@@ -300,7 +300,7 @@ namespace Words.Editor
 			{
 				ChooseBackground(doc);
 			}
-			else if (e.Command == CustomCommands.ShowViewer)
+			else if (e.Command == CustomCommands.SwitchWindow)
 			{
 				if (openDocuments.Count == 0)
 					this.Close();

@@ -376,6 +376,10 @@ namespace Words
 			{
 				e.CanExecute = (orderList.Count > 0);
 			}
+			else if (e.Command == CustomCommands.ShowPresentation)
+			{
+				e.CanExecute = Controller.PresentationManager.CurrentPresentation != null;
+			}
 		}
 
 		private void OnExecuteCommand(object sender, ExecutedRoutedEventArgs e)
@@ -410,7 +414,7 @@ namespace Words
 			{
 				Controller.ShowSongList();
 			}
-			else if (e.Command == CustomCommands.ShowEditor)
+			else if (e.Command == CustomCommands.SwitchWindow)
 			{
 				Controller.ShowEditorWindow();
 			}
@@ -437,6 +441,18 @@ namespace Words
 			else if (e.Command == CustomCommands.AddMedia)
 			{
 				ShowAddMediaDialog();
+			}
+			else if (e.Command == CustomCommands.HidePresentation)
+			{
+				Controller.PresentationManager.Status = PresentationStatus.Hide;
+			}
+			else if (e.Command == CustomCommands.Blackscreen)
+			{
+				Controller.PresentationManager.Status = PresentationStatus.Blackscreen;
+			}
+			else if (e.Command == CustomCommands.ShowPresentation)
+			{
+				Controller.PresentationManager.Status = PresentationStatus.Show;
 			}
 		}
 

@@ -28,6 +28,13 @@
 				</DataTrigger>
 			</Style.Triggers>
 		</Style>
+		<Style x:Key="markDisabledRadioButton" TargetType="RadioButton">
+			<Style.Triggers>
+				<DataTrigger Binding="{Binding Path=IsEnabled, RelativeSource={RelativeSource Self}}" Value="False">
+					<Setter Property="Button.Opacity" Value="0.5" />
+				</DataTrigger>
+			</Style.Triggers>
+		</Style>
 	</Application.Resources>
 	<JumpList.JumpList>
 		<JumpList ShowRecentCategory="True">

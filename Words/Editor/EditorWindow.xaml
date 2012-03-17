@@ -21,7 +21,7 @@
 		<CommandBinding Command="Save" Executed="OnExecuteCommand" CanExecute="OnCommandCanExecute"/>
 		<CommandBinding Command="SaveAs" Executed="OnExecuteCommand" CanExecute="OnCommandCanExecute"/>
 		<CommandBinding Command="Close" Executed="OnExecuteCommand" CanExecute="OnCommandCanExecute"/>
-		<CommandBinding Command="{x:Static my:CustomCommands.ShowViewer}" Executed="OnExecuteCommand"/>
+		<CommandBinding Command="{x:Static my:CustomCommands.SwitchWindow}" Executed="OnExecuteCommand"/>
 		<CommandBinding Command="{x:Static my:CustomCommands.ViewCurrent}" Executed="OnExecuteCommand" CanExecute="OnCommandCanExecute"/>
 		<CommandBinding Command="{x:Static my:CustomCommands.ChooseBackground}" Executed="OnExecuteCommand" CanExecute="OnCommandCanExecute"/>
 		<CommandBinding Command="{x:Static my:CustomCommands.SongSettings}" Executed="OnExecuteCommand" CanExecute="OnCommandCanExecute"/>
@@ -84,7 +84,7 @@
 			</MenuItem>
 		</Menu>
 		<ToolBar Grid.Row="1" ToolBarTray.IsLocked="True">
-			<Button Command="{x:Static my:CustomCommands.ShowViewer}" ToolTip="Präsentationsfenster anzeigen">
+			<Button Command="{x:Static my:CustomCommands.SwitchWindow}" ToolTip="Präsentationsfenster anzeigen">
 				<Image
 					Width="32"
 					Height="32"

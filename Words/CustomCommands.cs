@@ -20,13 +20,7 @@ namespace Words
 			private set;
 		}
 
-		public static RoutedCommand ShowEditor
-		{
-			get;
-			private set;
-		}
-
-		public static RoutedCommand ShowViewer
+		public static RoutedCommand SwitchWindow
 		{
 			get;
 			private set;
@@ -116,14 +110,31 @@ namespace Words
 			private set;
 		}
 
+		public static RoutedCommand HidePresentation
+		{
+			get;
+			private set;
+		}
+
+		public static RoutedCommand Blackscreen
+		{
+			get;
+			private set;
+		}
+
+		public static RoutedCommand ShowPresentation
+		{
+			get;
+			private set;
+		}
+
 		static CustomCommands()
 		{
 			Type t = typeof(CustomCommands);
 
 			Exit = new RoutedCommand("Exit", t);
 			ShowSonglist = new RoutedCommand("ShowSonglist", t);
-			ShowEditor = new RoutedCommand("ShowEditor", t);
-			ShowViewer = new RoutedCommand("ShowViewer", t);
+			SwitchWindow = new RoutedCommand("SwitchWindow", t, new InputGestureCollection { new KeyGesture(Key.Tab, ModifierKeys.Shift) });
 			EditActive = new RoutedCommand("EditActive", t);
 			ShowSettings = new RoutedCommand("ShowSettings", t);
 			ViewCurrent = new RoutedCommand("ViewCurrent", t);
@@ -138,6 +149,9 @@ namespace Words
 			SongSettings = new RoutedCommand("SongSettings", t);
 			EditChords = new RoutedCommand("EditChords", t);
 			AddMedia = new RoutedCommand("AddMedia", t);
+			HidePresentation = new RoutedCommand("HidePresentation", t, new InputGestureCollection { new KeyGesture(Key.F6) });
+			Blackscreen = new RoutedCommand("Blackscreen", t, new InputGestureCollection { new KeyGesture(Key.F7) });
+			ShowPresentation = new RoutedCommand("ShowPresentation", t, new InputGestureCollection { new KeyGesture(Key.F8) });
 		}
 	}
 }
