@@ -1,0 +1,67 @@
+﻿<UserControl
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:s="clr-namespace:System;assembly=mscorlib"
+	xmlns:local="clr-namespace:WpfTest"
+	mc:Ignorable="d"
+	x:Class="WpfTest.OriginalSongPresentationControl"
+	x:Name="UserControl"
+	d:DesignWidth="640" d:DesignHeight="480" Background="Red">
+    <UserControl.Triggers>
+        <EventTrigger RoutedEvent="UserControl.Loaded">
+            <BeginStoryboard>
+                <Storyboard>
+                    <DoubleAnimation
+            Storyboard.TargetName="UserControl" 
+            Storyboard.TargetProperty="Opacity"
+            From="1.0" To="0.0" Duration="0:0:5" 
+            AutoReverse="True" RepeatBehavior="Forever" />
+                </Storyboard>
+            </BeginStoryboard>
+        </EventTrigger>
+    </UserControl.Triggers>
+
+    <UserControl.Resources>
+		<DropShadowEffect x:Key="TextDropShadow" BlurRadius="4" Opacity="0.8" Direction="327" ShadowDepth="4"/>
+		<DropShadowEffect x:Key="SmallTextDropShadow" BlurRadius="4" Opacity="0.8" Direction="327" ShadowDepth="2"/>
+	</UserControl.Resources>
+
+	<Grid x:Name="LayoutRoot">
+		<Image x:Name="BackgroundImage" Stretch="Fill"/>
+		<StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+			<ItemsControl ItemsSource="{Binding Lines}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+						<StackPanel>
+                            <!--
+                            <local:OutlinedText FontSize="{Binding ElementName=UserControl, Path=DataContext.TextSize}" HorizontalAlignment="Center" Text="{Binding Text}" Stroke="Black" StrokeThickness="4" Bold="True" Fill="White" VerticalAlignment="Top" Margin="0,0,0,10" Effect="{StaticResource TextDropShadow}"/>
+                            <local:OutlinedText FontSize="{Binding ElementName=UserControl, Path=DataContext.TranslationSize}" x:Name="translation" HorizontalAlignment="Center" Text="{Binding Translation}" Stroke="Black" StrokeThickness="3" Bold="True" Italic="True" Margin="0,0,0,10" Fill="White"  VerticalAlignment="Top" Effect="{StaticResource TextDropShadow}"/>
+                            -->
+						</StackPanel>
+						<!--<DataTemplate.Triggers>
+							<DataTrigger Binding="{Binding Translation}" Value="">
+							    <Setter TargetName="translation" Property="Visibility" Value="Collapsed"/>
+					        </DataTrigger>
+				      </DataTemplate.Triggers>-->
+					</DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+		</StackPanel>
+        <!--
+        <local:OutlinedText HorizontalAlignment="Right" Text="{Binding Source}" Stroke="Black" StrokeThickness="2.5" FontSize="{Binding SourceSize}" Fill="White" VerticalAlignment="Top" Margin="0,20,50,0" Effect="{DynamicResource SmallTextDropShadow}"/>
+        -->
+		<StackPanel VerticalAlignment="Bottom" Margin="0,0,0,30">
+			<ItemsControl ItemsSource="{Binding CopyrightLines}">
+				<ItemsControl.ItemTemplate>
+					<DataTemplate>
+                        <!--
+                        <local:OutlinedText HorizontalAlignment="Center" Text="{Binding}" Stroke="Black" StrokeThickness="2.5" FontSize="{Binding ElementName=UserControl, Path=DataContext.CopyrightSize}" Fill="White" Effect="{StaticResource SmallTextDropShadow}"/>
+                        -->
+                    </DataTemplate>
+				</ItemsControl.ItemTemplate>
+			</ItemsControl>
+		</StackPanel>
+	</Grid>
+</UserControl>

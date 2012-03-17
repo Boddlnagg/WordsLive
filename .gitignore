@@ -1,0 +1,9 @@
+# Main output directory
+bin/*
+
+# Project's binary directories
+**/bin/*
+**/obj/*
+
+# VS user files
+*.suo

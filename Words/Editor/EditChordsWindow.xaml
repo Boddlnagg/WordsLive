@@ -1,0 +1,41 @@
+﻿<Window x:Class="Words.Editor.EditChordsWindow"
+		xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+		Title="Akkorde bearbeiten" Height="330" Width="325" MinHeight="330" MinWidth="325">
+	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="*"/>
+		</Grid.RowDefinitions>
+		<GroupBox Grid.Row="0" Header="Transponieren">
+			<Grid>
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="Auto"/>
+					<ColumnDefinition Width="*"/>
+				</Grid.ColumnDefinitions>
+				<Grid.RowDefinitions>
+					<RowDefinition Height="Auto"/>
+					<RowDefinition Height="Auto"/>
+					<RowDefinition Height="Auto"/>
+					<RowDefinition Height="Auto"/>
+				</Grid.RowDefinitions>
+				<Label Grid.Row="0" Grid.Column="0">Ausgangstonart:</Label>
+				<TextBox x:Name="keyTextBox" Grid.Row="0" Grid.Column="1" Margin="2" Text="{Binding OriginalKey, ValidatesOnDataErrors=True}" Style="{StaticResource textBoxInError}"/>
+				<Label Grid.Row="1" Grid.Column="0">Transponieren (Halbtöne):</Label>
+				<TextBox x:Name="amountTextBox" Grid.Row="1" Grid.Column="1" Height="26" Margin="2" VerticalAlignment="Bottom" Text="{Binding TransposeAmount, ValidatesOnDataErrors=True}" Style="{StaticResource textBoxInError}"/>
+				<Label Grid.Row="2" Grid.Column="0">Zieltonart:</Label>
+				<Label IsEnabled="False" Grid.Row="2" Grid.Column="1" Content="{Binding TargetKey}"/>
+				<Button Grid.Row="3" Grid.Column="1" Margin="5" Height="23" HorizontalAlignment="Right" Padding="5,0" Click="ButtonTranspose_Click">Transponieren</Button>
+			</Grid>
+		</GroupBox>
+		<GroupBox Grid.Row="1" Header="Sonstiges">
+			<StackPanel Orientation="Vertical">
+				<CheckBox Margin="5" IsChecked="{Binding GermanNotation}">Deutsche Akkordsymbole verwenden (H statt B)</CheckBox>
+				<CheckBox Margin="5" IsChecked="{Binding LongChordNames}">Akkordnamen ausschreiben (z.B. Cis statt C#)</CheckBox>
+				<Button HorizontalAlignment="Right" Height="23" Margin="5" Padding="5,0" Click="ButtonRemoveChords_Click">Alle Akkorde entfernen</Button>
+			</StackPanel>
+		</GroupBox>
+		<Button IsDefault="True" IsCancel="True" Height="23" Width="90" Margin="0,6,6,6" HorizontalAlignment="Right" VerticalAlignment="Bottom" Grid.Row="2">Schließen</Button>
+	</Grid>
+</Window>

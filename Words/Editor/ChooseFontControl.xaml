@@ -1,0 +1,38 @@
+﻿<UserControl x:Class="Words.Editor.ChooseFontControl"
+		xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+		xmlns:ext="http://schemas.microsoft.com/winfx/2006/xaml/presentation/toolkit/extended"
+		xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+		mc:Ignorable="d" 
+		d:DesignHeight="26" d:DesignWidth="300">
+	<Grid>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="5*"/>
+			<ColumnDefinition Width="Auto"/>
+			<ColumnDefinition Width="Auto"/>
+			<ColumnDefinition Width="*"/>
+			<ColumnDefinition Width="Auto"/>
+			<ColumnDefinition Width="*"/>
+			<ColumnDefinition Width="*"/>
+		</Grid.ColumnDefinitions>
+		<ComboBox ToolTip="Schriftart" Margin="0,0,6,0" x:Name="FontComboBox" Grid.Column="0" ItemsSource="{x:Static Fonts.SystemFontFamilies}">
+			<ComboBox.ItemTemplate>
+				<DataTemplate>
+					<TextBlock Text="{Binding}" FontFamily="{Binding}" FontSize="14"/>
+				</DataTemplate>
+			</ComboBox.ItemTemplate>
+			<ComboBox.ItemsPanel>
+				<ItemsPanelTemplate>
+					<VirtualizingStackPanel />
+				</ItemsPanelTemplate>
+			</ComboBox.ItemsPanel>
+		</ComboBox>
+		<ToggleButton ToolTip="Fett" Width="26" Margin="0,0,6,0" Grid.Column="1" FontWeight="Bold" IsChecked="{Binding Font.Bold, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}">B</ToggleButton>
+		<ToggleButton ToolTip="Kursiv" Width="26" Margin="0,0,6,0" Grid.Column="2" FontStyle="Italic" IsChecked="{Binding Font.Italic, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}">I</ToggleButton>
+		<TextBox ToolTip="Schriftgröße" Width="26" Margin="0,0,6,0" Grid.Column="3" Text="{Binding Font.Size, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}"/>
+		<ext:ColorPicker ToolTip="Schriftfarbe" Margin="0,0,6,0" Grid.Column="4" Width="50" Name="ColorPicker"/>
+		<TextBox ToolTip="Umrandung" Margin="0,0,6,0" Width="26" Grid.Column="5" Text="{Binding Font.Outline, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}"/>
+		<TextBox ToolTip="Schatten" Width="26" Grid.Column="6" Text="{Binding Font.Shadow, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}"/>
+	</Grid>
+</UserControl>

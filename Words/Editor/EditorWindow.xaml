@@ -1,0 +1,174 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Window
+	x:Class="Words.Editor.EditorWindow" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:local="clr-namespace:Words.Editor"
+	xmlns:my="clr-namespace:Words"
+	Title="Words - Editor"
+	MinHeight="300"
+	MinWidth="300"
+	Height = "{Binding Source={StaticResource settings}, Path=Default.EditorWindowHeight, Mode=TwoWay}"
+	Width = "{Binding Source={StaticResource settings}, Path=Default.EditorWindowWidth, Mode=TwoWay}"
+	Top="{Binding Source={StaticResource settings}, Path=Default.EditorWindowTop, Mode=TwoWay}"
+	Left="{Binding Source={StaticResource settings}, Path=Default.EditorWindowLeft, Mode=TwoWay}"
+	WindowState="{Binding Source={StaticResource settings}, Path=Default.EditorWindowState, Mode=TwoWay}"
+	Closing="Window_Closing"
+	Icon="/Words;component/Artwork/Editor.png ">
+	<Window.CommandBindings>
+		<CommandBinding Command="Undo" CanExecute="OnCommandCanExecute" Executed="OnExecuteCommand"/>
+		<CommandBinding Command="Redo" CanExecute="OnCommandCanExecute" Executed="OnExecuteCommand"/>
+		<CommandBinding Command="New" Executed="OnExecuteCommand"/>
+		<CommandBinding Command="Open" Executed="OnExecuteCommand"/>
+		<CommandBinding Command="Save" Executed="OnExecuteCommand" CanExecute="OnCommandCanExecute"/>
+		<CommandBinding Command="SaveAs" Executed="OnExecuteCommand" CanExecute="OnCommandCanExecute"/>
+		<CommandBinding Command="Close" Executed="OnExecuteCommand" CanExecute="OnCommandCanExecute"/>
+		<CommandBinding Command="{x:Static my:CustomCommands.ShowViewer}" Executed="OnExecuteCommand"/>
+		<CommandBinding Command="{x:Static my:CustomCommands.ViewCurrent}" Executed="OnExecuteCommand" CanExecute="OnCommandCanExecute"/>
+		<CommandBinding Command="{x:Static my:CustomCommands.ChooseBackground}" Executed="OnExecuteCommand" CanExecute="OnCommandCanExecute"/>
+		<CommandBinding Command="{x:Static my:CustomCommands.SongSettings}" Executed="OnExecuteCommand" CanExecute="OnCommandCanExecute"/>
+		<CommandBinding Command="{x:Static my:CustomCommands.EditChords}" Executed="OnExecuteCommand" CanExecute="OnCommandCanExecute"/>
+	</Window.CommandBindings>
+	<Grid
+		x:Name="LayoutRoot">
+		<Grid.RowDefinitions>
+			<RowDefinition
+				Height="Auto" />
+			<RowDefinition
+				Height="Auto" />
+			<RowDefinition
+				Height="*" />
+			<RowDefinition
+				Height="Auto" />
+		</Grid.RowDefinitions>
+		<Menu Grid.Row="0">
+			<MenuItem
+				Header="Datei">
+				<MenuItem Header="Neues Lied" Command="New">
+					<MenuItem.Icon>
+						<Image Width="24" Source="/Words;component/Artwork/New.png" />
+					</MenuItem.Icon>
+				</MenuItem>
+				<MenuItem Header="Lied öffnen" Command="Open">
+					<MenuItem.Icon>
+						<Image Width="24" Source="/Words;component/Artwork/Open.png" />
+					</MenuItem.Icon>
+				</MenuItem>
+				<MenuItem
+					Header="Lied speichern" Command="Save">
+					<MenuItem.Icon>
+						<Image Width="24" Source="/Words;component/Artwork/Save.png" />
+					</MenuItem.Icon>
+				</MenuItem>
+				<MenuItem
+					Header="Lied speichern unter" Command="SaveAs"/>
+				<MenuItem
+					Header="Lied schließen" Command="Close"/>
+			</MenuItem>
+			<MenuItem Header="Bearbeiten">
+				<MenuItem Header="Rückgängig" Command="Undo">
+					<MenuItem.Icon>
+						<Image Width="24" Source="/Words;component/Artwork/Undo.png" />
+					</MenuItem.Icon>
+				</MenuItem>
+				<MenuItem Header="Wiederholen" Command="Redo">
+					<MenuItem.Icon>
+						<Image Width="24" Source="/Words;component/Artwork/Redo.png" />
+					</MenuItem.Icon>
+				</MenuItem>
+				<MenuItem Header="Text an Cursorposition auf zwei Folien aufteilen" Command="{x:Static my:CustomCommands.Split}"/>
+				<MenuItem Header="Akkorde bearbeiten ..." Command="{x:Static my:CustomCommands.EditChords}"/>
+				<MenuItem Header="Lied formatieren ..." Command="{x:Static my:CustomCommands.SongSettings}">
+					<MenuItem.Icon>
+						<Image Width="24" Source="/Words;component/Artwork/Formatting.png" />
+					</MenuItem.Icon>
+				</MenuItem>
+			</MenuItem>
+		</Menu>
+		<ToolBar Grid.Row="1" ToolBarTray.IsLocked="True">
+			<Button Command="{x:Static my:CustomCommands.ShowViewer}" ToolTip="Präsentationsfenster anzeigen">
+				<Image
+					Width="32"
+					Height="32"
+					Source="/Words;component/Artwork/Viewer.png" />
+			</Button>
+			<Button Command="{x:Static my:CustomCommands.ViewCurrent}" Style="{StaticResource markDisabledButton}" ToolTip="Lied speichern und aktive Präsentation neu laden">
+				<Image
+					Width="32"
+					Height="32"
+					Source="/Words;component/Artwork/ViewCurrent.png" />
+			</Button>
+			<Separator/>
+			<Button Command="New" ToolTip="Neues Lied">
+				<Image
+					Width="32"
+					Height="32"
+					Source="/Words;component/Artwork/New.png" />
+			</Button>
+			<Button Command="Open" ToolTip="Lied öffnen">
+				<Image
+					Width="32"
+					Height="32"
+					Source="/Words;component/Artwork/Open.png" />
+			</Button>
+			<Button Command="Save" Style="{StaticResource markDisabledButton}" ToolTip="Lied speichern" >
+				<Image
+					Width="32"
+					Height="32"
+					Source="/Words;component/Artwork/Save.png" />
+			</Button>
+			<Separator/>
+			<Button Command="Undo" Style="{StaticResource markDisabledButton}" ToolTip="Rückgängig" >
+				<Image
+					Width="32"
+					Height="32"
+					Source="/Words;component/Artwork/Undo.png"/>
+			</Button>
+			<Button Command="Redo" Style="{StaticResource markDisabledButton}" ToolTip="Wiederhole" >
+				<Image
+					Width="32"
+					Height="32"
+					Source="/Words;component/Artwork/Redo.png" />
+			</Button>
+			<Separator/>
+			<Button Command="{x:Static my:CustomCommands.ChooseBackground}" Style="{StaticResource markDisabledButton}" ToolTip="Hintergrund für ausgewähltes Element ändern">
+				<Image
+					Width="32"
+					Height="32"
+					Source="/Words;component/Artwork/ChooseBackground.png" />
+			</Button>
+			<Button Command="DecreaseFontSize" Style="{StaticResource markDisabledButton}" ToolTip="Schriftgröße verringern">
+				<Image
+					Width="32"
+					Height="32"
+					Source="/Words;component/Artwork/DecreaseFontSize.png" />
+			</Button>
+			<Button Command="IncreaseFontSize" Style="{StaticResource markDisabledButton}" ToolTip="Schriftgröße erhöhen">
+				<Image
+					Width="32"
+					Height="32"
+					Source="/Words;component/Artwork/IncreaseFontSize.png" />
+			</Button>
+		</ToolBar>
+		<Grid Grid.Row="2" Grid.Column="0" AllowDrop="True" Drop="Tabs_Drop" Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}">
+			<TabControl x:Name="Tabs" ItemsSource="{Binding}">
+				<TabControl.ItemContainerStyle>
+					<Style TargetType="TabItem">
+						<Setter Property="Header" Value="{Binding Grid.Node.Title}"/>
+						<Setter Property="Content" Value="{Binding Grid}"/>
+						<Setter Property="ToolTip" Value="{Binding File.FullName}"/>
+						<Setter Property="ContextMenu">
+							<Setter.Value>
+								<ContextMenu>
+									<MenuItem Header="Speichern" Command="Save" CommandParameter="{Binding}"/>
+									<MenuItem Header="Schließen" Command="Close" CommandParameter="{Binding}" />
+								</ContextMenu>
+							</Setter.Value>
+						</Setter>
+					</Style>
+				</TabControl.ItemContainerStyle>
+			</TabControl>
+		</Grid>
+		<StatusBar
+			Grid.Row="3"
+			Height="23" />
+	</Grid>
+</Window>

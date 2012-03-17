@@ -1,0 +1,61 @@
+﻿<Window
+		xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+		xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" x:Class="Words.Songs.SongListWindow"
+		Title="Liederliste" MinWidth="450" MinHeight="350" mc:Ignorable="d" Loaded="Window_Loaded"
+		Height = "{Binding Source={StaticResource settings}, Path=Default.SongListWindowHeight, Mode=TwoWay}"
+		Width = "{Binding Source={StaticResource settings}, Path=Default.SongListWindowWidth, Mode=TwoWay}"
+		Top="{Binding Source={StaticResource settings}, Path=Default.SongListWindowTop, Mode=TwoWay}"
+		Left="{Binding Source={StaticResource settings}, Path=Default.SongListWindowLeft, Mode=TwoWay}"
+		WindowState="{Binding Source={StaticResource settings}, Path=Default.SongListWindowState, Mode=TwoWay}"
+		Icon="/Words;component/Artwork/Songlist.png">
+	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="*"/>
+			<RowDefinition Height="Auto"/>
+		</Grid.RowDefinitions>
+		<GroupBox Header="Suchen" Name="filterGroupBox" Grid.Row="0">
+			<Grid>
+				<TextBox AcceptsReturn="False" Name="filterTextBox" Margin="6,5,310,0" Text="{Binding Path=Keyword}" VerticalAlignment="Top" Height="23" TextWrapping="Wrap" />
+				<Button IsDefault="True" Name="filterButton" Margin="0,4,6,0" Content="Suchen" VerticalAlignment="Top" Height="23" Click="filterButton_Click" HorizontalAlignment="Right" Width="117" />
+				<CheckBox Content="Liedtext auch durchsuchen" IsChecked="{Binding Path=SearchInText}" Height="16" HorizontalAlignment="Right" Margin="0,8,146,0" Name="filterCheckBox" VerticalAlignment="Top" />
+				<Expander Header="Erweitert" HorizontalAlignment="Left" Margin="6,34,0,0" VerticalAlignment="Top" Width="564" IsExpanded="{Binding Source={StaticResource settings}, Path=Default.SongListSearchExpanded, Mode=TwoWay}">
+					<Grid>
+						<Label Content="Liederbuch:" Height="28" HorizontalAlignment="Left" Margin="-1,1,0,0" VerticalAlignment="Top" />
+						<TextBox Text="{Binding Path=SourceSongbook}" Height="23" HorizontalAlignment="Left" Margin="84,3,0,0" Name="filterSourceSongbookTextBox" VerticalAlignment="Top" Width="120" />
+						<Label Content="Liednummer:" Height="28" HorizontalAlignment="Left" Margin="-1,25,0,0" VerticalAlignment="Top" />
+						<TextBox Text="{Binding Path=SourceNumber}" Height="23" HorizontalAlignment="Left" Margin="84,27,0,0" Name="filterSourceNumberTextBox" VerticalAlignment="Top" Width="120" />
+						<Label Content="Copyright:" Height="28" HorizontalAlignment="Left" Margin="210,1,0,0" VerticalAlignment="Top" />
+						<TextBox Text="{Binding Path=Copyright}" Height="23" HorizontalAlignment="Left" Margin="281,3,0,0" Name="filterCopyrightTextBox" VerticalAlignment="Top" Width="120" />
+					</Grid>
+				</Expander>
+			</Grid>
+		</GroupBox>
+		<ListView Foreground="Black" IsTextSearchEnabled="True" TextSearch.TextPath="Title" x:Name="songListView" ItemsSource="{Binding}" VerticalAlignment="Stretch" Grid.Row="1" 
+				  PreviewMouseMove="List_MouseMove" PreviewMouseLeftButtonUp="songListView_PreviewMouseLeftButtonUp">
+			<ListView.Resources>
+				<Style TargetType="TextBlock">
+					<Setter Property="TextWrapping" Value="NoWrap" />
+					<Setter Property="TextTrimming" Value="CharacterEllipsis" />
+				</Style>
+			</ListView.Resources>
+			<ListView.View>
+				<GridView>
+					<GridViewColumn Header="Titel" Width="250" DisplayMemberBinding="{Binding Title}" />
+					<GridViewColumn Header="Quelle" Width="150" DisplayMemberBinding="{Binding SourcesString}" />
+					<GridViewColumn Header="Copyright" Width="170" DisplayMemberBinding="{Binding CopyrightTrimmed}" />
+				</GridView>
+			</ListView.View>
+			<ListView.ItemContainerStyle>
+				<Style TargetType="{x:Type ListViewItem}">
+					<EventSetter Event="PreviewMouseLeftButtonDown" Handler="ListViewItem_PreviewMouseLeftButtonDown"/>
+					<EventSetter Event="MouseDoubleClick" Handler="ListViewItem_MouseDoubleClick" />
+				</Style>
+			</ListView.ItemContainerStyle>
+		</ListView>
+		<Button Content="Lied hinzufügen" Grid.Row="2" Height="23" HorizontalAlignment="Right" Margin="0,6,6,6" Name="buttonAddSong" VerticalAlignment="Center" Width="110" Click="buttonAddSong_Click" />
+		<Button Content="Schließen" Grid.Row="2" Height="23" HorizontalAlignment="Right" Margin="0,6,122,6" Name="buttonClose" VerticalAlignment="Center" Width="110" Click="buttonClose_Click" />
+		<Label Grid.Row="2" Height="Auto" HorizontalAlignment="Left" Margin="6,0,0,0" Foreground="Gray" x:Name="labelStatus" Content="Lade ..." VerticalAlignment="Center" />
+	</Grid>
+</Window>

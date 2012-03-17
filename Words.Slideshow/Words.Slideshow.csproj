@@ -1,0 +1,110 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{8FC44A35-F11F-49EE-B15C-CB400B318447}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Words.Slideshow</RootNamespace>
+    <AssemblyName>Words.Slideshow</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="cli_basetypes, Version=1.0.19.0, Culture=neutral, PublicKeyToken=ce2cb7e279207b9e, processorArchitecture=MSIL" />
+    <Reference Include="cli_cppuhelper, Version=1.0.22.0, Culture=neutral, PublicKeyToken=ce2cb7e279207b9e, processorArchitecture=x86" />
+    <Reference Include="cli_oootypes, Version=1.0.8.0, Culture=neutral, PublicKeyToken=ce2cb7e279207b9e, processorArchitecture=MSIL" />
+    <Reference Include="cli_ure, Version=1.0.22.0, Culture=neutral, PublicKeyToken=ce2cb7e279207b9e, processorArchitecture=MSIL" />
+    <Reference Include="cli_uretypes, Version=1.0.8.0, Culture=neutral, PublicKeyToken=ce2cb7e279207b9e, processorArchitecture=MSIL" />
+    <Reference Include="Ionic.Zip">
+      <HintPath>..\3rdParty\Ionic.Zip.dll</HintPath>
+    </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Impress\ImpressMedia.cs" />
+    <Compile Include="Impress\ImpressPresentation.cs" />
+    <Compile Include="ISlideshowPresentation.cs" />
+    <Compile Include="Photos\PhotosMedia.cs" />
+    <Compile Include="Photos\PhotosPresentation.cs" />
+    <Compile Include="Photos\PhotosControl.xaml.cs">
+      <DependentUpon>PhotosControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="SlideshowMedia.cs" />
+    <Compile Include="SlideshowPresentationBase.cs" />
+    <Compile Include="SlideshowControlPanel.xaml.cs">
+      <DependentUpon>SlideshowControlPanel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PowerpointViewer\PowerpointViewerMedia.cs" />
+    <Compile Include="PowerpointViewer\PowerpointViewerPresentation.cs" />
+    <Compile Include="SlideshowPreviewProvider.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="Photos\PhotosControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SlideshowControlPanel.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PowerpointViewerLib\PowerpointViewerLib.csproj">
+      <Project>{13097FE4-040F-4E60-AD82-F18FE379CBF4}</Project>
+      <Name>PowerpointViewerLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Words.Core\Words.Core.csproj">
+      <Project>{AABDBF78-74B7-40DD-A327-FABF1FA758F8}</Project>
+      <Name>Words.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Words.Presentation.Wpf\Words.Presentation.Wpf.csproj">
+      <Project>{5CA13F98-4FCA-4DED-8468-366DD89932BD}</Project>
+      <Name>Words.Presentation.Wpf</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Words.Presentation\Words.Presentation.csproj">
+      <Project>{7103EF3D-12DE-4381-95D4-1A440F0AA1D9}</Project>
+      <Name>Words.Presentation</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Words\Words.csproj">
+      <Project>{B2DF371C-DCAE-43FF-817A-34FBC21234D8}</Project>
+      <Name>Words</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

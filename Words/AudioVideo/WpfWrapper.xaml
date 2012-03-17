@@ -1,0 +1,15 @@
+﻿<av:BaseMediaControl x:Class="Words.AudioVideo.WpfWrapper"
+			 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+			 xmlns:av="clr-namespace:Words.AudioVideo"
+			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+			 xmlns:vlc="clr-namespace:Vlc.DotNet.Wpf;assembly=Vlc.DotNet.Wpf"
+			 mc:Ignorable="d" 
+			 d:DesignHeight="300" d:DesignWidth="300"
+			 Background="Black">
+	<Grid>
+		<MediaElement x:Name="mediaElement"/>
+		<Rectangle x:Name="rect" Fill="Black"/>
+	</Grid>
+</av:BaseMediaControl>

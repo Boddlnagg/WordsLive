@@ -1,0 +1,701 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="210mm"
+   height="297mm"
+   id="svg2"
+   sodipodi:version="0.32"
+   inkscape:version="0.48.1 "
+   sodipodi:docname="Icon.svg"
+   inkscape:output_extension="org.inkscape.output.svg.inkscape"
+   version="1.1">
+  <defs
+     id="defs4">
+    <linearGradient
+       id="linearGradient4015">
+      <stop
+         style="stop-color:#0b0817;stop-opacity:1;"
+         offset="0"
+         id="stop4017" />
+      <stop
+         style="stop-color:#201742;stop-opacity:1;"
+         offset="1"
+         id="stop4019" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient3781">
+      <stop
+         style="stop-color:#e7e7e7;stop-opacity:1;"
+         offset="0"
+         id="stop3783" />
+      <stop
+         style="stop-color:#000000;stop-opacity:1;"
+         offset="1"
+         id="stop3785" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient5162">
+      <stop
+         style="stop-color:#6c80fe;stop-opacity:1;"
+         offset="0"
+         id="stop5164" />
+      <stop
+         style="stop-color:#e9e8fb;stop-opacity:1;"
+         offset="1"
+         id="stop5166" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient5052">
+      <stop
+         style="stop-color:#000000;stop-opacity:1;"
+         offset="0"
+         id="stop5054" />
+      <stop
+         style="stop-color:#000000;stop-opacity:0.72625697;"
+         offset="1"
+         id="stop5056" />
+    </linearGradient>
+    <linearGradient
+       inkscape:collect="always"
+       id="linearGradient5044">
+      <stop
+         style="stop-color:#000000;stop-opacity:1;"
+         offset="0"
+         id="stop5046" />
+      <stop
+         style="stop-color:#000000;stop-opacity:0;"
+         offset="1"
+         id="stop5048" />
+    </linearGradient>
+    <inkscape:perspective
+       sodipodi:type="inkscape:persp3d"
+       inkscape:vp_x="0 : 526.18109 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_z="744.09448 : 526.18109 : 1"
+       inkscape:persp3d-origin="372.04724 : 350.78739 : 1"
+       id="perspective10" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient5044"
+       id="linearGradient5050"
+       x1="2.9288101"
+       y1="1039.9005"
+       x2="49.641701"
+       y2="1039.9005"
+       gradientUnits="userSpaceOnUse" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient5052"
+       id="linearGradient5058"
+       x1="2.9288101"
+       y1="1039.9005"
+       x2="49.641701"
+       y2="1039.9005"
+       gradientUnits="userSpaceOnUse" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient5162"
+       id="linearGradient5168"
+       x1="3.4328196"
+       y1="-1057.9672"
+       x2="30.338434"
+       y2="-1027.7911"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(8.0769226,0,0,8.3080367,0,7691.0545)" />
+    <filter
+       inkscape:collect="always"
+       id="filter5258"
+       x="-0.043490204"
+       width="1.0869804"
+       y="-0.14774932"
+       height="1.2954986">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="0.84648047"
+         id="feGaussianBlur5260" />
+    </filter>
+    <radialGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3781"
+       id="radialGradient3787"
+       cx="105"
+       cy="992.36218"
+       fx="105"
+       fy="992.36218"
+       r="110.6105"
+       gradientTransform="matrix(2.0351363,0.01250727,-0.00662987,1.0838716,-102.11007,-84.544429)"
+       gradientUnits="userSpaceOnUse" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient5162"
+       id="linearGradient3806"
+       x1="5.9619045"
+       y1="1141.1122"
+       x2="171.88571"
+       y2="991.71216"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(1.0096154,0,0,1.1111111,-3.0288462,-148.04024)" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient5162-9"
+       id="linearGradient5168-7"
+       x1="3.4328196"
+       y1="-1057.9672"
+       x2="30.338434"
+       y2="-1027.7911"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(4.0384612,0,0,4.1540525,0,3319.382)" />
+    <linearGradient
+       id="linearGradient5162-9">
+      <stop
+         style="stop-color:#6c80fe;stop-opacity:1;"
+         offset="0"
+         id="stop5164-0" />
+      <stop
+         style="stop-color:#e9e8fb;stop-opacity:1;"
+         offset="1"
+         id="stop5166-9" />
+    </linearGradient>
+    <filter
+       color-interpolation-filters="sRGB"
+       inkscape:collect="always"
+       id="filter5258-0"
+       x="-0.043490205"
+       width="1.0869803"
+       y="-0.14774932"
+       height="1.2954986">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="0.84648047"
+         id="feGaussianBlur5260-0" />
+    </filter>
+    <linearGradient
+       id="linearGradient5162-9-0">
+      <stop
+         style="stop-color:#6c80fe;stop-opacity:1;"
+         offset="0"
+         id="stop5164-0-3" />
+      <stop
+         style="stop-color:#e9e8fb;stop-opacity:1;"
+         offset="1"
+         id="stop5166-9-1" />
+    </linearGradient>
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient5162-0"
+       id="linearGradient5168-4"
+       x1="3.4328196"
+       y1="-1057.9672"
+       x2="30.338434"
+       y2="-1027.7911"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(8.0769226,0,0,8.308105,0,7691.1263)" />
+    <linearGradient
+       id="linearGradient5162-0">
+      <stop
+         style="stop-color:#6c80fe;stop-opacity:1;"
+         offset="0"
+         id="stop5164-6" />
+      <stop
+         style="stop-color:#e9e8fb;stop-opacity:1;"
+         offset="1"
+         id="stop5166-2" />
+    </linearGradient>
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient5162-6"
+       id="linearGradient5168-9"
+       x1="3.4328196"
+       y1="-1057.9672"
+       x2="30.338434"
+       y2="-1027.7911"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(8.0769226,0,0,8.308105,0,7691.1263)" />
+    <linearGradient
+       id="linearGradient5162-6">
+      <stop
+         style="stop-color:#6c80fe;stop-opacity:1;"
+         offset="0"
+         id="stop5164-1" />
+      <stop
+         style="stop-color:#e9e8fb;stop-opacity:1;"
+         offset="1"
+         id="stop5166-4" />
+    </linearGradient>
+    <linearGradient
+       y2="-1027.7911"
+       x2="30.338434"
+       y1="-1057.9672"
+       x1="3.4328196"
+       gradientTransform="matrix(8.0769226,0,0,8.3080367,0,7691.0546)"
+       gradientUnits="userSpaceOnUse"
+       id="linearGradient3944"
+       xlink:href="#linearGradient5162"
+       inkscape:collect="always" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient5162-9-0"
+       id="linearGradient3970"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(8.0576919,0,0,4.1367438,0.5,3321.5829)"
+       x1="3.4328196"
+       y1="-1057.9672"
+       x2="30.338434"
+       y2="-1027.7911" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient5162-0"
+       id="linearGradient3972"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(8.0576919,0,0,8.2734879,0.5,7655.195)"
+       x1="3.4328196"
+       y1="-1057.9672"
+       x2="30.338434"
+       y2="-1027.7911" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient5162-0"
+       id="linearGradient3978"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(8.0576919,0,0,-8.2734879,0.5,-7655.195)"
+       x1="3.4328196"
+       y1="-1057.9672"
+       x2="30.338434"
+       y2="-1027.7911" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient4015"
+       id="linearGradient4021"
+       x1="-44"
+       y1="987.36212"
+       x2="407"
+       y2="825.36212"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(1,0,0,0.99999178,0,0.00864323)" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient4015"
+       id="linearGradient4023"
+       x1="-44"
+       y1="987.36212"
+       x2="407"
+       y2="825.36212"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(1,0,0,0.99999178,0,0.00864323)" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient4015"
+       id="linearGradient4049"
+       x1="445.28912"
+       y1="888.36395"
+       x2="531.44153"
+       y2="838.12207"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(0.51577201,0,0,0.49259125,270.93703,390.66534)" />
+    <filter
+       color-interpolation-filters="sRGB"
+       inkscape:collect="always"
+       id="filter5258-2"
+       x="-0.043490205"
+       width="1.0869803"
+       y="-0.14774932"
+       height="1.2954986">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="0.84648047"
+         id="feGaussianBlur5260-5" />
+    </filter>
+    <filter
+       color-interpolation-filters="sRGB"
+       inkscape:collect="always"
+       id="filter5258-2-2"
+       x="-0.043490205"
+       width="1.0869803"
+       y="-0.14774932"
+       height="1.2954986">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="0.84648047"
+         id="feGaussianBlur5260-5-5" />
+    </filter>
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient4015-5"
+       id="linearGradient4049-6"
+       x1="445.28912"
+       y1="888.36395"
+       x2="531.44153"
+       y2="838.12207"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(0.51577201,0,0,0.49259125,270.93703,390.66534)" />
+    <linearGradient
+       id="linearGradient4015-5">
+      <stop
+         style="stop-color:#0b0817;stop-opacity:1;"
+         offset="0"
+         id="stop4017-4" />
+      <stop
+         style="stop-color:#201742;stop-opacity:1;"
+         offset="1"
+         id="stop4019-2" />
+    </linearGradient>
+    <linearGradient
+       y2="838.12207"
+       x2="531.44153"
+       y1="888.36395"
+       x1="445.28912"
+       gradientTransform="matrix(0.2495671,0,0,0.23835061,458.7647,627.12092)"
+       gradientUnits="userSpaceOnUse"
+       id="linearGradient4105"
+       xlink:href="#linearGradient4015-5"
+       inkscape:collect="always" />
+    <filter
+       color-interpolation-filters="sRGB"
+       inkscape:collect="always"
+       id="filter5258-2-8"
+       x="-0.043490205"
+       width="1.0869803"
+       y="-0.14774932"
+       height="1.2954986">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="0.84648047"
+         id="feGaussianBlur5260-5-1" />
+    </filter>
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient4015-3"
+       id="linearGradient4049-3"
+       x1="445.28912"
+       y1="888.36395"
+       x2="531.44153"
+       y2="838.12207"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(0.51577201,0,0,0.49259125,270.93703,390.66534)" />
+    <linearGradient
+       id="linearGradient4015-3">
+      <stop
+         style="stop-color:#0b0817;stop-opacity:1;"
+         offset="0"
+         id="stop4017-9" />
+      <stop
+         style="stop-color:#201742;stop-opacity:1;"
+         offset="1"
+         id="stop4019-1" />
+    </linearGradient>
+    <linearGradient
+       y2="838.12207"
+       x2="531.44153"
+       y1="888.36395"
+       x1="445.28912"
+       gradientTransform="matrix(1.0481818,0,0,1.0010726,19.881677,13.128518)"
+       gradientUnits="userSpaceOnUse"
+       id="linearGradient4163"
+       xlink:href="#linearGradient4015-3"
+       inkscape:collect="always" />
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="2.8284271"
+     inkscape:cx="538.01344"
+     inkscape:cy="196.38912"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="1366"
+     inkscape:window-height="706"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Ebene 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <rect
+       style="fill:url(#linearGradient5168);fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.2;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="rect5062"
+       width="420"
+       height="39.999672"
+       x="0"
+       y="-1052.3622"
+       transform="scale(1,-1)"
+       inkscape:export-filename="C:\Users\Patrick\Documents\Visual Studio 2010\Projects\Words\Words\Artwork\SplashScreen.png"
+       inkscape:export-xdpi="89.995903"
+       inkscape:export-ydpi="89.995903"
+       rx="20.000002"
+       ry="20" />
+    <rect
+       style="fill:url(#linearGradient3944);fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.2;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="rect5062-8"
+       width="420"
+       height="19.999836"
+       x="0"
+       y="-1032.3623"
+       transform="scale(1,-1)"
+       inkscape:export-filename="C:\Users\Patrick\Documents\Visual Studio 2010\Projects\Words\Words\Artwork\SplashScreen.png"
+       inkscape:export-xdpi="89.995903"
+       inkscape:export-ydpi="89.995903"
+       rx="0"
+       ry="0" />
+    <rect
+       style="fill:url(#linearGradient4021);fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.2;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="rect3452"
+       width="420"
+       height="199.99835"
+       x="0"
+       y="812.36407"
+       inkscape:export-filename="C:\Users\Patrick\Documents\Visual Studio 2010\Projects\Words\Words\Artwork\SplashScreen.png"
+       inkscape:export-xdpi="89.995903"
+       inkscape:export-ydpi="89.995903"
+       ry="20.000053"
+       rx="20.000053" />
+    <rect
+       style="fill:url(#linearGradient4023);fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.2;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="rect3452-5"
+       width="420"
+       height="114.99905"
+       x="0"
+       y="897.36346"
+       inkscape:export-filename="C:\Users\Patrick\Documents\Visual Studio 2010\Projects\Words\Words\Artwork\SplashScreen.png"
+       inkscape:export-xdpi="89.995903"
+       inkscape:export-ydpi="89.995903"
+       ry="0" />
+    <path
+       style="fill:none;stroke:#dce0f9;stroke-width:0.99999994;stroke-miterlimit:4;stroke-opacity:1;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       d="M 19.46875,812.8718 C 9.111244,812.54536 0.5,820.56701 0.5,832.871 l 0,159.14984 0,19.99916 0,19.9055 c 0,11.6934 7.9489875,19.9367 20,19.9367 l 379,0 c 11.46407,0 20,-8.5485 20,-19.9367 l 0,-19.9055 0,-114.5266 0,-64.6224 c 0,-11.99652 -8.31256,-19.9992 -20,-19.9992 l -379,0 c -0.346251,0 -0.689424,-0.0172 -1.03125,0 z"
+       id="rect5062-39"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="csccssssccsssc"
+       inkscape:export-filename="C:\Users\Patrick\Documents\Visual Studio 2010\Projects\Words\Words\Artwork\SplashScreen.png"
+       inkscape:export-xdpi="89.995903"
+       inkscape:export-ydpi="89.995903" />
+    <text
+       xml:space="preserve"
+       style="font-size:40.04932404px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-indent:0;text-align:start;text-decoration:none;line-height:normal;letter-spacing:normal;word-spacing:normal;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;text-anchor:start;fill:#0b0817;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1px;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate;font-family:Calibri;-inkscape-font-specification:Calibri"
+       x="22.471308"
+       y="1041.9067"
+       id="text5266"
+       inkscape:export-filename="C:\Users\Patrick\Documents\Visual Studio 2010\Projects\Words\Words\Artwork\SplashScreen.png"
+       inkscape:export-xdpi="89.995903"
+       inkscape:export-ydpi="89.995903"
+       transform="scale(0.99831516,1.0016877)"><tspan
+         sodipodi:role="line"
+         id="tspan5268"
+         x="22.471308"
+         y="1041.9067"
+         dx="0 0 0 0 0 0 0 -4.2375054 -1.5072668 -1.5072668 -1.8840833 0 0 0 0.84615541 -1.5072668 -1.8840833 -1.5072668 -1.5072668 -1.13045 0 0 0 -4.2375054 -1.13045 -2.2609 -0.7536335 -1.8840833 -1.8840833 -1.5072668">       ship   isplay   oftware</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:20px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#a7b5ef;fill-opacity:0.79536683;stroke:none;filter:url(#filter5258);font-family:Calibri;-inkscape-font-specification:Calibri"
+       x="2.411232"
+       y="1045.4261"
+       id="text2650"
+       inkscape:export-filename="C:\Users\Patrick\Documents\Visual Studio 2010\Projects\Words\Words\Artwork\SplashScreen.png"
+       inkscape:export-xdpi="89.995903"
+       inkscape:export-ydpi="89.995903"
+       transform="matrix(3.7652748,0,0,3.7779948,12.45083,-3069.148)"><tspan
+         sodipodi:role="line"
+         id="tspan2652"
+         x="2.411232"
+         y="1045.4261"
+         dx="0 -0.75 -0.5625 -0.5 -0.3125"
+         style="fill:#a7b5ef;fill-opacity:0.79536683">words</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:75.43257904px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#dce0f9;fill-opacity:0.71814677;stroke:none;font-family:Calibri;-inkscape-font-specification:Calibri"
+       x="21.566118"
+       y="878.98291"
+       id="text5214"
+       inkscape:export-filename="C:\Users\Patrick\Documents\Visual Studio 2010\Projects\Words\Words\Artwork\SplashScreen.png"
+       inkscape:export-xdpi="89.995903"
+       inkscape:export-ydpi="89.995903"
+       transform="scale(0.99831516,1.0016877)"><tspan
+         sodipodi:role="line"
+         id="tspan5216"
+         x="21.566118"
+         y="878.98291"
+         dx="0 -2.828722 -2.1215413 -1.8858147 -1.178634"
+         style="fill:#dce0f9;fill-opacity:0.71814677;stroke:none">words</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:40.04932785px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-indent:0;text-align:start;text-decoration:none;line-height:normal;letter-spacing:normal;word-spacing:normal;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;text-anchor:start;fill:#ffffff;fill-opacity:0;fill-rule:nonzero;stroke:#0b0817;stroke-width:0.89999998;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate;font-family:Calibri;-inkscape-font-specification:Calibri"
+       x="22.471308"
+       y="1041.9069"
+       id="text2666"
+       inkscape:export-filename="C:\Users\Patrick\Documents\Visual Studio 2010\Projects\Words\Words\Artwork\SplashScreen.png"
+       inkscape:export-xdpi="89.995903"
+       inkscape:export-ydpi="89.995903"
+       transform="scale(0.99831514,1.0016877)"><tspan
+         sodipodi:role="line"
+         id="tspan2668"
+         x="22.471308"
+         y="1041.9069"
+         dx="0 -1.7602837 -1.5072668 0 0 0 0 0 0 0 0 -3.0413134 0.37681672 0 0 0 0 0 0 0 0 0 1.0657985"
+         style="stroke-width:0.89999998;stroke-miterlimit:4;stroke-dasharray:none">wor        d          s</tspan></text>
+    <rect
+       style="color:#000000;fill:url(#linearGradient4049);fill-opacity:1;fill-rule:nonzero;stroke:#dce0f9;stroke-width:1;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="rect4033"
+       width="31"
+       height="31"
+       x="509.08997"
+       y="799.33063"
+       rx="6.282486"
+       ry="6.282486"
+       inkscape:export-filename="C:\Users\Patrick\Documents\Visual Studio 2010\Projects\Words\Words\Artwork\Icon_16.png"
+       inkscape:export-xdpi="45"
+       inkscape:export-ydpi="45" />
+    <text
+       xml:space="preserve"
+       style="font-size:20px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#a7b5ef;fill-opacity:0.79536683;stroke:none;filter:url(#filter5258-2);font-family:Calibri;-inkscape-font-specification:Calibri"
+       x="2.411232"
+       y="1045.4261"
+       id="text2650-6"
+       inkscape:export-filename="C:\Users\Patrick\Documents\Visual Studio 2010\Projects\Words\Words\Artwork\SplashScreen.png"
+       inkscape:export-xdpi="89.995903"
+       inkscape:export-ydpi="89.995903"
+       transform="matrix(0.77341543,0,0,0.77602823,511.40494,1.8968112)"><tspan
+         sodipodi:role="line"
+         id="tspan2652-1"
+         x="2.411232"
+         y="1045.4261"
+         dx="0"
+         style="fill:#a7b5ef;fill-opacity:0.79536683">w</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:15.49441242px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#dce0f9;fill-opacity:0.71814677;stroke:none;font-family:Calibri;-inkscape-font-specification:Calibri"
+       x="514.13611"
+       y="811.80682"
+       id="text5214-4"
+       inkscape:export-filename="C:\Users\Patrick\Documents\Visual Studio 2010\Projects\Words\Words\Artwork\SplashScreen.png"
+       inkscape:export-xdpi="89.995903"
+       inkscape:export-ydpi="89.995903"
+       transform="scale(0.99831515,1.0016877)"><tspan
+         sodipodi:role="line"
+         id="tspan5216-4"
+         x="514.13611"
+         y="811.80682"
+         dx="0"
+         style="fill:#dce0f9;fill-opacity:0.71814677;stroke:none">w</tspan></text>
+    <rect
+       style="color:#000000;fill:url(#linearGradient4105);fill-opacity:1;fill-rule:nonzero;stroke:#dce0f9;stroke-width:1;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="rect4033-3"
+       width="15"
+       height="15"
+       x="574"
+       y="824.86218"
+       rx="3.0399125"
+       ry="3.0399125"
+       inkscape:export-filename="C:\Users\Patrick\Documents\Visual Studio 2010\Projects\Words\Words\Artwork\Icon_16.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <g
+       id="g4136"
+       transform="matrix(0.48387097,0,0,0.48387097,296.3089,434.09465)"
+       inkscape:export-filename="C:\Users\Patrick\Documents\Visual Studio 2010\Projects\Words\Words\Artwork\Icon_16.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90">
+      <text
+         transform="matrix(1.6377122,0,0,1.6432448,573.73095,-887.18238)"
+         inkscape:export-ydpi="89.995903"
+         inkscape:export-xdpi="89.995903"
+         inkscape:export-filename="C:\Users\Patrick\Documents\Visual Studio 2010\Projects\Words\Words\Artwork\SplashScreen.png"
+         id="text2650-6-6"
+         y="1045.4261"
+         x="2.411232"
+         style="font-size:20px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#a7b5ef;fill-opacity:0.79536683;stroke:none;filter:url(#filter5258-2-2);font-family:Calibri;-inkscape-font-specification:Calibri"
+         xml:space="preserve"><tspan
+           style="fill:#a7b5ef;fill-opacity:0.79536683"
+           dx="0"
+           y="1045.4261"
+           x="2.411232"
+           id="tspan2652-1-8"
+           sodipodi:role="line">w</tspan></text>
+      <text
+         transform="scale(0.99831515,1.0016877)"
+         inkscape:export-ydpi="89.995903"
+         inkscape:export-xdpi="89.995903"
+         inkscape:export-filename="C:\Users\Patrick\Documents\Visual Studio 2010\Projects\Words\Words\Artwork\SplashScreen.png"
+         id="text5214-4-5"
+         y="829.30884"
+         x="578.65491"
+         style="font-size:32.80951691px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#dce0f9;fill-opacity:0.71814677;stroke:none;font-family:Calibri;-inkscape-font-specification:Calibri"
+         xml:space="preserve"><tspan
+           style="fill:#dce0f9;fill-opacity:0.71814677;stroke:none"
+           dx="0"
+           y="829.30884"
+           x="578.65491"
+           id="tspan5216-4-4"
+           sodipodi:role="line">w</tspan></text>
+    </g>
+    <rect
+       style="color:#000000;fill:url(#linearGradient4163);fill-opacity:1;fill-rule:nonzero;stroke:#dce0f9;stroke-width:1;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="rect4033-5"
+       width="63"
+       height="63"
+       x="503.86996"
+       y="843.64185"
+       rx="12.767633"
+       ry="12.767633"
+       inkscape:export-filename="C:\Users\Patrick\Documents\Visual Studio 2010\Projects\Words\Words\Artwork\Icon_64.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <text
+       xml:space="preserve"
+       style="font-size:20px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#a7b5ef;fill-opacity:0.79536683;stroke:none;filter:url(#filter5258-2-8);font-family:Calibri;-inkscape-font-specification:Calibri"
+       x="2.411232"
+       y="1045.4261"
+       id="text2650-6-4"
+       inkscape:export-filename="C:\Users\Patrick\Documents\Visual Studio 2010\Projects\Words\Words\Artwork\SplashScreen.png"
+       inkscape:export-xdpi="89.995903"
+       inkscape:export-ydpi="89.995903"
+       transform="matrix(1.5717797,0,0,1.5770896,508.57454,-776.94948)"><tspan
+         sodipodi:role="line"
+         id="tspan2652-1-1"
+         x="2.411232"
+         y="1045.4261"
+         dx="0"
+         style="fill:#a7b5ef;fill-opacity:0.79536683">w</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:31.48864555px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#dce0f9;fill-opacity:0.71814677;stroke:none;font-family:Calibri;-inkscape-font-specification:Calibri"
+       x="513.22919"
+       y="870.31226"
+       id="text5214-4-2"
+       inkscape:export-filename="C:\Users\Patrick\Documents\Visual Studio 2010\Projects\Words\Words\Artwork\SplashScreen.png"
+       inkscape:export-xdpi="89.995903"
+       inkscape:export-ydpi="89.995903"
+       transform="scale(0.99831514,1.0016877)"><tspan
+         sodipodi:role="line"
+         id="tspan5216-4-8"
+         x="513.22919"
+         y="870.31226"
+         dx="0"
+         style="fill:#dce0f9;fill-opacity:0.71814677;stroke:none">w</tspan></text>
+  </g>
+</svg>
