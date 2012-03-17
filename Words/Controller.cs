@@ -62,7 +62,7 @@ namespace Words
 		private void LoadAttributes(Assembly assembly)
 		{
 			Type[] types = assembly.GetTypes();
-			MediaManager.RegisterMediaFromTypes(types);
+			MediaManager.RegisterMediaTypes(types);
 			IconProviders.RegisterProvidersFromTypes(types);
 			ControlPanels.RegisterPanelsFromTypes(types);
 

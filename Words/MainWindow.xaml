@@ -29,6 +29,7 @@
 		<CommandBinding Command="{x:Static local:CustomCommands.ShowEditor}" Executed="OnExecuteCommand"/>
 		<CommandBinding Command="{x:Static local:CustomCommands.ShowSettings}" Executed="OnExecuteCommand"/>
 		<CommandBinding Command="{x:Static local:CustomCommands.ChoosePresentationArea}" Executed="OnExecuteCommand"/>
+		<CommandBinding Command="{x:Static local:CustomCommands.AddMedia}" Executed="OnExecuteCommand"/>
 	</Window.CommandBindings>
 	<Grid x:Name="LayoutRoot">
 		<Grid.RowDefinitions>
@@ -64,6 +65,9 @@
 				</MenuItem>
 				<Separator/>
 				<MenuItem Header="Beenden" Command="{x:Static local:CustomCommands.Exit}"/>
+			</MenuItem>
+			<MenuItem Header="Medien">
+				<MenuItem Header="Medien hinzufügen" Command="{x:Static local:CustomCommands.AddMedia}"/>
 			</MenuItem>
 			<MenuItem Header="Bearbeiten">
 				<MenuItem IsCheckable="True" IsChecked="{Binding CurrentPanel.SwapTextAndTranslation}" Header="Liedtext und Übersetzung tauschen" Command="{x:Static local:CustomCommands.SwapTextAndTranslation}"/>

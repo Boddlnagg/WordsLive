@@ -8,7 +8,7 @@ using System.Text.RegularExpressions;
 
 namespace Words.Core.Songs
 {
-	[FileExtension(".ppl")]
+	[MediaType("Powerpraise-Lieder", ".ppl")]
 	public class Song : Media
 	{
 		public string SongTitle { get; set; }

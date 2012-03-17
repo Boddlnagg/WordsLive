@@ -7,10 +7,7 @@ using Vlc.DotNet.Core;
 
 namespace Words.AudioVideo
 {
-	[FileExtension(".wmv")]
-	[FileExtension(".mp4")]
-	[FileExtension(".avi")]
-	[FileExtension(".mov")]
+	[MediaType("Video-Dateien", ".wmv", ".mp4", ".avi", ".mov")]
 	public class VideoMedia : AudioVideoMedia
 	{
 		protected override bool LoadFromMetadata()

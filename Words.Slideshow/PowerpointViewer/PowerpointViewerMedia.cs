@@ -2,8 +2,7 @@
 
 namespace Words.Slideshow.Powerpoint
 {
-	[FileExtension(".ppt")]
-	[FileExtension(".pptx")] // TODO (Slideshow.PowerpointViewer): untested
+	[MediaType("Powerpoint-Präsentationen", ".ppt", ".pptx")] // TODO (Slideshow.PowerpointViewer): pptx untested
 	public class PowerpointViewerMedia : SlideshowMedia
 	{
 		protected override bool LoadFromMetadata()

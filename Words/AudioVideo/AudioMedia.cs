@@ -6,7 +6,7 @@ using Words.Core;
 
 namespace Words.AudioVideo
 {
-	[FileExtension(".mp3")]
+	[MediaType("Audio-Dateien", ".mp3")]
 	public class AudioMedia : AudioVideoMedia
 	{
 		protected override bool LoadFromMetadata()

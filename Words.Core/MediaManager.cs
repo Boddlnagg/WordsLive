@@ -10,16 +10,20 @@ namespace Words.Core
 {
 	public static class MediaManager
 	{
-		private static Dictionary<string, Type> mediaFileExtensions = new Dictionary<string, Type>();
+		private static Dictionary<string, MediaType> mediaFileExtensions = new Dictionary<string, MediaType>();
+		private static List<MediaType> mediaTypes = new List<MediaType>();
 
-		public static void RegisterMediaFileExtensions<T>(params string[] extensions) where T : Media
+		public static IEnumerable<MediaType> MediaTypes
 		{
-			RegisterMediaFileExtensions(typeof(T), extensions);
+			get
+			{
+				return mediaTypes;
+			}
 		}
 
-		private static void RegisterMediaFileExtensions(Type type, params string[] extensions)
+		private static void RegisterMediaFileExtensions(MediaType type)
 		{
-			foreach (var ext in extensions)
+			foreach (var ext in type.Extensions)
 			{
 				string key = ext.ToLower();
 				key = key.StartsWith(".") ? key : "." + key;
@@ -33,16 +37,18 @@ namespace Words.Core
 			}
 		}
 
-		public static void RegisterMediaFromTypes(IEnumerable<Type> types)
+		public static void RegisterMediaTypes(IEnumerable<Type> types)
 		{
 			foreach (var type in types)
 			{
 				if (type.IsSubclassOf(typeof(Media)))
 				{
-					var extensionAttributes = type.GetCustomAttributes(typeof(FileExtensionAttribute), true).Cast<FileExtensionAttribute>();
-					foreach (var attr in extensionAttributes)
+					var attr = type.GetCustomAttributes(typeof(MediaTypeAttribute), true).Cast<MediaTypeAttribute>().FirstOrDefault();
+					if (attr != null)
 					{
-						RegisterMediaFileExtensions(type, attr.Extension);
+						var t = new MediaType(attr.Description, attr.Extensions, type);
+						RegisterMediaFileExtensions(t);
+						mediaTypes.Add(t);
 					}
 				}
 			}
@@ -58,7 +64,7 @@ namespace Words.Core
 				string ext = file.Extension.ToLower();
 				if (mediaFileExtensions.ContainsKey(ext))
 				{
-					m = (Media)Activator.CreateInstance(mediaFileExtensions[ext]);
+					m = mediaFileExtensions[ext].CreateInstance();
 				}
 				else
 				{

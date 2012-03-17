@@ -277,6 +277,26 @@ namespace Words
 			}
 		}
 
+		private void ShowAddMediaDialog()
+		{
+			var typeFilters = new List<string>();
+			typeFilters.Add("Unterstützte Medientypen|" + String.Join(";", from t in MediaManager.MediaTypes from ext in t.Extensions select "*" + ext));
+			typeFilters.AddRange(from t in MediaManager.MediaTypes select t.Description + "|" + String.Join(";", t.Extensions.Select(s => "*" + s)));
+			typeFilters.Add("Alle Dateien|*");
+
+			Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
+			dlg.Filter = String.Join("|", typeFilters);
+			dlg.Multiselect = true;
+
+			if (dlg.ShowDialog() == true)
+			{
+				foreach (var file in dlg.FileNames)
+				{
+					orderList.Add(MediaManager.LoadMediaMetadata(file));
+				}
+			}
+		}
+
 		public void OpenPortfolio(string file = null)
 		{
 			if (orderList.Count > 0)
@@ -413,6 +433,10 @@ namespace Words
 			else if (e.Command == CustomCommands.ChoosePresentationArea)
 			{
 				ShowPresentationAreaSettingsWindow();
+			}
+			else if (e.Command == CustomCommands.AddMedia)
+			{
+				ShowAddMediaDialog();
 			}
 		}
 

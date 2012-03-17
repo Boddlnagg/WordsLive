@@ -110,6 +110,12 @@ namespace Words
 			private set;
 		}
 
+		public static RoutedCommand AddMedia
+		{
+			get;
+			private set;
+		}
+
 		static CustomCommands()
 		{
 			Type t = typeof(CustomCommands);
@@ -131,6 +137,7 @@ namespace Words
 			SwapTextAndTranslation = new RoutedCommand("SwapTextAndTranslation", t);
 			SongSettings = new RoutedCommand("SongSettings", t);
 			EditChords = new RoutedCommand("EditChords", t);
+			AddMedia = new RoutedCommand("AddMedia", t);
 		}
 	}
 }

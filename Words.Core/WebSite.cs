@@ -6,8 +6,7 @@ using System.IO;
 
 namespace Words.Core
 {
-	[FileExtension(".website")]
-	[FileExtension(".url")]
+	[MediaType("Webseiten", ".website", ".url")]
 	public class WebSite : Media
 	{
 		public string Url { get; private set; }

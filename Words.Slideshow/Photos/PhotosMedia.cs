@@ -8,7 +8,7 @@ using System.Collections.Generic;
 
 namespace Words.Slideshow.Photos
 {
-	[FileExtension(".zip")]
+	[MediaType("Gepackte Diashows", ".zip")]
 	public class PhotosMedia : SlideshowMedia
 	{
 		public IEnumerable<BitmapImage> Images { get; private set; }
