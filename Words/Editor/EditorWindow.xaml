@@ -3,7 +3,7 @@
 	x:Class="Words.Editor.EditorWindow" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:local="clr-namespace:Words.Editor"
 	xmlns:my="clr-namespace:Words"
-	Title="Words - Editor"
+	Title="Editor - Words"
 	MinHeight="300"
 	MinWidth="300"
 	Height = "{Binding Source={StaticResource settings}, Path=Default.EditorWindowHeight, Mode=TwoWay}"

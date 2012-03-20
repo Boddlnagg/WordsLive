@@ -22,9 +22,33 @@ namespace Words
 		
 		private Border previewBorder = new Border();
 
-		string portfolioFilename;
+		private FileInfo portfolioFile;
+
+		public FileInfo PortfolioFile
+		{
+			get
+			{
+				return portfolioFile;
+			}
+			set
+			{
+				portfolioFile = value;
+				OnPropertyChanged("PortfolioFile");
+				OnPropertyChanged("WindowTitle");
+			}
+		}
+
+		public string WindowTitle
+		{
+			get
+			{
+				return (PortfolioFile == null ? "Unbenanntes Portfolio" : PortfolioFile.Name) + " - Words";
+			}
+		}
 
 		IMediaControlPanel currentPanel = null;
+
+		bool portfolioChanged = false;
 
 		public IMediaControlPanel CurrentPanel
 		{
@@ -129,12 +153,18 @@ namespace Words
 				case "MoveUp":
 					boundaryItem = orderList.Move(selected, -1);
 					if (boundaryItem != null)
+					{
 						OrderListBox.ScrollIntoView(boundaryItem);
+						portfolioChanged = true;
+					}
 					break;
 				case "MoveDown":
 					boundaryItem = orderList.Move(selected, 1);
 					if (boundaryItem != null)
+					{
 						OrderListBox.ScrollIntoView(boundaryItem);
+						portfolioChanged = true;
+					}
 					break;
 				case "Delete":
 					if (selected.Count() > 0 && (selected.Count((item) => item.IsActive) == 0 || MessageBox.Show("Wollen Sie das aktive Element wirklich entfernen (Die Anzeige wird auf Blackscreen geschaltet, wenn die Präsentation gerade aktiv ist)?", "Aktives Element entfernen?", MessageBoxButton.YesNoCancel, MessageBoxImage.Warning) == MessageBoxResult.Yes))
@@ -155,6 +185,7 @@ namespace Words
 							this.OrderListBox.SelectedIndex = this.OrderListBox.Items.Count - 1;
 							OrderListBox.ScrollIntoView(this.OrderListBox.SelectedItem);
 						}
+						portfolioChanged = true;
 					}
 					break;
 			}
@@ -294,14 +325,34 @@ namespace Words
 				{
 					orderList.Add(MediaManager.LoadMediaMetadata(file));
 				}
+				portfolioChanged = true;
 			}
+		}
+
+		private void NewPortfolio()
+		{
+			if (portfolioChanged)
+			{
+				var res = MessageBox.Show("Das aktuelle Portfolio enthält möglicherweise ungespeicherte Änderungen. Wollen Sie es speichern?", "Änderungen speichern?", MessageBoxButton.YesNoCancel);
+				if (res == MessageBoxResult.Cancel)
+					return;
+				else if (res == MessageBoxResult.Yes)
+					SavePortfolio();
+			}
+			orderList.Clear();
+			PortfolioFile = null;
+			portfolioChanged = false;
 		}
 
 		public void OpenPortfolio(string file = null)
 		{
-			if (orderList.Count > 0)
+			if (portfolioChanged)
 			{
-				// TODO (Words): Sicherheitsabfrage, falls verändert
+				var res = MessageBox.Show("Das aktuelle Portfolio enthält möglicherweise ungespeicherte Änderungen. Wollen Sie es speichern?", "Änderungen speichern?", MessageBoxButton.YesNoCancel);
+				if (res == MessageBoxResult.Cancel)
+					return;
+				else if (res == MessageBoxResult.Yes)
+					SavePortfolio();
 			}
 
 			if (file == null)
@@ -322,7 +373,8 @@ namespace Words
 				orderList.Clear();
 				foreach (Media data in result)
 					orderList.Add(data);
-				portfolioFilename = file;
+				PortfolioFile = new FileInfo(file);
+				portfolioChanged = false;
 
 				System.Windows.Shell.JumpList.AddToRecentCategory(file);
 			}
@@ -334,13 +386,14 @@ namespace Words
 
 		private void SavePortfolio()
 		{
-			if (string.IsNullOrEmpty(portfolioFilename))
+			if (PortfolioFile == null)
 			{
 				SavePortfolioAs();
 			}
 			else
 			{
-				MediaManager.SavePortfolio(from m in orderList select m.Data.Data, portfolioFilename);
+				MediaManager.SavePortfolio(from m in orderList select m.Data.Data, PortfolioFile.FullName);
+				portfolioChanged = false;
 			}
 		}
 
@@ -350,15 +403,16 @@ namespace Words
 			dlg.DefaultExt = ".ppp";
 			dlg.Filter = "Powerpraise Portfolio|*.ppp";
 
-			if (portfolioFilename != null)
+			if (PortfolioFile != null)
 			{
-				dlg.FileName = portfolioFilename;
+				dlg.FileName = PortfolioFile.FullName;
 			}
 
 			if (dlg.ShowDialog() == true)
 			{
 				MediaManager.SavePortfolio(from m in orderList select m.Data.Data, dlg.FileName);
-				portfolioFilename = dlg.FileName;
+				PortfolioFile = new FileInfo(dlg.FileName);
+				portfolioChanged = false;
 			}
 		}
 
@@ -398,9 +452,7 @@ namespace Words
 			}
 			else if (e.Command == ApplicationCommands.New)
 			{
-				// TODO (Words): Sicherheitsabfrage, falls verändert
-				orderList.Clear();
-				portfolioFilename = null;
+				NewPortfolio();
 			}
 			else if (e.Command == NavigationCommands.Refresh)
 			{
