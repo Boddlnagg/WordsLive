@@ -14,9 +14,31 @@ namespace Words.Editor
 	{
 		ObservableCollection<EditorDocument> openDocuments = new ObservableCollection<EditorDocument>();
 
+		bool showChords;
+
+		public bool ShowChords
+		{
+			get
+			{
+				return showChords;
+			}
+			set
+			{
+				if (value != showChords)
+				{
+					showChords = value;
+					foreach (var doc in openDocuments)
+					{
+						doc.Grid.PreviewControl.ShowChords = showChords;
+					}
+				}
+			}
+		}
+
 		public EditorWindow()
 		{
 			InitializeComponent();
+			this.DataContext = this;
 			Tabs.DataContext = openDocuments;
 		}
 

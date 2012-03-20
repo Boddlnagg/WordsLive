@@ -66,9 +66,10 @@ namespace Words.Editor
 
 		private void InitSelection()
 		{
+			this.StructureTree.IsEnabled = true;
+
 			if (this.StructureTree.IsLoaded)
 			{
-				this.StructureTree.IsEnabled = true;
 				this.StructureTree.SetSelectedItem(songNode);
 				this.StructureTree.Focus();
 			}

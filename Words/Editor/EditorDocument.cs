@@ -25,6 +25,7 @@ namespace Words.Editor
 			Song = song;
 
 			Grid = new EditorGrid(song, parent);
+			Grid.PreviewControl.ShowChords = parent.ShowChords;
 
 			UndoService.Current[Grid.Node].Clear();
 

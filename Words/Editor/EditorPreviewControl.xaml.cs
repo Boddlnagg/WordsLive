@@ -34,6 +34,7 @@ namespace Words.Editor
 			Web.Crashed += OnWebViewCrashed;
 
 			controller = new SongDisplayController(Web);
+			controller.ShowChords = true;
 
 			controller.ImagesLoaded += (sender, args) => OnFinishedLoading();
 
@@ -96,8 +97,23 @@ namespace Words.Editor
 			}
 		}
 
+		public bool ShowChords
+		{
+			get
+			{
+				return controller.ShowChords;
+			}
+			set
+			{
+				controller.ShowChords = value;
+				UpdateStyle();
+				Update();
+			}
+		}
+
 		private void Load()
 		{
+			// TODO: previews don't load correctly when more than one file is opened simultaneously
 			UpdateStyle();
 			controller.PreloadImages(from bg in song.Backgrounds where bg.IsImage select Path.Combine(MediaManager.BackgroundsDirectory, bg.ImagePath));
 		}
