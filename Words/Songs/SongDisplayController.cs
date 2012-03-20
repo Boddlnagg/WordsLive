@@ -17,6 +17,19 @@ namespace Words.Songs
 		private SongSlide lastSlide;
 		private SongBackground lastBackground;
 
+		private readonly string clsBack = "back";
+		private readonly string clsFront = "front";
+		private readonly string clsMain = "main";
+		private readonly string clsTrans = "trans";
+		private readonly string clsInner = "inner";
+		private readonly string clsCopyright = "copyright";
+		private readonly string clsSource = "source";
+
+		private double factor;
+		const double fontFactor = 1.3;
+		const double mgFactor = 1.3;
+		const double lhFactor = 1.28;
+
 		public SongDisplayController(WebControl control)
 		{
 			this.control = control;
@@ -84,7 +97,6 @@ namespace Words.Songs
 			{
 				param = "null";
 			}
-
 			control.ExecuteJavascript("gotoSlide(" + param + ", " + showSource.ToString().ToLower() + ", " + showCopyright.ToString().ToLower() + ", " + fadeTime + ")");
 		}
 
@@ -138,21 +150,21 @@ namespace Words.Songs
 			return res;
 		}
 
-		private static IEnumerable<XElement> GenerateSourceHtml(SongSource source)
+		private IEnumerable<XElement> GenerateSourceHtml(SongSource source)
 		{
 			XElement sourceInner = new XElement("div", new XAttribute("class", "source"), source.ToString().Replace(" ", " "));
 
-			yield return new XElement("div", new XAttribute("class", "back"), sourceInner);
-			yield return new XElement("div", new XAttribute("class", "front"), sourceInner);
+			yield return new XElement("div", new XAttribute("class", clsBack), sourceInner);
+			yield return new XElement("div", new XAttribute("class", clsFront), sourceInner);
 		}
 
-		private static IEnumerable<XElement> GenerateCopyrightHtml(string copyright)
+		private IEnumerable<XElement> GenerateCopyrightHtml(string copyright)
 		{
 			var elements = from line in copyright.Split('\n') select new XElement("span", line.Replace(" ", " "));
-			XElement copyrightInner = new XElement("div", new XAttribute("class", "copyright"), elements.Count() > 0 ? (object)elements : String.Empty);
+			XElement copyrightInner = new XElement("div", new XAttribute("class", clsCopyright), elements.Count() > 0 ? (object)elements : String.Empty);
 
-			yield return new XElement("div", new XAttribute("class", "back"), copyrightInner);
-			yield return new XElement("div", new XAttribute("class", "front"), copyrightInner);
+			yield return new XElement("div", new XAttribute("class", clsBack), copyrightInner);
+			yield return new XElement("div", new XAttribute("class", clsFront), copyrightInner);
 		}
 
 		private string GetLineHeight(Song song)
@@ -181,7 +193,7 @@ namespace Words.Songs
 			{
 				string fsText = "font-size: " + MakeCssValue(slide.Size * fontFactor * factor, "pt") + ";";
 
-				inner = new XElement("div", new XAttribute("class", "inner"), new XAttribute("style", fsText));
+				inner = new XElement("div", new XAttribute("class", clsInner), new XAttribute("style", fsText));
 				bool translation = !String.IsNullOrEmpty(slide.Translation);
 
 				if (translation)
@@ -206,7 +218,7 @@ namespace Words.Songs
 							transLine = String.Empty;
 
 						inner.Add(new XElement("span", ParseLine(textLine, true)));
-						inner.Add(new XElement("span", new XAttribute("class", "trans"), ParseLine(transLine, false)));
+						inner.Add(new XElement("span", new XAttribute("class", clsTrans), ParseLine(transLine, false)));
 					}
 				}
 				else
@@ -221,10 +233,10 @@ namespace Words.Songs
 				}
 			}
 
-			yield return new XElement("div", new XAttribute("class", "back"),
-				new XElement("div", new XAttribute("class", "main"), (object)inner ?? String.Empty));
-			yield return new XElement("div", new XAttribute("class", "front"),
-				new XElement("div", new XAttribute("class", "main"), (object)inner ?? String.Empty));
+			yield return new XElement("div", new XAttribute("class", clsBack),
+				new XElement("div", new XAttribute("class", clsMain), (object)inner ?? String.Empty));
+			yield return new XElement("div", new XAttribute("class", clsFront),
+				new XElement("div", new XAttribute("class", clsMain), (object)inner ?? String.Empty));
 		}
 
 		private IEnumerable<object> ParseLine(string line, bool chords)
@@ -292,11 +304,6 @@ namespace Words.Songs
 		{
 			return val.ToString(CultureInfo.InvariantCulture) + unit;
 		}
-
-		static double factor;
-		const double fontFactor = 1.3;
-		const double mgFactor = 1.3;
-		const double lhFactor = 1.28;
 
 		private string GenerateCss(Song song, int width)
 		{
@@ -383,9 +390,9 @@ namespace Words.Songs
 
 				string transColor = "color: " + MakeCssColor(formatting.TranslationText.Color) + ";";
 
-				transString = ".main span.trans { " + transFont + transWeight + transFontStyle + transColor + fsTrans + lhTrans + " }";
+				transString = "."+clsMain+" span."+clsTrans+" { " + transFont + transWeight + transFontStyle + transColor + fsTrans + lhTrans + " }";
 				transString += @"
- .back .trans {
+ ."+clsBack+" ."+clsTrans+@" {
 	-webkit-text-stroke: 1px " + outlineColor + @";
 	text-stroke: 1px " + outlineColor + @";
 	text-shadow: " + shadowColor + @" 2px 2px 2px;
@@ -432,7 +439,7 @@ b b {
 	top: -50%;
 }
   
-  .main {
+  ."+clsMain+@" {
  position: absolute;
  width: 100%;
  height: 100%;
@@ -440,9 +447,9 @@ b b {
 table-layout: fixed;
   }
 
-  .main span { " + lhText + @"}
+  ."+clsMain+" span { " + lhText + @"}
   
-  .main .inner {
+  ."+clsMain+" ."+clsInner+@" {
   " + vAlign + mgTextTop + mgTextBottom + mgTextRight + mgTextLeft + hAlign + fsText + textColor + textFont + textWeight + textFontStyle + @"
   display: table-cell;
   width: 100%;
@@ -451,30 +458,30 @@ overflow: hidden;
 
  " + transString + @"
   
-.copyright {
+."+clsCopyright+@" {
 " + fsCopy + copyrightFont + copyrightColor + copyrightWeight + copyrightWeight + mgCopyBottom + hAlign + mgCopyRight + mgCopyLeft + @"
  position:absolute;
  width: 100%;
 }
 
-.source {
+."+clsSource+@" {
 " + mgSourceTop + mgSourceRight + fsSource + sourceFont + sourceWeight + sourceColor + @"
  position: absolute;
 }
   
-	.back .main {
+	."+clsBack+" ."+clsMain+@" {
  -webkit-text-stroke: 2px " + outlineColor + @";
  text-stroke: 2px " + outlineColor + @";
  text-shadow: " + shadowColor + @" 2px 2px 2px;
 }
   
-  .back .source {
+  ."+clsBack+" ."+clsSource+@" {
  -webkit-text-stroke: 1.5px " + outlineColor + @";
  text-stroke: 1.5px " + outlineColor + @";
  text-shadow: " + shadowColor + @" 2px 2px 2px;
   }
 
-.back .copyright {
+."+clsBack+" ."+clsCopyright+@" {
  -webkit-text-stroke: 1.1px " + outlineColor + @";
  text-stroke: 1.1px " + outlineColor + @";
  text-shadow: " + shadowColor + @" 2px 2px 2px;

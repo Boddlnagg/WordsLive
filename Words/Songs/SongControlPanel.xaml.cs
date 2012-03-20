@@ -25,7 +25,8 @@ namespace Words.Songs
 
 		private Song song;
 		private bool finishedLoading;
-		SongPresentation presentation;
+		private SongPresentation presentation;
+		private SongPresentation oldPresentation;
 
 		public SongControlPanel()
 		{
@@ -53,6 +54,12 @@ namespace Words.Songs
 
 		void Refresh(bool firstTime)
 		{
+			if (!firstTime)
+			{
+				oldPresentation = presentation;
+				oldPresentation.FinishedLoading -= pres_OnFinishedLoading;
+			}
+
 			finishedLoading = false;
 			presentation = Controller.PresentationManager.CreatePresentation<SongPresentation>();
 			presentation.FinishedLoading += pres_OnFinishedLoading;
@@ -86,7 +93,13 @@ namespace Words.Songs
 			if (this.SlideListBox.SelectedIndex >= 0)
 			{
 				presentation.CurrentSlideIndex = this.SlideListBox.SelectedIndex;
+
+				if (Controller.PresentationManager.CurrentPresentation != oldPresentation)
+					oldPresentation.Close();
 				Controller.PresentationManager.CurrentPresentation = presentation;
+
+				oldPresentation = null;
+				
 			}
 		}
 

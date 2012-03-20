@@ -11,8 +11,6 @@ using System.Windows;
 
 namespace Words.Editor
 {
-	// TODO: Somehow editor preview and song presentation share the same style, find out why and fix it!
-
 	public partial class EditorPreviewControl : UserControl
 	{
 		SongDisplayController controller;
