@@ -11,9 +11,8 @@ using System.Windows;
 
 namespace Words.Editor
 {
-	/// <summary>
-	/// Interaktionslogik für EditorPreviewControl.xaml
-	/// </summary>
+	// TODO: Somehow editor preview and song presentation share the same style, find out why and fix it!
+
 	public partial class EditorPreviewControl : UserControl
 	{
 		SongDisplayController controller;

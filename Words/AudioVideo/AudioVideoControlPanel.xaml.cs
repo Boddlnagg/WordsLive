@@ -6,21 +6,81 @@ using Words.Presentation.Wpf;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
+using System.ComponentModel;
 
 namespace Words.AudioVideo
 {
 	[TargetMedia(typeof(AudioVideoMedia))]
-	public partial class AudioVideoControlPanel : UserControl, IMediaControlPanel
+	public partial class AudioVideoControlPanel : UserControl, IMediaControlPanel, INotifyPropertyChanged
 	{
+		public event PropertyChangedEventHandler PropertyChanged;
+
+		protected void OnNotifyPropertyChanged(string name)
+		{
+			if (PropertyChanged != null)
+				PropertyChanged(this, new PropertyChangedEventArgs(name));
+		}
+
 		private AudioVideoMedia media;
 		private IAudioVideoPresentation presentation;
-		private bool isPlaying = false;
+		private PlayState playState = PlayState.Stopped;
 		private bool loaded = false;
 		private bool disableSeek = false;
+		private bool autoPlay = false;
 
 		public AudioVideoControlPanel()
 		{
 			InitializeComponent();
+
+			this.DataContext = this;
+		}
+
+		public PlayState PlayState
+		{
+			get
+			{
+				return playState;
+			}
+			private set
+			{
+				if (playState != value)
+				{
+					playState = value;
+					OnNotifyPropertyChanged("PlayState");
+				}
+			}
+		}
+
+		public bool IsLooping
+		{
+			get
+			{
+				if (presentation == null)
+					return false;
+				
+				return presentation.MediaControl.Loop;
+			}
+			set
+			{
+				if (presentation != null)
+				{
+					presentation.MediaControl.Loop = value;
+					OnNotifyPropertyChanged("IsLooping");
+				}
+			}
+		}
+
+		public bool AutoPlay
+		{
+			get
+			{
+				return autoPlay;
+			}
+			set
+			{
+				autoPlay = value;
+				OnNotifyPropertyChanged("AutoPlay");
+			}
 		}
 
 		public Control Control
@@ -59,8 +119,7 @@ namespace Words.AudioVideo
 
 			presentation.MediaControl.PlaybackEnded += () =>
 			{
-				playPauseButton.Content = "Play";
-				isPlaying = false;
+				PlayState = PlayState.Stopped;
 			};
 
 			DispatcherTimer timer = new DispatcherTimer();
@@ -77,11 +136,10 @@ namespace Words.AudioVideo
 			};
 			timer.Start();
 			Controller.PresentationManager.CurrentPresentation = presentation;
-			if (autoplayCheckBox.IsChecked.HasValue && autoplayCheckBox.IsChecked.Value)
+			if (AutoPlay)
 			{
 				presentation.MediaControl.Autoplay = true;
-				isPlaying = true;
-				playPauseButton.Content = "Pause";
+				PlayState = PlayState.Playing;
 			}
 			presentation.MediaControl.Load(media.File);
 		}
@@ -116,23 +174,20 @@ namespace Words.AudioVideo
 		private void Stop()
 		{
 			presentation.MediaControl.Stop();
-			isPlaying = false;
-			playPauseButton.Content = "Play";
+			PlayState = PlayState.Stopped;
 		}
 
 		private void OnMouseDownPlayPauseMedia(object sender, RoutedEventArgs e)
 		{
-			if (!isPlaying)
+			if (PlayState == PlayState.Stopped || PlayState == PlayState.Paused)
 			{
 				presentation.MediaControl.Play();
-				playPauseButton.Content = "Pause";
-				isPlaying = true;
+				PlayState = PlayState.Playing;
 			}
 			else
 			{
 				presentation.MediaControl.Pause();
-				playPauseButton.Content = "Play";
-				isPlaying = false;
+				PlayState = PlayState.Paused;
 			}
 		}
 
@@ -161,11 +216,6 @@ namespace Words.AudioVideo
 			loadPanel.IsEnabled = false;
 			controlPanel.IsEnabled = true;
 		}
-
-		private void loopCheckBox_Checked(object sender, RoutedEventArgs e)
-		{
-			presentation.MediaControl.Loop = loopCheckBox.IsChecked.HasValue && loopCheckBox.IsChecked.Value;
-		} 
 
 		public void Close()
 		{

@@ -129,6 +129,9 @@
     <Resource Include="Artwork\Small_UpArrow.png" />
     <Resource Include="Artwork\Icon.ico" />
     <Resource Include="Artwork\Formatting.png" />
+    <Resource Include="Artwork\Pause.png" />
+    <Resource Include="Artwork\Play.png" />
+    <Resource Include="Artwork\Stop.png" />
     <Content Include="Data\jquery.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -145,6 +148,7 @@
     <Compile Include="AudioVideo\AudioVideoMedia.cs" />
     <Compile Include="AudioVideo\BaseMediaControl.cs" />
     <Compile Include="AudioVideo\IAudioVideoPresentation.cs" />
+    <Compile Include="AudioVideo\PlayState.cs" />
     <Compile Include="AudioVideo\VideoMedia.cs" />
     <Compile Include="AudioVideo\VlcController.cs" />
     <Compile Include="AudioVideo\VlcWrapper.xaml.cs">
