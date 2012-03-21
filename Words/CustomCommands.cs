@@ -133,7 +133,7 @@ namespace Words
 			Type t = typeof(CustomCommands);
 
 			Exit = new RoutedCommand("Exit", t);
-			ShowSonglist = new RoutedCommand("ShowSonglist", t);
+			ShowSonglist = new RoutedCommand("ShowSonglist", t, new InputGestureCollection { new KeyGesture(Key.F, ModifierKeys.Control) });
 			SwitchWindow = new RoutedCommand("SwitchWindow", t, new InputGestureCollection { new KeyGesture(Key.Tab, ModifierKeys.Shift) });
 			EditActive = new RoutedCommand("EditActive", t);
 			ShowSettings = new RoutedCommand("ShowSettings", t);
