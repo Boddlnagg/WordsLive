@@ -9,6 +9,11 @@
 		Left="{Binding Source={StaticResource settings}, Path=Default.SongListWindowLeft, Mode=TwoWay}"
 		WindowState="{Binding Source={StaticResource settings}, Path=Default.SongListWindowState, Mode=TwoWay}"
 		Icon="/Words;component/Artwork/Songlist.png">
+	<Window.Resources>
+		<DataTemplate x:Key="titleTemplate">
+			<TextBlock Text="{Binding Title}" ToolTip="{Binding Path}"/>
+		</DataTemplate>
+	</Window.Resources>
 	<Grid>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="Auto"/>
@@ -42,7 +47,8 @@
 			</ListView.Resources>
 			<ListView.View>
 				<GridView>
-					<GridViewColumn Header="Titel" Width="250" DisplayMemberBinding="{Binding Title}" />
+					<!--<GridViewColumn Header="Titel" Width="250" DisplayMemberBinding="{Binding Title}" />-->
+					<GridViewColumn Header="Titel" Width="250" CellTemplate="{StaticResource titleTemplate}"/>
 					<GridViewColumn Header="Quelle" Width="150" DisplayMemberBinding="{Binding SourcesString}" />
 					<GridViewColumn Header="Copyright" Width="170" DisplayMemberBinding="{Binding CopyrightTrimmed}" />
 				</GridView>
