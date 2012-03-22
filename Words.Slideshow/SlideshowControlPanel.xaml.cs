@@ -37,6 +37,17 @@ namespace Words.Slideshow
 			{
 				this.Dispatcher.Invoke(new Action(presentation_SlideChanged));
 			};
+
+			pres.ClosedExternally += (sender, args) =>
+			{
+				this.Dispatcher.Invoke(new Action(() =>
+				{
+					Controller.PresentationManager.Status = PresentationStatus.Blackscreen;
+					Controller.PresentationManager.CurrentPresentation = null;
+					System.Windows.MessageBox.Show("Die Präsentation wurde unerwartet geschlossen. Words hat die Anzeige schwarz geschaltet und wird versuchen, die Präsentation neu zu laden.");
+					Controller.ReloadActiveMedia();
+				}));
+			};
 		}
 
 		public void Init(Core.Media media)

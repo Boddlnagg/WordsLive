@@ -17,5 +17,6 @@ namespace Words.Slideshow
 		IList<ImageSource> Thumbnails { get; }
 		event EventHandler Loaded;
 		event EventHandler SlideIndexChanged;
+		event EventHandler ClosedExternally;
 	}
 }

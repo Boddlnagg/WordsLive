@@ -39,6 +39,7 @@ namespace Words.Slideshow.Powerpoint
 		public override void Load()
 		{
 			doc = PowerpointViewerController.Open(ppt.File, new Rectangle(Area.WindowLocation.X, Area.WindowLocation.Y, Area.WindowSize.Width, Area.WindowSize.Height), openHidden: true);
+			
 			doc.Loaded += (sender, args) =>
 			{
 				Words.Presentation.Wpf.AeroPeekHelper.RemoveFromAeroPeek(doc.WindowHandle);
@@ -49,6 +50,11 @@ namespace Words.Slideshow.Powerpoint
 				}
 
 				base.OnLoaded();
+			};
+
+			doc.Closed += (sender, args) =>
+			{
+				base.OnClosedExternally();
 			};
 
 			doc.SlideChanged += (sender, args) =>

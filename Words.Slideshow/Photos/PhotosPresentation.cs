@@ -84,6 +84,14 @@ namespace Words.Slideshow.Photos
 				SlideIndexChanged(this, EventArgs.Empty);
 		}
 
+		protected void OnClosedExternally() // this will never be called
+		{
+			if (ClosedExternally != null)
+				ClosedExternally(this, EventArgs.Empty);
+		}
+
+		public event EventHandler ClosedExternally;
+
 		public event EventHandler Loaded;
 
 		public event EventHandler SlideIndexChanged;

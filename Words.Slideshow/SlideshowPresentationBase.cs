@@ -77,6 +77,14 @@ namespace Words.Slideshow
 				Loaded(this, EventArgs.Empty);
 		}
 
+		public event EventHandler ClosedExternally;
+
+		protected void OnClosedExternally()
+		{
+			if (ClosedExternally != null)
+				ClosedExternally(this, EventArgs.Empty);
+		}
+
 		#endregion
 
 		#region Abstract members
