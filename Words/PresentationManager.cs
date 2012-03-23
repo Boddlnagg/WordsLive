@@ -56,8 +56,13 @@ namespace Words
 
 					Action afterShowing = () =>
 						{
-							if (previousPresentation != null /*&& !previousPresentation.UsesSamePresentationWindow(currentPresentation)*/)
+							if (previousPresentation != null)
 							{
+								if (!currentPresentation.UsesSamePresentationWindow(previousPresentation) && previousPresentation.UsesSamePresentationWindow(blackscreen))
+								{
+									blackscreen.Show();
+								}
+
 								previousPresentation.Close();
 							}
 							if (currentPresentation != null && !currentPresentation.UsesSamePresentationWindow(this.blackscreen))
