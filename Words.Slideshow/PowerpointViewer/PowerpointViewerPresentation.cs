@@ -12,6 +12,7 @@ namespace Words.Slideshow.Powerpoint
 	{
 		private List<ImageSource> thumbnails;
 		private PowerpointViewerMedia ppt;
+		bool isClosing = false;
 
 		public override IList<ImageSource> Thumbnails
 		{
@@ -54,7 +55,8 @@ namespace Words.Slideshow.Powerpoint
 
 			doc.Closed += (sender, args) =>
 			{
-				base.OnClosedExternally();
+				if (!isClosing)
+					base.OnClosedExternally();
 			};
 
 			doc.SlideChanged += (sender, args) =>
@@ -79,6 +81,7 @@ namespace Words.Slideshow.Powerpoint
 
 		public override void Close()
 		{
+			isClosing = true;
 			doc.Close();
 		}
 

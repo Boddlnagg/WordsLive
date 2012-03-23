@@ -94,7 +94,7 @@ namespace Words.Songs
 			{
 				presentation.CurrentSlideIndex = this.SlideListBox.SelectedIndex;
 
-				if (Controller.PresentationManager.CurrentPresentation != oldPresentation)
+				if (Controller.PresentationManager.CurrentPresentation != oldPresentation && oldPresentation != null)
 					oldPresentation.Close();
 				Controller.PresentationManager.CurrentPresentation = presentation;
 

@@ -39,6 +39,9 @@
     <Reference Include="Ionic.Zip">
       <HintPath>..\3rdParty\Ionic.Zip.dll</HintPath>
     </Reference>
+    <Reference Include="PowerpointViewerLib, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86">
+      <HintPath>..\..\PowerpointViewerLib\bin\Debug\PowerpointViewerLib.dll</HintPath>
+    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
@@ -78,10 +81,6 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\PowerpointViewerLib\PowerpointViewerLib.csproj">
-      <Project>{13097FE4-040F-4E60-AD82-F18FE379CBF4}</Project>
-      <Name>PowerpointViewerLib</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Words.Core\Words.Core.csproj">
       <Project>{AABDBF78-74B7-40DD-A327-FABF1FA758F8}</Project>
       <Name>Words.Core</Name>
