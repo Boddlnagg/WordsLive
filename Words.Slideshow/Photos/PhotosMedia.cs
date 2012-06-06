@@ -1,10 +1,8 @@
-﻿using Words.Core;
+﻿using System.Collections.Generic;
 using System.IO;
-using System.Windows;
-using Ionic.Zip;
 using System.Windows.Media.Imaging;
-using System.Windows.Controls;
-using System.Collections.Generic;
+using Ionic.Zip;
+using Words.Core;
 
 namespace Words.Slideshow.Photos
 {
