@@ -51,6 +51,7 @@
 					<GridViewColumn Header="Titel" Width="250" CellTemplate="{StaticResource titleTemplate}"/>
 					<GridViewColumn Header="Quelle" Width="150" DisplayMemberBinding="{Binding SourcesString}" />
 					<GridViewColumn Header="Copyright" Width="170" DisplayMemberBinding="{Binding CopyrightTrimmed}" />
+					<GridViewColumn Header="Sprache" Width="100" DisplayMemberBinding="{Binding Language}" />
 				</GridView>
 			</ListView.View>
 			<ListView.ItemContainerStyle>

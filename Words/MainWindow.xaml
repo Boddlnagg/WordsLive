@@ -100,6 +100,9 @@
 					</MenuItem.Icon>
 				</MenuItem>
 			</MenuItem>
+			<!-- TODO <MenuItem Header="Hilfe">
+				<MenuItem Header="Über Words ..."/>
+			</MenuItem>-->
 		</Menu>
 		<ToolBar Grid.Row="1" Margin="0" VerticalAlignment="Top" ToolBarTray.IsLocked="True">
 			<Button Command="{x:Static local:CustomCommands.SwitchWindow}" ToolTip="Editorfenster anzeigen">

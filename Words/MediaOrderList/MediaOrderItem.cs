@@ -1,22 +1,25 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Words.Core;
-using System.Windows.Media;
 using System.ComponentModel;
-using System.Windows;
+using System.Windows.Media;
+using Words.Core;
 
 namespace Words.MediaOrderList
 {
 	public class MediaOrderItem : IActivatable, INotifyPropertyChanged
 	{
 		private IconProvider iconProvider;
+		private Func<Media, bool> activationHandler;
 
-		public MediaOrderItem(Media data)
+		public MediaOrderItem(Media data, Func<Media, bool> activationHandler)
 		{
+			if (data == null)
+				throw new ArgumentNullException("data");
 			this.Data = data;
+
+			if (activationHandler == null)
+				throw new ArgumentNullException("activationHandler");
+			this.activationHandler = activationHandler;
+
 			this.iconProvider = Controller.IconProviders.CreateProvider(data);
 		}
 
@@ -57,21 +60,7 @@ namespace Words.MediaOrderList
 		
 		public bool Activate()
 		{
-			// TODO (Words): refactor to get this logic out of MediaOrderItem ... somehow
-			if (Data is UnsupportedMedia)
-			{
-				MessageBox.Show("Die Datei " + Data.File + " kann nicht angezeigt werden, da das Format nicht unterstützt wird.");
-				return false;
-			}
-			else if (Data is FileNotFoundMedia)
-			{
-				MessageBox.Show("Die Datei " + Data.File + " existiert nicht.");
-				return false;
-			}
-			else
-			{
-				return true;
-			}
+			return activationHandler(Data);
 		}
 
 		public event PropertyChangedEventHandler PropertyChanged;

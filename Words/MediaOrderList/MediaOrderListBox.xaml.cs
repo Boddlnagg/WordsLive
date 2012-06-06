@@ -89,14 +89,12 @@ namespace Words.MediaOrderList
 				if (index == oldIndex)
 					return;
 
-				var items = (ActivatableBindingList<MediaOrderItem>)this.DataContext;
-
-				ActivatableItemContainer<MediaOrderItem> movedItem = items[oldIndex];
+				ActivatableItemContainer<MediaOrderItem> movedItem = list[oldIndex];
 
 				if (index < 0)
-					items.Move(new ActivatableItemContainer<MediaOrderItem>[] {movedItem} , Items.Count - oldIndex - 1);
+					list.Move(new ActivatableItemContainer<MediaOrderItem>[] {movedItem} , Items.Count - oldIndex - 1);
 				else
-					items.Move(new ActivatableItemContainer<MediaOrderItem>[] { movedItem }, index - oldIndex);
+					list.Move(new ActivatableItemContainer<MediaOrderItem>[] { movedItem }, index - oldIndex);
 
 				oldIndex = -1;
 			}
@@ -104,17 +102,16 @@ namespace Words.MediaOrderList
 			else if (e.Data.GetData(DataFormats.FileDrop) != null)
 			{
 				string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
-				var items = (ActivatableBindingList<MediaOrderItem>)this.DataContext;
 				foreach (string f in files)
 				{
 					IEnumerable<Media> result;
 					if (!MediaManager.TryLoadPortfolio(f, out result))
 					{
-						var item = new MediaOrderItem(MediaManager.LoadMediaMetadata(f));
+						var item = MediaManager.LoadMediaMetadata(f);
 						if (index < 0)
-							items.Add(item);
+							list.Add(item);
 						else
-							items.Insert(index, item);
+							list.Insert(index, item);
 					}
 					else
 					{
@@ -135,9 +132,8 @@ namespace Words.MediaOrderList
 				return;
 
 			var data = (ActivatableItemContainer<MediaOrderItem>)this.ItemContainerGenerator.ItemFromContainer(sender as ListBoxItem);
-			
-			var items = (ActivatableBindingList<MediaOrderItem>)this.DataContext;
-			items.ActiveItem = data;
+
+			list.ActiveItem = data;
 		}
 	}
 }
