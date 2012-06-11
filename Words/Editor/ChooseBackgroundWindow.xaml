@@ -3,7 +3,8 @@
 		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 		xmlns:local="clr-namespace:Words.Editor"
 		xmlns:ext="http://schemas.microsoft.com/winfx/2006/xaml/presentation/toolkit/extended"
-		Title="Hintergrund wählen"
+		xmlns:resx="clr-namespace:Words.Resources"
+		Title="{x:Static resx:Resource.cbTitle}"
 		MinWidth="600" MinHeight="350"
 		Height = "{Binding Source={StaticResource settings}, Path=Default.ChooseBackgroundWindowHeight, Mode=TwoWay}"
 	Width = "{Binding Source={StaticResource settings}, Path=Default.ChooseBackgroundWindowWidth, Mode=TwoWay}"
@@ -12,12 +13,12 @@
 	WindowState="{Binding Source={StaticResource settings}, Path=Default.ChooseBackgroundWindowState, Mode=TwoWay}" Icon="/Words;component/Artwork/ChooseBackground.png">
 	<DockPanel>
 		<Grid DockPanel.Dock="Bottom" Height="35">
-			<CheckBox IsChecked="{Binding Path=UseColor, Mode=TwoWay}" Height="Auto" VerticalAlignment="Center" Name="UseColorCheckbox" HorizontalAlignment="Left" Margin="6,0,0,0">Einzelne Farbe verwenden</CheckBox>
+			<CheckBox IsChecked="{Binding Path=UseColor, Mode=TwoWay}" Height="Auto" VerticalAlignment="Center" Name="UseColorCheckbox" HorizontalAlignment="Left" Margin="6,0,0,0" Content="{x:Static resx:Resource.cbUseSingleColor}"/>
 			<ext:ColorPicker Margin="167,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left" Width="50" IsEnabled="{Binding ElementName=UseColorCheckbox, Path=IsChecked}" Name="ColorPicker"></ext:ColorPicker>
-			<Button Content="OK" IsDefault="True" Margin="0,0,5,0" VerticalAlignment="Center" HorizontalAlignment="Right" Width="75" Click="OKButton_Click" />
-			<Button Content="Abbrechen" IsCancel="True" Margin="0,0,86,0" VerticalAlignment="Center" HorizontalAlignment="Right" Width="75" />
+			<Button Content="{x:Static resx:Resource.dialogOK}" IsDefault="True" Margin="0,0,5,0" VerticalAlignment="Center" HorizontalAlignment="Right" Width="75" Click="OKButton_Click" />
+			<Button Content="{x:Static resx:Resource.dialogCancel}" IsCancel="True" Margin="0,0,86,0" VerticalAlignment="Center" HorizontalAlignment="Right" Width="75" />
 			<Slider Height="23" Minimum="100" Maximum="300" Value="{Binding Source={StaticResource settings}, Path=Default.ChooseBackgroundPreviewWidth, Mode=TwoWay}" Margin="322,6,167,6" Name="PreviewSizeSlider" VerticalAlignment="Center" />
-			<Label Content="Vorschaugröße:" Height="27" HorizontalAlignment="Left" Margin="223,0,0,0" VerticalAlignment="Center" />
+			<Label Content="{x:Static resx:Resource.cbPreviewSize}" Height="27" HorizontalAlignment="Left" Margin="223,0,0,0" VerticalAlignment="Center" />
 		</Grid>
 			<Grid IsEnabled="{Binding Path=UseImage}">
 				<Grid.ColumnDefinitions>

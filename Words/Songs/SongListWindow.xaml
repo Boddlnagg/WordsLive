@@ -27,7 +27,7 @@
 				<TextBox AcceptsReturn="False" Name="filterTextBox" Margin="6,5,310,0" Text="{Binding Path=Keyword}" VerticalAlignment="Top" Height="23" TextWrapping="Wrap" />
 				<Button IsDefault="True" Name="filterButton" Margin="0,4,6,0" Content="{x:Static resx:Resource.slSearchButton}" VerticalAlignment="Top" Height="23" Click="filterButton_Click" HorizontalAlignment="Right" Width="117" />
 				<CheckBox Content="{x:Static resx:Resource.slSearchInText}" IsChecked="{Binding Path=SearchInText}" Height="16" HorizontalAlignment="Right" Margin="0,8,146,0" Name="filterCheckBox" VerticalAlignment="Top" />
-				<Expander Header="{x:Static resx:Resource.slExtended}" HorizontalAlignment="Left" Margin="6,34,0,0" VerticalAlignment="Top" Width="564" IsExpanded="{Binding Source={StaticResource settings}, Path=Default.SongListSearchExpanded, Mode=TwoWay}">
+				<Expander Header="{x:Static resx:Resource.slAdvanced}" HorizontalAlignment="Left" Margin="6,34,0,0" VerticalAlignment="Top" Width="564" IsExpanded="{Binding Source={StaticResource settings}, Path=Default.SongListSearchExpanded, Mode=TwoWay}">
 					<Grid>
 						<Label Content="{x:Static resx:Resource.slSongbook}" HorizontalAlignment="Left" Margin="-1,1,0,0" Height="28" VerticalAlignment="Top" />
 						<TextBox Text="{Binding Path=SourceSongbook}" Height="23" HorizontalAlignment="Left" Margin="84,3,0,0" Name="filterSourceSongbookTextBox" VerticalAlignment="Top" Width="120" />

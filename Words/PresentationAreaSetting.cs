@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using WinForms = System.Windows.Forms;
+using Words.Resources;
 
 namespace Words
 {
@@ -35,7 +36,7 @@ namespace Words
 		{
 			get
 			{
-				return String.Format("{0} ({1})", ScreenIndex == ScreenIndex.Primary ? "Primär" : "Sekundär", Fullscreen ? "Vollbild" : String.Format("Position: {0}/{1}, Größe: {2}x{3}", Left, Top, Width, Height));
+				return String.Format("{0} ({1})", ScreenIndex == ScreenIndex.Primary ? Resource.paPrimary : Resource.paSecondary, Fullscreen ? Resource.paFullscreen : String.Format(Resource.paPositionSize, Left, Top, Width, Height));
 			}
 		}
 

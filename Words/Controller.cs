@@ -11,6 +11,7 @@ using Words.Songs;
 using System.Configuration;
 using System.IO;
 using System.Reflection;
+using Words.Resources;
 
 namespace Words
 {
@@ -87,7 +88,7 @@ namespace Words
 
 			while (!Directory.Exists(Properties.Settings.Default.SongsDirectory) || !Directory.Exists(Properties.Settings.Default.BackgroundsDirectory))
 			{
-				MessageBox.Show("Das Verzeichnis für Lieder oder Hintergründe existiert nicht. Bitte ein anderes Verzeichnis wählen oder das Verzeichnis erstellen.");
+				MessageBox.Show(Resource.sMsgDirectoryMissing);
 				window.ShowSettingsWindow();
 			}
 

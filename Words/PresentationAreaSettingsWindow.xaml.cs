@@ -6,6 +6,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Data;
 using WinForms = System.Windows.Forms;
+using Words.Resources;
 
 namespace Words
 {
@@ -100,7 +101,7 @@ namespace Words
 		{
 			if (settings.Count(s => s.IsAvailable) == 0)
 			{
-				MessageBox.Show("Es muss mindestens eine Einstellung gültig sein (ohne rote Markierung).");
+				MessageBox.Show(Resource.paMsgValidOption);
 			}
 			else
 			{

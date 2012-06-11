@@ -117,17 +117,77 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="cbPreviewSize" xml:space="preserve">
+    <value>Preview size:</value>
+  </data>
+  <data name="cbTitle" xml:space="preserve">
+    <value>Choose background</value>
+  </data>
+  <data name="cbUseSingleColor" xml:space="preserve">
+    <value>Use single color</value>
+  </data>
+  <data name="dialogCancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
   <data name="dialogClose" xml:space="preserve">
     <value>Close</value>
+  </data>
+  <data name="dialogOK" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="paAdd" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="paFullscreen" xml:space="preserve">
+    <value>Fullscreen</value>
+  </data>
+  <data name="paMonitor" xml:space="preserve">
+    <value>Monitor:</value>
+  </data>
+  <data name="paMoveDown" xml:space="preserve">
+    <value>Move down</value>
+  </data>
+  <data name="paMoveUp" xml:space="preserve">
+    <value>Move up</value>
+  </data>
+  <data name="paMsgValidOption" xml:space="preserve">
+    <value>There must be at least one valid option (no red label).</value>
+  </data>
+  <data name="paPosition" xml:space="preserve">
+    <value>Position (rel. to top-left corner):</value>
+  </data>
+  <data name="paPositionSize" xml:space="preserve">
+    <value>Position: {0}/{1}, Size: {2}x{3}</value>
+  </data>
+  <data name="paPrimary" xml:space="preserve">
+    <value>Primary</value>
+  </data>
+  <data name="paRefresh" xml:space="preserve">
+    <value>Refresh</value>
+  </data>
+  <data name="paRemove" xml:space="preserve">
+    <value>Remove</value>
+  </data>
+  <data name="paSecondary" xml:space="preserve">
+    <value>Secondary</value>
+  </data>
+  <data name="paSecondaryExternal" xml:space="preserve">
+    <value>Secondary/External</value>
+  </data>
+  <data name="paSize" xml:space="preserve">
+    <value>Size (width, height):</value>
+  </data>
+  <data name="paTitle" xml:space="preserve">
+    <value>Choose presentation area</value>
   </data>
   <data name="slAddSong" xml:space="preserve">
     <value>Add song</value>
   </data>
+  <data name="slAdvanced" xml:space="preserve">
+    <value>Advanced</value>
+  </data>
   <data name="slCopyright" xml:space="preserve">
     <value>Copyright:</value>
-  </data>
-  <data name="slExtended" xml:space="preserve">
-    <value>Extended</value>
   </data>
   <data name="slFinishedLoadingN" xml:space="preserve">
     <value>Finished ({0:d})</value>
@@ -167,6 +227,9 @@
   </data>
   <data name="slTitle" xml:space="preserve">
     <value>Songlist</value>
+  </data>
+  <data name="sMsgDirectoryMissing" xml:space="preserve">
+    <value>The directory for songs or backgrounds does not exist. Please choose another directory or create it.</value>
   </data>
   <data name="vFilterAllFiles" xml:space="preserve">
     <value>All files</value>

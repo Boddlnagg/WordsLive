@@ -61,11 +61,191 @@ namespace Words.Resources {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Vorschaugröße: ähnelt.
+        /// </summary>
+        public static string cbPreviewSize {
+            get {
+                return ResourceManager.GetString("cbPreviewSize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Hintergrund wählen ähnelt.
+        /// </summary>
+        public static string cbTitle {
+            get {
+                return ResourceManager.GetString("cbTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Einzelne Farbe verwenden ähnelt.
+        /// </summary>
+        public static string cbUseSingleColor {
+            get {
+                return ResourceManager.GetString("cbUseSingleColor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Abbrechen ähnelt.
+        /// </summary>
+        public static string dialogCancel {
+            get {
+                return ResourceManager.GetString("dialogCancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Schließen ähnelt.
         /// </summary>
         public static string dialogClose {
             get {
                 return ResourceManager.GetString("dialogClose", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die OK ähnelt.
+        /// </summary>
+        public static string dialogOK {
+            get {
+                return ResourceManager.GetString("dialogOK", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Hinzufügen ähnelt.
+        /// </summary>
+        public static string paAdd {
+            get {
+                return ResourceManager.GetString("paAdd", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Vollbild ähnelt.
+        /// </summary>
+        public static string paFullscreen {
+            get {
+                return ResourceManager.GetString("paFullscreen", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Monitor: ähnelt.
+        /// </summary>
+        public static string paMonitor {
+            get {
+                return ResourceManager.GetString("paMonitor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Nach unten ähnelt.
+        /// </summary>
+        public static string paMoveDown {
+            get {
+                return ResourceManager.GetString("paMoveDown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Nach oben ähnelt.
+        /// </summary>
+        public static string paMoveUp {
+            get {
+                return ResourceManager.GetString("paMoveUp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Es muss mindestens eine Einstellung gültig sein (ohne rote Markierung). ähnelt.
+        /// </summary>
+        public static string paMsgValidOption {
+            get {
+                return ResourceManager.GetString("paMsgValidOption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Position (von links/oben): ähnelt.
+        /// </summary>
+        public static string paPosition {
+            get {
+                return ResourceManager.GetString("paPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Position: {0}/{1}, Größe: {2}x{3} ähnelt.
+        /// </summary>
+        public static string paPositionSize {
+            get {
+                return ResourceManager.GetString("paPositionSize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Primär ähnelt.
+        /// </summary>
+        public static string paPrimary {
+            get {
+                return ResourceManager.GetString("paPrimary", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Aktualisieren ähnelt.
+        /// </summary>
+        public static string paRefresh {
+            get {
+                return ResourceManager.GetString("paRefresh", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Entfernen ähnelt.
+        /// </summary>
+        public static string paRemove {
+            get {
+                return ResourceManager.GetString("paRemove", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Sekundär ähnelt.
+        /// </summary>
+        public static string paSecondary {
+            get {
+                return ResourceManager.GetString("paSecondary", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Sekundär/Extern ähnelt.
+        /// </summary>
+        public static string paSecondaryExternal {
+            get {
+                return ResourceManager.GetString("paSecondaryExternal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Größe (Breite/Höhe): ähnelt.
+        /// </summary>
+        public static string paSize {
+            get {
+                return ResourceManager.GetString("paSize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Präsentationsbereich festlegen ähnelt.
+        /// </summary>
+        public static string paTitle {
+            get {
+                return ResourceManager.GetString("paTitle", resourceCulture);
             }
         }
         
@@ -79,20 +259,20 @@ namespace Words.Resources {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Erweitert ähnelt.
+        /// </summary>
+        public static string slAdvanced {
+            get {
+                return ResourceManager.GetString("slAdvanced", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Copyright: ähnelt.
         /// </summary>
         public static string slCopyright {
             get {
                 return ResourceManager.GetString("slCopyright", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Erweitert ähnelt.
-        /// </summary>
-        public static string slExtended {
-            get {
-                return ResourceManager.GetString("slExtended", resourceCulture);
             }
         }
         
@@ -210,6 +390,15 @@ namespace Words.Resources {
         public static string slTitle {
             get {
                 return ResourceManager.GetString("slTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Das Verzeichnis für Lieder oder Hintergründe existiert nicht. Bitte ein anderes Verzeichnis wählen oder das Verzeichnis erstellen. ähnelt.
+        /// </summary>
+        public static string sMsgDirectoryMissing {
+            get {
+                return ResourceManager.GetString("sMsgDirectoryMissing", resourceCulture);
             }
         }
         

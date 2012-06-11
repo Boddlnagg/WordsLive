@@ -2,7 +2,9 @@
 		xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 		xmlns:local="clr-namespace:Words"
-		Title="Präsentationsbereich festlegen" Height="375" Width="409"
+		xmlns:resx="clr-namespace:Words.Resources"
+		Title="{x:Static resx:Resource.paTitle}"
+		Height="375" Width="409"
 		MinHeight="375" MinWidth="375"
 		Name="win"
 		Icon="/Words;component/Artwork/PresentationArea.png">
@@ -29,11 +31,11 @@
 				</DataTemplate>
 			</ListBox.Resources>
 		</ListBox>
-		<Button Grid.Row="0" Content="Nach oben" Height="23" Margin="0,12,12,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="75" Name="moveUpButton" Click="moveUpButton_Click" />
-		<Button Grid.Row="0" Content="Nach unten" Height="23" Margin="0,41,12,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="75" Name="moveDownButton" Click="moveDownButton_Click" />
-		<Button Content="Hinzufügen" Height="23" Margin="0,80,12,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="75" Name="addButton" Click="addButton_Click" />
-		<Button Content="Entfernen" Height="23" Margin="0,109,12,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="75" Name="removeButton" Click="removeButton_Click" />
-		<Button Content="Aktualisieren" Margin="0,0,12,12" HorizontalAlignment="Right" Width="75" Height="23" VerticalAlignment="Bottom" Name="updateButton" Click="updateButton_Click" />
+		<Button Grid.Row="0" Content="{x:Static resx:Resource.paMoveUp}" Height="23" Margin="0,12,12,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="75" Name="moveUpButton" Click="moveUpButton_Click" />
+		<Button Grid.Row="0" Content="{x:Static resx:Resource.paMoveDown}" Height="23" Margin="0,41,12,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="75" Name="moveDownButton" Click="moveDownButton_Click" />
+		<Button Content="{x:Static resx:Resource.paAdd}" Height="23" Margin="0,80,12,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="75" Name="addButton" Click="addButton_Click" />
+		<Button Content="{x:Static resx:Resource.paRemove}" Height="23" Margin="0,109,12,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="75" Name="removeButton" Click="removeButton_Click" />
+		<Button Content="{x:Static resx:Resource.paRefresh}" Margin="0,0,12,12" HorizontalAlignment="Right" Width="75" Height="23" VerticalAlignment="Bottom" Name="updateButton" Click="updateButton_Click" />
 		<Grid Grid.Row="1" VerticalAlignment="Top" DataContext="{Binding ElementName=settingsPriorityListBox, Path=SelectedItem}">
 			<Grid.Style>
 				<Style TargetType="Grid">
@@ -55,9 +57,9 @@
 				<RowDefinition Height="Auto"/>
 				<RowDefinition Height="Auto"/>
 			</Grid.RowDefinitions>
-			<Label Grid.Column="0" Grid.Row="0" Content="Monitor:" Height="28" HorizontalAlignment="Left" />
-			<RadioButton IsChecked="{Binding Path=ScreenIndex, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static local:ScreenIndex.Primary}}" Grid.Column="1" Grid.Row="0" Content="Primär" Height="16" HorizontalAlignment="Left" Margin="6" />
-			<RadioButton IsChecked="{Binding Path=ScreenIndex, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static local:ScreenIndex.Secondary}}" Grid.Column="2" Grid.Row="0" Content="Sekundär/Extern" Height="16" HorizontalAlignment="Left" Margin="6">
+			<Label Grid.Column="0" Grid.Row="0" Content="{x:Static resx:Resource.paMonitor}" Height="28" HorizontalAlignment="Left" />
+			<RadioButton IsChecked="{Binding Path=ScreenIndex, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static local:ScreenIndex.Primary}}" Grid.Column="1" Grid.Row="0" Content="{x:Static resx:Resource.paPrimary}" Height="16" HorizontalAlignment="Left" Margin="6" />
+			<RadioButton IsChecked="{Binding Path=ScreenIndex, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static local:ScreenIndex.Secondary}}" Grid.Column="2" Grid.Row="0" Content="{x:Static resx:Resource.paSecondaryExternal}" Height="16" HorizontalAlignment="Left" Margin="6">
 				<RadioButton.Style>
 					<Style TargetType="RadioButton">
 						<Style.Triggers>
@@ -68,16 +70,16 @@
 					</Style>
 				</RadioButton.Style>
 			</RadioButton>
-			<CheckBox IsChecked="{Binding Path=Fullscreen}" Grid.Column="1" Grid.Row="1" Content="Vollbild" Margin="6" />
-			<Label IsEnabled="{Binding Path=IsNotFullscreen}" Grid.Column="0" Grid.Row="2" Content="Position (von links/oben):" Height="28" HorizontalAlignment="Left"  />
+			<CheckBox IsChecked="{Binding Path=Fullscreen}" Grid.Column="1" Grid.Row="1" Content="{x:Static resx:Resource.paFullscreen}" Margin="6" />
+			<Label IsEnabled="{Binding Path=IsNotFullscreen}" Grid.Column="0" Grid.Row="2" Content="{x:Static resx:Resource.paPosition}" Height="28" HorizontalAlignment="Left"  />
 			<TextBox IsEnabled="{Binding Path=IsNotFullscreen}" Text="{Binding Left}" Grid.Column="1" Grid.Row="2" Height="23" Margin="6" />
 			<TextBox IsEnabled="{Binding Path=IsNotFullscreen}" Text="{Binding Top}" Grid.Column="2" Grid.Row="2" Height="23" Margin="6"  />
-			<Label IsEnabled="{Binding Path=IsNotFullscreen}" Grid.Column="0" Grid.Row="3" Content="Größe (Breite/Höhe):" Height="28" HorizontalAlignment="Left" />
+			<Label IsEnabled="{Binding Path=IsNotFullscreen}" Grid.Column="0" Grid.Row="3" Content="{x:Static resx:Resource.paSize}" Height="28" HorizontalAlignment="Left" />
 			<TextBox IsEnabled="{Binding Path=IsNotFullscreen}" Text="{Binding Width}" Grid.Column="1" Grid.Row="3" Height="23" Margin="6" />
 			<TextBox IsEnabled="{Binding Path=IsNotFullscreen}" Text="{Binding Height}" Grid.Column="2" Grid.Row="3" Height="23" Margin="6" />
 			
 		</Grid>
-		<Button IsDefault="True" Grid.Row="2" Content="OK" Margin="0,0,6,6" Height="23" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="90" Name="OKButton" Click="OKButton_Click" />
-		<Button IsCancel="True" Grid.Row="2" Content="Abbrechen" Margin="0,0,102,6" Height="23" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="90"/>
+		<Button IsDefault="True" Grid.Row="2" Content="{x:Static resx:Resource.dialogOK}" Margin="0,0,6,6" Height="23" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="90" Name="OKButton" Click="OKButton_Click" />
+		<Button IsCancel="True" Grid.Row="2" Content="{x:Static resx:Resource.dialogCancel}" Margin="0,0,102,6" Height="23" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="90"/>
 	</Grid>
 </Window>
