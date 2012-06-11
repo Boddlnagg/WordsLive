@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Windows;
+using System.Threading;
+using System.Globalization;
 
 namespace Words
 {
@@ -14,6 +16,10 @@ namespace Words
 		{
 			if (e.Args.Length > 0)
 				StartupPortfolio = e.Args[0];
+
+			Thread.CurrentThread.CurrentUICulture = new CultureInfo("en-US");
+			Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
+			//Words.Resources.Resource.Culture = new CultureInfo("en-US");
 		}
 	}
 }

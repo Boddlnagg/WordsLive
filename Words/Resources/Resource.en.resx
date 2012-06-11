@@ -1,0 +1,291 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="dialogClose" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="slAddSong" xml:space="preserve">
+    <value>Add song</value>
+  </data>
+  <data name="slCopyright" xml:space="preserve">
+    <value>Copyright:</value>
+  </data>
+  <data name="slExtended" xml:space="preserve">
+    <value>Extended</value>
+  </data>
+  <data name="slFinishedLoadingN" xml:space="preserve">
+    <value>Finished ({0:d})</value>
+  </data>
+  <data name="slGridCopyright" xml:space="preserve">
+    <value>Copyright</value>
+  </data>
+  <data name="slGridLanguage" xml:space="preserve">
+    <value>Language</value>
+  </data>
+  <data name="slGridSource" xml:space="preserve">
+    <value>Source</value>
+  </data>
+  <data name="slGridTitle" xml:space="preserve">
+    <value>Title</value>
+  </data>
+  <data name="slLoading" xml:space="preserve">
+    <value>Loading ...</value>
+  </data>
+  <data name="slLoadingN" xml:space="preserve">
+    <value>Loading ({0:d}) ...</value>
+  </data>
+  <data name="slSearch" xml:space="preserve">
+    <value>Search</value>
+  </data>
+  <data name="slSearchButton" xml:space="preserve">
+    <value>Search</value>
+  </data>
+  <data name="slSearchInText" xml:space="preserve">
+    <value>Search in song text</value>
+  </data>
+  <data name="slSongbook" xml:space="preserve">
+    <value>Songbook:</value>
+  </data>
+  <data name="slSongnumber" xml:space="preserve">
+    <value>Song #:</value>
+  </data>
+  <data name="slTitle" xml:space="preserve">
+    <value>Songlist</value>
+  </data>
+  <data name="vFilterAllFiles" xml:space="preserve">
+    <value>All files</value>
+  </data>
+  <data name="vFilterSupportedMediaTypes" xml:space="preserve">
+    <value>Supported media types</value>
+  </data>
+  <data name="vMenuActivePresentation" xml:space="preserve">
+    <value>_Active Presentation</value>
+  </data>
+  <data name="vMenuAddMedia" xml:space="preserve">
+    <value>Add media</value>
+  </data>
+  <data name="vMenuBlackscreen" xml:space="preserve">
+    <value>Blackscreen</value>
+  </data>
+  <data name="vMenuChoosePresentationArea" xml:space="preserve">
+    <value>Choose presentation area</value>
+  </data>
+  <data name="vMenuExit" xml:space="preserve">
+    <value>_Exit</value>
+  </data>
+  <data name="vMenuFile" xml:space="preserve">
+    <value>_File</value>
+  </data>
+  <data name="vMenuHidePresentation" xml:space="preserve">
+    <value>Hide presentation</value>
+  </data>
+  <data name="vMenuMedia" xml:space="preserve">
+    <value>_Media</value>
+  </data>
+  <data name="vMenuNewPortfolio" xml:space="preserve">
+    <value>_New portfolio</value>
+  </data>
+  <data name="vMenuOpenPortfolio" xml:space="preserve">
+    <value>_Open portfolio</value>
+  </data>
+  <data name="vMenuProjection" xml:space="preserve">
+    <value>_Projection</value>
+  </data>
+  <data name="vMenuRefresh" xml:space="preserve">
+    <value>Refresh</value>
+  </data>
+  <data name="vMenuSavePortfolio" xml:space="preserve">
+    <value>_Save portfolio</value>
+  </data>
+  <data name="vMenuSavePortfolioAs" xml:space="preserve">
+    <value>Save portfolio _as ...</value>
+  </data>
+  <data name="vMenuSettings" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="vMenuShowChords" xml:space="preserve">
+    <value>Show chords</value>
+  </data>
+  <data name="vMenuShowPresentation" xml:space="preserve">
+    <value>Show presentation</value>
+  </data>
+  <data name="vMenuShowSonglist" xml:space="preserve">
+    <value>Open Song_list</value>
+  </data>
+  <data name="vMenuSwapTextAndTranslation" xml:space="preserve">
+    <value>Swap text and translation</value>
+  </data>
+  <data name="vMenuUsePortfolioBackground" xml:space="preserve">
+    <value>Use single background for all songs</value>
+  </data>
+  <data name="vMsgSavePortfolioChanges" xml:space="preserve">
+    <value>The current portfolio might contain unsaved changes. Do you want to save them?</value>
+  </data>
+  <data name="vMsgSavePortfolioChangesTitle" xml:space="preserve">
+    <value>Save changes?</value>
+  </data>
+  <data name="vMsgUnableToLoadPortfolio" xml:space="preserve">
+    <value>Unable to load portfolio.</value>
+  </data>
+  <data name="vNoPreviewAvailable" xml:space="preserve">
+    <value>No preview available</value>
+  </data>
+  <data name="vPanelOrder" xml:space="preserve">
+    <value>Order</value>
+  </data>
+  <data name="vPanelPreview" xml:space="preserve">
+    <value>Preview</value>
+  </data>
+  <data name="vTitleUnnamedPortfolio" xml:space="preserve">
+    <value>New portfolio</value>
+  </data>
+  <data name="vToolbarBlackscreen" xml:space="preserve">
+    <value>Blackscreen</value>
+  </data>
+  <data name="vToolbarEditActiveSong" xml:space="preserve">
+    <value>Open active song in editor</value>
+  </data>
+  <data name="vToolbarHidePresentation" xml:space="preserve">
+    <value>Hide presentation (show desktop)</value>
+  </data>
+  <data name="vToolbarNewPortfolio" xml:space="preserve">
+    <value>New portfolio</value>
+  </data>
+  <data name="vToolbarOpenPortfolio" xml:space="preserve">
+    <value>Open portfolio</value>
+  </data>
+  <data name="vToolbarSavePortfolio" xml:space="preserve">
+    <value>Save portfolio</value>
+  </data>
+  <data name="vToolbarShowChords" xml:space="preserve">
+    <value>Show chords in presentation</value>
+  </data>
+  <data name="vToolbarShowEditorWindow" xml:space="preserve">
+    <value>Open editor</value>
+  </data>
+  <data name="vToolbarShowPresentation" xml:space="preserve">
+    <value>Show presentation</value>
+  </data>
+  <data name="vToolbarShowSonglist" xml:space="preserve">
+    <value>Open songlist</value>
+  </data>
+  <data name="vToolbarUsePortfolioBackground" xml:space="preserve">
+    <value>Use single background for all songs</value>
+  </data>
+</root>

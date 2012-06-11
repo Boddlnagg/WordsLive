@@ -1,18 +1,29 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Words.Core;
 
 namespace Words.MediaOrderList
 {
 	public class MediaOrderList : ActivatableBindingList<MediaOrderItem>
 	{
+		public event EventHandler ItemAdded;
+
+		private void OnItemAdded()
+		{
+			if (ItemAdded != null)
+				ItemAdded(this, new EventArgs());
+		}
+
 		public void Add(Media media)
 		{
 			this.Add(CreateItem(media));
+			ItemAdded(this, new EventArgs());
 		}
 
 		public void Insert(int index, Media media)
 		{
 			this.Insert(index, CreateItem(media));
+			ItemAdded(this, new EventArgs());
 		}
 
 		internal void ReplaceActiveBy(Media newItem)

@@ -13,6 +13,7 @@ using Words.MediaOrderList;
 using Words.Presentation;
 using System.Linq;
 using Words.Songs;
+using Words.Resources;
 
 namespace Words
 {
@@ -42,7 +43,7 @@ namespace Words
 		{
 			get
 			{
-				return (PortfolioFile == null ? "Unbenanntes Portfolio" : PortfolioFile.Name) + " - Words";
+				return (PortfolioFile == null ? Resource.vTitleUnnamedPortfolio : PortfolioFile.Name) + " - Words";
 			}
 		}
 
@@ -87,6 +88,7 @@ namespace Words
 			}
 
 			this.OrderListBox.Init(orderList);
+			this.orderList.ItemAdded += (sender, args) => { portfolioChanged = true; };
 
 			Controller.Initialize();
 
@@ -262,7 +264,7 @@ namespace Words
 			else if (!presentation.Preview.IsPreviewAvailable)
 			{
 				this.previewBorder.Child = null;
-				return new TextBlock { Text = "Keine Vorschau verfügbar", TextAlignment = TextAlignment.Center, Foreground = Brushes.Black };
+				return new TextBlock { Text = Resource.vNoPreviewAvailable, TextAlignment = TextAlignment.Center, Foreground = Brushes.Black };
 			}
 			else if (presentation.Preview is Words.Presentation.Wpf.WpfPreviewProvider)
 			{
@@ -311,9 +313,9 @@ namespace Words
 		private void ShowAddMediaDialog()
 		{
 			var typeFilters = new List<string>();
-			typeFilters.Add("Unterstützte Medientypen|" + String.Join(";", from t in MediaManager.MediaTypes from ext in t.Extensions select "*" + ext));
+			typeFilters.Add(Resource.vFilterSupportedMediaTypes + "|" + String.Join(";", from t in MediaManager.MediaTypes from ext in t.Extensions select "*" + ext));
 			typeFilters.AddRange(from t in MediaManager.MediaTypes select t.Description + "|" + String.Join(";", t.Extensions.Select(s => "*" + s)));
-			typeFilters.Add("Alle Dateien|*");
+			typeFilters.Add(Resource.vFilterAllFiles+"|*");
 
 			Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
 			dlg.Filter = String.Join("|", typeFilters);
@@ -333,7 +335,7 @@ namespace Words
 		{
 			if (portfolioChanged)
 			{
-				var res = MessageBox.Show("Das aktuelle Portfolio enthält möglicherweise ungespeicherte Änderungen. Wollen Sie es speichern?", "Änderungen speichern?", MessageBoxButton.YesNoCancel);
+				var res = MessageBox.Show(Resource.vMsgSavePortfolioChanges, Resource.vMsgSavePortfolioChangesTitle, MessageBoxButton.YesNoCancel);
 				if (res == MessageBoxResult.Cancel)
 					return;
 				else if (res == MessageBoxResult.Yes)
@@ -348,7 +350,7 @@ namespace Words
 		{
 			if (portfolioChanged)
 			{
-				var res = MessageBox.Show("Das aktuelle Portfolio enthält möglicherweise ungespeicherte Änderungen. Wollen Sie es speichern?", "Änderungen speichern?", MessageBoxButton.YesNoCancel);
+				var res = MessageBox.Show(Resource.vMsgSavePortfolioChanges, Resource.vMsgSavePortfolioChangesTitle, MessageBoxButton.YesNoCancel);
 				if (res == MessageBoxResult.Cancel)
 					return;
 				else if (res == MessageBoxResult.Yes)
@@ -380,7 +382,7 @@ namespace Words
 			}
 			else
 			{
-				MessageBox.Show("Portfolio konnte nicht geladen werden.");
+				MessageBox.Show(Resource.vMsgUnableToLoadPortfolio);
 			}
 		}
 

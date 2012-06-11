@@ -8,6 +8,7 @@ using System.Windows.Data;
 using System.Windows.Input;
 using Words.Core;
 using Words.Core.Songs;
+using Words.Resources;
 
 namespace Words.Songs
 {
@@ -72,9 +73,9 @@ namespace Words.Songs
 		private void LoadUpdateUI(bool finished)
 		{
 			if (finished)
-				this.labelStatus.Content = "Fertig (" + this.songList.Count + ")";
+				this.labelStatus.Content = String.Format(Resource.slFinishedLoadingN, this.songList.Count);
 			else
-				this.labelStatus.Content = "Lade (" + this.songList.Count + ") ...";
+				this.labelStatus.Content = String.Format(Resource.slLoadingN, this.songList.Count);
 		}
 
 		ListViewItem dragItem;

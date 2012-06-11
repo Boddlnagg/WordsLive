@@ -6,6 +6,7 @@
 	mc:Ignorable="d"
 	xmlns:mediaOrderList="clr-namespace:Words.MediaOrderList"
 	xmlns:local="clr-namespace:Words"
+	xmlns:resx="clr-namespace:Words.Resources"
 	x:Class="Words.MainWindow"
 	x:Name="Window"
 	Title="{Binding Path=WindowTitle}"
@@ -41,60 +42,60 @@
 			<RowDefinition Height="*" />
 		</Grid.RowDefinitions>
 		<Menu Grid.Row="0" VerticalAlignment="Top">
-			<MenuItem Header="_Datei">
-				<MenuItem Header="_Neues Portfolio" Command="New">
+			<MenuItem Header="{x:Static resx:Resource.vMenuFile}">
+				<MenuItem Header="{x:Static resx:Resource.vMenuNewPortfolio}" Command="New">
 					<MenuItem.Icon>
 						<Image Width="24" Source="/Words;component/Artwork/New.png" />
 					</MenuItem.Icon>
 				</MenuItem>
-				<MenuItem Header="Portfolio ö_ffnen" Command="Open">
+				<MenuItem Header="{x:Static resx:Resource.vMenuOpenPortfolio}" Command="Open">
 					<MenuItem.Icon>
 						<Image Width="24" Source="/Words;component/Artwork/Open.png" />
 					</MenuItem.Icon>
 				</MenuItem>
-				<MenuItem Header="Portfolio _speichern" Command="Save">
+				<MenuItem Header="{x:Static resx:Resource.vMenuSavePortfolio}" Command="Save">
 					<MenuItem.Icon>
 						<Image Width="24" Source="/Words;component/Artwork/Save.png" />
 					</MenuItem.Icon>
 				</MenuItem>
-				<MenuItem Header="Portfolio speichern _unter ..." Command="SaveAs"/>
+				<MenuItem Header="{x:Static resx:Resource.vMenuSavePortfolioAs}" Command="SaveAs"/>
 				<Separator/>
-				<MenuItem Header="Einstellungen" Command="{x:Static local:CustomCommands.ShowSettings}">
+				<MenuItem Header="{x:Static resx:Resource.vMenuSettings}" Command="{x:Static local:CustomCommands.ShowSettings}">
 					<MenuItem.Icon>
 						<Image Width="24" Source="/Words;component/Artwork/Settings.png" />
 					</MenuItem.Icon>
 				</MenuItem>
 				<Separator/>
-				<MenuItem Header="_Beenden" Command="{x:Static local:CustomCommands.Exit}"/>
+				<MenuItem Header="{x:Static resx:Resource.vMenuExit}" Command="{x:Static local:CustomCommands.Exit}"/>
 			</MenuItem>
-			<MenuItem Header="_Medien">
-				<MenuItem Header="Medien hinzufügen" Command="{x:Static local:CustomCommands.AddMedia}"/>
-				<MenuItem Header="_Liederliste anzeigen" Command="{x:Static local:CustomCommands.ShowSonglist}">
+			<MenuItem Header="{x:Static resx:Resource.vMenuMedia}">
+				<MenuItem Header="{x:Static resx:Resource.vMenuAddMedia}" Command="{x:Static local:CustomCommands.AddMedia}"/>
+				<MenuItem Header="{x:Static resx:Resource.vMenuShowSonglist}" Command="{x:Static local:CustomCommands.ShowSonglist}">
 					<MenuItem.Icon>
 						<Image Width="24" Source="/Words;component/Artwork/Songlist.png" />
 					</MenuItem.Icon>
 				</MenuItem>
 			</MenuItem>
-			<MenuItem Header="_Aktive Präsentation">
-				<MenuItem Header="Neu laden" Command="Refresh"/>
-				<MenuItem IsCheckable="True" IsChecked="{Binding CurrentPanel.SwapTextAndTranslation}" Header="Liedtext und Übersetzung tauschen" Command="{x:Static local:CustomCommands.SwapTextAndTranslation}"/>
+			<MenuItem Header="{x:Static resx:Resource.vMenuActivePresentation}">
+				<MenuItem Header="{x:Static resx:Resource.vMenuRefresh}" Command="Refresh"/>
+				<MenuItem IsCheckable="True" IsChecked="{Binding CurrentPanel.SwapTextAndTranslation}" Header="{x:Static resx:Resource.vMenuSwapTextAndTranslation}" Command="{x:Static local:CustomCommands.SwapTextAndTranslation}"/>
 			</MenuItem>
-			<MenuItem Header="_Projektion">
-				<MenuItem Header="Präsentation ausblenden" Command="{x:Static local:CustomCommands.HidePresentation}" IsChecked="{Binding Source={x:Static local:Controller.PresentationManager}, Path=Status, Mode=OneWay, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static local:PresentationStatus.Hide}}"/>
-				<MenuItem Header="Anzeige schwarz schalten" Command="{x:Static local:CustomCommands.Blackscreen}" IsChecked="{Binding Source={x:Static local:Controller.PresentationManager}, Path=Status, Mode=OneWay, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static local:PresentationStatus.Blackscreen}}"/>
-				<MenuItem Header="Präsentation anzeigen" Command="{x:Static local:CustomCommands.ShowPresentation}" IsChecked="{Binding Source={x:Static local:Controller.PresentationManager}, Path=Status, Mode=OneWay, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static local:PresentationStatus.Show}}"/>
+			<MenuItem Header="{x:Static resx:Resource.vMenuProjection}">
+				<MenuItem Header="{x:Static resx:Resource.vMenuHidePresentation}" Command="{x:Static local:CustomCommands.HidePresentation}" IsChecked="{Binding Source={x:Static local:Controller.PresentationManager}, Path=Status, Mode=OneWay, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static local:PresentationStatus.Hide}}"/>
+				<MenuItem Header="{x:Static resx:Resource.vMenuBlackscreen}" Command="{x:Static local:CustomCommands.Blackscreen}" IsChecked="{Binding Source={x:Static local:Controller.PresentationManager}, Path=Status, Mode=OneWay, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static local:PresentationStatus.Blackscreen}}"/>
+				<MenuItem Header="{x:Static resx:Resource.vMenuShowPresentation}" Command="{x:Static local:CustomCommands.ShowPresentation}" IsChecked="{Binding Source={x:Static local:Controller.PresentationManager}, Path=Status, Mode=OneWay, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static local:PresentationStatus.Show}}"/>
 				<Separator/>
-				<MenuItem IsCheckable="True" IsChecked="{Binding UsePortfolioBackground}" Header="Einen Hintergrund für alle Lieder verwenden">
+				<MenuItem IsCheckable="True" IsChecked="{Binding UsePortfolioBackground}" Header="{x:Static resx:Resource.vMenuUsePortfolioBackground}">
 					<MenuItem.Icon>
 						<Image Width="24" Source="/Words;component/Artwork/ChooseBackground.png" />
 					</MenuItem.Icon>
 				</MenuItem>
-				<MenuItem IsCheckable="True" IsChecked="{Binding SongPresentationShowChords}" Header="Liedakkorde anzeigen">
+				<MenuItem IsCheckable="True" IsChecked="{Binding SongPresentationShowChords}" Header="{x:Static resx:Resource.vMenuShowChords}">
 					<MenuItem.Icon>
 						<Image Width="24" Source="/Words;component/Artwork/ShowChords.png" />
 					</MenuItem.Icon>
 				</MenuItem>
-				<MenuItem Header="Präsentationsbereich festlegen" Command="{x:Static local:CustomCommands.ChoosePresentationArea}">
+				<MenuItem Header="{x:Static resx:Resource.vMenuChoosePresentationArea}" Command="{x:Static local:CustomCommands.ChoosePresentationArea}">
 					<MenuItem.Icon>
 						<Image Width="24" Source="/Words;component/Artwork/PresentationArea.png" />
 					</MenuItem.Icon>
@@ -105,46 +106,46 @@
 			</MenuItem>-->
 		</Menu>
 		<ToolBar Grid.Row="1" Margin="0" VerticalAlignment="Top" ToolBarTray.IsLocked="True">
-			<Button Command="{x:Static local:CustomCommands.SwitchWindow}" ToolTip="Editorfenster anzeigen">
+			<Button Command="{x:Static local:CustomCommands.SwitchWindow}" ToolTip="{x:Static resx:Resource.vToolbarShowEditorWindow}">
 				<Image Width="32" Height="32" Source="/Words;component/Artwork/Editor.png" />
 			</Button>
-			<Button Command="{x:Static local:CustomCommands.EditActive}" Style="{StaticResource markDisabledButton}" ToolTip="Aktives Lied im Editor bearbeiten">
+			<Button Command="{x:Static local:CustomCommands.EditActive}" Style="{StaticResource markDisabledButton}" ToolTip="{x:Static resx:Resource.vToolbarEditActiveSong}">
 				<Image Width="32" Height="32" Source="/Words;component/Artwork/EditCurrent.png" />
 			</Button>
 			<Separator/>
-			<Button Command="New" ToolTip="Neues Portfolio">
+			<Button Command="New" ToolTip="{x:Static resx:Resource.vToolbarNewPortfolio}">
 				<Image Width="32" Height="32" Source="/Words;component/Artwork/New.png" />
 			</Button>
-			<Button Command="Open" ToolTip="Portfolio öffnen">
+			<Button Command="Open" ToolTip="{x:Static resx:Resource.vToolbarOpenPortfolio}">
 				<Image Width="32" Height="32" Source="/Words;component/Artwork/Open.png" />
 			</Button>
-			<Button Command="Save" Style="{StaticResource markDisabledButton}" ToolTip="Portfolio speichern">
+			<Button Command="Save" Style="{StaticResource markDisabledButton}" ToolTip="{x:Static resx:Resource.vToolbarSavePortfolio}">
 				<Image Width="32" Height="32" Source="/Words;component/Artwork/Save.png" />
 			</Button>
 			<Separator/>
-			<RadioButton HorizontalAlignment="Left" Margin="0" VerticalAlignment="Stretch" GroupName="PresentationStatus" ToolTip="Präsentation ausblenden (Desktop anzeigen)"
+			<RadioButton HorizontalAlignment="Left" Margin="0" VerticalAlignment="Stretch" GroupName="PresentationStatus" ToolTip="{x:Static resx:Resource.vToolbarHidePresentation}"
 						 IsChecked="{Binding Source={x:Static local:Controller.PresentationManager}, Path=Status, Mode=OneWay, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static local:PresentationStatus.Hide}}"
 						 Command="{x:Static local:CustomCommands.HidePresentation}">
 				<Image Width="32" Height="32" HorizontalAlignment="Left" VerticalAlignment="Top" Source="/Words;component/Artwork/HidePresentation.png" />
 			</RadioButton>
-			<RadioButton HorizontalAlignment="Left" Margin="0" VerticalAlignment="Stretch" GroupName="PresentationStatus" ToolTip="Anzeige schwarz schalten"
+			<RadioButton HorizontalAlignment="Left" Margin="0" VerticalAlignment="Stretch" GroupName="PresentationStatus" ToolTip="{x:Static resx:Resource.vToolbarBlackscreen}"
 						 IsChecked="{Binding Source={x:Static local:Controller.PresentationManager}, Path=Status, Mode=OneWay, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static local:PresentationStatus.Blackscreen}}"
 						 Command="{x:Static local:CustomCommands.Blackscreen}">
 				<Image Width="32" Height="32" HorizontalAlignment="Left" VerticalAlignment="Top" Source="/Words;component/Artwork/Blackscreen.png"/>
 			</RadioButton>
-			<RadioButton HorizontalAlignment="Left" Margin="0" VerticalAlignment="Stretch" Style="{StaticResource markDisabledRadioButton}" GroupName="PresentationStatus" ToolTip="Präsentation anzeigen"
+			<RadioButton HorizontalAlignment="Left" Margin="0" VerticalAlignment="Stretch" Style="{StaticResource markDisabledRadioButton}" GroupName="PresentationStatus" ToolTip="{x:Static resx:Resource.vToolbarShowPresentation}"
 						 IsChecked="{Binding Source={x:Static local:Controller.PresentationManager}, Path=Status, Mode=OneWay, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static local:PresentationStatus.Show}}"
 						 Command="{x:Static local:CustomCommands.ShowPresentation}">
 				<Image Width="32" Height="32" HorizontalAlignment="Left" VerticalAlignment="Top" Source="/Words;component/Artwork/ShowPresentation.png"/>
 			</RadioButton>
 			<Separator/>
-			<Button Command="{x:Static local:CustomCommands.ShowSonglist}" ToolTip="Liederliste anzeigen">
+			<Button Command="{x:Static local:CustomCommands.ShowSonglist}" ToolTip="{x:Static resx:Resource.vToolbarShowSonglist}">
 				<Image Width="32" Height="32" Source="/Words;component/Artwork/Songlist.png" />
 			</Button>
-			<CheckBox ToolTip="Einen Hintergrund für alle Lieder verwenden" IsChecked="{Binding UsePortfolioBackground}">
+			<CheckBox ToolTip="{x:Static resx:Resource.vToolbarUsePortfolioBackground}" IsChecked="{Binding UsePortfolioBackground}">
 				<Image Width="32" Height="32" Source="/Words;component/Artwork/ChooseBackground.png" />
 			</CheckBox>
-			<CheckBox ToolTip="Liedakkorde bei der Präsentation anzeigen" IsChecked="{Binding SongPresentationShowChords}">
+			<CheckBox ToolTip="{x:Static resx:Resource.vToolbarShowChords}" IsChecked="{Binding SongPresentationShowChords}">
 				<Image Width="32" Height="32" Source="/Words;component/Artwork/ShowChords.png" />
 			</CheckBox>
 		</ToolBar>
@@ -161,7 +162,7 @@
 			</Grid.ColumnDefinitions>
 			<mediaOrderList:MediaOrderListBox x:Name="OrderListBox" Margin="0,26,0,0" BorderThickness="0"/>
 			<TextBlock x:Name="ContentHeader" Padding="5" VerticalAlignment="Top" Text="{Binding ElementName=OrderListBox,Path=ActiveItem.Data.Title}" Margin="0" Grid.Column="2" Background="{StaticResource HeaderGradientBrush}" Height="26"/>
-			<TextBlock Padding="5" Text="Vorschau" Grid.Row="2" Margin="0" Background="{StaticResource HeaderGradientBrush}" Height="26" VerticalAlignment="Top"/>
+			<TextBlock Padding="5" Text="{x:Static resx:Resource.vPanelPreview}" Grid.Row="2" Margin="0" Background="{StaticResource HeaderGradientBrush}" Height="26" VerticalAlignment="Top"/>
 			<Viewbox Margin="6,32,6,6" Grid.Row="2" x:Name="PreviewBox"/>
 			<GridSplitter HorizontalAlignment="Stretch" Grid.Row="1" VerticalAlignment="Stretch" Height="5" Background="#FFF0F0F0" BorderBrush="#FFE3E3E3" BorderThickness="0,1" Grid.ColumnSpan="2"/>
 			<GridSplitter Grid.Column="1" BorderBrush="#FFE3E3E3" Background="#FFF0F0F0" BorderThickness="1,0" Grid.RowSpan="3" HorizontalAlignment="Stretch" Margin="0" />
@@ -176,7 +177,7 @@
 						</Style.Triggers>
 					</Style>
 				</DockPanel.Resources>
-				<TextBlock Padding="5" Text="Reihenfolge" />
+				<TextBlock Padding="5" Text="{x:Static resx:Resource.vPanelOrder}" />
 				<Button Tag="Delete" HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="0,2" DockPanel.Dock="Right" Focusable="False" Click="OrderListButton_Click">
 					<Image Width="16" Height="16" Source="/Words;component/Artwork/Small_Delete.png" />
 				</Button>
