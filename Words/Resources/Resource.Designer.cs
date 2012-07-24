@@ -250,6 +250,78 @@ namespace Words.Resources {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Verzeichnisse ähnelt.
+        /// </summary>
+        public static string seHeaderDirectories {
+            get {
+                return ResourceManager.GetString("seHeaderDirectories", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Hintergründe: ähnelt.
+        /// </summary>
+        public static string seLabelBackgrounds {
+            get {
+                return ResourceManager.GetString("seLabelBackgrounds", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Template für neue Lieder: ähnelt.
+        /// </summary>
+        public static string seLabelNewSongTemplate {
+            get {
+                return ResourceManager.GetString("seLabelNewSongTemplate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Lieder: ähnelt.
+        /// </summary>
+        public static string seLabelSongs {
+            get {
+                return ResourceManager.GetString("seLabelSongs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Übergang zwischen Präsentationen: ähnelt.
+        /// </summary>
+        public static string seLabelTransitionPresentations {
+            get {
+                return ResourceManager.GetString("seLabelTransitionPresentations", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Übergang zwischen Liedfolien: ähnelt.
+        /// </summary>
+        public static string seLabelTransitionSlides {
+            get {
+                return ResourceManager.GetString("seLabelTransitionSlides", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Einstellungen ähnelt.
+        /// </summary>
+        public static string seTitle {
+            get {
+                return ResourceManager.GetString("seTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Achtung: Änderungen in diesem Bereich werden erst nach einem Neustart gültig. ähnelt.
+        /// </summary>
+        public static string seWarningRelaunch {
+            get {
+                return ResourceManager.GetString("seWarningRelaunch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Lied hinzufügen ähnelt.
         /// </summary>
         public static string slAddSong {

@@ -351,4 +351,28 @@
   <data name="vToolbarUsePortfolioBackground" xml:space="preserve">
     <value>Einen Hintergrund für alle Lieder verwenden</value>
   </data>
+  <data name="seHeaderDirectories" xml:space="preserve">
+    <value>Verzeichnisse</value>
+  </data>
+  <data name="seLabelBackgrounds" xml:space="preserve">
+    <value>Hintergründe:</value>
+  </data>
+  <data name="seLabelNewSongTemplate" xml:space="preserve">
+    <value>Template für neue Lieder:</value>
+  </data>
+  <data name="seLabelSongs" xml:space="preserve">
+    <value>Lieder:</value>
+  </data>
+  <data name="seLabelTransitionPresentations" xml:space="preserve">
+    <value>Übergang zwischen Präsentationen:</value>
+  </data>
+  <data name="seLabelTransitionSlides" xml:space="preserve">
+    <value>Übergang zwischen Liedfolien:</value>
+  </data>
+  <data name="seTitle" xml:space="preserve">
+    <value>Einstellungen</value>
+  </data>
+  <data name="seWarningRelaunch" xml:space="preserve">
+    <value>Achtung: Änderungen in diesem Bereich werden erst nach einem Neustart gültig.</value>
+  </data>
 </root>

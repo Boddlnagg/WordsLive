@@ -351,4 +351,28 @@
   <data name="vToolbarUsePortfolioBackground" xml:space="preserve">
     <value>Use single background for all songs</value>
   </data>
+  <data name="seHeaderDirectories" xml:space="preserve">
+    <value>Directories</value>
+  </data>
+  <data name="seLabelBackgrounds" xml:space="preserve">
+    <value>Backgrounds:</value>
+  </data>
+  <data name="seLabelNewSongTemplate" xml:space="preserve">
+    <value>Template for new songs:</value>
+  </data>
+  <data name="seLabelSongs" xml:space="preserve">
+    <value>Songs:</value>
+  </data>
+  <data name="seLabelTransitionPresentations" xml:space="preserve">
+    <value>Transition between presentations:</value>
+  </data>
+  <data name="seLabelTransitionSlides" xml:space="preserve">
+    <value>Transition between song slides:</value>
+  </data>
+  <data name="seTitle" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="seWarningRelaunch" xml:space="preserve">
+    <value>Warning: Changes in this area take effect only after restarting Words.</value>
+  </data>
 </root>
