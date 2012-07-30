@@ -19,8 +19,10 @@ namespace Words.Songs
 		private SongDisplayController controller;
 		private Image frontImage;
 		private Image backImage;
-		private BaseMediaControl videoBackground;
 		private Storyboard storyboard;
+		private BaseMediaControl videoBackground;
+		private System.Windows.Shapes.Rectangle videoBackgroundClone;
+		private ImageSource nextBackground = null;
 
 		private int currentSlideIndex;
 		public int CurrentSlideIndex
@@ -44,39 +46,55 @@ namespace Words.Songs
 			if (song == null)
 				throw new ArgumentNullException("song");
 
+			string video = null; // @"C:\Users\Patrick\Documents\Visual Studio 2010\Projects\Words\bin\Debug\Test\Kerze.mp4";
+
 			this.song = song;
 
-			base.Load(false);
+			base.Load(false, true);
 
-			frontImage = new Image { Stretch = Stretch.Fill };
-			backImage = new Image { Stretch = Stretch.Fill };
-
-			DoubleAnimation ani = new DoubleAnimation { From = 0.0, To = 1.0};
+			DoubleAnimation ani = new DoubleAnimation { From = 0.0, To = 1.0 };
 			storyboard = new Storyboard();
 			storyboard.Children.Add(ani);
-			Storyboard.SetTarget(ani, frontImage);
+			Storyboard.SetTarget(ani, Control.ForegroundGrid);
 			Storyboard.SetTargetProperty(ani, new PropertyPath(Image.OpacityProperty));
 
-			this.BackgroundGrid.Children.Add(backImage);
-			this.BackgroundGrid.Children.Add(frontImage);
+			if (video == null)
+			{
+				frontImage = new Image { Stretch = Stretch.Fill };
+				backImage = new Image { Stretch = Stretch.Fill };
+
+				this.Control.BackgroundGrid.Children.Add(backImage);
+				this.Control.ForegroundGrid.Children.Add(frontImage);
+			}
+			else
+			{
+				videoBackground = new AudioVideo.WpfWrapper(); // TODO: use VlcWrapper (configurable)
+				
+				videoBackground.Autoplay = true;
+				videoBackground.Loop = true;
+				videoBackground.Load(video);
+
+				var brush = new System.Windows.Media.VisualBrush(videoBackground);
+				videoBackgroundClone = new System.Windows.Shapes.Rectangle();
+				videoBackgroundClone.Fill = brush;
+
+				this.Control.ForegroundGrid.Children.Add(videoBackground);
+				this.Control.BackgroundGrid.Children.Add(videoBackgroundClone);
+			}
 			
-			/*
-			videoBackground = new AudioVideo.VlcWrapper();
-			this.BackgroundGrid.Children.Add(videoBackground);
-			videoBackground.Autoplay = true;
-			videoBackground.Loop = true;
-			videoBackground.Load(@"C:\Users\Patrick\Documents\Visual Studio 2010\Projects\Words\bin\Debug\Test\Kerze.mp4");
-			*/
 
 			this.IsTransparent = true;
 
-			this.Control.LoadCompleted += (sender, args) =>
+			controller = new SongDisplayController(Control.Web);
+
+			this.Control.Web.LoadCompleted += (sender, args) =>
 			{
 				controller.UpdateCss(this.song, this.Area.WindowSize.Width);
 				controller.PreloadImages(from bg in this.song.Backgrounds where bg.IsImage select Path.Combine(MediaManager.BackgroundsDirectory, bg.ImagePath));
 			};
 
-			controller = new SongDisplayController(Control);
+			Control.Web.IsDirtyChanged += new EventHandler(web_IsDirtyChanged);
+
 			controller.ShowChords = showChords;
 
 			this.Area.WindowSizeChanged += OnWindowSizeChanged;
@@ -85,11 +103,19 @@ namespace Words.Songs
 
 			controller.ImagesLoaded += OnFinishedLoading;
 
-			this.Control.JSConsoleMessageAdded += (obj, target) => {
+			this.Control.Web.JSConsoleMessageAdded += (obj, target) =>
+			{
 			    System.Windows.MessageBox.Show("JS error in line "+target.LineNumber+": "+target.Message);
 			};
 
-			this.Control.LoadFile("song.html");
+			this.Control.Web.LoadFile("song.html");
+		}
+
+		void web_IsDirtyChanged(object sender, EventArgs e)
+		{
+			Control.RenderWebView();
+			if (!Control.Web.IsDirty)
+				UpdateSlide();
 		}
 
 		private void OnWindowSizeChanged(object sender, EventArgs args)
@@ -130,7 +156,11 @@ namespace Words.Songs
 
 			var slide = FindSlideByIndex(index);
 
-			controller.GotoSlide(song, slide, showSource, showCopyright, update ? 0 : Properties.Settings.Default.SongSlideTransition, update);
+			//controller.GotoSlide(song, slide, showSource, showCopyright, /*update ? 0 : Properties.Settings.Default.SongSlideTransition*/ 0, update);
+			//controller.UpdateSlideWithCallback(song, slide, showSource, showCopyright, UpdateForeground);
+			controller.UpdateSlide(song, slide, false);
+			controller.ShowSource(showSource);
+			controller.ShowCopyright(showCopyright);
 
 			if (videoBackground == null) // only change backgrounds if we're not using a video background
 			{
@@ -141,18 +171,21 @@ namespace Words.Songs
 				else
 					bg = song.Backgrounds[song.FirstSlide != null ? song.FirstSlide.BackgroundIndex : 0];
 
-				ChangeBackground(bg);
+				nextBackground = SongBackgroundToImageSourceConverter.CreateBackgroundSource(bg);
 			}
 		}
 
-		private void ChangeBackground(SongBackground bg)
+		private void UpdateSlide()
 		{
-			//controller.ChangeBackground(bg, Properties.Settings.Default.SongSlideTransition);
-
-			backImage.Source = frontImage.Source;
-			frontImage.Source = SongBackgroundToImageSourceConverter.CreateBackgroundSource(bg);
+			Control.UpdateForeground();
+			if (nextBackground != null)
+			{
+				backImage.Source = frontImage.Source;
+				frontImage.Source = nextBackground;
+				nextBackground = null;
+			}
 			storyboard.Children[0].Duration = new TimeSpan(0, 0, 0, 0, Properties.Settings.Default.SongSlideTransition);
-			storyboard.Begin(this.BackgroundGrid);
+			storyboard.Begin(this.Control.BackgroundGrid);
 		}
 
 		private SongSlide FindSlideByIndex(int index)

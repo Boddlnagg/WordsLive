@@ -43,8 +43,8 @@ namespace Words
 
 		private void goButton_Click(object sender, RoutedEventArgs e)
 		{
-			presentation.Control.LoadURL(urlTextBox.Text);
-			presentation.Control.BeginLoading += (s, args) => this.urlTextBox.Text = args.Url;
+			presentation.Control.Web.LoadURL(urlTextBox.Text);
+			presentation.Control.Web.BeginLoading += (s, args) => this.urlTextBox.Text = args.Url;
 			Controller.PresentationManager.CurrentPresentation = presentation;
 		}
 

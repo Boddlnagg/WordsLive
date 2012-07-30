@@ -14,31 +14,18 @@ namespace Words
 	{
 		Window win;
 
-		public new WebControl Control
+		public void Load(bool enableInput, bool manualUpdate = false)
 		{
-			get
-			{
-				return base.Control.Web;
-			}
-		}
+			if (!manualUpdate)
+				this.Control.Load(false, null);
+			else
+				this.Control.Load(true, this.Area);
 
-		public Grid BackgroundGrid
-		{
-			get
-			{
-				return base.Control.BackgroundGrid;
-			}
-		}
-
-		public void Load(bool enableInput)
-		{
-			AwesomiumManager.Register(this.Control);
-
-			this.Control.OpenExternalLink += OnOpenExternalLink;
-			this.Control.Crashed += OnWebviewCrashed;
+			this.Control.Web.OpenExternalLink += OnOpenExternalLink;
+			this.Control.Web.Crashed += OnWebviewCrashed;
 
 			if (!enableInput)
-				this.Control.DeferInput(); // TODO: is this the only possible solution to disable input?
+				this.Control.Web.DeferInput(); // TODO: is this the only possible solution to disable input?
 
 			win = new Window();
 			win.Width = this.Area.WindowSize.Width;
@@ -70,7 +57,7 @@ namespace Words
 			// no support for multiple browser instances/tabs/windows, so open external links in the same window
 			if (e.Url.Length > 0)
 			{
-				this.Control.LoadURL(e.Url);
+				this.Control.Web.LoadURL(e.Url);
 			}
 		}
 
@@ -90,19 +77,19 @@ namespace Words
 			{
 				win.Dispatcher.Invoke(new Action(() => win.Close()));
 			}
-			AwesomiumManager.Close(this.Control);
+			AwesomiumManager.Close(this.Control.Web);
 		}
 
 		public bool IsTransparent
 		{
 			get
 			{
-				return this.Control.IsTransparent;
+				return this.Control.Web.IsTransparent;
 			}
 			set
 			{
-				this.Control.FlushAlpha = !value;
-				this.Control.IsTransparent = value;
+				this.Control.Web.FlushAlpha = !value;
+				this.Control.Web.IsTransparent = value;
 			}
 		}
 	}

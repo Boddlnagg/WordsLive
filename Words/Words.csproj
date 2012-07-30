@@ -56,8 +56,12 @@
     <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Awesomium.Core, Version=1.6.6.0, Culture=neutral, PublicKeyToken=e1a0d7c8071a5214, processorArchitecture=x86" />
-    <Reference Include="Awesomium.Windows.Controls, Version=1.6.6.0, Culture=neutral, PublicKeyToken=7a34e179b8b61c39, processorArchitecture=x86" />
+    <Reference Include="Awesomium.Core, Version=1.6.6.0, Culture=neutral, PublicKeyToken=e1a0d7c8071a5214, processorArchitecture=x86">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Awesomium.Windows.Controls, Version=1.6.6.0, Culture=neutral, PublicKeyToken=7a34e179b8b61c39, processorArchitecture=x86">
+      <Private>True</Private>
+    </Reference>
     <Reference Include="MonitoredUndo">
       <HintPath>..\3rdParty\MonitoredUndo.dll</HintPath>
     </Reference>
@@ -160,9 +164,6 @@
     </Compile>
     <Compile Include="AwesomiumManager.cs" />
     <Compile Include="AwesomiumPresentation.cs" />
-    <Compile Include="AwesomiumWrapper.xaml.cs">
-      <DependentUpon>AwesomiumWrapper.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Editor\ChooseFontControl.xaml.cs">
       <DependentUpon>ChooseFontControl.xaml</DependentUpon>
     </Compile>
@@ -174,6 +175,9 @@
     </Compile>
     <Compile Include="Editor\SongSettingsWindow.xaml.cs">
       <DependentUpon>SongSettingsWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="AwesomiumWrapper.xaml.cs">
+      <DependentUpon>AwesomiumWrapper.xaml</DependentUpon>
     </Compile>
     <Compile Include="Resources\Resource.en.Designer.cs">
       <DependentUpon>Resource.en.resx</DependentUpon>
@@ -294,10 +298,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="AwesomiumWrapper.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Editor\ChooseBackgroundWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -333,6 +333,10 @@
     <Page Include="Editor\SongSettingsWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="AwesomiumWrapper.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="UnhandledExceptionWindow.xaml">
       <SubType>Designer</SubType>

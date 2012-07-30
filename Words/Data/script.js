@@ -51,40 +51,6 @@ function changeBackground(bg, fadeTime) {
     });
 }
 
-function gotoSlide(html, source, copyright, fadeTime) {
-    if (html != null) {
-        if (inAnimation) {
-            $("#next").remove();
-        }
-
-        inAnimation = true;
-
-        $("#current").after('<div id="next" style="display:none">' + html + '</div>');
-        $("#next").fadeIn(fadeTime, 'linear');
-        $("#current").delay(fadeTime / 4).fadeOut(fadeTime * 3/4, 'linear', function () {
-            $("#current").remove();
-            $("#next").attr("id", "current");
-            inAnimation = false;
-        });
-    }
-
-    if (source && !sourceActive) {
-        $("#source").fadeIn(fadeTime);
-    }
-    else if (sourceActive && !source) {
-        $("#source").fadeOut(fadeTime);
-    }
-    sourceActive = source;
-
-    if (copyright && !copyrightActive) {
-        $("#copyright").fadeIn(fadeTime);
-    }
-    else if (copyrightActive && !copyright) {
-        $("#copyright").fadeOut(fadeTime);
-    }
-    copyrightActive = copyright;
-}
-
 function updateCss(css) {
     $().ready(function () {
         $("#style").html(css);

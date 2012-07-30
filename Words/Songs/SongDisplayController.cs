@@ -7,14 +7,13 @@ using System.IO;
 using Words.Core.Songs;
 using System.Globalization;
 using Words.Core;
-using Awesomium.Windows.Controls;
+using Awesomium.Core;
 
 namespace Words.Songs
 {
 	public class SongDisplayController
 	{
-		private WebControl control;
-		private SongSlide lastSlide;
+		private IWebViewJavaScript control;
 		private SongBackground lastBackground;
 
 		private readonly string clsBack = "back";
@@ -30,7 +29,7 @@ namespace Words.Songs
 		const double mgFactor = 1.3;
 		const double lhFactor = 1.28;
 
-		public SongDisplayController(WebControl control)
+		public SongDisplayController(IWebViewJavaScript control)
 		{
 			this.control = control;
 
@@ -85,21 +84,6 @@ namespace Words.Songs
 			control.ExecuteJavascript("showCopyright(" + show.ToString().ToLower() + ")");
 		}
 
-		public void GotoSlide(Song song, SongSlide slide, bool showSource, bool showCopyright, int fadeTime, bool update = false)
-		{
-			string param;
-			if (slide != lastSlide || update)
-			{
-				lastSlide = slide;
-				param = PrepareJavascriptString(HtmlToString(GenerateSlideHtml(song, slide)));
-			}
-			else
-			{
-				param = "null";
-			}
-			control.ExecuteJavascript("gotoSlide(" + param + ", " + showSource.ToString().ToLower() + ", " + showCopyright.ToString().ToLower() + ", " + fadeTime + ")");
-		}
-
 		public void ChangeBackground(SongBackground bg, int fadeTime)
 		{
 			if (bg != lastBackground)
@@ -126,28 +110,31 @@ namespace Words.Songs
 			}
 		}
 
-		public void UpdateSlide(Song song, SongSlide slide)
+		public void UpdateSlide(Song song, SongSlide slide, bool updateBackground = true)
 		{
 			control.ExecuteJavascript("updateSlide(" + PrepareJavascriptString(HtmlToString(GenerateSlideHtml(song, slide))) + ")");
 
-			SongBackground bg;
+			if (updateBackground)
+			{
+				SongBackground bg;
 
-			if (slide != null)
-				bg = song.Backgrounds[slide.BackgroundIndex];
-			else
-				bg = song.Backgrounds[song.FirstSlide != null ? song.FirstSlide.BackgroundIndex : 0];
+				if (slide != null)
+					bg = song.Backgrounds[slide.BackgroundIndex];
+				else
+					bg = song.Backgrounds[song.FirstSlide != null ? song.FirstSlide.BackgroundIndex : 0];
 
-			ChangeBackground(bg, 0);
+				ChangeBackground(bg, 0);
+			}
 		}
 
 		private static string HtmlToString(IEnumerable<XElement> elements)
 		{
-			string res = "";
+			StringBuilder sb = new StringBuilder();
 			foreach (XElement e in elements)
 			{
-				res += e.ToString();
+				sb.Append(e.ToString());
 			}
-			return res;
+			return sb.ToString();
 		}
 
 		private IEnumerable<XElement> GenerateSourceHtml(SongSource source)

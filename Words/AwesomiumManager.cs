@@ -9,7 +9,7 @@ namespace Words
 {
 	public class AwesomiumManager
 	{
-		private static List<WebControl> controls = new List<WebControl>();
+		private static List<IWebView> controls = new List<IWebView>();
 		private static bool initialized = false;
 
 		public static void Init()
@@ -57,12 +57,12 @@ namespace Words
 			}
 		}
 
-		public static void Register(WebControl web)
+		public static void Register(IWebView web)
 		{
 			controls.Add(web);
 		}
 
-		public static void Close(WebControl web)
+		public static void Close(IWebView web)
 		{
 			controls.Remove(web);
 			web.Close();
