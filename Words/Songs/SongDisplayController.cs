@@ -149,7 +149,7 @@ namespace Words.Songs
 		{
 			var elements = from line in copyright.Split('\n') select new XElement("span", line.Replace(" ", " "));
 			XElement copyrightInner = new XElement("div", new XAttribute("class", clsCopyright), elements.Count() > 0 ? (object)elements : String.Empty);
-
+				
 			yield return new XElement("div", new XAttribute("class", clsBack), copyrightInner);
 			yield return new XElement("div", new XAttribute("class", clsFront), copyrightInner);
 		}
@@ -173,7 +173,6 @@ namespace Words.Songs
 
 		private IEnumerable<XElement> GenerateSlideHtml(Song song, SongSlide slide)
 		{
-			// TODO (Words - song formatting): don't create both layers when outline/stroke is disabled
 			XElement inner = null;
 
 			if (slide != null)
@@ -220,8 +219,11 @@ namespace Words.Songs
 				}
 			}
 
-			yield return new XElement("div", new XAttribute("class", clsBack),
-				new XElement("div", new XAttribute("class", clsMain), (object)inner ?? String.Empty));
+			if (song.Formatting.IsOutlineEnabled || song.Formatting.IsShadowEnabled)
+			{
+				yield return new XElement("div", new XAttribute("class", clsBack),
+					new XElement("div", new XAttribute("class", clsMain), (object)inner ?? String.Empty));
+			}
 			yield return new XElement("div", new XAttribute("class", clsFront),
 				new XElement("div", new XAttribute("class", clsMain), (object)inner ?? String.Empty));
 		}
@@ -294,16 +296,18 @@ namespace Words.Songs
 
 		private string GenerateCss(Song song, int width)
 		{
-			// TODO (Words - song formatting): adjust stroke and shadow according to font size
-
+			// TODO (Words - song formatting): use Powerpraise's song settings for stroke and shadow size?
 			SongFormatting formatting = song.Formatting;
 
 			if (song.HasTranslation && formatting.TranslationPosition == TranslationPosition.Block)
 				throw new NotImplementedException("Translation block positioning is not yet supported"); // TODO (Words - song formatting): support translation block positioning
 
 			factor = (double)width / 1024;
+			double strokeFactor = 0.1; // factor used for stroke and shadow
 
 			string fsText = "font-size: " + MakeCssValue(formatting.MainText.Size * fontFactor * factor, "pt") + ";";
+			string strokeText = MakeCssValue(formatting.MainText.Size * fontFactor * factor * strokeFactor, "px");
+
 
 			string lhText = GetLineHeight(song);
 
@@ -370,6 +374,7 @@ namespace Words.Songs
 			{
 				string fsTrans = "font-size: " + MakeCssValue(formatting.TranslationText.Size * fontFactor * factor, "pt") + ";";
 				string lhTrans = "height: " + MakeCssValue((formatting.TextLineSpacing + formatting.TranslationText.Size) * lhFactor * factor, "px") + ";";
+				string strokeTrans = MakeCssValue(formatting.TranslationText.Size * fontFactor * factor * strokeFactor, "px");
 
 				string transFont = "font-family: " + formatting.TranslationText.Name + ";";
 				string transWeight = formatting.TranslationText.Bold ? "font-weight: bold;" : "font-weight: normal;";
@@ -380,13 +385,16 @@ namespace Words.Songs
 				transString = "."+clsMain+" span."+clsTrans+" { " + transFont + transWeight + transFontStyle + transColor + fsTrans + lhTrans + " }";
 				transString += @"
  ."+clsBack+" ."+clsTrans+@" {
-	-webkit-text-stroke: 1px " + outlineColor + @";
-	text-stroke: 1px " + outlineColor + @";
-	text-shadow: " + shadowColor + @" 2px 2px 2px;
+" + (formatting.IsOutlineEnabled ?
+	("-webkit-text-stroke: " + strokeTrans + " " + outlineColor + @";
+	text-stroke: " + strokeTrans + " " + outlineColor):"") + @";
+" + (formatting.IsShadowEnabled ?
+  ("text-shadow: " + shadowColor + " "+strokeTrans+" "+strokeTrans+" "+strokeTrans):"") + @";
  }";
 			}
 
 			string fsSource = "font-size: " + MakeCssValue(formatting.SourceText.Size * fontFactor * factor, "pt") + ";";
+			string strokeSource = MakeCssValue(formatting.SourceText.Size * fontFactor * factor * strokeFactor, "px");
 			string mgSourceTop = "top: " + MakeCssValue(formatting.SourceBorderTop * mgFactor * factor, "px") + ";";
 			string mgSourceRight = "right: " + MakeCssValue(formatting.SourceBorderRight * mgFactor * factor, "px") + ";";
 
@@ -395,6 +403,7 @@ namespace Words.Songs
 			string sourceColor = "color: " + MakeCssColor(formatting.SourceText.Color) + ";";
 
 			string fsCopy = "font-size: " + MakeCssValue(formatting.CopyrightText.Size * fontFactor * factor, "pt") + ";";
+			string strokeCopy = MakeCssValue(formatting.CopyrightText.Size * fontFactor * factor * strokeFactor, "px");
 			//string lhCopy = "height: "+MakeCssValue(formatting.CopyrightText.Size * fontFactor * factor * lhFactor, "px")+";";
 			string mgCopyBottom = "bottom: " + MakeCssValue((formatting.CopyrightBorderBottom + 2) * mgFactor * factor, "px") + ";";
 
@@ -457,21 +466,27 @@ overflow: hidden;
 }
   
 	."+clsBack+" ."+clsMain+@" {
- -webkit-text-stroke: 2px " + outlineColor + @";
- text-stroke: 2px " + outlineColor + @";
- text-shadow: " + shadowColor + @" 2px 2px 2px;
+" + (formatting.IsOutlineEnabled ?
+ ("-webkit-text-stroke: "+strokeText+" " + outlineColor + @";
+ text-stroke: "+strokeText+" " + outlineColor): "") + @";
+" + (formatting.IsShadowEnabled ?
+  ("text-shadow: " + shadowColor + " "+strokeText+" "+strokeText+" "+strokeText):"") + @";
 }
   
   ."+clsBack+" ."+clsSource+@" {
- -webkit-text-stroke: 1.5px " + outlineColor + @";
- text-stroke: 1.5px " + outlineColor + @";
- text-shadow: " + shadowColor + @" 2px 2px 2px;
+ " + (formatting.IsOutlineEnabled ?
+   ("-webkit-text-stroke: "+strokeSource+" " + outlineColor + @";
+ text-stroke: "+strokeSource+" " + outlineColor): "") + @";
+ " + (formatting.IsShadowEnabled ?
+   ("text-shadow: " + shadowColor + " "+strokeSource+" "+strokeSource+" "+strokeSource) : "") + @";
   }
 
 ."+clsBack+" ."+clsCopyright+@" {
- -webkit-text-stroke: 1.1px " + outlineColor + @";
- text-stroke: 1.1px " + outlineColor + @";
- text-shadow: " + shadowColor + @" 2px 2px 2px;
+" + (formatting.IsOutlineEnabled ?
+ ("-webkit-text-stroke: "+strokeCopy+" " + outlineColor + @";
+ text-stroke: "+strokeCopy+" " + outlineColor): "") + @";
+" + (formatting.IsShadowEnabled ?
+  ("text-shadow: " + shadowColor + " "+strokeCopy+" "+strokeCopy+" "+strokeCopy) : "") + @";
 }";
 			//using (StreamWriter sw = new StreamWriter("output.css"))
 			//	sw.WriteLine(result);

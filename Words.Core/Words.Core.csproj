@@ -42,6 +42,9 @@
     <CheckForOverflowUnderflow>False</CheckForOverflowUnderflow>
     <DefineConstants>TRACE</DefineConstants>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
   <ItemGroup>
     <Reference Include="System" />
@@ -66,6 +69,7 @@
     <Compile Include="Songs\Chords\ChordSymbol.cs" />
     <Compile Include="Songs\Chords\Key.cs" />
     <Compile Include="Songs\Chords\Note.cs" />
+    <Compile Include="Songs\HtmlExport.cs" />
     <Compile Include="Songs\Song.cs" />
     <Compile Include="Songs\SongBackground.cs" />
     <Compile Include="Songs\SongFormatting.cs" />

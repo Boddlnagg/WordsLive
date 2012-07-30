@@ -534,9 +534,18 @@ namespace Words
 		{
 			var setting = Controller.PresentationAreaSettings.First(s => s.IsAvailable);
 			Controller.PresentationManager.Area.ScreenIndex = (int)setting.ScreenIndex;
-			Controller.PresentationManager.Area.Fullscreen = setting.Fullscreen;
+			if (Controller.PresentationManager.Area.Fullscreen)
+			{
+				Controller.PresentationManager.Area.Size = new System.Drawing.Size(setting.Width, setting.Height);
+				Controller.PresentationManager.Area.Fullscreen = setting.Fullscreen;
+			}
+			else
+			{
+				Controller.PresentationManager.Area.Fullscreen = setting.Fullscreen;
+				Controller.PresentationManager.Area.Size = new System.Drawing.Size(setting.Width, setting.Height);
+			}
 			Controller.PresentationManager.Area.Offset = new System.Drawing.Point(setting.Left, setting.Top);
-			Controller.PresentationManager.Area.Size = new System.Drawing.Size(setting.Width, setting.Height);
+			
 		}
 
 		public bool SongPresentationShowChords

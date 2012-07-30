@@ -41,7 +41,7 @@ namespace Words
 
 		private void updateButton_Click(object sender, RoutedEventArgs e)
 		{
-			OnPropertyChanged("IsSecondaryScreenAvailable"); // TODO (Words): testen, wenn ein zweiter Bildschirm zur Verfügung steht
+			OnPropertyChanged("IsSecondaryScreenAvailable"); // TODO (Words): Dieses Feature testen, wenn ein zweiter Bildschirm zur Verfügung steht
 
 			foreach (var setting in settings)
 				setting.Update();

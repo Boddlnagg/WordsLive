@@ -24,7 +24,8 @@ namespace Words
 			this.Control.Web.OpenExternalLink += OnOpenExternalLink;
 			this.Control.Web.Crashed += OnWebviewCrashed;
 
-			if (!enableInput)
+			// we only need to disable input, when manual updates are disabled
+			if (!enableInput && !manualUpdate)
 				this.Control.Web.DeferInput(); // TODO: is this the only possible solution to disable input?
 
 			win = new Window();
