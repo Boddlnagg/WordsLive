@@ -15,8 +15,8 @@ namespace Words.Songs
 	{
 		private CollectionViewSource cvs;
 		private Song song;
-		private List<string> partAccessKeys = new List<string>();
-		private Dictionary<string, string> partAccessNames = new Dictionary<string, string>();
+		private Dictionary<string, string> partAccessKeys = new Dictionary<string, string>();
+		private Dictionary<string, int> partAccessIndices = new Dictionary<string, int>();
 
 		public SongSlide SelectedSlide
 		{
@@ -53,37 +53,37 @@ namespace Words.Songs
 		private void GeneratePartAccessKeys()
 		{
 			partAccessKeys.Clear();
-			partAccessNames.Clear();
+			partAccessIndices.Clear();
 
 			foreach (var partName in song.Order)
 			{
 				string accessKey;
-				string accessName;
+				int accessIndex;
 
-				if (!partAccessNames.ContainsKey(partName))
+				if (!partAccessIndices.ContainsKey(partName))
 				{
 					var match = Regex.Match(partName, @"^[^\d]*(\d)[^\d]*$");
 					if (match != Match.Empty)
 					{
 						var keyIndex = match.Groups[1].Index + match.Groups[1].Length - 1;
-						accessName = partName.Insert(keyIndex, "_");
-						accessKey = partName.Substring(keyIndex, 1);
+						accessIndex = keyIndex;
+						accessKey = partName.Substring(keyIndex, 1).ToUpper();
 					}
 					else
 					{
 						// use first letter
-						accessName = "_" + partName;
-						accessKey = partName[0].ToString();
+						accessIndex = 0;
+						accessKey = partName[0].ToString().ToUpper();
 					}
 
-					if (!partAccessKeys.Contains(accessKey))
+					if (!partAccessKeys.ContainsKey(accessKey))
 					{
-						partAccessKeys.Add(accessKey);
-						partAccessNames.Add(partName, accessName);
+						partAccessKeys.Add(accessKey, partName);
+						partAccessIndices.Add(partName, accessIndex);
 					}
 					else
 					{
-						partAccessNames.Add(partName, partName); // no access key possible
+						partAccessIndices.Add(partName, -1); // no access key possible
 					}
 				}
 			}
@@ -101,7 +101,9 @@ namespace Words.Songs
 				Background = SongBackgroundToImageSourceConverter.CreateBackgroundSource(song.Backgrounds[song.FirstSlide != null ? song.FirstSlide.BackgroundIndex : 0]),
 				PartIndex = partIndex++,
 				PartName = "",
-				AccessName = "",
+				PreAccessName = "",
+				AccessKey = "",
+				PostAccessName = "",
 				SlideIndex = 0,
 				OrderPosition = orderPosition++
 			});
@@ -110,6 +112,23 @@ namespace Words.Songs
 				int slideIndex = 0;
 				foreach (var s in (from p in this.song.Parts where p.Name == partName select p).Single().Slides)
 				{
+					var accIndex = partAccessIndices[partName];
+					string pre;
+					string acc;
+					string post;
+					if (accIndex >= 0)
+					{
+						pre = partName.Substring(0, partAccessIndices[partName]);
+						acc = partName[partAccessIndices[partName]].ToString();
+						post = partName.Substring(partAccessIndices[partName] + 1);
+					}
+					else
+					{
+						pre = partName;
+						acc = "";
+						post = "";
+					}
+
 					parts.Add(new SongSlideContainer
 					{
 						Text = s.TextWithoutChords,
@@ -117,7 +136,9 @@ namespace Words.Songs
 						Background = SongBackgroundToImageSourceConverter.CreateBackgroundSource(song.Backgrounds[s.BackgroundIndex]),
 						PartIndex = partIndex,
 						PartName = partName,
-						AccessName = partAccessNames[partName],
+						PreAccessName = pre,
+						AccessKey = acc,
+						PostAccessName = post,
 						SlideIndex = slideIndex++,
 						OrderPosition = orderPosition++
 					});
@@ -132,7 +153,9 @@ namespace Words.Songs
 				Background = SongBackgroundToImageSourceConverter.CreateBackgroundSource(song.Backgrounds[song.LastSlide != null ? song.LastSlide.BackgroundIndex : 0]),
 				PartIndex = partIndex++,
 				PartName = "",
-				AccessName = "",
+				PreAccessName = "",
+				AccessKey = "",
+				PostAccessName = "",
 				SlideIndex = 0,
 				OrderPosition = orderPosition++
 			});
@@ -146,39 +169,33 @@ namespace Words.Songs
 			public ImageSource Background { get; set; }
 			public int PartIndex { get; set; }
 			public string PartName { get; set; }
-			public string AccessName { get; set; }
+			public string PreAccessName { get; set; }
+			public string AccessKey { get; set; }
+			public string PostAccessName { get; set; }
 			public int SlideIndex { get; set; }
 			public int OrderPosition { get; set; } // this is needed so every slide will be unique
 		}
 
-		private bool sameKeyEvent;
-		private bool? lastKeyEvent;
-
-		private void Part_AccessKeyPressed(object sender, System.Windows.Input.AccessKeyPressedEventArgs e)
+		protected override void OnKeyUp(System.Windows.Input.KeyEventArgs e)
 		{
-			// TODO: This is buggy and therefore disabled
-
-			/*if (!partAccessKeys.Contains(e.Key))
+			string part;
+			if (partAccessKeys.ContainsKey(e.Key.ToString()))
+				part = partAccessKeys[e.Key.ToString()];
+			else if (partAccessKeys.ContainsKey(e.Key.ToString().Replace("NumPad", "")))
+				part = partAccessKeys[e.Key.ToString().Replace("NumPad", "")];
+			else if (e.Key.ToString().Length > 1 && partAccessKeys.ContainsKey(e.Key.ToString().Substring(1)))
+				part = partAccessKeys[e.Key.ToString().Substring(1)];
+			else
 				return;
 
 			e.Handled = true;
 
-			if (lastKeyEvent.HasValue && lastKeyEvent.Value == sameKeyEvent)
-				return;
-
-			lastKeyEvent = sameKeyEvent;
-
-			var cvg = (sender as FrameworkElement).DataContext as CollectionViewGroup;
-
-			if (cvg == null)
-				return;
-
-			var selectedPartName = (cvg.Items[0] as SongSlideContainer).PartName;
-
-			var selectedContainer = FindNextItemWithPartName(selectedPartName);
+			var selectedContainer = FindNextItemWithPartName(part);
 
 			this.SelectedItem = selectedContainer;
-			this.ScrollIntoView(selectedContainer);*/
+			this.ScrollIntoView(selectedContainer);
+
+			base.OnKeyUp(e);
 		}
 
 		private SongSlideContainer FindNextItemWithPartName(string name)
@@ -196,14 +213,6 @@ namespace Words.Songs
 			}
 
 			throw new ArgumentException("Part with name \"" + name + "\" does not exist");
-		}
-
-		protected override void OnPreviewKeyDown(System.Windows.Input.KeyEventArgs e)
-		{
-			sameKeyEvent = !sameKeyEvent;
-			lastKeyEvent = null;
-
-			base.OnPreviewKeyDown(e);
 		}
 	}
 }

@@ -18,9 +18,9 @@
 			<Setter Property="Template">
 				<Setter.Value>
 					<ControlTemplate>
-						<DockPanel AccessKeyManager.AccessKeyPressed="Part_AccessKeyPressed" Margin="0,1" Background="White">
+						<DockPanel Margin="0,1" Background="White">
 							<TextBlock DockPanel.Dock="Left" Name="caption" FontWeight="Bold" FontSize="13" Margin="2" Foreground="Gray" Width="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType={x:Type local:SongSlideListBox}}, Converter={StaticResource sameWidthConverter}, ConverterParameter=caption}" >
-								<AccessText Text="{Binding Path=Items[0].AccessName}"/>
+								<Run Text="{Binding Path=Items[0].PreAccessName}"/><Run TextDecorations="Underline" Text="{Binding Path=Items[0].AccessKey}"/><Run Text="{Binding Path=Items[0].PostAccessName}"/>
 							</TextBlock>
 							<ItemsPresenter DockPanel.Dock="Left" Margin="10,0,2,2" HorizontalAlignment="Stretch"/>
 						</DockPanel>
