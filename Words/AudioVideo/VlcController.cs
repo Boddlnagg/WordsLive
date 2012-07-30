@@ -14,7 +14,9 @@ namespace Words.AudioVideo
 		{
 			get
 			{
-				return Directory.Exists(VlcContext.LibVlcDllsPath);
+				// TODO: returns true if 64-bit VLC is installed,
+				// but this can't be used by 32-bit Words
+				return Directory.Exists(VlcContext.LibVlcDllsPath); 
 			}
 		}
 
@@ -23,7 +25,7 @@ namespace Words.AudioVideo
 		public static void Init()
 		{
 			if (!IsAvailable)
-				throw new InvalidOperationException("VLC is not available.");
+				throw new InvalidOperationException("VLC is not available (not installed).");
 
 			//Set libvlc.dll and libvlccore.dll directory path
 			//VlcContext.LibVlcDllsPath = CommonStrings.LIBVLC_DLLS_PATH_DEFAULT_VALUE_AMD64;
@@ -38,9 +40,18 @@ namespace Words.AudioVideo
 			//VlcContext.StartupOptions.LogOptions.ShowLoggerConsole = true;
 			VlcContext.StartupOptions.LogOptions.Verbosity = VlcLogVerbosities.Debug;
 			VlcContext.StartupOptions.AddOption("--no-osd");
+			VlcContext.LibVlcDllsPath = @"C:\Program Files\VideoLAN\VLC";
+			VlcContext.LibVlcPluginsPath = @"C:\Program Files\VideoLAN\VLC\plugins";
 
 			//Initialize the VlcContext
-			VlcContext.Initialize();
+			try
+			{
+				VlcContext.Initialize();
+			}
+			catch (FileNotFoundException)
+			{
+				throw new InvalidOperationException("VLC is not available (libvlc not found). Try installing the 32-bit version of VLC.");
+			}
 
 			IsInitialized = true;
 		}

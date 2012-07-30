@@ -31,14 +31,17 @@ namespace Words.Presentation.Wpf
 
 		public static void RemoveFromAeroPeek(IntPtr Hwnd)
 		{
-			bool enabled;
-			DwmIsCompositionEnabled(out enabled);
-			if (enabled)
+			if (Environment.OSVersion.Version.Major >= 6)
 			{
-				var status = Marshal.AllocHGlobal(sizeof(int));
-				Marshal.WriteInt32(status, 1); // true
-				DwmSetWindowAttribute(Hwnd, DwmWindowAttribute.ExcludedFromPeek, status, sizeof(int));
-				Marshal.FreeHGlobal(status);
+				bool enabled;
+				DwmIsCompositionEnabled(out enabled);
+				if (enabled)
+				{
+					var status = Marshal.AllocHGlobal(sizeof(int));
+					Marshal.WriteInt32(status, 1); // true
+					DwmSetWindowAttribute(Hwnd, DwmWindowAttribute.ExcludedFromPeek, status, sizeof(int));
+					Marshal.FreeHGlobal(status);
+				}
 			}
 		}
 	}

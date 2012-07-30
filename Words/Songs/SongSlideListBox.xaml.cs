@@ -156,7 +156,9 @@ namespace Words.Songs
 
 		private void Part_AccessKeyPressed(object sender, System.Windows.Input.AccessKeyPressedEventArgs e)
 		{
-			if (!partAccessKeys.Contains(e.Key))
+			// TODO: This is buggy and therefore disabled
+
+			/*if (!partAccessKeys.Contains(e.Key))
 				return;
 
 			e.Handled = true;
@@ -176,7 +178,7 @@ namespace Words.Songs
 			var selectedContainer = FindNextItemWithPartName(selectedPartName);
 
 			this.SelectedItem = selectedContainer;
-			this.ScrollIntoView(selectedContainer);
+			this.ScrollIntoView(selectedContainer);*/
 		}
 
 		private SongSlideContainer FindNextItemWithPartName(string name)
