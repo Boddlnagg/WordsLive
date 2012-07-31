@@ -18,7 +18,7 @@ namespace Words.Slideshow
 
             presentation.SlideIndexChanged += (sender, args) =>
             {
-                image.Dispatcher.Invoke(new Action(() => { image.Source = presentation.Thumbnails[presentation.SlideIndex]; }));
+                image.Dispatcher.Invoke(new Action(() => { image.Source = presentation.Thumbnails[presentation.SlideIndex].Image; }));
             };
         }
 

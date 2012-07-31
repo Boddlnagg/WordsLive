@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using PowerpointViewerLib;
 using Words.Presentation;
@@ -10,19 +9,28 @@ namespace Words.Slideshow.Powerpoint
 {
 	public class PowerpointViewerPresentation : SlideshowPresentationBase
 	{
-		private List<ImageSource> thumbnails;
+		private List<SlideThumbnail> thumbnails;
 		private PowerpointViewerMedia ppt;
 		bool isClosing = false;
 
-		public override IList<ImageSource> Thumbnails
+		public override IList<SlideThumbnail> Thumbnails
 		{
 			get
 			{
 				if (thumbnails == null && doc.HasLoaded)
 				{
-					thumbnails = new List<ImageSource>();
+					thumbnails = new List<SlideThumbnail>();
+					int i = 1;
 					foreach (Bitmap bmp in doc.Thumbnails)
-						thumbnails.Add(System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(bmp.GetHbitmap(), IntPtr.Zero, System.Windows.Int32Rect.Empty, BitmapSizeOptions.FromWidthAndHeight(bmp.Width, bmp.Height)));
+					{
+						int animations = doc.GetSlideStepCount(i - 1) - 1;
+						thumbnails.Add(new SlideThumbnail
+						{
+							Image = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(bmp.GetHbitmap(), IntPtr.Zero, System.Windows.Int32Rect.Empty, BitmapSizeOptions.FromWidthAndHeight(bmp.Width, bmp.Height)),
+							Title = String.Format("Folie {0} ({1})", i, animations == 0 ? "keine Animation" : (animations == 1 ? " 1 Animationsschritt" : animations + " Animationsschritte"))
+						});
+						i++;
+					}
 				}
 				return thumbnails;
 			}

@@ -101,7 +101,7 @@ namespace Words.Slideshow
 
 		public abstract void Hide();
 
-		public abstract IList<ImageSource> Thumbnails { get; }
+		public abstract IList<SlideThumbnail> Thumbnails { get; }
 
 		public abstract int SlideIndex { get; }
 

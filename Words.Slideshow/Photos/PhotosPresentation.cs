@@ -57,7 +57,7 @@ namespace Words.Slideshow.Photos
 			OnSlideIndexChanged();
 		}
 
-		public IList<ImageSource> Thumbnails
+		public IList<SlideThumbnail> Thumbnails
 		{
 			get
 			{

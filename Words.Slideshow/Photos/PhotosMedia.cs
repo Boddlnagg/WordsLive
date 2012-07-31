@@ -97,17 +97,17 @@ namespace Words.Slideshow.Photos
 			}
 		}
 
-		public IList<ImageSource> Thumbnails { get; private set; }
+		public IList<SlideThumbnail> Thumbnails { get; private set; }
 		public IEnumerable<PhotoInfo> Photos { get; private set; }
 
 		protected override bool LoadFromMetadata()
 		{
 			Photos = LoadFromTxt(this.File);
 
-			Thumbnails = new List<ImageSource>();
+			Thumbnails = new List<SlideThumbnail>();
 			foreach (var photo in Photos)
 			{
-				Thumbnails.Add(photo.Thumbnail);
+				Thumbnails.Add(new SlideThumbnail { Image = photo.Thumbnail, Title = photo.File});
 			}
 			return true;
 		}

@@ -57,6 +57,7 @@
     <Compile Include="Photos\PhotosControl.xaml.cs">
       <DependentUpon>PhotosControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="SlideThumbnail.cs" />
     <Compile Include="SlideshowMedia.cs" />
     <Compile Include="SlideshowPresentationBase.cs" />
     <Compile Include="SlideshowControlPanel.xaml.cs">

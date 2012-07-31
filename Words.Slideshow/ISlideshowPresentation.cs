@@ -14,7 +14,7 @@ namespace Words.Slideshow
 		void NextStep();
 		void PreviousStep();
 		int SlideIndex { get; }
-		IList<ImageSource> Thumbnails { get; }
+		IList<SlideThumbnail> Thumbnails { get; }
 		event EventHandler Loaded;
 		event EventHandler SlideIndexChanged;
 		event EventHandler ClosedExternally;
