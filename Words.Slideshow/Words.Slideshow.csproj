@@ -36,9 +36,6 @@
     <Reference Include="cli_oootypes, Version=1.0.8.0, Culture=neutral, PublicKeyToken=ce2cb7e279207b9e, processorArchitecture=MSIL" />
     <Reference Include="cli_ure, Version=1.0.22.0, Culture=neutral, PublicKeyToken=ce2cb7e279207b9e, processorArchitecture=MSIL" />
     <Reference Include="cli_uretypes, Version=1.0.8.0, Culture=neutral, PublicKeyToken=ce2cb7e279207b9e, processorArchitecture=MSIL" />
-    <Reference Include="Ionic.Zip">
-      <HintPath>..\3rdParty\Ionic.Zip.dll</HintPath>
-    </Reference>
     <Reference Include="PowerpointViewerLib, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86">
       <HintPath>..\..\PowerpointViewerLib\bin\Debug\PowerpointViewerLib.dll</HintPath>
     </Reference>

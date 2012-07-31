@@ -29,7 +29,7 @@ namespace Words.Slideshow.Photos
 			DoubleAnimation ani = new DoubleAnimation { From = 0.0, To = 1.0 };
 			storyboard = new Storyboard();
 			storyboard.Children.Add(ani);
-			Storyboard.SetTarget(ani, front);
+			Storyboard.SetTarget(ani, frontGrid);
 			Storyboard.SetTargetProperty(ani, new PropertyPath(Image.OpacityProperty));
 		}
 

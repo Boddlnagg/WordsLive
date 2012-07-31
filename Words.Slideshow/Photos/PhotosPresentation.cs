@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows.Media;
-using Words.Presentation;
 using Words.Presentation.Wpf;
 
 namespace Words.Slideshow.Photos
@@ -9,7 +8,7 @@ namespace Words.Slideshow.Photos
 	public class PhotosPresentation : WpfPresentation<PhotosControl>, ISlideshowPresentation
 	{
 		private PhotosMedia media;
-		private List<ImageSource> images;
+		private List<PhotosMedia.PhotoInfo> images;
 		private int index;
 
 		public void Init(PhotosMedia media)
@@ -19,7 +18,7 @@ namespace Words.Slideshow.Photos
 
 		public void Load()
 		{
-			images = new List<ImageSource>(media.Images);
+			images = new List<PhotosMedia.PhotoInfo>(media.Photos);
 			index = 0;
 			Update();
 			OnLoaded();
@@ -52,7 +51,9 @@ namespace Words.Slideshow.Photos
 
 		private void Update()
 		{
-			this.Control.ImageSource = images[index];
+			this.Control.ImageSource = images[index].LoadImage();
+			if (index + 1 < images.Count)
+				images[index + 1].PreCache();
 			OnSlideIndexChanged();
 		}
 
@@ -60,7 +61,7 @@ namespace Words.Slideshow.Photos
 		{
 			get
 			{
-				return images;
+				return media.Thumbnails;
 			}
 		}
 
