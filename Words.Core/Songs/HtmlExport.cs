@@ -49,8 +49,8 @@ namespace Words.Core.Songs
 			}
 		}
 
-		// this method is copied from SongDisplayController
-		private static IEnumerable<object> ParseLine(string line, bool printChords)
+		// TODO: this method is copied from SongDisplayController -> find a way to no duplicate it
+		private static IEnumerable<object> ParseLine(string line, bool showChords)
 		{
 			string rest;
 
@@ -84,12 +84,12 @@ namespace Words.Core.Songs
 				rest = rest.Substring(end + 1);
 				elements.Add(before);
 
-				if (printChords)
+				if (showChords)
 				{
 					// abusing the <b> tag for chords for brevity
 					// we need two nested tags, the outer one with position:relative,
 					// the inner one with position:absolute (see css below)
-					elements.Add(new XElement("b", new XElement("b", chord)));
+					elements.Add(new XElement("b", new XElement("b", chord))); // TODO: pretty printing (see original method in SongDisplayController)
 				}
 			}
 

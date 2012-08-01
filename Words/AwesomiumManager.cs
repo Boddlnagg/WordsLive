@@ -36,6 +36,7 @@ namespace Words
 					/*HomeURL = Settings.Default.HomeURL,*/
 					/*LogPath = My.Application.UserAppDataPath,*/
 					LogLevel = LogLevel.Verbose,
+					AcceptLanguageOverride = "de-DE", // TODO: set this to the correct system language (needed for bibleserver)
 					ChildProcessPath = System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "Words.Awesomium.exe"),
 				};
 

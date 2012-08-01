@@ -122,7 +122,7 @@
 					Height="32"
 					Source="/Words;component/Artwork/Undo.png"/>
 			</Button>
-			<Button Command="Redo" Style="{StaticResource markDisabledButton}" ToolTip="Wiederhole" >
+			<Button Command="Redo" Style="{StaticResource markDisabledButton}" ToolTip="Wiederholen" >
 				<Image
 					Width="32"
 					Height="32"
