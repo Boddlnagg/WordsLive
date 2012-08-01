@@ -57,7 +57,11 @@ namespace Words.Slideshow
 				this.media = (SlideshowMedia)media;
 				pres = this.media.CreatePresentation();
 				SetupEventListeners();
-				pres.Load();
+				if (!pres.Load())
+				{
+					Controller.PresentationManager.Status = PresentationStatus.Blackscreen;
+					Controller.PresentationManager.CurrentPresentation = null;
+				}
 			}
 			else
 			{

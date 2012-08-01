@@ -11,7 +11,7 @@ namespace Words.Slideshow
 	{
 		private SlideshowPreviewProvider preview;
 
-		public abstract void Load();
+		public abstract bool Load();
 
 		public virtual bool UsesSamePresentationWindow(IPresentation presentation)
 		{

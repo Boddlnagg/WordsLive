@@ -16,12 +16,13 @@ namespace Words.Slideshow.Photos
 			this.media = media;
 		}
 
-		public void Load()
+		public bool Load()
 		{
 			images = new List<PhotosMedia.PhotoInfo>(media.Photos);
 			index = 0;
 			Update();
 			OnLoaded();
+			return true;
 		}
 
 		public void GotoSlide(int index)

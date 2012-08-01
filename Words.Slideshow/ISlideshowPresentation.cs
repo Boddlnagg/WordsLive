@@ -9,7 +9,7 @@ namespace Words.Slideshow
 {
 	public interface ISlideshowPresentation : IPresentation
 	{
-		void Load();
+		bool Load();
 		void GotoSlide(int index);
 		void NextStep();
 		void PreviousStep();

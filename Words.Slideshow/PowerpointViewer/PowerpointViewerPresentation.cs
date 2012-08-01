@@ -45,9 +45,16 @@ namespace Words.Slideshow.Powerpoint
 			this.ppt = ppt;
 		}
 
-		public override void Load()
+		public override bool Load()
 		{
-			doc = PowerpointViewerController.Open(ppt.File, new Rectangle(Area.WindowLocation.X, Area.WindowLocation.Y, Area.WindowSize.Width, Area.WindowSize.Height), openHidden: true);
+			try
+			{
+				doc = PowerpointViewerController.Open(ppt.File, new Rectangle(Area.WindowLocation.X, Area.WindowLocation.Y, Area.WindowSize.Width, Area.WindowSize.Height), openHidden: true, thumbnailWidth: 200);
+			}
+			catch (PowerpointViewerController.PowerpointViewerOpenException)
+			{
+				return false;
+			}
 			
 			doc.Loaded += (sender, args) =>
 			{
@@ -72,6 +79,8 @@ namespace Words.Slideshow.Powerpoint
 				base.OnSlideIndexChanged();
 			};
 			LoadPreviewProvider();
+
+			return true;
 		}
 
 		public override void Show()
@@ -90,7 +99,8 @@ namespace Words.Slideshow.Powerpoint
 		public override void Close()
 		{
 			isClosing = true;
-			doc.Close();
+			if (doc != null)
+				doc.Close();
 		}
 
 		public override void Hide()

@@ -51,6 +51,9 @@ namespace Words
 			{
 				if (Status == PresentationStatus.Show)
 				{
+					if (value == null)
+						throw new InvalidOperationException("Can't set CurrentPresentation to null when PresentationStatus is set to Show");
+
 					IPresentation previousPresentation = currentPresentation;
 					currentPresentation = value;
 
