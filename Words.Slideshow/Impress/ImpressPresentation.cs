@@ -13,7 +13,6 @@ using System.IO;
 using System.Windows.Media.Imaging;
 using System.Runtime.InteropServices;
 
-#if FALSE
 namespace Words.Slideshow.Impress
 {			
 	public class ImpressPresentation : SlideshowPresentationBase
@@ -66,60 +65,88 @@ namespace Words.Slideshow.Impress
 		XSlideShowController controller;
 		XModel document;
 		XWindow window;
+		XComponent component;
 		SlideShowListener listener = new SlideShowListener();
 		IntPtr hWnd;
+		bool presentationEnded;
 
-		List<ImageSource> thumbnails = new List<ImageSource>();
+		ImpressMedia media;
 
-		public void Load(ImpressMedia media)
+		List<SlideThumbnail> thumbnails = new List<SlideThumbnail>();
+
+		public void Init(ImpressMedia media)
 		{
-			// Start LibreOffice and load file
-			unoidl.com.sun.star.uno.XComponentContext localContext = uno.util.Bootstrap.bootstrap();
-			unoidl.com.sun.star.lang.XMultiServiceFactory multiServiceFactory = (unoidl.com.sun.star.lang.XMultiServiceFactory)localContext.getServiceManager();
-			XComponentLoader componentLoader = (XComponentLoader)multiServiceFactory.createInstance("com.sun.star.frame.Desktop");
-			XComponent component = componentLoader.loadComponentFromURL(CreateFileUrl(media.File), "_blank", 0, new PropertyValue[] { });
+			this.media = media;
+		}
 
-			// Hide the window and set display
-			document = (XModel)component;
-			window = document.getCurrentController().getFrame().getContainerWindow();
-			window.setVisible(false);
-			XSystemDependentWindowPeer xWindowPeer = (XSystemDependentWindowPeer)(window);
-			var handle = xWindowPeer.getWindowHandle(new byte[] { }, 1);
-			presentation = (XPresentation2)((XPresentationSupplier)component).getPresentation();
-			
-			presentation.setPropertyValue("Display", new uno.Any(GetDisplayIndex())); // TODO (Slideshow.Impress): test this
-
-			//presentation.setPropertyValue("IsTransitionOnClick", new uno.Any(false));
-
-			CreateThumbnails();
-
-			listener.SlideTransitionStarted += (sender, args) =>
+		public override bool Load()
+		{
+			try
 			{
-				OnSlideIndexChanged();
-			};
-
-			Start();
-
-			controller.gotoSlideIndex(0);
-
-			hWnd = FindWindow("SALTMPSUBFRAME", null);
-			//hWnd2 = FindWindowEx(hWnd, IntPtr.Zero, "SALOBJECT", null);
-			//hWnd3 = FindWindowEx(wnd, IntPtr.Zero, "SALOBJECTCHILD", null);
-
-			//int CS_DROPSHADOW = 0x20000;
-			//var bit = GetClassLongPtr(hWnd, -26).ToInt32() | CS_DROPSHADOW;
-			//SetClassLong(hWnd, -26, new IntPtr(GetClassLongPtr(hWnd, -26).ToInt32() ^ CS_DROPSHADOW));
-			//bit = GetClassLongPtr(hWnd, -26).ToInt32() | CS_DROPSHADOW;
-
-			// Resizing the window works (but a dropshadow remains) and moving doesn't, so we stay fullscreen
-			//MoveWindow(hWnd, 0, 0, 800, 600, true);
+				// Start LibreOffice and load file
+				unoidl.com.sun.star.uno.XComponentContext localContext = uno.util.Bootstrap.bootstrap();
+				unoidl.com.sun.star.lang.XMultiServiceFactory multiServiceFactory = (unoidl.com.sun.star.lang.XMultiServiceFactory)localContext.getServiceManager();
+				XComponentLoader componentLoader = (XComponentLoader)multiServiceFactory.createInstance("com.sun.star.frame.Desktop");
+				component = componentLoader.loadComponentFromURL(CreateFileUrl(media.File), "_blank", 0, new PropertyValue[] { });
 
 
-			ShowWindow(hWnd, 0);
+				// Hide the window and set display
+				document = (XModel)component;
+				window = document.getCurrentController().getFrame().getContainerWindow();
+				window.setVisible(false);
+				XSystemDependentWindowPeer xWindowPeer = (XSystemDependentWindowPeer)(window);
+				var handle = xWindowPeer.getWindowHandle(new byte[] { }, 1);
+				presentation = (XPresentation2)((XPresentationSupplier)component).getPresentation();
 
-			LoadPreviewProvider();
-			
-			base.OnLoaded();
+				presentation.setPropertyValue("Display", new uno.Any(GetDisplayIndex())); // TODO (Slideshow.Impress): test this
+
+				presentation.setPropertyValue("IsTransitionOnClick", new uno.Any(false));
+
+				CreateThumbnails();
+
+				listener.SlideTransitionStarted += (sender, args) =>
+				{
+					OnSlideIndexChanged();
+				};
+
+				listener.SlideEnded += (sender, args) =>
+				{
+					if (controller.getNextSlideIndex() == -1) // presentation has ended
+					{
+						presentationEnded = true;
+					}
+				};
+
+				Start();
+				controller.gotoSlideIndex(0);
+
+				hWnd = FindWindow("SALTMPSUBFRAME", null);
+				//hWnd2 = FindWindowEx(hWnd, IntPtr.Zero, "SALOBJECT", null);
+				//hWnd3 = FindWindowEx(wnd, IntPtr.Zero, "SALOBJECTCHILD", null);
+
+				//int CS_DROPSHADOW = 0x20000;
+				//var bit = GetClassLongPtr(hWnd, -26).ToInt32() | CS_DROPSHADOW;
+				//SetClassLong(hWnd, -26, new IntPtr(GetClassLongPtr(hWnd, -26).ToInt32() ^ CS_DROPSHADOW));
+				//bit = GetClassLongPtr(hWnd, -26).ToInt32() | CS_DROPSHADOW;
+
+				// Resizing the window works (but a dropshadow remains) and moving doesn't, so we stay fullscreen
+				//MoveWindow(hWnd, 0, 0, 800, 600, true);
+
+
+				ShowWindow(hWnd, 0);
+
+				LoadPreviewProvider();
+
+				base.OnLoaded();
+
+				Controller.FocusMainWindow();
+
+				return true;
+			}
+			catch
+			{
+				return false;
+			}
 		}
 
 		private int GetDisplayIndex()
@@ -169,7 +196,8 @@ namespace Words.Slideshow.Impress
 				using (StreamReader reader = new StreamReader(file))
 				{
 					var decoder = new PngBitmapDecoder(reader.BaseStream, BitmapCreateOptions.PreservePixelFormat, BitmapCacheOption.OnLoad);
-					thumbnails.Add(decoder.Frames[0]);
+					decoder.Frames[0].Freeze();
+					thumbnails.Add(new SlideThumbnail { Image = decoder.Frames[0], Title = "Folie "+(i+1)});
 				}
 			}
 			File.Delete(file);
@@ -186,27 +214,46 @@ namespace Words.Slideshow.Impress
 
 		public override void GotoSlide(int index)
 		{
+			if (presentationEnded || controller.getCurrentSlideIndex() == -1)
+			{
+				controller.removeSlideShowListener(listener);
+				presentation.end();
+				Start();
+				Controller.FocusMainWindow(); // TODO: doesn't work?
+				presentationEnded = false;
+			}
 			controller.gotoSlideIndex(index);
 		}
 
 		public override void NextStep()
 		{
-			controller.gotoNextEffect();
+			if (!presentationEnded)
+				controller.gotoNextEffect();
 		}
 
 		public override void PreviousStep()
 		{
-			controller.gotoPreviousEffect();
+			if (!presentationEnded)
+				controller.gotoPreviousEffect();
 		}
 
 		public override void Show()
 		{
 			ShowWindow(hWnd, 1);
+			Controller.FocusMainWindow();
 		}
 
 		public override void Close()
 		{
-			presentation.end();
+			try
+			{
+				presentation.end();
+				component.dispose();
+			}
+			catch (DisposedException)
+			{
+				// ignore
+			}
 			controller = null;
 		}
 
@@ -215,7 +262,7 @@ namespace Words.Slideshow.Impress
 			ShowWindow(hWnd, 0);
 		}
 
-		public override IList<ImageSource> Thumbnails
+		public override IList<SlideThumbnail> Thumbnails
 		{
 			get
 			{
@@ -266,4 +313,3 @@ namespace Words.Slideshow.Impress
 		}
 	}
 }
-#endif
