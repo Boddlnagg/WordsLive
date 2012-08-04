@@ -32,7 +32,7 @@ namespace Words
 					// have its own cache and cookies. So, there's no better place
 					// than the Application User Data Path.
 					/*UserDataPath = My.Application.UserAppDataPath,*/
-					EnablePlugins = false,
+					EnablePlugins = false, // TODO: make this configurable in case someone wants to use flash ...
 					/*HomeURL = Settings.Default.HomeURL,*/
 					/*LogPath = My.Application.UserAppDataPath,*/
 					LogLevel = LogLevel.Verbose,

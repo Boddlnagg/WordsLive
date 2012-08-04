@@ -159,6 +159,14 @@ namespace Words
 			}
 		}
 
+		public static System.Windows.Threading.Dispatcher Dispatcher
+		{
+			get
+			{
+				return instance.window.Dispatcher;
+			}
+		}
+
 		public static void OpenPortfolio(string file)
 		{
 			instance.window.OpenPortfolio(file);
@@ -209,7 +217,7 @@ namespace Words
 			return editor;
 		}
 
-		public static void ShowMainWindow()
+		public static void FocusMainWindow()
 		{
 			instance.window.Focus();
 		}

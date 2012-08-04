@@ -17,6 +17,7 @@ using Words.Resources;
 
 namespace Words
 {
+	// TODO: PDF support via pdf.js
 	public partial class MainWindow : Window, INotifyPropertyChanged
 	{
 		private Words.MediaOrderList.MediaOrderList orderList = new Words.MediaOrderList.MediaOrderList();

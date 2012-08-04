@@ -316,7 +316,7 @@ namespace Words.Editor
 			{
 				SaveSong(doc);
 				Controller.ReloadActiveMedia();
-				Controller.ShowMainWindow();
+				Controller.FocusMainWindow();
 			}
 			else if (e.Command == CustomCommands.ChooseBackground)
 			{
@@ -327,7 +327,7 @@ namespace Words.Editor
 				if (openDocuments.Count == 0)
 					this.Close();
 
-				Controller.ShowMainWindow();
+				Controller.FocusMainWindow();
 			}
 			else if (e.Command == CustomCommands.SongSettings)
 			{
