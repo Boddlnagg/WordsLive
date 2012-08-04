@@ -320,12 +320,14 @@ namespace Words.Editor
 				PreviewControl.Node = (SongNode)StructureTree.SelectedItem;
 				EditBorder.Child = null;
 				EditHeader.Text = "";
+				EnableSpellCheckCheckBox.IsEnabled = false;
 			}
 			else if (StructureTree.SelectedItem is SongNodeSlide)
 			{
 				PreviewControl.Node = (SongNode)StructureTree.SelectedItem;
 				EditBorder.Child = (Grid)this.Resources["editTextWithTranslation"];
 				EditHeader.Text = "Folientext";
+				EnableSpellCheckCheckBox.IsEnabled = true;
 			}
 			else if (StructureTree.SelectedItem is SongNodePart)
 			{
@@ -333,11 +335,22 @@ namespace Words.Editor
 				PreviewControl.Node = p.Children[0];
 				EditBorder.Child = null;
 				EditHeader.Text = "";
+				EnableSpellCheckCheckBox.IsEnabled = false;
 			}
 			else if (StructureTree.SelectedItem is SongNodeMetadata)
 			{
+				if (((SongNodeMetadata)StructureTree.SelectedItem).Title == "Sprache")
+				{
+					EditBorder.Child = (ComboBox)this.Resources["editLanguageComboBox"];
+					EnableSpellCheckCheckBox.IsEnabled = false;
+				}
+				else
+				{
+					EditBorder.Child = (TextBox)this.Resources["editTextBox"];
+					EnableSpellCheckCheckBox.IsEnabled = true;
+				}
+
 				PreviewControl.Node = (SongNode)StructureTree.SelectedItem;
-				EditBorder.Child = (TextBox)this.Resources["editTextBox"];
 				EditHeader.Text = ((SongNodeMetadata)StructureTree.SelectedItem).Title;
 			}
 			else if (StructureTree.SelectedItem is SongNodeSource)
@@ -345,6 +358,7 @@ namespace Words.Editor
 				PreviewControl.Node = (SongNode)StructureTree.SelectedItem;
 				EditBorder.Child = (Grid)this.Resources["editSourceGrid"];
 				EditHeader.Text = "Quelle";
+				EnableSpellCheckCheckBox.IsEnabled = false;
 			}
 			else
 			{

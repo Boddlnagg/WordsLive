@@ -22,7 +22,8 @@
 		<songs:SongBackgroundToImageSourceConverter x:Key="backgroundConverter" />
 		<TextBox x:Key="editTextBox"
 			AcceptsReturn="True" IsUndoEnabled="False"
-			Text="{Binding ElementName=StructureTree, Path=SelectedItem.Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+			Text="{Binding ElementName=StructureTree, Path=SelectedItem.Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+			SpellCheck.IsEnabled="{Binding ElementName=EnableSpellCheckCheckBox, Path=IsChecked, Mode=OneWay}"/>
 		<Grid x:Key="editTextWithTranslation" Background="White">
 			<Grid.ColumnDefinitions>
 				<ColumnDefinition Width="*"/>
@@ -30,8 +31,9 @@
 				<ColumnDefinition Width="Auto">
 				</ColumnDefinition>
 			</Grid.ColumnDefinitions>
-			<TextBox Name="TextTextBox" Grid.Column="0" AcceptsReturn="True" IsUndoEnabled="False"
-					 Text="{Binding ElementName=StructureTree,Path=SelectedItem.Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+			<TextBox Name="TextTextBox" Grid.Column="0" AcceptsReturn="True" IsUndoEnabled="False" Language="{Binding ElementName=StructureTree, Path=Items[0].LanguageCode, ConverterCulture=en-US}"
+					 Text="{Binding ElementName=StructureTree,Path=SelectedItem.Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+					SpellCheck.IsEnabled="{Binding ElementName=EnableSpellCheckCheckBox, Path=IsChecked, Mode=OneWay}"/>
 			<Expander Grid.Column="2" ExpandDirection="Left" IsExpanded="{Binding ElementName=StructureTree,Path=SelectedItem.Root.Song.HasTranslation, Mode=OneTime}"
 					  Expanded="TranslationExpanderExpandedCollapsed" Collapsed="TranslationExpanderExpandedCollapsed" >
 				<Expander.Header>
@@ -45,7 +47,15 @@
 					 Text="{Binding ElementName=StructureTree,Path=SelectedItem.Translation, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 			</Expander>
 		</Grid>
-		<Grid x:Key="editSourceGrid" Background="White">
+		<ComboBox x:Key="editLanguageComboBox" Margin="10" Height="24" VerticalAlignment="Top" IsEditable="True" Text="{Binding ElementName=StructureTree,Path=SelectedItem.Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+			<ComboBoxItem>Deutsch</ComboBoxItem>
+			<ComboBoxItem>Schweizerdeutsch</ComboBoxItem>
+			<ComboBoxItem>Englisch</ComboBoxItem>
+			<ComboBoxItem>Italienisch</ComboBoxItem>
+			<ComboBoxItem>Französisch</ComboBoxItem>
+			<ComboBoxItem>Spanisch</ComboBoxItem>
+		</ComboBox>
+		<Grid x:Key="editSourceGrid" Margin="10" VerticalAlignment="Top">
 			<Grid.ColumnDefinitions>
 				<ColumnDefinition Width="Auto"></ColumnDefinition>
 				<ColumnDefinition></ColumnDefinition>
@@ -196,13 +206,21 @@
 				Grid.Column="2"
 				Margin="0,26,0,0"
 				x:Name="PreviewControl" />
-	<TextBlock x:Name="EditHeader"
+	<DockPanel
 		Grid.Row="2"
 		Grid.Column="2"
-		Padding="5"
+		LastChildFill="False"
+		Margin="0"
+		VerticalAlignment="Top"
 		Background="{DynamicResource HeaderGradientBrush}"
-		Height="26"
-		VerticalAlignment="Top" />
+		Height="26">
+		<DockPanel.Resources>
+			<Style TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"/>
+		</DockPanel.Resources>
+		<!-- TODO: create global setting for this checkbox -->
+		<CheckBox x:Name="EnableSpellCheckCheckBox" DockPanel.Dock="Right" VerticalAlignment="Center" IsEnabled="False">Rechtschreibprüfung</CheckBox>
+		<TextBlock x:Name="EditHeader" Padding="5"/>
+	</DockPanel>
 	<Border Grid.Row="2"
 		Grid.Column="2"
 		Margin="0,26,0,0" Background="LightGray" x:Name="EditBorder">

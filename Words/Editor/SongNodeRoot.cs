@@ -44,6 +44,50 @@ namespace Words.Editor
 			private set;
 		}
 
+		public string LanguageCode
+		{
+			get
+			{
+				string lang = Song.Language;
+				int index = lang.IndexOfAny(new char[] {'/', ' ', '('});
+				if (index > 0)
+				{
+					lang = Song.Language.Substring(0, index);
+				}
+
+				return LanguageCodeFromName(lang);
+			}
+		}
+
+		private string LanguageCodeFromName(string name)
+		{
+			switch (name.ToLower())
+			{
+				case "deutsch":
+				case "german":
+					return "de";
+				case "schweizerdeutsch":
+					return "de-ch";
+				case "englisch":
+				case "english":
+					return "en";
+				case "italienisch":
+				case "italiano":
+				case "italian":
+					return "it";
+				case "französisch":
+				case "francais":
+				case "french":
+					return "fr";
+				case "spanisch":
+				case "espanol":
+				case "spanish":
+					return "es";
+				default:
+					return String.Empty;
+			}
+		}
+
 		public SongNodeRoot(Song song) : base(null)
 		{
 			this.Song = song;
@@ -57,7 +101,11 @@ namespace Words.Editor
 
 			sourceNode = new SongNodeSource(Root, song.Sources[0]);
 			copyrightNode = new SongNodeMetadata(Root, "Copyright", song.Copyright, (value) => song.Copyright = value);
-			languageNode = new SongNodeMetadata(Root, "Sprache", song.Language, (value) => song.Language = value);
+			languageNode = new SongNodeMetadata(Root, "Sprache", song.Language, (value) => 
+				{
+					song.Language = value;
+					this.OnNotifyPropertyChanged("LanguageCode");
+				});
 			categoryNode = new SongNodeMetadata(Root, "Kategorie", song.Category, (value) => song.Category = value);
 
 			this.PropertyChanged += (sender, args) =>
