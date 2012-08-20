@@ -60,9 +60,8 @@
   <ItemGroup>
     <Compile Include="FileNotFoundMedia.cs" />
     <Compile Include="Media.cs" />
+    <Compile Include="MediaFileHandler.cs" />
     <Compile Include="MediaManager.cs" />
-    <Compile Include="MediaType.cs" />
-    <Compile Include="MediaTypeAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ShutdownAttribute.cs" />
     <Compile Include="Songs\Chords\Chords.cs" />

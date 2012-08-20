@@ -4,6 +4,11 @@ using Words.Core;
 
 namespace Words.MediaOrderList
 {
+	public class MediaNotificationEventArgs : EventArgs
+	{
+		public Media Media { get; set; }
+	}
+
 	public class MediaOrderList : ActivatableBindingList<MediaOrderItem>
 	{
 		public event EventHandler ItemAdded;
@@ -76,18 +81,33 @@ namespace Words.MediaOrderList
 		{
 			if (media is UnsupportedMedia)
 			{
-				System.Windows.MessageBox.Show("Die Datei " + media.File + " kann nicht angezeigt werden, da das Format nicht unterstützt wird.");
+				OnNotifyTryOpenUnsupportedMedia(media);
 				return false;
 			}
 			else if (media is FileNotFoundMedia)
 			{
-				System.Windows.MessageBox.Show("Die Datei " + media.File + " existiert nicht.");
+				OnNotifyTryOpenFileNotFoundMedia(media);
 				return false;
 			}
 			else
 			{
 				return true;
 			}
+		}
+
+		public event EventHandler<MediaNotificationEventArgs> NotifyTryOpenUnsupportedMedia;
+		public event EventHandler<MediaNotificationEventArgs> NotifyTryOpenFileNotFoundMedia;
+
+		protected void OnNotifyTryOpenUnsupportedMedia(Media media)
+		{
+			if (NotifyTryOpenUnsupportedMedia != null)
+				NotifyTryOpenUnsupportedMedia(this, new MediaNotificationEventArgs { Media = media });
+		}
+
+		protected void OnNotifyTryOpenFileNotFoundMedia(Media media)
+		{
+			if (NotifyTryOpenFileNotFoundMedia != null)
+				NotifyTryOpenFileNotFoundMedia(this, new MediaNotificationEventArgs { Media = media });
 		}
 
 		private MediaOrderItem CreateItem(Media media)

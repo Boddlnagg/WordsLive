@@ -10,74 +10,95 @@ namespace Words.Core
 {
 	public static class MediaManager
 	{
-		private static Dictionary<string, MediaType> mediaFileExtensions = new Dictionary<string, MediaType>();
-		private static List<MediaType> mediaTypes = new List<MediaType>();
+		private static List<MediaFileHandler> fileHandlers = new List<MediaFileHandler>();
 
-		public static IEnumerable<MediaType> MediaTypes
-		{
-			get
-			{
-				return mediaTypes;
-			}
-		}
-
-		private static void RegisterMediaFileExtensions(MediaType type)
-		{
-			foreach (var ext in type.Extensions)
-			{
-				string key = ext.ToLower();
-				key = key.StartsWith(".") ? key : "." + key;
-				if (mediaFileExtensions.ContainsKey(key))
-				{
-					// TODO (Core): what to do? maybe register anyway and allow to choose from the registered media types.
-					throw new ArgumentException("File extension '" + key + "' already registered.");
-				}
-
-				mediaFileExtensions.Add(key, type);
-			}
-		}
-
-		public static void RegisterMediaTypes(IEnumerable<Type> types)
+		public static void RegisterHandlersFromTypes(IEnumerable<Type> types)
 		{
 			foreach (var type in types)
 			{
-				if (type.IsSubclassOf(typeof(Media)))
+				if (type.IsClass && !type.IsAbstract && typeof(MediaFileHandler).IsAssignableFrom(type))
 				{
-					var attr = type.GetCustomAttributes(typeof(MediaTypeAttribute), true).Cast<MediaTypeAttribute>().FirstOrDefault();
-					if (attr != null)
-					{
-						var t = new MediaType(attr.Description, attr.Extensions, type);
-						RegisterMediaFileExtensions(t);
-						mediaTypes.Add(t);
-					}
+					MediaFileHandler handler = (MediaFileHandler)Activator.CreateInstance(type);
+					fileHandlers.Add(handler);
 				}
 			}
 		}
 
-		public static Media LoadMediaMetadata(string fileName)
+		public static IEnumerable<MediaFileHandler> FileHandlers
 		{
-			FileInfo file = new FileInfo(fileName);
-			Media m;
+			get
+			{
+				return fileHandlers;
+			}
+		}
 
+		public static Media LoadMediaMetadata(FileInfo file)
+		{
 			if (file.Exists)
 			{
 				string ext = file.Extension.ToLower();
-				if (mediaFileExtensions.ContainsKey(ext))
+				var handlers = from h in fileHandlers where h.Extensions.Contains(ext) select h;
+				Media result;
+				foreach (var h in handlers)
 				{
-					m = mediaFileExtensions[ext].CreateInstance();
+					result = h.TryHandle(file);
+					if (result != null)
+						return result;
 				}
-				else
-				{
-					m = new UnsupportedMedia();
-				}
+
+				var notSupported = new UnsupportedMedia();
+				notSupported.LoadMetadata(file.FullName);
+				return notSupported;
 			}
 			else
 			{
-				m = new FileNotFoundMedia();
+				var notFound = new FileNotFoundMedia();
+				notFound.LoadMetadata(file.FullName);
+				return notFound;
+			}
+		}
+
+		public static Media LoadMediaMetadata(string file)
+		{
+			return LoadMediaMetadata(new FileInfo(file));
+		}
+
+		public static IEnumerable<Media> LoadMultipleMediaMetadata(IEnumerable<string> fileName)
+		{
+			var files = from f in fileName select new FileInfo(f);
+
+			// if not all of them exist load them seperately
+			if (!files.All(f => f.Exists))
+			{
+				foreach (var file in files)
+				{
+					yield return LoadMediaMetadata(file);
+				}
 			}
 
-			m.LoadMetadata(file.FullName);
-			return m;
+			var extensions = (from f in files select f.Extension.ToLower()).Distinct();
+
+			// select handlers that can handle all selected file types
+			var handlers = from h in fileHandlers where !extensions.Except(h.Extensions).Any() select h;
+
+			Media[] result;
+			foreach (var h in handlers)
+			{
+				result = h.TryHandleMultiple(files.ToArray());
+				if (result != null)
+				{
+					foreach (var r in result)
+						yield return r;
+
+					yield break;
+				}
+			}
+
+			// if not all of them are supported by a single handler load them seperately
+			foreach (var file in files)
+			{
+				yield return LoadMediaMetadata(file);
+			}
 		}
 
 		public static bool TryLoadPortfolio(string fileName, out IEnumerable<Media> result)

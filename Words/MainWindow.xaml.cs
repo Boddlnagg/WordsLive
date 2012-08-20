@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -11,9 +12,8 @@ using Words.Core.Songs;
 using Words.Editor;
 using Words.MediaOrderList;
 using Words.Presentation;
-using System.Linq;
-using Words.Songs;
 using Words.Resources;
+using Words.Songs;
 
 namespace Words
 {
@@ -90,6 +90,14 @@ namespace Words
 
 			this.OrderListBox.Init(orderList);
 			this.orderList.ItemAdded += (sender, args) => { portfolioChanged = true; };
+			this.orderList.NotifyTryOpenFileNotFoundMedia += (sender, args) =>
+			{
+				MessageBox.Show("Die Datei " + args.Media.File + " existiert nicht.");
+			};
+			this.orderList.NotifyTryOpenUnsupportedMedia += (sender, args) =>
+			{
+				MessageBox.Show("Die Datei " + args.Media.File + " kann nicht angezeigt werden, da das Format nicht unterstützt wird.");
+			};
 
 			Controller.Initialize();
 
@@ -239,8 +247,8 @@ namespace Words
 		{
 			media.Load();
 
-			if (!media.IsLoaded)
-				return null;
+			//if (!media.IsLoaded)
+			//	return null;
 
 			if (media is Song && UsePortfolioBackground == true)
 			{
@@ -288,8 +296,10 @@ namespace Words
 
 			if (CurrentPanel != null && CurrentPanel.IsUpdatable && File.Exists(OrderListBox.ActiveItem.Path))
 			{
-				OrderListBox.ActiveItem.Reload();
-				CurrentPanel.Init(LoadMedia(OrderListBox.ActiveItem.Data));
+				var m = OrderListBox.ActiveItem;
+				m.Reload();
+				LoadMedia(m.Data);
+				CurrentPanel.Init(m.Data);
 			}
 			else
 			{
@@ -314,8 +324,8 @@ namespace Words
 		private void ShowAddMediaDialog()
 		{
 			var typeFilters = new List<string>();
-			typeFilters.Add(Resource.vFilterSupportedMediaTypes + "|" + String.Join(";", from t in MediaManager.MediaTypes from ext in t.Extensions select "*" + ext));
-			typeFilters.AddRange(from t in MediaManager.MediaTypes select t.Description + "|" + String.Join(";", t.Extensions.Select(s => "*" + s)));
+			typeFilters.Add(Resource.vFilterSupportedMediaTypes + "|" + String.Join(";", (from h in MediaManager.FileHandlers from ext in h.Extensions select "*" + ext).Distinct()));
+			typeFilters.AddRange(from h in MediaManager.FileHandlers select h.Description + "|" + String.Join(";", h.Extensions.Select(s => "*" + s)));
 			typeFilters.Add(Resource.vFilterAllFiles+"|*");
 
 			Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
@@ -324,10 +334,14 @@ namespace Words
 
 			if (dlg.ShowDialog() == true)
 			{
-				foreach (var file in dlg.FileNames)
+				if (dlg.FileNames.Count() > 1)
 				{
-					orderList.Add(MediaManager.LoadMediaMetadata(file));
+					foreach (var m in MediaManager.LoadMultipleMediaMetadata(dlg.FileNames))
+						orderList.Add(m);
 				}
+				else
+					orderList.Add(MediaManager.LoadMediaMetadata(dlg.FileName));
+
 				portfolioChanged = true;
 			}
 		}

@@ -1,36 +1,35 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows.Media;
-using unoidl.com.sun.star.frame;
-using unoidl.com.sun.star.lang;
+using System.IO;
+using System.Runtime.InteropServices;
+using System.Windows.Media.Imaging;
 using unoidl.com.sun.star.awt;
 using unoidl.com.sun.star.beans;
-using unoidl.com.sun.star.presentation;
 using unoidl.com.sun.star.drawing;
-using System.IO;
-using System.Windows.Media.Imaging;
-using System.Runtime.InteropServices;
+using unoidl.com.sun.star.frame;
+using unoidl.com.sun.star.lang;
+using unoidl.com.sun.star.presentation;
 
 namespace Words.Slideshow.Impress
 {			
+	/// <summary>
+	/// Bridge to Open-/LibreOffice Impress
+	/// </summary>
 	public class ImpressPresentation : SlideshowPresentationBase
 	{
 		#region P/Invokes
 		[DllImport("user32.dll", SetLastError = true)]
 		static extern IntPtr FindWindow(string lpClassName, string lpWindowName);
 
-		[DllImport("user32.dll", SetLastError = true)]
+		[DllImport("user32.dll")]
+		static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
+
+		/*[DllImport("user32.dll", SetLastError = true)]
 		static extern IntPtr FindWindowEx(IntPtr hwndParent, IntPtr hwndChildAfter, string lpszClass, string lpszWindow);
 
 		[DllImport("user32.dll", SetLastError = true)]
 		private static extern bool MoveWindow(IntPtr hWnd, int X, int Y, int nWidth, int nHeight, bool bRepaint);
-
-		[DllImport("user32.dll")]
-		static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
-
-		/*
+		
 		public static IntPtr SetClassLong(IntPtr hWnd, int nIndex, IntPtr dwNewLong)
 		{
 			if (IntPtr.Size > 4)
@@ -64,7 +63,6 @@ namespace Words.Slideshow.Impress
 		XPresentation2 presentation;
 		XSlideShowController controller;
 		XModel document;
-		XWindow window;
 		XComponent component;
 		SlideShowListener listener = new SlideShowListener();
 		IntPtr hWnd;
@@ -92,7 +90,7 @@ namespace Words.Slideshow.Impress
 
 				// Hide the window and set display
 				document = (XModel)component;
-				window = document.getCurrentController().getFrame().getContainerWindow();
+				XWindow window = document.getCurrentController().getFrame().getContainerWindow();
 				window.setVisible(false);
 				XSystemDependentWindowPeer xWindowPeer = (XSystemDependentWindowPeer)(window);
 				var handle = xWindowPeer.getWindowHandle(new byte[] { }, 1);
@@ -219,7 +217,7 @@ namespace Words.Slideshow.Impress
 				controller.removeSlideShowListener(listener);
 				presentation.end();
 				Start();
-				Controller.FocusMainWindow(); // TODO: doesn't work?
+				Controller.FocusMainWindow();
 				presentationEnded = false;
 			}
 			controller.gotoSlideIndex(index);
@@ -277,7 +275,10 @@ namespace Words.Slideshow.Impress
 				return controller.getCurrentSlideIndex();
 			}
 		}
-
+	
+		/// <summary>
+		/// This implements an UNO interface and maps handlers to C# events.
+		/// </summary>
 		public class SlideShowListener : XSlideShowListener
 		{
 			public event EventHandler SlideTransitionStarted;

@@ -15,10 +15,5 @@ namespace Words.Core
 				return base.Title + " (Format wird nicht unterstützt)";
 			}
 		}
-
-		protected override bool LoadFromMetadata()
-		{
-			return false;
-		}
 	}
 }

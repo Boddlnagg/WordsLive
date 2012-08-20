@@ -5,7 +5,7 @@ using System.Windows.Media.Imaging;
 using PowerpointViewerLib;
 using Words.Presentation;
 
-namespace Words.Slideshow.Powerpoint
+namespace Words.Slideshow.PowerpointViewer
 {
 	public class PowerpointViewerPresentation : SlideshowPresentationBase
 	{

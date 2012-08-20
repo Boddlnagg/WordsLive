@@ -5,10 +5,11 @@ using System.Threading;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Words.Core;
+using System.Linq;
+using System.Windows;
 
 namespace Words.Slideshow.Photos
 {
-	[MediaType("Diashows", ".show")]
 	public class PhotosMedia : SlideshowMedia
 	{
 		public class PhotoInfo
@@ -97,19 +98,25 @@ namespace Words.Slideshow.Photos
 			}
 		}
 
-		public IList<SlideThumbnail> Thumbnails { get; private set; }
-		public IEnumerable<PhotoInfo> Photos { get; private set; }
+		// TODO: allow adding/reordering/removing images after loading
 
-		protected override bool LoadFromMetadata()
+		public IList<SlideThumbnail> Thumbnails { get; private set; }
+		public IList<PhotoInfo> Photos { get; private set; }
+
+		public override void Load()
 		{
-			Photos = LoadFromTxt(this.File);
+			FileInfo file = new FileInfo(this.File);
+			if (file.Extension.ToLower() == ".show")
+				Photos = LoadFromTxt(this.File).ToList();
+			else
+				Photos = new List<PhotoInfo> { new PhotoInfo(this.File) };
 
 			Thumbnails = new List<SlideThumbnail>();
 			foreach (var photo in Photos)
 			{
 				Thumbnails.Add(new SlideThumbnail { Image = photo.Thumbnail, Title = photo.File});
 			}
-			return true;
+			//return true;
 		}
 
 		private IEnumerable<PhotoInfo> LoadFromTxt(string filename)

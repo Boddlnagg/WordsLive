@@ -15,10 +15,5 @@ namespace Words.Core
 				return base.Title + " (Datei nicht gefunden)";
 			}
 		}
-
-		protected override bool LoadFromMetadata()
-		{
-			return false;
-		}
 	}
 }

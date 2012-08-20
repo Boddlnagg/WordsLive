@@ -145,6 +145,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="AudioVideo\AudioFileHandler.cs" />
     <Compile Include="AudioVideo\AudioMedia.cs" />
     <Compile Include="AudioVideo\AudioVideoControlPanel.xaml.cs">
       <DependentUpon>AudioVideoControlPanel.xaml</DependentUpon>
@@ -153,6 +154,7 @@
     <Compile Include="AudioVideo\BaseMediaControl.cs" />
     <Compile Include="AudioVideo\IAudioVideoPresentation.cs" />
     <Compile Include="AudioVideo\PlayState.cs" />
+    <Compile Include="AudioVideo\VideoFileHandler.cs" />
     <Compile Include="AudioVideo\VideoMedia.cs" />
     <Compile Include="AudioVideo\VlcController.cs" />
     <Compile Include="AudioVideo\VlcWrapper.xaml.cs">
@@ -218,6 +220,8 @@
     <Compile Include="Editor\SongNodePart.cs" />
     <Compile Include="Editor\SongNodeRoot.cs" />
     <Compile Include="Editor\SongNodeSlide.cs" />
+    <Compile Include="Songs\SongFileHandler.cs" />
+    <Compile Include="WebSiteFileHandler.cs" />
     <Compile Include="UnhandledExceptionWindow.xaml.cs">
       <DependentUpon>UnhandledExceptionWindow.xaml</DependentUpon>
     </Compile>
@@ -425,6 +429,7 @@
     <EmbeddedResource Include="Resources\Resource.en.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resource.en.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\Resource.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

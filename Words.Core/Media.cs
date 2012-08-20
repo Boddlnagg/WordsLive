@@ -23,12 +23,9 @@ namespace Words.Core
 			}
 		}
 
-		public bool IsLoaded { get; private set; }
-
-		public void Load()
-		{
-			IsLoaded = LoadFromMetadata();		
+		public virtual void Load()
+		{	
+			
 		}
-		protected abstract bool LoadFromMetadata();
 	}
 }

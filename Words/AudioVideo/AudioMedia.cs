@@ -3,17 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Words.Core;
+using System.IO;
 
 namespace Words.AudioVideo
 {
-	[MediaType("Audio-Dateien", ".mp3")]
+	// TODO: in order to play Audio using WPF the presentation needs to be shown (which is just a black screen). This might be confusing.
 	public class AudioMedia : AudioVideoMedia
 	{
-		protected override bool LoadFromMetadata()
-		{
-			return true;
-		}
-
 		public override bool HasVideo
 		{
 			get { return false; }

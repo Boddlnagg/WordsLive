@@ -63,7 +63,7 @@ namespace Words
 		private void LoadAttributes(Assembly assembly)
 		{
 			Type[] types = assembly.GetTypes();
-			MediaManager.RegisterMediaTypes(types);
+			MediaManager.RegisterHandlersFromTypes(types);
 			IconProviders.RegisterProvidersFromTypes(types);
 			ControlPanels.RegisterPanelsFromTypes(types);
 
@@ -219,6 +219,7 @@ namespace Words
 
 		public static void FocusMainWindow()
 		{
+			instance.window.Activate();
 			instance.window.Focus();
 		}
 

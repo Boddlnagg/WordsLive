@@ -8,7 +8,6 @@ using System.Text.RegularExpressions;
 
 namespace Words.Core.Songs
 {
-	[MediaType("Powerpraise-Lieder", ".ppl")]
 	public class Song : Media
 	{
 		public string SongTitle { get; set; }
@@ -100,10 +99,9 @@ namespace Words.Core.Songs
 			this.Load(filename);
 		}
 
-		protected override bool LoadFromMetadata()
+		public override void Load()
 		{
 			this.Load(this.File);
-			return true;
 		}
 
 		private void Load(string filename)

@@ -1,15 +1,11 @@
 ﻿using Words.Core;
+using System.Collections.Generic;
+using System.IO;
 
-namespace Words.Slideshow.Powerpoint
+namespace Words.Slideshow.PowerpointViewer
 {
-	[MediaType("Powerpoint-Präsentationen", ".ppt", ".pptx")] // TODO (Slideshow.PowerpointViewer): pptx untested
 	public class PowerpointViewerMedia : SlideshowMedia
 	{
-		protected override bool LoadFromMetadata()
-		{
-			return PowerpointViewerLib.PowerpointViewerController.IsAvailable;
-		}
-
 		public override ISlideshowPresentation CreatePresentation()
 		{
 			var pres = Controller.PresentationManager.CreatePresentation<PowerpointViewerPresentation>();

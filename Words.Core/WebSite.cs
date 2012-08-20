@@ -6,7 +6,6 @@ using System.IO;
 
 namespace Words.Core
 {
-	[MediaType("Webseiten", ".website", ".url")]
 	public class WebSite : Media
 	{
 		public string Url { get; private set; }
@@ -20,7 +19,7 @@ namespace Words.Core
 			}
 		}
 
-		protected override bool LoadFromMetadata()
+		public override void Load()
 		{
 			using (StreamReader reader = new StreamReader(this.File))
 			{
@@ -32,12 +31,10 @@ namespace Words.Core
 					if (line.StartsWith("URL="))
 					{
 						Url = line.Substring(4);
-						return true;
+						return;
 					}
 				}
 			}
-
-			return false;
 		}
 	}
 }

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Windows.Media;
 using Words.Presentation.Wpf;
 
 namespace Words.Slideshow.Photos

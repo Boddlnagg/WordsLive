@@ -102,20 +102,33 @@ namespace Words.MediaOrderList
 			else if (e.Data.GetData(DataFormats.FileDrop) != null)
 			{
 				string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
-				foreach (string f in files)
+
+				IEnumerable<Media> result;
+
+				if (files.Length < 1)
+					return;
+
+				if (files.Length == 1)
 				{
-					IEnumerable<Media> result;
-					if (!MediaManager.TryLoadPortfolio(f, out result))
-					{
-						var item = MediaManager.LoadMediaMetadata(f);
-						if (index < 0)
-							list.Add(item);
-						else
-							list.Insert(index, item);
-					}
+					if (MediaManager.TryLoadPortfolio(files[0], out result))
+						Controller.OpenPortfolio(files[0]);
 					else
 					{
-						Controller.OpenPortfolio(f);
+						Media m = MediaManager.LoadMediaMetadata(files[0]);
+						if (index < 0)
+							list.Add(m);
+						else
+							list.Insert(index, m);
+					}
+				}
+				else
+				{
+					foreach (var m in MediaManager.LoadMultipleMediaMetadata(files))
+					{
+						if (index < 0)
+							list.Add(m);
+						else
+							list.Insert(index, m);
 					}
 				}
 			}
