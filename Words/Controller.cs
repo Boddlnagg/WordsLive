@@ -53,16 +53,32 @@ namespace Words
 
 		private void DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
 		{
-			UnhandledExceptionWindow win = new UnhandledExceptionWindow(e.Exception);
-			win.Owner = window;
-			var result = win.ShowDialog();
-			if (result.HasValue && result.Value == false)
-				e.Handled = true;
+			if (window.IsLoaded)
+			{
+				UnhandledExceptionWindow win = new UnhandledExceptionWindow(e.Exception);
+				win.Owner = window;
+				var result = win.ShowDialog();
+				if (result.HasValue && result.Value == false)
+					e.Handled = true;
+			}
 		}
 
 		private void LoadAttributes(Assembly assembly)
 		{
-			Type[] types = assembly.GetTypes();
+			Type[] types;
+			try
+			{
+				types = assembly.GetTypes();
+			}
+			catch (ReflectionTypeLoadException ex)
+			{
+				foreach (var item in ex.LoaderExceptions)
+				{
+					// TODO: show warning/error
+				}
+				types = ex.Types;
+			}
+
 			MediaManager.RegisterHandlersFromTypes(types);
 			IconProviders.RegisterProvidersFromTypes(types);
 			ControlPanels.RegisterPanelsFromTypes(types);

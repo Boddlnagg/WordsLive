@@ -4,6 +4,8 @@ using Words.Core;
 
 namespace Words.Slideshow.PowerpointViewer
 {
+	// TODO: This currently only works with PowerpointViewer 2007 (older versions untested), not with 2010
+	// and Visual C++ 2010 Redistributable must be installed for pptviewlib.dll to work
 	public class PowerpointFileHandler : MediaFileHandler
 	{
 		public override IEnumerable<string> Extensions

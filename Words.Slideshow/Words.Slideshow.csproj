@@ -31,13 +31,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="cli_basetypes, Version=1.0.19.0, Culture=neutral, PublicKeyToken=ce2cb7e279207b9e, processorArchitecture=MSIL" />
-    <Reference Include="cli_cppuhelper, Version=1.0.22.0, Culture=neutral, PublicKeyToken=ce2cb7e279207b9e, processorArchitecture=x86" />
-    <Reference Include="cli_oootypes, Version=1.0.8.0, Culture=neutral, PublicKeyToken=ce2cb7e279207b9e, processorArchitecture=MSIL" />
-    <Reference Include="cli_ure, Version=1.0.22.0, Culture=neutral, PublicKeyToken=ce2cb7e279207b9e, processorArchitecture=MSIL" />
-    <Reference Include="cli_uretypes, Version=1.0.8.0, Culture=neutral, PublicKeyToken=ce2cb7e279207b9e, processorArchitecture=MSIL" />
-    <Reference Include="Gallio, Version=3.3.0.0, Culture=neutral, PublicKeyToken=eb9cfa67ee6ab36e, processorArchitecture=MSIL" />
-    <Reference Include="MbUnit, Version=3.3.0.0, Culture=neutral, PublicKeyToken=eb9cfa67ee6ab36e, processorArchitecture=MSIL" />
     <Reference Include="PowerpointViewerLib, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86">
       <HintPath>..\..\PowerpointViewerLib\bin\Debug\PowerpointViewerLib.dll</HintPath>
     </Reference>
@@ -55,7 +48,6 @@
   <ItemGroup>
     <Compile Include="Impress\ImpressFileHandler.cs" />
     <Compile Include="Impress\ImpressMedia.cs" />
-    <Compile Include="Impress\ImpressPresentation.cs" />
     <Compile Include="ISlideshowPresentation.cs" />
     <Compile Include="Photos\PhotosFileHandler.cs" />
     <Compile Include="Photos\PhotosMedia.cs" />

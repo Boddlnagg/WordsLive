@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 using Words.Core;
 
 namespace Words.Slideshow.Impress
@@ -22,11 +24,44 @@ namespace Words.Slideshow.Impress
 			if ((file.Extension.ToLower() == ".ppt" || file.Extension.ToLower() == ".pptx") && PowerpointViewerLib.PowerpointViewerController.IsAvailable)
 				return null;
 
-			// TODO (Slideshow.Impress): check if impress is available
+			if (!IsAvailable)
+				return null;
 
-			var media = new ImpressMedia();
+			return null;
+
+			var media = new ImpressMedia(PresentationType);
 			media.LoadMetadata(file.FullName);
 			return media;
+		}
+
+		private bool? isAvailable = null;
+
+		public bool IsAvailable
+		{
+			get
+			{
+				if (!isAvailable.HasValue)
+					TryLoadBridge();
+
+				return isAvailable.Value;
+			}
+		}
+
+		internal Type PresentationType { get; private set; }
+
+		private void TryLoadBridge()
+		{
+			try
+			{
+				var asm = Assembly.LoadFrom("Words.Slideshow.Impress.Bridge.dll");
+				PresentationType = asm.GetType("Words.Slideshow.Impress.Bridge.ImpressPresentation");
+				if (PresentationType != null)
+					isAvailable = true;
+			}
+			catch (ReflectionTypeLoadException)
+			{
+				isAvailable = false;
+			}
 		}
 	}
 }

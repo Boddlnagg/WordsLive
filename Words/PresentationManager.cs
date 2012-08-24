@@ -25,6 +25,20 @@ namespace Words
 			return pres;
 		}
 
+		public IPresentation CreatePresentation(Type t)
+		{
+			if (t.IsClass && !t.IsAbstract && typeof(IPresentation).IsAssignableFrom(t))
+			{
+				var pres = (IPresentation)Activator.CreateInstance(t);
+				pres.Init(this.Area);
+				return pres;
+			}
+			else
+			{
+				throw new InvalidOperationException("Can't create presentation of non-presentation type or abstract class.");
+			}
+		}
+
 		public PresentationArea Area
 		{
 			get

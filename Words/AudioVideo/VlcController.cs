@@ -5,6 +5,7 @@ using System.Text;
 using Vlc.DotNet.Core;
 using Words.Core;
 using System.IO;
+using System.Reflection;
 
 namespace Words.AudioVideo
 {
@@ -16,7 +17,8 @@ namespace Words.AudioVideo
 			{
 				// TODO: returns true if 64-bit VLC is installed,
 				// but this can't be used by 32-bit Words
-				return Directory.Exists(VlcContext.LibVlcDllsPath); 
+				// TODO: make VLC path configurable
+				return Directory.Exists(@"C:\Program Files\VideoLAN\VLC") || Directory.Exists(@"C:\Programme\VideoLAN\VLC");
 			}
 		}
 
@@ -26,6 +28,12 @@ namespace Words.AudioVideo
 		{
 			if (!IsAvailable)
 				throw new InvalidOperationException("VLC is not available (not installed).");
+
+			string path;
+			if (Directory.Exists(@"C:\Program Files\VideoLAN\VLC"))
+				path = @"C:\Program Files\VideoLAN\VLC";
+			else
+				path = @"C:\Programme\VideoLAN\VLC";
 
 			//Set libvlc.dll and libvlccore.dll directory path
 			//VlcContext.LibVlcDllsPath = CommonStrings.LIBVLC_DLLS_PATH_DEFAULT_VALUE_AMD64;
@@ -40,8 +48,8 @@ namespace Words.AudioVideo
 			//VlcContext.StartupOptions.LogOptions.ShowLoggerConsole = true;
 			VlcContext.StartupOptions.LogOptions.Verbosity = VlcLogVerbosities.Debug;
 			VlcContext.StartupOptions.AddOption("--no-osd");
-			VlcContext.LibVlcDllsPath = @"C:\Program Files\VideoLAN\VLC";
-			VlcContext.LibVlcPluginsPath = @"C:\Program Files\VideoLAN\VLC\plugins";
+			VlcContext.LibVlcDllsPath = path;
+			VlcContext.LibVlcPluginsPath = path + @"\plugins";
 
 			//Initialize the VlcContext
 			try
@@ -51,6 +59,10 @@ namespace Words.AudioVideo
 			catch (FileNotFoundException)
 			{
 				throw new InvalidOperationException("VLC is not available (libvlc not found). Try installing the 32-bit version of VLC.");
+			}
+			catch (TargetInvocationException)
+			{
+				throw new InvalidOperationException("VLC could not be loaded. Try installing the latest version (or any version >= 1.2).");
 			}
 
 			IsInitialized = true;

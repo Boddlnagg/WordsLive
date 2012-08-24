@@ -20,6 +20,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Words.Slideshow", "Words.Sl
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Words.Awesomium", "Words.Awesomium\Words.Awesomium.csproj", "{2114F490-5C8F-4BEC-BC84-E0B91F769F83}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Words.Slideshow.Impress.Bridge", "Words.Slideshow.Impress.Bridge\Words.Slideshow.Impress.Bridge.csproj", "{7B989242-0A40-4E64-B976-751E01810525}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -104,6 +106,16 @@ Global
 		{2114F490-5C8F-4BEC-BC84-E0B91F769F83}.Release|Mixed Platforms.Build.0 = Release|x86
 		{2114F490-5C8F-4BEC-BC84-E0B91F769F83}.Release|x86.ActiveCfg = Release|x86
 		{2114F490-5C8F-4BEC-BC84-E0B91F769F83}.Release|x86.Build.0 = Release|x86
+		{7B989242-0A40-4E64-B976-751E01810525}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7B989242-0A40-4E64-B976-751E01810525}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7B989242-0A40-4E64-B976-751E01810525}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{7B989242-0A40-4E64-B976-751E01810525}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{7B989242-0A40-4E64-B976-751E01810525}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{7B989242-0A40-4E64-B976-751E01810525}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7B989242-0A40-4E64-B976-751E01810525}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7B989242-0A40-4E64-B976-751E01810525}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{7B989242-0A40-4E64-B976-751E01810525}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{7B989242-0A40-4E64-B976-751E01810525}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
