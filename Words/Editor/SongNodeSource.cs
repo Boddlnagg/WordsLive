@@ -22,7 +22,7 @@ namespace Words.Editor
         public SongNodeSource(SongNodeRoot root, SongSource source) : base(root)
         {
             this.source = source;
-            this.Title = "Quelle";
+            this.Title = Words.Resources.Resource.eMetadataSourceTitle;
         }
 
         public string Songbook

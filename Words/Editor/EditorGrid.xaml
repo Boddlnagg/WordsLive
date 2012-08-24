@@ -6,6 +6,7 @@
 			 xmlns:local="clr-namespace:Words.Editor"
 			 xmlns:songs="clr-namespace:Words.Songs"
 			 xmlns:my="clr-namespace:Words"
+			 xmlns:resx="clr-namespace:Words.Resources"
 			 mc:Ignorable="d" 
 			 d:DesignHeight="400" d:DesignWidth="800">
 	<Grid.CommandBindings>
@@ -22,8 +23,7 @@
 		<songs:SongBackgroundToImageSourceConverter x:Key="backgroundConverter" />
 		<TextBox x:Key="editTextBox"
 			AcceptsReturn="True" IsUndoEnabled="False"
-			Text="{Binding ElementName=StructureTree, Path=SelectedItem.Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-			SpellCheck.IsEnabled="{Binding ElementName=EnableSpellCheckCheckBox, Path=IsChecked, Mode=OneWay}"/>
+			Text="{Binding ElementName=StructureTree, Path=SelectedItem.Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 		<Grid x:Key="editTextWithTranslation" Background="White">
 			<Grid.ColumnDefinitions>
 				<ColumnDefinition Width="*"/>
@@ -37,7 +37,7 @@
 			<Expander Grid.Column="2" ExpandDirection="Left" IsExpanded="{Binding ElementName=StructureTree,Path=SelectedItem.Root.Song.HasTranslation, Mode=OneTime}"
 					  Expanded="TranslationExpanderExpandedCollapsed" Collapsed="TranslationExpanderExpandedCollapsed" >
 				<Expander.Header>
-					<TextBlock Text="Übersetzung">
+					<TextBlock Text="{x:Static resx:Resource.eGridTranslation}">
 						<TextBlock.LayoutTransform>
 							<RotateTransform Angle="90"/>
 						</TextBlock.LayoutTransform>
@@ -48,6 +48,7 @@
 			</Expander>
 		</Grid>
 		<ComboBox x:Key="editLanguageComboBox" Margin="10" Height="24" VerticalAlignment="Top" IsEditable="True" Text="{Binding ElementName=StructureTree,Path=SelectedItem.Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+			<!-- TODO: localize -->
 			<ComboBoxItem>Deutsch</ComboBoxItem>
 			<ComboBoxItem>Schweizerdeutsch</ComboBoxItem>
 			<ComboBoxItem>Englisch</ComboBoxItem>
@@ -64,9 +65,9 @@
 				<RowDefinition Height="Auto"></RowDefinition>
 				<RowDefinition Height="Auto"></RowDefinition>
 			</Grid.RowDefinitions>
-			<Label Grid.Column="0" Grid.Row="0">Buch:</Label>
+			<Label Grid.Column="0" Grid.Row="0" Content="{x:Static resx:Resource.eGridSourceSongbookLabel}"/>
 			<TextBox Grid.Column="1" Grid.Row="0" Margin="0,2,0,2" IsUndoEnabled="False" Text="{Binding ElementName=StructureTree, Path=SelectedItem.Songbook, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-			<Label Grid.Column="0" Grid.Row="1">Nummer:</Label>
+			<Label Grid.Column="0" Grid.Row="1" Content="{x:Static resx:Resource.eGridSourceNumberLabel}"/>
 			<TextBox Grid.Column="1" Grid.Row="1" IsUndoEnabled="False" Text="{Binding ElementName=StructureTree, Path=SelectedItem.Number, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 		</Grid>
 	</Grid.Resources>
@@ -119,25 +120,12 @@
 		<DockPanel.Resources>
 			<Style TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"/>
 		</DockPanel.Resources>
-		<Button ToolTip="Folie/Liedteil hinzufügen" Command="{x:Static my:CustomCommands.Insert}" HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="0,2" DockPanel.Dock="Right" Focusable="False">
-			<!--<Button.Style>
-				<Style TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
-					<Style.Triggers>
-						<DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Grid}}, Path=SelectedPart}" Value="{x:Null}">
-							<Setter Property="Opacity" Value="0.5" />
-							<Setter Property="IsEnabled" Value="False" />
-						</DataTrigger>
-					</Style.Triggers>
-				</Style>
-			</Button.Style>-->
+		<Button ToolTip="{x:Static resx:Resource.eGridAddElementButton}" Command="{x:Static my:CustomCommands.Insert}" HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="0,2" DockPanel.Dock="Right" Focusable="False">
 			<Image Width="16" Height="16" Source="/Words;component/Artwork/Small_Plus.png" />
 		</Button>
-		<!--<Button ToolTip="Liedteil hinzufügen" Command="{x:Static my:CustomCommands.AddPart}" HorizontalAlignment="Left" VerticalAlignment="Stretch" DockPanel.Dock="Right" Margin="0,2" Focusable="False">
-			<Image Width="16" Height="16" Source="/Words;component/Artwork/Small_NewPart.png" />
-		</Button>-->
 		<TextBlock
 			Padding="5"
-			Text="Liedteile" />
+			Text="{x:Static resx:Resource.eGridPartsHeader}" />
 	</DockPanel>
 	<TreeView
 		x:Name="StructureTree" ItemsSource="{Binding}"
@@ -155,9 +143,9 @@
 				<TextBlock Text="{Binding Title}">
 					<TextBlock.ContextMenu>
 						<ContextMenu>
-							<MenuItem Header="Umbenennen" Command="{x:Static my:CustomCommands.Rename}" CommandParameter="{Binding}"/>
-							<MenuItem Header="Liedteil entfernen" Command="Delete" CommandParameter="{Binding}"/>
-							<MenuItem Header="Folie hinzufügen" Command="{x:Static my:CustomCommands.Insert}" CommandParameter="{Binding}"/>
+							<MenuItem Header="{x:Static resx:Resource.eGridContextRename}" Command="{x:Static my:CustomCommands.Rename}" CommandParameter="{Binding}"/>
+							<MenuItem Header="{x:Static resx:Resource.eGridContextRemovePart}" Command="Delete" CommandParameter="{Binding}"/>
+							<MenuItem Header="{x:Static resx:Resource.eGridContextAddSlide}" Command="{x:Static my:CustomCommands.Insert}" CommandParameter="{Binding}"/>
 						</ContextMenu>
 					</TextBlock.ContextMenu>
 				</TextBlock>
@@ -167,8 +155,8 @@
 				<TextBlock Text="{Binding Title}">
 					<TextBlock.ContextMenu>
 						<ContextMenu>
-							<MenuItem Header="Lied umbenennen" Command="{x:Static my:CustomCommands.Rename}" CommandParameter="{Binding}"/>
-							<MenuItem Header="Liedteil hinzufügen" Command="{x:Static my:CustomCommands.Insert}" CommandParameter="{Binding}"/>
+							<MenuItem Header="{x:Static resx:Resource.eGridContextRenameSong}" Command="{x:Static my:CustomCommands.Rename}" CommandParameter="{Binding}"/>
+							<MenuItem Header="{x:Static resx:Resource.eGridContextAddPart}" Command="{x:Static my:CustomCommands.Insert}" CommandParameter="{Binding}"/>
 						</ContextMenu>
 					</TextBlock.ContextMenu>
 				</TextBlock>
@@ -178,8 +166,8 @@
 				<TextBlock Text="{Binding Title}">
 					<TextBlock.ContextMenu>
 						<ContextMenu>
-							<MenuItem Header="Folie entfernen" Command="Delete" CommandParameter="{Binding}"/>
-							<MenuItem Header="Folie duplizieren" Command="{x:Static my:CustomCommands.Duplicate}" CommandParameter="{Binding}"/>
+							<MenuItem Header="{x:Static resx:Resource.eGridContextRemoveSlide}" Command="Delete" CommandParameter="{Binding}"/>
+							<MenuItem Header="{x:Static resx:Resource.eGridContextDuplicateSlide}" Command="{x:Static my:CustomCommands.Duplicate}" CommandParameter="{Binding}"/>
 						</ContextMenu>
 					</TextBlock.ContextMenu>
 				</TextBlock>
@@ -197,7 +185,7 @@
 		Grid.Row="0"
 		Grid.Column="2"
 		Padding="5"
-		Text="Vorschau"
+		Text="{x:Static resx:Resource.eGridPreviewHeader}"
 		Background="{DynamicResource HeaderGradientBrush}"
 		Height="26"
 		VerticalAlignment="Top" />
@@ -217,8 +205,7 @@
 		<DockPanel.Resources>
 			<Style TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"/>
 		</DockPanel.Resources>
-		<!-- TODO: create global setting for this checkbox -->
-		<CheckBox x:Name="EnableSpellCheckCheckBox" DockPanel.Dock="Right" VerticalAlignment="Center" IsEnabled="False">Rechtschreibprüfung</CheckBox>
+		<CheckBox x:Name="EnableSpellCheckCheckBox" DockPanel.Dock="Right" VerticalAlignment="Center" IsEnabled="False" IsChecked="{Binding Source={StaticResource settings}, Path=Default.EditorEnableSpellCheck, Mode=TwoWay}" Content="{x:Static resx:Resource.eGridSpellCheckCheckbox}"/>
 		<TextBlock x:Name="EditHeader" Padding="5"/>
 	</DockPanel>
 	<Border Grid.Row="2"
@@ -245,17 +232,17 @@
 		</DockPanel.Resources>
 		<TextBlock
 		Padding="5"
-		Text="Liedablauf"/>
-		<Button Tag="Remove" ToolTip="Liedteil aus dem Ablauf entfernen"  HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="0,2" DockPanel.Dock="Right" Focusable="False" Click="PartOrderButton_Click">
+		Text="{x:Static resx:Resource.eGridOrderHeader}"/>
+		<Button Tag="Remove" ToolTip="{x:Static resx:Resource.eGridOrderRemoveButton}"  HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="0,2" DockPanel.Dock="Right" Focusable="False" Click="PartOrderButton_Click">
 			<Image Width="16" Height="16" Source="/Words;component/Artwork/Small_Delete.png" />
 		</Button>
-		<Button Tag="MoveDown" ToolTip="Liedteil im Ablauf nach unten schieben"  HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="0,2" DockPanel.Dock="Right" Focusable="False" Click="PartOrderButton_Click">
+		<Button Tag="MoveDown" ToolTip="{x:Static resx:Resource.eGridOrderMoveDownButton}"  HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="0,2" DockPanel.Dock="Right" Focusable="False" Click="PartOrderButton_Click">
 			<Image Width="16" Height="16" Source="/Words;component/Artwork/Small_DownArrow.png" />
 		</Button>
-		<Button Tag="MoveUp" ToolTip="Liedteil im Ablauf nach oben schieben"  HorizontalAlignment="Left" VerticalAlignment="Stretch" DockPanel.Dock="Right" Margin="0,2" Focusable="False" Click="PartOrderButton_Click">
+		<Button Tag="MoveUp" ToolTip="{x:Static resx:Resource.eGridOrderMoveUpButton}"  HorizontalAlignment="Left" VerticalAlignment="Stretch" DockPanel.Dock="Right" Margin="0,2" Focusable="False" Click="PartOrderButton_Click">
 			<Image Width="16" Height="16" Source="/Words;component/Artwork/Small_UpArrow.png" />
 		</Button>
-		<Button Tag="Add" ToolTip="Ausgewählten Liedteil zum Ablauf hinzufügen"  HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="0,2" DockPanel.Dock="Right" Focusable="False" Click="PartOrderButton_Click">
+		<Button Tag="Add" ToolTip="{x:Static resx:Resource.eGridOrderAddButton}"  HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="0,2" DockPanel.Dock="Right" Focusable="False" Click="PartOrderButton_Click">
 			<Button.Style>
 				<Style TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
 					<Style.Triggers>
@@ -269,7 +256,7 @@
 			<Image Width="16" Height="16" Source="/Words;component/Artwork/Small_Plus.png" />
 		</Button>
 		<CheckBox x:Name="showSlidesCheckBox" VerticalAlignment="Center" DockPanel.Dock="Right" IsChecked="True" Margin="2,0">
-			<TextBlock TextTrimming="CharacterEllipsis" ToolTip="{Binding Path=Text, RelativeSource={RelativeSource Self}}">Folien anzeigen</TextBlock>
+			<TextBlock TextTrimming="CharacterEllipsis" ToolTip="{Binding Path=Text, RelativeSource={RelativeSource Self}}" Text="{x:Static resx:Resource.eGridOrderShowSlidesCheckbox}"/>
 		</CheckBox>
 	</DockPanel>
 

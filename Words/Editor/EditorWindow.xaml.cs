@@ -139,7 +139,7 @@ namespace Words.Editor
 				template = Path.Combine("Data", "Standard.ppl");
 			}
 
-			Load(new Song(template) { SongTitle = "Neues Lied" });
+			Load(new Song(template) { SongTitle = Words.Resources.Resource.eNewSongTitle });
 		}
 
 		private bool CloseSong(EditorDocument doc)
@@ -149,7 +149,7 @@ namespace Words.Editor
 
 			if (doc.IsModified)
 			{
-				var res = MessageBox.Show("Das Lied \"" + doc.Song.SongTitle + "\" enthält möglicherweise ungespeicherte Änderungen. Wollen Sie es speichern?", "Änderungen speichern?", MessageBoxButton.YesNoCancel);
+				var res = MessageBox.Show(String.Format(Words.Resources.Resource.eMsgSaveSongChanges, doc.Song.SongTitle), Words.Resources.Resource.eMsgSaveSongChangesTitle, MessageBoxButton.YesNoCancel);
 				if (res == MessageBoxResult.Cancel)
 				{
 					return false;
@@ -179,7 +179,7 @@ namespace Words.Editor
 				bg = doc.Song.Backgrounds[0];
 			else
 			{
-				MessageBox.Show("Bitte wählen Sie entweder das Lied, einen Liedteil oder eine Folie aus.");
+				MessageBox.Show(Words.Resources.Resource.eMsgSelectElement);
 				return;
 			}
 

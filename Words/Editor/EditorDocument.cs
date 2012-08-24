@@ -53,32 +53,32 @@ namespace Words.Editor
 			}
 		}
 
-		private string GetChangesetText(ChangeSet set)
-		{
-			if (set.Changes.Count() == 0)
-			{
-				return set.Description;
-			}
-			else
-			{
-				string name;
-				object target = set.Changes.First().Target;
-				if (target is SongNodeRoot)
-					name = "Lied";
-				else if (target is SongNodePart)
-					name = "Liedteil";
-				else if (target is SongNodeSlide)
-					name = "Folie";
-				else if (target is SongNodeSource)
-					name = "Quelle";
-				else if (target is SongNodeMetadata)
-					name = (target as SongNodeMetadata).Title;
-				else
-					throw new InvalidOperationException();
+		//private string GetChangesetText(ChangeSet set)
+		//{
+		//    if (set.Changes.Count() == 0)
+		//    {
+		//        return set.Description;
+		//    }
+		//    else
+		//    {
+		//        string name;
+		//        object target = set.Changes.First().Target;
+		//        if (target is SongNodeRoot)
+		//            name = "Lied";
+		//        else if (target is SongNodePart)
+		//            name = "Liedteil";
+		//        else if (target is SongNodeSlide)
+		//            name = "Folie";
+		//        else if (target is SongNodeSource)
+		//            name = "Quelle";
+		//        else if (target is SongNodeMetadata)
+		//            name = (target as SongNodeMetadata).Title;
+		//        else
+		//            throw new InvalidOperationException();
 
-				return set.Description + " in " + name;
-			}
-		}
+		//        return set.Description + " in " + name;
+		//    }
+		//}
 
 		private bool isModified;
 

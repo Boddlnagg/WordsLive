@@ -375,4 +375,184 @@
   <data name="seWarningRelaunch" xml:space="preserve">
     <value>Achtung: Änderungen in diesem Bereich werden erst nach einem Neustart gültig.</value>
   </data>
+  <data name="eGridAddElementButton" xml:space="preserve">
+    <value>Folie/Liedteil hinzufügen</value>
+  </data>
+  <data name="eGridContextAddPart" xml:space="preserve">
+    <value>Liedteil hinzufügen</value>
+  </data>
+  <data name="eGridContextAddSlide" xml:space="preserve">
+    <value>Folie hinzufügen</value>
+  </data>
+  <data name="eGridContextDuplicateSlide" xml:space="preserve">
+    <value>Folie duplizieren</value>
+  </data>
+  <data name="eGridContextRemovePart" xml:space="preserve">
+    <value>Liedteil entfernen</value>
+  </data>
+  <data name="eGridContextRemoveSlide" xml:space="preserve">
+    <value>Folie entfernen</value>
+  </data>
+  <data name="eGridContextRename" xml:space="preserve">
+    <value>Umbenennen</value>
+  </data>
+  <data name="eGridContextRenameSong" xml:space="preserve">
+    <value>Lied umbenennen</value>
+  </data>
+  <data name="eGridOrderAddButton" xml:space="preserve">
+    <value>Ausgewählten Liedteil zum Ablauf hinzufügen</value>
+  </data>
+  <data name="eGridOrderHeader" xml:space="preserve">
+    <value>Liedablauf</value>
+  </data>
+  <data name="eGridOrderMoveDownButton" xml:space="preserve">
+    <value>Liedteil im Ablauf nach unten schieben</value>
+  </data>
+  <data name="eGridOrderMoveUpButton" xml:space="preserve">
+    <value>Liedteil im Ablauf nach oben schieben</value>
+  </data>
+  <data name="eGridOrderRemoveButton" xml:space="preserve">
+    <value>Liedteil aus dem Ablauf entfernen</value>
+  </data>
+  <data name="eGridOrderShowSlidesCheckbox" xml:space="preserve">
+    <value>Folien anzeigen</value>
+  </data>
+  <data name="eGridPartsHeader" xml:space="preserve">
+    <value>Liedteile</value>
+  </data>
+  <data name="eGridPreviewHeader" xml:space="preserve">
+    <value>Vorschau</value>
+  </data>
+  <data name="eGridSlideTitle" xml:space="preserve">
+    <value>Folie</value>
+  </data>
+  <data name="eGridSourceNumberLabel" xml:space="preserve">
+    <value>Nummer:</value>
+  </data>
+  <data name="eGridSourceSongbookLabel" xml:space="preserve">
+    <value>Buch:</value>
+  </data>
+  <data name="eGridSpellCheckCheckbox" xml:space="preserve">
+    <value>Rechtschreibprüfung</value>
+  </data>
+  <data name="eGridTextHeader" xml:space="preserve">
+    <value>Folientext</value>
+  </data>
+  <data name="eGridTranslation" xml:space="preserve">
+    <value>Übersetzung</value>
+  </data>
+  <data name="eMenuCloseSong" xml:space="preserve">
+    <value>Lied schließen</value>
+  </data>
+  <data name="eMenuEdit" xml:space="preserve">
+    <value>_Bearbeiten</value>
+  </data>
+  <data name="eMenuEditChords" xml:space="preserve">
+    <value>Akkorde bearbeiten ...</value>
+  </data>
+  <data name="eMenuFile" xml:space="preserve">
+    <value>_Datei</value>
+  </data>
+  <data name="eMenuFormatSong" xml:space="preserve">
+    <value>Lied formatieren ...</value>
+  </data>
+  <data name="eMenuNewSong" xml:space="preserve">
+    <value>Neues Lied</value>
+  </data>
+  <data name="eMenuOpenSong" xml:space="preserve">
+    <value>Lied öffnen</value>
+  </data>
+  <data name="eMenuRedo" xml:space="preserve">
+    <value>Wieder_holen</value>
+  </data>
+  <data name="eMenuSaveSong" xml:space="preserve">
+    <value>Lied speichern</value>
+  </data>
+  <data name="eMenuSaveSongAs" xml:space="preserve">
+    <value>Lied speichern unter ...</value>
+  </data>
+  <data name="eMenuSplitTextAtCursor" xml:space="preserve">
+    <value>Text an Cursorposition auf zwei Folien aufteilen</value>
+  </data>
+  <data name="eMenuUndo" xml:space="preserve">
+    <value>_Rückgängig</value>
+  </data>
+  <data name="eMetadataCategoryTitle" xml:space="preserve">
+    <value>Kategorie</value>
+  </data>
+  <data name="eMetadataCopyrightTitle" xml:space="preserve">
+    <value>Copyright</value>
+  </data>
+  <data name="eMetadataLanguageTitle" xml:space="preserve">
+    <value>Sprache</value>
+  </data>
+  <data name="eMetadataSourceTitle" xml:space="preserve">
+    <value>Quelle</value>
+  </data>
+  <data name="eMsgSaveSongChanges" xml:space="preserve">
+    <value>Das Lied "{0}" enthält möglicherweise ungespeicherte Änderungen. Wollen Sie es speichern?</value>
+  </data>
+  <data name="eMsgSaveSongChangesTitle" xml:space="preserve">
+    <value>Änderungen speichern?</value>
+  </data>
+  <data name="eMsgSelectElement" xml:space="preserve">
+    <value>Bitte wählen Sie entweder das Lied, einen Liedteil oder eine Folie aus.</value>
+  </data>
+  <data name="eNewSongTitle" xml:space="preserve">
+    <value>Neues Lied</value>
+  </data>
+  <data name="eToolbarChangeBackground" xml:space="preserve">
+    <value>Hintergrund für ausgewähltes Element ändern</value>
+  </data>
+  <data name="eToolbarDecreaseFontSize" xml:space="preserve">
+    <value>Schriftgröße verringern</value>
+  </data>
+  <data name="eToolbarIncreaseFontSize" xml:space="preserve">
+    <value>Schriftgröße erhöhen</value>
+  </data>
+  <data name="eToolbarNewSong" xml:space="preserve">
+    <value>Neues Lied</value>
+  </data>
+  <data name="eToolbarOpenSong" xml:space="preserve">
+    <value>Lied öffnen</value>
+  </data>
+  <data name="eToolbarRedo" xml:space="preserve">
+    <value>Wiederholen</value>
+  </data>
+  <data name="eToolbarSaveAndReload" xml:space="preserve">
+    <value>Lied speichern und aktive Präsentation neu laden</value>
+  </data>
+  <data name="eToolbarSaveSong" xml:space="preserve">
+    <value>Lied speichern</value>
+  </data>
+  <data name="eToolbarShowChords" xml:space="preserve">
+    <value>Liedakkorde anzeigen</value>
+  </data>
+  <data name="eToolbarShowPresenter" xml:space="preserve">
+    <value>Präsentationsfenster anzeigen</value>
+  </data>
+  <data name="eToolbarUndo" xml:space="preserve">
+    <value>Rückgängig</value>
+  </data>
+  <data name="rpMsgNameAlreadyExists" xml:space="preserve">
+    <value>Ein Liedteil mit diesem Namen existiert bereits.</value>
+  </data>
+  <data name="rpMsgNameMustNotBeEmpty" xml:space="preserve">
+    <value>Der Name darf nicht leer sein.</value>
+  </data>
+  <data name="rpNewNameLabel" xml:space="preserve">
+    <value>Neuer Name:</value>
+  </data>
+  <data name="rpTitle" xml:space="preserve">
+    <value>Liedteil benennen</value>
+  </data>
+  <data name="rsMsgNameMustNotBeEmpty" xml:space="preserve">
+    <value>Der Name darf nicht leer sein.</value>
+  </data>
+  <data name="rsNewNameLabel" xml:space="preserve">
+    <value>Neuer Name:</value>
+  </data>
+  <data name="rsTitle" xml:space="preserve">
+    <value>Lied umbenennen</value>
+  </data>
 </root>

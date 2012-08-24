@@ -57,7 +57,7 @@ namespace Words.Editor
                 {
                     case "SongName":
                         if (string.IsNullOrEmpty(this.songName))
-                            return "Der Name darf nicht leer sein.";
+                            return Words.Resources.Resource.rsMsgNameMustNotBeEmpty;
                         break;
                 }
                 return null;

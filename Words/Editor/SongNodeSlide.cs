@@ -163,13 +163,13 @@ namespace Words.Editor
 
 		public SongNodeSlide(SongNodeRoot root, SongSlide slide) : base(root)
 		{
-			this.Title = "Folie";
+			this.Title = Words.Resources.Resource.eGridSlideTitle;
 			this.slide = slide;
 		}
 
 		public SongNodeSlide(SongNodeRoot root) : base(root)
 		{
-			this.Title = "Folie";
+			this.Title = Words.Resources.Resource.eGridSlideTitle;
 			this.slide = new SongSlide();
 			this.FontSize = Root.Song.Formatting.MainText.Size;
 		}

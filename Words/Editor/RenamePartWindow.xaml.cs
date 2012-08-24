@@ -5,9 +5,6 @@ using Words.Utils;
 
 namespace Words.Editor
 {
-    /// <summary>
-    /// Interaktionslogik für RenamePartWindow.xaml
-    /// </summary>
     public partial class RenamePartWindow : Window, INotifyPropertyChanged, IDataErrorInfo
     {
         SongNodeRoot song;
@@ -87,12 +84,12 @@ namespace Words.Editor
                 { 
                     case "PartName":
                         if (string.IsNullOrEmpty(this.partName))
-                            return "Der Name darf nicht leer sein.";
+                            return Words.Resources.Resource.rpMsgNameMustNotBeEmpty;
 
                         foreach (var part in this.song.Parts)
                         {
                             if (this.partName == part.Title && !(part == this.part && this.part != null))
-                                return "Ein Liedteil mit diesem Namen existiert bereits.";
+                                return Words.Resources.Resource.rpMsgNameAlreadyExists;
                         }
                         break;
                 }

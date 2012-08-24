@@ -9,9 +9,32 @@ namespace Words.Editor
 {
 	public class SongNodeMetadata : SongNode
 	{
-		public SongNodeMetadata(SongNodeRoot root, string title, string initValue, Action<string> updateSource) : base(root)
+		public enum MetadataKind
 		{
-			this.Title = title;
+			Copyright,
+			Language,
+			Category
+		}
+
+		private static string GetTitleFromKind(MetadataKind kind)
+		{
+			switch(kind)
+			{
+				case MetadataKind.Copyright:
+					return Words.Resources.Resource.eMetadataCopyrightTitle;
+				case MetadataKind.Language:
+					return Words.Resources.Resource.eMetadataLanguageTitle;
+				case MetadataKind.Category:
+					return Words.Resources.Resource.eMetadataCategoryTitle;
+				default:
+					throw new ArgumentException("kind");
+			}
+		}
+
+		public SongNodeMetadata(SongNodeRoot root, MetadataKind kind, string initValue, Action<string> updateSource) : base(root)
+		{
+			this.Kind = kind;
+			this.Title = GetTitleFromKind(Kind);
 			this.Text = initValue;
 
 			this.PropertyChanged += (sender, args) =>
@@ -22,6 +45,8 @@ namespace Words.Editor
 				}
 			};
 		}
+
+		public MetadataKind Kind { get; private set; }
 
 		private string text;
 		public string Text

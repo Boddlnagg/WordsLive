@@ -115,6 +115,483 @@ namespace Words.Resources {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Folie/Liedteil hinzufügen ähnelt.
+        /// </summary>
+        public static string eGridAddElementButton {
+            get {
+                return ResourceManager.GetString("eGridAddElementButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Liedteil hinzufügen ähnelt.
+        /// </summary>
+        public static string eGridContextAddPart {
+            get {
+                return ResourceManager.GetString("eGridContextAddPart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Folie hinzufügen ähnelt.
+        /// </summary>
+        public static string eGridContextAddSlide {
+            get {
+                return ResourceManager.GetString("eGridContextAddSlide", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Folie duplizieren ähnelt.
+        /// </summary>
+        public static string eGridContextDuplicateSlide {
+            get {
+                return ResourceManager.GetString("eGridContextDuplicateSlide", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Liedteil entfernen ähnelt.
+        /// </summary>
+        public static string eGridContextRemovePart {
+            get {
+                return ResourceManager.GetString("eGridContextRemovePart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Folie entfernen ähnelt.
+        /// </summary>
+        public static string eGridContextRemoveSlide {
+            get {
+                return ResourceManager.GetString("eGridContextRemoveSlide", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Umbenennen ähnelt.
+        /// </summary>
+        public static string eGridContextRename {
+            get {
+                return ResourceManager.GetString("eGridContextRename", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Lied umbenennen ähnelt.
+        /// </summary>
+        public static string eGridContextRenameSong {
+            get {
+                return ResourceManager.GetString("eGridContextRenameSong", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Ausgewählten Liedteil zum Ablauf hinzufügen ähnelt.
+        /// </summary>
+        public static string eGridOrderAddButton {
+            get {
+                return ResourceManager.GetString("eGridOrderAddButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Liedablauf ähnelt.
+        /// </summary>
+        public static string eGridOrderHeader {
+            get {
+                return ResourceManager.GetString("eGridOrderHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Liedteil im Ablauf nach unten schieben ähnelt.
+        /// </summary>
+        public static string eGridOrderMoveDownButton {
+            get {
+                return ResourceManager.GetString("eGridOrderMoveDownButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Liedteil im Ablauf nach oben schieben ähnelt.
+        /// </summary>
+        public static string eGridOrderMoveUpButton {
+            get {
+                return ResourceManager.GetString("eGridOrderMoveUpButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Liedteil aus dem Ablauf entfernen ähnelt.
+        /// </summary>
+        public static string eGridOrderRemoveButton {
+            get {
+                return ResourceManager.GetString("eGridOrderRemoveButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Folien anzeigen ähnelt.
+        /// </summary>
+        public static string eGridOrderShowSlidesCheckbox {
+            get {
+                return ResourceManager.GetString("eGridOrderShowSlidesCheckbox", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Liedteile ähnelt.
+        /// </summary>
+        public static string eGridPartsHeader {
+            get {
+                return ResourceManager.GetString("eGridPartsHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Vorschau ähnelt.
+        /// </summary>
+        public static string eGridPreviewHeader {
+            get {
+                return ResourceManager.GetString("eGridPreviewHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Folie ähnelt.
+        /// </summary>
+        public static string eGridSlideTitle {
+            get {
+                return ResourceManager.GetString("eGridSlideTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Nummer: ähnelt.
+        /// </summary>
+        public static string eGridSourceNumberLabel {
+            get {
+                return ResourceManager.GetString("eGridSourceNumberLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Buch: ähnelt.
+        /// </summary>
+        public static string eGridSourceSongbookLabel {
+            get {
+                return ResourceManager.GetString("eGridSourceSongbookLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Rechtschreibprüfung ähnelt.
+        /// </summary>
+        public static string eGridSpellCheckCheckbox {
+            get {
+                return ResourceManager.GetString("eGridSpellCheckCheckbox", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Folientext ähnelt.
+        /// </summary>
+        public static string eGridTextHeader {
+            get {
+                return ResourceManager.GetString("eGridTextHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Übersetzung ähnelt.
+        /// </summary>
+        public static string eGridTranslation {
+            get {
+                return ResourceManager.GetString("eGridTranslation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Lied schließen ähnelt.
+        /// </summary>
+        public static string eMenuCloseSong {
+            get {
+                return ResourceManager.GetString("eMenuCloseSong", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die _Bearbeiten ähnelt.
+        /// </summary>
+        public static string eMenuEdit {
+            get {
+                return ResourceManager.GetString("eMenuEdit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Akkorde bearbeiten ... ähnelt.
+        /// </summary>
+        public static string eMenuEditChords {
+            get {
+                return ResourceManager.GetString("eMenuEditChords", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die _Datei ähnelt.
+        /// </summary>
+        public static string eMenuFile {
+            get {
+                return ResourceManager.GetString("eMenuFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Lied formatieren ... ähnelt.
+        /// </summary>
+        public static string eMenuFormatSong {
+            get {
+                return ResourceManager.GetString("eMenuFormatSong", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Neues Lied ähnelt.
+        /// </summary>
+        public static string eMenuNewSong {
+            get {
+                return ResourceManager.GetString("eMenuNewSong", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Lied öffnen ähnelt.
+        /// </summary>
+        public static string eMenuOpenSong {
+            get {
+                return ResourceManager.GetString("eMenuOpenSong", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Wieder_holen ähnelt.
+        /// </summary>
+        public static string eMenuRedo {
+            get {
+                return ResourceManager.GetString("eMenuRedo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Lied speichern ähnelt.
+        /// </summary>
+        public static string eMenuSaveSong {
+            get {
+                return ResourceManager.GetString("eMenuSaveSong", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Lied speichern unter ... ähnelt.
+        /// </summary>
+        public static string eMenuSaveSongAs {
+            get {
+                return ResourceManager.GetString("eMenuSaveSongAs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Text an Cursorposition auf zwei Folien aufteilen ähnelt.
+        /// </summary>
+        public static string eMenuSplitTextAtCursor {
+            get {
+                return ResourceManager.GetString("eMenuSplitTextAtCursor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die _Rückgängig ähnelt.
+        /// </summary>
+        public static string eMenuUndo {
+            get {
+                return ResourceManager.GetString("eMenuUndo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Kategorie ähnelt.
+        /// </summary>
+        public static string eMetadataCategoryTitle {
+            get {
+                return ResourceManager.GetString("eMetadataCategoryTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Copyright ähnelt.
+        /// </summary>
+        public static string eMetadataCopyrightTitle {
+            get {
+                return ResourceManager.GetString("eMetadataCopyrightTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Sprache ähnelt.
+        /// </summary>
+        public static string eMetadataLanguageTitle {
+            get {
+                return ResourceManager.GetString("eMetadataLanguageTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Quelle ähnelt.
+        /// </summary>
+        public static string eMetadataSourceTitle {
+            get {
+                return ResourceManager.GetString("eMetadataSourceTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Das Lied &quot;{0}&quot; enthält möglicherweise ungespeicherte Änderungen. Wollen Sie es speichern? ähnelt.
+        /// </summary>
+        public static string eMsgSaveSongChanges {
+            get {
+                return ResourceManager.GetString("eMsgSaveSongChanges", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Änderungen speichern? ähnelt.
+        /// </summary>
+        public static string eMsgSaveSongChangesTitle {
+            get {
+                return ResourceManager.GetString("eMsgSaveSongChangesTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Bitte wählen Sie entweder das Lied, einen Liedteil oder eine Folie aus. ähnelt.
+        /// </summary>
+        public static string eMsgSelectElement {
+            get {
+                return ResourceManager.GetString("eMsgSelectElement", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Neues Lied ähnelt.
+        /// </summary>
+        public static string eNewSongTitle {
+            get {
+                return ResourceManager.GetString("eNewSongTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Hintergrund für ausgewähltes Element ändern ähnelt.
+        /// </summary>
+        public static string eToolbarChangeBackground {
+            get {
+                return ResourceManager.GetString("eToolbarChangeBackground", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Schriftgröße verringern ähnelt.
+        /// </summary>
+        public static string eToolbarDecreaseFontSize {
+            get {
+                return ResourceManager.GetString("eToolbarDecreaseFontSize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Schriftgröße erhöhen ähnelt.
+        /// </summary>
+        public static string eToolbarIncreaseFontSize {
+            get {
+                return ResourceManager.GetString("eToolbarIncreaseFontSize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Neues Lied ähnelt.
+        /// </summary>
+        public static string eToolbarNewSong {
+            get {
+                return ResourceManager.GetString("eToolbarNewSong", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Lied öffnen ähnelt.
+        /// </summary>
+        public static string eToolbarOpenSong {
+            get {
+                return ResourceManager.GetString("eToolbarOpenSong", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Wiederholen ähnelt.
+        /// </summary>
+        public static string eToolbarRedo {
+            get {
+                return ResourceManager.GetString("eToolbarRedo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Lied speichern und aktive Präsentation neu laden ähnelt.
+        /// </summary>
+        public static string eToolbarSaveAndReload {
+            get {
+                return ResourceManager.GetString("eToolbarSaveAndReload", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Lied speichern ähnelt.
+        /// </summary>
+        public static string eToolbarSaveSong {
+            get {
+                return ResourceManager.GetString("eToolbarSaveSong", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Liedakkorde anzeigen ähnelt.
+        /// </summary>
+        public static string eToolbarShowChords {
+            get {
+                return ResourceManager.GetString("eToolbarShowChords", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Präsentationsfenster anzeigen ähnelt.
+        /// </summary>
+        public static string eToolbarShowPresenter {
+            get {
+                return ResourceManager.GetString("eToolbarShowPresenter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Rückgängig ähnelt.
+        /// </summary>
+        public static string eToolbarUndo {
+            get {
+                return ResourceManager.GetString("eToolbarUndo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Hinzufügen ähnelt.
         /// </summary>
         public static string paAdd {
@@ -246,6 +723,69 @@ namespace Words.Resources {
         public static string paTitle {
             get {
                 return ResourceManager.GetString("paTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Ein Liedteil mit diesem Namen existiert bereits. ähnelt.
+        /// </summary>
+        public static string rpMsgNameAlreadyExists {
+            get {
+                return ResourceManager.GetString("rpMsgNameAlreadyExists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Der Name darf nicht leer sein. ähnelt.
+        /// </summary>
+        public static string rpMsgNameMustNotBeEmpty {
+            get {
+                return ResourceManager.GetString("rpMsgNameMustNotBeEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Neuer Name: ähnelt.
+        /// </summary>
+        public static string rpNewNameLabel {
+            get {
+                return ResourceManager.GetString("rpNewNameLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Liedteil benennen ähnelt.
+        /// </summary>
+        public static string rpTitle {
+            get {
+                return ResourceManager.GetString("rpTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Der Name darf nicht leer sein. ähnelt.
+        /// </summary>
+        public static string rsMsgNameMustNotBeEmpty {
+            get {
+                return ResourceManager.GetString("rsMsgNameMustNotBeEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Neuer Name: ähnelt.
+        /// </summary>
+        public static string rsNewNameLabel {
+            get {
+                return ResourceManager.GetString("rsNewNameLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Lied umbenennen ähnelt.
+        /// </summary>
+        public static string rsTitle {
+            get {
+                return ResourceManager.GetString("rsTitle", resourceCulture);
             }
         }
         

@@ -100,13 +100,13 @@ namespace Words.Editor
 			}
 
 			sourceNode = new SongNodeSource(Root, song.Sources[0]);
-			copyrightNode = new SongNodeMetadata(Root, "Copyright", song.Copyright, (value) => song.Copyright = value);
-			languageNode = new SongNodeMetadata(Root, "Sprache", song.Language, (value) => 
+			copyrightNode = new SongNodeMetadata(Root, SongNodeMetadata.MetadataKind.Copyright, song.Copyright, (value) => song.Copyright = value);
+			languageNode = new SongNodeMetadata(Root, SongNodeMetadata.MetadataKind.Language, song.Language, (value) => 
 				{
 					song.Language = value;
 					this.OnNotifyPropertyChanged("LanguageCode");
 				});
-			categoryNode = new SongNodeMetadata(Root, "Kategorie", song.Category, (value) => song.Category = value);
+			categoryNode = new SongNodeMetadata(Root, SongNodeMetadata.MetadataKind.Category, song.Category, (value) => song.Category = value);
 
 			this.PropertyChanged += (sender, args) =>
 			{

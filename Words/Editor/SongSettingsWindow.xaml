@@ -4,7 +4,7 @@
 		xmlns:local="clr-namespace:Words.Editor"
 		xmlns:songs="clr-namespace:Words.Core.Songs;assembly=Words.Core"
 		xmlns:ext="http://schemas.microsoft.com/winfx/2006/xaml/presentation/toolkit/extended"
-		Title="SongSettingsWindow" Height="500" Width="352" MinHeight="500" MinWidth="350"
+		Title="Lied formatieren" Height="500" Width="352" MinHeight="500" MinWidth="350"
 		Icon="/Words;component/Artwork/Formatting.png">
 	<Grid>
 		<Grid.RowDefinitions>
