@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using Words.Core.Songs;
-using System.Collections.ObjectModel;
 using MonitoredUndo;
+using Words.Core.Songs;
 
 namespace Words.Editor
 {
@@ -13,6 +10,14 @@ namespace Words.Editor
 		private ObservableCollection<SongNodeSlide> slides = new ObservableCollection<SongNodeSlide>();
 		private SongPart part;
 		private Song song;
+
+		public override string IconUri
+		{
+			get
+			{
+				return "/Words;component/Artwork/Small_Folder.png";
+			}
+		}
 
 		public SongPart Part
 		{

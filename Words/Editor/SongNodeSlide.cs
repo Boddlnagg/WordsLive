@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using Words.Core.Songs;
 using MonitoredUndo;
+using Words.Core.Songs;
 using Words.Core.Songs.Chords;
 
 namespace Words.Editor
@@ -13,6 +11,14 @@ namespace Words.Editor
 		private SongSlide slide;
 		private bool hasTranslation;
 		private bool hasChords;
+
+		public override string IconUri
+		{
+			get
+			{
+				return "/Words;component/Artwork/Small_Slide.png";
+			}
+		}
 
 		public SongSlide Slide
 		{

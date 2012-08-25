@@ -199,7 +199,7 @@ namespace Words.Editor
 				controller.ShowCopyright(false);
 				controller.ShowSource(false);
 			}
-			if (node is SongNodeSlide)
+			else if (node is SongNodeSlide)
 			{
 				controller.UpdateSlide(song, (node as SongNodeSlide).Slide);
 				(node as SongNodeSlide).PropertyChanged += (sender, args) =>
@@ -219,7 +219,7 @@ namespace Words.Editor
 
 				UpdateSourceCopyright();
 			}
-			else if (node is SongNodeMetadata && (node as SongNodeMetadata).Title == "Copyright")
+			else if (node is SongNodeCopyright)
 			{
 				switch (song.Formatting.CopyrightDisplayPosition)
 				{
@@ -238,7 +238,7 @@ namespace Words.Editor
 				controller.SetCopyright(song.Copyright);
 				controller.ShowCopyright(true);
 				controller.ShowSource(false);
-				(node as SongNodeMetadata).PropertyChanged += (sender, args) =>
+				(node as SongNodeCopyright).PropertyChanged += (sender, args) =>
 				{
 					if (node != sender)
 						return;

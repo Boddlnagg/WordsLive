@@ -135,42 +135,53 @@
 		PreviewMouseMove="StructureTree_PreviewMouseMove">
 		<TreeView.Resources>
 			<HierarchicalDataTemplate DataType="{x:Type local:SongNode}">
-				<TextBlock Text="{Binding Title}">
-				</TextBlock>
+				<StackPanel Orientation="Horizontal">
+					<Image Width="16" Height="16" Margin="0, 1, 2, 1" Source="{Binding IconUri}" />
+					<TextBlock Text="{Binding Title}"/>
+				</StackPanel>
 			</HierarchicalDataTemplate>
 			<HierarchicalDataTemplate DataType="{x:Type local:SongNodePart}"
 				ItemsSource="{Binding Path=Children}">
-				<TextBlock Text="{Binding Title}">
-					<TextBlock.ContextMenu>
-						<ContextMenu>
-							<MenuItem Header="{x:Static resx:Resource.eGridContextRename}" Command="{x:Static my:CustomCommands.Rename}" CommandParameter="{Binding}"/>
-							<MenuItem Header="{x:Static resx:Resource.eGridContextRemovePart}" Command="Delete" CommandParameter="{Binding}"/>
-							<MenuItem Header="{x:Static resx:Resource.eGridContextAddSlide}" Command="{x:Static my:CustomCommands.Insert}" CommandParameter="{Binding}"/>
-						</ContextMenu>
-					</TextBlock.ContextMenu>
-				</TextBlock>
+				<StackPanel Orientation="Horizontal">
+					<Image Width="16" Height="16" Margin="0, 1, 2, 1" Source="{Binding IconUri}" />
+					<TextBlock Text="{Binding Title}">
+						<TextBlock.ContextMenu>
+							<ContextMenu>
+								<MenuItem Header="{x:Static resx:Resource.eGridContextRename}" Command="{x:Static my:CustomCommands.Rename}" CommandParameter="{Binding}"/>
+								<MenuItem Header="{x:Static resx:Resource.eGridContextRemovePart}" Command="Delete" CommandParameter="{Binding}"/>
+								<MenuItem Header="{x:Static resx:Resource.eGridContextAddSlide}" Command="{x:Static my:CustomCommands.Insert}" CommandParameter="{Binding}"/>
+							</ContextMenu>
+						</TextBlock.ContextMenu>
+					</TextBlock>
+				</StackPanel>
 			</HierarchicalDataTemplate>
 			<HierarchicalDataTemplate DataType="{x:Type local:SongNodeRoot}"
 				ItemsSource="{Binding Path=Children}">
-				<TextBlock Text="{Binding Title}">
-					<TextBlock.ContextMenu>
-						<ContextMenu>
-							<MenuItem Header="{x:Static resx:Resource.eGridContextRenameSong}" Command="{x:Static my:CustomCommands.Rename}" CommandParameter="{Binding}"/>
-							<MenuItem Header="{x:Static resx:Resource.eGridContextAddPart}" Command="{x:Static my:CustomCommands.Insert}" CommandParameter="{Binding}"/>
-						</ContextMenu>
-					</TextBlock.ContextMenu>
-				</TextBlock>
+				<StackPanel Orientation="Horizontal">
+					<Image Width="16" Height="16" Margin="0, 1, 2, 1" Source="{Binding IconUri}" />
+					<TextBlock Text="{Binding Title}">
+						<TextBlock.ContextMenu>
+							<ContextMenu>
+								<MenuItem Header="{x:Static resx:Resource.eGridContextRenameSong}" Command="{x:Static my:CustomCommands.Rename}" CommandParameter="{Binding}"/>
+								<MenuItem Header="{x:Static resx:Resource.eGridContextAddPart}" Command="{x:Static my:CustomCommands.Insert}" CommandParameter="{Binding}"/>
+							</ContextMenu>
+						</TextBlock.ContextMenu>
+					</TextBlock>
+				</StackPanel>
 			</HierarchicalDataTemplate>
 			<HierarchicalDataTemplate DataType="{x:Type local:SongNodeSlide}"
 				ItemsSource="{Binding Path=Children}">
-				<TextBlock Text="{Binding Title}">
-					<TextBlock.ContextMenu>
-						<ContextMenu>
-							<MenuItem Header="{x:Static resx:Resource.eGridContextRemoveSlide}" Command="Delete" CommandParameter="{Binding}"/>
-							<MenuItem Header="{x:Static resx:Resource.eGridContextDuplicateSlide}" Command="{x:Static my:CustomCommands.Duplicate}" CommandParameter="{Binding}"/>
-						</ContextMenu>
-					</TextBlock.ContextMenu>
-				</TextBlock>
+				<StackPanel Orientation="Horizontal">
+					<Image Width="16" Height="16" Margin="0, 1, 2, 1" Source="{Binding IconUri}" />
+					<TextBlock Text="{Binding Title}">
+						<TextBlock.ContextMenu>
+							<ContextMenu>
+								<MenuItem Header="{x:Static resx:Resource.eGridContextRemoveSlide}" Command="Delete" CommandParameter="{Binding}"/>
+								<MenuItem Header="{x:Static resx:Resource.eGridContextDuplicateSlide}" Command="{x:Static my:CustomCommands.Duplicate}" CommandParameter="{Binding}"/>
+							</ContextMenu>
+						</TextBlock.ContextMenu>
+					</TextBlock>
+				</StackPanel>
 			</HierarchicalDataTemplate>
 		</TreeView.Resources>
 		<TreeView.ItemContainerStyle>

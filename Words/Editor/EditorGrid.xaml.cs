@@ -337,21 +337,12 @@ namespace Words.Editor
 				EditHeader.Text = "";
 				EnableSpellCheckCheckBox.IsEnabled = false;
 			}
-			else if (StructureTree.SelectedItem is SongNodeMetadata)
+			else if (StructureTree.SelectedItem is SongNodeLanguage)
 			{
-				if (((SongNodeMetadata)StructureTree.SelectedItem).Kind == SongNodeMetadata.MetadataKind.Language)
-				{
-					EditBorder.Child = (ComboBox)this.Resources["editLanguageComboBox"];
-					EnableSpellCheckCheckBox.IsEnabled = false;
-				}
-				else
-				{
-					EditBorder.Child = (TextBox)this.Resources["editTextBox"];
-					EnableSpellCheckCheckBox.IsEnabled = false;
-				}
-
+				EditBorder.Child = (ComboBox)this.Resources["editLanguageComboBox"];
+				EnableSpellCheckCheckBox.IsEnabled = false;
 				PreviewControl.Node = (SongNode)StructureTree.SelectedItem;
-				EditHeader.Text = ((SongNodeMetadata)StructureTree.SelectedItem).Title;
+				EditHeader.Text = ((SongNodeLanguage)StructureTree.SelectedItem).Title;
 			}
 			else if (StructureTree.SelectedItem is SongNodeSource)
 			{
@@ -359,6 +350,13 @@ namespace Words.Editor
 				EditBorder.Child = (Grid)this.Resources["editSourceGrid"];
 				EditHeader.Text = ((SongNodeSource)StructureTree.SelectedItem).Title;
 				EnableSpellCheckCheckBox.IsEnabled = false;
+			}
+			else if (StructureTree.SelectedItem is SongNodeMetadata) // copyright and category
+			{
+				EditBorder.Child = (TextBox)this.Resources["editTextBox"];
+				EnableSpellCheckCheckBox.IsEnabled = false;
+				PreviewControl.Node = (SongNode)StructureTree.SelectedItem;
+				EditHeader.Text = ((SongNodeMetadata)StructureTree.SelectedItem).Title;
 			}
 			else
 			{

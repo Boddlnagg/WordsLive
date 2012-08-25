@@ -88,6 +88,11 @@ namespace Words.Editor
 			}
 		}
 
+		public override string IconUri
+		{
+			get { return "/Words;component/Artwork/Small_Song.png"; }
+		}
+
 		public SongNodeRoot(Song song) : base(null)
 		{
 			this.Song = song;
@@ -100,13 +105,14 @@ namespace Words.Editor
 			}
 
 			sourceNode = new SongNodeSource(Root, song.Sources[0]);
-			copyrightNode = new SongNodeMetadata(Root, SongNodeMetadata.MetadataKind.Copyright, song.Copyright, (value) => song.Copyright = value);
-			languageNode = new SongNodeMetadata(Root, SongNodeMetadata.MetadataKind.Language, song.Language, (value) => 
+			copyrightNode = new SongNodeCopyright(Root);
+			languageNode = new SongNodeLanguage(Root);
+			languageNode.PropertyChanged += (sender, args) =>
 				{
-					song.Language = value;
-					this.OnNotifyPropertyChanged("LanguageCode");
-				});
-			categoryNode = new SongNodeMetadata(Root, SongNodeMetadata.MetadataKind.Category, song.Category, (value) => song.Category = value);
+					if (args.PropertyName == "Text")
+						this.OnNotifyPropertyChanged("LanguageCode");
+				};
+			categoryNode = new SongNodeCategory(Root);
 
 			this.PropertyChanged += (sender, args) =>
 			{

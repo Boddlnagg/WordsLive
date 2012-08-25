@@ -139,6 +139,13 @@
     <Resource Include="Artwork\Pause.png" />
     <Resource Include="Artwork\Play.png" />
     <Resource Include="Artwork\Stop.png" />
+    <Resource Include="Artwork\Small_Slide.png" />
+    <Resource Include="Artwork\Small_Song.png" />
+    <Resource Include="Artwork\Tiny_Songlist.png" />
+    <Resource Include="Artwork\Small_Copyright.png" />
+    <Resource Include="Artwork\Small_Source.png" />
+    <Resource Include="Artwork\Small_Language.png" />
+    <Resource Include="Artwork\Small_Category.png" />
     <Content Include="Data\jquery.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -175,6 +182,9 @@
     <Compile Include="Editor\EditChordsWindow.xaml.cs">
       <DependentUpon>EditChordsWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Editor\SongNodeCategory.cs" />
+    <Compile Include="Editor\SongNodeCopyright.cs" />
+    <Compile Include="Editor\SongNodeLanguage.cs" />
     <Compile Include="Editor\SongNodeMetadata.cs">
       <SubType>Code</SubType>
     </Compile>

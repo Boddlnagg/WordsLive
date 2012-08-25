@@ -7,52 +7,54 @@ using MonitoredUndo;
 
 namespace Words.Editor
 {
-    public abstract class SongNode : INotifyPropertyChanged, ISupportsUndo
-    {
-        private SongNodeRoot root;
+	public abstract class SongNode : INotifyPropertyChanged, ISupportsUndo
+	{
+		private SongNodeRoot root;
 
-        public SongNode(SongNodeRoot root)
-        {
-            if (this is SongNodeRoot)
-                this.root = (SongNodeRoot)this;
-            else
-                this.root = root;
-        }
+		public SongNode(SongNodeRoot root)
+		{
+			if (this is SongNodeRoot)
+				this.root = (SongNodeRoot)this;
+			else
+				this.root = root;
+		}
 
-        public SongNodeRoot Root
-        {
-            get
-            {
-                return this.root;
-            }
-        }
+		public SongNodeRoot Root
+		{
+			get
+			{
+				return this.root;
+			}
+		}
 
-        private string title;
-        public string Title
-        {
-            get
-            {
-                return title;
-            }
-            set
-            {
-                DefaultChangeFactory.OnChanging(this, "Title", this.title, value);
-                this.title = value;
-                OnNotifyPropertyChanged("Title");
-            }
-        }
+		private string title;
+		public string Title
+		{
+			get
+			{
+				return title;
+			}
+			set
+			{
+				DefaultChangeFactory.OnChanging(this, "Title", this.title, value);
+				this.title = value;
+				OnNotifyPropertyChanged("Title");
+			}
+		}
 
-        public event PropertyChangedEventHandler PropertyChanged;
+		public abstract string IconUri { get; }
 
-        protected void OnNotifyPropertyChanged(string name)
-        {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(name));
-        }
+		public event PropertyChangedEventHandler PropertyChanged;
 
-        public object GetUndoRoot()
-        {
-            return this.Root;
-        }
-    }
+		protected void OnNotifyPropertyChanged(string name)
+		{
+			if (PropertyChanged != null)
+				PropertyChanged(this, new PropertyChangedEventArgs(name));
+		}
+
+		public object GetUndoRoot()
+		{
+			return this.Root;
+		}
+	}
 }
