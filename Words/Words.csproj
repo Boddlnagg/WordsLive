@@ -129,9 +129,6 @@
     <Resource Include="Artwork\DecreaseFontSize.png" />
     <Resource Include="Artwork\IncreaseFontSize.png" />
     <Resource Include="Artwork\Small_DownArrow.png" />
-    <Resource Include="Artwork\Small_Duplicate.png" />
-    <Resource Include="Artwork\Small_NewPart.png" />
-    <Resource Include="Artwork\Small_NewSlide.png" />
     <Resource Include="Artwork\Small_Reload.png" />
     <Resource Include="Artwork\Small_UpArrow.png" />
     <Resource Include="Artwork\Icon.ico" />
