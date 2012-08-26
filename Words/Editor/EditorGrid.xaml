@@ -10,11 +10,6 @@
 			 mc:Ignorable="d" 
 			 d:DesignHeight="400" d:DesignWidth="800">
 	<Grid.CommandBindings>
-		<CommandBinding Command="{x:Static my:CustomCommands.Rename}" Executed="OnExecuteCommand"/>
-		<CommandBinding Command="Delete" Executed="OnExecuteCommand" CanExecute="OnCanExecuteCommand"/>
-		<CommandBinding Command="{x:Static my:CustomCommands.Insert}" Executed="OnExecuteCommand"/>
-		<CommandBinding Command="{x:Static my:CustomCommands.AddPart}" Executed="OnExecuteCommand"/>
-		<CommandBinding Command="{x:Static my:CustomCommands.Duplicate}" Executed="OnExecuteCommand"/>
 		<CommandBinding Command="{x:Static my:CustomCommands.Split}" CanExecute="OnCanExecuteCommand" Executed="OnExecuteCommand"/>
 		<CommandBinding Command="IncreaseFontSize" Executed="OnExecuteCommand" CanExecute="OnCanExecuteCommand"/>
 		<CommandBinding Command="DecreaseFontSize" Executed="OnExecuteCommand" CanExecute="OnCanExecuteCommand"/>
@@ -120,7 +115,7 @@
 		<DockPanel.Resources>
 			<Style TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"/>
 		</DockPanel.Resources>
-		<Button ToolTip="{x:Static resx:Resource.eGridAddElementButton}" Command="{x:Static my:CustomCommands.Insert}" HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="0,2" DockPanel.Dock="Right" Focusable="False">
+		<Button ToolTip="{x:Static resx:Resource.eGridAddElementButton}" CommandTarget="{Binding ElementName=StructureTree}" Command="{x:Static my:CustomCommands.Insert}" HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="0,2" DockPanel.Dock="Right" Focusable="False">
 			<Image Width="16" Height="16" Source="/Words;component/Artwork/Small_Plus.png" />
 		</Button>
 		<TextBlock
@@ -131,8 +126,16 @@
 		x:Name="StructureTree" ItemsSource="{Binding}"
 		Grid.Row="0" Grid.Column="0" Margin="0,26,0,0" Grid.RowSpan="3"
 		SelectedItemChanged="StructureTree_SelectedItemChanged"
+		AllowDrop="True" Drop="StructureTree_Drop" DragOver="StructureTree_DragEnterOrOver" DragEnter="StructureTree_DragEnterOrOver"
 		PreviewMouseLeftButtonDown="StructureTree_PreviewMouseLeftButtonDown"
 		PreviewMouseMove="StructureTree_PreviewMouseMove">
+		<TreeView.CommandBindings>
+			<CommandBinding Command="{x:Static my:CustomCommands.Duplicate}" Executed="OnExecuteCommand"/>
+			<CommandBinding Command="{x:Static my:CustomCommands.Rename}" Executed="OnExecuteCommand"/>
+			<CommandBinding Command="Delete" Executed="OnExecuteCommand" CanExecute="OnCanExecuteCommand"/>
+			<CommandBinding Command="{x:Static my:CustomCommands.Insert}" Executed="OnExecuteCommand"/>
+			<CommandBinding Command="{x:Static my:CustomCommands.AddPart}" Executed="OnExecuteCommand"/>
+		</TreeView.CommandBindings>
 		<TreeView.Resources>
 			<HierarchicalDataTemplate DataType="{x:Type local:SongNode}">
 				<StackPanel Orientation="Horizontal">
@@ -231,39 +234,19 @@
 		VerticalAlignment="Top"
 		Background="{DynamicResource HeaderGradientBrush}"
 		Height="26">
-		<DockPanel.Resources>
-			<Style TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
-				<Style.Triggers>
-					<DataTrigger Binding="{Binding ElementName=OrderListBox,Path=SelectedItem}" Value="{x:Null}">
-						<Setter Property="Opacity" Value="0.5" />
-						<Setter Property="IsEnabled" Value="False" />
-					</DataTrigger>
-				</Style.Triggers>
-			</Style>
-		</DockPanel.Resources>
 		<TextBlock
 		Padding="5"
 		Text="{x:Static resx:Resource.eGridOrderHeader}"/>
-		<Button Tag="Remove" ToolTip="{x:Static resx:Resource.eGridOrderRemoveButton}"  HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="0,2" DockPanel.Dock="Right" Focusable="False" Click="PartOrderButton_Click">
+		<Button CommandTarget="{Binding ElementName=OrderListBox}" Command="Delete" Style="{StaticResource markDisabledToolbarButton}" ToolTip="{x:Static resx:Resource.eGridOrderRemoveButton}"  HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="0,2" DockPanel.Dock="Right" Focusable="False">
 			<Image Width="16" Height="16" Source="/Words;component/Artwork/Small_Delete.png" />
 		</Button>
-		<Button Tag="MoveDown" ToolTip="{x:Static resx:Resource.eGridOrderMoveDownButton}"  HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="0,2" DockPanel.Dock="Right" Focusable="False" Click="PartOrderButton_Click">
+		<Button CommandTarget="{Binding ElementName=OrderListBox}" Command="{x:Static my:CustomCommands.MoveDown}" Style="{StaticResource markDisabledToolbarButton}" ToolTip="{x:Static resx:Resource.eGridOrderMoveDownButton}"  HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="0,2" DockPanel.Dock="Right" Focusable="False">
 			<Image Width="16" Height="16" Source="/Words;component/Artwork/Small_DownArrow.png" />
 		</Button>
-		<Button Tag="MoveUp" ToolTip="{x:Static resx:Resource.eGridOrderMoveUpButton}"  HorizontalAlignment="Left" VerticalAlignment="Stretch" DockPanel.Dock="Right" Margin="0,2" Focusable="False" Click="PartOrderButton_Click">
+		<Button CommandTarget="{Binding ElementName=OrderListBox}" Command="{x:Static my:CustomCommands.MoveUp}" Style="{StaticResource markDisabledToolbarButton}" ToolTip="{x:Static resx:Resource.eGridOrderMoveUpButton}"  HorizontalAlignment="Left" VerticalAlignment="Stretch" DockPanel.Dock="Right" Margin="0,2" Focusable="False">
 			<Image Width="16" Height="16" Source="/Words;component/Artwork/Small_UpArrow.png" />
 		</Button>
-		<Button Tag="Add" ToolTip="{x:Static resx:Resource.eGridOrderAddButton}"  HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="0,2" DockPanel.Dock="Right" Focusable="False" Click="PartOrderButton_Click">
-			<Button.Style>
-				<Style TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
-					<Style.Triggers>
-						<DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Grid}}, Path=SelectedPart}" Value="{x:Null}">
-							<Setter Property="Opacity" Value="0.5" />
-							<Setter Property="IsEnabled" Value="False" />
-						</DataTrigger>
-					</Style.Triggers>
-				</Style>
-			</Button.Style>
+		<Button CommandTarget="{Binding ElementName=OrderListBox}" Command="{x:Static my:CustomCommands.Insert}" Style="{StaticResource markDisabledToolbarButton}" ToolTip="{x:Static resx:Resource.eGridOrderAddButton}"  HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="0,2" DockPanel.Dock="Right" Focusable="False">
 			<Image Width="16" Height="16" Source="/Words;component/Artwork/Small_Plus.png" />
 		</Button>
 		<CheckBox x:Name="showSlidesCheckBox" VerticalAlignment="Center" DockPanel.Dock="Right" IsChecked="True" Margin="2,0">
@@ -275,10 +258,18 @@
 		x:Name="OrderListBox" Grid.Column="4" Margin="0,26,0,0"
 		Grid.RowSpan="3" AllowDrop="True"
 		Drop="OrderListBox_Drop"
+		DragOver="OrderListBox_DragEnterOrOver"
+		DragEnter="OrderListBox_DragEnterOrOver"
 		ScrollViewer.CanContentScroll="False"
 		PreviewMouseMove="OrderListBox_PreviewMouseMove"
 		PreviewMouseLeftButtonDown="OrderListBox_PreviewMouseLeftButtonDown"
 		ItemsSource="{Binding PartOrder}" SelectionChanged="OrderListBox_SelectionChanged">
+		<ListBox.CommandBindings>
+			<CommandBinding Command="Delete" Executed="OrderListBox_OnExecuteCommand" CanExecute="OrderListBox_OnCanExecuteCommand"/>
+			<CommandBinding Command="{x:Static my:CustomCommands.Insert}" Executed="OrderListBox_OnExecuteCommand" CanExecute="OrderListBox_OnCanExecuteCommand"/>
+			<CommandBinding Command="{x:Static my:CustomCommands.MoveUp}" Executed="OrderListBox_OnExecuteCommand" CanExecute="OrderListBox_OnCanExecuteCommand"/>
+			<CommandBinding Command="{x:Static my:CustomCommands.MoveDown}" Executed="OrderListBox_OnExecuteCommand" CanExecute="OrderListBox_OnCanExecuteCommand"/>
+		</ListBox.CommandBindings>
 		<ListBox.ItemTemplate>
 			<DataTemplate>
 				<StackPanel Orientation="Vertical">

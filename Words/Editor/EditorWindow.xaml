@@ -151,7 +151,7 @@
 				<Image Width="32" Height="32" Source="/Words;component/Artwork/ShowChords.png" />
 			</CheckBox>
 		</ToolBar>
-		<Grid Grid.Row="2" Grid.Column="0" AllowDrop="True" Drop="Tabs_Drop" Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}">
+		<Grid Grid.Row="2" Grid.Column="0" AllowDrop="True" Drop="Tabs_Drop" DragEnter="Tabs_DragEnterOrOver" DragOver="Tabs_DragEnterOrOver" Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}">
 			<TabControl x:Name="Tabs" ItemsSource="{Binding}">
 				<TabControl.ItemContainerStyle>
 					<Style TargetType="TabItem">

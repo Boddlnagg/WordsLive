@@ -160,14 +160,20 @@
 				<ColumnDefinition Width="5"/>
 				<ColumnDefinition Width="2.5*" MinWidth="100"/>
 			</Grid.ColumnDefinitions>
-			<mediaOrderList:MediaOrderListBox x:Name="OrderListBox" Margin="0,26,0,0" BorderThickness="0"/>
+			<mediaOrderList:MediaOrderListBox x:Name="OrderListBox" Margin="0,26,0,0" BorderThickness="0">
+				<mediaOrderList:MediaOrderListBox.CommandBindings>
+					<CommandBinding Command="Delete" Executed="OrderListBox_OnExecuteCommand" CanExecute="OrderListBox_OnCanExecuteCommand"/>
+					<CommandBinding Command="{x:Static local:CustomCommands.MoveUp}" Executed="OrderListBox_OnExecuteCommand" CanExecute="OrderListBox_OnCanExecuteCommand"/>
+					<CommandBinding Command="{x:Static local:CustomCommands.MoveDown}" Executed="OrderListBox_OnExecuteCommand" CanExecute="OrderListBox_OnCanExecuteCommand"/>
+				</mediaOrderList:MediaOrderListBox.CommandBindings>
+			</mediaOrderList:MediaOrderListBox>
 			<TextBlock x:Name="ContentHeader" Padding="5" VerticalAlignment="Top" Text="{Binding ElementName=OrderListBox,Path=ActiveItem.Data.Title}" Margin="0" Grid.Column="2" Background="{StaticResource HeaderGradientBrush}" Height="26"/>
 			<TextBlock Padding="5" Text="{x:Static resx:Resource.vPanelPreview}" Grid.Row="2" Margin="0" Background="{StaticResource HeaderGradientBrush}" Height="26" VerticalAlignment="Top"/>
 			<Viewbox Margin="6,32,6,6" Grid.Row="2" x:Name="PreviewBox"/>
 			<GridSplitter HorizontalAlignment="Stretch" Grid.Row="1" VerticalAlignment="Stretch" Height="5" Background="#FFF0F0F0" BorderBrush="#FFE3E3E3" BorderThickness="0,1" Grid.ColumnSpan="2"/>
 			<GridSplitter Grid.Column="1" BorderBrush="#FFE3E3E3" Background="#FFF0F0F0" BorderThickness="1,0" Grid.RowSpan="3" HorizontalAlignment="Stretch" Margin="0" />
 			<DockPanel x:Name="OrderListHeader" LastChildFill="False" Margin="0" VerticalAlignment="Top" Background="{DynamicResource HeaderGradientBrush}" Height="26">
-				<DockPanel.Resources>
+				<!--<DockPanel.Resources>
 					<Style TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
 						<Style.Triggers>
 							<DataTrigger Binding="{Binding ElementName=OrderListBox,Path=SelectedItem}" Value="{x:Null}">
@@ -176,15 +182,15 @@
 							</DataTrigger>
 						</Style.Triggers>
 					</Style>
-				</DockPanel.Resources>
+				</DockPanel.Resources>-->
 				<TextBlock Padding="5" Text="{x:Static resx:Resource.vPanelOrder}" />
-				<Button Tag="Delete" HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="0,2" DockPanel.Dock="Right" Focusable="False" Click="OrderListButton_Click">
+				<Button Style="{StaticResource markDisabledToolbarButton}" CommandTarget="{Binding ElementName=OrderListBox}" Command="Delete" HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="0,2" DockPanel.Dock="Right" Focusable="False">
 					<Image Width="16" Height="16" Source="/Words;component/Artwork/Small_Delete.png" />
 				</Button>
-				<Button Tag="MoveDown" HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="0,2" DockPanel.Dock="Right" Focusable="False" Click="OrderListButton_Click">
+				<Button Style="{StaticResource markDisabledToolbarButton}" CommandTarget="{Binding ElementName=OrderListBox}" Command="{x:Static local:CustomCommands.MoveDown}" HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="0,2" DockPanel.Dock="Right" Focusable="False">
 					<Image Width="16" Height="16" Source="/Words;component/Artwork/Small_DownArrow.png" />
 				</Button>
-				<Button Tag="MoveUp" HorizontalAlignment="Left" VerticalAlignment="Stretch" DockPanel.Dock="Right" Margin="0,2" Focusable="False" Click="OrderListButton_Click">
+				<Button Style="{StaticResource markDisabledToolbarButton}" CommandTarget="{Binding ElementName=OrderListBox}" Command="{x:Static local:CustomCommands.MoveUp}" HorizontalAlignment="Left" VerticalAlignment="Stretch" DockPanel.Dock="Right" Margin="0,2" Focusable="False">
 					<Image Width="16" Height="16" Source="/Words;component/Artwork/Small_UpArrow.png" />
 				</Button>
 			</DockPanel>

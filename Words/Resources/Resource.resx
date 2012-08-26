@@ -555,4 +555,10 @@
   <data name="rsTitle" xml:space="preserve">
     <value>Lied umbenennen</value>
   </data>
+  <data name="dialogError" xml:space="preserve">
+    <value>Fehler</value>
+  </data>
+  <data name="eMsgMoveLastSlideInPart" xml:space="preserve">
+    <value>Die letzte Folie eines Liedteils kann nicht verschoben oder entfernt werden.</value>
+  </data>
 </root>

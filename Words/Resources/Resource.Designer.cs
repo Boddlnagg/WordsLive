@@ -106,6 +106,15 @@ namespace Words.Resources {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Fehler ähnelt.
+        /// </summary>
+        public static string dialogError {
+            get {
+                return ResourceManager.GetString("dialogError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die OK ähnelt.
         /// </summary>
         public static string dialogOK {
@@ -453,6 +462,15 @@ namespace Words.Resources {
         public static string eMetadataSourceTitle {
             get {
                 return ResourceManager.GetString("eMetadataSourceTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Die letzte Folie eines Liedteils kann nicht verschoben oder entfernt werden. ähnelt.
+        /// </summary>
+        public static string eMsgMoveLastSlideInPart {
+            get {
+                return ResourceManager.GetString("eMsgMoveLastSlideInPart", resourceCulture);
             }
         }
         

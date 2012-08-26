@@ -68,6 +68,18 @@ namespace Words
 			private set;
 		}
 
+		public static RoutedCommand MoveUp
+		{
+			get;
+			private set;
+		}
+
+		public static RoutedCommand MoveDown
+		{
+			get;
+			private set;
+		}
+
 		public static RoutedCommand AddPart
 		{
 			get;
@@ -142,6 +154,8 @@ namespace Words
 			ChoosePresentationArea = new RoutedCommand("ChoosePresentationArea", t);
 			Rename = new RoutedCommand("Rename", t, new InputGestureCollection { new KeyGesture(Key.F2) });
 			Insert = new RoutedCommand("Insert", t, new InputGestureCollection { new KeyGesture(Key.Insert) });
+			MoveUp = new RoutedCommand("MoveUp", t);
+			MoveDown = new RoutedCommand("MoveDown", t);
 			AddPart = new RoutedCommand("AddPart", t);
 			Duplicate = new RoutedCommand("Duplicate", t);
 			Split = new RoutedCommand("Split", t);

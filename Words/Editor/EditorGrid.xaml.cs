@@ -42,8 +42,6 @@ namespace Words.Editor
 
 		private EditorWindow parent;
 
-		private int oldIndex;
-
 		public EditorGrid(Song song, EditorWindow parent)
 		{
 			InitializeComponent();
@@ -138,54 +136,29 @@ namespace Words.Editor
 				this.StructureTree.SetSelectedItem(newSlide);
 		}
 
-		private void PartOrderButton_Click(object sender, RoutedEventArgs e)
+		#region Drag & Drop
+		Point startPoint;
+		//bool isDragging;
+		bool canDrag;
+		private int oldIndex;
+
+		private void OrderListBox_DragEnterOrOver(object sender, DragEventArgs e)
 		{
-			string tag = (string)((FrameworkElement)sender).Tag;
-			switch (tag)
+			if (e.Data.GetData(typeof(SongPartWrapper)) is SongPartWrapper)
 			{
-				case "Add":
-					SongNodePart part = SelectedPart;
-
-					if (part != null)
-					{
-						int index;
-						if (OrderListBox.SelectedIndex == -1)
-							index = -1;
-						else
-							index = OrderListBox.SelectedIndex + 1;
-
-						songNode.AddPartToOrder(part, index);
-
-						if (index == -1)
-							OrderListBox.SelectedIndex = OrderListBox.Items.Count - 1;
-						else
-							OrderListBox.SelectedIndex = index;
-					}
-					break;
-				case "MoveUp":
-					int moveUpIndex = OrderListBox.SelectedIndex - 1;
-					if (moveUpIndex < 0)
-						moveUpIndex = 0;
-					songNode.MovePartInOrder(OrderListBox.SelectedIndex, moveUpIndex);
-					OrderListBox.SelectedIndex = moveUpIndex;
-					break;
-				case "MoveDown":
-					int moveDownIndex = OrderListBox.SelectedIndex + 1;
-					if (moveDownIndex > OrderListBox.Items.Count - 1)
-						moveDownIndex = OrderListBox.Items.Count - 1;
-					songNode.MovePartInOrder(OrderListBox.SelectedIndex, moveDownIndex);
-					OrderListBox.SelectedIndex = moveDownIndex;
-					break;
-				case "Remove":
-					int selectedIndex = OrderListBox.SelectedIndex;
-					songNode.RemovePartFromOrder(OrderListBox.SelectedIndex);
-					if (selectedIndex >= 0)
-						OrderListBox.SelectedIndex = selectedIndex < OrderListBox.Items.Count ? selectedIndex : OrderListBox.Items.Count - 1;
-					break;
+				if (e.KeyStates.HasFlag(DragDropKeyStates.ControlKey))
+					e.Effects = DragDropEffects.Copy;
+				else
+					e.Effects = DragDropEffects.Move;
+				e.Handled = true;
+			}
+			else if (e.Data.GetData(typeof(SongNodePart)) is SongNodePart)
+			{
+				e.Effects = DragDropEffects.Copy;
+				e.Handled = true;
 			}
 		}
 
-		#region Drag & Drop
 		private void OrderListBox_Drop(object sender, DragEventArgs e)
 		{
 			int index = OrderListBox.GetCurrentIndex(e.GetPosition);
@@ -217,6 +190,8 @@ namespace Words.Editor
 				OrderListBox.SelectedIndex = index;
 
 				oldIndex = -1;
+
+				e.Handled = true;
 			}
 			// Data comes from treeview
 			else if (e.Data.GetData(typeof(SongNodePart)) is SongNodePart)
@@ -225,6 +200,8 @@ namespace Words.Editor
 					index = OrderListBox.Items.Count;
 
 				songNode.AddPartToOrder((SongNodePart)e.Data.GetData(typeof(SongNodePart)), index);
+
+				e.Handled = true;
 			}
 		}
 
@@ -260,10 +237,6 @@ namespace Words.Editor
 			}
 		}
 
-		Point startPoint;
-		bool isDragging;
-		bool canDrag;
-
 		private void OrderListBox_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
 		{
 			// HACK: is there a better solution than this?
@@ -276,7 +249,7 @@ namespace Words.Editor
 
 		private void StructureTree_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
 		{
-			if (e.OriginalSource is TextBlock)
+			if (e.OriginalSource is TextBlock || e.OriginalSource is Image || e.OriginalSource is StackPanel)
 			{
 				startPoint = e.GetPosition(null);
 				canDrag = true;
@@ -287,7 +260,7 @@ namespace Words.Editor
 
 		private void StructureTree_PreviewMouseMove(object sender, MouseEventArgs e)
 		{
-			if (e.LeftButton == MouseButtonState.Pressed && !isDragging && canDrag)
+			if (e.LeftButton == MouseButtonState.Pressed && canDrag)
 			{
 				Point position = e.GetPosition(null);
 				if (Math.Abs(position.X - startPoint.X) >
@@ -297,13 +270,74 @@ namespace Words.Editor
 				{
 					if (StructureTree.SelectedItem is SongNodePart)
 					{
-						SongNodePart temp = this.StructureTree.SelectedItem as SongNodePart;
-						isDragging = true;
-						DragDropEffects dde = DragDropEffects.Move;
-						DragDropEffects de = DragDrop.DoDragDrop(StructureTree, temp, dde);
-						isDragging = false;
+						DragDropEffects de = DragDrop.DoDragDrop(StructureTree, StructureTree.SelectedItem as SongNodePart, DragDropEffects.Copy);
+					}
+					else if (StructureTree.SelectedItem is SongNodeSlide)
+					{
+						DragDropEffects de = DragDrop.DoDragDrop(StructureTree, StructureTree.SelectedItem as SongNodeSlide, DragDropEffects.Move | DragDropEffects.Copy);
 					}
 				}
+			}
+		}
+
+		private void StructureTree_DragEnterOrOver(object sender, DragEventArgs e)
+		{
+			if (e.Data.GetData(typeof(SongNodeSlide)) is SongNodeSlide)
+			{
+				var item = StructureTree.GetItemAtLocation<TreeViewItem>(e.GetPosition(StructureTree));
+				if (item != null && (item.Header is SongNodeSlide || item.Header is SongNodePart))
+				{
+					if (e.KeyStates.HasFlag(DragDropKeyStates.ControlKey))
+						e.Effects = DragDropEffects.Copy;
+					else
+						e.Effects = DragDropEffects.Move;
+				}
+				else
+				{
+					e.Effects = DragDropEffects.None;
+				}
+
+				e.Handled = true;
+			}
+			else
+			{
+				e.Effects = DragDropEffects.None;
+			}
+		}
+
+		private void StructureTree_Drop(object sender, DragEventArgs e)
+		{
+			if (e.Data.GetData(typeof(SongNodeSlide)) == null)
+				return;
+
+			SongNode targetNode = StructureTree.GetItemAtLocation<TreeViewItem>(e.GetPosition(StructureTree)).Header as SongNode;
+			SongNodeSlide dragNode = e.Data.GetData(typeof(SongNodeSlide)) as SongNodeSlide;
+
+			if (e.KeyStates.HasFlag(DragDropKeyStates.ControlKey)) // copy
+			{
+				if (targetNode is SongNodeSlide)
+					targetNode.Root.CopySlide(dragNode, targetNode as SongNodeSlide);
+				else if (targetNode is SongNodePart)
+					targetNode.Root.CopySlide(dragNode, targetNode as SongNodePart);
+			}
+			else
+			{
+				if (targetNode == dragNode)
+					return;
+
+				if (dragNode.Root.FindPartWithSlide(dragNode).Children.Count <= 1)
+				{
+					MessageBox.Show(Words.Resources.Resource.eMsgMoveLastSlideInPart,
+						Words.Resources.Resource.dialogError, MessageBoxButton.OK, MessageBoxImage.Error);
+					return;
+				}
+
+				if (targetNode is SongNodeSlide)
+					targetNode.Root.MoveSlide(dragNode, targetNode as SongNodeSlide);
+				else if (targetNode is SongNodePart)
+					targetNode.Root.MoveSlide(dragNode, targetNode as SongNodePart);
+
+				StructureTree.SetSelectedItem(dragNode);
 			}
 		}
 		#endregion
@@ -552,6 +586,65 @@ namespace Words.Editor
 		internal void Cleanup()
 		{
 			PreviewControl.Cleanup();
+		}
+
+		private void OrderListBox_OnExecuteCommand(object sender, ExecutedRoutedEventArgs e)
+		{
+			if (e.Command == ApplicationCommands.Delete)
+			{
+				int selectedIndex = OrderListBox.SelectedIndex;
+				songNode.RemovePartFromOrder(OrderListBox.SelectedIndex);
+				if (selectedIndex >= 0)
+					OrderListBox.SelectedIndex = selectedIndex < OrderListBox.Items.Count ? selectedIndex : OrderListBox.Items.Count - 1;
+			}
+			else if (e.Command == CustomCommands.Insert)
+			{
+				SongNodePart part = SelectedPart;
+
+				if (part != null)
+				{
+					int index;
+					if (OrderListBox.SelectedIndex == -1)
+						index = -1;
+					else
+						index = OrderListBox.SelectedIndex + 1;
+
+					songNode.AddPartToOrder(part, index);
+
+					if (index == -1)
+						OrderListBox.SelectedIndex = OrderListBox.Items.Count - 1;
+					else
+						OrderListBox.SelectedIndex = index;
+				}
+			}
+			else if (e.Command == CustomCommands.MoveUp)
+			{
+				int moveUpIndex = OrderListBox.SelectedIndex - 1;
+				if (moveUpIndex < 0)
+					moveUpIndex = 0;
+				songNode.MovePartInOrder(OrderListBox.SelectedIndex, moveUpIndex);
+				OrderListBox.SelectedIndex = moveUpIndex;
+			}
+			else if (e.Command == CustomCommands.MoveDown)
+			{
+				int moveDownIndex = OrderListBox.SelectedIndex + 1;
+				if (moveDownIndex > OrderListBox.Items.Count - 1)
+					moveDownIndex = OrderListBox.Items.Count - 1;
+				songNode.MovePartInOrder(OrderListBox.SelectedIndex, moveDownIndex);
+				OrderListBox.SelectedIndex = moveDownIndex;
+			}
+		}
+
+		private void OrderListBox_OnCanExecuteCommand(object sender, CanExecuteRoutedEventArgs e)
+		{
+			if (e.Command == ApplicationCommands.Delete || e.Command == CustomCommands.MoveUp || e.Command == CustomCommands.MoveDown)
+			{
+				e.CanExecute = OrderListBox.SelectedItem != null;
+			}
+			else if (e.Command == CustomCommands.Insert)
+			{
+				e.CanExecute = SelectedPart != null;
+			}
 		}
 	}
 }

@@ -38,6 +38,9 @@ namespace Words.Editor
 			{
 				if (value != slide.Text)
 				{
+					if (value == null)
+						value = string.Empty;
+
 					EditorDocument.OnChangingTryMerge(this, "Text", slide.Text, value);
 					slide.Text = value;
 					HasChords = Chords.GetChords(slide.Text).Any();
@@ -188,6 +191,16 @@ namespace Words.Editor
 				this.BackgroundIndex = index;
 				Root.CleanBackgrounds();
 			}
+		}
+
+		public SongNodeSlide Clone()
+		{
+			var s = new SongNodeSlide(Root);
+			s.ChangeFontSize(FontSize);
+			s.BackgroundIndex = BackgroundIndex;
+			s.Text = Text;
+			s.Translation = Translation;
+			return s;
 		}
 	}
 }

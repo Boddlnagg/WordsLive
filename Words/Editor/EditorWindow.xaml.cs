@@ -222,6 +222,20 @@ namespace Words.Editor
 			}
 		}
 
+		private void Tabs_DragEnterOrOver(object sender, DragEventArgs e)
+		{
+			if (e.Data.GetData(DataFormats.FileDrop) != null)
+			{
+				e.Effects = DragDropEffects.Copy;
+				e.Handled = true;
+			}
+			else
+			{
+				e.Effects = DragDropEffects.None;
+				e.Handled = true;
+			}
+		}
+
 		private void Window_Closing(object sender, CancelEventArgs e)
 		{
 			this.Focus();

@@ -555,4 +555,10 @@
   <data name="rsTitle" xml:space="preserve">
     <value>Rename song</value>
   </data>
+  <data name="dialogError" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="eMsgMoveLastSlideInPart" xml:space="preserve">
+    <value>The last slide in a part cannot be moved or deleted.</value>
+  </data>
 </root>

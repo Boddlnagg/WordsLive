@@ -2,6 +2,7 @@
 using System.Linq;
 using MonitoredUndo;
 using Words.Core.Songs;
+using System;
 
 namespace Words.Editor
 {
@@ -71,18 +72,50 @@ namespace Words.Editor
 		public SongNodeSlide AddSlide()
 		{
 			var slide = new SongNodeSlide(Root);
+			AddSlide(slide);
+			return slide;
+		}
+
+		public void AddSlide(SongNodeSlide slide)
+		{
 			var ch = new DelegateChange(this,
 				() => { slides.Remove(slide); },
 				() => { slides.Add(slide); },
 				new ChangeKey<object, string>(this, "Children"));
 			UndoService.Current[Root].AddChange(ch, "AddSlide");
 			this.slides.Add(slide);
-			return slide;
+		}
+
+		public void InsertSlideAfter(SongNodeSlide slide, SongNodeSlide target)
+		{
+			var index = this.slides.IndexOf(target);
+			if (index < 0)
+				throw new InvalidOperationException("Slide is not in this part.");
+
+			if (index >= this.slides.Count - 1)
+			{
+				AddSlide(slide);
+			}
+			else
+			{
+				var ch = new DelegateChange(this,
+				() => { slides.Remove(slide); },
+				() => { slides.Insert(index + 1, slide); },
+				new ChangeKey<object, string>(this, "Children"));
+				UndoService.Current[Root].AddChange(ch, "InsertSlideAfter");
+				this.slides.Insert(index + 1, slide);
+			}
 		}
 
 		public void RemoveSlide(SongNodeSlide slide)
 		{
+			if (this.slides.Count <= 1)
+				throw new InvalidOperationException("Can't remove last slide in a part.");
+
 			int i = slides.IndexOf(slide);
+			if (i < 0)
+				throw new InvalidOperationException("Slide is not in this part.");
+
 			var ch = new DelegateChange(this,
 				() => { slides.Insert(i, slide); },
 				() => { slides.Remove(slide); },
@@ -97,17 +130,13 @@ namespace Words.Editor
 			int i = slides.IndexOf(slide);
 			using (new UndoBatch(this, "DuplicateSlide", false))
 			{
-				s = new SongNodeSlide(Root);
+				s = slide.Clone();
 				var ch = new DelegateChange(this,
 					() => { slides.Remove(s); },
 					() => { slides.Insert(i + 1, s); },
 					new ChangeKey<object, string>(this, "Children"));
 				UndoService.Current[Root].AddChange(ch, "DuplicateSlide");
 				slides.Insert(i + 1, s);
-				s.ChangeFontSize(slide.FontSize);
-				s.BackgroundIndex = slide.BackgroundIndex;
-				s.Text = slide.Text;
-				s.Translation = slide.Translation;
 			}
 			return s;
 		}
@@ -118,7 +147,11 @@ namespace Words.Editor
 			using (new UndoBatch(this, "SplitSlide", false))
 			{
 				var textBefore = slide.Text.Substring(0, splitIndex);
+				if (textBefore.EndsWith("\r\n"))
+					textBefore = textBefore.Substring(0, textBefore.Length - 2);
 				var textAfter = slide.Text.Substring(splitIndex);
+				if (textAfter.StartsWith("\r\n"))
+					textAfter = textAfter.Substring(2);
 				newSlide = DuplicateSlide(slide);
 				slide.Text = textBefore;
 				newSlide.Text = textAfter;

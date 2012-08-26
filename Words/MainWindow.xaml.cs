@@ -153,56 +153,6 @@ namespace Words
 			}
 		}
 
-		private void OrderListButton_Click(object sender, System.Windows.RoutedEventArgs e)
-		{
-			string tag = (sender as Control).Tag as string;
-			var selected = this.OrderListBox.SelectedItems.Cast<ActivatableItemContainer<MediaOrderItem>>();
-			ActivatableItemContainer<MediaOrderItem> boundaryItem;
-
-			switch (tag)
-			{ 
-				case "MoveUp":
-					boundaryItem = orderList.Move(selected, -1);
-					if (boundaryItem != null)
-					{
-						OrderListBox.ScrollIntoView(boundaryItem);
-						portfolioChanged = true;
-					}
-					break;
-				case "MoveDown":
-					boundaryItem = orderList.Move(selected, 1);
-					if (boundaryItem != null)
-					{
-						OrderListBox.ScrollIntoView(boundaryItem);
-						portfolioChanged = true;
-					}
-					break;
-				case "Delete":
-					if (selected.Count() > 0 && (selected.Count((item) => item.IsActive) == 0 || MessageBox.Show("Wollen Sie das aktive Element wirklich entfernen (Die Anzeige wird auf Blackscreen geschaltet, wenn die Präsentation gerade aktiv ist)?", "Aktives Element entfernen?", MessageBoxButton.YesNoCancel, MessageBoxImage.Warning) == MessageBoxResult.Yes))
-					{
-						int index = this.OrderListBox.SelectedIndex;
-						var selectedArray = selected.ToArray();
-						foreach(var item in selectedArray)
-						{
-							orderList.Remove(item);
-						}
-						if (index < this.OrderListBox.Items.Count)
-						{
-							this.OrderListBox.SelectedIndex = index;
-							OrderListBox.ScrollIntoView(this.OrderListBox.SelectedItem);
-						}
-						else if (this.OrderListBox.HasItems)
-						{
-							this.OrderListBox.SelectedIndex = this.OrderListBox.Items.Count - 1;
-							OrderListBox.ScrollIntoView(this.OrderListBox.SelectedItem);
-						}
-						portfolioChanged = true;
-					}
-					break;
-			}
-			
-		}
-
 		private void Window_Closing(object sender, CancelEventArgs e)
 		{
 			e.Cancel = !Controller.TryCloseAllWindows();
@@ -641,6 +591,59 @@ namespace Words
 		{
 			if (PropertyChanged != null)
 				PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+		}
+
+		private void OrderListBox_OnExecuteCommand(object sender, ExecutedRoutedEventArgs e)
+		{
+			var selected = this.OrderListBox.SelectedItems.Cast<ActivatableItemContainer<MediaOrderItem>>();
+			ActivatableItemContainer<MediaOrderItem> boundaryItem;
+
+			if (e.Command == CustomCommands.MoveUp)
+			{
+					boundaryItem = orderList.Move(selected, -1);
+					if (boundaryItem != null)
+					{
+						OrderListBox.ScrollIntoView(boundaryItem);
+						portfolioChanged = true;
+					}
+			}
+			else if (e.Command == CustomCommands.MoveDown)
+			{
+					boundaryItem = orderList.Move(selected, 1);
+					if (boundaryItem != null)
+					{
+						OrderListBox.ScrollIntoView(boundaryItem);
+						portfolioChanged = true;
+					}
+			}
+			else if (e.Command == ApplicationCommands.Delete)
+			{
+				if (selected.Count() > 0 && (selected.Count((item) => item.IsActive) == 0 || MessageBox.Show("Wollen Sie das aktive Element wirklich entfernen (Die Anzeige wird auf Blackscreen geschaltet, wenn die Präsentation gerade aktiv ist)?", "Aktives Element entfernen?", MessageBoxButton.YesNoCancel, MessageBoxImage.Warning) == MessageBoxResult.Yes))
+				{
+					int index = this.OrderListBox.SelectedIndex;
+					var selectedArray = selected.ToArray();
+					foreach (var item in selectedArray)
+					{
+						orderList.Remove(item);
+					}
+					if (index < this.OrderListBox.Items.Count)
+					{
+						this.OrderListBox.SelectedIndex = index;
+						OrderListBox.ScrollIntoView(this.OrderListBox.SelectedItem);
+					}
+					else if (this.OrderListBox.HasItems)
+					{
+						this.OrderListBox.SelectedIndex = this.OrderListBox.Items.Count - 1;
+						OrderListBox.ScrollIntoView(this.OrderListBox.SelectedItem);
+					}
+					portfolioChanged = true;
+				}
+			}
+		}
+
+		private void OrderListBox_OnCanExecuteCommand(object sender, CanExecuteRoutedEventArgs e)
+		{
+			e.CanExecute = OrderListBox.SelectedItem != null;
 		}
 	}
 }

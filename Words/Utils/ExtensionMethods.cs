@@ -135,6 +135,12 @@ namespace Words.Utils
 			return str.IndexOf(value, StringComparison.OrdinalIgnoreCase) >= 0;
 		}
 
+		public static T GetItemAtLocation<T>(this UIElement visual, Point location) where T : DependencyObject
+		{
+			DependencyObject obj = visual.InputHitTest(location) as DependencyObject;
+			return (T)obj.VisualUpwardSearch<T>();
+		}
+		
 		public static void CreateRecursive(this DirectoryInfo dirInfo)
 		{
 			if (dirInfo.Parent != null && !dirInfo.Exists)
