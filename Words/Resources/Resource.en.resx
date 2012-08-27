@@ -561,4 +561,7 @@
   <data name="eMsgMoveLastSlideInPart" xml:space="preserve">
     <value>The last slide in a part cannot be moved or deleted.</value>
   </data>
+  <data name="eMsgCouldNotOpenSong" xml:space="preserve">
+    <value>Can not open the song "{0}".</value>
+  </data>
 </root>

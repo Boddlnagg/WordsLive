@@ -138,7 +138,6 @@ namespace Words.Editor
 
 		#region Drag & Drop
 		Point startPoint;
-		//bool isDragging;
 		bool canDrag;
 		private int oldIndex;
 
@@ -168,8 +167,6 @@ namespace Words.Editor
 			{
 				if (oldIndex < 0)
 					return;
-
-				//SongPartWrapper movedItem = songNode.PartOrder.ElementAt(oldIndex);
 
 				if (index < 0)
 					index = OrderListBox.Items.Count;

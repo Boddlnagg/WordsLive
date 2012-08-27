@@ -466,6 +466,15 @@ namespace Words.Resources {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Die Datei &quot;{0}&quot; konnte nicht geladen werden. ähnelt.
+        /// </summary>
+        public static string eMsgCouldNotOpenSong {
+            get {
+                return ResourceManager.GetString("eMsgCouldNotOpenSong", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Die letzte Folie eines Liedteils kann nicht verschoben oder entfernt werden. ähnelt.
         /// </summary>
         public static string eMsgMoveLastSlideInPart {

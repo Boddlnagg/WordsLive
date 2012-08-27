@@ -59,7 +59,15 @@ namespace Words.Editor
 
 		public void Load(string file)
 		{
-			Load(file, new Song(file));
+			try
+			{
+				Load(file, new Song(file));
+			}
+			catch (Exception)
+			{
+			    Controller.ShowEditorWindow();
+			    MessageBox.Show(String.Format(Words.Resources.Resource.eMsgCouldNotOpenSong, file), Words.Resources.Resource.dialogError, MessageBoxButton.OK, MessageBoxImage.Error);
+			}
 		}
 
 		public void Load(Song song)
@@ -83,7 +91,7 @@ namespace Words.Editor
 		{
 			Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
 			dlg.DefaultExt = ".ppl";
-			dlg.Filter = "Powerpraise-Lied|*.ppl";
+			dlg.Filter = "Powerpraise-Lied|*.ppl|SongBeamer-Lied|*.sng";
 
 			if (dlg.ShowDialog() == true)
 			{
@@ -96,7 +104,7 @@ namespace Words.Editor
 			if (doc == null)
 				throw new ArgumentNullException("doc");
 			
-			if (doc.File == null)
+			if (doc.File == null || doc.File.Extension.ToLower() != ".ppl")
 			{
 				SaveSongAs(doc);
 			}
@@ -120,7 +128,7 @@ namespace Words.Editor
 			}
 			else
 			{
-				dlg.FileName = doc.File.Name;
+				dlg.FileName =  Path.GetFileNameWithoutExtension(doc.File.Name);
 			}
 
 			if (dlg.ShowDialog() == true)
@@ -131,15 +139,7 @@ namespace Words.Editor
 
 		private void NewSong()
 		{
-			var template = Properties.Settings.Default.SongTemplateFile;
-
-			if (string.IsNullOrEmpty(template) || !File.Exists(template))
-			{
-				// fall back to standard template in data directory
-				template = Path.Combine("Data", "Standard.ppl");
-			}
-
-			Load(new Song(template) { SongTitle = Words.Resources.Resource.eNewSongTitle });
+			Load(new Song(Song.Template) { SongTitle = Words.Resources.Resource.eNewSongTitle });
 		}
 
 		private bool CloseSong(EditorDocument doc)

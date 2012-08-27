@@ -49,6 +49,17 @@ namespace Words
 			LoadAttributes(Assembly.LoadFrom(Path.Combine(startupDir, "Words.Slideshow.dll"))); // TODO (Words): automatically load plugins
 
 			InitDataDirectories();
+
+			// init song template file
+			var template = Properties.Settings.Default.SongTemplateFile;
+
+			if (string.IsNullOrEmpty(template) || !File.Exists(template))
+			{
+				// fall back to standard template in data directory
+				template = Path.Combine("Data", "Standard.ppl");
+			}
+
+			Song.Template = template;
 		}
 
 		private void DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)

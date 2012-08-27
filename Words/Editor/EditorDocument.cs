@@ -20,6 +20,9 @@ namespace Words.Editor
 			else
 			{
 				this.File = new FileInfo(file);
+
+				if (this.File.Extension.ToLower() != ".ppl")
+					IsModified = true;
 			}
 
 			Song = song;
@@ -97,6 +100,12 @@ namespace Words.Editor
 
 		public void Save()
 		{
+			if (this.File == null)
+				throw new InvalidOperationException("Source file unknown.");
+
+			if (this.File.Extension.ToLower() != ".ppl")
+				throw new InvalidOperationException("Source file was not a Powerpraise song.");
+
 			this.Song.SavePowerpraise(this.File.FullName);
 			IsModified = false;
 		}
