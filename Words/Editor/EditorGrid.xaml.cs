@@ -267,7 +267,7 @@ namespace Words.Editor
 				{
 					if (StructureTree.SelectedItem is SongNodePart)
 					{
-						DragDropEffects de = DragDrop.DoDragDrop(StructureTree, StructureTree.SelectedItem as SongNodePart, DragDropEffects.Copy);
+						DragDropEffects de = DragDrop.DoDragDrop(StructureTree, StructureTree.SelectedItem as SongNodePart, DragDropEffects.Move | DragDropEffects.Copy);
 					}
 					else if (StructureTree.SelectedItem is SongNodeSlide)
 					{
@@ -279,7 +279,7 @@ namespace Words.Editor
 
 		private void StructureTree_DragEnterOrOver(object sender, DragEventArgs e)
 		{
-			if (e.Data.GetData(typeof(SongNodeSlide)) is SongNodeSlide)
+			if (e.Data.GetData(typeof(SongNodeSlide)) != null)
 			{
 				var item = StructureTree.GetItemAtLocation<TreeViewItem>(e.GetPosition(StructureTree));
 				if (item != null && (item.Header is SongNodeSlide || item.Header is SongNodePart))
@@ -296,6 +296,19 @@ namespace Words.Editor
 
 				e.Handled = true;
 			}
+			else if (e.Data.GetData(typeof(SongNodePart)) != null)
+			{
+				var item = StructureTree.GetItemAtLocation<TreeViewItem>(e.GetPosition(StructureTree));
+				if (item != null && (item.Header is SongNodePart || item.Header is SongNodeSlide))
+				{
+					if (e.KeyStates.HasFlag(DragDropKeyStates.ControlKey))
+						e.Effects = DragDropEffects.Copy;
+					else
+						e.Effects = DragDropEffects.Move;
+
+					e.Handled = true;
+				}
+			}
 			else
 			{
 				e.Effects = DragDropEffects.None;
@@ -304,37 +317,69 @@ namespace Words.Editor
 
 		private void StructureTree_Drop(object sender, DragEventArgs e)
 		{
-			if (e.Data.GetData(typeof(SongNodeSlide)) == null)
-				return;
-
-			SongNode targetNode = StructureTree.GetItemAtLocation<TreeViewItem>(e.GetPosition(StructureTree)).Header as SongNode;
-			SongNodeSlide dragNode = e.Data.GetData(typeof(SongNodeSlide)) as SongNodeSlide;
-
-			if (e.KeyStates.HasFlag(DragDropKeyStates.ControlKey)) // copy
+			if (e.Data.GetData(typeof(SongNodeSlide)) != null)
 			{
-				if (targetNode is SongNodeSlide)
-					targetNode.Root.CopySlide(dragNode, targetNode as SongNodeSlide);
-				else if (targetNode is SongNodePart)
-					targetNode.Root.CopySlide(dragNode, targetNode as SongNodePart);
-			}
-			else
-			{
-				if (targetNode == dragNode)
-					return;
+				SongNode targetNode = StructureTree.GetItemAtLocation<TreeViewItem>(e.GetPosition(StructureTree)).Header as SongNode;
+				SongNodeSlide dragNode = e.Data.GetData(typeof(SongNodeSlide)) as SongNodeSlide;
 
-				if (dragNode.Root.FindPartWithSlide(dragNode).Children.Count <= 1)
+				if (e.KeyStates.HasFlag(DragDropKeyStates.ControlKey)) // copy
 				{
-					MessageBox.Show(Words.Resources.Resource.eMsgMoveLastSlideInPart,
-						Words.Resources.Resource.dialogError, MessageBoxButton.OK, MessageBoxImage.Error);
-					return;
+					if (targetNode is SongNodeSlide)
+						Node.CopySlide(dragNode, targetNode as SongNodeSlide);
+					else if (targetNode is SongNodePart)
+						Node.CopySlide(dragNode, targetNode as SongNodePart);
 				}
+				else
+				{
+					if (targetNode == dragNode)
+						return;
 
+					if (Node.FindPartWithSlide(dragNode).Children.Count <= 1)
+					{
+						MessageBox.Show(Words.Resources.Resource.eMsgMoveLastSlideInPart,
+							Words.Resources.Resource.dialogError, MessageBoxButton.OK, MessageBoxImage.Error);
+						return;
+					}
+
+					if (targetNode is SongNodeSlide)
+						Node.MoveSlide(dragNode, targetNode as SongNodeSlide);
+					else if (targetNode is SongNodePart)
+						Node.MoveSlide(dragNode, targetNode as SongNodePart);
+
+					StructureTree.SetSelectedItem(dragNode);
+				}
+			}
+			else if (e.Data.GetData(typeof(SongNodePart)) != null)
+			{
+				SongNode targetNode = StructureTree.GetItemAtLocation<TreeViewItem>(e.GetPosition(StructureTree)).Header as SongNode;
+				SongNodePart dragNode = e.Data.GetData(typeof(SongNodePart)) as SongNodePart;
+				SongNodePart targetPart;
 				if (targetNode is SongNodeSlide)
-					targetNode.Root.MoveSlide(dragNode, targetNode as SongNodeSlide);
-				else if (targetNode is SongNodePart)
-					targetNode.Root.MoveSlide(dragNode, targetNode as SongNodePart);
+					targetPart = Node.FindPartWithSlide(targetNode as SongNodeSlide);
+				else
+					targetPart = (SongNodePart)targetNode;
 
-				StructureTree.SetSelectedItem(dragNode);
+				if (e.KeyStates.HasFlag(DragDropKeyStates.ControlKey))
+				{
+					// copy part: request name for the copy first
+					var res = ShowRenamePartDialog(songNode, null);
+					if (res.DialogResult.HasValue && res.DialogResult.Value)
+					{
+						SongNodePart newPart;
+						using (new UndoBatch(songNode, "CopyPart", false))
+						{
+							newPart = dragNode.Copy(res.PartName);
+							Node.AddPart(newPart);
+							Node.MovePart(newPart, targetPart);
+						}
+						this.StructureTree.SetSelectedItem(newPart);
+					}
+				}
+				else
+				{
+					Node.MovePart(dragNode, targetPart);
+					StructureTree.SetSelectedItem(dragNode);
+				}
 			}
 		}
 		#endregion

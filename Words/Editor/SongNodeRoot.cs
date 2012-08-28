@@ -186,6 +186,34 @@ namespace Words.Editor
 			redo();
 		}
 
+		public void MovePart(SongNodePart part, SongNodePart target)
+		{
+			if (part == target)
+				return;
+
+			int originalIndex = partNodes.IndexOf(part);
+			int newIndex = partNodes.IndexOf(target);
+
+			Action redo = () =>
+			{
+				partNodes.Remove(part);
+				partNodes.Insert(newIndex, part);
+				UpdateParts();
+			};
+
+			Action undo = () =>
+			{
+				partNodes.Remove(part);
+				partNodes.Insert(originalIndex, part);
+				UpdateParts();
+			};
+
+			var ch = new DelegateChange(this, undo, redo, new ChangeKey<object, string>(this, "Parts"));
+			UndoService.Current[this].AddChange(ch, "MovePart");
+
+			redo();
+		}
+
 		public void MoveSlide(SongNodeSlide slide, SongNodePart target)
 		{
 			var part = FindPartWithSlide(slide);
@@ -219,7 +247,7 @@ namespace Words.Editor
 
 			using (new UndoBatch(this, "CopySlide", false))
 			{
-				s = slide.Clone();
+				s = slide.Copy();
 				target.AddSlide(s);
 			}
 		}
@@ -232,7 +260,7 @@ namespace Words.Editor
 
 			using (new UndoBatch(this, "CopySlide", false))
 			{
-				s = slide.Clone();
+				s = slide.Copy();
 				targetPart.InsertSlideAfter(s, target);
 			}
 		}

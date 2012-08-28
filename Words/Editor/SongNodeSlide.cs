@@ -193,7 +193,7 @@ namespace Words.Editor
 			}
 		}
 
-		public SongNodeSlide Clone()
+		public SongNodeSlide Copy()
 		{
 			var s = new SongNodeSlide(Root);
 			s.ChangeFontSize(FontSize);

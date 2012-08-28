@@ -130,7 +130,7 @@ namespace Words.Editor
 			int i = slides.IndexOf(slide);
 			using (new UndoBatch(this, "DuplicateSlide", false))
 			{
-				s = slide.Clone();
+				s = slide.Copy();
 				var ch = new DelegateChange(this,
 					() => { slides.Remove(s); },
 					() => { slides.Insert(i + 1, s); },
@@ -184,6 +184,17 @@ namespace Words.Editor
 
 				Root.CleanBackgrounds();
 			}
+		}
+
+		public SongNodePart Copy(string name)
+		{
+			var copy = new SongNodePart(Root, song, name);
+			copy.slides.Clear();
+			foreach(var slide in slides)
+			{
+				copy.AddSlide(slide.Copy());
+			}
+			return copy;
 		}
 	}
 }
