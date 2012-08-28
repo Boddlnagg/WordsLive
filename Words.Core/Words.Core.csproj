@@ -71,6 +71,7 @@
     <Compile Include="Songs\HtmlExport.cs" />
     <Compile Include="Songs\Song.cs" />
     <Compile Include="Songs\SongBackground.cs" />
+    <Compile Include="Songs\SongBeamerImport.cs" />
     <Compile Include="Songs\SongFormatting.cs" />
     <Compile Include="Songs\SongPart.cs" />
     <Compile Include="Songs\SongSlide.cs" />

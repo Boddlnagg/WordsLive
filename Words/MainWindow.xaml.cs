@@ -445,7 +445,7 @@ namespace Words
 					if (song != null)
 					{
 						EditorWindow win = Controller.ShowEditorWindow();
-						win.Load(song.File);
+						win.LoadOrImport(song.File);
 					}
 				}
 			}

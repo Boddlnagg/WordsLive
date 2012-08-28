@@ -11,7 +11,7 @@ namespace Words.Editor
 {
 	public class EditorDocument : INotifyPropertyChanged
 	{
-		public EditorDocument(string file, Song song, EditorWindow parent)
+		public EditorDocument(string file, Song song, bool imported, EditorWindow parent)
 		{
 			if (String.IsNullOrEmpty(file))
 			{
@@ -21,7 +21,7 @@ namespace Words.Editor
 			{
 				this.File = new FileInfo(file);
 
-				if (this.File.Extension.ToLower() != ".ppl")
+				if (imported)
 					IsModified = true;
 			}
 
@@ -102,9 +102,6 @@ namespace Words.Editor
 		{
 			if (this.File == null)
 				throw new InvalidOperationException("Source file unknown.");
-
-			if (this.File.Extension.ToLower() != ".ppl")
-				throw new InvalidOperationException("Source file was not a Powerpraise song.");
 
 			this.Song.SavePowerpraise(this.File.FullName);
 			IsModified = false;

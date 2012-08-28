@@ -57,30 +57,63 @@ namespace Words.Editor
 			return null;
 		}
 
-		public void Load(string file)
+		/// <summary>
+		/// Creates a new instance of <see cref="Song"/> from the template file (the SongTemplateFile application setting).
+		/// This is used for creating new (empty) songs and for importing songs.
+		/// </summary>
+		/// <returns>The created song.</returns>
+		private Song CreateSongFromTemplate()
 		{
-			try
+			// init song template file
+			var template = Properties.Settings.Default.SongTemplateFile;
+
+			if (string.IsNullOrEmpty(template) || !File.Exists(template))
 			{
-				Load(file, new Song(file));
+				// fall back to standard template in data directory
+				template = Path.Combine("Data", "Standard.ppl");
 			}
-			catch (Exception)
+
+			return new Song(template) { SongTitle = Words.Resources.Resource.eNewSongTitle };
+		}
+
+		public void LoadOrImport(string filename)
+		{
+			if (filename == null)
+				throw new ArgumentNullException("filename");
+
+			var file = new FileInfo(filename);
+
+			if (file.Extension == ".ppl")
 			{
-			    Controller.ShowEditorWindow();
-			    MessageBox.Show(String.Format(Words.Resources.Resource.eMsgCouldNotOpenSong, file), Words.Resources.Resource.dialogError, MessageBoxButton.OK, MessageBoxImage.Error);
+				Load(filename, new Song(filename), false);
+			}
+			else if (file.Extension == ".sng")
+			{
+				var song = CreateSongFromTemplate();
+				SongBeamerImport.Import(song, filename);
+				Load(filename, song, true);
+			}
+			else
+			{
+				Controller.ShowEditorWindow();
+				MessageBox.Show(String.Format(Words.Resources.Resource.eMsgCouldNotOpenSong, file), Words.Resources.Resource.dialogError, MessageBoxButton.OK, MessageBoxImage.Error);
 			}
 		}
 
 		public void Load(Song song)
 		{
-			Load(null, song);
+			if (song == null)
+				throw new ArgumentNullException("song");
+
+			Load(null, song, false);
 		}
 
-		public void Load(string file, Song song)
+		private void Load(string file, Song song, bool imported)
 		{
 			var opened = CheckSongOpened(file, song);
 			if (opened == null)
 			{
-				opened = new EditorDocument(file, song, this);
+				opened = new EditorDocument(file, song, imported, this);
 				openDocuments.Add(opened);
 			}
 
@@ -95,7 +128,7 @@ namespace Words.Editor
 
 			if (dlg.ShowDialog() == true)
 			{
-				Load(dlg.FileName);
+				LoadOrImport(dlg.FileName);
 			}
 		}
 
@@ -139,7 +172,7 @@ namespace Words.Editor
 
 		private void NewSong()
 		{
-			Load(new Song(Song.Template) { SongTitle = Words.Resources.Resource.eNewSongTitle });
+			Load(CreateSongFromTemplate());
 		}
 
 		private bool CloseSong(EditorDocument doc)
@@ -217,7 +250,7 @@ namespace Words.Editor
 				string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
 				foreach (var file in files)
 				{
-					Load(file);
+					LoadOrImport(file);
 				}
 			}
 		}
