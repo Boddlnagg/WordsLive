@@ -415,7 +415,7 @@ namespace Words.Editor
 			}
 			else if (StructureTree.SelectedItem is SongNodeLanguage)
 			{
-				EditBorder.Child = (ComboBox)this.Resources["editLanguageComboBox"];
+				EditBorder.Child = (Grid)this.Resources["editLanguageGrid"];
 				EnableSpellCheckCheckBox.IsEnabled = false;
 				PreviewControl.Node = (SongNode)StructureTree.SelectedItem;
 				EditHeader.Text = ((SongNodeLanguage)StructureTree.SelectedItem).Title;

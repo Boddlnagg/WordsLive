@@ -15,7 +15,7 @@ namespace Words.Editor
 	public class SongNodeRoot : SongNode
 	{
 		private List<SongNodePart> partNodes = new List<SongNodePart>();
-		private SongNodeMetadata languageNode;
+		private SongNodeLanguage languageNode;
 		private SongNodeMetadata categoryNode;
 		private SongNodeMetadata copyrightNode;
 		private SongNodeSource sourceNode;
@@ -48,19 +48,29 @@ namespace Words.Editor
 		{
 			get
 			{
-				string lang = Song.Language;
-				int index = lang.IndexOfAny(new char[] {'/', ' ', '('});
-				if (index > 0)
-				{
-					lang = Song.Language.Substring(0, index);
-				}
+				return LanguageCodeFromName(Song.Language);
+			}
+		}
 
-				return LanguageCodeFromName(lang);
+		public string TranslationLanguageCode
+		{
+			get
+			{
+				return LanguageCodeFromName(Song.TranslationLanguage);
 			}
 		}
 
 		private string LanguageCodeFromName(string name)
 		{
+			if (String.IsNullOrEmpty(name))
+				return String.Empty;
+
+			int index = name.IndexOfAny(new char[] { '/', ' ', '(' });
+			if (index > 0)
+			{
+				name = name.Substring(0, index);
+			}
+
 			switch (name.ToLower())
 			{
 				case "deutsch":
@@ -109,8 +119,10 @@ namespace Words.Editor
 			languageNode = new SongNodeLanguage(Root);
 			languageNode.PropertyChanged += (sender, args) =>
 				{
-					if (args.PropertyName == "Text")
+					if (args.PropertyName == "Language")
 						this.OnNotifyPropertyChanged("LanguageCode");
+					else if (args.PropertyName == "TranslationLanguage")
+						this.OnNotifyPropertyChanged("TranslationLanguageCode");
 				};
 			categoryNode = new SongNodeCategory(Root);
 

@@ -22,6 +22,7 @@ namespace Words.Core.Songs
 
 		public string Category { get; set; }
 		public string Language { get; set; }
+		public string TranslationLanguage { get; set; } // TODO: this setting is currently not saved (not supported in .ppl)
 		public string Comment { get; set; }
 		public IList<SongBackground> Backgrounds { get; set; }
 		public SongFormatting Formatting { get; set; }

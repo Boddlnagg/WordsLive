@@ -1,17 +1,39 @@
 ﻿
 namespace Words.Editor
 {
-	public class SongNodeLanguage : SongNodeMetadata
+	public class SongNodeLanguage : SongNode
 	{
 		public SongNodeLanguage(SongNodeRoot root) : base(root)
 		{
 			this.Title = Words.Resources.Resource.eMetadataLanguageTitle;
-			this.Text = root.Song.Language;
 		}
 
-		protected override void UpdateSource(string value)
+		public string Language
 		{
-			Root.Song.Language = value;
+			get
+			{
+				return Root.Song.Language;
+			}
+			set
+			{
+				EditorDocument.OnChangingTryMerge(this, "Language", Root.Song.Language, value);
+				Root.Song.Language = value;
+				OnNotifyPropertyChanged("Language");
+			}
+		}
+
+		public string TranslationLanguage
+		{
+			get
+			{
+				return Root.Song.TranslationLanguage;
+			}
+			set
+			{
+				EditorDocument.OnChangingTryMerge(this, "TranslationLanguage", Root.Song.TranslationLanguage, value);
+				Root.Song.TranslationLanguage = value;
+				OnNotifyPropertyChanged("TranslationLanguage");
+			}
 		}
 
 		public override string IconUri

@@ -218,6 +218,8 @@ namespace Words.Core.Songs
 
 			if (properties.ContainsKey("lang")) // language of the song 	#Lang=E
 				song.Language = properties["lang"]; // TODO: what format is this in?
+
+			// TODO: is there a "lang2" property for the language of the first translation? -> Put it in song.TranslationLanguage
 		}
 
 		private static void PostProcessSongBeamerProperties(Song song, Dictionary<string, string> properties)
