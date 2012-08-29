@@ -1,13 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Media;
 using Words.Core.Songs;
-using System.Windows;
-using System.Text.RegularExpressions;
-using System;
 
 namespace Words.Songs
 {
@@ -193,9 +192,19 @@ namespace Words.Songs
 			var selectedContainer = FindNextItemWithPartName(part);
 
 			this.SelectedItem = selectedContainer;
-			this.ScrollIntoView(selectedContainer);
 
 			base.OnKeyUp(e);
+		}
+
+		protected override void OnSelectionChanged(SelectionChangedEventArgs e)
+		{
+			if (ItemContainerGenerator.Status == System.Windows.Controls.Primitives.GeneratorStatus.ContainersGenerated)
+			{
+				var container = (ListBoxItem)ItemContainerGenerator.ContainerFromIndex(SelectedIndex);
+				container.Focus();
+			}
+
+			base.OnSelectionChanged(e);
 		}
 
 		private SongSlideContainer FindNextItemWithPartName(string name)
