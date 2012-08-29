@@ -250,6 +250,7 @@ namespace Words
 				m.Reload();
 				LoadMedia(m.Data);
 				CurrentPanel.Init(m.Data);
+				// TODO: set (keyboard) focus to ControlPanel.Control
 			}
 			else
 			{
@@ -380,6 +381,26 @@ namespace Words
 				MediaManager.SavePortfolio(from m in orderList select m.Data.Data, dlg.FileName);
 				PortfolioFile = new FileInfo(dlg.FileName);
 				portfolioChanged = false;
+			}
+		}
+
+		/// <summary>
+		/// Loads a media item from a file and adds it to the current portfolio.
+		/// If an item is active, the new item is added after that one, otherwise it is appended
+		/// to the end of the portfolio.
+		/// </summary>
+		/// <param name="file">The file to add.</param>
+		internal void AddToPortfolio(string file)
+		{
+			var media = MediaManager.LoadMediaMetadata(file);
+			if (orderList.ActiveItem != null)
+			{
+				int index = orderList.IndexOf(orderList.ActiveItem);
+				orderList.Insert(index + 1, media);
+			}
+			else
+			{
+				orderList.Add(media);
 			}
 		}
 

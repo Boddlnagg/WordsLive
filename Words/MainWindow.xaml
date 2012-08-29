@@ -101,6 +101,18 @@
 					</MenuItem.Icon>
 				</MenuItem>
 			</MenuItem>
+			<MenuItem Header="{x:Static resx:Resource.veMenuWindow}">
+				<MenuItem Header="{x:Static resx:Resource.veMenuShowSonglist}" Command="{x:Static local:CustomCommands.ShowSonglist}">
+					<MenuItem.Icon>
+						<Image Width="24" Source="/Words;component/Artwork/Songlist.png" />
+					</MenuItem.Icon>
+				</MenuItem>
+				<MenuItem Header="{x:Static resx:Resource.vMenuShowEditorWindow}" Command="{x:Static local:CustomCommands.SwitchWindow}">
+					<MenuItem.Icon>
+						<Image Width="24" Source="/Words;component/Artwork/Editor.png" />
+					</MenuItem.Icon>
+				</MenuItem>
+			</MenuItem>
 			<!-- TODO <MenuItem Header="Hilfe">
 				<MenuItem Header="Über Words ..."/>
 			</MenuItem>-->

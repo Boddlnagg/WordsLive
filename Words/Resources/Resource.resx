@@ -564,4 +564,19 @@
   <data name="eMsgCouldNotOpenSong" xml:space="preserve">
     <value>Die Datei "{0}" konnte nicht geladen werden.</value>
   </data>
+  <data name="eMenuAddToPortfolio" xml:space="preserve">
+    <value>Lied zum aktuellen Portfolio hinzufügen</value>
+  </data>
+  <data name="eMenuShowPresenter" xml:space="preserve">
+    <value>Präsentationsfenster anzeigen</value>
+  </data>
+  <data name="veMenuShowSonglist" xml:space="preserve">
+    <value>Liederliste anzeigen</value>
+  </data>
+  <data name="veMenuWindow" xml:space="preserve">
+    <value>Fenster</value>
+  </data>
+  <data name="vMenuShowEditorWindow" xml:space="preserve">
+    <value>Editorfenster anzeigen</value>
+  </data>
 </root>

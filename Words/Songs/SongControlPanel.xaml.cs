@@ -1,15 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Media;
 using Words.Core;
 using Words.Core.Songs;
-using System.Threading;
-using System.Windows.Threading;
 
 namespace Words.Songs
 {

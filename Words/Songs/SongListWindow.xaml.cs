@@ -112,18 +112,25 @@ namespace Words.Songs
 			Controller.AddToPortfolio(song.Path);
 		}
 
-		private void buttonAddSong_Click(object sender, RoutedEventArgs e)
+		private void OnCanExecuteCommand(object sender, CanExecuteRoutedEventArgs e)
 		{
-			if (songListView.SelectedItem == null)
-				return;
-
-			var song = (SongWrapper)songListView.SelectedItem;
-			Controller.AddToPortfolio(song.Path);
+			if (e.Command == CustomCommands.AddMedia)
+			{
+				e.CanExecute = songListView.SelectedItem != null;
+			}
 		}
 
-		private void buttonClose_Click(object sender, RoutedEventArgs e)
+		private void OnExecuteCommand(object sender, ExecutedRoutedEventArgs e)
 		{
-			this.Close();
+			if (e.Command == CustomCommands.AddMedia)
+			{
+				var song = (SongWrapper)songListView.SelectedItem;
+				Controller.AddToPortfolio(song.Path);
+			}
+			else if (e.Command == ApplicationCommands.Close)
+			{
+				this.Close();
+			}
 		}
 	}
 }

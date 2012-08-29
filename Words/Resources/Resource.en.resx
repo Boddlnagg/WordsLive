@@ -340,7 +340,8 @@
     <value>Show chords in presentation</value>
   </data>
   <data name="vToolbarShowEditorWindow" xml:space="preserve">
-    <value>Open editor</value>
+    <value>Open editor window</value>
+    <comment> </comment>
   </data>
   <data name="vToolbarShowPresentation" xml:space="preserve">
     <value>Show presentation</value>
@@ -563,5 +564,20 @@
   </data>
   <data name="eMsgCouldNotOpenSong" xml:space="preserve">
     <value>Can not open the song "{0}".</value>
+  </data>
+  <data name="eMenuAddToPortfolio" xml:space="preserve">
+    <value>Add song to current portfolio</value>
+  </data>
+  <data name="eMenuShowPresenter" xml:space="preserve">
+    <value>Show presenter window</value>
+  </data>
+  <data name="veMenuShowSonglist" xml:space="preserve">
+    <value>Open songlist</value>
+  </data>
+  <data name="veMenuWindow" xml:space="preserve">
+    <value>Window</value>
+  </data>
+  <data name="vMenuShowEditorWindow" xml:space="preserve">
+    <value>Open editor window</value>
   </data>
 </root>

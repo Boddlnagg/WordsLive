@@ -3,6 +3,7 @@
 		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 		xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" x:Class="Words.Songs.SongListWindow"
 		xmlns:resx="clr-namespace:Words.Resources"
+		xmlns:local="clr-namespace:Words"
 		MinWidth="450" MinHeight="350" mc:Ignorable="d" Loaded="Window_Loaded"
 		Height = "{Binding Source={StaticResource settings}, Path=Default.SongListWindowHeight, Mode=TwoWay}"
 		Width = "{Binding Source={StaticResource settings}, Path=Default.SongListWindowWidth, Mode=TwoWay}"
@@ -16,6 +17,10 @@
 			<TextBlock Text="{Binding Title}" ToolTip="{Binding Path}"/>
 		</DataTemplate>
 	</Window.Resources>
+	<Window.CommandBindings>
+		<CommandBinding Command="{x:Static local:CustomCommands.AddMedia}" CanExecute="OnCanExecuteCommand"  Executed="OnExecuteCommand"/>
+		<CommandBinding Command="Close" Executed="OnExecuteCommand"/>
+	</Window.CommandBindings>
 	<Grid>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="Auto"/>
@@ -49,7 +54,6 @@
 			</ListView.Resources>
 			<ListView.View>
 				<GridView>
-					<!--<GridViewColumn Header="Titel" Width="250" DisplayMemberBinding="{Binding Title}" />-->
 					<GridViewColumn Header="{x:Static resx:Resource.slGridTitle}" Width="250" CellTemplate="{StaticResource titleTemplate}"/>
 					<GridViewColumn Header="{x:Static resx:Resource.slGridSource}" Width="150" DisplayMemberBinding="{Binding SourcesString}" />
 					<GridViewColumn Header="{x:Static resx:Resource.slGridCopyright}" Width="170" DisplayMemberBinding="{Binding CopyrightTrimmed}" />
@@ -63,8 +67,8 @@
 				</Style>
 			</ListView.ItemContainerStyle>
 		</ListView>
-		<Button Content="{x:Static resx:Resource.slAddSong}" Grid.Row="2" Height="23" HorizontalAlignment="Right" Margin="0,6,6,6" Name="buttonAddSong" VerticalAlignment="Center" Width="110" Click="buttonAddSong_Click" />
-		<Button Content="{x:Static resx:Resource.dialogClose}" Grid.Row="2" Height="23" Margin="0,6,122,6" Name="buttonClose" VerticalAlignment="Center" Click="buttonClose_Click" HorizontalAlignment="Right" Width="110" />
+		<Button Command="{x:Static local:CustomCommands.AddMedia}" Content="{x:Static resx:Resource.slAddSong}" Grid.Row="2" Height="23" HorizontalAlignment="Right" Margin="0,6,6,6" Name="buttonAddSong" VerticalAlignment="Center" Width="110"/>
+		<Button Command="Close" Content="{x:Static resx:Resource.dialogClose}" Grid.Row="2" Height="23" Margin="0,6,122,6" Name="buttonClose" VerticalAlignment="Center" HorizontalAlignment="Right" Width="110" />
 		<Label Grid.Row="2" Height="Auto" HorizontalAlignment="Left" Margin="6,0,0,0" Foreground="Gray" x:Name="labelStatus" Content="{x:Static resx:Resource.slLoading}" VerticalAlignment="Center" />
 	</Grid>
 </Window>

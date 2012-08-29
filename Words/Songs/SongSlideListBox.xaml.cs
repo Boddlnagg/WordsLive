@@ -198,11 +198,9 @@ namespace Words.Songs
 
 		protected override void OnSelectionChanged(SelectionChangedEventArgs e)
 		{
-			if (ItemContainerGenerator.Status == System.Windows.Controls.Primitives.GeneratorStatus.ContainersGenerated)
-			{
-				var container = (ListBoxItem)ItemContainerGenerator.ContainerFromIndex(SelectedIndex);
+			var container = (ListBoxItem)ItemContainerGenerator.ContainerFromIndex(SelectedIndex);
+			if (container != null)
 				container.Focus();
-			}
 
 			base.OnSelectionChanged(e);
 		}

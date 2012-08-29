@@ -146,7 +146,7 @@ namespace Words
 
 			Exit = new RoutedCommand("Exit", t);
 			ShowSonglist = new RoutedCommand("ShowSonglist", t, new InputGestureCollection { new KeyGesture(Key.F, ModifierKeys.Control) });
-			SwitchWindow = new RoutedCommand("SwitchWindow", t, new InputGestureCollection { new KeyGesture(Key.Tab, ModifierKeys.Shift) });
+			SwitchWindow = new RoutedCommand("SwitchWindow", t, new InputGestureCollection { new KeyGesture(Key.W, ModifierKeys.Control) });
 			EditActive = new RoutedCommand("EditActive", t);
 			ShowSettings = new RoutedCommand("ShowSettings", t);
 			ViewCurrent = new RoutedCommand("ViewCurrent", t);

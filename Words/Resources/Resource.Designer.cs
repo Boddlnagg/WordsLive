@@ -322,6 +322,15 @@ namespace Words.Resources {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Lied zum aktuellen Portfolio hinzufügen ähnelt.
+        /// </summary>
+        public static string eMenuAddToPortfolio {
+            get {
+                return ResourceManager.GetString("eMenuAddToPortfolio", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Lied schließen ähnelt.
         /// </summary>
         public static string eMenuCloseSong {
@@ -408,6 +417,15 @@ namespace Words.Resources {
         public static string eMenuSaveSongAs {
             get {
                 return ResourceManager.GetString("eMenuSaveSongAs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Präsentationsfenster anzeigen ähnelt.
+        /// </summary>
+        public static string eMenuShowPresenter {
+            get {
+                return ResourceManager.GetString("eMenuShowPresenter", resourceCulture);
             }
         }
         
@@ -1042,6 +1060,24 @@ namespace Words.Resources {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Liederliste anzeigen ähnelt.
+        /// </summary>
+        public static string veMenuShowSonglist {
+            get {
+                return ResourceManager.GetString("veMenuShowSonglist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Fenster ähnelt.
+        /// </summary>
+        public static string veMenuWindow {
+            get {
+                return ResourceManager.GetString("veMenuWindow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Alle Dateien ähnelt.
         /// </summary>
         public static string vFilterAllFiles {
@@ -1200,6 +1236,15 @@ namespace Words.Resources {
         public static string vMenuShowChords {
             get {
                 return ResourceManager.GetString("vMenuShowChords", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Editorfenster anzeigen ähnelt.
+        /// </summary>
+        public static string vMenuShowEditorWindow {
+            get {
+                return ResourceManager.GetString("vMenuShowEditorWindow", resourceCulture);
             }
         }
         

@@ -11,7 +11,7 @@ namespace Words.Editor
 {
 	public class EditorDocument : INotifyPropertyChanged
 	{
-		public EditorDocument(string file, Song song, bool imported, EditorWindow parent)
+		public EditorDocument(string file, Song song, bool isImported, EditorWindow parent)
 		{
 			if (String.IsNullOrEmpty(file))
 			{
@@ -21,8 +21,8 @@ namespace Words.Editor
 			{
 				this.File = new FileInfo(file);
 
-				if (imported)
-					IsModified = true;
+				this.IsImported = isImported;
+					
 			}
 
 			Song = song;
@@ -98,6 +98,24 @@ namespace Words.Editor
 			}
 		}
 
+		private bool isImported;
+
+		public bool IsImported
+		{
+			get
+			{
+				return isImported;
+			}
+			private set
+			{
+				isImported = value;
+				OnPropertyChanged("IsImported");
+
+				if (value)
+					IsModified = true;
+			}
+		}
+
 		public void Save()
 		{
 			if (this.File == null)
@@ -105,6 +123,7 @@ namespace Words.Editor
 
 			this.Song.SavePowerpraise(this.File.FullName);
 			IsModified = false;
+			IsImported = false;
 		}
 
 		public void SaveAs(string file)
@@ -112,6 +131,7 @@ namespace Words.Editor
 			File = new FileInfo(file);
 			this.Song.SavePowerpraise(this.File.FullName);
 			IsModified = false;
+			IsImported = false;
 		}
 
 		public void Undo()

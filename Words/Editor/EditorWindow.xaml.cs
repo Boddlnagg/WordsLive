@@ -320,6 +320,10 @@ namespace Words.Editor
 			{
 				e.CanExecute = doc != null;
 			}
+			else if (e.Command == CustomCommands.AddMedia)
+			{
+				e.CanExecute = doc != null && !doc.IsImported && doc.File != null;
+			}
 		}
 
 		private void OnExecuteCommand(object sender, ExecutedRoutedEventArgs e)
@@ -389,8 +393,15 @@ namespace Words.Editor
 				var win = new EditChordsWindow(doc.Grid.Node);
 				win.Owner = this;
 				win.ShowDialog();
-				doc.Grid.PreviewControl.UpdateStyle();
-				
+				doc.Grid.PreviewControl.UpdateStyle();	
+			}
+			else if (e.Command == CustomCommands.AddMedia)
+			{
+				Controller.AddToPortfolio(doc.File.FullName);
+			}
+			else if (e.Command == CustomCommands.ShowSonglist)
+			{
+				Controller.ShowSongList();
 			}
 		}
 	}

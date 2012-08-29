@@ -190,7 +190,7 @@ namespace Words
 
 		public static void AddToPortfolio(string file)
 		{
-			((MediaOrderList.MediaOrderList)instance.window.OrderListBox.DataContext).Add(MediaManager.LoadMediaMetadata(file));
+			instance.window.AddToPortfolio(file);
 		}
 
 		public static void ShowSongList()
