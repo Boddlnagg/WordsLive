@@ -33,7 +33,7 @@
 					BorderThickness="1,0"
 					HorizontalAlignment="Stretch"
 					VerticalAlignment="Stretch"/>
-				<TreeView Grid.Column="0" Name="directoryView" ItemsSource="{Binding}">
+				<TreeView Grid.Column="0" Name="directoryView" ItemsSource="{Binding}" SelectedItemChanged="directoryView_SelectedItemChanged">
 					<TreeView.Resources>
 						<HierarchicalDataTemplate DataType="{x:Type local:BackgroundsDirectory}" ItemsSource="{Binding Directories}" >
 							<StackPanel Orientation="Horizontal" Margin="2">
@@ -91,7 +91,7 @@
 					<ListView.ItemsPanel>
 						<ItemsPanelTemplate>
 							<WrapPanel Width="{Binding (FrameworkElement.ActualWidth), RelativeSource={RelativeSource AncestorType=ScrollContentPresenter}}"/>
-					</ItemsPanelTemplate>
+						</ItemsPanelTemplate>
 					</ListView.ItemsPanel>
 				</ListView>
 			</Grid>

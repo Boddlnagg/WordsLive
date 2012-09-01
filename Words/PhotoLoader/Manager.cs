@@ -205,10 +205,8 @@ namespace Words.PhotoLoader
 
 		private ImageSource GetBitmapSource(LoadImageRequest loadTask, DisplayOptions loadType)
 		{
-			// TODO: rotate according to metadata
 			Image image = loadTask.Image;
 			string source = loadTask.Source;
-
 			ImageSource imageSource = null;
 
 			if (!string.IsNullOrWhiteSpace(source))
@@ -250,9 +248,41 @@ namespace Words.PhotoLoader
 						if (loadType == DisplayOptions.Preview)
 						{
 							BitmapFrame bitmapFrame = BitmapFrame.Create(imageStream);
-							imageSource = bitmapFrame.Thumbnail;
+							int rotation = GetRotation(bitmapFrame.Metadata as BitmapMetadata);
 
-							if (imageSource == null) // Preview it is not embedded into the file
+							if (bitmapFrame.Thumbnail != null)
+							{
+								BitmapSource src = bitmapFrame.Thumbnail;
+								// crop black bars if necessary
+								double ratio = (double)bitmapFrame.PixelWidth / bitmapFrame.PixelHeight;
+								double thumbRatio = (double)src.PixelWidth / src.PixelHeight;
+								if (Math.Abs(ratio - thumbRatio) >= 0.01)
+								{
+									if (ratio > thumbRatio) // crop top/bottom
+									{
+										int newHeight = (int)(src.PixelWidth / ratio);
+										int top = (src.PixelHeight - newHeight) / 2;
+										src = new CroppedBitmap(src, new Int32Rect(0, top, src.PixelWidth, newHeight));
+									}
+									else // crop left/right
+									{
+										int newWidth = (int)(src.PixelHeight * ratio);
+										int left = (src.PixelWidth - newWidth) / 2;
+										src = new CroppedBitmap(src, new Int32Rect(left, 0, newWidth, src.PixelHeight));
+									}
+								}
+
+								TransformedBitmap thumbnail = new TransformedBitmap();
+								thumbnail.BeginInit();
+								thumbnail.Source = src;
+								TransformGroup transformGroup = new TransformGroup();
+								// rotate according to metadata
+								transformGroup.Children.Add(new RotateTransform(rotation));
+								thumbnail.Transform = transformGroup;
+								thumbnail.EndInit();
+								imageSource = thumbnail;
+							}
+							else // Preview it is not embedded into the file
 							{
 								// we'll make a thumbnail image then ... (too bad as the pre-created one is FAST!)
 								TransformedBitmap thumbnail = new TransformedBitmap();
@@ -268,6 +298,7 @@ namespace Words.PhotoLoader
 								double scaleY = decodeH / (double)pixelH;
 								TransformGroup transformGroup = new TransformGroup();
 								transformGroup.Children.Add(new ScaleTransform(scaleX, scaleY));
+								transformGroup.Children.Add(new RotateTransform(rotation));
 								thumbnail.Transform = transformGroup;
 								thumbnail.EndInit();
 
@@ -279,10 +310,19 @@ namespace Words.PhotoLoader
 						}
 						else if (loadType == DisplayOptions.FullResolution)
 						{
-							BitmapImage bitmapImage = new BitmapImage();
+							BitmapFrame bitmapFrame = BitmapFrame.Create(imageStream);
+							int rotation = GetRotation(bitmapFrame.Metadata as BitmapMetadata);
+
+							TransformedBitmap bitmapImage = new TransformedBitmap();
 							bitmapImage.BeginInit();
-							bitmapImage.StreamSource = imageStream;
+							bitmapImage.Source = bitmapFrame as BitmapSource;
+							TransformGroup transformGroup = new TransformGroup();
+							transformGroup.Children.Add(new RotateTransform(rotation));
+							bitmapImage.Transform = transformGroup;
 							bitmapImage.EndInit();
+
+							bitmapImage.Freeze();
+
 							imageSource = bitmapImage;
 						}
 						else if (loadType == DisplayOptions.VideoPreview)
@@ -341,6 +381,35 @@ namespace Words.PhotoLoader
 			}
 
 			return imageSource;
+		}
+
+		private int GetRotation(BitmapMetadata metadata)
+		{
+			int rotation = 0;
+
+			if ((metadata != null) && metadata.ContainsQuery("System.Photo.Orientation"))
+			{
+				object o = metadata.GetQuery("System.Photo.Orientation");
+
+				if (o != null)
+				{
+					//refer to http://www.impulseadventure.com/photo/exif-orientation.html for details on orientation values
+					switch ((ushort)o)
+					{
+						case 6:
+							rotation = 90;
+							break;
+						case 3:
+							rotation = 180;
+							break;
+						case 8:
+							rotation = 270;
+							break;
+					}
+				}
+			}
+
+			return rotation;
 		}
 
 		private void LoaderThreadThumbnails()

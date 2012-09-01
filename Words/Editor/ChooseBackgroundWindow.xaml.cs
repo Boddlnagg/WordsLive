@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Words.Core;
 using Words.Core.Songs;
+using Words.Utils;
 
 namespace Words.Editor
 {
@@ -98,7 +99,7 @@ namespace Words.Editor
 			}
 		}
 
-		internal volatile string SelectImage;
+		internal string SelectImage;
 
 		private void SelectEntry(string path)
 		{ 
@@ -172,6 +173,12 @@ namespace Words.Editor
 				SetResultAndClose();
 			}
 		}
+
+		private void directoryView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+		{
+			ScrollViewer scrollViewer = imageListView.FindVisualChild<ScrollViewer>();
+			scrollViewer.ScrollToTop();
+		}
 	}
 
 	class BackgroundEntry
@@ -185,19 +192,19 @@ namespace Words.Editor
 	{
 		private static string[] allowedImageExtensions = new string[] { ".png", ".jpg", ".jpeg" };
 		private static string[] allowedVideoExtensions = new string[] { ".mp4", ".wmv", ".avi" };
-		private ObservableCollection<BackgroundEntry> images;
+		private List<BackgroundEntry> images;
 
 		public DirectoryInfo Info { get; set; }
 		public ChooseBackgroundWindow Parent { get; set; }
 		public bool IsRoot { get; set; }
 
-		public ObservableCollection<BackgroundEntry> Images
+		public List<BackgroundEntry> Images
 		{
 			get
 			{
 				if (images == null)
 				{
-					images = new ObservableCollection<BackgroundEntry>();
+					images = new List<BackgroundEntry>();
 					LoadImages();
 				}
 				return images;
@@ -223,8 +230,11 @@ namespace Words.Editor
 					images.Add(entry);
 					if (Parent.SelectImage == entry.File.Name)
 					{
-						Parent.imageListView.SelectedItem = entry;
-						Parent.imageListView.ScrollIntoView(entry);
+						Parent.Dispatcher.BeginInvoke(new Action(() => 
+						{
+							Parent.imageListView.SelectedItem = entry;
+							Parent.imageListView.ScrollIntoView(entry);
+						}));
 						Parent.SelectImage = null;
 					}
 				}
