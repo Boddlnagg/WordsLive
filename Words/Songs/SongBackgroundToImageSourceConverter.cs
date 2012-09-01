@@ -16,7 +16,12 @@ namespace Words.Songs
 		public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
 		{
 			var bg = (SongBackground)value;
-			return CreateBackgroundSource(bg);
+			int width;
+			if (parameter != null && int.TryParse((string)parameter, out width))
+				return CreateBackgroundSource(bg, width);
+			else
+				return CreateBackgroundSource(bg);
+
 		}
 
 		public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
@@ -24,13 +29,19 @@ namespace Words.Songs
 			return null;
 		}
 
-		public static ImageSource CreateBackgroundSource(SongBackground bg)
+		public static ImageSource CreateBackgroundSource(SongBackground bg, int width = -1)
 		{
 			if (bg.IsImage)
 			{
 				try
 				{
-					return new BitmapImage(new Uri(Path.Combine(MediaManager.BackgroundsDirectory, bg.ImagePath)));
+					var img = new BitmapImage();
+					img.BeginInit();
+					img.UriSource = new Uri(Path.Combine(MediaManager.BackgroundsDirectory, bg.ImagePath));
+					if (width > -1)
+						img.DecodePixelWidth = width;
+					img.EndInit();
+					return img;
 				}
 				catch
 				{

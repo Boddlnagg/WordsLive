@@ -36,7 +36,7 @@
 	<ListBox.ItemTemplate>
 		<DataTemplate>
 			<StackPanel VerticalAlignment="Top" Orientation="Horizontal" Margin="0">
-				<Image VerticalAlignment="Top" Source="{Binding Path=Background}" Height="45" Width="60" Stretch="Fill"/>
+				<Image VerticalAlignment="Top" Source="{Binding Background, Converter={StaticResource BackgroundConverter}, ConverterParameter=60}" Height="45" Width="60" Stretch="Fill"/>
 				<TextBlock Name="text" MinWidth="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType={x:Type local:SongSlideListBox}}, Converter={StaticResource sameWidthConverter}, ConverterParameter=text}" TextWrapping="Wrap" Text="{Binding Path=Text}" VerticalAlignment="Center" Margin="10,0,0,0" FontSize="13" HorizontalAlignment="Stretch"/>
 				<TextBlock Name="translation" TextWrapping="Wrap" Text="{Binding Path=Translation}" Foreground="Gray"  VerticalAlignment="Center" Margin="10,0,0,0" FontSize="13"/>
 			</StackPanel>

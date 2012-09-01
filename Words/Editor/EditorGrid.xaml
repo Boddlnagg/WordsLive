@@ -4,7 +4,6 @@
 			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
 			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 			 xmlns:local="clr-namespace:Words.Editor"
-			 xmlns:songs="clr-namespace:Words.Songs"
 			 xmlns:my="clr-namespace:Words"
 			 xmlns:resx="clr-namespace:Words.Resources"
 			 mc:Ignorable="d" 
@@ -15,7 +14,6 @@
 		<CommandBinding Command="DecreaseFontSize" Executed="OnExecuteCommand" CanExecute="OnCanExecuteCommand"/>
 	</Grid.CommandBindings>
 	<Grid.Resources>
-		<songs:SongBackgroundToImageSourceConverter x:Key="backgroundConverter" />
 		<TextBox x:Key="editTextBox"
 			AcceptsReturn="True" IsUndoEnabled="False"
 			Text="{Binding ElementName=StructureTree, Path=SelectedItem.Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
@@ -297,7 +295,7 @@
 						<ItemsControl.ItemTemplate>
 							<DataTemplate>
 								<StackPanel Orientation="Horizontal">
-									<Image Source="{Binding Background, Converter={StaticResource backgroundConverter}}" Height="45" Width="60" Stretch="Fill" VerticalAlignment="Top" Margin="0,5,0,0"/>
+									<Image Source="{Binding Background, Converter={StaticResource BackgroundConverter}, ConverterParameter=60}" Height="45" Width="60" Stretch="Fill" VerticalAlignment="Top" Margin="0,5,0,0"/>
 									<TextBlock Text="{Binding TextWithoutChords}" Margin="5,0,0,5"/>
 								</StackPanel>
 							</DataTemplate>

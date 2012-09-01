@@ -4,6 +4,7 @@
 	xmlns:utils="clr-namespace:Words.Utils"
 	xmlns:properties="clr-namespace:Words.Properties"
 	xmlns:sys="clr-namespace:System;assembly=mscorlib"
+	xmlns:songs="clr-namespace:Words.Songs"
 	x:Class="Words.App" StartupUri="MainWindow.xaml"
 	Startup="ApplicationStartup">
 	<Application.Resources>
@@ -17,6 +18,7 @@
 			<sys:String>Spanisch</sys:String>
 		</x:Array>
 		<utils:EnumToBooleanConverter x:Key="EnumToBooleanConverter" />
+		<songs:SongBackgroundToImageSourceConverter x:Key="BackgroundConverter" />
 		<properties:Settings x:Key="settings" />
 		<LinearGradientBrush x:Key="HeaderGradientBrush" EndPoint="0.5,1" StartPoint="0.5,0">
 			<GradientStop Color="#FFEBF6FF" Offset="0"/>

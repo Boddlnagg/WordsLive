@@ -21,7 +21,12 @@ namespace Words.Songs
 			{
 				try
 				{
-					return new BitmapImage(new Uri(Path.Combine(MediaManager.BackgroundsDirectory, s.Backgrounds[0].ImagePath)));
+					var img = new BitmapImage();
+					img.BeginInit();
+					img.UriSource = new Uri(Path.Combine(MediaManager.BackgroundsDirectory, s.Backgrounds[0].ImagePath));
+					img.DecodePixelWidth = 22;
+					img.EndInit();
+					return img;
 				}
 				catch
 				{

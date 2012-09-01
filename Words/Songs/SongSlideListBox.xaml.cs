@@ -97,7 +97,7 @@ namespace Words.Songs
 			{
 				Text = "(Nur Hintergrund)",
 				Translation = "",
-				Background = SongBackgroundToImageSourceConverter.CreateBackgroundSource(song.Backgrounds[song.FirstSlide != null ? song.FirstSlide.BackgroundIndex : 0]),
+				Background = song.Backgrounds[song.FirstSlide != null ? song.FirstSlide.BackgroundIndex : 0],
 				PartIndex = partIndex++,
 				PartName = "",
 				PreAccessName = "",
@@ -132,7 +132,7 @@ namespace Words.Songs
 					{
 						Text = s.TextWithoutChords,
 						Translation = s.Translation,
-						Background = SongBackgroundToImageSourceConverter.CreateBackgroundSource(song.Backgrounds[s.BackgroundIndex]),
+						Background = song.Backgrounds[s.BackgroundIndex],
 						PartIndex = partIndex,
 						PartName = partName,
 						PreAccessName = pre,
@@ -149,7 +149,7 @@ namespace Words.Songs
 			{
 				Text = "(Nur Hintergrund)",
 				Translation = "",
-				Background = SongBackgroundToImageSourceConverter.CreateBackgroundSource(song.Backgrounds[song.LastSlide != null ? song.LastSlide.BackgroundIndex : 0]),
+				Background = song.Backgrounds[song.LastSlide != null ? song.LastSlide.BackgroundIndex : 0],
 				PartIndex = partIndex++,
 				PartName = "",
 				PreAccessName = "",
@@ -165,7 +165,7 @@ namespace Words.Songs
 		{
 			public string Text { get; set; }
 			public string Translation { get; set; }
-			public ImageSource Background { get; set; }
+			public SongBackground Background { get; set; }
 			public int PartIndex { get; set; }
 			public string PartName { get; set; }
 			public string PreAccessName { get; set; }
