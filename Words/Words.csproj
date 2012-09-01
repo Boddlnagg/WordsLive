@@ -143,6 +143,7 @@
     <Resource Include="Artwork\Small_Source.png" />
     <Resource Include="Artwork\Small_Language.png" />
     <Resource Include="Artwork\Small_Category.png" />
+    <Resource Include="Artwork\Movie.png" />
     <Content Include="Data\jquery.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -191,6 +192,13 @@
     <Compile Include="AwesomiumWrapper.xaml.cs">
       <DependentUpon>AwesomiumWrapper.xaml</DependentUpon>
     </Compile>
+    <Compile Include="PhotoLoader\ImageLoaders\ExternalLoader.cs" />
+    <Compile Include="PhotoLoader\ImageLoaders\ILoader.cs" />
+    <Compile Include="PhotoLoader\ImageLoaders\LoaderFactory.cs" />
+    <Compile Include="PhotoLoader\ImageLoaders\LocalDiskLoader.cs" />
+    <Compile Include="PhotoLoader\Loader.cs" />
+    <Compile Include="PhotoLoader\Manager.cs" />
+    <Compile Include="PhotoLoader\Types.cs" />
     <Compile Include="Resources\Resource.en.Designer.cs">
       <DependentUpon>Resource.en.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -349,6 +357,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="AwesomiumWrapper.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="PhotoLoader\Resources.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

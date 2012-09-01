@@ -62,7 +62,7 @@ namespace Words.Core.Songs
 							currentPart = new SongPart { Name = FindUnusedPartName(prototype) };
 							linenum = 0;
 						}
-						else if (line == "--")
+						else if (line == "--" || line == "--A")
 						{
 							currentPart.Slides.Add(new SongSlide { Size = prototype.Formatting.MainText.Size, Text = currentText, Translation = currentTrans });
 							currentText = "";

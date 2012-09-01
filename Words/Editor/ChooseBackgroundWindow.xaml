@@ -4,6 +4,7 @@
 		xmlns:local="clr-namespace:Words.Editor"
 		xmlns:ext="http://schemas.microsoft.com/winfx/2006/xaml/presentation/toolkit/extended"
 		xmlns:resx="clr-namespace:Words.Resources"
+		xmlns:photoloader="clr-namespace:Words.PhotoLoader"
 		Title="{x:Static resx:Resource.cbTitle}"
 		MinWidth="600" MinHeight="350"
 		Height = "{Binding Source={StaticResource settings}, Path=Default.ChooseBackgroundWindowHeight, Mode=TwoWay}"
@@ -51,21 +52,35 @@
 						</Style>
 					</TreeView.ItemContainerStyle>
 				</TreeView>
-				<ListView Grid.IsSharedSizeScope="True" Grid.Column="2" ItemsSource="{Binding ElementName=directoryView, Path=SelectedItem.Images}" Name="imageListView">
+				<ListView Grid.Column="2" ItemsSource="{Binding ElementName=directoryView, Path=SelectedItem.Images}" Name="imageListView">
 					<ListView.ItemTemplate>
 						<DataTemplate>
-						<Grid Width="{Binding ElementName=PreviewSizeSlider, Path=Value}" Margin="1,2,3,1">
-							<Grid.ColumnDefinitions>
-								<ColumnDefinition Width="Auto" SharedSizeGroup="Column"/>
-							</Grid.ColumnDefinitions>
-							<Grid.RowDefinitions>
-								<RowDefinition Height="Auto" SharedSizeGroup="Row"/>
-							</Grid.RowDefinitions>
-							<StackPanel Orientation="Vertical" MouseDown="StackPanel_MouseDown" Width="{Binding ElementName=PreviewSizeSlider, Path=Value}" ToolTip="{Binding File.Name}">
-								<Image Source="{Binding Source}" Name="img"/>
-								<TextBlock TextTrimming="CharacterEllipsis" Text="{Binding File.Name}" Margin="0,0,0,5"/>
-							</StackPanel>
-						</Grid>
+						<StackPanel Width="{Binding ElementName=PreviewSizeSlider, Path=Value}" Margin="1,2,3,1" Orientation="Vertical" MouseDown="StackPanel_MouseDown" ToolTip="{Binding File.Name}">
+							<Grid>
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition Width="4*"/>
+									<ColumnDefinition Width="1*"/>
+								</Grid.ColumnDefinitions>
+								<Image x:Name="img" Grid.Column="0" Grid.ColumnSpan="2"
+								photoloader:Loader.DisplayOption="{Binding DisplayOptions}"
+								photoloader:Loader.Source="{Binding File.FullName}"
+								photoloader:Loader.DisplayWaitingAnimationDuringLoading="True"
+								photoloader:Loader.DisplayErrorThumbnailOnError="True"/>
+								<Image Source="/Words;component/Artwork/Movie.png" Grid.Column="1" VerticalAlignment="Top" Margin="3">
+									<Image.Style>
+										<Style TargetType="Image">
+											<Setter Property="Visibility" Value="Hidden"/>
+											<Style.Triggers>
+												<DataTrigger Binding="{Binding IsVideo}" Value="True">
+													<Setter Property="Visibility" Value="Visible"/>
+												</DataTrigger>
+											</Style.Triggers>
+										</Style>
+									</Image.Style>
+								</Image>
+							</Grid>
+							<TextBlock TextTrimming="CharacterEllipsis" Text="{Binding File.Name}" Margin="0,0,0,5"/>
+						</StackPanel>
 						<DataTemplate.Triggers>
 							<DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Grid}}, Path=IsEnabled}" Value="False">
 								<Setter TargetName="img" Property="Opacity" Value="0.5"/>
@@ -76,9 +91,10 @@
 					<ListView.ItemsPanel>
 						<ItemsPanelTemplate>
 							<WrapPanel Width="{Binding (FrameworkElement.ActualWidth), RelativeSource={RelativeSource AncestorType=ScrollContentPresenter}}"
-								   ItemWidth="{Binding (ListView.View).ItemWidth, RelativeSource={RelativeSource AncestorType=ListView}}"
+								   />
+						<!--ItemWidth="{Binding (ListView.View).ItemWidth, RelativeSource={RelativeSource AncestorType=ListView}}"
 								   MinWidth="{Binding ItemWidth, RelativeSource={RelativeSource Self}}"
-								   ItemHeight="{Binding (ListView.View).ItemHeight, RelativeSource={RelativeSource AncestorType=ListView}}"/>
+								   ItemHeight="{Binding (ListView.View).ItemHeight, RelativeSource={RelativeSource AncestorType=ListView}}"-->
 					</ItemsPanelTemplate>
 					</ListView.ItemsPanel>
 				</ListView>

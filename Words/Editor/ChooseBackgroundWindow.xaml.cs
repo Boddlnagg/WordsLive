@@ -7,11 +7,11 @@ using System.Linq;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using Words.Core.Songs;
-using System.Windows.Input;
 using Words.Core;
+using Words.Core.Songs;
 
 namespace Words.Editor
 {
@@ -125,9 +125,9 @@ namespace Words.Editor
 			}
 			else
 			{
+				SelectImage = remainingSelectPath;
 				currentContainer.IsSelected = true;
 				currentContainer.BringIntoView();
-				SelectImage = remainingSelectPath;
 				imageListView.Focus();
 			}
 		}
@@ -137,7 +137,7 @@ namespace Words.Editor
 			ChosenBackground = new SongBackground();
 			if (UseImage)
 			{
-				var entry = imageListView.SelectedItem as BackgroundEntry;
+				var entry = (BackgroundEntry)imageListView.SelectedItem;
 				if (entry == null)
 				{
 					MessageBox.Show("Es ist kein Bild ausgewählt.");
@@ -175,13 +175,15 @@ namespace Words.Editor
 
 	class BackgroundEntry
 	{
-		public ImageSource Source { get; set; }
 		public FileInfo File { get; set; }
+		public Words.PhotoLoader.DisplayOptions DisplayOptions { get; set; }
+		public bool IsVideo { get; set; }
 	}
 
 	class BackgroundsDirectory
 	{
-		private static string[] allowedExtensions = new string[] { ".png", ".jpg", ".jpeg" };
+		private static string[] allowedImageExtensions = new string[] { ".png", ".jpg", ".jpeg" };
+		private static string[] allowedVideoExtensions = new string[] { ".mp4", ".wmv", ".avi" };
 		private ObservableCollection<BackgroundEntry> images;
 
 		public DirectoryInfo Info { get; set; }
@@ -195,8 +197,7 @@ namespace Words.Editor
 				if (images == null)
 				{
 					images = new ObservableCollection<BackgroundEntry>();
-					new Thread(LoadImages).Start();
-					//Parent.Dispatcher.BeginInvoke(new Action(LoadImages));
+					LoadImages();
 				}
 				return images;
 			}
@@ -206,23 +207,25 @@ namespace Words.Editor
 		{
 			foreach (var file in Info.GetFiles())
 			{
-				if (allowedExtensions.Contains(file.Extension.ToLower()))
+				BackgroundEntry entry = null;
+				if (allowedImageExtensions.Contains(file.Extension.ToLower()))
 				{
-					BackgroundEntry bg = new BackgroundEntry
+					entry = new BackgroundEntry { File = file, DisplayOptions = PhotoLoader.DisplayOptions.Preview, IsVideo = false };
+				}
+				else if (allowedVideoExtensions.Contains(file.Extension.ToLower()))
+				{
+					entry = new BackgroundEntry { File = file, DisplayOptions = PhotoLoader.DisplayOptions.VideoPreview, IsVideo = true };
+				}
+
+				if (entry != null)
+				{
+					images.Add(entry);
+					if (Parent.SelectImage == entry.File.Name)
 					{
-						Source = BitmapFrame.Create(new Uri(file.FullName)),
-						File = file
-					};
-					Parent.Dispatcher.Invoke(new Action(() =>
-					{
-						images.Add(bg);
-						if (Parent.SelectImage == bg.File.Name)
-						{
-							Parent.imageListView.SelectedItem = bg;
-							Parent.imageListView.ScrollIntoView(bg);
-							Parent.SelectImage = null;
-						}
-					}));
+						Parent.imageListView.SelectedItem = entry;
+						Parent.imageListView.ScrollIntoView(entry);
+						Parent.SelectImage = null;
+					}
 				}
 			}
 		}
@@ -234,7 +237,8 @@ namespace Words.Editor
 			get
 			{
 				if (directories == null)
-					directories = (from di in Info.GetDirectories() where di.Name != "[Thumbnails]" select new BackgroundsDirectory { Info = di, Parent = this.Parent }).ToList();
+					directories = (from di in Info.GetDirectories() where di.Name != "[Thumbnails]"
+								   select new BackgroundsDirectory { Info = di, Parent = this.Parent }).ToList();
 				return directories;
 			}
 		}
