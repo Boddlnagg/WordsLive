@@ -61,7 +61,7 @@
 									<ColumnDefinition Width="4*"/>
 									<ColumnDefinition Width="1*"/>
 								</Grid.ColumnDefinitions>
-								<Image x:Name="img" Grid.Column="0" Grid.ColumnSpan="2"
+								<Image Name="img" Grid.Column="0" Grid.ColumnSpan="2"
 								photoloader:Loader.DisplayOption="{Binding DisplayOptions}"
 								photoloader:Loader.Source="{Binding File.FullName}"
 								photoloader:Loader.DisplayWaitingAnimationDuringLoading="True"
@@ -90,11 +90,7 @@
 					</ListView.ItemTemplate>
 					<ListView.ItemsPanel>
 						<ItemsPanelTemplate>
-							<WrapPanel Width="{Binding (FrameworkElement.ActualWidth), RelativeSource={RelativeSource AncestorType=ScrollContentPresenter}}"
-								   />
-						<!--ItemWidth="{Binding (ListView.View).ItemWidth, RelativeSource={RelativeSource AncestorType=ListView}}"
-								   MinWidth="{Binding ItemWidth, RelativeSource={RelativeSource Self}}"
-								   ItemHeight="{Binding (ListView.View).ItemHeight, RelativeSource={RelativeSource AncestorType=ListView}}"-->
+							<WrapPanel Width="{Binding (FrameworkElement.ActualWidth), RelativeSource={RelativeSource AncestorType=ScrollContentPresenter}}"/>
 					</ItemsPanelTemplate>
 					</ListView.ItemsPanel>
 				</ListView>

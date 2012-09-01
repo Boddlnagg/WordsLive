@@ -35,6 +35,7 @@ namespace Words.PhotoLoader
 		private static void OnSourceChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
 		{
 			Manager.Instance.LoadImage(e.NewValue as string, d as Image);
+			(d as Image).AddHandler(Image.UnloadedEvent, new RoutedEventHandler(Manager.Instance.OnImageUnloaded));
 		}
 
 

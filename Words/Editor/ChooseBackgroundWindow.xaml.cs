@@ -155,6 +155,7 @@ namespace Words.Editor
 			{
 				ChosenBackground.Color = System.Drawing.Color.FromArgb(ColorPicker.SelectedColor.R, ColorPicker.SelectedColor.G, ColorPicker.SelectedColor.B);
 			}
+
 			this.DialogResult = true;
 			this.Close();
 		}

@@ -27,7 +27,7 @@ namespace Words.PhotoLoader
 
 		private Dictionary<Image, LoadImageRequest> _imagesLastRunningTask = new Dictionary<Image, LoadImageRequest>();
 
-		private Stack<LoadImageRequest> _loadThumbnailStack = new Stack<LoadImageRequest>();
+		private Queue<LoadImageRequest> _loadThumbnailQueue = new Queue<LoadImageRequest>();
 		private Stack<LoadImageRequest> _loadNormalStack = new Stack<LoadImageRequest>();
 
 		private AutoResetEvent _loaderThreadThumbnailEvent = new AutoResetEvent(false);
@@ -102,12 +102,29 @@ namespace Words.PhotoLoader
 			// Begin Loading
 			BeginLoading(image, loadTask);
 
-			lock (_loadThumbnailStack)
+			lock (_loadThumbnailQueue)
 			{
-				_loadThumbnailStack.Push(loadTask);                
+				_loadThumbnailQueue.Enqueue(loadTask);                
 			}
 
 			_loaderThreadThumbnailEvent.Set();
+		}
+
+		internal void OnImageUnloaded(object sender, RoutedEventArgs args)
+		{
+			var img = (Image)sender;
+
+			lock (_loadThumbnailQueue)
+			{
+				foreach (var i in _loadThumbnailQueue)
+				{
+					if (i.Image == img)
+					{
+						i.IsCanceled = true;
+						break;
+					}
+				}
+			}
 		}
 		#endregion
 
@@ -337,9 +354,9 @@ namespace Words.PhotoLoader
 				do
 				{
 
-					lock (_loadThumbnailStack)
+					lock (_loadThumbnailQueue)
 					{
-						loadTask = _loadThumbnailStack.Count > 0 ? _loadThumbnailStack.Pop() : null;
+						loadTask = _loadThumbnailQueue.Count > 0 ? _loadThumbnailQueue.Dequeue() : null;
 					}
 
 					if (loadTask != null && !loadTask.IsCanceled)

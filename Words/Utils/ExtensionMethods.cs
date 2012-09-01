@@ -98,6 +98,25 @@ namespace Words.Utils
 			return source;
 		}
 
+		public static T FindVisualChild<T>(this DependencyObject source) where T : DependencyObject
+		{
+			for (int i = 0; i < VisualTreeHelper.GetChildrenCount(source); i++)
+			{
+				DependencyObject child = VisualTreeHelper.GetChild(source, i);
+
+				if (child != null && child is T)
+					return (T)child;
+				else
+				{
+					T childOfChild = FindVisualChild<T>(child);
+					if (childOfChild != null)
+						return childOfChild;
+				}
+			}
+
+			return null;
+		}
+
 		public static int GetCurrentIndex(this ListBox listBox, GetPositionDelegate getPosition)
 		{
 			int index = -1;
