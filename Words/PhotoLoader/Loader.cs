@@ -3,6 +3,9 @@ using System.Windows.Controls;
 
 namespace Words.PhotoLoader
 {
+	/// <summary>
+	/// Code from http://dotnetlearning.wordpress.com/2011/01/27/loading-images-asynchronously-in-wpf/
+	/// </summary>
 	public static class Loader
 	{
 		[AttachedPropertyBrowsableForType(typeof(Image))]

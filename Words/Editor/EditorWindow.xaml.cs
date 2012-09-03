@@ -209,7 +209,7 @@ namespace Words.Editor
 			else if (doc.Grid.StructureTree.SelectedItem is SongNodePart)
 				bg = doc.Song.Backgrounds[(doc.Grid.StructureTree.SelectedItem as SongNodePart).Children[0].BackgroundIndex];
 			else if (doc.Grid.StructureTree.SelectedItem is SongNodeRoot)
-				bg = doc.Song.Backgrounds[0];
+				bg = doc.Song.Backgrounds[doc.Song.FirstSlide != null ? doc.Song.FirstSlide.BackgroundIndex : 0];
 			else
 			{
 				MessageBox.Show(Words.Resources.Resource.eMsgSelectElement);
