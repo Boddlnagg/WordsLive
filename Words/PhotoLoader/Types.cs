@@ -4,7 +4,8 @@ namespace Words.PhotoLoader
 	public enum SourceType
 	{
 		LocalDisk,
-		ExternalResource
+		ExternalResource,
+		ZipFile
 	}
 
 	public enum DisplayOptions

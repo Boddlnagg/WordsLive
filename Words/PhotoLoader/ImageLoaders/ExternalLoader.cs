@@ -1,26 +1,29 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Text;
 
 namespace Words.PhotoLoader.ImageLoaders
 {
-    class ExternalLoader : ILoader
-    {
-        #region ILoader Members
+	class ExternalLoader : ILoader
+	{
+		#region ILoader Members
 
-        public System.IO.Stream Load(string source)
-        {
-            var webClient = new WebClient();
-            byte[] html = webClient.DownloadData(source);
+		public System.IO.Stream Load(object source)
+		{
+			var webClient = new WebClient();
+			byte[] html = null;
 
-            if (html == null || html.Count() == 0) return null;
+			if (source is string)
+				html = webClient.DownloadData(source as string);
+			else if (source is Uri)
+				html = webClient.DownloadData(source as Uri);
 
-            return new MemoryStream(html);
-        }
+			if (html == null || html.Count() == 0) return null;
 
-        #endregion
-    }
+			return new MemoryStream(html);
+		}
+
+		#endregion
+	}
 }

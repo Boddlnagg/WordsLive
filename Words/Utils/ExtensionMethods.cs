@@ -98,17 +98,23 @@ namespace Words.Utils
 			return source;
 		}
 
-		public static T FindVisualChild<T>(this DependencyObject source) where T : DependencyObject
+		public static T FindVisualChild<T>(this DependencyObject source, int index = 0) where T : DependencyObject
 		{
+			int count = 0;
 			for (int i = 0; i < VisualTreeHelper.GetChildrenCount(source); i++)
 			{
 				DependencyObject child = VisualTreeHelper.GetChild(source, i);
 
 				if (child != null && child is T)
-					return (T)child;
+				{
+					if (count == index)
+						return (T)child;
+					else
+						count++;
+				}
 				else
 				{
-					T childOfChild = FindVisualChild<T>(child);
+					T childOfChild = FindVisualChild<T>(child, index);
 					if (childOfChild != null)
 						return childOfChild;
 				}

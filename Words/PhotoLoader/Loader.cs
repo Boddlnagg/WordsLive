@@ -33,11 +33,11 @@ namespace Words.PhotoLoader
 			obj.SetValue(SourceProperty, value);
 		}
 		public static readonly DependencyProperty SourceProperty =
-			DependencyProperty.RegisterAttached("Source", typeof(string), typeof(Loader), new UIPropertyMetadata(string.Empty, OnSourceChanged));
+			DependencyProperty.RegisterAttached("Source", typeof(object), typeof(Loader), new UIPropertyMetadata(string.Empty, OnSourceChanged));
 
 		private static void OnSourceChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
 		{
-			Manager.Instance.LoadImage(e.NewValue as string, d as Image);
+			Manager.Instance.LoadImage(e.NewValue, d as Image);
 			(d as Image).AddHandler(Image.UnloadedEvent, new RoutedEventHandler(Manager.Instance.OnImageUnloaded));
 		}
 

@@ -55,18 +55,21 @@
 				<ListView Grid.Column="2" ItemsSource="{Binding ElementName=directoryView, Path=SelectedItem.Images}" Name="imageListView">
 					<ListView.ItemTemplate>
 						<DataTemplate>
-						<StackPanel Width="{Binding ElementName=PreviewSizeSlider, Path=Value}" Margin="1,2,3,1" Orientation="Vertical" MouseDown="StackPanel_MouseDown" ToolTip="{Binding File.Name}">
-							<Grid>
+							<Grid MaxWidth="{Binding ElementName=PreviewSizeSlider, Path=Value}" MaxHeight="{Binding ElementName=PreviewSizeSlider, Path=Value}"  Margin="1,2,3,1" ToolTip="{Binding File.Name}" MouseDown="Grid_MouseDown">
 								<Grid.ColumnDefinitions>
 									<ColumnDefinition Width="4*"/>
 									<ColumnDefinition Width="1*"/>
 								</Grid.ColumnDefinitions>
-								<Image Name="img" Grid.Column="0" Grid.ColumnSpan="2"
+								<Grid.RowDefinitions>
+									<RowDefinition Height="*"/>
+									<RowDefinition Height="Auto"/>
+								</Grid.RowDefinitions>
+								<Image Name="img" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0"
 								photoloader:Loader.DisplayOption="{Binding DisplayOptions}"
 								photoloader:Loader.Source="{Binding File.FullName}"
 								photoloader:Loader.DisplayWaitingAnimationDuringLoading="True"
 								photoloader:Loader.DisplayErrorThumbnailOnError="True"/>
-								<Image Source="/Words;component/Artwork/Movie.png" Grid.Column="1" VerticalAlignment="Top" Margin="3">
+							<Image Source="/Words;component/Artwork/Movie.png" Grid.Column="1" Grid.Row="0" VerticalAlignment="Top" Margin="3">
 									<Image.Style>
 										<Style TargetType="Image">
 											<Setter Property="Visibility" Value="Hidden"/>
@@ -78,9 +81,8 @@
 										</Style>
 									</Image.Style>
 								</Image>
+								<TextBlock Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" TextTrimming="CharacterEllipsis" Text="{Binding File.Name}" Margin="0,0,0,5"/>
 							</Grid>
-							<TextBlock TextTrimming="CharacterEllipsis" Text="{Binding File.Name}" Margin="0,0,0,5"/>
-						</StackPanel>
 						<DataTemplate.Triggers>
 							<DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Grid}}, Path=IsEnabled}" Value="False">
 								<Setter TargetName="img" Property="Opacity" Value="0.5"/>

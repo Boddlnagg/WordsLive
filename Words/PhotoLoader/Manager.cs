@@ -16,7 +16,7 @@ namespace Words.PhotoLoader
 		internal class LoadImageRequest
 		{
 			public bool IsCanceled { get; set; }
-			public string Source { get; set; }
+			public object Source { get; set; }
 			public Stream Stream { get; set; }
 			public Image Image { get; set; }
 		}
@@ -33,8 +33,8 @@ namespace Words.PhotoLoader
 		private AutoResetEvent _loaderThreadThumbnailEvent = new AutoResetEvent(false);
 		private AutoResetEvent _loaderThreadNormalSizeEvent = new AutoResetEvent(false);
 
-		private DrawingImage _loadingImage = null;
-		private DrawingImage _errorThumbnail = null;
+		private ImageSource _loadingImage = null;
+		private ImageSource _errorThumbnail = null;
 		private TransformGroup _loadingAnimationTransform = null;
 		#endregion
 
@@ -92,10 +92,35 @@ namespace Words.PhotoLoader
 				return instance;
 			}
 		}
+
+		public ImageSource LoadingImage
+		{
+			get
+			{
+				return _loadingImage;
+			}
+			set
+			{
+				_loadingImage = value;
+			}
+		}
+
+		public ImageSource ErrorImage
+		{
+			get
+			{
+				return _errorThumbnail;
+			}
+			set
+			{
+				_errorThumbnail = value;
+			}
+
+		}
 		#endregion
 
 		#region Public Methods
-		public void LoadImage(string source, Image image)
+		public void LoadImage(object source, Image image)
 		{
 			LoadImageRequest loadTask = new LoadImageRequest() { Image = image, Source = source };
 
@@ -206,10 +231,10 @@ namespace Words.PhotoLoader
 		private ImageSource GetBitmapSource(LoadImageRequest loadTask, DisplayOptions loadType)
 		{
 			Image image = loadTask.Image;
-			string source = loadTask.Source;
+			object source = loadTask.Source;
 			ImageSource imageSource = null;
 
-			if (!string.IsNullOrWhiteSpace(source))
+			if (source != null)
 			{
 				Stream imageStream = null;
 
@@ -237,6 +262,10 @@ namespace Words.PhotoLoader
 							loadTask.Stream.CopyTo(imageStream);
 							imageStream.Position = 0;
 						}
+					}
+					else if (sourceType == SourceType.ZipFile)
+					{
+						throw new InvalidOperationException("Can't load video preview from zip file.");
 					}
 				}
 				catch (Exception) { }
@@ -329,7 +358,15 @@ namespace Words.PhotoLoader
 						{
 							var player = new MediaPlayer { Volume = 0, ScrubbingEnabled = true };
 
-							player.Open(new Uri(loadTask.Source));
+							Uri uri;
+							if (loadTask.Source is string)
+								uri = new Uri(loadTask.Source as string);
+							else if (loadTask.Source is Uri)
+								uri = loadTask.Source as Uri;
+							else
+								throw new InvalidOperationException();
+
+							player.Open(uri);
 							player.Pause();
 							player.Position = new TimeSpan(0, 0, 20); // go to 20 seconds (if the video is shorter, a black image will be captured)
 							

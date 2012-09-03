@@ -49,6 +49,8 @@ namespace Words
 			LoadAttributes(Assembly.LoadFrom(Path.Combine(startupDir, "Words.Slideshow.dll"))); // TODO (Words): automatically load plugins
 
 			InitDataDirectories();
+
+			Words.PhotoLoader.Manager.Instance.LoadingImage = new System.Windows.Media.Imaging.BitmapImage(new Uri("/Words;component/Artwork/LoadingAnimation.png", UriKind.Relative));
 		}
 
 		private void DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)

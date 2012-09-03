@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using Words.Core;
 using Words.Core.Songs;
 using Words.Utils;
+using Ionic.Zip;
 
 namespace Words.Editor
 {
@@ -166,7 +167,7 @@ namespace Words.Editor
 			SetResultAndClose();
 		}
 
-		private void StackPanel_MouseDown(object sender, MouseButtonEventArgs e)
+		private void Grid_MouseDown(object sender, MouseButtonEventArgs e)
 		{
 			if (e.ChangedButton == MouseButton.Left && e.ClickCount == 2)
 			{
@@ -230,7 +231,7 @@ namespace Words.Editor
 					images.Add(entry);
 					if (Parent.SelectImage == entry.File.Name)
 					{
-						Parent.Dispatcher.BeginInvoke(new Action(() => 
+						Parent.Dispatcher.BeginInvoke(new Action(() =>
 						{
 							Parent.imageListView.SelectedItem = entry;
 							Parent.imageListView.ScrollIntoView(entry);

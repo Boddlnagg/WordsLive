@@ -4,6 +4,6 @@ namespace Words.PhotoLoader.ImageLoaders
 {
     internal interface ILoader
     {
-        Stream Load(string source);
+        Stream Load(object source);
     }
 }

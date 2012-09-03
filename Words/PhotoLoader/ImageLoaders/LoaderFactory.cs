@@ -12,6 +12,8 @@ namespace Words.PhotoLoader.ImageLoaders
 					return new LocalDiskLoader();
 				case SourceType.ExternalResource:
 					return new ExternalLoader();
+				case SourceType.ZipFile:
+					return new ZipLoader();
 				default:
 					throw new ApplicationException("Unexpected exception");
 			}
