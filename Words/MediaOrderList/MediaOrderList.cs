@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Words.Core;
 using System.ComponentModel;
+using System.Linq;
 
 namespace Words.MediaOrderList
 {
@@ -30,6 +31,41 @@ namespace Words.MediaOrderList
 		{
 			this.Insert(index, CreateItem(media));
 			OnItemAdded();
+		}
+
+		public MediaOrderItem Move(IEnumerable<MediaOrderItem> items, int delta)
+		{
+			if (delta == 0)
+				return null;
+
+			bool raiseListChangedEvents = this.RaiseListChangedEvents;
+
+			items = delta > 0 ? items.OrderByDescending((item) => this.IndexOf(item)) : items.OrderBy((item) => this.IndexOf(item));
+
+			var boundaryItem = items.First();
+
+			if (delta > 0 && this.IndexOf(boundaryItem) >= this.Count - 1 || delta < 0 && this.IndexOf(boundaryItem) == 0)
+				return null;
+
+			try
+			{
+				this.RaiseListChangedEvents = false;
+
+				foreach (var item in items)
+				{
+					int oldIndex = this.IndexOf(item);
+					int index = oldIndex + delta;
+					this.RemoveItem(oldIndex);
+					this.InsertItem(index, item);
+					this.OnListChanged(new ListChangedEventArgs(ListChangedType.ItemMoved, index, oldIndex));
+				}
+			}
+			finally
+			{
+				this.RaiseListChangedEvents = raiseListChangedEvents;
+			}
+
+			return boundaryItem;
 		}
 
 		// TODO!!

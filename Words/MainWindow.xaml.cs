@@ -644,38 +644,37 @@ namespace Words
 
 		private void OrderListBox_OnExecuteCommand(object sender, ExecutedRoutedEventArgs e)
 		{
-			var selected = this.OrderListBox.SelectedItems.Cast<ActivatableItemContainer<MediaOrderItem>>();
-			ActivatableItemContainer<MediaOrderItem> boundaryItem;
+			var selected = this.OrderListBox.SelectedItems.Cast<MediaOrderItem>();
+			bool activeSelected = selected.Any() && (selected.Count((item) => item == OrderListBox.GetActiveItem()) != 0);
+			MediaOrderItem boundaryItem;
 
-			// TODO!!
 			if (e.Command == CustomCommands.MoveUp)
 			{
-					//boundaryItem = orderList.Move(selected, -1);
-					//if (boundaryItem != null)
-					//{
-					//    OrderListBox.ScrollIntoView(boundaryItem);
-					//    portfolioChanged = true;
-					//}
+				boundaryItem = orderList.Move(selected, -1);
+				if (boundaryItem != null)
+				{
+					OrderListBox.ScrollIntoView(boundaryItem);
+					portfolioChanged = true;
+				}
 			}
 			else if (e.Command == CustomCommands.MoveDown)
 			{
-					//boundaryItem = orderList.Move(selected, 1);
-					//if (boundaryItem != null)
-					//{
-					//    OrderListBox.ScrollIntoView(boundaryItem);
-					//    portfolioChanged = true;
-					//}
+				boundaryItem = orderList.Move(selected, 1);
+				if (boundaryItem != null)
+				{
+					OrderListBox.ScrollIntoView(boundaryItem);
+					portfolioChanged = true;
+				}
 			}
 			else if (e.Command == ApplicationCommands.Delete)
 			{
-				if (selected.Count() > 0 && (selected.Count((item) => item.IsActive) == 0 || MessageBox.Show("Wollen Sie das aktive Element wirklich entfernen (Die Anzeige wird auf Blackscreen geschaltet, wenn die Präsentation gerade aktiv ist)?", "Aktives Element entfernen?", MessageBoxButton.YesNoCancel, MessageBoxImage.Warning) == MessageBoxResult.Yes))
+				if (selected.Any() && (!activeSelected || MessageBox.Show("Wollen Sie das aktive Element wirklich entfernen (Die Anzeige wird auf Blackscreen geschaltet, wenn die Präsentation gerade aktiv ist)?", "Aktives Element entfernen?", MessageBoxButton.YesNoCancel, MessageBoxImage.Warning) == MessageBoxResult.Yes))
 				{
 					int index = this.OrderListBox.SelectedIndex;
 					var selectedArray = selected.ToArray();
 					foreach (var item in selectedArray)
 					{
-						// TODO!!
-						//orderList.Remove(item);
+						orderList.Remove(item);
 					}
 					if (index < this.OrderListBox.Items.Count)
 					{

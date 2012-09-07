@@ -1,11 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using Words.Utils;
+using System.ComponentModel;
+using System.Collections.Specialized;
+using System.Collections;
 
 namespace Words.MediaOrderList
 {
@@ -34,15 +34,71 @@ namespace Words.MediaOrderList
 			{
 				sender.MouseDoubleClick += ListBox_MouseDoubleClick;
 				sender.ItemContainerGenerator.StatusChanged += ListBox_ContainerGeneratorStatusChanged;
+				sender.DataContextChanged += ListBox_DataContextChanged;
 			}
 			else
 			{
 				sender.MouseDoubleClick -= ListBox_MouseDoubleClick;
 				sender.ItemContainerGenerator.StatusChanged -= ListBox_ContainerGeneratorStatusChanged;
+				sender.DataContextChanged -= ListBox_DataContextChanged;
 			}
 		}
 
-		static void ListBox_ContainerGeneratorStatusChanged(object sender, EventArgs e)
+		#region Event handlers
+		private static void ListBox_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+		{
+			var listBox = sender as ListBox;
+
+			// remove old list-changed handler
+			if (e.OldValue is IBindingList)
+			{
+				(e.OldValue as IBindingList).ListChanged -= (s, args) => ActivatableListBox_ListChanged(listBox, s, args);
+			}
+			else if (e.OldValue is INotifyCollectionChanged)
+			{
+				(e.OldValue as INotifyCollectionChanged).CollectionChanged -= (s, args) => ActivatableListBox_CollectionChanged(listBox, s, args);
+			}
+
+			// add new list-changed handler
+			if (e.NewValue is IBindingList)
+			{
+				(e.NewValue as IBindingList).ListChanged += (s, args) => ActivatableListBox_ListChanged(listBox, s, args);
+			}
+			else if (e.NewValue is INotifyCollectionChanged)
+			{
+				(e.NewValue as INotifyCollectionChanged).CollectionChanged += (s, args) => ActivatableListBox_CollectionChanged(listBox, s, args);
+			}
+		}
+
+		private static void ActivatableListBox_CollectionChanged(ListBox listBox, object sender, NotifyCollectionChangedEventArgs e)
+		{
+			if (e.Action == NotifyCollectionChangedAction.Remove)
+			{
+				// TODO: This is untested
+				var list = sender as INotifyCollectionChanged;
+				if (e.OldItems.Contains(GetActiveItem(listBox)))
+					SetActiveItem(listBox, null);
+			}
+
+			UpdateActivatedIndex(listBox, listBox.GetActiveItem());
+		}
+
+		private static void ActivatableListBox_ListChanged(ListBox listBox, object sender, ListChangedEventArgs e)
+		{
+			if (e.ListChangedType == ListChangedType.ItemDeleted)
+			{
+				var list = sender as IBindingList;
+				var i = listBox.GetActiveIndex();
+				if (e.NewIndex == listBox.GetActiveIndex()) // removing active item
+				{
+					SetActiveItem(listBox, null);
+				}
+			}
+
+			UpdateActivatedIndex(listBox, listBox.GetActiveItem());
+		}
+
+		private static void ListBox_ContainerGeneratorStatusChanged(object sender, EventArgs e)
 		{
 			var generator = sender as ItemContainerGenerator;
 			if (generator.Status == System.Windows.Controls.Primitives.GeneratorStatus.ContainersGenerated)
@@ -80,6 +136,8 @@ namespace Words.MediaOrderList
 			}
 		}
 
+		#endregion
+
 		[AttachedPropertyBrowsableForType(typeof(ListBox))]
 		public static IActivatable GetActiveItem(this ListBox obj)
 		{
@@ -98,8 +156,21 @@ namespace Words.MediaOrderList
 		{
 			var value = e.NewValue as IActivatable;
 			var listBox = d as ListBox;
+			UpdateActivatedIndex(listBox, value);
 			UpdateActivatedItem(listBox, value);
 		}
+
+		[AttachedPropertyBrowsableForType(typeof(ListBox))]
+		public static int GetActiveIndex(this ListBox obj)
+		{
+			return (int)obj.GetValue(ActiveIndexProperty);
+		}
+
+		public static readonly DependencyPropertyKey ActiveIndexPropertyKey =
+			DependencyProperty.RegisterAttachedReadOnly("ActiveIndex", typeof(int), typeof(ActivatableListBox), new UIPropertyMetadata(-1));
+
+		public static readonly DependencyProperty ActiveIndexProperty =
+			ActiveIndexPropertyKey.DependencyProperty;
 
 		[AttachedPropertyBrowsableForType(typeof(ListBoxItem))]
 		public static bool GetIsActive(ListBoxItem obj)
@@ -121,6 +192,33 @@ namespace Words.MediaOrderList
 				if (container != null)
 					container.SetValue(IsActivePropertyKey, item == value);
 			}
+		}
+
+		private static void UpdateActivatedIndex(ListBox listBox, IActivatable value)
+		{
+			var collection = listBox.DataContext as ICollection;
+
+			// find index of activated item
+			int index;
+			if (value == null || collection == null)
+			{
+				index = -1;
+			}
+			else
+			{
+				index = 0;
+				foreach (var item in collection)
+				{
+					if (item == value)
+						break;
+					index++;
+				}
+			}
+
+			if (index >= collection.Count)
+				index = -1;
+
+			listBox.SetValue(ActiveIndexPropertyKey, index);
 		}
 	}
 }
