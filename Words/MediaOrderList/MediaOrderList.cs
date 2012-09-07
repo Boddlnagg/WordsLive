@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using Words.Core;
+using System.ComponentModel;
+using System.Linq;
 
 namespace Words.MediaOrderList
 {
@@ -9,71 +11,81 @@ namespace Words.MediaOrderList
 		public Media Media { get; set; }
 	}
 
-	public class MediaOrderList : ActivatableBindingList<MediaOrderItem>
+	public class MediaOrderList : BindingList<MediaOrderItem>
 	{
-		public event EventHandler ItemAdded;
-
-		private void OnItemAdded()
-		{
-			if (ItemAdded != null)
-				ItemAdded(this, new EventArgs());
-		}
-
 		public void Add(Media media)
 		{
 			this.Add(CreateItem(media));
-			ItemAdded(this, new EventArgs());
 		}
 
 		public void Insert(int index, Media media)
 		{
 			this.Insert(index, CreateItem(media));
-			ItemAdded(this, new EventArgs());
 		}
 
-		internal void ReplaceActiveBy(Media newItem)
+		public MediaOrderItem Move(IEnumerable<MediaOrderItem> items, int delta)
 		{
-			for (int i = 0; i < this.Items.Count; i++)
+			if (delta == 0)
+				return null;
+
+			bool raiseListChangedEvents = this.RaiseListChangedEvents;
+
+			items = delta > 0 ? items.OrderByDescending((item) => this.IndexOf(item)) : items.OrderBy((item) => this.IndexOf(item));
+
+			var boundaryItem = items.First();
+
+			if (delta > 0 && this.IndexOf(boundaryItem) >= this.Count - 1 || delta < 0 && this.IndexOf(boundaryItem) == 0)
+				return null;
+
+			try
 			{
-				if (this.Items[i].IsActive)
+				this.RaiseListChangedEvents = false;
+
+				foreach (var item in items)
 				{
-					// For some reason uncommenting the code does mess up the IsActive-bold-marker in the list
-					// (the active item is not marked anymore after the replace)
-
-					//bool raiseListChangedEvents = this.RaiseListChangedEvents;
-					//try
-					//{
-						//this.RaiseListChangedEvents = false;
-						
-						this.ActiveItem = null;
-						RemoveIgnoreActivated = true;
-						this.RemoveItem(i);
-						RemoveIgnoreActivated = false;
-						if (i > this.Count)
-							this.Add(CreateItem(newItem));
-						else
-							this.Insert(i, CreateItem(newItem));
-
-
-						//this.OnListChanged(new ListChangedEventArgs(ListChangedType.ItemChanged, i));
-
-						this.ActiveItem = this.Items[i];
-					//}
-					//finally
-					//{
-						//this.RaiseListChangedEvents = raiseListChangedEvents;
-					//}
-
-					break;
+					int oldIndex = this.IndexOf(item);
+					int index = oldIndex + delta;
+					this.RemoveItem(oldIndex);
+					this.InsertItem(index, item);
+					this.OnListChanged(new ListChangedEventArgs(ListChangedType.ItemMoved, index, oldIndex));
 				}
 			}
+			finally
+			{
+				this.RaiseListChangedEvents = raiseListChangedEvents;
+			}
+
+			return boundaryItem;
+		}
+
+		internal MediaOrderItem Replace(MediaOrderItem oldItem, Media newItem)
+		{
+			bool raiseListChangedEvents = this.RaiseListChangedEvents;
+			int i = this.IndexOf(oldItem);
+			MediaOrderItem item;
+
+			try
+			{
+				this.RaiseListChangedEvents = false;
+				this.Remove(oldItem);
+				item = CreateItem(newItem);
+				this.Insert(i, item);
+			}
+			finally
+			{
+				this.RaiseListChangedEvents = raiseListChangedEvents;
+			}
+
+			this.ResetBindings();
+
+			return item;
 		}
 
 		public IEnumerable<Media> Export()
 		{
 			foreach (var i in this.Items)
 			{
-				yield return i.Data.Data;
+				yield return i.Data;
 			}
 		}
 

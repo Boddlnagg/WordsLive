@@ -14,12 +14,14 @@ using Words.MediaOrderList;
 using Words.Presentation;
 using Words.Resources;
 using Words.Songs;
+using System.Collections.ObjectModel;
+using Words.Utils;
 
 namespace Words
 {
 	public partial class MainWindow : Window, INotifyPropertyChanged
 	{
-		private Words.MediaOrderList.MediaOrderList orderList = new Words.MediaOrderList.MediaOrderList();
+		private MediaOrderList.MediaOrderList orderList = new MediaOrderList.MediaOrderList();
 		
 		private Border previewBorder = new Border();
 
@@ -72,23 +74,34 @@ namespace Words
 			}
 		}
 
+		public Media ActiveMedia
+		{
+			get
+			{
+				if (OrderListBox.GetActiveItem() == null)
+					return null;
+				else
+					return (OrderListBox.GetActiveItem() as MediaOrderItem).Data;
+			}
+		}
+
 		public MainWindow()
 		{
 			AwesomiumManager.Init();
 
-			this.InitializeComponent();
+			this.InitializeComponent();	
 
 			this.DataContext = this;
 
-			DependencyPropertyDescriptor activeItemDescriptor = DependencyPropertyDescriptor.FromProperty(MediaOrderListBox.ActiveItemProperty, typeof(MediaOrderListBox));
+			DependencyPropertyDescriptor activeItemDescriptor = DependencyPropertyDescriptor.FromProperty(ActivatableListBox.ActiveItemProperty, typeof(ListBox));
 
 			if (activeItemDescriptor != null)
 			{
 				activeItemDescriptor.AddValueChanged(this.OrderListBox, OrderListBox_ActiveItemChanged);
 			}
 
-			this.OrderListBox.Init(orderList);
-			this.orderList.ItemAdded += (sender, args) => { portfolioChanged = true; };
+			this.OrderListBox.DataContext = orderList;
+			this.orderList.ListChanged += (sender, args) => { portfolioChanged = true; };
 			this.orderList.NotifyTryOpenFileNotFoundMedia += (sender, args) =>
 			{
 				MessageBox.Show("Die Datei " + args.Media.File + " existiert nicht.");
@@ -164,7 +177,7 @@ namespace Words
 
 		private void OrderListBox_ActiveItemChanged(object sender, EventArgs e)
 		{
-			if (orderList.ActiveItem == null)
+			if (ActiveMedia == null)
 			{
 				if (Controller.PresentationManager.Status == PresentationStatus.Show)
 				{
@@ -181,7 +194,7 @@ namespace Words
 			}
 			else
 			{
-				var media = OrderListBox.ActiveItem.Data;
+				var media = ActiveMedia;
 				LoadMedia(media);
 				IMediaControlPanel panel = Controller.ControlPanels.CreatePanel(media);
 				if (panel is SongControlPanel)
@@ -240,12 +253,13 @@ namespace Words
 
 		internal void ReloadActiveMedia()
 		{
-			if (OrderListBox.ActiveItem == null)
+			if (ActiveMedia == null)
 				return;
 
-			if (CurrentPanel != null && CurrentPanel.IsUpdatable && File.Exists(OrderListBox.ActiveItem.Path))
+			var m = OrderListBox.GetActiveItem() as MediaOrderItem;
+
+			if (CurrentPanel != null && CurrentPanel.IsUpdatable && File.Exists(m.Path))
 			{
-				var m = OrderListBox.ActiveItem;
 				m.Reload();
 				LoadMedia(m.Data);
 				CurrentPanel.Init(m.Data);
@@ -253,7 +267,7 @@ namespace Words
 			}
 			else
 			{
-				var active = OrderListBox.ActiveItem.Data;
+				var active = ActiveMedia;
 
 				if (String.IsNullOrEmpty(active.File))
 					return; // can't reload when no filename is given
@@ -265,7 +279,7 @@ namespace Words
 				// needed to restore selected index
 				int selected = OrderListBox.SelectedIndex;
 
-				orderList.ReplaceActiveBy(newData);
+				OrderListBox.SetActiveItem(orderList.Replace(OrderListBox.GetActiveItem() as MediaOrderItem, newData));
 				if (OrderListBox.SelectedIndex != selected)
 					OrderListBox.SelectedIndex = selected;
 			}
@@ -359,7 +373,7 @@ namespace Words
 			}
 			else
 			{
-				MediaManager.SavePortfolio(from m in orderList select m.Data.Data, PortfolioFile.FullName);
+				MediaManager.SavePortfolio(from m in orderList select m.Data, PortfolioFile.FullName);
 				portfolioChanged = false;
 			}
 		}
@@ -377,7 +391,7 @@ namespace Words
 
 			if (dlg.ShowDialog() == true)
 			{
-				MediaManager.SavePortfolio(from m in orderList select m.Data.Data, dlg.FileName);
+				MediaManager.SavePortfolio(from m in orderList select m.Data, dlg.FileName);
 				PortfolioFile = new FileInfo(dlg.FileName);
 				portfolioChanged = false;
 			}
@@ -392,9 +406,9 @@ namespace Words
 		internal void AddToPortfolio(string file)
 		{
 			var media = MediaManager.LoadMediaMetadata(file);
-			if (orderList.ActiveItem != null)
+			if (ActiveMedia != null)
 			{
-				int index = orderList.IndexOf(orderList.ActiveItem);
+				int index = orderList.IndexOf((MediaOrderItem)OrderListBox.GetActiveItem());
 				orderList.Insert(index + 1, media);
 			}
 			else
@@ -407,11 +421,11 @@ namespace Words
 		{
 			if (e.Command == NavigationCommands.Refresh)
 			{
-				e.CanExecute = (OrderListBox.ActiveItem != null);
+				e.CanExecute = (ActiveMedia != null);
 			}
 			else if (e.Command == CustomCommands.EditActive)
 			{
-				e.CanExecute = (orderList.ActiveItem != null) && (orderList.ActiveItem.Data.Data as Song != null);
+				e.CanExecute = OrderListBox != null && (ActiveMedia as Song != null);
 			}
 			else if (e.Command == ApplicationCommands.Save || e.Command == ApplicationCommands.SaveAs)
 			{
@@ -459,14 +473,11 @@ namespace Words
 			}
 			else if (e.Command == CustomCommands.EditActive)
 			{
-				if (orderList.ActiveItem != null)
+				var song = ActiveMedia as Song;
+				if (song != null)
 				{
-					var song = orderList.ActiveItem.Data.Data as Song;
-					if (song != null)
-					{
-						EditorWindow win = Controller.ShowEditorWindow();
-						win.LoadOrImport(song.File);
-					}
+					EditorWindow win = Controller.ShowEditorWindow();
+					win.LoadOrImport(song.File);
 				}
 			}
 			else if (e.Command == CustomCommands.ShowSettings)
@@ -580,7 +591,7 @@ namespace Words
 						if (win.DialogResult == true)
 						{
 							portfolioBackground = win.ChosenBackground;
-							if (orderList.ActiveItem != null && orderList.ActiveItem.Data.Data is Song)
+							if (ActiveMedia is Song)
 							{
 								ReloadActiveMedia();
 							}
@@ -594,7 +605,7 @@ namespace Words
 					else
 					{
 						// disable portfolio background
-						if (orderList.ActiveItem != null && orderList.ActiveItem.Data.Data is Song)
+						if (ActiveMedia is Song)
 						{
 							ReloadActiveMedia();
 						}
@@ -615,30 +626,31 @@ namespace Words
 
 		private void OrderListBox_OnExecuteCommand(object sender, ExecutedRoutedEventArgs e)
 		{
-			var selected = this.OrderListBox.SelectedItems.Cast<ActivatableItemContainer<MediaOrderItem>>();
-			ActivatableItemContainer<MediaOrderItem> boundaryItem;
+			var selected = this.OrderListBox.SelectedItems.Cast<MediaOrderItem>();
+			bool activeSelected = selected.Any() && (selected.Count((item) => item == OrderListBox.GetActiveItem()) != 0);
+			MediaOrderItem boundaryItem;
 
 			if (e.Command == CustomCommands.MoveUp)
 			{
-					boundaryItem = orderList.Move(selected, -1);
-					if (boundaryItem != null)
-					{
-						OrderListBox.ScrollIntoView(boundaryItem);
-						portfolioChanged = true;
-					}
+				boundaryItem = orderList.Move(selected, -1);
+				if (boundaryItem != null)
+				{
+					OrderListBox.ScrollIntoView(boundaryItem);
+					portfolioChanged = true;
+				}
 			}
 			else if (e.Command == CustomCommands.MoveDown)
 			{
-					boundaryItem = orderList.Move(selected, 1);
-					if (boundaryItem != null)
-					{
-						OrderListBox.ScrollIntoView(boundaryItem);
-						portfolioChanged = true;
-					}
+				boundaryItem = orderList.Move(selected, 1);
+				if (boundaryItem != null)
+				{
+					OrderListBox.ScrollIntoView(boundaryItem);
+					portfolioChanged = true;
+				}
 			}
 			else if (e.Command == ApplicationCommands.Delete)
 			{
-				if (selected.Count() > 0 && (selected.Count((item) => item.IsActive) == 0 || MessageBox.Show("Wollen Sie das aktive Element wirklich entfernen (Die Anzeige wird auf Blackscreen geschaltet, wenn die Präsentation gerade aktiv ist)?", "Aktives Element entfernen?", MessageBoxButton.YesNoCancel, MessageBoxImage.Warning) == MessageBoxResult.Yes))
+				if (selected.Any() && (!activeSelected || MessageBox.Show("Wollen Sie das aktive Element wirklich entfernen (Die Anzeige wird auf Blackscreen geschaltet, wenn die Präsentation gerade aktiv ist)?", "Aktives Element entfernen?", MessageBoxButton.YesNoCancel, MessageBoxImage.Warning) == MessageBoxResult.Yes))
 				{
 					int index = this.OrderListBox.SelectedIndex;
 					var selectedArray = selected.ToArray();
@@ -664,6 +676,103 @@ namespace Words
 		private void OrderListBox_OnCanExecuteCommand(object sender, CanExecuteRoutedEventArgs e)
 		{
 			e.CanExecute = OrderListBox.SelectedItem != null;
+		}
+
+		int oldIndex;
+		Point startPoint;
+
+		void OrderListBox_PreviewMouseMove(object sender, MouseEventArgs e)
+		{
+			if (e.LeftButton == MouseButtonState.Pressed && oldIndex >= 0)
+			{
+				Point position = e.GetPosition(null);
+				if (Math.Abs(position.X - startPoint.X) >
+						SystemParameters.MinimumHorizontalDragDistance ||
+					Math.Abs(position.Y - startPoint.Y) >
+						SystemParameters.MinimumVerticalDragDistance)
+				{
+
+					OrderListBox.SelectedIndex = oldIndex;
+					var selectedItem = orderList[oldIndex] as MediaOrderItem;
+
+					if (selectedItem == null)
+						return;
+
+					// this will create the drag "rectangle"
+					DragDropEffects allowedEffects = DragDropEffects.Move;
+					if (DragDrop.DoDragDrop(this, selectedItem, allowedEffects) != DragDropEffects.None)
+					{
+						// The item was dropped into a new location,
+						// so make it the new selected item.
+						OrderListBox.SelectedItem = selectedItem;
+					}
+				}
+			}
+		}
+
+		void OrderListBox_Drop(object sender, DragEventArgs e)
+		{
+			int index = OrderListBox.GetCurrentIndex(e.GetPosition);
+
+			// Data comes from list itself
+			if (e.Data.GetData(typeof(MediaOrderItem)) != null)
+			{
+
+				if (oldIndex < 0)
+					return;
+
+				if (index == oldIndex)
+					return;
+
+				MediaOrderItem movedItem = orderList[oldIndex];
+
+				if (index < 0)
+					orderList.Move(new MediaOrderItem[] { movedItem }, orderList.Count - oldIndex - 1);
+				else
+					orderList.Move(new MediaOrderItem[] { movedItem }, index - oldIndex);
+
+				oldIndex = -1;
+			}
+			// Data comes from explorer
+			else if (e.Data.GetData(DataFormats.FileDrop) != null)
+			{
+				string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+
+				IEnumerable<Media> result;
+
+				if (files.Length < 1)
+					return;
+
+				if (files.Length == 1)
+				{
+					if (MediaManager.TryLoadPortfolio(files[0], out result))
+						Controller.OpenPortfolio(files[0]);
+					else
+					{
+						Media m = MediaManager.LoadMediaMetadata(files[0]);
+						if (index < 0)
+							orderList.Add(m);
+						else
+							orderList.Insert(index, m);
+					}
+				}
+				else
+				{
+					foreach (var m in MediaManager.LoadMultipleMediaMetadata(files))
+					{
+						if (index < 0)
+							orderList.Add(m);
+						else
+							orderList.Insert(index, m);
+					}
+				}
+			}
+		}
+
+		void OrderListBoxItem_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+		{
+			oldIndex = OrderListBox.GetCurrentIndex(e.GetPosition);
+			startPoint = e.GetPosition(null);
 		}
 	}
 }

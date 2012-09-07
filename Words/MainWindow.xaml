@@ -172,14 +172,53 @@
 				<ColumnDefinition Width="5"/>
 				<ColumnDefinition Width="2.5*" MinWidth="100"/>
 			</Grid.ColumnDefinitions>
-			<mediaOrderList:MediaOrderListBox x:Name="OrderListBox" Margin="0,26,0,0" BorderThickness="0">
-				<mediaOrderList:MediaOrderListBox.CommandBindings>
+			<ListBox x:Name="OrderListBox"
+					 AllowDrop="True"
+					 ScrollViewer.CanContentScroll="False"
+					 mediaOrderList:ActivatableListBox.IsActivatable="True" 
+					 Margin="0,26,0,0" BorderThickness="0" 
+					 ItemsSource="{Binding}"
+					 PreviewMouseMove="OrderListBox_PreviewMouseMove"
+					 Drop="OrderListBox_Drop"
+					 SelectionMode="Extended">
+				<ListBox.CommandBindings>
 					<CommandBinding Command="Delete" Executed="OrderListBox_OnExecuteCommand" CanExecute="OrderListBox_OnCanExecuteCommand"/>
 					<CommandBinding Command="{x:Static local:CustomCommands.MoveUp}" Executed="OrderListBox_OnExecuteCommand" CanExecute="OrderListBox_OnCanExecuteCommand"/>
 					<CommandBinding Command="{x:Static local:CustomCommands.MoveDown}" Executed="OrderListBox_OnExecuteCommand" CanExecute="OrderListBox_OnCanExecuteCommand"/>
-				</mediaOrderList:MediaOrderListBox.CommandBindings>
-			</mediaOrderList:MediaOrderListBox>
-			<TextBlock x:Name="ContentHeader" Padding="5" VerticalAlignment="Top" Text="{Binding ElementName=OrderListBox,Path=ActiveItem.Data.Title}" Margin="0" Grid.Column="2" Background="{StaticResource HeaderGradientBrush}" Height="26"/>
+				</ListBox.CommandBindings>
+				<ListBox.Resources>
+					<Style x:Key="ActiveItemTextStyle" TargetType="{x:Type TextBlock}">
+						<Setter Property="FontWeight">
+							<Setter.Value>
+								<FontWeight>Normal</FontWeight>
+							</Setter.Value>
+						</Setter>
+						<Style.Triggers>
+							<DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type ListBoxItem}}, Path=(mediaOrderList:ActivatableListBox.IsActive), Mode=OneWay}" Value="True">
+								<Setter Property="FontWeight">
+									<Setter.Value>
+										<FontWeight>Bold</FontWeight>
+									</Setter.Value>
+								</Setter>
+							</DataTrigger>
+						</Style.Triggers>
+					</Style>
+				</ListBox.Resources>
+				<ListBox.ItemContainerStyle>
+					<Style TargetType="{x:Type ListBoxItem}" BasedOn="{StaticResource {x:Type ListBoxItem}}">
+						<EventSetter Event="PreviewMouseLeftButtonDown" Handler="OrderListBoxItem_PreviewMouseLeftButtonDown"/>
+					</Style>
+				</ListBox.ItemContainerStyle>
+				<ListBox.ItemTemplate>
+					<DataTemplate>
+						<StackPanel Orientation="Horizontal" AllowDrop="True" ToolTip="{Binding Path=Path}">
+							<Image Source="{Binding Path=Icon}" Margin="0,2,4,2" Width="22" Height="16"/>
+							<TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Text="{Binding Path=Title}" TextWrapping="Wrap" Style="{StaticResource ActiveItemTextStyle}"/>
+						</StackPanel>
+					</DataTemplate>
+				</ListBox.ItemTemplate>
+			</ListBox>
+			<TextBlock x:Name="ContentHeader" Padding="5" VerticalAlignment="Top" Text="{Binding ElementName=OrderListBox,Path=(mediaOrderList:ActivatableListBox.ActiveItem).Title}" Margin="0" Grid.Column="2" Background="{StaticResource HeaderGradientBrush}" Height="26"/>
 			<TextBlock Padding="5" Text="{x:Static resx:Resource.vPanelPreview}" Grid.Row="2" Margin="0" Background="{StaticResource HeaderGradientBrush}" Height="26" VerticalAlignment="Top"/>
 			<Viewbox Margin="6,32,6,6" Grid.Row="2" x:Name="PreviewBox"/>
 			<GridSplitter HorizontalAlignment="Stretch" Grid.Row="1" VerticalAlignment="Stretch" Height="5" Background="#FFF0F0F0" BorderBrush="#FFE3E3E3" BorderThickness="0,1" Grid.ColumnSpan="2"/>
