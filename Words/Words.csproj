@@ -196,6 +196,7 @@
     <Compile Include="AwesomiumWrapper.xaml.cs">
       <DependentUpon>AwesomiumWrapper.xaml</DependentUpon>
     </Compile>
+    <Compile Include="MediaOrderList\ActivatableListBox.cs" />
     <Compile Include="PhotoLoader\ImageLoaders\ExternalLoader.cs" />
     <Compile Include="PhotoLoader\ImageLoaders\ILoader.cs" />
     <Compile Include="PhotoLoader\ImageLoaders\LoaderFactory.cs" />

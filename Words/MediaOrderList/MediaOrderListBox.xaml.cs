@@ -32,18 +32,18 @@ namespace Words.MediaOrderList
 			}
 		}
 
-		public void Init(MediaOrderList list)
-		{
-			this.list = list;
-			this.DataContext = this.list;
-			this.list.PropertyChanged += delegate(object sender, System.ComponentModel.PropertyChangedEventArgs e)
-			{
-				if (list.ActiveItem == null)
-					ActiveItem = null;
-				else
-					ActiveItem = list.ActiveItem.Data;
-			};
-		}
+		//public void Init(MediaOrderList list)
+		//{
+		//    this.list = list;
+		//    this.DataContext = this.list;
+		//    this.list.PropertyChanged += delegate(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+		//    {
+		//        if (list.ActiveItem == null)
+		//            ActiveItem = null;
+		//        else
+		//            ActiveItem = list.ActiveItem.Data;
+		//    };
+		//}
 
 		public MediaOrderListBox()
 		{
@@ -81,22 +81,24 @@ namespace Words.MediaOrderList
 			int index = this.GetCurrentIndex(e.GetPosition);
 
 			// Data comes from list itself
-			if (e.Data.GetData(typeof(ActivatableItemContainer<MediaOrderItem>)) is ActivatableItemContainer<MediaOrderItem>)
+			if (e.Data.GetData(typeof(MediaOrderItem)) != null)
 			{
-				if (oldIndex < 0)
-					return;
+				return; // TODO!!
 
-				if (index == oldIndex)
-					return;
+				//if (oldIndex < 0)
+				//    return;
 
-				ActivatableItemContainer<MediaOrderItem> movedItem = list[oldIndex];
+				//if (index == oldIndex)
+				//    return;
 
-				if (index < 0)
-					list.Move(new ActivatableItemContainer<MediaOrderItem>[] {movedItem} , Items.Count - oldIndex - 1);
-				else
-					list.Move(new ActivatableItemContainer<MediaOrderItem>[] { movedItem }, index - oldIndex);
+				//MediaOrderItem movedItem = list[oldIndex];
 
-				oldIndex = -1;
+				//if (index < 0)
+				//    list.Move(new ActivatableItemContainer<MediaOrderItem>[] {movedItem} , Items.Count - oldIndex - 1);
+				//else
+				//    list.Move(new ActivatableItemContainer<MediaOrderItem>[] { movedItem }, index - oldIndex);
+
+				//oldIndex = -1;
 			}
 			// Data comes from explorer
 			else if (e.Data.GetData(DataFormats.FileDrop) != null)
@@ -146,7 +148,7 @@ namespace Words.MediaOrderList
 
 			var data = (ActivatableItemContainer<MediaOrderItem>)this.ItemContainerGenerator.ItemFromContainer(sender as ListBoxItem);
 
-			list.ActiveItem = data;
+			//list.ActiveItem = data;
 		}
 	}
 }

@@ -14,12 +14,25 @@ using Words.MediaOrderList;
 using Words.Presentation;
 using Words.Resources;
 using Words.Songs;
+using System.Collections.ObjectModel;
 
 namespace Words
 {
 	public partial class MainWindow : Window, INotifyPropertyChanged
 	{
-		private Words.MediaOrderList.MediaOrderList orderList = new Words.MediaOrderList.MediaOrderList();
+		public class ActivatableElement : IActivatable
+		{
+			public string Title { get; set; }
+
+			public bool Activate()
+			{
+				return MessageBox.Show("Element " + Title + " aktivieren?", "", MessageBoxButton.YesNo) == MessageBoxResult.Yes;
+			}
+		}
+
+		public List<ActivatableElement> TestList { get; private set; }
+
+		private MediaOrderList.MediaOrderList orderList = new MediaOrderList.MediaOrderList();
 		
 		private Border previewBorder = new Border();
 
@@ -74,29 +87,36 @@ namespace Words
 
 		public MainWindow()
 		{
+			TestList = new List<ActivatableElement> {
+				new ActivatableElement { Title = "A" },
+				new ActivatableElement { Title = "B" },
+				new ActivatableElement { Title = "C" }
+			};
+
 			AwesomiumManager.Init();
 
-			this.InitializeComponent();
+			this.InitializeComponent();	
 
 			this.DataContext = this;
 
-			DependencyPropertyDescriptor activeItemDescriptor = DependencyPropertyDescriptor.FromProperty(MediaOrderListBox.ActiveItemProperty, typeof(MediaOrderListBox));
+			DependencyPropertyDescriptor activeItemDescriptor = DependencyPropertyDescriptor.FromProperty(ActivatableListBox.ActiveItemProperty, typeof(ListBox));
 
 			if (activeItemDescriptor != null)
 			{
 				activeItemDescriptor.AddValueChanged(this.OrderListBox, OrderListBox_ActiveItemChanged);
 			}
 
-			this.OrderListBox.Init(orderList);
-			this.orderList.ItemAdded += (sender, args) => { portfolioChanged = true; };
-			this.orderList.NotifyTryOpenFileNotFoundMedia += (sender, args) =>
-			{
-				MessageBox.Show("Die Datei " + args.Media.File + " existiert nicht.");
-			};
-			this.orderList.NotifyTryOpenUnsupportedMedia += (sender, args) =>
-			{
-				MessageBox.Show("Die Datei " + args.Media.File + " kann nicht angezeigt werden, da das Format nicht unterstützt wird.");
-			};
+			//this.OrderListBox.Init(orderList);
+			this.OrderListBox.DataContext = orderList;
+			this.orderList.ListChanged += (sender, args) => { portfolioChanged = true; };
+			//this.orderList.NotifyTryOpenFileNotFoundMedia += (sender, args) =>
+			//{
+			//    MessageBox.Show("Die Datei " + args.Media.File + " existiert nicht.");
+			//};
+			//this.orderList.NotifyTryOpenUnsupportedMedia += (sender, args) =>
+			//{
+			//    MessageBox.Show("Die Datei " + args.Media.File + " kann nicht angezeigt werden, da das Format nicht unterstützt wird.");
+			//};
 
 			Controller.Initialize();
 
@@ -164,7 +184,7 @@ namespace Words
 
 		private void OrderListBox_ActiveItemChanged(object sender, EventArgs e)
 		{
-			if (orderList.ActiveItem == null)
+			if (OrderListBox.GetActiveItem() == null)
 			{
 				if (Controller.PresentationManager.Status == PresentationStatus.Show)
 				{
@@ -181,7 +201,7 @@ namespace Words
 			}
 			else
 			{
-				var media = OrderListBox.ActiveItem.Data;
+				var media = (OrderListBox.GetActiveItem() as MediaOrderItem).Data;
 				LoadMedia(media);
 				IMediaControlPanel panel = Controller.ControlPanels.CreatePanel(media);
 				if (panel is SongControlPanel)
@@ -240,12 +260,13 @@ namespace Words
 
 		internal void ReloadActiveMedia()
 		{
-			if (OrderListBox.ActiveItem == null)
+			if (OrderListBox.GetActiveItem() == null)
 				return;
 
-			if (CurrentPanel != null && CurrentPanel.IsUpdatable && File.Exists(OrderListBox.ActiveItem.Path))
+			var m = OrderListBox.GetActiveItem() as MediaOrderItem;
+
+			if (CurrentPanel != null && CurrentPanel.IsUpdatable && File.Exists(m.Path))
 			{
-				var m = OrderListBox.ActiveItem;
 				m.Reload();
 				LoadMedia(m.Data);
 				CurrentPanel.Init(m.Data);
@@ -253,7 +274,7 @@ namespace Words
 			}
 			else
 			{
-				var active = OrderListBox.ActiveItem.Data;
+				var active = m.Data;
 
 				if (String.IsNullOrEmpty(active.File))
 					return; // can't reload when no filename is given
@@ -265,7 +286,7 @@ namespace Words
 				// needed to restore selected index
 				int selected = OrderListBox.SelectedIndex;
 
-				orderList.ReplaceActiveBy(newData);
+				//orderList.ReplaceActiveBy(newData); TODO!!
 				if (OrderListBox.SelectedIndex != selected)
 					OrderListBox.SelectedIndex = selected;
 			}
@@ -359,7 +380,7 @@ namespace Words
 			}
 			else
 			{
-				MediaManager.SavePortfolio(from m in orderList select m.Data.Data, PortfolioFile.FullName);
+				MediaManager.SavePortfolio(from m in orderList select m.Data, PortfolioFile.FullName);
 				portfolioChanged = false;
 			}
 		}
@@ -377,7 +398,7 @@ namespace Words
 
 			if (dlg.ShowDialog() == true)
 			{
-				MediaManager.SavePortfolio(from m in orderList select m.Data.Data, dlg.FileName);
+				MediaManager.SavePortfolio(from m in orderList select m.Data, dlg.FileName);
 				PortfolioFile = new FileInfo(dlg.FileName);
 				portfolioChanged = false;
 			}
@@ -392,9 +413,9 @@ namespace Words
 		internal void AddToPortfolio(string file)
 		{
 			var media = MediaManager.LoadMediaMetadata(file);
-			if (orderList.ActiveItem != null)
+			if (OrderListBox.GetActiveItem() != null)
 			{
-				int index = orderList.IndexOf(orderList.ActiveItem);
+				int index = orderList.IndexOf((MediaOrderItem)OrderListBox.GetActiveItem());
 				orderList.Insert(index + 1, media);
 			}
 			else
@@ -407,11 +428,11 @@ namespace Words
 		{
 			if (e.Command == NavigationCommands.Refresh)
 			{
-				e.CanExecute = (OrderListBox.ActiveItem != null);
+				e.CanExecute = (OrderListBox.GetActiveItem() != null);
 			}
 			else if (e.Command == CustomCommands.EditActive)
 			{
-				e.CanExecute = (orderList.ActiveItem != null) && (orderList.ActiveItem.Data.Data as Song != null);
+				e.CanExecute = OrderListBox != null && (OrderListBox.GetActiveItem() != null) && ((OrderListBox.GetActiveItem() as MediaOrderItem).Data as Song != null);
 			}
 			else if (e.Command == ApplicationCommands.Save || e.Command == ApplicationCommands.SaveAs)
 			{
@@ -459,9 +480,9 @@ namespace Words
 			}
 			else if (e.Command == CustomCommands.EditActive)
 			{
-				if (orderList.ActiveItem != null)
+				if (OrderListBox.GetActiveItem() != null)
 				{
-					var song = orderList.ActiveItem.Data.Data as Song;
+					var song = (OrderListBox.GetActiveItem() as MediaOrderItem).Data as Song;
 					if (song != null)
 					{
 						EditorWindow win = Controller.ShowEditorWindow();
@@ -580,7 +601,7 @@ namespace Words
 						if (win.DialogResult == true)
 						{
 							portfolioBackground = win.ChosenBackground;
-							if (orderList.ActiveItem != null && orderList.ActiveItem.Data.Data is Song)
+							if (OrderListBox.GetActiveItem() != null && (OrderListBox.GetActiveItem() as MediaOrderItem).Data is Song)
 							{
 								ReloadActiveMedia();
 							}
@@ -594,7 +615,7 @@ namespace Words
 					else
 					{
 						// disable portfolio background
-						if (orderList.ActiveItem != null && orderList.ActiveItem.Data.Data is Song)
+						if (OrderListBox.GetActiveItem() != null && (OrderListBox.GetActiveItem() as MediaOrderItem).Data is Song)
 						{
 							ReloadActiveMedia();
 						}
@@ -618,23 +639,24 @@ namespace Words
 			var selected = this.OrderListBox.SelectedItems.Cast<ActivatableItemContainer<MediaOrderItem>>();
 			ActivatableItemContainer<MediaOrderItem> boundaryItem;
 
+			// TODO!!
 			if (e.Command == CustomCommands.MoveUp)
 			{
-					boundaryItem = orderList.Move(selected, -1);
-					if (boundaryItem != null)
-					{
-						OrderListBox.ScrollIntoView(boundaryItem);
-						portfolioChanged = true;
-					}
+					//boundaryItem = orderList.Move(selected, -1);
+					//if (boundaryItem != null)
+					//{
+					//    OrderListBox.ScrollIntoView(boundaryItem);
+					//    portfolioChanged = true;
+					//}
 			}
 			else if (e.Command == CustomCommands.MoveDown)
 			{
-					boundaryItem = orderList.Move(selected, 1);
-					if (boundaryItem != null)
-					{
-						OrderListBox.ScrollIntoView(boundaryItem);
-						portfolioChanged = true;
-					}
+					//boundaryItem = orderList.Move(selected, 1);
+					//if (boundaryItem != null)
+					//{
+					//    OrderListBox.ScrollIntoView(boundaryItem);
+					//    portfolioChanged = true;
+					//}
 			}
 			else if (e.Command == ApplicationCommands.Delete)
 			{
@@ -644,7 +666,8 @@ namespace Words
 					var selectedArray = selected.ToArray();
 					foreach (var item in selectedArray)
 					{
-						orderList.Remove(item);
+						// TODO!!
+						//orderList.Remove(item);
 					}
 					if (index < this.OrderListBox.Items.Count)
 					{
