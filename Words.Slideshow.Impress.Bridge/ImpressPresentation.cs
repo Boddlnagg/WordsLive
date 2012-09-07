@@ -96,10 +96,6 @@ namespace Words.Slideshow.Impress.Bridge
 				var handle = xWindowPeer.getWindowHandle(new byte[] { }, 1);
 				presentation = (XPresentation2)((XPresentationSupplier)component).getPresentation();
 
-				presentation.setPropertyValue("Display", new uno.Any(GetDisplayIndex())); // TODO (Slideshow.Impress): test this
-
-				presentation.setPropertyValue("IsTransitionOnClick", new uno.Any(false));
-
 				CreateThumbnails();
 
 				listener.SlideTransitionStarted += (sender, args) =>
@@ -152,7 +148,7 @@ namespace Words.Slideshow.Impress.Bridge
 			for (int i = 0; i < System.Windows.Forms.Screen.AllScreens.Length; i++)
 			{
 				if (System.Windows.Forms.Screen.AllScreens[i] == Area.Screen)
-					return i;
+					return i + 1;
 			}
 
 			return 0;
@@ -160,7 +156,11 @@ namespace Words.Slideshow.Impress.Bridge
 
 		private void Start()
 		{
+			// TODO (Slideshow.Impress): when restarting (after presentation has finished),
+			// the Presenter Console is shown -> find that window/frame and hide it
 			controller = null;
+			presentation.setPropertyValue("Display", new uno.Any(GetDisplayIndex()));
+			var props = ((XPropertySetInfo)presentation.getPropertySetInfo()).getProperties();
 			presentation.start();
 
 			int i = 1;
