@@ -298,7 +298,7 @@ namespace Words
 				// needed to restore selected index
 				int selected = OrderListBox.SelectedIndex;
 
-				//orderList.ReplaceActiveBy(newData); TODO!!
+				OrderListBox.SetActiveItem(orderList.Replace(OrderListBox.GetActiveItem() as MediaOrderItem, newData));
 				if (OrderListBox.SelectedIndex != selected)
 					OrderListBox.SelectedIndex = selected;
 			}

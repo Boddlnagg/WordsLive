@@ -13,24 +13,14 @@ namespace Words.MediaOrderList
 
 	public class MediaOrderList : BindingList<MediaOrderItem>
 	{
-		public event EventHandler ItemAdded;
-
-		private void OnItemAdded()
-		{
-			if (ItemAdded != null)
-				ItemAdded(this, new EventArgs());
-		}
-
 		public void Add(Media media)
 		{
 			this.Add(CreateItem(media));
-			OnItemAdded();
 		}
 
 		public void Insert(int index, Media media)
 		{
 			this.Insert(index, CreateItem(media));
-			OnItemAdded();
 		}
 
 		public MediaOrderItem Move(IEnumerable<MediaOrderItem> items, int delta)
@@ -68,44 +58,28 @@ namespace Words.MediaOrderList
 			return boundaryItem;
 		}
 
-		// TODO!!
-		//internal void ReplaceActiveBy(Media newItem)
-		//{
-		//    for (int i = 0; i < this.Items.Count; i++)
-		//    {
-		//        if (this.Items[i].IsActive)
-		//        {
-		//            // For some reason uncommenting the code does mess up the IsActive-bold-marker in the list
-		//            // (the active item is not marked anymore after the replace)
+		internal MediaOrderItem Replace(MediaOrderItem oldItem, Media newItem)
+		{
+			bool raiseListChangedEvents = this.RaiseListChangedEvents;
+			int i = this.IndexOf(oldItem);
+			MediaOrderItem item;
 
-		//            //bool raiseListChangedEvents = this.RaiseListChangedEvents;
-		//            //try
-		//            //{
-		//                //this.RaiseListChangedEvents = false;
-						
-		//                this.ActiveItem = null;
-		//                RemoveIgnoreActivated = true;
-		//                this.RemoveItem(i);
-		//                RemoveIgnoreActivated = false;
-		//                if (i > this.Count)
-		//                    this.Add(CreateItem(newItem));
-		//                else
-		//                    this.Insert(i, CreateItem(newItem));
+			try
+			{
+				this.RaiseListChangedEvents = false;
+				this.Remove(oldItem);
+				item = CreateItem(newItem);
+				this.Insert(i, item);
+			}
+			finally
+			{
+				this.RaiseListChangedEvents = raiseListChangedEvents;
+			}
 
+			this.ResetBindings();
 
-		//                //this.OnListChanged(new ListChangedEventArgs(ListChangedType.ItemChanged, i));
-
-		//                this.ActiveItem = this.Items[i];
-		//            //}
-		//            //finally
-		//            //{
-		//                //this.RaiseListChangedEvents = raiseListChangedEvents;
-		//            //}
-
-		//            break;
-		//        }
-		//    }
-		//}
+			return item;
+		}
 
 		public IEnumerable<Media> Export()
 		{

@@ -88,7 +88,6 @@ namespace Words.MediaOrderList
 			if (e.ListChangedType == ListChangedType.ItemDeleted)
 			{
 				var list = sender as IBindingList;
-				var i = listBox.GetActiveIndex();
 				if (e.NewIndex == listBox.GetActiveIndex()) // removing active item
 				{
 					SetActiveItem(listBox, null);
@@ -186,11 +185,13 @@ namespace Words.MediaOrderList
 
 		private static void UpdateActivatedItem(ListBox listBox, IActivatable value)
 		{
-			foreach (var item in listBox.Items)
+			for (int i = 0; i < listBox.Items.Count; i++)
 			{
-				var container = listBox.ItemContainerGenerator.ContainerFromItem(item);
+				var container = listBox.ItemContainerGenerator.ContainerFromIndex(i);
 				if (container != null)
-					container.SetValue(IsActivePropertyKey, item == value);
+				{
+					container.SetValue(IsActivePropertyKey, listBox.Items[i] == value);
+				}
 			}
 		}
 
