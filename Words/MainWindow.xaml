@@ -172,13 +172,6 @@
 				<ColumnDefinition Width="5"/>
 				<ColumnDefinition Width="2.5*" MinWidth="100"/>
 			</Grid.ColumnDefinitions>
-			<!--<mediaOrderList:MediaOrderListBox x:Name="OrderListBox" Margin="0,26,0,0" BorderThickness="0">
-				<mediaOrderList:MediaOrderListBox.CommandBindings>
-					<CommandBinding Command="Delete" Executed="OrderListBox_OnExecuteCommand" CanExecute="OrderListBox_OnCanExecuteCommand"/>
-					<CommandBinding Command="{x:Static local:CustomCommands.MoveUp}" Executed="OrderListBox_OnExecuteCommand" CanExecute="OrderListBox_OnCanExecuteCommand"/>
-					<CommandBinding Command="{x:Static local:CustomCommands.MoveDown}" Executed="OrderListBox_OnExecuteCommand" CanExecute="OrderListBox_OnCanExecuteCommand"/>
-				</mediaOrderList:MediaOrderListBox.CommandBindings>
-			</mediaOrderList:MediaOrderListBox>-->
 			<ListBox x:Name="OrderListBox"
 					 AllowDrop="True"
 					 ScrollViewer.CanContentScroll="False"

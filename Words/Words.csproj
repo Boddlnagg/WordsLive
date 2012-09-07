@@ -260,14 +260,9 @@
     <Compile Include="IMediaControlPanel.cs" />
     <Compile Include="ControlPanelManager.cs" />
     <Compile Include="MediaOrderList\IconProvider.cs" />
-    <Compile Include="MediaOrderList\ActivatableBindingList.cs" />
-    <Compile Include="MediaOrderList\ActivatableItemContainer.cs" />
     <Compile Include="MediaOrderList\IconProviderManager.cs" />
     <Compile Include="MediaOrderList\MediaOrderItem.cs" />
     <Compile Include="MediaOrderList\IActivatable.cs" />
-    <Compile Include="MediaOrderList\MediaOrderListBox.xaml.cs">
-      <DependentUpon>MediaOrderListBox.xaml</DependentUpon>
-    </Compile>
     <Compile Include="MediaOrderList\MediaOrderList.cs" />
     <Compile Include="PresentationAreaSetting.cs" />
     <Compile Include="PresentationAreaSettingsWindow.xaml.cs">
@@ -383,12 +378,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="MainWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="MediaOrderList\MediaOrderListBox.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
