@@ -196,18 +196,16 @@ namespace Words.MediaOrderList
 
 		private static void UpdateActivatedIndex(ListBox listBox, IActivatable value)
 		{
-			var collection = listBox.DataContext as ICollection;
-
 			// find index of activated item
 			int index;
-			if (value == null || collection == null)
+			if (value == null)
 			{
 				index = -1;
 			}
 			else
 			{
 				index = 0;
-				foreach (var item in collection)
+				foreach (var item in listBox.Items)
 				{
 					if (item == value)
 						break;
@@ -215,7 +213,7 @@ namespace Words.MediaOrderList
 				}
 			}
 
-			if (index >= collection.Count)
+			if (index >= listBox.Items.Count)
 				index = -1;
 
 			listBox.SetValue(ActiveIndexPropertyKey, index);

@@ -15,6 +15,7 @@ using Words.Presentation;
 using Words.Resources;
 using Words.Songs;
 using System.Collections.ObjectModel;
+using Words.Utils;
 
 namespace Words
 {
@@ -694,6 +695,103 @@ namespace Words
 		private void OrderListBox_OnCanExecuteCommand(object sender, CanExecuteRoutedEventArgs e)
 		{
 			e.CanExecute = OrderListBox.SelectedItem != null;
+		}
+
+		int oldIndex;
+		Point startPoint;
+
+		void OrderListBox_PreviewMouseMove(object sender, MouseEventArgs e)
+		{
+			if (e.LeftButton == MouseButtonState.Pressed && oldIndex >= 0)
+			{
+				Point position = e.GetPosition(null);
+				if (Math.Abs(position.X - startPoint.X) >
+						SystemParameters.MinimumHorizontalDragDistance ||
+					Math.Abs(position.Y - startPoint.Y) >
+						SystemParameters.MinimumVerticalDragDistance)
+				{
+
+					OrderListBox.SelectedIndex = oldIndex;
+					var selectedItem = orderList[oldIndex] as MediaOrderItem;
+
+					if (selectedItem == null)
+						return;
+
+					// this will create the drag "rectangle"
+					DragDropEffects allowedEffects = DragDropEffects.Move;
+					if (DragDrop.DoDragDrop(this, selectedItem, allowedEffects) != DragDropEffects.None)
+					{
+						// The item was dropped into a new location,
+						// so make it the new selected item.
+						OrderListBox.SelectedItem = selectedItem;
+					}
+				}
+			}
+		}
+
+		void OrderListBox_Drop(object sender, DragEventArgs e)
+		{
+			int index = OrderListBox.GetCurrentIndex(e.GetPosition);
+
+			// Data comes from list itself
+			if (e.Data.GetData(typeof(MediaOrderItem)) != null)
+			{
+
+				if (oldIndex < 0)
+					return;
+
+				if (index == oldIndex)
+					return;
+
+				MediaOrderItem movedItem = orderList[oldIndex];
+
+				if (index < 0)
+					orderList.Move(new MediaOrderItem[] { movedItem }, orderList.Count - oldIndex - 1);
+				else
+					orderList.Move(new MediaOrderItem[] { movedItem }, index - oldIndex);
+
+				oldIndex = -1;
+			}
+			// Data comes from explorer
+			else if (e.Data.GetData(DataFormats.FileDrop) != null)
+			{
+				string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+
+				IEnumerable<Media> result;
+
+				if (files.Length < 1)
+					return;
+
+				if (files.Length == 1)
+				{
+					if (MediaManager.TryLoadPortfolio(files[0], out result))
+						Controller.OpenPortfolio(files[0]);
+					else
+					{
+						Media m = MediaManager.LoadMediaMetadata(files[0]);
+						if (index < 0)
+							orderList.Add(m);
+						else
+							orderList.Insert(index, m);
+					}
+				}
+				else
+				{
+					foreach (var m in MediaManager.LoadMultipleMediaMetadata(files))
+					{
+						if (index < 0)
+							orderList.Add(m);
+						else
+							orderList.Insert(index, m);
+					}
+				}
+			}
+		}
+
+		void OrderListBoxItem_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+		{
+			oldIndex = OrderListBox.GetCurrentIndex(e.GetPosition);
+			startPoint = e.GetPosition(null);
 		}
 	}
 }

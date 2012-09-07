@@ -185,6 +185,8 @@
 					 mediaOrderList:ActivatableListBox.IsActivatable="True" 
 					 Margin="0,26,0,0" BorderThickness="0" 
 					 ItemsSource="{Binding}"
+					 PreviewMouseMove="OrderListBox_PreviewMouseMove"
+					 Drop="OrderListBox_Drop"
 					 SelectionMode="Extended">
 				<ListBox.CommandBindings>
 					<CommandBinding Command="Delete" Executed="OrderListBox_OnExecuteCommand" CanExecute="OrderListBox_OnCanExecuteCommand"/>
@@ -209,6 +211,11 @@
 						</Style.Triggers>
 					</Style>
 				</ListBox.Resources>
+				<ListBox.ItemContainerStyle>
+					<Style TargetType="{x:Type ListBoxItem}" BasedOn="{StaticResource {x:Type ListBoxItem}}">
+						<EventSetter Event="PreviewMouseLeftButtonDown" Handler="OrderListBoxItem_PreviewMouseLeftButtonDown"/>
+					</Style>
+				</ListBox.ItemContainerStyle>
 				<ListBox.ItemTemplate>
 					<DataTemplate>
 						<StackPanel Orientation="Horizontal" AllowDrop="True" ToolTip="{Binding Path=Path}">
