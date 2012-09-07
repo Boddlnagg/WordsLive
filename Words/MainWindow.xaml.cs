@@ -100,17 +100,16 @@ namespace Words
 				activeItemDescriptor.AddValueChanged(this.OrderListBox, OrderListBox_ActiveItemChanged);
 			}
 
-			//this.OrderListBox.Init(orderList);
 			this.OrderListBox.DataContext = orderList;
 			this.orderList.ListChanged += (sender, args) => { portfolioChanged = true; };
-			//this.orderList.NotifyTryOpenFileNotFoundMedia += (sender, args) =>
-			//{
-			//    MessageBox.Show("Die Datei " + args.Media.File + " existiert nicht.");
-			//};
-			//this.orderList.NotifyTryOpenUnsupportedMedia += (sender, args) =>
-			//{
-			//    MessageBox.Show("Die Datei " + args.Media.File + " kann nicht angezeigt werden, da das Format nicht unterstützt wird.");
-			//};
+			this.orderList.NotifyTryOpenFileNotFoundMedia += (sender, args) =>
+			{
+				MessageBox.Show("Die Datei " + args.Media.File + " existiert nicht.");
+			};
+			this.orderList.NotifyTryOpenUnsupportedMedia += (sender, args) =>
+			{
+				MessageBox.Show("Die Datei " + args.Media.File + " kann nicht angezeigt werden, da das Format nicht unterstützt wird.");
+			};
 
 			Controller.Initialize();
 
