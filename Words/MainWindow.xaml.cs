@@ -85,6 +85,17 @@ namespace Words
 			}
 		}
 
+		public Media ActiveMedia
+		{
+			get
+			{
+				if (OrderListBox.GetActiveItem() == null)
+					return null;
+				else
+					return (OrderListBox.GetActiveItem() as MediaOrderItem).Data;
+			}
+		}
+
 		public MainWindow()
 		{
 			TestList = new List<ActivatableElement> {
@@ -184,7 +195,7 @@ namespace Words
 
 		private void OrderListBox_ActiveItemChanged(object sender, EventArgs e)
 		{
-			if (OrderListBox.GetActiveItem() == null)
+			if (ActiveMedia == null)
 			{
 				if (Controller.PresentationManager.Status == PresentationStatus.Show)
 				{
@@ -201,7 +212,7 @@ namespace Words
 			}
 			else
 			{
-				var media = (OrderListBox.GetActiveItem() as MediaOrderItem).Data;
+				var media = ActiveMedia;
 				LoadMedia(media);
 				IMediaControlPanel panel = Controller.ControlPanels.CreatePanel(media);
 				if (panel is SongControlPanel)
@@ -260,7 +271,7 @@ namespace Words
 
 		internal void ReloadActiveMedia()
 		{
-			if (OrderListBox.GetActiveItem() == null)
+			if (ActiveMedia == null)
 				return;
 
 			var m = OrderListBox.GetActiveItem() as MediaOrderItem;
@@ -274,7 +285,7 @@ namespace Words
 			}
 			else
 			{
-				var active = m.Data;
+				var active = ActiveMedia;
 
 				if (String.IsNullOrEmpty(active.File))
 					return; // can't reload when no filename is given
@@ -413,7 +424,7 @@ namespace Words
 		internal void AddToPortfolio(string file)
 		{
 			var media = MediaManager.LoadMediaMetadata(file);
-			if (OrderListBox.GetActiveItem() != null)
+			if (ActiveMedia != null)
 			{
 				int index = orderList.IndexOf((MediaOrderItem)OrderListBox.GetActiveItem());
 				orderList.Insert(index + 1, media);
@@ -428,11 +439,11 @@ namespace Words
 		{
 			if (e.Command == NavigationCommands.Refresh)
 			{
-				e.CanExecute = (OrderListBox.GetActiveItem() != null);
+				e.CanExecute = (ActiveMedia != null);
 			}
 			else if (e.Command == CustomCommands.EditActive)
 			{
-				e.CanExecute = OrderListBox != null && (OrderListBox.GetActiveItem() != null) && ((OrderListBox.GetActiveItem() as MediaOrderItem).Data as Song != null);
+				e.CanExecute = OrderListBox != null && (ActiveMedia as Song != null);
 			}
 			else if (e.Command == ApplicationCommands.Save || e.Command == ApplicationCommands.SaveAs)
 			{
@@ -480,14 +491,11 @@ namespace Words
 			}
 			else if (e.Command == CustomCommands.EditActive)
 			{
-				if (OrderListBox.GetActiveItem() != null)
+				var song = ActiveMedia as Song;
+				if (song != null)
 				{
-					var song = (OrderListBox.GetActiveItem() as MediaOrderItem).Data as Song;
-					if (song != null)
-					{
-						EditorWindow win = Controller.ShowEditorWindow();
-						win.LoadOrImport(song.File);
-					}
+					EditorWindow win = Controller.ShowEditorWindow();
+					win.LoadOrImport(song.File);
 				}
 			}
 			else if (e.Command == CustomCommands.ShowSettings)
@@ -601,7 +609,7 @@ namespace Words
 						if (win.DialogResult == true)
 						{
 							portfolioBackground = win.ChosenBackground;
-							if (OrderListBox.GetActiveItem() != null && (OrderListBox.GetActiveItem() as MediaOrderItem).Data is Song)
+							if (ActiveMedia is Song)
 							{
 								ReloadActiveMedia();
 							}
@@ -615,7 +623,7 @@ namespace Words
 					else
 					{
 						// disable portfolio background
-						if (OrderListBox.GetActiveItem() != null && (OrderListBox.GetActiveItem() as MediaOrderItem).Data is Song)
+						if (ActiveMedia is Song)
 						{
 							ReloadActiveMedia();
 						}

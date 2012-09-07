@@ -170,10 +170,7 @@ namespace Words
 		{
 			get
 			{
-				if (instance.window.OrderListBox.GetActiveItem() == null)
-					return null;
-				else
-					return (instance.window.OrderListBox.GetActiveItem() as MediaOrderItem).Data;
+				return instance.window.ActiveMedia;
 			}
 		}
 
