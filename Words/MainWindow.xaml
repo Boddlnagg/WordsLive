@@ -238,6 +238,9 @@
 				<Button Style="{StaticResource markDisabledToolbarButton}" CommandTarget="{Binding ElementName=OrderListBox}" Command="Delete" HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="0,2" DockPanel.Dock="Right" Focusable="False">
 					<Image Width="16" Height="16" Source="/Words;component/Artwork/Small_Delete.png" />
 				</Button>
+				<Button Style="{StaticResource markDisabledToolbarButton}" Command="{x:Static local:CustomCommands.AddMedia}" HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="0,2" DockPanel.Dock="Right" Focusable="False">
+					<Image Width="16" Height="16" Source="/Words;component/Artwork/Small_Plus.png" />
+				</Button>
 				<Button Style="{StaticResource markDisabledToolbarButton}" CommandTarget="{Binding ElementName=OrderListBox}" Command="{x:Static local:CustomCommands.MoveDown}" HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="0,2" DockPanel.Dock="Right" Focusable="False">
 					<Image Width="16" Height="16" Source="/Words;component/Artwork/Small_DownArrow.png" />
 				</Button>
