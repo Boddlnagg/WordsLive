@@ -148,20 +148,15 @@ namespace Words
 
 		void UpdatePreview()
 		{
-			switch (Controller.PresentationManager.Status)
+			if (Controller.PresentationManager.CurrentPresentation == null)
 			{
-				case PresentationStatus.Hide:
-					this.previewBorder.Background = null;
-					this.PreviewBox.Child = GetPreviewControl(null);
-					break;
-				case PresentationStatus.Blackscreen:
-					this.previewBorder.Background = Brushes.Black;
-					this.PreviewBox.Child = GetPreviewControl(Controller.PresentationManager.Blackscreen);
-					break;
-				case PresentationStatus.Show:
-					this.previewBorder.Background = Brushes.Black;
-					this.PreviewBox.Child = GetPreviewControl(Controller.PresentationManager.CurrentPresentation);
-					break;
+				this.previewBorder.Background = null;
+				this.PreviewBox.Child = GetPreviewControl(null);
+			}
+			else
+			{
+				this.previewBorder.Background = Brushes.Black;
+				this.PreviewBox.Child = GetPreviewControl(Controller.PresentationManager.CurrentPresentation);
 			}
 		}
 
