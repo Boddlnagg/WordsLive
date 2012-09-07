@@ -21,18 +21,6 @@ namespace Words
 {
 	public partial class MainWindow : Window, INotifyPropertyChanged
 	{
-		public class ActivatableElement : IActivatable
-		{
-			public string Title { get; set; }
-
-			public bool Activate()
-			{
-				return MessageBox.Show("Element " + Title + " aktivieren?", "", MessageBoxButton.YesNo) == MessageBoxResult.Yes;
-			}
-		}
-
-		public List<ActivatableElement> TestList { get; private set; }
-
 		private MediaOrderList.MediaOrderList orderList = new MediaOrderList.MediaOrderList();
 		
 		private Border previewBorder = new Border();
@@ -99,12 +87,6 @@ namespace Words
 
 		public MainWindow()
 		{
-			TestList = new List<ActivatableElement> {
-				new ActivatableElement { Title = "A" },
-				new ActivatableElement { Title = "B" },
-				new ActivatableElement { Title = "C" }
-			};
-
 			AwesomiumManager.Init();
 
 			this.InitializeComponent();	
