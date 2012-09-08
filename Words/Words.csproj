@@ -197,14 +197,14 @@
       <DependentUpon>AwesomiumWrapper.xaml</DependentUpon>
     </Compile>
     <Compile Include="MediaOrderList\ActivatableListBox.cs" />
-    <Compile Include="ImageLoader\Loaders\ExternalLoader.cs" />
-    <Compile Include="ImageLoader\Loaders\ILoader.cs" />
-    <Compile Include="ImageLoader\Loaders\LoaderFactory.cs" />
-    <Compile Include="ImageLoader\Loaders\LocalDiskLoader.cs" />
-    <Compile Include="ImageLoader\Loaders\ZipLoader.cs" />
-    <Compile Include="ImageLoader\Loader.cs" />
-    <Compile Include="ImageLoader\Manager.cs" />
-    <Compile Include="ImageLoader\Types.cs" />
+    <Compile Include="Utils\ImageLoader\Loaders\ExternalLoader.cs" />
+    <Compile Include="Utils\ImageLoader\Loaders\ILoader.cs" />
+    <Compile Include="Utils\ImageLoader\Loaders\LoaderFactory.cs" />
+    <Compile Include="Utils\ImageLoader\Loaders\LocalDiskLoader.cs" />
+    <Compile Include="Utils\ImageLoader\Loaders\ZipLoader.cs" />
+    <Compile Include="Utils\ImageLoader\Loader.cs" />
+    <Compile Include="Utils\ImageLoader\Manager.cs" />
+    <Compile Include="Utils\ImageLoader\Types.cs" />
     <Compile Include="Resources\Resource.en.Designer.cs">
       <DependentUpon>Resource.en.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -361,7 +361,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="ImageLoader\Resources.xaml">
+    <Page Include="Utils\ImageLoader\Resources.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

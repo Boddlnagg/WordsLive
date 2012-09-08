@@ -3,7 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 
-namespace Words.ImageLoader.Loaders
+namespace Words.Utils.ImageLoader.Loaders
 {
 	class ExternalLoader : ILoader
 	{

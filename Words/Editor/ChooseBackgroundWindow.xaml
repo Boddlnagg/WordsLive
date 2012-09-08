@@ -4,7 +4,7 @@
 		xmlns:local="clr-namespace:Words.Editor"
 		xmlns:ext="http://schemas.microsoft.com/winfx/2006/xaml/presentation/toolkit/extended"
 		xmlns:resx="clr-namespace:Words.Resources"
-		xmlns:imageloader="clr-namespace:Words.ImageLoader"
+		xmlns:imageloader="clr-namespace:Words.Utils.ImageLoader"
 		Title="{x:Static resx:Resource.cbTitle}"
 		MinWidth="600" MinHeight="350"
 		Height = "{Binding Source={StaticResource settings}, Path=Default.ChooseBackgroundWindowHeight, Mode=TwoWay}"

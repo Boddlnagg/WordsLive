@@ -7,9 +7,9 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
-using Words.ImageLoader.Loaders;
+using Words.Utils.ImageLoader.Loaders;
 
-namespace Words.ImageLoader
+namespace Words.Utils.ImageLoader
 {
 	internal sealed class Manager
 	{
@@ -57,7 +57,7 @@ namespace Words.ImageLoader
 
 			#region Loading Images from Resources
 			ResourceDictionary resourceDictionary = new ResourceDictionary();
-			resourceDictionary.Source = new Uri("Words;component/ImageLoader/Resources.xaml", UriKind.Relative);
+			resourceDictionary.Source = new Uri("Words;component/Utils/ImageLoader/Resources.xaml", UriKind.Relative);
 			_loadingImage = resourceDictionary["ImageLoading"] as DrawingImage;
 			_loadingImage.Freeze();
 			_errorThumbnail = resourceDictionary["ImageError"] as DrawingImage;

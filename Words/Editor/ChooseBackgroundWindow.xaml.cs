@@ -185,7 +185,7 @@ namespace Words.Editor
 	class BackgroundEntry
 	{
 		public FileInfo File { get; set; }
-		public Words.ImageLoader.DisplayOptions DisplayOptions { get; set; }
+		public Words.Utils.ImageLoader.DisplayOptions DisplayOptions { get; set; }
 		public bool IsVideo { get; set; }
 	}
 
@@ -219,11 +219,11 @@ namespace Words.Editor
 				BackgroundEntry entry = null;
 				if (allowedImageExtensions.Contains(file.Extension.ToLower()))
 				{
-					entry = new BackgroundEntry { File = file, DisplayOptions = ImageLoader.DisplayOptions.Preview, IsVideo = false };
+					entry = new BackgroundEntry { File = file, DisplayOptions = Utils.ImageLoader.DisplayOptions.Preview, IsVideo = false };
 				}
 				else if (allowedVideoExtensions.Contains(file.Extension.ToLower()))
 				{
-					entry = new BackgroundEntry { File = file, DisplayOptions = ImageLoader.DisplayOptions.VideoPreview, IsVideo = true };
+					entry = new BackgroundEntry { File = file, DisplayOptions = Utils.ImageLoader.DisplayOptions.VideoPreview, IsVideo = true };
 				}
 
 				if (entry != null)

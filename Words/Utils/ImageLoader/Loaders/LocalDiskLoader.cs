@@ -1,6 +1,6 @@
 ﻿using System.IO;
 
-namespace Words.ImageLoader.Loaders
+namespace Words.Utils.ImageLoader.Loaders
 {
 	internal class LocalDiskLoader: ILoader
 	{
