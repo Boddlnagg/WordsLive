@@ -106,7 +106,7 @@ namespace Words
 
 			if (Controller.PresentationAreaSettings.Count(s => s.IsAvailable) > 0)
 			{
-				UpdatePresentationAreaFromSettings();
+				Controller.UpdatePresentationAreaFromSettings();
 			}
 			else
 			{
@@ -508,26 +508,8 @@ namespace Words
 			if (result == true)
 			{
 				Controller.PresentationAreaSettings = win.Settings;
-				UpdatePresentationAreaFromSettings();
+				Controller.UpdatePresentationAreaFromSettings();
 			}
-		}
-
-		private void UpdatePresentationAreaFromSettings()
-		{
-			var setting = Controller.PresentationAreaSettings.First(s => s.IsAvailable);
-			Controller.PresentationManager.Area.ScreenIndex = (int)setting.ScreenIndex;
-			if (Controller.PresentationManager.Area.Fullscreen)
-			{
-				Controller.PresentationManager.Area.Size = new System.Drawing.Size(setting.Width, setting.Height);
-				Controller.PresentationManager.Area.Fullscreen = setting.Fullscreen;
-			}
-			else
-			{
-				Controller.PresentationManager.Area.Fullscreen = setting.Fullscreen;
-				Controller.PresentationManager.Area.Size = new System.Drawing.Size(setting.Width, setting.Height);
-			}
-			Controller.PresentationManager.Area.Offset = new System.Drawing.Point(setting.Left, setting.Top);
-			
 		}
 
 		public bool SongPresentationShowChords

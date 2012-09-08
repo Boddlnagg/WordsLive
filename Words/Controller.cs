@@ -12,6 +12,8 @@ using System.Configuration;
 using System.IO;
 using System.Reflection;
 using Words.Resources;
+using Microsoft.Win32;
+using System.Threading;
 
 namespace Words
 {
@@ -40,6 +42,7 @@ namespace Words
 		{
 			Application.Current.DispatcherUnhandledException += DispatcherUnhandledException;
 			window = (MainWindow)Application.Current.MainWindow;
+			SystemEvents.DisplaySettingsChanged += DisplaySettingsChanged;
 
 			LoadAttributes(Assembly.GetAssembly(typeof(Media))); // Words.Core.dll
 			LoadAttributes(Assembly.GetExecutingAssembly()); // Words.exe
@@ -51,6 +54,17 @@ namespace Words
 			InitDataDirectories();
 
 			Words.Utils.ImageLoader.Manager.Instance.LoadingImage = new System.Windows.Media.Imaging.BitmapImage(new Uri("/Words;component/Artwork/LoadingAnimation.png", UriKind.Relative));
+		}
+
+		void DisplaySettingsChanged(object sender, EventArgs e)
+		{
+			// TODO: is there a better way then starting a new thread?
+			// (we need to wait some time before updating, for else Windows will resize/move the windows again)
+			new Thread((ThreadStart) delegate
+			{
+				Thread.Sleep(1000);
+				this.window.Dispatcher.BeginInvoke(new Action(() => UpdatePresentationAreaFromSettings()));
+			}).Start();
 		}
 
 		private void DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
@@ -248,6 +262,18 @@ namespace Words
 		internal static void Initialize()
 		{
 			instance.Init();
+		}
+
+		internal static void UpdatePresentationAreaFromSettings()
+		{
+			var setting = Controller.PresentationAreaSettings.First(s => s.IsAvailable);
+			Controller.PresentationManager.Area.BeginModify();
+			Controller.PresentationManager.Area.ScreenIndex = (int)setting.ScreenIndex;
+			Controller.PresentationManager.Area.Size = new System.Drawing.Size(setting.Width, setting.Height);
+			Controller.PresentationManager.Area.Fullscreen = setting.Fullscreen;
+			Controller.PresentationManager.Area.Offset = new System.Drawing.Point(setting.Left, setting.Top);
+			Controller.PresentationManager.Area.EndModify();
+
 		}
 
 		internal static void Shutdown()

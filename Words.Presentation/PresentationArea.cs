@@ -12,10 +12,12 @@ namespace Words.Presentation
 		/// </summary>
 		public PresentationArea()
 		{
+			this.BeginModify();
 			this.Screen = Screen.AllScreens[0];
 			this.Size = new Size(800,600);
 			this.Offset = new Point(0, 0);
 			this.Fullscreen = true;
+			this.EndModify();
 		}
 		
 		/// <summary>
@@ -55,16 +57,8 @@ namespace Words.Presentation
 			}
 			set
 			{
-				bool sizeChanged = false;
-				if(Fullscreen && screen.Bounds.Size != value.Bounds.Size)
-					sizeChanged = true;
-				
+				CheckCanModify();
 				screen = value;
-				
-				this.OnWindowLocationChanged();
-				
-				if(sizeChanged)
-					this.OnWindowSizeChanged();
 			}
 		}
 
@@ -114,6 +108,8 @@ namespace Words.Presentation
 			}
 			set
 			{
+				CheckCanModify();
+
 				if(value.X > this.Screen.Bounds.Width - 10 ||
 				   value.Y > this.Screen.Bounds.Height - 10 ||
 				   value.X < -this.Size.Width + 10 ||
@@ -121,9 +117,6 @@ namespace Words.Presentation
 					throw new ArgumentException("New offset is outside of screen");
 				
 				offset = value;
-				
-				if(!this.Fullscreen)
-					OnWindowLocationChanged();
 			}
 		}
 		
@@ -170,12 +163,10 @@ namespace Words.Presentation
 			}
 			set
 			{
+				CheckCanModify();
 				if(value.Height < 10 || value.Width < 10)
 					throw new ArgumentException("Size must be at least 10x10");
 				size = value;
-				
-				if(!this.Fullscreen)
-					OnWindowSizeChanged();
 			}
 		}
 		
@@ -222,25 +213,8 @@ namespace Words.Presentation
 			}
 			set
 			{
-				if (fullscreen != value)
-				{
-					fullscreen = value;
-					
-					if (fullscreen)
-					{
-						if (Offset.X != 0 || Offset.Y != 0)
-							OnWindowLocationChanged();
-						
-						OnWindowSizeChanged();
-					}
-					else
-					{
-						OnWindowSizeChanged();
-						
-						if (Offset.X != 0 || Offset.Y != 0)
-							OnWindowLocationChanged();
-					}
-				}
+				CheckCanModify();
+				fullscreen = value;
 			}
 		}
 		
@@ -270,6 +244,34 @@ namespace Words.Presentation
 				else
 					return new Point(this.Screen.Bounds.Location.X + this.Offset.X, this.Screen.Bounds.Location.Y + this.Offset.Y);
 			}
+		}
+
+		private bool isModifying = false;
+
+		/// <summary>
+		/// Begins a modification of the location or size of this PresentationArea.
+		/// Call this before any change to another property.
+		/// </summary>
+		public void BeginModify()
+		{
+			isModifying = true;
+		}
+
+		/// <summary>
+		/// Ends a modification of the location or size of this PresentationArea.
+		/// Only when this is called, the changes are actually adopted.
+		/// </summary>
+		public void EndModify()
+		{
+			isModifying = false;
+			OnWindowSizeChanged();
+			OnWindowLocationChanged();
+		}
+
+		private void CheckCanModify()
+		{
+			if (!isModifying)
+				throw new InvalidOperationException("Must call BeginModify() before changing this area.");
 		}
 	}
 }
