@@ -13,7 +13,6 @@ namespace Words
 	 * - PDF support via pdf.js?
 	 * - XPS support?
 	 * - automatically recognize second monitor
-	 * - smoothen change/reload of song (is black for a short moment)
 	 * - ChooseBackgroundWindow: reduce RAM usage, make loading faster, support videos (TEST)
 	 * - sometimes AwesomiumProcess is used instead of Words.Awesomium.exe
 	 * - Shortcuts in the menu are shown as "Ctrl" instead of "Strg" in German language

@@ -41,7 +41,9 @@ namespace Words.Songs
 					if (width > -1)
 						img.DecodePixelWidth = width;
 					img.EndInit();
-					return img;
+					WriteableBitmap writable = new WriteableBitmap(img);
+					writable.Freeze();
+					return writable;
 				}
 				catch
 				{

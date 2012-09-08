@@ -156,8 +156,6 @@ namespace Words.Songs
 
 			var slide = FindSlideByIndex(index);
 
-			//controller.GotoSlide(song, slide, showSource, showCopyright, /*update ? 0 : Properties.Settings.Default.SongSlideTransition*/ 0, update);
-			//controller.UpdateSlideWithCallback(song, slide, showSource, showCopyright, UpdateForeground);
 			controller.UpdateSlide(song, slide, false);
 			controller.ShowSource(showSource);
 			controller.ShowCopyright(showCopyright);
@@ -184,8 +182,11 @@ namespace Words.Songs
 				frontImage.Source = nextBackground;
 				nextBackground = null;
 			}
-			storyboard.Children[0].Duration = new TimeSpan(0, 0, 0, 0, Properties.Settings.Default.SongSlideTransition);
-			storyboard.Begin(this.Control.BackgroundGrid);
+			if (backImage.Source != null)
+			{
+				storyboard.Children[0].Duration = new TimeSpan(0, 0, 0, 0, Properties.Settings.Default.SongSlideTransition);
+				storyboard.Begin(this.Control.BackgroundGrid);
+			}
 		}
 
 		private SongSlide FindSlideByIndex(int index)
