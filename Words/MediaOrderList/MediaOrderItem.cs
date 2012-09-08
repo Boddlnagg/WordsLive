@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Windows.Media;
 using Words.Core;
+using Words.Utils.ActivatableListBox;
 
 namespace Words.MediaOrderList
 {

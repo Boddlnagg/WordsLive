@@ -14,8 +14,8 @@ using Words.MediaOrderList;
 using Words.Presentation;
 using Words.Resources;
 using Words.Songs;
-using System.Collections.ObjectModel;
 using Words.Utils;
+using Words.Utils.ActivatableListBox;
 
 namespace Words
 {
@@ -93,7 +93,7 @@ namespace Words
 
 			this.DataContext = this;
 
-			DependencyPropertyDescriptor activeItemDescriptor = DependencyPropertyDescriptor.FromProperty(ActivatableListBox.ActiveItemProperty, typeof(ListBox));
+			DependencyPropertyDescriptor activeItemDescriptor = DependencyPropertyDescriptor.FromProperty(Words.Utils.ActivatableListBox.Activator.ActiveItemProperty, typeof(ListBox));
 
 			if (activeItemDescriptor != null)
 			{

@@ -4,7 +4,7 @@
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	mc:Ignorable="d"
-	xmlns:mediaOrderList="clr-namespace:Words.MediaOrderList"
+	xmlns:alb="clr-namespace:Words.Utils.ActivatableListBox"
 	xmlns:local="clr-namespace:Words"
 	xmlns:resx="clr-namespace:Words.Resources"
 	x:Class="Words.MainWindow"
@@ -175,7 +175,7 @@
 			<ListBox x:Name="OrderListBox"
 					 AllowDrop="True"
 					 ScrollViewer.CanContentScroll="False"
-					 mediaOrderList:ActivatableListBox.IsActivatable="True" 
+					 alb:Activator.IsActivatable="True" 
 					 Margin="0,26,0,0" BorderThickness="0" 
 					 ItemsSource="{Binding}"
 					 PreviewMouseMove="OrderListBox_PreviewMouseMove"
@@ -194,7 +194,7 @@
 							</Setter.Value>
 						</Setter>
 						<Style.Triggers>
-							<DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type ListBoxItem}}, Path=(mediaOrderList:ActivatableListBox.IsActive), Mode=OneWay}" Value="True">
+							<DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type ListBoxItem}}, Path=(alb:Activator.IsActive), Mode=OneWay}" Value="True">
 								<Setter Property="FontWeight">
 									<Setter.Value>
 										<FontWeight>Bold</FontWeight>
@@ -218,7 +218,7 @@
 					</DataTemplate>
 				</ListBox.ItemTemplate>
 			</ListBox>
-			<TextBlock x:Name="ContentHeader" Padding="5" VerticalAlignment="Top" Text="{Binding ElementName=OrderListBox,Path=(mediaOrderList:ActivatableListBox.ActiveItem).Title}" Margin="0" Grid.Column="2" Background="{StaticResource HeaderGradientBrush}" Height="26"/>
+			<TextBlock x:Name="ContentHeader" Padding="5" VerticalAlignment="Top" Text="{Binding ElementName=OrderListBox,Path=(alb:Activator.ActiveItem).Title}" Margin="0" Grid.Column="2" Background="{StaticResource HeaderGradientBrush}" Height="26"/>
 			<TextBlock Padding="5" Text="{x:Static resx:Resource.vPanelPreview}" Grid.Row="2" Margin="0" Background="{StaticResource HeaderGradientBrush}" Height="26" VerticalAlignment="Top"/>
 			<Viewbox Margin="6,32,6,6" Grid.Row="2" x:Name="PreviewBox"/>
 			<GridSplitter HorizontalAlignment="Stretch" Grid.Row="1" VerticalAlignment="Stretch" Height="5" Background="#FFF0F0F0" BorderBrush="#FFE3E3E3" BorderThickness="0,1" Grid.ColumnSpan="2"/>

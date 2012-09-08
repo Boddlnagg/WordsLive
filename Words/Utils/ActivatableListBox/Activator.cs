@@ -7,9 +7,9 @@ using System.ComponentModel;
 using System.Collections.Specialized;
 using System.Collections;
 
-namespace Words.MediaOrderList
+namespace Words.Utils.ActivatableListBox
 {
-	public static class ActivatableListBox
+	public static class Activator
 	{
 		[AttachedPropertyBrowsableForType(typeof(ListBox))]
 		public static bool GetIsActivatable(ListBox obj)
@@ -23,7 +23,7 @@ namespace Words.MediaOrderList
 		}
 
 		public static readonly DependencyProperty IsActivatableProperty =
-			DependencyProperty.RegisterAttached("IsActivatable", typeof(bool), typeof(ActivatableListBox), new UIPropertyMetadata(false, OnIsActivatableChanged));
+			DependencyProperty.RegisterAttached("IsActivatable", typeof(bool), typeof(Activator), new UIPropertyMetadata(false, OnIsActivatableChanged));
 
 		private static void OnIsActivatableChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
 		{
@@ -149,7 +149,7 @@ namespace Words.MediaOrderList
 		}
 
 		public static readonly DependencyProperty ActiveItemProperty =
-			DependencyProperty.RegisterAttached("ActiveItem", typeof(IActivatable), typeof(ActivatableListBox), new UIPropertyMetadata(null, OnActiveItemChanged));
+			DependencyProperty.RegisterAttached("ActiveItem", typeof(IActivatable), typeof(Activator), new UIPropertyMetadata(null, OnActiveItemChanged));
 
 		private static void OnActiveItemChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
 		{
@@ -166,7 +166,7 @@ namespace Words.MediaOrderList
 		}
 
 		public static readonly DependencyPropertyKey ActiveIndexPropertyKey =
-			DependencyProperty.RegisterAttachedReadOnly("ActiveIndex", typeof(int), typeof(ActivatableListBox), new UIPropertyMetadata(-1));
+			DependencyProperty.RegisterAttachedReadOnly("ActiveIndex", typeof(int), typeof(Activator), new UIPropertyMetadata(-1));
 
 		public static readonly DependencyProperty ActiveIndexProperty =
 			ActiveIndexPropertyKey.DependencyProperty;
@@ -178,7 +178,7 @@ namespace Words.MediaOrderList
 		}
 
 		public static readonly DependencyPropertyKey IsActivePropertyKey =
-			DependencyProperty.RegisterAttachedReadOnly("IsActive", typeof(bool), typeof(ActivatableListBox), new UIPropertyMetadata(false));
+			DependencyProperty.RegisterAttachedReadOnly("IsActive", typeof(bool), typeof(Activator), new UIPropertyMetadata(false));
 
 		public static readonly DependencyProperty IsActiveProperty =
 			IsActivePropertyKey.DependencyProperty;

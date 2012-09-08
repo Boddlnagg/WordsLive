@@ -196,7 +196,7 @@
     <Compile Include="AwesomiumWrapper.xaml.cs">
       <DependentUpon>AwesomiumWrapper.xaml</DependentUpon>
     </Compile>
-    <Compile Include="MediaOrderList\ActivatableListBox.cs" />
+    <Compile Include="Utils\ActivatableListBox\Activator.cs" />
     <Compile Include="Utils\ImageLoader\Loaders\ExternalLoader.cs" />
     <Compile Include="Utils\ImageLoader\Loaders\ILoader.cs" />
     <Compile Include="Utils\ImageLoader\Loaders\LoaderFactory.cs" />
@@ -262,7 +262,7 @@
     <Compile Include="MediaOrderList\IconProvider.cs" />
     <Compile Include="MediaOrderList\IconProviderManager.cs" />
     <Compile Include="MediaOrderList\MediaOrderItem.cs" />
-    <Compile Include="MediaOrderList\IActivatable.cs" />
+    <Compile Include="Utils\ActivatableListBox\IActivatable.cs" />
     <Compile Include="MediaOrderList\MediaOrderList.cs" />
     <Compile Include="PresentationAreaSetting.cs" />
     <Compile Include="PresentationAreaSettingsWindow.xaml.cs">
