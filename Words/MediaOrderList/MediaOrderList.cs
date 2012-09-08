@@ -11,8 +11,52 @@ namespace Words.MediaOrderList
 		public Media Media { get; set; }
 	}
 
-	public class MediaOrderList : BindingList<MediaOrderItem>
+	public class MediaOrderList : BindingList<MediaOrderItem>, INotifyPropertyChanged
 	{
+		private MediaOrderItem activeItem;
+
+		public MediaOrderItem ActiveItem
+		{
+			get
+			{
+				return activeItem;
+			}
+			set
+			{
+				activeItem = value;
+				OnPropertyChanged("ActiveItem");
+				OnPropertyChanged("ActiveMedia");
+				OnActiveItemChanged();
+			}
+		}
+
+		public Media ActiveMedia
+		{
+			get
+			{
+				if (ActiveItem == null)
+					return null;
+				else
+					return ActiveItem.Data;
+			}
+		}
+
+		public event PropertyChangedEventHandler PropertyChanged;
+
+		public void OnPropertyChanged(string propertyName)
+		{
+			if (PropertyChanged != null)
+				PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+		}
+
+		public event EventHandler ActiveItemChanged;
+
+		public void OnActiveItemChanged()
+		{
+			if (ActiveItemChanged != null)
+				ActiveItemChanged(this, EventArgs.Empty);
+		}
+
 		public void Add(Media media)
 		{
 			this.Add(CreateItem(media));

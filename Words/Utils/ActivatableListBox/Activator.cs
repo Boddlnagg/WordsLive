@@ -149,7 +149,7 @@ namespace Words.Utils.ActivatableListBox
 		}
 
 		public static readonly DependencyProperty ActiveItemProperty =
-			DependencyProperty.RegisterAttached("ActiveItem", typeof(IActivatable), typeof(Activator), new UIPropertyMetadata(null, OnActiveItemChanged));
+			DependencyProperty.RegisterAttached("ActiveItem", typeof(IActivatable), typeof(Activator), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnActiveItemChanged));
 
 		private static void OnActiveItemChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
 		{

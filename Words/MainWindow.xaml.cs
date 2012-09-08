@@ -15,7 +15,6 @@ using Words.Presentation;
 using Words.Resources;
 using Words.Songs;
 using Words.Utils;
-using Words.Utils.ActivatableListBox;
 
 namespace Words
 {
@@ -78,10 +77,7 @@ namespace Words
 		{
 			get
 			{
-				if (OrderListBox.GetActiveItem() == null)
-					return null;
-				else
-					return (OrderListBox.GetActiveItem() as MediaOrderItem).Data;
+				return orderList.ActiveMedia;
 			}
 		}
 
@@ -93,12 +89,7 @@ namespace Words
 
 			this.DataContext = this;
 
-			DependencyPropertyDescriptor activeItemDescriptor = DependencyPropertyDescriptor.FromProperty(Words.Utils.ActivatableListBox.Activator.ActiveItemProperty, typeof(ListBox));
-
-			if (activeItemDescriptor != null)
-			{
-				activeItemDescriptor.AddValueChanged(this.OrderListBox, OrderListBox_ActiveItemChanged);
-			}
+			orderList.ActiveItemChanged += orderList_ActiveItemChanged;
 
 			this.OrderListBox.DataContext = orderList;
 			this.orderList.ListChanged += (sender, args) => { portfolioChanged = true; };
@@ -170,7 +161,7 @@ namespace Words
 			Controller.Shutdown();
 		}
 
-		private void OrderListBox_ActiveItemChanged(object sender, EventArgs e)
+		private void orderList_ActiveItemChanged(object sender, EventArgs e)
 		{
 			if (ActiveMedia == null)
 			{
@@ -251,7 +242,7 @@ namespace Words
 			if (ActiveMedia == null)
 				return;
 
-			var m = OrderListBox.GetActiveItem() as MediaOrderItem;
+			var m = orderList.ActiveItem;
 
 			if (CurrentPanel != null && CurrentPanel.IsUpdatable && File.Exists(m.Path))
 			{
@@ -274,7 +265,7 @@ namespace Words
 				// needed to restore selected index
 				int selected = OrderListBox.SelectedIndex;
 
-				OrderListBox.SetActiveItem(orderList.Replace(OrderListBox.GetActiveItem() as MediaOrderItem, newData));
+				orderList.ActiveItem = orderList.Replace(orderList.ActiveItem, newData);
 				if (OrderListBox.SelectedIndex != selected)
 					OrderListBox.SelectedIndex = selected;
 			}
@@ -403,7 +394,7 @@ namespace Words
 			var media = MediaManager.LoadMediaMetadata(file);
 			if (ActiveMedia != null)
 			{
-				int index = orderList.IndexOf((MediaOrderItem)OrderListBox.GetActiveItem());
+				int index = orderList.IndexOf(orderList.ActiveItem);
 				orderList.Insert(index + 1, media);
 			}
 			else
@@ -622,7 +613,7 @@ namespace Words
 		private void OrderListBox_OnExecuteCommand(object sender, ExecutedRoutedEventArgs e)
 		{
 			var selected = this.OrderListBox.SelectedItems.Cast<MediaOrderItem>();
-			bool activeSelected = selected.Any() && (selected.Count((item) => item == OrderListBox.GetActiveItem()) != 0);
+			bool activeSelected = selected.Any() && (selected.Count((item) => item == orderList.ActiveItem) != 0);
 			MediaOrderItem boundaryItem;
 
 			if (e.Command == CustomCommands.MoveUp)
