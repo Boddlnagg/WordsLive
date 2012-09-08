@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using Ionic.Zip;
 
-namespace Words.PhotoLoader.ImageLoaders
+namespace Words.ImageLoader.Loaders
 {
 	internal class ZipLoader: ILoader
 	{

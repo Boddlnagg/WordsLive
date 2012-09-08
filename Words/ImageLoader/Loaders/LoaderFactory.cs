@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Words.PhotoLoader.ImageLoaders
+namespace Words.ImageLoader.Loaders
 {
 	internal static class LoaderFactory
 	{

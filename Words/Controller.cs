@@ -50,7 +50,7 @@ namespace Words
 
 			InitDataDirectories();
 
-			Words.PhotoLoader.Manager.Instance.LoadingImage = new System.Windows.Media.Imaging.BitmapImage(new Uri("/Words;component/Artwork/LoadingAnimation.png", UriKind.Relative));
+			Words.ImageLoader.Manager.Instance.LoadingImage = new System.Windows.Media.Imaging.BitmapImage(new Uri("/Words;component/Artwork/LoadingAnimation.png", UriKind.Relative));
 		}
 
 		private void DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
