@@ -755,10 +755,19 @@ namespace Words
 			}
 		}
 
-		void OrderListBoxItem_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+		private void OrderListBox_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
 		{
-			oldIndex = OrderListBox.GetCurrentIndex(e.GetPosition);
-			startPoint = e.GetPosition(null);
+			Point p = e.GetPosition(OrderListBox);
+			var item = (ListBoxItem)(OrderListBox.InputHitTest(p) as DependencyObject).VisualUpwardSearch<ListBoxItem>();
+			if (item != null)
+			{
+				startPoint = p;
+				oldIndex = OrderListBox.GetCurrentIndex(e.GetPosition);
+			}
+			else
+			{
+				oldIndex = -1;
+			}
 		}
 	}
 }
