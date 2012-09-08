@@ -239,14 +239,14 @@
 				<Button Style="{StaticResource markDisabledToolbarButton}" CommandTarget="{Binding ElementName=OrderListBox}" Command="Delete" HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="0,2" DockPanel.Dock="Right" Focusable="False">
 					<Image Width="16" Height="16" Source="/Words;component/Artwork/Small_Delete.png" />
 				</Button>
-				<Button Style="{StaticResource markDisabledToolbarButton}" Command="{x:Static local:CustomCommands.AddMedia}" HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="0,2" DockPanel.Dock="Right" Focusable="False">
-					<Image Width="16" Height="16" Source="/Words;component/Artwork/Small_Plus.png" />
-				</Button>
 				<Button Style="{StaticResource markDisabledToolbarButton}" CommandTarget="{Binding ElementName=OrderListBox}" Command="{x:Static local:CustomCommands.MoveDown}" HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="0,2" DockPanel.Dock="Right" Focusable="False">
 					<Image Width="16" Height="16" Source="/Words;component/Artwork/Small_DownArrow.png" />
 				</Button>
 				<Button Style="{StaticResource markDisabledToolbarButton}" CommandTarget="{Binding ElementName=OrderListBox}" Command="{x:Static local:CustomCommands.MoveUp}" HorizontalAlignment="Left" VerticalAlignment="Stretch" DockPanel.Dock="Right" Margin="0,2" Focusable="False">
 					<Image Width="16" Height="16" Source="/Words;component/Artwork/Small_UpArrow.png" />
+				</Button>
+				<Button Style="{StaticResource markDisabledToolbarButton}" Command="{x:Static local:CustomCommands.AddMedia}" HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="0,2" DockPanel.Dock="Right" Focusable="False">
+					<Image Width="16" Height="16" Source="/Words;component/Artwork/Small_Plus.png" />
 				</Button>
 			</DockPanel>
 			<Grid Grid.Column="2" Grid.RowSpan="3" Margin="0,26,0,0" VerticalAlignment="Stretch">
