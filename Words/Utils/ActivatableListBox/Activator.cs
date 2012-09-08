@@ -72,11 +72,16 @@ namespace Words.Utils.ActivatableListBox
 
 		private static void ActivatableListBox_CollectionChanged(ListBox listBox, object sender, NotifyCollectionChangedEventArgs e)
 		{
+			// TODO: This is untested (binding to an ObservableCollection<T>)
 			if (e.Action == NotifyCollectionChangedAction.Remove)
 			{
-				// TODO: This is untested
 				var list = sender as INotifyCollectionChanged;
 				if (e.OldItems.Contains(GetActiveItem(listBox)))
+					SetActiveItem(listBox, null);
+			}
+			else if (e.Action == NotifyCollectionChangedAction.Reset)
+			{
+				if (!listBox.Items.Contains(GetActiveItem(listBox)))
 					SetActiveItem(listBox, null);
 			}
 
@@ -92,6 +97,11 @@ namespace Words.Utils.ActivatableListBox
 				{
 					SetActiveItem(listBox, null);
 				}
+			}
+			else if (e.ListChangedType == ListChangedType.Reset)
+			{
+				if (!listBox.Items.Contains(GetActiveItem(listBox)))
+					SetActiveItem(listBox, null);
 			}
 
 			UpdateActivatedIndex(listBox, listBox.GetActiveItem());
