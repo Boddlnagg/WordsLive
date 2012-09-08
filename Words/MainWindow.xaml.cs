@@ -671,13 +671,8 @@ namespace Words
 		{
 			if (e.LeftButton == MouseButtonState.Pressed && oldIndex >= 0)
 			{
-				Point position = e.GetPosition(null);
-				if (Math.Abs(position.X - startPoint.X) >
-						SystemParameters.MinimumHorizontalDragDistance ||
-					Math.Abs(position.Y - startPoint.Y) >
-						SystemParameters.MinimumVerticalDragDistance)
+				if(e.GetPosition(OrderListBox).ExceedsMinimumDragDistance(startPoint))
 				{
-
 					OrderListBox.SelectedIndex = oldIndex;
 					var selectedItem = orderList[oldIndex] as MediaOrderItem;
 
@@ -698,7 +693,7 @@ namespace Words
 
 		void OrderListBox_Drop(object sender, DragEventArgs e)
 		{
-			int index = OrderListBox.GetCurrentIndex(e.GetPosition);
+			int index = OrderListBox.GetIndexAtPosition(e.GetPosition(OrderListBox));
 
 			// Data comes from list itself
 			if (e.Data.GetData(typeof(MediaOrderItem)) != null)
@@ -758,16 +753,9 @@ namespace Words
 		private void OrderListBox_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
 		{
 			Point p = e.GetPosition(OrderListBox);
-			var item = (ListBoxItem)(OrderListBox.InputHitTest(p) as DependencyObject).VisualUpwardSearch<ListBoxItem>();
-			if (item != null)
-			{
+			oldIndex = OrderListBox.GetIndexAtPosition(p);
+			if (oldIndex >= 0)
 				startPoint = p;
-				oldIndex = OrderListBox.GetCurrentIndex(e.GetPosition);
-			}
-			else
-			{
-				oldIndex = -1;
-			}
 		}
 	}
 }

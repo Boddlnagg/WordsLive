@@ -116,7 +116,7 @@ namespace Words.Utils.ActivatableListBox
 				if (first != null)
 				{
 					// find parent ListBox from first container
-					var listBox = (ListBox)first.VisualUpwardSearch<ListBox>();
+					var listBox = first.FindVisualParent<ListBox>();
 					var value = listBox.GetActiveItem();
 					UpdateActivatedItem(listBox, value);
 				}
@@ -130,13 +130,13 @@ namespace Words.Utils.ActivatableListBox
 				// get ListBoxItem at mouse position
 				var listBox = sender as ListBox;
 				var element = listBox.InputHitTest(e.GetPosition(listBox)) as DependencyObject;
-				var listBoxItem = element.VisualUpwardSearch<ListBoxItem>();
+				var listBoxItem = element.FindVisualParent<ListBoxItem, ListBox>();
 				if (listBoxItem != null)
 				{
 					var content = listBoxItem.GetValue(ListBoxItem.ContentProperty) as IActivatable;
 					if (content != null)
 					{
-						if (content.Activate())
+						if (GetActiveItem(listBox) != content && content.Activate())
 						{
 							SetActiveItem(listBox, content);
 						}

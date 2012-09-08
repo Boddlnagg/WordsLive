@@ -160,7 +160,7 @@ namespace Words.Editor
 
 		private void OrderListBox_Drop(object sender, DragEventArgs e)
 		{
-			int index = OrderListBox.GetCurrentIndex(e.GetPosition);
+			int index = OrderListBox.GetIndexAtPosition(e.GetPosition(OrderListBox));
 
 			// Data comes from list itself
 			if (e.Data.GetData(typeof(SongPartWrapper)) is SongPartWrapper)
@@ -210,11 +210,7 @@ namespace Words.Editor
 			if (oldIndex < 0)
 				return;
 
-			Point position = e.GetPosition(null);
-			if (Math.Abs(position.X - startPoint.X) >
-					SystemParameters.MinimumHorizontalDragDistance ||
-				Math.Abs(position.Y - startPoint.Y) >
-					SystemParameters.MinimumVerticalDragDistance)
+			if (e.GetPosition(OrderListBox).ExceedsMinimumDragDistance(startPoint))
 			{
 
 				OrderListBox.SelectedIndex = oldIndex;
@@ -236,12 +232,10 @@ namespace Words.Editor
 
 		private void OrderListBox_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
 		{
-			// HACK: is there a better solution than this?
-			if (e.OriginalSource is TextBlock || e.OriginalSource is Image || e.OriginalSource is Border || e.OriginalSource is ScrollViewer)
-			{
-				startPoint = e.GetPosition(null);
-				oldIndex = OrderListBox.GetCurrentIndex(e.GetPosition);
-			}
+			Point p = e.GetPosition(OrderListBox);
+			oldIndex = OrderListBox.GetIndexAtPosition(p);
+			if (oldIndex >= 0)
+				startPoint = p;
 		}
 
 		private void StructureTree_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -259,11 +253,7 @@ namespace Words.Editor
 		{
 			if (e.LeftButton == MouseButtonState.Pressed && canDrag)
 			{
-				Point position = e.GetPosition(null);
-				if (Math.Abs(position.X - startPoint.X) >
-						SystemParameters.MinimumHorizontalDragDistance ||
-					Math.Abs(position.Y - startPoint.Y) >
-						SystemParameters.MinimumVerticalDragDistance)
+				if (e.GetPosition(null).ExceedsMinimumDragDistance(startPoint))
 				{
 					if (StructureTree.SelectedItem is SongNodePart)
 					{
@@ -281,7 +271,7 @@ namespace Words.Editor
 		{
 			if (e.Data.GetData(typeof(SongNodeSlide)) != null)
 			{
-				var item = StructureTree.GetItemAtLocation<TreeViewItem>(e.GetPosition(StructureTree));
+				var item = StructureTree.GetItemAtPosition(e.GetPosition(StructureTree));
 				if (item != null && (item.Header is SongNodeSlide || item.Header is SongNodePart))
 				{
 					if (e.KeyStates.HasFlag(DragDropKeyStates.ControlKey))
@@ -298,7 +288,7 @@ namespace Words.Editor
 			}
 			else if (e.Data.GetData(typeof(SongNodePart)) != null)
 			{
-				var item = StructureTree.GetItemAtLocation<TreeViewItem>(e.GetPosition(StructureTree));
+				var item = StructureTree.GetItemAtPosition(e.GetPosition(StructureTree));
 				if (item != null && (item.Header is SongNodePart || item.Header is SongNodeSlide))
 				{
 					if (e.KeyStates.HasFlag(DragDropKeyStates.ControlKey))
@@ -319,7 +309,7 @@ namespace Words.Editor
 		{
 			if (e.Data.GetData(typeof(SongNodeSlide)) != null)
 			{
-				SongNode targetNode = StructureTree.GetItemAtLocation<TreeViewItem>(e.GetPosition(StructureTree)).Header as SongNode;
+				SongNode targetNode = StructureTree.GetItemAtPosition(e.GetPosition(StructureTree)).Header as SongNode;
 				SongNodeSlide dragNode = e.Data.GetData(typeof(SongNodeSlide)) as SongNodeSlide;
 
 				if (e.KeyStates.HasFlag(DragDropKeyStates.ControlKey)) // copy
@@ -351,7 +341,7 @@ namespace Words.Editor
 			}
 			else if (e.Data.GetData(typeof(SongNodePart)) != null)
 			{
-				SongNode targetNode = StructureTree.GetItemAtLocation<TreeViewItem>(e.GetPosition(StructureTree)).Header as SongNode;
+				SongNode targetNode = StructureTree.GetItemAtPosition(e.GetPosition(StructureTree)).Header as SongNode;
 				SongNodePart dragNode = e.Data.GetData(typeof(SongNodePart)) as SongNodePart;
 				SongNodePart targetPart;
 				if (targetNode is SongNodeSlide)
@@ -471,7 +461,7 @@ namespace Words.Editor
 		private void TreeViewItem_PreviewMouseRightButtonDown(object sender, MouseEventArgs e)
 		{
 			// Select item when right-clicked
-			TreeViewItem item = (e.OriginalSource as DependencyObject).VisualUpwardSearch<TreeViewItem>() as TreeViewItem;
+			TreeViewItem item = (e.OriginalSource as DependencyObject).FindVisualParent<TreeViewItem, TreeView>();
 
 			if (item != null)
 			{
@@ -603,7 +593,7 @@ namespace Words.Editor
 		{
 			// HACK
 			Expander exp = (Expander)sender;
-			Grid g = (Grid)exp.VisualUpwardSearch<Grid>();
+			Grid g = exp.FindVisualParent<Grid>();
 			if (exp.IsExpanded)
 			{
 				g.ColumnDefinitions[0].Width = new GridLength(1, GridUnitType.Star);

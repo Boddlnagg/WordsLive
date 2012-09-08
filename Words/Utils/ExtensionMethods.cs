@@ -90,12 +90,23 @@ namespace Words.Utils
 			return false;
 		}
 
-		public static DependencyObject VisualUpwardSearch<T>(this DependencyObject source)
+		public static T FindVisualParent<T>(this DependencyObject source) where T : DependencyObject
 		{
 			while (source != null && source.GetType() != typeof(T))
 				source = VisualTreeHelper.GetParent(source);
 
-			return source;
+			return (T)source;
+		}
+
+		public static T FindVisualParent<T, TLimit>(this DependencyObject source) where T : DependencyObject
+		{
+			while (source != null && source.GetType() != typeof(T) && source.GetType() != typeof(TLimit))
+				source = VisualTreeHelper.GetParent(source);
+
+			if (source.GetType() != typeof(T))
+				return null;
+			else
+				return (T)source;
 		}
 
 		public static T FindVisualChild<T>(this DependencyObject source, int index = 0) where T : DependencyObject
@@ -123,47 +134,33 @@ namespace Words.Utils
 			return null;
 		}
 
-		public static int GetCurrentIndex(this ListBox listBox, GetPositionDelegate getPosition)
+		public static int GetIndexAtPosition(this ListBox listBox, Point relativePosition)
 		{
-			int index = -1;
-			for (int i = listBox.Items.Count - 1; i >= 0; i--)
+			var item = (listBox.InputHitTest(relativePosition) as DependencyObject).FindVisualParent<ListBoxItem, ListBox>();
+			if (item != null)
 			{
-				ListBoxItem item = GetListBoxItem(listBox, i);
-				if (item != null && IsMouseOverTarget(item, getPosition))
-				{
-					index = i;
-					break;
-				}
+				return listBox.ItemContainerGenerator.IndexFromContainer(item);
 			}
-			return index;
+			else
+			{
+				return -1;
+			}
 		}
 
-		private  static ListBoxItem GetListBoxItem(this ListBox listBox, int index)
+		public static TreeViewItem GetItemAtPosition(this TreeView treeView, Point relativePosition)
 		{
-			if (listBox.ItemContainerGenerator.Status != GeneratorStatus.ContainersGenerated)
-				return null;
-
-			return listBox.ItemContainerGenerator.ContainerFromIndex(index) as ListBoxItem;
+			return (treeView.InputHitTest(relativePosition) as DependencyObject).FindVisualParent<TreeViewItem, TreeView>();
 		}
 
-		private static bool IsMouseOverTarget(this Visual target, GetPositionDelegate getPosition)
+		public static bool ExceedsMinimumDragDistance(this Point point, Point other)
 		{
-			Rect bounds = VisualTreeHelper.GetDescendantBounds(target);
-			Point mousePos = getPosition((IInputElement)target);
-			return bounds.Contains(mousePos);
+			return (Math.Abs(point.X - other.X) > SystemParameters.MinimumHorizontalDragDistance || 
+				Math.Abs(point.Y - other.Y) > SystemParameters.MinimumVerticalDragDistance);
 		}
-
-		public delegate Point GetPositionDelegate(IInputElement element);
 
 		public static bool ContainsIgnoreCase(this string str, string value)
 		{
 			return str.IndexOf(value, StringComparison.OrdinalIgnoreCase) >= 0;
-		}
-
-		public static T GetItemAtLocation<T>(this UIElement visual, Point location) where T : DependencyObject
-		{
-			DependencyObject obj = visual.InputHitTest(location) as DependencyObject;
-			return (T)obj.VisualUpwardSearch<T>();
 		}
 		
 		public static void CreateRecursive(this DirectoryInfo dirInfo)
