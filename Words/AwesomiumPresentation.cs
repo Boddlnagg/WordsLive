@@ -74,6 +74,7 @@ namespace Words
 		public override void Close()
 		{
 			base.Close();
+			this.Control.Close();
 			if (win != null)
 			{
 				win.Dispatcher.Invoke(new Action(() => win.Close()));

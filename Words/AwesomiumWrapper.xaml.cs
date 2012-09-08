@@ -17,6 +17,7 @@ namespace Words
 	{
 		private WebView webView;
 		private WebControl webControl;
+		private PresentationArea area;
 
 		private Image frontImage;
 		private Image backImage;
@@ -43,6 +44,8 @@ namespace Words
 
 		public void Load(bool manualUpdate, PresentationArea area)
 		{
+			this.area = area;
+
 			if (!manualUpdate)
 			{
 				webControl = new WebControl();
@@ -59,7 +62,7 @@ namespace Words
 				wb2 = new WriteableBitmap(w, h, 96, 96, PixelFormats.Pbgra32, null);
 				rect = new Int32Rect(0, 0, w, h);
 
-				area.WindowSizeChanged += new System.EventHandler(area_WindowSizeChanged);
+				area.WindowSizeChanged += area_WindowSizeChanged;
 			}
 		}
 
@@ -67,6 +70,7 @@ namespace Words
 		{
 			int w = ((PresentationArea)sender).WindowSize.Width;
 			int h = ((PresentationArea)sender).WindowSize.Height;
+
 			webView.Resize(w, h);
 
 			wb1 = new WriteableBitmap(w, h, 96, 96, PixelFormats.Pbgra32, null);
@@ -102,6 +106,11 @@ namespace Words
 			backImage.Source = frontImage.Source;
 			frontImage.Source = swapBitmaps ? wb1 : wb2;
 			swapBitmaps = !swapBitmaps;
+		}
+
+		public void Close()
+		{
+			area.WindowSizeChanged -= area_WindowSizeChanged;
 		}
 	}
 }
