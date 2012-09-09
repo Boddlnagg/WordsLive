@@ -71,6 +71,7 @@
     <Reference Include="MonitoredUndo">
       <HintPath>..\3rdParty\MonitoredUndo.dll</HintPath>
     </Reference>
+    <Reference Include="ReachFramework" />
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core">
@@ -107,6 +108,16 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="XpsDocument.cs" />
+    <Compile Include="XpsDocumentControlPanel.xaml.cs">
+      <DependentUpon>XpsDocumentControlPanel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="XpsDocumentFileHandler.cs" />
+    <Compile Include="XpsPresentation.cs" />
+    <Page Include="XpsDocumentControlPanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Resource Include="Artwork\PresentationArea.png" />
     <Resource Include="Artwork\Settings.png" />
     <Resource Include="Artwork\Small_Plus.png" />

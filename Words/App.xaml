@@ -46,6 +46,29 @@
 				</DataTrigger>
 			</Style.Triggers>
 		</Style>
+		<Style x:Key="reducedDocumentViewer" TargetType="DocumentViewer">
+			<Setter Property="Foreground"
+		  Value="{DynamicResource {x:Static Colors.Black}}"/>
+			<Setter Property="Background"
+		  Value="{DynamicResource {x:Static Colors.Black}}"/>
+			<Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+			<Setter Property="Template">
+				<Setter.Value>
+					<ControlTemplate TargetType="DocumentViewer">
+						<Border BorderThickness="{TemplateBinding BorderThickness}"
+								BorderBrush="{TemplateBinding BorderBrush}" Focusable="False">
+							<Grid Background="{x:Static Brushes.Black}" KeyboardNavigation.TabNavigation="Local">
+								<ScrollViewer CanContentScroll="true"
+									HorizontalScrollBarVisibility="Auto"
+									VerticalScrollBarVisibility="Auto"
+									x:Name="PART_ContentHost"
+									IsTabStop="true"/>
+							</Grid>
+						</Border>
+					</ControlTemplate>
+				</Setter.Value>
+			</Setter>
+		</Style>
 	</Application.Resources>
 	<JumpList.JumpList>
 		<JumpList ShowRecentCategory="True">

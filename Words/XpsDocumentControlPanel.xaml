@@ -1,0 +1,34 @@
+﻿<UserControl x:Class="Words.XpsDocumentControlPanel"
+			 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+			 mc:Ignorable="d" 
+			 d:DesignHeight="300" d:DesignWidth="500">
+	<Grid>
+		<!-- TODO: improve and localize UI -->
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="Auto"/>
+		</Grid.RowDefinitions>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="*"/>
+			<ColumnDefinition Width="*"/>
+			<ColumnDefinition Width="*"/>
+			<ColumnDefinition Width="*"/>
+		</Grid.ColumnDefinitions>
+		<Button Grid.Column="0" Height="28" Margin="6" Click="ZoomInButton_Click">Zoom in</Button>
+		<Button Grid.Column="1" Height="28" Margin="6" Click="ZoomOutButton_Click">Zoom out</Button>
+		<Button Grid.Column="2" Height="28" Margin="6" Click="ActualSizeButton_Click">Actual size</Button>
+		<Button Grid.Column="3" Height="28" Margin="6" Click="ViewThumbnailsButton_Click">View thumbnails</Button>
+		<Button Grid.Row="1" Grid.Column="0" Height="28" Margin="6" Click="FitToWidthButton_Click">Fit to width</Button>
+		<Button Grid.Row="1" Grid.Column="1" Height="28" Margin="6" Click="WholePageButton_Click">Whole page</Button>
+		<TextBox Grid.Row="1" Grid.Column="2" Height="28" Margin="6" x:Name="MultiplePagesTextBox" />
+		<Button Grid.Row="1" Grid.Column="3" Height="28" Margin="6" Click="MultiplePagesButton_Click">Multiple pages</Button>
+		<Button Grid.Row="2" Grid.Column="0" Height="28" Margin="6" Click="PrevPageButton_Click">Previous page</Button>
+		<Button Grid.Row="2" Grid.Column="1" Height="28" Margin="6" Click="NextPageButton_Click">Next page</Button>
+		<TextBox Grid.Row="2" Grid.Column="2" Height="28" Margin="6" x:Name="GoToPageTextBox" />
+		<Button Grid.Row="2" Grid.Column="3" Height="28" Margin="6" Click="GoToPageButton_Click">Go to page</Button>
+	</Grid>
+</UserControl>
