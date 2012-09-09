@@ -37,11 +37,23 @@ namespace Words
 			InitializeComponent();
 			
 			settingsPriorityListBox.DataContext = this.settings;
+
+			Controller.DisplaySettingsChanged += new EventHandler(Controller_DisplaySettingsChanged);
+		}
+
+		void Controller_DisplaySettingsChanged(object sender, EventArgs e)
+		{
+			Update();
 		}
 
 		private void updateButton_Click(object sender, RoutedEventArgs e)
 		{
-			OnPropertyChanged("IsSecondaryScreenAvailable"); // TODO (Words): Dieses Feature testen, wenn ein zweiter Bildschirm zur Verfügung steht
+			Update();
+		}
+
+		private void Update()
+		{
+			OnPropertyChanged("IsSecondaryScreenAvailable");
 
 			foreach (var setting in settings)
 				setting.Update();

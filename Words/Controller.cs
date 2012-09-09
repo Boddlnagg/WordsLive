@@ -42,7 +42,8 @@ namespace Words
 		{
 			Application.Current.DispatcherUnhandledException += DispatcherUnhandledException;
 			window = (MainWindow)Application.Current.MainWindow;
-			SystemEvents.DisplaySettingsChanged += DisplaySettingsChanged;
+			SystemEvents.DisplaySettingsChanged += HandleDisplaySettingsChanged;
+			DisplaySettingsChanged += (sender, args) => UpdatePresentationAreaFromSettings();
 
 			LoadAttributes(Assembly.GetAssembly(typeof(Media))); // Words.Core.dll
 			LoadAttributes(Assembly.GetExecutingAssembly()); // Words.exe
@@ -56,15 +57,23 @@ namespace Words
 			Words.Utils.ImageLoader.Manager.Instance.LoadingImage = new System.Windows.Media.Imaging.BitmapImage(new Uri("/Words;component/Artwork/LoadingAnimation.png", UriKind.Relative));
 		}
 
-		void DisplaySettingsChanged(object sender, EventArgs e)
+		void HandleDisplaySettingsChanged(object sender, EventArgs e)
 		{
 			// TODO: is there a better way then starting a new thread?
 			// (we need to wait some time before updating, for else Windows will resize/move the windows again)
 			new Thread((ThreadStart) delegate
 			{
 				Thread.Sleep(1000);
-				this.window.Dispatcher.BeginInvoke(new Action(() => UpdatePresentationAreaFromSettings()));
+				this.window.Dispatcher.BeginInvoke(new Action(() => OnDisplaySettingsChanged()));
 			}).Start();
+		}
+
+		public static event EventHandler DisplaySettingsChanged;
+
+		protected static void OnDisplaySettingsChanged()
+		{
+			if (DisplaySettingsChanged != null)
+				DisplaySettingsChanged(null, EventArgs.Empty);
 		}
 
 		private void DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
