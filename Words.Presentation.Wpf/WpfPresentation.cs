@@ -11,6 +11,7 @@ namespace Words.Presentation.Wpf
 	public class WpfPresentation<T> : IWpfPresentation where T : FrameworkElement,new()
 	{
 		private T control;
+		private PresentationArea area;
 
 		public WpfPresentation()
 		{
@@ -66,7 +67,14 @@ namespace Words.Presentation.Wpf
 
 		public virtual void Close()
 		{
-			// does nothing, because the WpfPresentationWindow needs to be kept alive
+			if (area != null)
+			{
+				area.WindowSizeChanged -= (sender, args) =>
+				{
+					this.control.Width = area.WindowSize.Width;
+					this.control.Height = area.WindowSize.Height;
+				};
+			}
 		}
 
 
@@ -78,6 +86,16 @@ namespace Words.Presentation.Wpf
 		public void Init(PresentationArea area)
 		{
 			WpfPresentationWindow.Instance.Area = area;
+			this.area = area;
+
+			this.control.Width = area.WindowSize.Width;
+			this.control.Height = area.WindowSize.Height;
+
+			area.WindowSizeChanged += (sender, args) =>
+			{
+				this.control.Width = area.WindowSize.Width;
+				this.control.Height = area.WindowSize.Height;
+			};
 		}
 	}
 }
