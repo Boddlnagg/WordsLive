@@ -579,4 +579,16 @@
   <data name="vMenuShowEditorWindow" xml:space="preserve">
     <value>Editorfenster anzeigen</value>
   </data>
+  <data name="eGridLanguages" xml:space="preserve">
+    <value>Deutsch;Schweizerdeutsch;Englisch;Italienisch;Französisch;Spanisch</value>
+  </data>
+  <data name="eGridLanguageText" xml:space="preserve">
+    <value>Liedtext:</value>
+  </data>
+  <data name="eGridLanguageTranslation" xml:space="preserve">
+    <value>Übersetzung:</value>
+  </data>
+  <data name="rpNameTemplates" xml:space="preserve">
+    <value>Refrain;Strophe #;Teil #;Pre-Chorus;Chorus;Bridge;Instrumentalteil</value>
+  </data>
 </root>

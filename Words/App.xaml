@@ -8,16 +8,8 @@
 	x:Class="Words.App" StartupUri="MainWindow.xaml"
 	Startup="ApplicationStartup">
 	<Application.Resources>
-		<x:Array x:Key="languages" Type="sys:String">
-			<!-- TODO: localize -->
-			<sys:String>Deutsch</sys:String>
-			<sys:String>Schweizerdeutsch</sys:String>
-			<sys:String>Englisch</sys:String>
-			<sys:String>Italienisch</sys:String>
-			<sys:String>Französisch</sys:String>
-			<sys:String>Spanisch</sys:String>
-		</x:Array>
 		<utils:EnumToBooleanConverter x:Key="EnumToBooleanConverter" />
+		<utils:StringSplitConverter x:Key="StringSplitConverter" />
 		<songs:SongBackgroundToImageSourceConverter x:Key="BackgroundConverter" />
 		<properties:Settings x:Key="settings" />
 		<LinearGradientBrush x:Key="HeaderGradientBrush" EndPoint="0.5,1" StartPoint="0.5,0">

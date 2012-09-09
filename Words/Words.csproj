@@ -245,6 +245,7 @@
     <Compile Include="Editor\SongNodeRoot.cs" />
     <Compile Include="Editor\SongNodeSlide.cs" />
     <Compile Include="Songs\SongFileHandler.cs" />
+    <Compile Include="Utils\StringSplitConverter.cs" />
     <Compile Include="WebSiteFileHandler.cs" />
     <Compile Include="UnhandledExceptionWindow.xaml.cs">
       <DependentUpon>UnhandledExceptionWindow.xaml</DependentUpon>

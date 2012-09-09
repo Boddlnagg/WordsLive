@@ -26,15 +26,7 @@
 			<Button Content="{x:Static resx:Resource.dialogCancel}" IsCancel="True" Width="75" Margin="3"/>
 			<Button Content="{x:Static resx:Resource.dialogOK}" IsDefault="True" Margin="3" Width="75" Click="Button_Click" />
 		</StackPanel>
-		<ListBox Margin="5" SelectionChanged="ListBox_SelectionChanged">
-			<!-- TODO: localize -->
-			<sys:String>Refrain</sys:String>
-			<sys:String>Strophe #</sys:String>
-			<sys:String>Teil #</sys:String>
-			<sys:String>Pre-Chorus</sys:String>
-			<sys:String>Chorus</sys:String>
-			<sys:String>Bridge</sys:String>
-			<sys:String>Instrumentalteil</sys:String>
-		</ListBox>
+		<ListBox Margin="5" SelectionChanged="ListBox_SelectionChanged"
+				 ItemsSource="{Binding Source={x:Static resx:Resource.rpNameTemplates}, Converter={StaticResource StringSplitConverter}, ConverterParameter=';'}"/>
 	</DockPanel>
 </Window>

@@ -196,6 +196,33 @@ namespace Words.Resources {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Deutsch;Schweizerdeutsch;Englisch;Italienisch;Französisch;Spanisch ähnelt.
+        /// </summary>
+        public static string eGridLanguages {
+            get {
+                return ResourceManager.GetString("eGridLanguages", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Liedtext: ähnelt.
+        /// </summary>
+        public static string eGridLanguageText {
+            get {
+                return ResourceManager.GetString("eGridLanguageText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Übersetzung: ähnelt.
+        /// </summary>
+        public static string eGridLanguageTranslation {
+            get {
+                return ResourceManager.GetString("eGridLanguageTranslation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Ausgewählten Liedteil zum Ablauf hinzufügen ähnelt.
         /// </summary>
         public static string eGridOrderAddButton {
@@ -786,6 +813,15 @@ namespace Words.Resources {
         public static string rpMsgNameMustNotBeEmpty {
             get {
                 return ResourceManager.GetString("rpMsgNameMustNotBeEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Refrain;Strophe #;Teil #;Pre-Chorus;Chorus;Bridge;Instrumentalteil ähnelt.
+        /// </summary>
+        public static string rpNameTemplates {
+            get {
+                return ResourceManager.GetString("rpNameTemplates", resourceCulture);
             }
         }
         

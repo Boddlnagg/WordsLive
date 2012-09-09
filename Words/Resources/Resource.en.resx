@@ -341,7 +341,6 @@
   </data>
   <data name="vToolbarShowEditorWindow" xml:space="preserve">
     <value>Open editor window</value>
-    <comment> </comment>
   </data>
   <data name="vToolbarShowPresentation" xml:space="preserve">
     <value>Show presentation</value>
@@ -579,5 +578,17 @@
   </data>
   <data name="vMenuShowEditorWindow" xml:space="preserve">
     <value>Open editor window</value>
+  </data>
+  <data name="eGridLanguages" xml:space="preserve">
+    <value>English;German;Spanish</value>
+  </data>
+  <data name="eGridLanguageText" xml:space="preserve">
+    <value>Text:</value>
+  </data>
+  <data name="eGridLanguageTranslation" xml:space="preserve">
+    <value>Translation:</value>
+  </data>
+  <data name="rpNameTemplates" xml:space="preserve">
+    <value>Chorus;Verse #;Part #;Pre-Chorus;Bridge;Instrumental;Tag</value>
   </data>
 </root>

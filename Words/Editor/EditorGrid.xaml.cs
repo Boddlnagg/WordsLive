@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -7,7 +9,6 @@ using System.Windows.Input;
 using MonitoredUndo;
 using Words.Core.Songs;
 using Words.Utils;
-using System.ComponentModel;
 
 namespace Words.Editor
 {
