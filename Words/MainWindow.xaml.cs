@@ -307,6 +307,7 @@ namespace Words
 			IEnumerable<Media> result;
 			if (MediaManager.TryLoadPortfolio(file, out result))
 			{
+				oldIndex = -1; // this is needed
 				orderList.Clear();
 				foreach (Media data in result)
 					orderList.Add(data);
@@ -646,7 +647,7 @@ namespace Words
 
 		void OrderListBox_PreviewMouseMove(object sender, MouseEventArgs e)
 		{
-			if (e.LeftButton == MouseButtonState.Pressed && oldIndex >= 0)
+			if (e.LeftButton == MouseButtonState.Pressed && oldIndex >= 0 && oldIndex < orderList.Count)
 			{
 				if(e.GetPosition(OrderListBox).ExceedsMinimumDragDistance(startPoint))
 				{
