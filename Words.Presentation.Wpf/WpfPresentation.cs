@@ -86,13 +86,12 @@ namespace Words.Presentation.Wpf
 
 		public bool TransitionPossibleFrom(IPresentation presentation)
 		{
-			//return (presentation is IWpfPresentation);
-			return true;
+			return presentation != null;
 		}
 
 		public bool TransitionPossibleTo(IPresentation presentation)
 		{
-			return true;
+			return presentation != null;
 		}
 
 		public void Init(PresentationArea area)
