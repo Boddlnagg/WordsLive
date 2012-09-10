@@ -26,15 +26,17 @@ namespace Words
 
 		public void Init(Media media)
 		{
+			if (this.doc == null)
+				pres = Controller.PresentationManager.CreatePresentation<XpsPresentation>();
+
 			this.doc = (XpsDocument)media;
-			pres = Controller.PresentationManager.CreatePresentation<XpsPresentation>();
 			pres.SetSourceDocument(doc);
 			Controller.PresentationManager.CurrentPresentation = pres;
 		}
 
 		public bool IsUpdatable
 		{
-			get { return false; }
+			get { return true; }
 		}
 
 		public void Close()
