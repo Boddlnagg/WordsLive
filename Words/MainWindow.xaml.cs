@@ -184,18 +184,8 @@ namespace Words
 			OnPropertyChanged("ActiveMedia");
 			if (ActiveMedia == null)
 			{
-				if (Controller.PresentationManager.Status == PresentationStatus.Show)
-				{
-					Controller.PresentationManager.Status = PresentationStatus.Blackscreen;
-				}
-
-				if (Controller.PresentationManager.CurrentPresentation != null)
-				{
-					Controller.PresentationManager.CurrentPresentation.Close();
-					Controller.PresentationManager.CurrentPresentation = null;
-				}
-
 				this.CurrentPanel = null;
+				Controller.PresentationManager.CurrentPresentation = null;
 			}
 			else
 			{

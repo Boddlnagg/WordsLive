@@ -11,7 +11,6 @@ namespace Words
 	/*
 	 * TODO:
 	 * - PDF support via pdf.js?
-	 * - ChooseBackgroundWindow: reduce RAM usage, make loading faster, support videos (TEST)
 	 * - sometimes AwesomiumProcess is used instead of Words.Awesomium.exe
 	 * - Shortcuts in the menu are shown as "Ctrl" instead of "Strg" in German language
 	 * - Add alerts to Presentation.Wpf to be able to display messages over any WPF presentation
@@ -19,6 +18,9 @@ namespace Words
 	 *   (see http://manual.openlp.org/creating_service.html#using-the-service-timer)
 	 * - Improve audio/video support (look at DMediaPlayer) and support start/stop times
 	 *   (see http://manual.openlp.org/creating_service.html#using-the-media-timer, but with better UI)
+	 * - Fix song preview when set to blackscreen/hide after it has been shown once (slides mess up)
+	 * - Maintain correct window z-order using SetWindowPos, especially for ImpressPresentation
+	 *   (see http://msdn.microsoft.com/en-us/library/windows/desktop/ms633545%28v=vs.85%29.aspx)
 	 */
 
 	public partial class App : Application

@@ -58,14 +58,16 @@ namespace Words.Slideshow.PowerpointViewer
 			
 			doc.Loaded += (sender, args) =>
 			{
-				Words.Presentation.Wpf.AeroPeekHelper.RemoveFromAeroPeek(doc.WindowHandle);
-				if (showOnLoaded)
-				{
-					doc.Move(Area.WindowLocation.X, Area.WindowLocation.Y);
-					isShown = true;
-				}
-
-				base.OnLoaded();
+				Controller.Dispatcher.Invoke(new Action(() => {
+					Words.Presentation.Wpf.AeroPeekHelper.RemoveFromAeroPeek(doc.WindowHandle);
+					if (showOnLoaded)
+					{
+						doc.Move(Area.WindowLocation.X, Area.WindowLocation.Y);
+						isShown = true;
+					}
+					base.OnLoaded();
+					Controller.FocusMainWindow();
+				}));
 			};
 
 			doc.Closed += (sender, args) =>

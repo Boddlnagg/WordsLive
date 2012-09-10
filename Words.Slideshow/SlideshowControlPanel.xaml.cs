@@ -42,9 +42,9 @@ namespace Words.Slideshow
 			{
 				this.Dispatcher.Invoke(new Action(() =>
 				{
-					Controller.PresentationManager.Status = PresentationStatus.Blackscreen;
 					Controller.PresentationManager.CurrentPresentation = null;
-					System.Windows.MessageBox.Show("Die Präsentation wurde unerwartet geschlossen. Words hat die Anzeige schwarz geschaltet und wird versuchen, die Präsentation neu zu laden.");
+					Controller.FocusMainWindow();
+					System.Windows.MessageBox.Show("Die Präsentation wurde unerwartet geschlossen. Words hat die Anzeige schwarz geschaltet und wird versuchen, die Präsentation neu zu laden."); // TODO: localize
 					Controller.ReloadActiveMedia();
 				}));
 			};
@@ -59,7 +59,6 @@ namespace Words.Slideshow
 				SetupEventListeners();
 				if (!pres.Load())
 				{
-					Controller.PresentationManager.Status = PresentationStatus.Blackscreen;
 					Controller.PresentationManager.CurrentPresentation = null;
 				}
 			}

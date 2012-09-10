@@ -65,9 +65,6 @@ namespace Words
 			{
 				if (Status == PresentationStatus.Show)
 				{
-					if (value == null)
-						throw new InvalidOperationException("Can't set CurrentPresentation to null when PresentationStatus is set to Show");
-
 					IPresentation previousPresentation = currentPresentation;
 					currentPresentation = value;
 
@@ -75,32 +72,44 @@ namespace Words
 						{
 							if (previousPresentation != null)
 							{
-								if (!currentPresentation.UsesSamePresentationWindow(previousPresentation) && previousPresentation.UsesSamePresentationWindow(blackscreen))
-								{
-									blackscreen.Show();
-								}
+								// why did we have these in here??
+
+								//if (currentPresentation != null && !currentPresentation.UsesSamePresentationWindow(previousPresentation) && previousPresentation.UsesSamePresentationWindow(blackscreen))
+								//{
+								//    blackscreen.Show();
+								//}
 
 								previousPresentation.Close();
 							}
-							if (currentPresentation != null && !currentPresentation.UsesSamePresentationWindow(this.blackscreen))
-							{
-								this.blackscreen.Hide();
-							}
+							//if (currentPresentation != null && !currentPresentation.UsesSamePresentationWindow(this.blackscreen))
+							//{
+							//    this.blackscreen.Hide();
+							//}
 						};
-
-					if (currentPresentation.TransitionPossibleFrom(previousPresentation))
+					if (currentPresentation == null)
 					{
-						currentPresentation.Show(Properties.Settings.Default.PresentationTransition, afterShowing, previousPresentation);
-					}
-					else if (previousPresentation.TransitionPossibleTo(currentPresentation))
-					{
-						currentPresentation.Show();
-						previousPresentation.TransitionTo(currentPresentation, Properties.Settings.Default.PresentationTransition, afterShowing);
+						// automatically go blackscreen if presentation is set to null
+						status = PresentationStatus.Blackscreen;
+						OnPropertyChanged("Status");
+						this.blackscreen.Show();
+						afterShowing();
 					}
 					else
 					{
-						currentPresentation.Show();
-						afterShowing();
+						if (currentPresentation.TransitionPossibleFrom(previousPresentation))
+						{
+							currentPresentation.Show(Properties.Settings.Default.PresentationTransition, afterShowing, previousPresentation);
+						}
+						else if (previousPresentation.TransitionPossibleTo(currentPresentation))
+						{
+							currentPresentation.Show();
+							previousPresentation.TransitionTo(currentPresentation, Properties.Settings.Default.PresentationTransition, afterShowing);
+						}
+						else
+						{
+							currentPresentation.Show();
+							afterShowing();
+						}
 					}
 				}
 				else
@@ -184,8 +193,6 @@ namespace Words
 							this.currentPresentation.Show();
 							afterShowing();
 						}
-
-						
 
 						status = PresentationStatus.Show;
 						break;
