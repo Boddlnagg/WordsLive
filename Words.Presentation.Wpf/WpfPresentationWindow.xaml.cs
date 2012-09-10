@@ -41,9 +41,9 @@ namespace Words.Presentation.Wpf
 		/// </summary>
 		/// <param name="control">The control to show next.</param>
 		/// <param name="milliseconds">The duration of the transition in milliseconds.</param>
-		public static void SetContent(FrameworkElement control, int milliseconds, Action callback = null)
+		public static void SetContent(FrameworkElement control, int milliseconds, Action callback, IPresentation previous)
 		{
-			if (Instance.MainContainer.Child == control)
+			if (Instance.MainContainer.Child == control && previous is IWpfPresentation)
 				return;
 
 			if (contentTransitionCallback != null)
@@ -52,16 +52,33 @@ namespace Words.Presentation.Wpf
 			contentTransitionCallback = callback;
 
 			Instance.PreviousContainer.Child = null;
-			UIElement tmp = Instance.MainContainer.Child;
+			UIElement previousControl;
+			if (previous is IWpfPresentation)
+				previousControl = Instance.MainContainer.Child;
+			else
+				previousControl = null;
 			Instance.MainContainer.Child = control;
-			Instance.PreviousContainer.Child = tmp;
+			Instance.PreviousContainer.Child = previousControl;
 			Instance.PreviousContainer.Opacity = 1;
+			Instance.MainContainer.Opacity = 0;
 
 			Storyboard sbd = (Storyboard)Instance.FindResource("ContentTransition");
 			sbd.Children[0].Duration = new TimeSpan(0, 0, 0, 0, milliseconds);
 			sbd.Begin(Instance);
 		}
 
+		public static void FadeOutContent(int milliseconds, Action callback)
+		{
+			if (contentTransitionCallback != null)
+				contentTransitionCallback();
+
+			contentTransitionCallback = callback;
+
+			Storyboard sbd = (Storyboard)Instance.FindResource("ContentFadeOut");
+			sbd.Children[0].Duration = new TimeSpan(0, 0, 0, 0, milliseconds);
+			sbd.Begin(Instance);
+		}
+		
 		private static Action contentTransitionCallback = null;
 
 		private void ContentTransition_Completed(object sender, EventArgs e)
@@ -75,6 +92,8 @@ namespace Words.Presentation.Wpf
 				contentTransitionCallback = null;
 				callback();
 			}
+
+			Instance.MainContainer.Opacity = 1;
 			
 		}
 
@@ -102,11 +121,11 @@ namespace Words.Presentation.Wpf
 
 					this.area.WindowLocationChanged += delegate
 					{
-						if (hidden == false)
-						{
+						//if (hidden == false)
+						//{
 							this.Left = this.area.WindowLocation.X;
 							this.Top = this.area.WindowLocation.Y;
-						}
+						//}
 					};
 				}
 			}
@@ -125,8 +144,10 @@ namespace Words.Presentation.Wpf
 				AeroPeekHelper.RemoveFromAeroPeek(windowHandle);
 			}
 
-			Instance.Left = Instance.area.WindowLocation.X;
-			Instance.Top = Instance.area.WindowLocation.Y;
+			Instance.ContentContainer.Opacity = 1;
+
+			//Instance.Left = Instance.area.WindowLocation.X;
+			//Instance.Top = Instance.area.WindowLocation.Y;
 
 			hidden = false;
 		}
@@ -135,8 +156,9 @@ namespace Words.Presentation.Wpf
 		{
 			if (hidden == false)
 			{
-				Instance.Left = -32000;
-				Instance.Top = -32000;
+				Instance.ContentContainer.Opacity = 0;
+				//Instance.Left = -32000;
+				//Instance.Top = -32000;
 				hidden = true;
 			}
 		}

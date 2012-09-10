@@ -90,7 +90,12 @@ namespace Words
 
 					if (currentPresentation.TransitionPossibleFrom(previousPresentation))
 					{
-						currentPresentation.Show(Properties.Settings.Default.PresentationTransition, afterShowing);
+						currentPresentation.Show(Properties.Settings.Default.PresentationTransition, afterShowing, previousPresentation);
+					}
+					else if (previousPresentation.TransitionPossibleTo(currentPresentation))
+					{
+						currentPresentation.Show();
+						previousPresentation.TransitionTo(currentPresentation, Properties.Settings.Default.PresentationTransition, afterShowing);
 					}
 					else
 					{
@@ -133,14 +138,22 @@ namespace Words
 						break;
 
 					case PresentationStatus.Blackscreen:
-						if (status == PresentationStatus.Show && this.currentPresentation.TransitionPossibleFrom(this.blackscreen))
-							this.blackscreen.Show(Properties.Settings.Default.PresentationTransition);
-						else
-							this.blackscreen.Show();
+						Action afterBlackscreen = () =>
+							{
+								if (currentPresentation != null && !currentPresentation.UsesSamePresentationWindow(this.blackscreen))
+								{
+									currentPresentation.Hide();
+								}
+							};
 
-						if (currentPresentation != null && !currentPresentation.UsesSamePresentationWindow(this.blackscreen))
+						if (status == PresentationStatus.Show && this.blackscreen.TransitionPossibleFrom(this.currentPresentation))
 						{
-							currentPresentation.Hide();
+							this.blackscreen.Show(Properties.Settings.Default.PresentationTransition, afterBlackscreen, this.currentPresentation);
+						}
+						else
+						{
+							this.blackscreen.Show();
+							afterBlackscreen();
 						}
 
 						status = PresentationStatus.Blackscreen;
@@ -152,13 +165,27 @@ namespace Words
 							throw new InvalidOperationException("Can't show presentation when none is active");
 						}
 
-						if (status == PresentationStatus.Blackscreen && this.currentPresentation.TransitionPossibleFrom(this.blackscreen))
-							this.currentPresentation.Show(Properties.Settings.Default.PresentationTransition);
-						else
-							this.currentPresentation.Show();
+						Action afterShowing = () => {
+							if (!currentPresentation.UsesSamePresentationWindow(this.blackscreen))
+								this.blackscreen.Hide();
+						};
 
-						if (!currentPresentation.UsesSamePresentationWindow(this.blackscreen))
-							this.blackscreen.Hide();
+						if (status == PresentationStatus.Blackscreen && this.currentPresentation.TransitionPossibleFrom(this.blackscreen))
+						{
+							this.currentPresentation.Show(Properties.Settings.Default.PresentationTransition, afterShowing, this.blackscreen);
+						}
+						else if (status == PresentationStatus.Blackscreen && this.blackscreen.TransitionPossibleTo(this.currentPresentation))
+						{
+							this.currentPresentation.Show();
+							this.blackscreen.TransitionTo(this.currentPresentation, Properties.Settings.Default.PresentationTransition, afterShowing);
+						}
+						else
+						{
+							this.currentPresentation.Show();
+							afterShowing();
+						}
+
+						
 
 						status = PresentationStatus.Show;
 						break;

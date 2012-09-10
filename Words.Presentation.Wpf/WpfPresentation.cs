@@ -34,9 +34,15 @@ namespace Words.Presentation.Wpf
 			}
 		}
 
-		public virtual void Show(int transitionDuration = 0, Action callback = null)
+		public virtual void Show(int transitionDuration = 0, Action callback = null, IPresentation previous = null)
 		{
-			WpfPresentationWindow.SetContent(this.Control, transitionDuration, callback);
+			WpfPresentationWindow.SetContent(this.Control, transitionDuration, callback, previous);
+			WpfPresentationWindow.ShowWindow();
+		}
+
+		public virtual void TransitionTo(IPresentation target, int transitionDuration, Action callback)
+		{
+			WpfPresentationWindow.FadeOutContent(transitionDuration, callback);
 			WpfPresentationWindow.ShowWindow();
 		}
 		
@@ -80,7 +86,13 @@ namespace Words.Presentation.Wpf
 
 		public bool TransitionPossibleFrom(IPresentation presentation)
 		{
-			return (presentation is IWpfPresentation);
+			//return (presentation is IWpfPresentation);
+			return true;
+		}
+
+		public bool TransitionPossibleTo(IPresentation presentation)
+		{
+			return true;
 		}
 
 		public void Init(PresentationArea area)

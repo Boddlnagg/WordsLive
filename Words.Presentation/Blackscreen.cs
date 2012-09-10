@@ -26,11 +26,16 @@ namespace Words.Presentation
 		/// As this presentation does not support transitions, this parameter will be ignored.</param>
 		/// <param name="callback">An optional callback action that will be called after the transition
 		/// (or instantly when there is no transition).</param>
-		public void Show(int transitionDuration = 0, Action callback = null)
+		public void Show(int transitionDuration = 0, Action callback = null, IPresentation previous = null)
 		{
 			this.form.Show();
 			if (callback != null)
 				callback();
+		}
+
+		public void TransitionTo(IPresentation target, int transitionDuration, Action callback)
+		{
+			// not possible
 		}
 
 		/// <summary>
@@ -84,6 +89,11 @@ namespace Words.Presentation
 		///   <c>true</c> if a transition is possible from the other presentation; otherwise <c>false</c>
 		/// </returns>
 		public bool TransitionPossibleFrom(IPresentation presentation)
+		{
+			return false;
+		}
+
+		public bool TransitionPossibleTo(IPresentation presentation)
 		{
 			return false;
 		}

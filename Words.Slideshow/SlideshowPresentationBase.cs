@@ -20,6 +20,11 @@ namespace Words.Slideshow
 			return false;
 		}
 
+		public virtual bool TransitionPossibleTo(IPresentation presentation)
+		{
+			return false;
+		}
+
 		public virtual void Init(PresentationArea area)
 		{
 			this.area = area;
@@ -35,12 +40,17 @@ namespace Words.Slideshow
 			}
 		}
 
-		public virtual void Show(int transitionDuration = 0, Action callback = null)
+		public virtual void Show(int transitionDuration = 0, Action callback = null, IPresentation previous = null)
 		{
 			// NOTE: transition duration will be ignored (not possible with external presentations)
 			Show();
 			if (callback != null)
 				callback();
+		}
+
+		public virtual void TransitionTo(IPresentation target, int transitionDuration, Action callback)
+		{
+			// not possible
 		}
 
 		protected void LoadPreviewProvider()

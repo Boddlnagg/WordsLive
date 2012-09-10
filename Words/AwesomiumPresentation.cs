@@ -7,6 +7,7 @@ using Awesomium.Core;
 using Awesomium.Windows.Controls;
 using System;
 using Words.Presentation.Wpf;
+using Words.Presentation;
 
 namespace Words
 {
@@ -42,7 +43,7 @@ namespace Words
 			win.Show();
 		}
 
-		public override void Show(int transitionDuration = 0, Action callback = null)
+		public override void Show(int transitionDuration = 0, Action callback = null, IPresentation previous = null)
 		{
 			if (win != null)
 			{
@@ -50,7 +51,7 @@ namespace Words
 				win.Close();
 				win = null;
 			}
-			base.Show(transitionDuration, callback);
+			base.Show(transitionDuration, callback, previous);
 		}
 
 		private void OnOpenExternalLink(object sender, OpenExternalLinkEventArgs e)

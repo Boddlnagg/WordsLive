@@ -35,7 +35,12 @@ namespace Words.Presentation
 		/// An optional callback action that will be called after the transition
 		/// (or instantly when there is no transition).
 		/// </param>
-		void Show(int transitionDuration = 0, Action callback = null);
+		/// <param name="previous">
+		/// The previous presentation when there is a transition.
+		/// </param>
+		void Show(int transitionDuration = 0, Action callback = null, IPresentation previous = null);
+
+		void TransitionTo(IPresentation target, int transitionDuration, Action callback);
 
 		/// <summary>
 		/// Hides this presentation. Use this if you want to be able to show it again later.
@@ -61,5 +66,7 @@ namespace Words.Presentation
 		/// <param name="presentation">The other presentation to check.</param>
 		/// <returns><c>true</c> if a transition is possible from the other presentation; otherwise <c>false</c></returns>
 		bool TransitionPossibleFrom(IPresentation presentation);
+
+		bool TransitionPossibleTo(IPresentation presentation);
 	}
 }
