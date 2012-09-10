@@ -153,6 +153,10 @@ namespace Words
 
 		private void Window_Closing(object sender, CancelEventArgs e)
 		{
+			if (portfolioChanged)
+			{
+				// TODO: ask whether to save portfolio
+			}
 			e.Cancel = !Controller.TryCloseAllWindows();
 		}
 
@@ -488,6 +492,12 @@ namespace Words
 			}
 			else if (e.Command == CustomCommands.ShowPresentation)
 			{
+				Controller.PresentationManager.Status = PresentationStatus.Show;
+			}
+			else if (e.Command == CustomCommands.ShowTestImage)
+			{
+				orderList.ActiveItem = null;
+				Controller.PresentationManager.CurrentPresentation = Controller.PresentationManager.CreatePresentation<TestPresentation>();
 				Controller.PresentationManager.Status = PresentationStatus.Show;
 			}
 		}

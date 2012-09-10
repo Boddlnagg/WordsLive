@@ -140,6 +140,12 @@ namespace Words
 			private set;
 		}
 
+		public static RoutedCommand ShowTestImage
+		{
+			get;
+			private set;
+		}
+
 		static CustomCommands()
 		{
 			Type t = typeof(CustomCommands);
@@ -166,6 +172,7 @@ namespace Words
 			HidePresentation = new RoutedCommand("HidePresentation", t, new InputGestureCollection { new KeyGesture(Key.F6) });
 			Blackscreen = new RoutedCommand("Blackscreen", t, new InputGestureCollection { new KeyGesture(Key.F7) });
 			ShowPresentation = new RoutedCommand("ShowPresentation", t, new InputGestureCollection { new KeyGesture(Key.F8) });
+			ShowTestImage = new RoutedCommand("ShowTestImage", t);
 		}
 	}
 }

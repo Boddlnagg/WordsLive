@@ -591,4 +591,7 @@
   <data name="rpNameTemplates" xml:space="preserve">
     <value>Chorus;Verse #;Part #;Pre-Chorus;Bridge;Instrumental;Tag</value>
   </data>
+  <data name="vMenuShowTestImage" xml:space="preserve">
+    <value>Show test image</value>
+  </data>
 </root>

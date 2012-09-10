@@ -1303,6 +1303,15 @@ namespace Words.Resources {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Testbild anzeigen ähnelt.
+        /// </summary>
+        public static string vMenuShowTestImage {
+            get {
+                return ResourceManager.GetString("vMenuShowTestImage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Liedtext und Übersetzung tauschen ähnelt.
         /// </summary>
         public static string vMenuSwapTextAndTranslation {
