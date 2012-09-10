@@ -1366,6 +1366,33 @@ namespace Words.Resources {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Neu laden ähnelt.
+        /// </summary>
+        public static string vOrderContextMenuRefresh {
+            get {
+                return ResourceManager.GetString("vOrderContextMenuRefresh", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Entfernen ähnelt.
+        /// </summary>
+        public static string vOrderContextMenuRemove {
+            get {
+                return ResourceManager.GetString("vOrderContextMenuRemove", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Anzeigen ähnelt.
+        /// </summary>
+        public static string vOrderContextMenuShow {
+            get {
+                return ResourceManager.GetString("vOrderContextMenuShow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Reihenfolge ähnelt.
         /// </summary>
         public static string vPanelOrder {

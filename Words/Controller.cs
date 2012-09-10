@@ -197,6 +197,18 @@ namespace Words
 			}
 		}
 
+		public static IMediaControlPanel CurrentPanel
+		{
+			get
+			{
+				return instance.window.CurrentPanel;
+			}
+			internal set
+			{
+				instance.window.CurrentPanel = value;
+			}
+		}
+
 		public static System.Windows.Threading.Dispatcher Dispatcher
 		{
 			get

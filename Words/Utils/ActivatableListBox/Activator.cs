@@ -103,6 +103,10 @@ namespace Words.Utils.ActivatableListBox
 				if (!listBox.Items.Contains(GetActiveItem(listBox)))
 					SetActiveItem(listBox, null);
 			}
+			else if (e.ListChangedType == ListChangedType.ItemChanged)
+			{
+				UpdateActivatedItem(listBox, GetActiveItem(listBox));
+			}
 
 			UpdateActivatedIndex(listBox, listBox.GetActiveItem());
 		}

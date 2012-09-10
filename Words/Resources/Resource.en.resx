@@ -271,7 +271,7 @@
     <value>_Projection</value>
   </data>
   <data name="vMenuRefresh" xml:space="preserve">
-    <value>Refresh</value>
+    <value>Refresh active media</value>
   </data>
   <data name="vMenuSavePortfolio" xml:space="preserve">
     <value>_Save portfolio</value>
@@ -593,5 +593,14 @@
   </data>
   <data name="vMenuShowTestImage" xml:space="preserve">
     <value>Show test image</value>
+  </data>
+  <data name="vOrderContextMenuRefresh" xml:space="preserve">
+    <value>Refresh</value>
+  </data>
+  <data name="vOrderContextMenuRemove" xml:space="preserve">
+    <value>Remove</value>
+  </data>
+  <data name="vOrderContextMenuShow" xml:space="preserve">
+    <value>Show</value>
   </data>
 </root>

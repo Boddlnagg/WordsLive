@@ -189,6 +189,8 @@
 					<CommandBinding Command="Delete" Executed="OrderListBox_OnExecuteCommand" CanExecute="OrderListBox_OnCanExecuteCommand"/>
 					<CommandBinding Command="{x:Static local:CustomCommands.MoveUp}" Executed="OrderListBox_OnExecuteCommand" CanExecute="OrderListBox_OnCanExecuteCommand"/>
 					<CommandBinding Command="{x:Static local:CustomCommands.MoveDown}" Executed="OrderListBox_OnExecuteCommand" CanExecute="OrderListBox_OnCanExecuteCommand"/>
+					<CommandBinding Command="{x:Static local:CustomCommands.Activate}" Executed="OrderListBox_OnExecuteCommand" CanExecute="OrderListBox_OnCanExecuteCommand"/>
+					<CommandBinding Command="Refresh" Executed="OrderListBox_OnExecuteCommand" CanExecute="OrderListBox_OnCanExecuteCommand"/>
 				</ListBox.CommandBindings>
 				<ListBox.Resources>
 					<Style x:Key="ActiveItemTextStyle" TargetType="{x:Type TextBlock}">
@@ -216,6 +218,19 @@
 						</StackPanel>
 					</DataTemplate>
 				</ListBox.ItemTemplate>
+				<ListBox.ItemContainerStyle>
+					<Style TargetType="ListBoxItem">
+						<Setter Property="ContextMenu">
+							<Setter.Value>
+								<ContextMenu>
+									<MenuItem Header="{x:Static resx:Resource.vOrderContextMenuShow}" Command="{x:Static local:CustomCommands.Activate}"/>
+									<MenuItem Header="{x:Static resx:Resource.vOrderContextMenuRefresh}" Command="Refresh"/>
+									<MenuItem Header="{x:Static resx:Resource.vOrderContextMenuRemove}" Command="Delete"/>
+								</ContextMenu>
+							</Setter.Value>
+						</Setter>
+					</Style>
+				</ListBox.ItemContainerStyle>
 			</ListBox>
 			<TextBlock x:Name="ContentHeader" Padding="5" VerticalAlignment="Top" Text="{Binding ElementName=OrderListBox,Path=(alb:Activator.ActiveItem).Title}" Margin="0" Grid.Column="2" Background="{StaticResource HeaderGradientBrush}" Height="26"/>
 			<TextBlock Padding="5" Text="{x:Static resx:Resource.vPanelPreview}" Grid.Row="2" Margin="0" Background="{StaticResource HeaderGradientBrush}" Height="26" VerticalAlignment="Top"/>

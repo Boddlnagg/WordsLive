@@ -3,33 +3,33 @@ using System.ComponentModel;
 using System.Windows.Media;
 using Words.Core;
 using Words.Utils.ActivatableListBox;
+using System.IO;
 
 namespace Words.MediaOrderList
 {
 	public class MediaOrderItem : INotifyPropertyChanged
 	{
 		private IconProvider iconProvider;
-		private Func<Media, bool> activationHandler;
 
-		public MediaOrderItem(Media data, Func<Media, bool> activationHandler)
+		public MediaOrderItem(Media data)
 		{
 			if (data == null)
 				throw new ArgumentNullException("data");
 			this.Data = data;
-
-			if (activationHandler == null)
-				throw new ArgumentNullException("activationHandler");
-			this.activationHandler = activationHandler;
 
 			this.iconProvider = Controller.IconProviders.CreateProvider(data);
 		}
 
 		public Media Data { get; private set; }
 
-		public void Reload()
+		public void ReloadMetadata()
 		{
-			this.Data.LoadMetadata(this.Data.File);
-			this.iconProvider.Update();
+			var newData = MediaManager.ReloadMediaMetadata(Data);
+			if (newData != Data)
+			{
+				Data = newData;
+				iconProvider = Controller.IconProviders.CreateProvider(newData);
+			}
 			OnPropertyChanged("Title");
 			OnPropertyChanged("Path");
 			OnPropertyChanged("Icon");
@@ -57,11 +57,6 @@ namespace Words.MediaOrderList
 			{
 				return this.iconProvider.Icon;
 			}
-		}
-		
-		public bool Activate()
-		{
-			return activationHandler(Data);
 		}
 
 		public event PropertyChangedEventHandler PropertyChanged;

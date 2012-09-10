@@ -58,7 +58,7 @@ namespace Words
 			{
 				return currentPanel;
 			}
-			private set
+			internal set
 			{
 				if (currentPanel != null)
 					currentPanel.Close();
@@ -90,6 +90,7 @@ namespace Words
 			this.DataContext = this;
 
 			orderList.ActiveItemChanged += orderList_ActiveItemChanged;
+			MediaManager.MediaLoaded += MediaManager_MediaLoaded;
 
 			this.OrderListBox.DataContext = orderList;
 			this.orderList.ListChanged += (sender, args) => { portfolioChanged = true; };
@@ -137,6 +138,19 @@ namespace Words
 			}
 		}
 
+		void MediaManager_MediaLoaded(object sender, MediaEventArgs args)
+		{
+			if (args.Media is Song && UsePortfolioBackground == true)
+			{
+				Song song = args.Media as Song;
+				for (int i = 0; i < song.Backgrounds.Count; i++)
+				{
+					song.Backgrounds.RemoveAt(i);
+					song.Backgrounds.Insert(i, portfolioBackground);
+				}
+			}
+		}
+
 		void UpdatePreview()
 		{
 			if (Controller.PresentationManager.CurrentPresentation == null)
@@ -167,6 +181,7 @@ namespace Words
 
 		private void orderList_ActiveItemChanged(object sender, EventArgs e)
 		{
+			OnPropertyChanged("ActiveMedia");
 			if (ActiveMedia == null)
 			{
 				if (Controller.PresentationManager.Status == PresentationStatus.Show)
@@ -185,7 +200,7 @@ namespace Words
 			else
 			{
 				var media = ActiveMedia;
-				LoadMedia(media);
+				MediaManager.LoadMedia(media);
 				IMediaControlPanel panel = Controller.ControlPanels.CreatePanel(media);
 				if (panel is SongControlPanel)
 				{
@@ -193,26 +208,6 @@ namespace Words
 				}
 				this.CurrentPanel = panel;
 			}
-		}
-
-		private Media LoadMedia(Media media)
-		{
-			media.Load();
-
-			//if (!media.IsLoaded)
-			//	return null;
-
-			if (media is Song && UsePortfolioBackground == true)
-			{
-				Song song = media as Song;
-				for (int i = 0; i < song.Backgrounds.Count; i++)
-				{
-					song.Backgrounds.RemoveAt(i);
-					song.Backgrounds.Insert(i, portfolioBackground);
-				}
-			}
-
-			return media;
 		}
 
 		private UIElement GetPreviewControl(IPresentation presentation)
@@ -243,36 +238,7 @@ namespace Words
 
 		internal void ReloadActiveMedia()
 		{
-			if (ActiveMedia == null)
-				return;
-
-			var m = orderList.ActiveItem;
-
-			if (CurrentPanel != null && CurrentPanel.IsUpdatable && File.Exists(m.Path))
-			{
-				m.Reload();
-				LoadMedia(m.Data);
-				CurrentPanel.Init(m.Data);
-				// TODO: set (keyboard) focus to ControlPanel.Control
-			}
-			else
-			{
-				var active = ActiveMedia;
-
-				if (String.IsNullOrEmpty(active.File))
-					return; // can't reload when no filename is given
-
-				var newData = MediaManager.LoadMediaMetadata(active.File);
-
-				CurrentPanel = null;
-
-				// needed to restore selected index
-				int selected = OrderListBox.SelectedIndex;
-
-				orderList.ActiveItem = orderList.Replace(orderList.ActiveItem, newData);
-				if (OrderListBox.SelectedIndex != selected)
-					OrderListBox.SelectedIndex = selected;
-			}
+			orderList.Reload(orderList.ActiveItem);
 		}
 
 		private void ShowAddMediaDialog()
@@ -649,11 +615,30 @@ namespace Words
 					portfolioChanged = true;
 				}
 			}
+			else if (e.Command == CustomCommands.Activate)
+			{
+				orderList.ActiveItem = selected.First();
+			}
+			else if (e.Command == NavigationCommands.Refresh)
+			{
+				foreach (var item in selected)
+				{
+					orderList.Reload(item);
+				}
+			}
 		}
 
 		private void OrderListBox_OnCanExecuteCommand(object sender, CanExecuteRoutedEventArgs e)
 		{
-			e.CanExecute = OrderListBox.SelectedItem != null;
+			if (e.Command == CustomCommands.Activate)
+			{
+				// can only activate a single item
+				e.CanExecute = OrderListBox.SelectedItem != null && OrderListBox.SelectedItems.Count == 1;
+			}
+			else
+			{
+				e.CanExecute = OrderListBox.SelectedItem != null;
+			}
 		}
 
 		int oldIndex;

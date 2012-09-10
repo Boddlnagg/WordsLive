@@ -8,6 +8,18 @@ using System.Xml.Linq;
 
 namespace Words.Core
 {
+	public class MediaEventArgs : EventArgs
+	{
+		public Media Media { get; private set; }
+
+		public MediaEventArgs(Media media)
+		{
+			Media = media;
+		}
+	}
+
+	public delegate void MediaEventHandler(object sender, MediaEventArgs args);
+
 	public static class MediaManager
 	{
 		private static List<MediaFileHandler> fileHandlers = new List<MediaFileHandler>();
@@ -60,7 +72,51 @@ namespace Words.Core
 
 		public static Media LoadMediaMetadata(string file)
 		{
+			if (String.IsNullOrEmpty(file))
+				throw new ArgumentException("file");
+
 			return LoadMediaMetadata(new FileInfo(file));
+		}
+
+		public static Media ReloadMediaMetadata(Media media)
+		{
+			var file = new FileInfo(media.File);
+			if (file.Exists)
+			{
+				if (media is FileNotFoundMedia)
+				{
+					return LoadMediaMetadata(file);
+				}
+				else
+				{
+					media.LoadMetadata(file.FullName);
+					return media;
+				}
+			}
+			else
+			{
+				var notFound = new FileNotFoundMedia();
+				notFound.LoadMetadata(file.FullName);
+				return notFound;
+			}
+		}
+
+		public static Media LoadMedia(Media media)
+		{
+			if (media == null)
+				throw new ArgumentNullException("media");
+
+			media.Load();
+			OnMediaLoaded(media);
+			return media;
+		}
+
+		public static event MediaEventHandler MediaLoaded;
+
+		private static void OnMediaLoaded(Media media)
+		{
+			if (MediaLoaded != null)
+				MediaLoaded(null, new MediaEventArgs(media));
 		}
 
 		public static IEnumerable<Media> LoadMultipleMediaMetadata(IEnumerable<string> fileName)

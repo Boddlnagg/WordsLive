@@ -6,6 +6,7 @@ using System.Windows.Input;
 
 namespace Words
 {
+	// TODO: move some commands to class where they are used
 	public static class CustomCommands
 	{
 		public static RoutedCommand Exit
@@ -27,6 +28,12 @@ namespace Words
 		}
 
 		public static RoutedCommand EditActive
+		{
+			get;
+			private set;
+		}
+
+		public static RoutedCommand Activate
 		{
 			get;
 			private set;
@@ -154,6 +161,7 @@ namespace Words
 			ShowSonglist = new RoutedCommand("ShowSonglist", t, new InputGestureCollection { new KeyGesture(Key.F, ModifierKeys.Control) });
 			SwitchWindow = new RoutedCommand("SwitchWindow", t, new InputGestureCollection { new KeyGesture(Key.W, ModifierKeys.Control) });
 			EditActive = new RoutedCommand("EditActive", t);
+			Activate = new RoutedCommand("Activate", t);
 			ShowSettings = new RoutedCommand("ShowSettings", t);
 			ViewCurrent = new RoutedCommand("ViewCurrent", t);
 			ChooseBackground = new RoutedCommand("ChooseBackground", t);

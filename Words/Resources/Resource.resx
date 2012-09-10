@@ -594,4 +594,13 @@
   <data name="vMenuShowTestImage" xml:space="preserve">
     <value>Testbild anzeigen</value>
   </data>
+  <data name="vOrderContextMenuRefresh" xml:space="preserve">
+    <value>Neu laden</value>
+  </data>
+  <data name="vOrderContextMenuRemove" xml:space="preserve">
+    <value>Entfernen</value>
+  </data>
+  <data name="vOrderContextMenuShow" xml:space="preserve">
+    <value>Anzeigen</value>
+  </data>
 </root>

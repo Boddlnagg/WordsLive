@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Words.Core;
 using System.ComponentModel;
 using System.Linq;
+using System.IO;
 
 namespace Words.MediaOrderList
 {
@@ -23,7 +24,7 @@ namespace Words.MediaOrderList
 			}
 			set
 			{
-				if (value == null || value.Activate())
+				if (value == null || CanActivate(value))
 				{
 					activeItem = value;
 					OnPropertyChanged("ActiveItem");
@@ -126,8 +127,9 @@ namespace Words.MediaOrderList
 			{
 				this.RaiseListChangedEvents = raiseListChangedEvents;
 			}
-
-			this.ResetBindings();
+			
+			this.ResetItem(i);
+			this.OnListChanged(new ListChangedEventArgs(ListChangedType.ItemMoved, i, i)); // workaround for a bug in ListBox
 
 			return item;
 		}
@@ -140,16 +142,47 @@ namespace Words.MediaOrderList
 			}
 		}
 
-		private bool CanActivate(Media media)
+		public void Reload(MediaOrderItem item)
 		{
-			if (media is UnsupportedMedia)
+			if (item == null)
+				throw new ArgumentNullException("item");
+
+			if (item == ActiveItem)
 			{
-				OnNotifyTryOpenUnsupportedMedia(media);
+				if (Controller.CurrentPanel != null && Controller.CurrentPanel.IsUpdatable && File.Exists(item.Path))
+				{
+					item.ReloadMetadata();
+					MediaManager.LoadMedia(item.Data);
+					Controller.CurrentPanel.Init(item.Data);
+					// TODO: set (keyboard) focus to ControlPanel.Control (via event CurrentPanelChanged in MainWindow)
+				}
+				else
+				{
+					var newData = MediaManager.LoadMediaMetadata(item.Data.File);
+					Controller.CurrentPanel = null;
+					var newActive = Replace(ActiveItem, newData);
+					if (CanActivate(newActive))
+						ActiveItem = newActive;
+					else
+						ActiveItem = null;
+				}
+			}
+			else
+			{
+				item.ReloadMetadata();
+			}
+		}
+
+		private bool CanActivate(MediaOrderItem item)
+		{
+			if (item.Data is UnsupportedMedia)
+			{
+				OnNotifyTryOpenUnsupportedMedia(item.Data);
 				return false;
 			}
-			else if (media is FileNotFoundMedia)
+			else if (item.Data is FileNotFoundMedia)
 			{
-				OnNotifyTryOpenFileNotFoundMedia(media);
+				OnNotifyTryOpenFileNotFoundMedia(item.Data);
 				return false;
 			}
 			else
@@ -175,7 +208,7 @@ namespace Words.MediaOrderList
 
 		private MediaOrderItem CreateItem(Media media)
 		{
-			return new MediaOrderItem(media, CanActivate);
+			return new MediaOrderItem(media);
 		}
 	}
 }
