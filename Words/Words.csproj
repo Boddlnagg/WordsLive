@@ -275,7 +275,6 @@
     <Compile Include="MediaOrderList\IconProvider.cs" />
     <Compile Include="MediaOrderList\IconProviderManager.cs" />
     <Compile Include="MediaOrderList\MediaOrderItem.cs" />
-    <Compile Include="Utils\ActivatableListBox\IActivatable.cs" />
     <Compile Include="MediaOrderList\MediaOrderList.cs" />
     <Compile Include="PresentationAreaSetting.cs" />
     <Compile Include="PresentationAreaSettingsWindow.xaml.cs">

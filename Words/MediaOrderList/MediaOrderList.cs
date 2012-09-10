@@ -23,10 +23,17 @@ namespace Words.MediaOrderList
 			}
 			set
 			{
-				activeItem = value;
-				OnPropertyChanged("ActiveItem");
-				OnPropertyChanged("ActiveMedia");
-				OnActiveItemChanged();
+				if (value == null || value.Activate())
+				{
+					activeItem = value;
+					OnPropertyChanged("ActiveItem");
+					OnPropertyChanged("ActiveMedia");
+					OnActiveItemChanged();
+				}
+				else
+				{
+					OnPropertyChanged("ActiveItem");
+				}
 			}
 		}
 

@@ -133,10 +133,10 @@ namespace Words.Utils.ActivatableListBox
 				var listBoxItem = element.FindVisualParent<ListBoxItem, ListBox>();
 				if (listBoxItem != null)
 				{
-					var content = listBoxItem.GetValue(ListBoxItem.ContentProperty) as IActivatable;
+					var content = listBoxItem.GetValue(ListBoxItem.ContentProperty);
 					if (content != null)
 					{
-						if (GetActiveItem(listBox) != content && content.Activate())
+						if (GetActiveItem(listBox) != content/* && content.Activate()*/)
 						{
 							SetActiveItem(listBox, content);
 						}
@@ -148,22 +148,22 @@ namespace Words.Utils.ActivatableListBox
 		#endregion
 
 		[AttachedPropertyBrowsableForType(typeof(ListBox))]
-		public static IActivatable GetActiveItem(this ListBox obj)
+		public static object GetActiveItem(this ListBox obj)
 		{
-			return (IActivatable)obj.GetValue(ActiveItemProperty);
+			return obj.GetValue(ActiveItemProperty);
 		}
 
-		public static void SetActiveItem(this ListBox obj, IActivatable value)
+		public static void SetActiveItem(this ListBox obj, object value)
 		{
 			obj.SetValue(ActiveItemProperty, value);
 		}
 
 		public static readonly DependencyProperty ActiveItemProperty =
-			DependencyProperty.RegisterAttached("ActiveItem", typeof(IActivatable), typeof(Activator), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnActiveItemChanged));
+			DependencyProperty.RegisterAttached("ActiveItem", typeof(object), typeof(Activator), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnActiveItemChanged));
 
 		private static void OnActiveItemChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
 		{
-			var value = e.NewValue as IActivatable;
+			var value = e.NewValue;
 			var listBox = d as ListBox;
 			UpdateActivatedIndex(listBox, value);
 			UpdateActivatedItem(listBox, value);
@@ -193,7 +193,7 @@ namespace Words.Utils.ActivatableListBox
 		public static readonly DependencyProperty IsActiveProperty =
 			IsActivePropertyKey.DependencyProperty;
 
-		private static void UpdateActivatedItem(ListBox listBox, IActivatable value)
+		private static void UpdateActivatedItem(ListBox listBox, object value)
 		{
 			for (int i = 0; i < listBox.Items.Count; i++)
 			{
@@ -205,7 +205,7 @@ namespace Words.Utils.ActivatableListBox
 			}
 		}
 
-		private static void UpdateActivatedIndex(ListBox listBox, IActivatable value)
+		private static void UpdateActivatedIndex(ListBox listBox, object value)
 		{
 			// find index of activated item
 			int index;

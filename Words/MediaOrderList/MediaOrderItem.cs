@@ -6,7 +6,7 @@ using Words.Utils.ActivatableListBox;
 
 namespace Words.MediaOrderList
 {
-	public class MediaOrderItem : IActivatable, INotifyPropertyChanged
+	public class MediaOrderItem : INotifyPropertyChanged
 	{
 		private IconProvider iconProvider;
 		private Func<Media, bool> activationHandler;
