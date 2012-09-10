@@ -72,6 +72,7 @@ namespace Words.Slideshow.Impress.Bridge
 		XSlideShowController controller;
 		XModel document;
 		XComponent component;
+		XDesktop desktop;
 		SlideShowListener listener = new SlideShowListener();
 		IntPtr presentationHandle, mainHandle;
 		bool presentationEnded;
@@ -93,7 +94,8 @@ namespace Words.Slideshow.Impress.Bridge
 				// Start LibreOffice and load file
 				unoidl.com.sun.star.uno.XComponentContext localContext = uno.util.Bootstrap.bootstrap();
 				unoidl.com.sun.star.lang.XMultiServiceFactory multiServiceFactory = (unoidl.com.sun.star.lang.XMultiServiceFactory)localContext.getServiceManager();
-				XComponentLoader componentLoader = (XComponentLoader)multiServiceFactory.createInstance("com.sun.star.frame.Desktop");
+				desktop = (XDesktop)multiServiceFactory.createInstance("com.sun.star.frame.Desktop");
+				var componentLoader = (XComponentLoader)desktop;
 				component = componentLoader.loadComponentFromURL(CreateFileUrl(media.File), "_blank", 0, new PropertyValue[] { });
 
 				// Get the main window's handle and hide the window
@@ -102,7 +104,7 @@ namespace Words.Slideshow.Impress.Bridge
 				window.setVisible(false);
 				XSystemDependentWindowPeer xWindowPeer = (XSystemDependentWindowPeer)(window);
 				mainHandle = new IntPtr((int)xWindowPeer.getWindowHandle(new byte[] { }, SystemDependent.SYSTEM_WIN32).Value);
-				ShowWindow(mainHandle, 0);
+				//ShowWindow(mainHandle, 0);
 
 				presentation = (XPresentation2)((XPresentationSupplier)component).getPresentation();
 
@@ -190,6 +192,8 @@ namespace Words.Slideshow.Impress.Bridge
 
 			// Resizing the window works (but a dropshadow remains) and moving doesn't, so we stay fullscreen
 			//MoveWindow(hWnd, 0, 0, 800, 600, true);
+
+			Words.Presentation.Wpf.AeroPeekHelper.RemoveFromAeroPeek(presentationHandle);
 
 			ShowWindow(presenterConsoleHandle, 0); // hide presenter console
 
@@ -283,6 +287,8 @@ namespace Words.Slideshow.Impress.Bridge
 			{
 				presentation.end();
 				component.dispose();
+				if (desktop.getCurrentComponent() == null) // no component is running anymore
+					desktop.terminate();
 			}
 			catch (DisposedException)
 			{
