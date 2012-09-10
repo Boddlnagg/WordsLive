@@ -43,7 +43,9 @@ namespace Words.Presentation.Wpf
 		/// <param name="milliseconds">The duration of the transition in milliseconds.</param>
 		public static void SetContent(FrameworkElement control, int milliseconds, Action callback, IPresentation previous)
 		{
-			if (Instance.MainContainer.Child == control && previous is IWpfPresentation)
+			bool transitionFromNonWpf = previous != null && !(previous is IWpfPresentation);
+
+			if (Instance.MainContainer.Child == control && !transitionFromNonWpf)
 				return;
 
 			if (contentTransitionCallback != null)
@@ -53,10 +55,10 @@ namespace Words.Presentation.Wpf
 
 			Instance.PreviousContainer.Child = null;
 			UIElement previousControl;
-			if (previous is IWpfPresentation)
-				previousControl = Instance.MainContainer.Child;
-			else
+			if (transitionFromNonWpf)
 				previousControl = null;
+			else
+				previousControl = Instance.MainContainer.Child;
 			Instance.MainContainer.Child = control;
 			Instance.PreviousContainer.Child = previousControl;
 			Instance.PreviousContainer.Opacity = 1;
@@ -83,8 +85,13 @@ namespace Words.Presentation.Wpf
 
 		private void ContentTransition_Completed(object sender, EventArgs e)
 		{
-			Instance.PreviousContainer.Child = null;
-			Instance.PreviousContainer.Opacity = 1;
+			// temporarily keep the previous control if the current one is blackscreen
+			// (because the previous control is probably still shown in the preview area)
+			if (!(Instance.MainContainer.Child is BlackscreenControl))
+			{
+				Instance.PreviousContainer.Child = null;
+				Instance.PreviousContainer.Opacity = 1;
+			}
 
 			if (contentTransitionCallback != null)
 			{
