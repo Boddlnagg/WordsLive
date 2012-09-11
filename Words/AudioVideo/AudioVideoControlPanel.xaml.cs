@@ -101,6 +101,11 @@ namespace Words.AudioVideo
 				throw new ArgumentException("media must not be null and of type VideoMedia");
 		}
 
+		public ControlPanelLoadState LoadState
+		{
+			get { return ControlPanelLoadState.Loaded; }
+		}
+
 		private static string FormatTimeSpan(TimeSpan span)
 		{
 			return String.Format("{0:00}:{1:00}", (int)span.TotalMinutes, span.Seconds);

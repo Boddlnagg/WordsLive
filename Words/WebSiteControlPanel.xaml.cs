@@ -143,6 +143,11 @@ namespace Words
 			get { return false; }
 		}
 
+		public ControlPanelLoadState LoadState
+		{
+			get { return ControlPanelLoadState.Loaded; }
+		}
+
 		public void Close()
 		{
 			if (Controller.PresentationManager.CurrentPresentation != presentation)

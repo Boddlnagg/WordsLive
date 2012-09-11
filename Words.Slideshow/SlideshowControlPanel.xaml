@@ -27,9 +27,9 @@
 		<ListView.ItemsPanel>
 			<ItemsPanelTemplate>
 				<WrapPanel Width="{Binding (FrameworkElement.ActualWidth), RelativeSource={RelativeSource AncestorType=ScrollContentPresenter}}"
-								   ItemWidth="{Binding (ListView.View).ItemWidth, RelativeSource={RelativeSource AncestorType=ListView}}"
-								   MinWidth="{Binding ItemWidth, RelativeSource={RelativeSource Self}}"
-								   ItemHeight="{Binding (ListView.View).ItemHeight, RelativeSource={RelativeSource AncestorType=ListView}}" />
+								ItemWidth="{Binding (ListView.View).ItemWidth, RelativeSource={RelativeSource AncestorType=ListView}}"
+								MinWidth="{Binding ItemWidth, RelativeSource={RelativeSource Self}}"
+								ItemHeight="{Binding (ListView.View).ItemHeight, RelativeSource={RelativeSource AncestorType=ListView}}" />
 			</ItemsPanelTemplate>
 		</ListView.ItemsPanel>
 		<ListView.ItemTemplate>

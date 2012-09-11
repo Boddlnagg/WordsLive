@@ -18,5 +18,6 @@ namespace Words
 		/// </summary>
 		bool IsUpdatable { get; }
 		void Close();
+		ControlPanelLoadState LoadState { get; }
 	}
 }

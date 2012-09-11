@@ -156,6 +156,11 @@ namespace Words.Songs
 			get { return true; }
 		}
 
+		public ControlPanelLoadState LoadState
+		{
+			get { return ControlPanelLoadState.Loaded; }
+		}
+
 		private bool showChords;
 
 		public bool ShowChords

@@ -108,6 +108,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="ControlPanelLoadState.cs" />
     <Compile Include="TestPresentation.cs" />
     <Compile Include="XpsDocument.cs" />
     <Compile Include="XpsDocumentControlPanel.xaml.cs">
@@ -160,6 +161,7 @@
     <Resource Include="Artwork\Small_Category.png" />
     <Resource Include="Artwork\Movie.png" />
     <Resource Include="Artwork\LoadingAnimation.png" />
+    <Resource Include="Artwork\LoadingFailed.png" />
     <Content Include="Data\jquery.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

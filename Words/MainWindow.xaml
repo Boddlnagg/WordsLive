@@ -264,12 +264,56 @@
 			</DockPanel>
 			<Grid Grid.Column="2" Grid.RowSpan="3" Margin="0,26,0,0" VerticalAlignment="Stretch">
 				<Grid.RowDefinitions>
-					<RowDefinition Height="Auto"/>
+					<!--<RowDefinition Height="Auto"/>-->
 					<RowDefinition Height="*"/>
-					<RowDefinition Height="Auto"/>
+					<!--<RowDefinition Height="Auto"/>-->
 				</Grid.RowDefinitions>
 				<!--<Label Grid.Row="0" Background="LightGray">Zurück</Label>-->
-				<Border x:Name="ControlPanel" Grid.Row="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
+				<Border x:Name="ControlPanel" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
+				<Image x:Name="LoadingAnimation" Source="/Words;component/Artwork/LoadingAnimation.png" Stretch="None" RenderTransformOrigin="0.5,0.5">
+					<Image.Style>
+						<Style TargetType="Image">
+							<Style.Setters>
+								<Setter Property="Visibility" Value="Collapsed"/>
+							</Style.Setters>
+							<Style.Triggers>
+								<DataTrigger Binding="{Binding CurrentPanel.LoadState}" Value="Loading">
+									<Setter Property="Visibility" Value="Visible"/>
+								</DataTrigger>
+							</Style.Triggers>
+						</Style>
+					</Image.Style>
+					<Image.RenderTransform>
+						<RotateTransform Angle="0" />
+					</Image.RenderTransform>
+					<Image.Triggers>
+						<EventTrigger RoutedEvent="Image.Loaded">
+							<BeginStoryboard>
+								<Storyboard>
+									<DoubleAnimation
+										Storyboard.TargetName="LoadingAnimation" 
+										Storyboard.TargetProperty="(RenderTransform).(RotateTransform.Angle)"
+										From="0" To="359" Duration="0:0:1" 
+										AutoReverse="False" RepeatBehavior="Forever" />
+								</Storyboard>
+							</BeginStoryboard>
+						</EventTrigger>
+					</Image.Triggers>
+				</Image>
+				<Image x:Name="LoadingFailedImage" Source="/Words;component/Artwork/LoadingFailed.png" Stretch="None">
+					<Image.Style>
+						<Style TargetType="Image">
+							<Style.Setters>
+								<Setter Property="Visibility" Value="Collapsed"/>
+							</Style.Setters>
+							<Style.Triggers>
+								<DataTrigger Binding="{Binding CurrentPanel.LoadState}" Value="Failed">
+									<Setter Property="Visibility" Value="Visible"/>
+								</DataTrigger>
+							</Style.Triggers>
+						</Style>
+					</Image.Style>
+				</Image>
 				<!--<Label Grid.Row="2" Content="Weiter" FontSize="13" Background="LightGray"/>-->
 			</Grid>
 		</Grid>

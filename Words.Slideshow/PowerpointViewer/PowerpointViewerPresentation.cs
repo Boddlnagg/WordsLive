@@ -60,14 +60,21 @@ namespace Words.Slideshow.PowerpointViewer
 				{
 					Controller.Dispatcher.Invoke(new Action(() =>
 					{
-						Words.Presentation.Wpf.AeroPeekHelper.RemoveFromAeroPeek(doc.WindowHandle);
-						if (showOnLoaded)
+						if (!isClosing)
 						{
-							doc.Move(Area.WindowLocation.X, Area.WindowLocation.Y);
-							isShown = true;
+							Words.Presentation.Wpf.AeroPeekHelper.RemoveFromAeroPeek(doc.WindowHandle);
+							if (showOnLoaded)
+							{
+								doc.Move(Area.WindowLocation.X, Area.WindowLocation.Y);
+								isShown = true;
+							}
+							OnLoaded(true);
+							Controller.FocusMainWindow();
 						}
-						base.OnLoaded(true);
-						Controller.FocusMainWindow();
+						else
+						{
+							doc.Close();
+						}
 					}));
 				};
 
@@ -87,7 +94,7 @@ namespace Words.Slideshow.PowerpointViewer
 			{
 				Controller.Dispatcher.Invoke(new Action(() =>
 				{
-					base.OnLoaded(false);
+					OnLoaded(false);
 				}));
 			}
 		}

@@ -39,6 +39,11 @@ namespace Words
 			get { return true; }
 		}
 
+		public ControlPanelLoadState LoadState
+		{
+			get { return ControlPanelLoadState.Loaded; }
+		}
+
 		public void Close()
 		{
 			

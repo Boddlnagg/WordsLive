@@ -73,7 +73,7 @@ namespace Words.Slideshow
 		
 		public event EventHandler SlideIndexChanged;
 
-		protected void OnSlideIndexChanged()
+		protected virtual void OnSlideIndexChanged()
 		{
 			if (SlideIndexChanged != null)
 				SlideIndexChanged(this, EventArgs.Empty);
@@ -81,7 +81,7 @@ namespace Words.Slideshow
 
 		public event EventHandler<SlideshowLoadedEventArgs> Loaded;
 
-		protected void OnLoaded(bool success)
+		protected virtual void OnLoaded(bool success)
 		{
 			if (Loaded != null)
 				Loaded(this, new SlideshowLoadedEventArgs(success));
@@ -89,7 +89,7 @@ namespace Words.Slideshow
 
 		public event EventHandler ClosedExternally;
 
-		protected void OnClosedExternally()
+		protected virtual void OnClosedExternally()
 		{
 			if (ClosedExternally != null)
 				ClosedExternally(this, EventArgs.Empty);

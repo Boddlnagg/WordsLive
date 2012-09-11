@@ -1,19 +1,22 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Windows.Controls;
 using System.Windows.Input;
-using Words.Core;
 
 namespace Words.Slideshow
 {
 	[TargetMedia(typeof(SlideshowMedia))]
-	public partial class SlideshowControlPanel : UserControl, IMediaControlPanel
+	public partial class SlideshowControlPanel : UserControl, IMediaControlPanel, INotifyPropertyChanged
 	{
 		private SlideshowMedia media;
 		private ISlideshowPresentation pres;
+		private ControlPanelLoadState loadState;
 
 		public SlideshowControlPanel()
 		{
 			InitializeComponent();
+
+			LoadState = ControlPanelLoadState.Loading;
 		}
 
 		public Control Control
@@ -33,12 +36,14 @@ namespace Words.Slideshow
 				this.Dispatcher.Invoke(new Action(() => {
 					if (args.Success)
 					{
+						LoadState = ControlPanelLoadState.Loaded;
 						Controller.PresentationManager.CurrentPresentation = pres;
 						this.slideListView.DataContext = pres.Thumbnails;
 						this.Focus();
 					}
 					else
 					{
+						LoadState = ControlPanelLoadState.Failed;
 						Controller.PresentationManager.CurrentPresentation = null;
 					}
 				}));
@@ -109,10 +114,31 @@ namespace Words.Slideshow
 			get { return false; }
 		}
 
+		public ControlPanelLoadState LoadState
+		{
+			get
+			{
+				return loadState;
+			}
+			set
+			{
+				loadState = value;
+				OnPropertyChanged("LoadState");
+			}
+		}
+
 		public void Close()
 		{
 			if (Controller.PresentationManager.CurrentPresentation != pres)
 				pres.Close();
+		}
+
+		public event PropertyChangedEventHandler PropertyChanged;
+
+		protected virtual void OnPropertyChanged(string propertyName)
+		{
+			if (PropertyChanged != null)
+				PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 		}
 	}
 }
