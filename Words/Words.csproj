@@ -119,6 +119,7 @@
     <Compile Include="Images\ImagesMedia.cs" />
     <Compile Include="Images\ImagesPresentation.cs" />
     <Compile Include="TestPresentation.cs" />
+    <Compile Include="Utils\InsertionAdorner.cs" />
     <Compile Include="XpsDocument.cs" />
     <Compile Include="XpsDocumentControlPanel.xaml.cs">
       <DependentUpon>XpsDocumentControlPanel.xaml</DependentUpon>

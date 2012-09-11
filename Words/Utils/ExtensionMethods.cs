@@ -147,6 +147,19 @@ namespace Words.Utils
 			}
 		}
 
+		public static int GetIndexAtPosition(this ListView listView, Point relativePosition)
+		{
+			var item = (listView.InputHitTest(relativePosition) as DependencyObject).FindVisualParent<ListViewItem, ListView>();
+			if (item != null)
+			{
+				return listView.ItemContainerGenerator.IndexFromContainer(item);
+			}
+			else
+			{
+				return -1;
+			}
+		}
+
 		public static TreeViewItem GetItemAtPosition(this TreeView treeView, Point relativePosition)
 		{
 			return (treeView.InputHitTest(relativePosition) as DependencyObject).FindVisualParent<TreeViewItem, TreeView>();

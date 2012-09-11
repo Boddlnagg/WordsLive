@@ -603,4 +603,7 @@
   <data name="vOrderContextMenuShow" xml:space="preserve">
     <value>Anzeigen</value>
   </data>
+  <data name="vImagesContextMenuRemove" xml:space="preserve">
+    <value>Entfernen</value>
+  </data>
 </root>

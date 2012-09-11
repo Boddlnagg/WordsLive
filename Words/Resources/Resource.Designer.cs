@@ -1132,6 +1132,15 @@ namespace Words.Resources {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Entfernen ähnelt.
+        /// </summary>
+        public static string vImagesContextMenuRemove {
+            get {
+                return ResourceManager.GetString("vImagesContextMenuRemove", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die _Aktive Präsentation ähnelt.
         /// </summary>
         public static string vMenuActivePresentation {
