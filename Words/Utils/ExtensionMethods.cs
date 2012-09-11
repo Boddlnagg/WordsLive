@@ -103,7 +103,7 @@ namespace Words.Utils
 			while (source != null && source.GetType() != typeof(T) && source.GetType() != typeof(TLimit))
 				source = VisualTreeHelper.GetParent(source);
 
-			if (source.GetType() != typeof(T))
+			if (source == null || source.GetType() != typeof(T))
 				return null;
 			else
 				return (T)source;
