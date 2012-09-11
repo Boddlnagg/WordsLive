@@ -30,7 +30,18 @@ namespace Words.Slideshow
 		{
 			pres.Loaded += (sender, args) =>
 			{
-				this.Dispatcher.Invoke(new Action(presentation_Loaded));
+				this.Dispatcher.Invoke(new Action(() => {
+					if (args.Success)
+					{
+						Controller.PresentationManager.CurrentPresentation = pres;
+						this.slideListView.DataContext = pres.Thumbnails;
+						this.Focus();
+					}
+					else
+					{
+						Controller.PresentationManager.CurrentPresentation = null;
+					}
+				}));
 			};
 
 			pres.SlideIndexChanged += (sender, args) =>
@@ -57,22 +68,12 @@ namespace Words.Slideshow
 				this.media = (SlideshowMedia)media;
 				pres = this.media.CreatePresentation();
 				SetupEventListeners();
-				if (!pres.Load())
-				{
-					Controller.PresentationManager.CurrentPresentation = null;
-				}
+				pres.Load();
 			}
 			else
 			{
 				throw new ArgumentException("media is not a valid slideshow media.");
 			}
-		}
-
-		private void presentation_Loaded()
-		{
-			Controller.PresentationManager.CurrentPresentation = pres;
-			this.slideListView.DataContext = pres.Thumbnails;
-			this.Focus();
 		}
 
 		private void presentation_SlideChanged()

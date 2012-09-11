@@ -87,7 +87,7 @@ namespace Words.Slideshow.Impress.Bridge
 			this.media = media;
 		}
 
-		public override bool Load()
+		public override void Load()
 		{
 			try
 			{
@@ -128,15 +128,13 @@ namespace Words.Slideshow.Impress.Bridge
 
 				LoadPreviewProvider();
 
-				base.OnLoaded();
+				base.OnLoaded(true);
 
 				Controller.FocusMainWindow();
-
-				return true;
 			}
 			catch
 			{
-				return false;
+				base.OnLoaded(false);
 			}
 		}
 

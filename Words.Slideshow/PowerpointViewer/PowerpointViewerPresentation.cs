@@ -45,44 +45,42 @@ namespace Words.Slideshow.PowerpointViewer
 			this.ppt = ppt;
 		}
 
-		public override bool Load()
+		public override void Load()
 		{
 			try
 			{
 				doc = PowerpointViewerController.Open(ppt.File, new Rectangle(Area.WindowLocation.X, Area.WindowLocation.Y, Area.WindowSize.Width, Area.WindowSize.Height), openHidden: true, thumbnailWidth: 200);
+				doc.Loaded += (sender, args) =>
+				{
+					Controller.Dispatcher.Invoke(new Action(() =>
+					{
+						Words.Presentation.Wpf.AeroPeekHelper.RemoveFromAeroPeek(doc.WindowHandle);
+						if (showOnLoaded)
+						{
+							doc.Move(Area.WindowLocation.X, Area.WindowLocation.Y);
+							isShown = true;
+						}
+						base.OnLoaded(true);
+						Controller.FocusMainWindow();
+					}));
+				};
+
+				doc.Closed += (sender, args) =>
+				{
+					if (!isClosing)
+						base.OnClosedExternally();
+				};
+
+				doc.SlideChanged += (sender, args) =>
+				{
+					base.OnSlideIndexChanged();
+				};
+				LoadPreviewProvider();
 			}
 			catch (PowerpointViewerController.PowerpointViewerOpenException)
 			{
-				return false;
+				base.OnLoaded(false);
 			}
-			
-			doc.Loaded += (sender, args) =>
-			{
-				Controller.Dispatcher.Invoke(new Action(() => {
-					Words.Presentation.Wpf.AeroPeekHelper.RemoveFromAeroPeek(doc.WindowHandle);
-					if (showOnLoaded)
-					{
-						doc.Move(Area.WindowLocation.X, Area.WindowLocation.Y);
-						isShown = true;
-					}
-					base.OnLoaded();
-					Controller.FocusMainWindow();
-				}));
-			};
-
-			doc.Closed += (sender, args) =>
-			{
-				if (!isClosing)
-					base.OnClosedExternally();
-			};
-
-			doc.SlideChanged += (sender, args) =>
-			{
-				base.OnSlideIndexChanged();
-			};
-			LoadPreviewProvider();
-
-			return true;
 		}
 
 		public override void Show()

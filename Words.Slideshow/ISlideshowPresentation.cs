@@ -4,15 +4,25 @@ using Words.Presentation;
 
 namespace Words.Slideshow
 {
+	public class SlideshowLoadedEventArgs : EventArgs
+	{
+		public bool Success { get; private set; }
+
+		public SlideshowLoadedEventArgs(bool success)
+		{
+			Success = success;
+		}
+	}
+
 	public interface ISlideshowPresentation : IPresentation
 	{
-		bool Load();
+		void Load();
 		void GotoSlide(int index);
 		void NextStep();
 		void PreviousStep();
 		int SlideIndex { get; }
 		IList<SlideThumbnail> Thumbnails { get; }
-		event EventHandler Loaded;
+		event EventHandler<SlideshowLoadedEventArgs> Loaded;
 		event EventHandler SlideIndexChanged;
 		event EventHandler ClosedExternally;
 	}

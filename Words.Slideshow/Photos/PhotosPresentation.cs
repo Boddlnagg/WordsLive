@@ -15,13 +15,12 @@ namespace Words.Slideshow.Photos
 			this.media = media;
 		}
 
-		public bool Load()
+		public void Load()
 		{
 			images = new List<PhotosMedia.PhotoInfo>(media.Photos);
 			index = 0;
 			Update();
-			OnLoaded();
-			return true;
+			OnLoaded(true);
 		}
 
 		public void GotoSlide(int index)
@@ -73,10 +72,10 @@ namespace Words.Slideshow.Photos
 			}
 		}
 
-		protected void OnLoaded()
+		protected void OnLoaded(bool success)
 		{
 			if (Loaded != null)
-				Loaded(this, EventArgs.Empty);
+				Loaded(this, new SlideshowLoadedEventArgs(success));
 		}
 
 		protected void OnSlideIndexChanged()
@@ -93,7 +92,7 @@ namespace Words.Slideshow.Photos
 
 		public event EventHandler ClosedExternally;
 
-		public event EventHandler Loaded;
+		public event EventHandler<SlideshowLoadedEventArgs> Loaded;
 
 		public event EventHandler SlideIndexChanged;
 	}

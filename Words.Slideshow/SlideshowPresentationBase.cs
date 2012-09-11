@@ -8,7 +8,7 @@ namespace Words.Slideshow
 	{
 		private SlideshowPreviewProvider preview;
 
-		public abstract bool Load();
+		public abstract void Load();
 
 		public virtual bool UsesSamePresentationWindow(IPresentation presentation)
 		{
@@ -76,12 +76,12 @@ namespace Words.Slideshow
 				SlideIndexChanged(this, EventArgs.Empty);
 		}
 
-		public event EventHandler Loaded;
+		public event EventHandler<SlideshowLoadedEventArgs> Loaded;
 
-		protected void OnLoaded()
+		protected void OnLoaded(bool success)
 		{
 			if (Loaded != null)
-				Loaded(this, EventArgs.Empty);
+				Loaded(this, new SlideshowLoadedEventArgs(success));
 		}
 
 		public event EventHandler ClosedExternally;
