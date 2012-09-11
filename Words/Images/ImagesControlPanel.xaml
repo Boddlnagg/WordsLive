@@ -44,6 +44,11 @@
 					</Grid.RowDefinitions>
 					<Border BorderThickness="3" Style="{StaticResource borderStyle}">
 						<Image imageloader:Loader.Source="{Binding FullName}" ToolTip="{Binding Name}" Margin="2,2,2,2" Height="120"/>
+						<Border.ContextMenu>
+							<ContextMenu>
+								<MenuItem Header="Remove" Click="Remove_Click"/>
+							</ContextMenu>
+						</Border.ContextMenu>
 					</Border>
 				</Grid>
 			</DataTemplate>

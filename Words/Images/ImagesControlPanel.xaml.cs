@@ -32,10 +32,9 @@ namespace Words.Images
 			{
 				this.media = (ImagesMedia)media;
 				pres = Controller.PresentationManager.CreatePresentation<ImagesPresentation>();
-				pres.Load(this.media);
+				pres.LoadingFinished += pres_LoadingFinished;
 				Controller.PresentationManager.CurrentPresentation = pres;
 				this.slideListView.DataContext = this.media.Images;
-				this.Focus();
 			}
 			else
 			{
@@ -43,11 +42,17 @@ namespace Words.Images
 			}
 		}
 
+		void pres_LoadingFinished(object sender, EventArgs e)
+		{
+			this.Cursor = Cursors.Arrow;
+		}
+
 		private void slideListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
-			if (pres.SlideIndex != slideListView.SelectedIndex)
+			if (slideListView.SelectedItem != null)
 			{
-				pres.GotoSlide(slideListView.SelectedIndex);
+				pres.ShowImage((System.IO.FileInfo)slideListView.SelectedItem);
+				this.Cursor = Cursors.Wait;
 			}
 			slideListView.ScrollIntoView(slideListView.SelectedItem);
 		}
@@ -56,19 +61,22 @@ namespace Words.Images
 		{
 			if (e.Key == Key.Right || e.Key == Key.Down || e.Key == Key.PageDown)
 			{
-				pres.NextStep();
+				if (slideListView.SelectedIndex + 1 < slideListView.Items.Count)
+					slideListView.SelectedIndex++;
+				
 				e.Handled = true;
 			}
 			else if (e.Key == Key.Left || e.Key == Key.Up || e.Key == Key.PageUp)
 			{
-				pres.PreviousStep();
+				if (slideListView.SelectedIndex > 0)
+					slideListView.SelectedIndex--;
 				e.Handled = true;
 			}
 		}
 
 		public bool IsUpdatable
 		{
-			get { return false; }
+			get { return false; } // TODO
 		}
 
 		public ControlPanelLoadState LoadState
@@ -91,6 +99,12 @@ namespace Words.Images
 		{
 			if (PropertyChanged != null)
 				PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+		}
+
+		private void Remove_Click(object sender, System.Windows.RoutedEventArgs e)
+		{
+			var item = (System.IO.FileInfo)slideListView.SelectedItem;
+			this.media.Images.Remove(item);
 		}
 	}
 }

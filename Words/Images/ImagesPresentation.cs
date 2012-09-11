@@ -7,55 +7,22 @@ namespace Words.Images
 {
 	public class ImagesPresentation : WpfPresentation<ImagesControl>
 	{
-		private ImagesMedia media;
-		private int index;
-
-		public void Load(ImagesMedia media)
+		public ImagesPresentation()
 		{
-			this.media = media;
-			//images = new List<ImagesMedia.ImageInfo>(media.Photos);
-			index = 0;
-			Update();
+			this.Control.LoadingFinished += (sender, args) => OnLoadingFinished();
 		}
 
-		public void GotoSlide(int index)
+		public void ShowImage(FileInfo file)
 		{
-			this.index = index;
-			Update();
-			
+			this.Control.ImageSource = file.FullName;
 		}
 
-		public void NextStep()
-		{
-			if (index < media.Images.Count - 1)
-			{
-				index++;
-				Update();
-			}
-		}
+		public event EventHandler LoadingFinished;
 
-		public void PreviousStep()
+		protected virtual void OnLoadingFinished()
 		{
-			if (index > 0)
-			{
-				index--;
-				Update();
-			}
-		}
-
-		private void Update()
-		{
-			this.Control.ImageSource = media.Images[index].FullName;
-			//if (index + 1 < images.Count)
-			//	images[index + 1].PreCache();
-		}
-
-		public int SlideIndex
-		{
-			get
-			{
-				return index;
-			}
+			if (LoadingFinished != null)
+				LoadingFinished(this, EventArgs.Empty);
 		}
 	}
 }

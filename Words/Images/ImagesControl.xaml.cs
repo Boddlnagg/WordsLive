@@ -35,6 +35,18 @@ namespace Words.Images
 				Loader.SetSource(back, nextSource);
 				nextSource = null;
 			}
+			else
+			{
+				OnLoadingFinished();
+			}
+		}
+
+		public event EventHandler LoadingFinished;
+
+		protected virtual void OnLoadingFinished()
+		{
+			if (LoadingFinished != null)
+				LoadingFinished(this, EventArgs.Empty);
 		}
 
 		public int TransitionDuration
