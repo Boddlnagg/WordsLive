@@ -223,6 +223,7 @@ namespace Words.Utils.ImageLoader
 					{
 						// Set IsLoading Pty
 						Loader.SetIsLoading(image, false);
+						image.RaiseEvent(new RoutedEventArgs(Loader.LoadedEvent, image));
 					}
 				}));
 			}
@@ -337,7 +338,7 @@ namespace Words.Utils.ImageLoader
 								imageSource = writable;
 							}
 						}
-						else if (loadType == DisplayOptions.FullResolution)
+						else if (loadType == DisplayOptions.Combined || loadType == DisplayOptions.FullResolution)
 						{
 							BitmapFrame bitmapFrame = BitmapFrame.Create(imageStream);
 							int rotation = GetRotation(bitmapFrame.Metadata as BitmapMetadata);
@@ -350,9 +351,10 @@ namespace Words.Utils.ImageLoader
 							bitmapImage.Transform = transformGroup;
 							bitmapImage.EndInit();
 
-							bitmapImage.Freeze();
+							WriteableBitmap writable = new WriteableBitmap(bitmapImage);
+							writable.Freeze();
 
-							imageSource = bitmapImage;
+							imageSource = writable;
 						}
 						else if (loadType == DisplayOptions.VideoPreview)
 						{
@@ -474,20 +476,23 @@ namespace Words.Utils.ImageLoader
 							displayOption = Loader.GetDisplayOption(loadTask.Image);
 						}));
 
-						ImageSource bitmapSource;
+						ImageSource bitmapSource = null;
 
 						if (displayOption == DisplayOptions.VideoPreview)
 							bitmapSource = GetBitmapSource(loadTask, DisplayOptions.VideoPreview);
-						else
+						else if (displayOption != DisplayOptions.FullResolution)
 							bitmapSource = GetBitmapSource(loadTask, DisplayOptions.Preview);
 
 						if (displayOption == DisplayOptions.Preview || displayOption == DisplayOptions.VideoPreview)
 						{
 							EndLoading(loadTask.Image, bitmapSource, loadTask, true);
 						}
-						else if (displayOption == DisplayOptions.FullResolution)
+						else if (displayOption == DisplayOptions.Combined || displayOption == DisplayOptions.FullResolution)
 						{
-							EndLoading(loadTask.Image, bitmapSource, loadTask, false);
+							if (displayOption != DisplayOptions.FullResolution)
+							{
+								EndLoading(loadTask.Image, bitmapSource, loadTask, false);
+							}
 
 							lock (_loadNormalStack)
 							{
@@ -522,7 +527,7 @@ namespace Words.Utils.ImageLoader
 
 					if (loadTask != null && !loadTask.IsCanceled)
 					{
-						ImageSource bitmapSource = GetBitmapSource(loadTask, DisplayOptions.FullResolution);
+						ImageSource bitmapSource = GetBitmapSource(loadTask, DisplayOptions.Combined);
 						EndLoading(loadTask.Image, bitmapSource, loadTask, true);
 					}
 

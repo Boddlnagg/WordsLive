@@ -4,9 +4,9 @@ using System.Linq;
 using System.Windows;
 using Words.Core;
 
-namespace Words.Slideshow.Photos
+namespace Words.Images
 {
-	public class PhotosFileHandler : MediaFileHandler
+	public class ImagesFileHandler : MediaFileHandler
 	{
 		public override IEnumerable<string> Extensions
 		{
@@ -20,7 +20,7 @@ namespace Words.Slideshow.Photos
 
 		public override Media TryHandle(FileInfo file)
 		{
-			var media = new PhotosMedia();
+			var media = new ImagesMedia();
 			media.LoadMetadata(file.FullName);
 			return media;
 		}
@@ -39,13 +39,13 @@ namespace Words.Slideshow.Photos
 
 					if (dlg.ShowDialog() == true)
 					{
-						// TODO: move writing the actual file to PhotosMedia
+						// TODO: move writing the actual file to ImagesMedia
 						using (StreamWriter writer = new StreamWriter(dlg.FileName))
 						{
 							foreach (var f in files)
 								writer.WriteLine(f.FullName);
 						}
-						var media = new PhotosMedia();
+						var media = new ImagesMedia();
 						media.LoadMetadata(dlg.FileName);
 						return new Media[] { media };
 					}

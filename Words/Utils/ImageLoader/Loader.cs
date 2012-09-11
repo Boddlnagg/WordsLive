@@ -23,12 +23,12 @@ namespace Words.Utils.ImageLoader
 
 		
 		[AttachedPropertyBrowsableForType(typeof(Image))]
-		public static string GetSource(Image obj)
+		public static object GetSource(Image obj)
 		{
-			return (string)obj.GetValue(SourceProperty);
+			return obj.GetValue(SourceProperty);
 		}
 
-		public static void SetSource(Image obj, string value)
+		public static void SetSource(Image obj, object value)
 		{
 			obj.SetValue(SourceProperty, value);
 		}
@@ -114,8 +114,24 @@ namespace Words.Utils.ImageLoader
 
 		public static readonly DependencyProperty ErrorDetectedProperty =
 			DependencyProperty.RegisterAttached("ErrorDetected", typeof(bool), typeof(Loader), new UIPropertyMetadata(false));
-
 		
+		public static readonly RoutedEvent LoadedEvent = EventManager.RegisterRoutedEvent("Loaded", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(Loader));
+		public static void AddLoadedHandler(DependencyObject d, RoutedEventHandler handler)
+		{
+			UIElement uie = d as UIElement;
+			if (uie != null)
+			{
+				uie.AddHandler(LoadedEvent, handler);
+			}
+		}
+		public static void RemoveLoadedHandler(DependencyObject d, RoutedEventHandler handler)
+		{
+			UIElement uie = d as UIElement;
+			if (uie != null)
+			{
+				uie.RemoveHandler(LoadedEvent, handler);
+			}
+		}
 		
 	}
 }

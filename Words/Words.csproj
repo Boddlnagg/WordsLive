@@ -109,6 +109,15 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="ControlPanelLoadState.cs" />
+    <Compile Include="Images\ImagesControlPanel.xaml.cs">
+      <DependentUpon>ImagesControlPanel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Images\ImagesControl.xaml.cs">
+      <DependentUpon>ImagesControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Images\ImagesFileHandler.cs" />
+    <Compile Include="Images\ImagesMedia.cs" />
+    <Compile Include="Images\ImagesPresentation.cs" />
     <Compile Include="TestPresentation.cs" />
     <Compile Include="XpsDocument.cs" />
     <Compile Include="XpsDocumentControlPanel.xaml.cs">
@@ -116,6 +125,14 @@
     </Compile>
     <Compile Include="XpsDocumentFileHandler.cs" />
     <Compile Include="XpsPresentation.cs" />
+    <Page Include="Images\ImagesControlPanel.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Images\ImagesControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="XpsDocumentControlPanel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

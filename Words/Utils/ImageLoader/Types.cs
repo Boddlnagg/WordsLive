@@ -11,6 +11,7 @@ namespace Words.Utils.ImageLoader
 	public enum DisplayOptions
 	{
 		Preview,
+		Combined,
 		FullResolution,
 		VideoPreview
 	}

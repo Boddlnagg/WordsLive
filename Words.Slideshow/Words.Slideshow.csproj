@@ -49,12 +49,6 @@
     <Compile Include="Impress\ImpressFileHandler.cs" />
     <Compile Include="Impress\ImpressMedia.cs" />
     <Compile Include="ISlideshowPresentation.cs" />
-    <Compile Include="Photos\PhotosFileHandler.cs" />
-    <Compile Include="Photos\PhotosMedia.cs" />
-    <Compile Include="Photos\PhotosPresentation.cs" />
-    <Compile Include="Photos\PhotosControl.xaml.cs">
-      <DependentUpon>PhotosControl.xaml</DependentUpon>
-    </Compile>
     <Compile Include="PowerpointViewer\PowerpointViewerFileHandler.cs" />
     <Compile Include="SlideThumbnail.cs" />
     <Compile Include="SlideshowMedia.cs" />
@@ -68,10 +62,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="Photos\PhotosControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="SlideshowControlPanel.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
