@@ -8,6 +8,7 @@ using Words.Core;
 using System.Linq;
 using System.Windows;
 using System.Collections.ObjectModel;
+using Ionic.Zip;
 
 namespace Words.Images
 {
@@ -15,18 +16,61 @@ namespace Words.Images
 	{
 		// TODO: allow adding/reordering/removing images after loading
 
-		public ObservableCollection<FileInfo> Images { get; private set; }
+		public class ImageInfo
+		{
+			public FileInfo File { get; private set; }
+			public ZipEntry ZipEntry { get; private set; }
+
+			public object Source
+			{
+				get
+				{
+					if (File != null)
+						return File;
+					else
+						return ZipEntry;
+				}
+			}
+
+			public string Title
+			{
+				get
+				{
+					if (File != null)
+						return File.Name;
+					else
+						return "ZIP"; // TODO
+				}
+			}
+
+			public ImageInfo(FileInfo file)
+			{
+				this.File = file;
+			}
+
+			public ImageInfo(string filename)
+			{
+				this.File = new FileInfo(filename);
+			}
+
+			public ImageInfo(ZipEntry entry)
+			{
+				this.ZipEntry = entry;
+			}
+		}
+
+		public ObservableCollection<ImageInfo> Images { get; private set; }
 
 		public override void Load()
 		{
 			FileInfo file = new FileInfo(this.File);
 			if (file.Extension.ToLower() == ".show")
-				Images = new ObservableCollection<FileInfo>(LoadFromTxt(this.File).ToList());
+				Images = new ObservableCollection<ImageInfo>(LoadFromTxt(this.File));
 			else
-				Images = new ObservableCollection<FileInfo> { file };
+				Images = new ObservableCollection<ImageInfo> { new ImageInfo(file) };
 		}
 
-		private IEnumerable<FileInfo> LoadFromTxt(string filename)
+		private IEnumerable<ImageInfo> LoadFromTxt(string filename)
 		{
 			using (StreamReader reader = new StreamReader(filename))
 			{
@@ -34,10 +78,10 @@ namespace Words.Images
 
 				while ((line = reader.ReadLine()) != null)
 				{
-					if (!System.IO.File.Exists(line))
+					if (!System.IO.File.Exists(line)) // TODO: maybe show anyway? (-> loading error image)
 						continue;
 
-					yield return new FileInfo(line);
+					yield return new ImageInfo(new FileInfo(line));
 				}
 			}
 		}

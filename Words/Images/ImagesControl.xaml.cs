@@ -11,7 +11,7 @@ namespace Words.Images
 		Storyboard storyboard;
 		int transitionDuration = 500; // in milliseconds
 		bool animationRunning;
-		string nextSource = null;
+		object nextSource = null;
 
 		public ImagesControl()
 		{
@@ -61,15 +61,15 @@ namespace Words.Images
 			}
 		}
 
-		public string ImageSource
+		public object ImageSource
 		{
 			get
 			{
-				return (string)Loader.GetSource(front);
+				return Loader.GetSource(front);
 			}
 			set
 			{
-				if (value != (string)Loader.GetSource(back))
+				if (value != Loader.GetSource(back))
 				{
 					if (animationRunning)
 					{

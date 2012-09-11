@@ -7,7 +7,6 @@ using System.Windows;
 using System.Collections.Generic;
 using System.Windows.Controls.Primitives;
 using System.Windows.Documents;
-using System.IO;
 
 namespace Words.Images
 {
@@ -57,7 +56,7 @@ namespace Words.Images
 		{
 			if (slideListView.SelectedItem != null)
 			{
-				pres.ShowImage((FileInfo)slideListView.SelectedItem);
+				pres.ShowImage((ImagesMedia.ImageInfo)slideListView.SelectedItem);
 				this.Cursor = Cursors.Wait;
 			}
 			slideListView.ScrollIntoView(slideListView.SelectedItem);
@@ -115,7 +114,7 @@ namespace Words.Images
 			if (i >= 0)
 			{
 				this.CreateInsertionAdorner(slideListView.ItemContainerGenerator.ContainerFromIndex(i) as FrameworkElement);
-				if (e.Data.GetData(typeof(FileInfo)) != null)
+				if (e.Data.GetData(typeof(ImagesMedia.ImageInfo)) != null)
 					e.Effects = DragDropEffects.Move;
 				else
 					e.Effects = DragDropEffects.Copy;
@@ -142,7 +141,7 @@ namespace Words.Images
 			if (i >= 0)
 			{
 				// Data comes from list itself
-				if (e.Data.GetData(typeof(FileInfo)) != null)
+				if (e.Data.GetData(typeof(ImagesMedia.ImageInfo)) != null)
 				{
 					if (oldIndex < 0)
 						return;
@@ -160,7 +159,7 @@ namespace Words.Images
 					foreach (string file in files)
 					{
 						// TODO: check validity (image format)
-						media.Images.Insert(i + 1, new FileInfo(file));
+						media.Images.Insert(i + 1, new ImagesMedia.ImageInfo(file));
 					}
 				}
 			}
@@ -215,7 +214,7 @@ namespace Words.Images
 		{
 			if (e.LeftButton == MouseButtonState.Pressed && oldIndex >= 0 && e.GetPosition(slideListView).ExceedsMinimumDragDistance(startPoint))
 			{
-				var selectedItem = (FileInfo)slideListView.Items[oldIndex];
+				var selectedItem = (ImagesMedia.ImageInfo)slideListView.Items[oldIndex];
 				DragDrop.DoDragDrop(this, selectedItem, DragDropEffects.Move);
 			}
 		}
@@ -240,7 +239,7 @@ namespace Words.Images
 		{
 			if (e.Command == ApplicationCommands.Delete)
 			{
-				var item = (FileInfo)slideListView.SelectedItem;
+				var item = (ImagesMedia.ImageInfo)slideListView.SelectedItem;
 				this.media.Images.Remove(item);
 			}
 		}

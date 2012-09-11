@@ -12,9 +12,9 @@ namespace Words.Images
 			this.Control.LoadingFinished += (sender, args) => OnLoadingFinished();
 		}
 
-		public void ShowImage(FileInfo file)
+		public void ShowImage(ImagesMedia.ImageInfo image)
 		{
-			this.Control.ImageSource = file.FullName;
+			this.Control.ImageSource = image.Source;
 		}
 
 		public event EventHandler LoadingFinished;

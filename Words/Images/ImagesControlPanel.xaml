@@ -50,7 +50,7 @@
 						<RowDefinition Height="Auto" SharedSizeGroup="Row"/>
 					</Grid.RowDefinitions>
 					<Border BorderThickness="3" Style="{StaticResource borderStyle}">
-						<Image imageloader:Loader.Source="{Binding FullName}" ToolTip="{Binding Name}" Margin="2,2,2,2" Height="120"/>
+						<Image imageloader:Loader.Source="{Binding Source}" ToolTip="{Binding Title}" Margin="2,2,2,2" Height="120"/>
 					</Border>
 				</Grid>
 			</DataTemplate>
