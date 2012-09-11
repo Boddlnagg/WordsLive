@@ -7,10 +7,10 @@
 			 mc:Ignorable="d" 
 			 d:DesignHeight="300" d:DesignWidth="300">
 	<Grid>
-		<Grid x:Name="backGrid" Background="Red">
+		<Grid x:Name="backGrid" Background="Black">
 			<Image x:Name="back" imageloader:Loader.DisplayOption="FullResolution" imageloader:Loader.Loaded="back_Loaded"/>
 		</Grid>
-		<Grid x:Name="frontGrid" Background="Green">
+		<Grid x:Name="frontGrid" Background="Black">
 			<Image x:Name="front"/>
 		</Grid>
 	</Grid>
