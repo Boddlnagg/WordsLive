@@ -14,7 +14,7 @@ namespace Words.Images
 
 		public void ShowImage(ImagesMedia.ImageInfo image)
 		{
-			this.Control.ImageSource = image.Source;
+			this.Control.CurrentImage = image;
 		}
 
 		public event EventHandler LoadingFinished;

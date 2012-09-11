@@ -39,7 +39,18 @@ namespace Words.Images
 					if (File != null)
 						return File.Name;
 					else
-						return "ZIP"; // TODO
+						return ZipEntry.FileName;
+				}
+			}
+
+			public Utils.ImageLoader.SourceType SourceType
+			{
+				get
+				{
+					if (File != null)
+						return Utils.ImageLoader.SourceType.LocalDisk;
+					else
+						return Utils.ImageLoader.SourceType.ZipFile;
 				}
 			}
 
@@ -66,6 +77,8 @@ namespace Words.Images
 			FileInfo file = new FileInfo(this.File);
 			if (file.Extension.ToLower() == ".show")
 				Images = new ObservableCollection<ImageInfo>(LoadFromTxt(this.File));
+			else if (file.Extension.ToLower() == ".zip")
+				Images = new ObservableCollection<ImageInfo>(LoadFromZip(this.File));
 			else
 				Images = new ObservableCollection<ImageInfo> { new ImageInfo(file) };
 		}
@@ -82,6 +95,17 @@ namespace Words.Images
 						continue;
 
 					yield return new ImageInfo(new FileInfo(line));
+				}
+			}
+		}
+
+		private IEnumerable<ImageInfo> LoadFromZip(string filename)
+		{
+			using (var zip = new ZipFile(filename))
+			{
+				foreach (var entry in zip.Entries)
+				{
+					yield return new ImageInfo(entry);
 				}
 			}
 		}

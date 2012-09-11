@@ -10,7 +10,7 @@ namespace Words.Images
 	{
 		public override IEnumerable<string> Extensions
 		{
-			get { return new string[] { ".show", ".jpg", ".jpeg", ".png" }; } // TODO: add more
+			get { return new string[] { ".show", ".zip", ".jpg", ".jpeg", ".png" }; } // TODO: add more
 		}
 
 		public override string Description

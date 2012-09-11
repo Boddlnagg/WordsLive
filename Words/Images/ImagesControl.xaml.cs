@@ -11,7 +11,8 @@ namespace Words.Images
 		Storyboard storyboard;
 		int transitionDuration = 500; // in milliseconds
 		bool animationRunning;
-		object nextSource = null;
+		ImagesMedia.ImageInfo current;
+		ImagesMedia.ImageInfo next;
 
 		public ImagesControl()
 		{
@@ -30,10 +31,10 @@ namespace Words.Images
 			front.Source = back.Source;
 			frontGrid.Opacity = 1;
 			animationRunning = false;
-			if (nextSource != null)
+			if (next != null)
 			{
-				Loader.SetSource(back, nextSource);
-				nextSource = null;
+				Update(next);
+				next = null;
 			}
 			else
 			{
@@ -61,23 +62,25 @@ namespace Words.Images
 			}
 		}
 
-		public object ImageSource
+		public ImagesMedia.ImageInfo CurrentImage
 		{
 			get
 			{
-				return Loader.GetSource(front);
+				return current;
 			}
 			set
 			{
-				if (value != Loader.GetSource(back))
+				if (value != current)
 				{
+					current = value;
+
 					if (animationRunning)
 					{
-						nextSource = value;
+						next = value;
 					}
 					else
 					{
-						Loader.SetSource(back, value);
+						Update(value);
 					}
 				}
 			}
@@ -88,6 +91,12 @@ namespace Words.Images
 			animationRunning = true;
 			storyboard.Children[0].Duration = new TimeSpan(0, 0, 0, 0, transitionDuration);
 			storyboard.Begin(this);
+		}
+
+		private void Update(ImagesMedia.ImageInfo image)
+		{
+			Loader.SetSourceType(back, image.SourceType);
+			Loader.SetSource(back, image.Source);
 		}
 	}
 }
