@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Windows.Media.Imaging;
 using PowerpointViewerLib;
 using Words.Presentation;
+using System.Threading;
 
 namespace Words.Slideshow.PowerpointViewer
 {
@@ -47,6 +48,11 @@ namespace Words.Slideshow.PowerpointViewer
 
 		public override void Load()
 		{
+			ThreadPool.QueueUserWorkItem(new WaitCallback(PerformLoad));
+		}
+
+		private void PerformLoad(object o)
+		{
 			try
 			{
 				doc = PowerpointViewerController.Open(ppt.File, new Rectangle(Area.WindowLocation.X, Area.WindowLocation.Y, Area.WindowSize.Width, Area.WindowSize.Height), openHidden: true, thumbnailWidth: 200);
@@ -79,7 +85,10 @@ namespace Words.Slideshow.PowerpointViewer
 			}
 			catch (PowerpointViewerController.PowerpointViewerOpenException)
 			{
-				base.OnLoaded(false);
+				Controller.Dispatcher.Invoke(new Action(() =>
+				{
+					base.OnLoaded(false);
+				}));
 			}
 		}
 

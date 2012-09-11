@@ -55,7 +55,10 @@ namespace Words.Slideshow
 
 		protected void LoadPreviewProvider()
 		{
-			preview = new SlideshowPreviewProvider(this);
+			Controller.Dispatcher.Invoke((Action)delegate
+			{
+				preview = new SlideshowPreviewProvider(this);
+			});
 		}
 
 		public IPreviewProvider Preview
