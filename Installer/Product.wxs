@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+	<Product Id="*" Name="WordsProject" Language="1031" Version="1.0.0.0" Manufacturer="WordsProject" UpgradeCode="178f61e3-6be1-4081-9383-af3d34b29d08">
+		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
+
+		<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+		<MediaTemplate />
+
+		<Feature Id="ProductFeature" Title="MainFeature" Description="The complete package."
+						 ConfigurableDirectory="APPLICATIONFOLDER" Level="1">
+			<ComponentGroupRef Id="ProductComponents" />
+		</Feature>
+		<!--<Property Id="ApplicationFolderName" Value="WordsProject" />
+		<Property Id="WixAppFolder" Value="WixPerMachineFolder" />-->
+		<UI>
+			<UIRef Id="WixUI_Mondo" />
+			<UIRef Id="WixUI_ErrorProgressText" />
+		</UI>
+		<WixVariable Id="WixUIBannerBmp" Value="$(var.Words.ProjectDir)Artwork\InstallerBanner.bmp" />
+		<WixVariable Id="WixUIDialogBmp" Value="$(var.Words.ProjectDir)Artwork\InstallerDialog.bmp" />
+	</Product>
+
+	<Fragment>
+		<Directory Id="TARGETDIR" Name="SourceDir">
+			<Directory Id="ProgramFilesFolder">
+				<Directory Id="APPLICATIONFOLDER" Name="WordsProject" />
+			</Directory>
+		</Directory>
+	</Fragment>
+
+	<Fragment>
+		<ComponentGroup Id="ProductComponents" Directory="APPLICATIONFOLDER">
+			<!-- TODO: Remove the comments around this Component element and the ComponentRef below in order to add resources to this installer. -->
+			<Component Id="ProductComponent">
+				<File Source="$(var.Words.TargetPath)" Name="Words.exe" />
+			</Component>
+		</ComponentGroup>
+	</Fragment>
+</Wix>
