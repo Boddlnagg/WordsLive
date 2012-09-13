@@ -18,7 +18,6 @@ namespace Words.Images
 		private ImagesPresentation pres;
 		private DispatcherTimer autoAdvanceTimer;
 		private bool resetAutoAdvance = true;
-		private bool isLoading = false;
 
 		public bool AutoAdvance
 		{
@@ -125,7 +124,6 @@ namespace Words.Images
 		void pres_LoadingFinished(object sender, EventArgs e)
 		{
 			this.Cursor = Cursors.Arrow;
-			isLoading = false;
 		}
 
 		private void slideListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -141,7 +139,6 @@ namespace Words.Images
 					ResetAutoAdvanceTimer();
 
 				pres.CurrentImage = (ImageInfo)slideListView.SelectedItem;
-				isLoading = true;
 				this.Cursor = Cursors.Wait;
 			}
 			slideListView.ScrollIntoView(slideListView.SelectedItem);
@@ -361,7 +358,7 @@ namespace Words.Images
 			}
 			else if (e.Command == CustomCommands.RotateLeft || e.Command == CustomCommands.RotateRight)
 			{
-				e.CanExecute = media.CanEdit && img.IsJpeg && (img != slideListView.SelectedItem || !isLoading);
+				e.CanExecute = media.CanEdit && img.IsJpeg && (img != slideListView.SelectedItem || !pres.IsLoadingImage);
 			}
 			else if (e.Command == ApplicationCommands.Save)
 			{

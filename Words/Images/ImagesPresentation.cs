@@ -18,6 +18,8 @@ namespace Words.Images
 		ImageInfo current;
 		ImageInfo next;
 
+		public bool IsLoadingImage { get; private set; }
+
 		public ImagesPresentation()
 		{
 			back = new Image();
@@ -92,10 +94,12 @@ namespace Words.Images
 			animationRunning = true;
 			storyboard.Children[0].Duration = new TimeSpan(0, 0, 0, 0, Properties.Settings.Default.ImageTransition);
 			storyboard.Begin(this.Control);
+			IsLoadingImage = false;
 		}
 
 		private void Update(ImageInfo image)
 		{
+			IsLoadingImage = true;
 			Loader.SetSourceType(back, image.SourceType);
 			Loader.SetSource(back, image.Source);
 		}
