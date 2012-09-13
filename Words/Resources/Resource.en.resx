@@ -618,6 +618,12 @@
   <data name="vImagesFinishActions" xml:space="preserve">
     <value>Stop;Start over;Blackscreen;Next item in order</value>
   </data>
+  <data name="vImagesRotateLeft" xml:space="preserve">
+    <value>Rotate left</value>
+  </data>
+  <data name="vImagesRotateRight" xml:space="preserve">
+    <value>Rotate right</value>
+  </data>
   <data name="vImagesSave" xml:space="preserve">
     <value>Save</value>
   </data>

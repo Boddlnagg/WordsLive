@@ -5,7 +5,8 @@
 			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 			 xmlns:imageloader="clr-namespace:Words.Utils.ImageLoader"
 			 xmlns:resx="clr-namespace:Words.Resources"
-			 xmlns:local="clr-namespace:Words.Images"
+			 xmlns:images="clr-namespace:Words.Images"
+			 xmlns:local="clr-namespace:Words"
 			 xmlns:utils="clr-namespace:Words.Utils"
 			 mc:Ignorable="d" 
 			 d:DesignHeight="300" d:DesignWidth="500">
@@ -23,7 +24,7 @@
 			<Label VerticalAlignment="Center" IsEnabled="{Binding ElementName=AutoAdvanceCheckBox, Path=IsChecked}" Content="s"/>
 			<Separator/>
 			<Label VerticalAlignment="Center" Content="{x:Static resx:Resource.vImagesAfterwards}"/>
-			<ComboBox Width="100" ItemsSource="{Binding Source={x:Static resx:Resource.vImagesFinishActions}, Converter={StaticResource StringSplitConverter}, ConverterParameter=';'}" SelectedIndex="{Binding FinishAction, Converter={StaticResource EnumToIndexConverter}, ConverterParameter={x:Type local:FinishAction}}">
+			<ComboBox Width="100" ItemsSource="{Binding Source={x:Static resx:Resource.vImagesFinishActions}, Converter={StaticResource StringSplitConverter}, ConverterParameter=';'}" SelectedIndex="{Binding FinishAction, Converter={StaticResource EnumToIndexConverter}, ConverterParameter={x:Type images:FinishAction}}">
 				<ComboBox.ItemTemplate>
 					<DataTemplate>
 						<TextBlock Margin="2,0,0,0" TextTrimming="CharacterEllipsis" Text="{Binding}"/>
@@ -38,6 +39,8 @@
 			<ListView.CommandBindings>
 				<CommandBinding Command="Delete" CanExecute="CanExecuteCommand" Executed="CommandExecuted"/>
 				<CommandBinding Command="Save" Executed="CommandExecuted" CanExecute="CanExecuteCommand"/>
+				<CommandBinding Command="{x:Static local:CustomCommands.RotateLeft}" Executed="CommandExecuted" CanExecute="CanExecuteCommand"/>
+				<CommandBinding Command="{x:Static local:CustomCommands.RotateRight}" Executed="CommandExecuted" CanExecute="CanExecuteCommand"/>
 			</ListView.CommandBindings>
 			<ListView.Resources>
 				<Style TargetType="{x:Type Border}" x:Key="borderStyle">
@@ -75,20 +78,22 @@
 							<RowDefinition Height="Auto" SharedSizeGroup="Row"/>
 						</Grid.RowDefinitions>
 						<Border BorderThickness="3" Style="{StaticResource borderStyle}">
-							<Image imageloader:Loader.Source="{Binding Source}" imageloader:Loader.SourceType="{Binding SourceType}" ToolTip="{Binding Title}" Margin="2,2,2,2" Height="120"/>
+							<Image imageloader:Loader.Source="{Binding Source}" imageloader:Loader.SourceType="{Binding SourceType}" ToolTip="{Binding Title}" Margin="2,2,2,2" Height="120">
+								<Image.ContextMenu>
+									<ContextMenu>
+										<MenuItem Header="{x:Static resx:Resource.vImagesContextMenuRemove}" Command="Delete" CommandParameter="{Binding}" CommandTarget="{Binding ElementName=slideListView}"/>
+										<MenuItem Header="{x:Static resx:Resource.vImagesRotateLeft}" Command="{x:Static local:CustomCommands.RotateLeft}" CommandParameter="{Binding}" CommandTarget="{Binding ElementName=slideListView}"/>
+										<MenuItem Header="{x:Static resx:Resource.vImagesRotateRight}" Command="{x:Static local:CustomCommands.RotateRight}" CommandParameter="{Binding}" CommandTarget="{Binding ElementName=slideListView}"/>
+									</ContextMenu>
+								</Image.ContextMenu>
+							</Image>
 						</Border>
 					</Grid>
 				</DataTemplate>
 			</ListView.ItemTemplate>
 			<ListView.ItemContainerStyle>
 				<Style TargetType="ListViewItem">
-					<Setter Property="ContextMenu">
-						<Setter.Value>
-							<ContextMenu>
-								<MenuItem Header="{x:Static resx:Resource.vImagesContextMenuRemove}" Command="Delete"/>
-							</ContextMenu>
-						</Setter.Value>
-					</Setter>
+					<EventSetter Event="PreviewMouseRightButtonDown" Handler="ListViewItem_PreviewMouseRightButtonDown" />
 				</Style>
 			</ListView.ItemContainerStyle>
 		</ListView>

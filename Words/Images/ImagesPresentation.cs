@@ -66,18 +66,15 @@ namespace Words.Images
 			}
 			set
 			{
-				if (value != current)
-				{
-					current = value;
+				current = value;
 
-					if (animationRunning)
-					{
-						next = value;
-					}
-					else
-					{
-						Update(value);
-					}
+				if (animationRunning)
+				{
+					next = value;
+				}
+				else
+				{
+					Update(value);
 				}
 			}
 		}

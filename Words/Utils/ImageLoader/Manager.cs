@@ -205,6 +205,8 @@ namespace Words.Utils.ImageLoader
 					System.Diagnostics.Debug.WriteLine("EndLoading() - unexpected condition: there is no running task for this image!");
 				}
 
+				loadTask.Stream.Close();
+
 				image.Dispatcher.BeginInvoke(new ThreadStart(delegate
 				{
 					if (image.RenderTransform == _loadingAnimationTransform)

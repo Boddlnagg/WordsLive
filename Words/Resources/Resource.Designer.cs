@@ -1177,6 +1177,24 @@ namespace Words.Resources {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Nach links drehen ähnelt.
+        /// </summary>
+        public static string vImagesRotateLeft {
+            get {
+                return ResourceManager.GetString("vImagesRotateLeft", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Nach rechts drehen ähnelt.
+        /// </summary>
+        public static string vImagesRotateRight {
+            get {
+                return ResourceManager.GetString("vImagesRotateRight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Speichern ähnelt.
         /// </summary>
         public static string vImagesSave {

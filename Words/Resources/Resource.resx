@@ -618,6 +618,12 @@
   <data name="vImagesAutoAdvanceAfter" xml:space="preserve">
     <value>Automatisch weiter nach</value>
   </data>
+  <data name="vImagesRotateLeft" xml:space="preserve">
+    <value>Nach links drehen</value>
+  </data>
+  <data name="vImagesRotateRight" xml:space="preserve">
+    <value>Nach rechts drehen</value>
+  </data>
   <data name="vImagesSave" xml:space="preserve">
     <value>Speichern</value>
   </data>

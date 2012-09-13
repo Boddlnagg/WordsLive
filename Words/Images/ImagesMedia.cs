@@ -17,6 +17,8 @@ namespace Words.Images
 
 		public bool CanSave { get; private set; }
 
+		public bool CanEdit { get; private set; }
+
 		public override void Load()
 		{
 			FileInfo file = new FileInfo(this.File);
@@ -24,16 +26,19 @@ namespace Words.Images
 			{
 				Images = new ObservableCollection<ImageInfo>(LoadFromTxt());
 				CanSave = true;
+				CanEdit = true;
 			}
 			else if (file.Extension.ToLower() == ".zip")
 			{
 				Images = new ObservableCollection<ImageInfo>(LoadFromZip());
 				CanSave = false;
+				CanEdit = false;
 			}
 			else
 			{
 				Images = new ObservableCollection<ImageInfo> { new ImageInfo(file) };
 				CanSave = false;
+				CanEdit = true;
 			}
 		}
 

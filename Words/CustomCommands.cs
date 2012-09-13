@@ -153,6 +153,18 @@ namespace Words
 			private set;
 		}
 
+		public static RoutedCommand RotateLeft
+		{
+			get;
+			private set;
+		}
+
+		public static RoutedCommand RotateRight
+		{
+			get;
+			private set;
+		}
+
 		static CustomCommands()
 		{
 			Type t = typeof(CustomCommands);
@@ -181,6 +193,8 @@ namespace Words
 			Blackscreen = new RoutedCommand("Blackscreen", t, new InputGestureCollection { new KeyGesture(Key.F7) });
 			ShowPresentation = new RoutedCommand("ShowPresentation", t, new InputGestureCollection { new KeyGesture(Key.F8) });
 			ShowTestImage = new RoutedCommand("ShowTestImage", t);
+			RotateLeft = new RoutedCommand("RotateLeft", t);
+			RotateRight = new RoutedCommand("RotateRight", t);
 		}
 	}
 }

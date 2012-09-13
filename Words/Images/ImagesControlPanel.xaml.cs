@@ -18,6 +18,7 @@ namespace Words.Images
 		private ImagesPresentation pres;
 		private DispatcherTimer autoAdvanceTimer;
 		private bool resetAutoAdvance = true;
+		private bool isLoading = false;
 
 		public bool AutoAdvance
 		{
@@ -124,9 +125,15 @@ namespace Words.Images
 		void pres_LoadingFinished(object sender, EventArgs e)
 		{
 			this.Cursor = Cursors.Arrow;
+			isLoading = false;
 		}
 
 		private void slideListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			UpdatePresentation();
+		}
+
+		private void UpdatePresentation()
 		{
 			if (slideListView.SelectedItem != null)
 			{
@@ -134,6 +141,7 @@ namespace Words.Images
 					ResetAutoAdvanceTimer();
 
 				pres.CurrentImage = (ImageInfo)slideListView.SelectedItem;
+				isLoading = true;
 				this.Cursor = Cursors.Wait;
 			}
 			slideListView.ScrollIntoView(slideListView.SelectedItem);
@@ -271,7 +279,7 @@ namespace Words.Images
 					{
 						if (media.IsValidImageFile(file))
 						{
-							media.Images.Insert(i + 1, new ImageInfo(file));
+							media.Images.Insert(media.Images.Count > 0 ? i + 1 : 0, new ImageInfo(file));
 						}
 					}
 				}
@@ -294,12 +302,16 @@ namespace Words.Images
 				if (index == -1)
 					index = slideListView.Items.Count - 1;
 			}
+			else if (index == -1)
+			{
+				index = 0;
+			}
 
 			return index;
 		}
 
 		InsertionAdorner insertionAdorner;
-		int oldIndex;
+		int oldIndex = -1;
 		Point startPoint;
 
 		private void CreateInsertionAdorner(FrameworkElement targetItemContainer)
@@ -341,9 +353,15 @@ namespace Words.Images
 		}
 		private void CanExecuteCommand(object sender, CanExecuteRoutedEventArgs e)
 		{
+			ImageInfo img = e.Parameter as ImageInfo;
+
 			if (e.Command == ApplicationCommands.Delete)
 			{
-				e.CanExecute = slideListView.SelectedItem != null;
+				e.CanExecute = true;
+			}
+			else if (e.Command == CustomCommands.RotateLeft || e.Command == CustomCommands.RotateRight)
+			{
+				e.CanExecute = media.CanEdit && img.IsJpeg && (img != slideListView.SelectedItem || !isLoading);
 			}
 			else if (e.Command == ApplicationCommands.Save)
 			{
@@ -356,15 +374,34 @@ namespace Words.Images
 
 		private void CommandExecuted(object sender, ExecutedRoutedEventArgs e)
 		{
+			ImageInfo img = e.Parameter as ImageInfo;
+
 			if (e.Command == ApplicationCommands.Delete)
 			{
-				var item = (ImageInfo)slideListView.SelectedItem;
-				this.media.Images.Remove(item);
+				this.media.Images.Remove(img);
+			}
+			else if (e.Command == CustomCommands.RotateLeft)
+			{
+				img.RotateLeft();
+				if (img == slideListView.SelectedItem)
+					UpdatePresentation();
+			}
+			else if (e.Command == CustomCommands.RotateRight)
+			{
+				img.RotateRight();
+				if (img == slideListView.SelectedItem)
+					UpdatePresentation();
 			}
 			else if (e.Command == ApplicationCommands.Save)
 			{
 				this.media.Save();
 			}
+		}
+
+		private void ListViewItem_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
+		{
+			slideListView.Focus();
+			e.Handled = true;
 		}
 	}
 }
