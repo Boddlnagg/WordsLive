@@ -180,6 +180,7 @@
     <Resource Include="Artwork\Movie.png" />
     <Resource Include="Artwork\LoadingAnimation.png" />
     <Resource Include="Artwork\LoadingFailed.png" />
+    <SplashScreen Include="Artwork\Banner.png" />
     <Content Include="Data\jquery.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -340,7 +341,6 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-    <SplashScreen Include="Artwork\SplashScreen.png" />
     <Page Include="AudioVideo\AudioVideoControlPanel.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
