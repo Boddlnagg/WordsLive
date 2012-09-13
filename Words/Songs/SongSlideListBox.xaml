@@ -11,35 +11,44 @@
 	BorderThickness="0"
 	ItemsSource="{Binding}"
 	SelectionMode="Single"
-	Background="LightGray">
+	Background="LightGray"
+	Grid.IsSharedSizeScope="True">
 	<ListBox.Resources>
-		<local:SameWidthConverter x:Key="sameWidthConverter" />
 		<Style x:Key="containerStyle" TargetType="{x:Type GroupItem}">
 			<Setter Property="Template">
 				<Setter.Value>
 					<ControlTemplate>
 						<DockPanel Margin="0,1" Background="White">
-							<TextBlock DockPanel.Dock="Left" Name="caption" FontWeight="Bold" FontSize="13" Margin="2" Foreground="Gray" Width="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType={x:Type local:SongSlideListBox}}, Converter={StaticResource sameWidthConverter}, ConverterParameter=caption}" >
-								<Run Text="{Binding Path=Items[0].PreAccessName}"/><Run TextDecorations="Underline" Text="{Binding Path=Items[0].AccessKey}"/><Run Text="{Binding Path=Items[0].PostAccessName}"/>
-							</TextBlock>
+							<Grid DockPanel.Dock="Left">
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition Width="Auto" SharedSizeGroup="CaptionGroup"/>
+								</Grid.ColumnDefinitions>
+								<TextBlock Name="caption" FontWeight="Bold" FontSize="13" Margin="2" Foreground="Gray">
+									<Run Text="{Binding Path=Items[0].PreAccessName}"/><Run TextDecorations="Underline" Text="{Binding Path=Items[0].AccessKey}"/><Run Text="{Binding Path=Items[0].PostAccessName}"/>
+								</TextBlock>
+							</Grid>
 							<ItemsPresenter DockPanel.Dock="Left" Margin="10,0,2,2" HorizontalAlignment="Stretch"/>
 						</DockPanel>
 					</ControlTemplate>
 				</Setter.Value>
 			</Setter>
 		</Style>
-
 	</ListBox.Resources>
 	<ListBox.GroupStyle>
 		<GroupStyle ContainerStyle="{StaticResource containerStyle}" />
 	</ListBox.GroupStyle>
 	<ListBox.ItemTemplate>
 		<DataTemplate>
-			<StackPanel VerticalAlignment="Top" Orientation="Horizontal" Margin="0">
-				<Image VerticalAlignment="Top" Source="{Binding Background, Converter={StaticResource BackgroundConverter}, ConverterParameter=60}" Height="45" Width="60" Stretch="Fill"/>
-				<TextBlock Name="text" MinWidth="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType={x:Type local:SongSlideListBox}}, Converter={StaticResource sameWidthConverter}, ConverterParameter=text}" TextWrapping="Wrap" Text="{Binding Path=Text}" VerticalAlignment="Center" Margin="10,0,0,0" FontSize="13" HorizontalAlignment="Stretch"/>
-				<TextBlock Name="translation" TextWrapping="Wrap" Text="{Binding Path=Translation}" Foreground="Gray"  VerticalAlignment="Center" Margin="10,0,0,0" FontSize="13"/>
-			</StackPanel>
+			<Grid VerticalAlignment="Top" Margin="0" HorizontalAlignment="Stretch">
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="Auto" SharedSizeGroup="ImageGroup"/>
+					<ColumnDefinition Width="*" SharedSizeGroup="TextGroup"/>
+					<ColumnDefinition Width="Auto" SharedSizeGroup="TranslationGroup"/>
+				</Grid.ColumnDefinitions>
+				<Image Grid.Column="0" VerticalAlignment="Top" Source="{Binding Background, Converter={StaticResource BackgroundConverter}, ConverterParameter=60}" Height="45" Width="60" Stretch="Fill"/>
+				<TextBlock Grid.Column="1" Name="text" TextWrapping="Wrap" Text="{Binding Path=Text}" VerticalAlignment="Center" Margin="10,0,0,0" FontSize="13" HorizontalAlignment="Stretch"/>
+				<TextBlock Grid.Column="2" Name="translation" TextWrapping="Wrap" Text="{Binding Path=Translation}" Foreground="Gray"  VerticalAlignment="Center" Margin="10,0,0,0" FontSize="13"/>
+			</Grid>
 		</DataTemplate>
 	</ListBox.ItemTemplate>
 	<ListBox.ItemContainerStyle>

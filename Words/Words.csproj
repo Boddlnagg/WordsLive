@@ -251,7 +251,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resource.resx</DependentUpon>
     </Compile>
-    <Compile Include="Songs\SameWidthConverter.cs" />
     <Compile Include="Songs\SongBackgroundToImageSourceConverter.cs" />
     <Compile Include="TargetMediaAttribute.cs" />
     <Compile Include="Editor\ChooseBackgroundWindow.xaml.cs">
