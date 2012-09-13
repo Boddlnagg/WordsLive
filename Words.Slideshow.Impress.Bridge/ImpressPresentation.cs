@@ -11,6 +11,7 @@ using unoidl.com.sun.star.drawing;
 using unoidl.com.sun.star.frame;
 using unoidl.com.sun.star.lang;
 using unoidl.com.sun.star.presentation;
+using System.Threading;
 
 namespace Words.Slideshow.Impress.Bridge
 {			
@@ -97,44 +98,7 @@ namespace Words.Slideshow.Impress.Bridge
 			{
 				Area.WindowSizeChanged += Area_WindowSizeChanged;
 
-				// Start LibreOffice and load file
-				unoidl.com.sun.star.uno.XComponentContext localContext = uno.util.Bootstrap.bootstrap();
-				unoidl.com.sun.star.lang.XMultiServiceFactory multiServiceFactory = (unoidl.com.sun.star.lang.XMultiServiceFactory)localContext.getServiceManager();
-				desktop = (XDesktop)multiServiceFactory.createInstance("com.sun.star.frame.Desktop");
-				var componentLoader = (XComponentLoader)desktop;
-				component = componentLoader.loadComponentFromURL(CreateFileUrl(media.File), "_blank", 0, new PropertyValue[] { });
-
-				// Get the main window's handle and hide the window
-				document = (XModel)component;
-				XWindow window = document.getCurrentController().getFrame().getContainerWindow();
-				window.setVisible(false);
-				XSystemDependentWindowPeer xWindowPeer = (XSystemDependentWindowPeer)(window);
-				mainHandle = new IntPtr((int)xWindowPeer.getWindowHandle(new byte[] { }, SystemDependent.SYSTEM_WIN32).Value);
-				//ShowWindow(mainHandle, 0);
-
-				presentation = (XPresentation2)((XPresentationSupplier)component).getPresentation();
-
-				CreateThumbnails();
-
-				listener.SlideTransitionStarted += (sender, args) =>
-				{
-					OnSlideIndexChanged();
-				};
-
-				listener.SlideEnded += (sender, args) =>
-				{
-					if (controller.getNextSlideIndex() == -1) // presentation has ended
-					{
-						presentationEnded = true;
-					}
-				};
-
-				Start();
-				controller.gotoSlideIndex(0);
-
-				LoadPreviewProvider();
-
-				base.OnLoaded(true);
+				ThreadPool.QueueUserWorkItem(new WaitCallback(PerformLoad));
 
 				Controller.FocusMainWindow();
 			}
@@ -142,6 +106,48 @@ namespace Words.Slideshow.Impress.Bridge
 			{
 				base.OnLoaded(false);
 			}
+		}
+
+		void PerformLoad(object o)
+		{
+			// Start LibreOffice and load file
+			unoidl.com.sun.star.uno.XComponentContext localContext = uno.util.Bootstrap.bootstrap();
+			unoidl.com.sun.star.lang.XMultiServiceFactory multiServiceFactory = (unoidl.com.sun.star.lang.XMultiServiceFactory)localContext.getServiceManager();
+			desktop = (XDesktop)multiServiceFactory.createInstance("com.sun.star.frame.Desktop");
+			var componentLoader = (XComponentLoader)desktop;
+			component = componentLoader.loadComponentFromURL(CreateFileUrl(media.File), "_blank", 0, new PropertyValue[] { });
+
+			// Get the main window's handle and hide the window
+			document = (XModel)component;
+			XWindow window = document.getCurrentController().getFrame().getContainerWindow();
+			window.setVisible(false);
+			XSystemDependentWindowPeer xWindowPeer = (XSystemDependentWindowPeer)(window);
+			mainHandle = new IntPtr((int)xWindowPeer.getWindowHandle(new byte[] { }, SystemDependent.SYSTEM_WIN32).Value);
+			//ShowWindow(mainHandle, 0);
+
+			presentation = (XPresentation2)((XPresentationSupplier)component).getPresentation();
+
+			CreateThumbnails();
+
+			listener.SlideTransitionStarted += (sender, args) =>
+			{
+				OnSlideIndexChanged();
+			};
+
+			listener.SlideEnded += (sender, args) =>
+			{
+				if (controller.getNextSlideIndex() == -1) // presentation has ended
+				{
+					presentationEnded = true;
+				}
+			};
+
+			Start();
+			controller.gotoSlideIndex(0);
+
+			LoadPreviewProvider();
+
+			base.OnLoaded(true);
 		}
 
 		void Area_WindowSizeChanged(object sender, EventArgs e)
