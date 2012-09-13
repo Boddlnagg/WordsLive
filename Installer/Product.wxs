@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-	<Product Id="*" Name="WordsProject" Language="1031" Version="1.0.0.0" Manufacturer="WordsProject" UpgradeCode="178f61e3-6be1-4081-9383-af3d34b29d08">
+	<Product Id="*" Name="WordsLive" Language="1031" Version="1.0.0.0" Manufacturer="WordsLive" UpgradeCode="178f61e3-6be1-4081-9383-af3d34b29d08">
 		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
 
 		<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
