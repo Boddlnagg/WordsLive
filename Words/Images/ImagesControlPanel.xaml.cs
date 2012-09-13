@@ -56,7 +56,7 @@ namespace Words.Images
 		{
 			if (slideListView.SelectedItem != null)
 			{
-				pres.ShowImage((ImagesMedia.ImageInfo)slideListView.SelectedItem);
+				pres.ShowImage((ImageInfo)slideListView.SelectedItem);
 				this.Cursor = Cursors.Wait;
 			}
 			slideListView.ScrollIntoView(slideListView.SelectedItem);
@@ -114,7 +114,7 @@ namespace Words.Images
 			if (i >= 0)
 			{
 				this.CreateInsertionAdorner(slideListView.ItemContainerGenerator.ContainerFromIndex(i) as FrameworkElement);
-				if (e.Data.GetData(typeof(ImagesMedia.ImageInfo)) != null)
+				if (e.Data.GetData(typeof(ImageInfo)) != null)
 					e.Effects = DragDropEffects.Move;
 				else
 					e.Effects = DragDropEffects.Copy;
@@ -141,7 +141,7 @@ namespace Words.Images
 			if (i >= 0)
 			{
 				// Data comes from list itself
-				if (e.Data.GetData(typeof(ImagesMedia.ImageInfo)) != null)
+				if (e.Data.GetData(typeof(ImageInfo)) != null)
 				{
 					if (oldIndex < 0)
 						return;
@@ -159,7 +159,7 @@ namespace Words.Images
 					foreach (string file in files)
 					{
 						// TODO: check validity (image format)
-						media.Images.Insert(i + 1, new ImagesMedia.ImageInfo(file));
+						media.Images.Insert(i + 1, new ImageInfo(file));
 					}
 				}
 			}
@@ -214,7 +214,7 @@ namespace Words.Images
 		{
 			if (e.LeftButton == MouseButtonState.Pressed && oldIndex >= 0 && e.GetPosition(slideListView).ExceedsMinimumDragDistance(startPoint))
 			{
-				var selectedItem = (ImagesMedia.ImageInfo)slideListView.Items[oldIndex];
+				var selectedItem = (ImageInfo)slideListView.Items[oldIndex];
 				DragDrop.DoDragDrop(this, selectedItem, DragDropEffects.Move);
 			}
 		}
@@ -239,7 +239,7 @@ namespace Words.Images
 		{
 			if (e.Command == ApplicationCommands.Delete)
 			{
-				var item = (ImagesMedia.ImageInfo)slideListView.SelectedItem;
+				var item = (ImageInfo)slideListView.SelectedItem;
 				this.media.Images.Remove(item);
 			}
 		}

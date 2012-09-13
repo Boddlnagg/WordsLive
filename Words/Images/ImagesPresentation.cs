@@ -12,7 +12,7 @@ namespace Words.Images
 			this.Control.LoadingFinished += (sender, args) => OnLoadingFinished();
 		}
 
-		public void ShowImage(ImagesMedia.ImageInfo image)
+		public void ShowImage(ImageInfo image)
 		{
 			this.Control.CurrentImage = image;
 		}

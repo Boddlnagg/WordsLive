@@ -109,6 +109,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="ControlPanelLoadState.cs" />
+    <Compile Include="Images\ImageInfo.cs" />
     <Compile Include="Images\ImagesControlPanel.xaml.cs">
       <DependentUpon>ImagesControlPanel.xaml</DependentUpon>
     </Compile>

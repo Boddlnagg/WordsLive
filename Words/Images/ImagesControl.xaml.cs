@@ -11,8 +11,8 @@ namespace Words.Images
 		Storyboard storyboard;
 		int transitionDuration = 500; // in milliseconds
 		bool animationRunning;
-		ImagesMedia.ImageInfo current;
-		ImagesMedia.ImageInfo next;
+		ImageInfo current;
+		ImageInfo next;
 
 		public ImagesControl()
 		{
@@ -62,7 +62,7 @@ namespace Words.Images
 			}
 		}
 
-		public ImagesMedia.ImageInfo CurrentImage
+		public ImageInfo CurrentImage
 		{
 			get
 			{
@@ -93,7 +93,7 @@ namespace Words.Images
 			storyboard.Begin(this);
 		}
 
-		private void Update(ImagesMedia.ImageInfo image)
+		private void Update(ImageInfo image)
 		{
 			Loader.SetSourceType(back, image.SourceType);
 			Loader.SetSource(back, image.Source);
