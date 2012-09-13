@@ -9,7 +9,6 @@ namespace Words.Images
 	public partial class ImagesControl : UserControl
 	{
 		Storyboard storyboard;
-		int transitionDuration = 500; // in milliseconds
 		bool animationRunning;
 		ImageInfo current;
 		ImageInfo next;
@@ -50,18 +49,6 @@ namespace Words.Images
 				LoadingFinished(this, EventArgs.Empty);
 		}
 
-		public int TransitionDuration
-		{
-			get 
-			{
-				return transitionDuration;
-			}
-			set
-			{
-				transitionDuration = value;
-			}
-		}
-
 		public ImageInfo CurrentImage
 		{
 			get
@@ -89,7 +76,7 @@ namespace Words.Images
 		private void back_Loaded(object sender, RoutedEventArgs e)
 		{
 			animationRunning = true;
-			storyboard.Children[0].Duration = new TimeSpan(0, 0, 0, 0, transitionDuration);
+			storyboard.Children[0].Duration = new TimeSpan(0, 0, 0, 0, Properties.Settings.Default.ImageTransition);
 			storyboard.Begin(this);
 		}
 

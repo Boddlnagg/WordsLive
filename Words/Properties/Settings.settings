@@ -99,5 +99,17 @@
     <Setting Name="EditorEnableSpellCheck" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
+    <Setting Name="ImagesFinishAction" Type="Words.Images.FinishAction" Scope="User">
+      <Value Profile="(Default)">Stop</Value>
+    </Setting>
+    <Setting Name="ImagesEnableAutoAdvance" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="ImagesAutoAdvanceSeconds" Type="System.UInt32" Scope="User">
+      <Value Profile="(Default)">5</Value>
+    </Setting>
+    <Setting Name="ImageTransition" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">500</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

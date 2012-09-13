@@ -14,8 +14,6 @@ namespace Words
 	 * - sometimes AwesomiumProcess is used instead of Words.Awesomium.exe
 	 * - Shortcuts in the menu are shown as "Ctrl" instead of "Strg" in German language
 	 * - Add alerts to Presentation.Wpf to be able to display messages over any WPF presentation
-	 * - Add generic loop timer for all slide-based media types, including songs, external presentations and image slideshows
-	 *   (see http://manual.openlp.org/creating_service.html#using-the-service-timer)
 	 * - Improve audio/video support (look at DMediaPlayer) and support start/stop times
 	 *   (see http://manual.openlp.org/creating_service.html#using-the-media-timer, but with better UI)
 	 * - Fix song preview when set to blackscreen/hide after it has been shown once (slides mess up)

@@ -907,6 +907,15 @@ namespace Words.Resources {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Übergang zwischen Bildern: ähnelt.
+        /// </summary>
+        public static string seLabelTransitionImages {
+            get {
+                return ResourceManager.GetString("seLabelTransitionImages", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Übergang zwischen Präsentationen: ähnelt.
         /// </summary>
         public static string seLabelTransitionPresentations {
@@ -1132,11 +1141,47 @@ namespace Words.Resources {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Nach Ablauf: ähnelt.
+        /// </summary>
+        public static string vImagesAfterwards {
+            get {
+                return ResourceManager.GetString("vImagesAfterwards", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Automatisch weiter nach ähnelt.
+        /// </summary>
+        public static string vImagesAutoAdvanceAfter {
+            get {
+                return ResourceManager.GetString("vImagesAutoAdvanceAfter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Entfernen ähnelt.
         /// </summary>
         public static string vImagesContextMenuRemove {
             get {
                 return ResourceManager.GetString("vImagesContextMenuRemove", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Anhalten;Von vorne;Anzeige schwarz schalten;Nächstes Medienelement ähnelt.
+        /// </summary>
+        public static string vImagesFinishActions {
+            get {
+                return ResourceManager.GetString("vImagesFinishActions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Speichern ähnelt.
+        /// </summary>
+        public static string vImagesSave {
+            get {
+                return ResourceManager.GetString("vImagesSave", resourceCulture);
             }
         }
         

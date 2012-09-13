@@ -397,5 +397,53 @@ namespace Words.Properties {
                 this["EditorEnableSpellCheck"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Stop")]
+        public global::Words.Images.FinishAction ImagesFinishAction {
+            get {
+                return ((global::Words.Images.FinishAction)(this["ImagesFinishAction"]));
+            }
+            set {
+                this["ImagesFinishAction"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool ImagesEnableAutoAdvance {
+            get {
+                return ((bool)(this["ImagesEnableAutoAdvance"]));
+            }
+            set {
+                this["ImagesEnableAutoAdvance"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("5")]
+        public uint ImagesAutoAdvanceSeconds {
+            get {
+                return ((uint)(this["ImagesAutoAdvanceSeconds"]));
+            }
+            set {
+                this["ImagesAutoAdvanceSeconds"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("500")]
+        public int ImageTransition {
+            get {
+                return ((int)(this["ImageTransition"]));
+            }
+            set {
+                this["ImageTransition"] = value;
+            }
+        }
     }
 }

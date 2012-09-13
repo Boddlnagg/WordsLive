@@ -606,4 +606,19 @@
   <data name="vImagesContextMenuRemove" xml:space="preserve">
     <value>Entfernen</value>
   </data>
+  <data name="vImagesFinishActions" xml:space="preserve">
+    <value>Anhalten;Von vorne;Anzeige schwarz schalten;Nächstes Medienelement</value>
+  </data>
+  <data name="seLabelTransitionImages" xml:space="preserve">
+    <value>Übergang zwischen Bildern:</value>
+  </data>
+  <data name="vImagesAfterwards" xml:space="preserve">
+    <value>Nach Ablauf:</value>
+  </data>
+  <data name="vImagesAutoAdvanceAfter" xml:space="preserve">
+    <value>Automatisch weiter nach</value>
+  </data>
+  <data name="vImagesSave" xml:space="preserve">
+    <value>Speichern</value>
+  </data>
 </root>

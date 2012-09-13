@@ -109,6 +109,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="ControlPanelLoadState.cs" />
+    <Compile Include="Images\FinishAction.cs" />
     <Compile Include="Images\ImageInfo.cs" />
     <Compile Include="Images\ImagesControlPanel.xaml.cs">
       <DependentUpon>ImagesControlPanel.xaml</DependentUpon>
@@ -121,6 +122,7 @@
     <Compile Include="Images\ImagesPresentation.cs" />
     <Compile Include="TestPresentation.cs" />
     <Compile Include="Utils\InsertionAdorner.cs" />
+    <Compile Include="Utils\EnumToIndexConverter.cs" />
     <Compile Include="XpsDocument.cs" />
     <Compile Include="XpsDocumentControlPanel.xaml.cs">
       <DependentUpon>XpsDocumentControlPanel.xaml</DependentUpon>

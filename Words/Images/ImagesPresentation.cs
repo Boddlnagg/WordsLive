@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.ComponentModel;
 using Words.Presentation.Wpf;
-using System.IO;
 
 namespace Words.Images
 {

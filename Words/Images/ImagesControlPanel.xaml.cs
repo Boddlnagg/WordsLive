@@ -1,12 +1,13 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Windows.Controls;
-using System.Windows.Input;
-using Words.Utils;
+using System.Linq;
 using System.Windows;
-using System.Collections.Generic;
+using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Threading;
+using Words.Utils;
 
 namespace Words.Images
 {
@@ -15,10 +16,81 @@ namespace Words.Images
 	{
 		private ImagesMedia media;
 		private ImagesPresentation pres;
+		private DispatcherTimer autoAdvanceTimer;
+		private bool resetAutoAdvance = true;
+
+		public bool AutoAdvance
+		{
+			get
+			{
+				return Properties.Settings.Default.ImagesEnableAutoAdvance;
+			}
+			set
+			{
+				if (value != Properties.Settings.Default.ImagesEnableAutoAdvance)
+				{
+					Properties.Settings.Default.ImagesEnableAutoAdvance = value;
+					OnPropertyChanged("AutoAdvance");
+					ResetAutoAdvanceTimer();
+				}
+			}
+		}
+
+		public uint AutoAdvanceSeconds
+		{
+			get
+			{
+				return Properties.Settings.Default.ImagesAutoAdvanceSeconds;
+			}
+			set
+			{
+				if (value != Properties.Settings.Default.ImagesAutoAdvanceSeconds)
+				{
+					if (value > 999)
+						value = 999;
+					Properties.Settings.Default.ImagesAutoAdvanceSeconds = value;
+					OnPropertyChanged("AutoAdvanceSeconds");
+					ResetAutoAdvanceTimer();
+				}
+			}
+		}
+
+		public FinishAction FinishAction
+		{
+			get
+			{
+				return Properties.Settings.Default.ImagesFinishAction;
+			}
+			set
+			{
+				Properties.Settings.Default.ImagesFinishAction = value;
+				OnPropertyChanged("FinishAction");
+			}
+		}
 
 		public ImagesControlPanel()
 		{
 			InitializeComponent();
+
+			autoAdvanceTimer = new DispatcherTimer();
+			autoAdvanceTimer.Tick += autoAdvanceTimer_Tick;
+		}
+
+		private void ResetAutoAdvanceTimer()
+		{
+			autoAdvanceTimer.Stop();
+			if (AutoAdvance && AutoAdvanceSeconds > 0)
+			{
+				autoAdvanceTimer.Interval = new TimeSpan(0, 0, (int)AutoAdvanceSeconds);
+				autoAdvanceTimer.Start();
+			}
+		}
+
+		void autoAdvanceTimer_Tick(object sender, EventArgs e)
+		{
+			resetAutoAdvance = false;
+			ShowNext();
+			resetAutoAdvance = true;
 		}
 
 		public Control Control
@@ -39,7 +111,9 @@ namespace Words.Images
 				pres = Controller.PresentationManager.CreatePresentation<ImagesPresentation>();
 				pres.LoadingFinished += pres_LoadingFinished;
 				Controller.PresentationManager.CurrentPresentation = pres;
-				this.slideListView.DataContext = this.media.Images;
+				this.DataContext = this;
+				if (this.media.Images.Count > 0)
+					this.slideListView.SelectedIndex = 0;
 			}
 			else
 			{
@@ -56,6 +130,9 @@ namespace Words.Images
 		{
 			if (slideListView.SelectedItem != null)
 			{
+				if (resetAutoAdvance)
+					ResetAutoAdvanceTimer();
+
 				pres.ShowImage((ImageInfo)slideListView.SelectedItem);
 				this.Cursor = Cursors.Wait;
 			}
@@ -66,17 +143,46 @@ namespace Words.Images
 		{
 			if (e.Key == Key.Right || e.Key == Key.Down || e.Key == Key.PageDown)
 			{
-				if (slideListView.SelectedIndex + 1 < slideListView.Items.Count)
-					slideListView.SelectedIndex++;
-				
+				ShowNext();
 				e.Handled = true;
 			}
 			else if (e.Key == Key.Left || e.Key == Key.Up || e.Key == Key.PageUp)
 			{
-				if (slideListView.SelectedIndex > 0)
-					slideListView.SelectedIndex--;
+				ShowPrevious();
 				e.Handled = true;
 			}
+		}
+
+		protected void ShowNext()
+		{
+			if (slideListView.SelectedIndex + 1 < slideListView.Items.Count)
+			{
+				slideListView.SelectedIndex++;
+			}
+			else // reached end
+			{
+				switch(FinishAction)
+				{
+					case FinishAction.Rerun:
+						slideListView.SelectedIndex = 0;
+						break;
+					case FinishAction.NextMedia:
+						Controller.TryActivateNext();
+						break;
+					case FinishAction.Blackscreen:
+						Controller.PresentationManager.Status = PresentationStatus.Blackscreen;
+						break;
+					case FinishAction.Stop:
+						AutoAdvance = false;
+						break;
+				}
+			}
+		}
+
+		protected void ShowPrevious()
+		{
+			if (slideListView.SelectedIndex > 0)
+				slideListView.SelectedIndex--;
 		}
 
 		public bool IsUpdatable
@@ -94,6 +200,9 @@ namespace Words.Images
 
 		public void Close()
 		{
+			autoAdvanceTimer.Stop();
+			autoAdvanceTimer.Tick -= autoAdvanceTimer_Tick;
+
 			if (Controller.PresentationManager.CurrentPresentation != pres)
 				pres.Close();
 		}
@@ -116,8 +225,10 @@ namespace Words.Images
 				this.CreateInsertionAdorner(slideListView.ItemContainerGenerator.ContainerFromIndex(i) as FrameworkElement);
 				if (e.Data.GetData(typeof(ImageInfo)) != null)
 					e.Effects = DragDropEffects.Move;
-				else
+				else if (((string[])e.Data.GetData(DataFormats.FileDrop)).Where((f) => media.IsValidImageFile(f)).Any())
 					e.Effects = DragDropEffects.Copy;
+				else
+					e.Effects = DragDropEffects.None;
 			}
 			else
 			{
@@ -158,8 +269,10 @@ namespace Words.Images
 					string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
 					foreach (string file in files)
 					{
-						// TODO: check validity (image format)
-						media.Images.Insert(i + 1, new ImageInfo(file));
+						if (media.IsValidImageFile(file))
+						{
+							media.Images.Insert(i + 1, new ImageInfo(file));
+						}
 					}
 				}
 			}
@@ -232,6 +345,12 @@ namespace Words.Images
 			{
 				e.CanExecute = slideListView.SelectedItem != null;
 			}
+			else if (e.Command == ApplicationCommands.Save)
+			{
+				e.CanExecute = media != null && media.CanSave;
+			}
+
+			e.Handled = true;
 		}
 
 
@@ -241,6 +360,10 @@ namespace Words.Images
 			{
 				var item = (ImageInfo)slideListView.SelectedItem;
 				this.media.Images.Remove(item);
+			}
+			else if (e.Command == ApplicationCommands.Save)
+			{
+				this.media.Save();
 			}
 		}
 	}

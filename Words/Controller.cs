@@ -277,6 +277,11 @@ namespace Words
 		{
 			instance.window.ReloadActiveMedia();
 		}
+
+		public static void TryActivateNext()
+		{
+			instance.window.TryActivateNext();
+		}
 		#endregion
 
 		#region Internal members

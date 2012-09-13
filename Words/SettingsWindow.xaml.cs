@@ -63,6 +63,18 @@ namespace Words
 			}
 		}
 
+		public int ImageTransition
+		{
+			get
+			{
+				return Properties.Settings.Default.ImageTransition;
+			}
+			set
+			{
+				Properties.Settings.Default.ImageTransition = value;
+			}
+		}
+
 		public string SongTemplateFile
 		{
 			get
@@ -92,12 +104,17 @@ namespace Words
 			{
 				switch (columnName)
 				{
+					// TODO: localize
 					case "PresentationTransition":
 						if (PresentationTransition < 0)
 							return "Der Wert muss 0 oder größer sein.";
 						break;
 					case "SongSlideTransition":
 						if (SongSlideTransition < 0)
+							return "Der Wert muss 0 oder größer sein.";
+						break;
+					case "ImageTransition":
+						if (ImageTransition < 0)
 							return "Der Wert muss 0 oder größer sein.";
 						break;
 				}

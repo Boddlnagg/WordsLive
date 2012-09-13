@@ -231,6 +231,18 @@ namespace Words
 			orderList.Reload(orderList.ActiveItem);
 		}
 
+		internal void TryActivateNext()
+		{
+			if (ActiveMedia == null)
+				return;
+
+			int index = orderList.IndexOf(orderList.ActiveItem);
+			if (orderList.Count > index + 1)
+			{
+				orderList.ActiveItem = orderList[index + 1];
+			}
+		}
+
 		private void ShowAddMediaDialog()
 		{
 			var typeFilters = new List<string>();

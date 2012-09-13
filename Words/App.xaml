@@ -9,6 +9,7 @@
 	Startup="ApplicationStartup">
 	<Application.Resources>
 		<utils:EnumToBooleanConverter x:Key="EnumToBooleanConverter" />
+		<utils:EnumToIndexConverter x:Key="EnumToIndexConverter" />
 		<utils:StringSplitConverter x:Key="StringSplitConverter" />
 		<songs:SongBackgroundToImageSourceConverter x:Key="BackgroundConverter" />
 		<properties:Settings x:Key="settings" />

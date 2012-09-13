@@ -1,36 +1,45 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Threading;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using Words.Core;
-using System.Linq;
-using System.Windows;
 using System.Collections.ObjectModel;
+using System.IO;
+using System.Linq;
 using Ionic.Zip;
+using Words.Core;
+using System.Threading;
 
 namespace Words.Images
 {
 	public class ImagesMedia : Media
 	{
-		// TODO: allow adding/reordering/removing images after loading
+		public static readonly string[] ImageExtensions = new string[] { ".jpg", ".jpeg", ".png" }; // TODO: add more
+
 		public ObservableCollection<ImageInfo> Images { get; private set; }
+
+		public bool CanSave { get; private set; }
 
 		public override void Load()
 		{
 			FileInfo file = new FileInfo(this.File);
 			if (file.Extension.ToLower() == ".show")
-				Images = new ObservableCollection<ImageInfo>(LoadFromTxt(this.File));
+			{
+				Images = new ObservableCollection<ImageInfo>(LoadFromTxt());
+				CanSave = true;
+			}
 			else if (file.Extension.ToLower() == ".zip")
-				Images = new ObservableCollection<ImageInfo>(LoadFromZip(this.File));
+			{
+				Images = new ObservableCollection<ImageInfo>(LoadFromZip());
+				CanSave = false;
+			}
 			else
+			{
 				Images = new ObservableCollection<ImageInfo> { new ImageInfo(file) };
+				CanSave = false;
+			}
 		}
 
-		private IEnumerable<ImageInfo> LoadFromTxt(string filename)
+		private IEnumerable<ImageInfo> LoadFromTxt()
 		{
-			using (StreamReader reader = new StreamReader(filename))
+			using (StreamReader reader = new StreamReader(this.File))
 			{
 				string line;
 
@@ -44,15 +53,37 @@ namespace Words.Images
 			}
 		}
 
-		private IEnumerable<ImageInfo> LoadFromZip(string filename)
+		private IEnumerable<ImageInfo> LoadFromZip()
 		{
-			using (var zip = new ZipFile(filename))
+			using (var zip = new ZipFile(this.File))
 			{
 				foreach (var entry in zip.Entries)
 				{
 					yield return new ImageInfo(entry);
 				}
 			}
+		}
+
+		public void Save()
+		{
+			var file = new FileInfo(this.File);
+
+			if (file.Extension.ToLower() != ".show")
+				throw new InvalidOperationException("Can only save txt-slideshows.");
+
+			using (StreamWriter writer = new StreamWriter(this.File))
+			{
+				foreach (var img in Images)
+				{
+					writer.WriteLine(img.File.FullName); // TODO: relative path?
+				}
+			}
+		}
+
+		public bool IsValidImageFile(string filename)
+		{
+			FileInfo file = new FileInfo(filename);
+			return file.Exists && ImageExtensions.Contains(file.Extension.ToLower());
 		}
 	}
 }
