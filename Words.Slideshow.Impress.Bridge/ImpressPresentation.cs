@@ -35,9 +35,13 @@ namespace Words.Slideshow.Impress.Bridge
 		[DllImport("user32.dll", CharSet = System.Runtime.InteropServices.CharSet.Auto)]
 		public static extern int GetWindowText(HandleRef hWnd, StringBuilder lpString, int nMaxCount);
 
-		/*[DllImport("user32.dll", SetLastError = true)]
+		[DllImport("user32.dll", SetLastError = true)]
 		private static extern bool MoveWindow(IntPtr hWnd, int X, int Y, int nWidth, int nHeight, bool bRepaint);
-		
+
+		/*[DllImport("user32.dll")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int X, int Y, int cx, int cy, uint uFlags);
+
 		public static IntPtr SetClassLong(IntPtr hWnd, int nIndex, IntPtr dwNewLong)
 		{
 			if (IntPtr.Size > 4)
@@ -46,10 +50,10 @@ namespace Words.Slideshow.Impress.Bridge
 				return new IntPtr(SetClassLongPtr32(hWnd, nIndex, unchecked((uint)dwNewLong.ToInt32())));
 		}
 
-		[DllImport("user32.dll", EntryPoint="SetClassLong")]
+		[DllImport("user32.dll", EntryPoint="SetClassLong", SetLastError=true)]
 		public static extern uint SetClassLongPtr32(IntPtr hWnd, int nIndex, uint dwNewLong);
 
-		[DllImport("user32.dll", EntryPoint="SetClassLongPtr")]
+		[DllImport("user32.dll", EntryPoint="SetClassLongPtr", SetLastError=true)]
 		public static extern IntPtr SetClassLongPtr64(IntPtr hWnd, int nIndex, IntPtr dwNewLong);
 
 		public static IntPtr GetClassLongPtr(IntPtr hWnd, int nIndex)
@@ -60,10 +64,10 @@ namespace Words.Slideshow.Impress.Bridge
 				return new IntPtr(GetClassLongPtr32(hWnd, nIndex));
 		}
 
-		[DllImport("user32.dll", EntryPoint="GetClassLong")]
+		[DllImport("user32.dll", EntryPoint="GetClassLong", SetLastError=true)]
 		public static extern uint GetClassLongPtr32(IntPtr hWnd, int nIndex);
 
-		[DllImport("user32.dll", EntryPoint="GetClassLongPtr")]
+		[DllImport("user32.dll", EntryPoint="GetClassLongPtr", SetLastError=true)]
 		public static extern IntPtr GetClassLongPtr64(IntPtr hWnd, int nIndex);
 		*/
 		#endregion
@@ -91,6 +95,8 @@ namespace Words.Slideshow.Impress.Bridge
 		{
 			try
 			{
+				Area.WindowSizeChanged += Area_WindowSizeChanged;
+
 				// Start LibreOffice and load file
 				unoidl.com.sun.star.uno.XComponentContext localContext = uno.util.Bootstrap.bootstrap();
 				unoidl.com.sun.star.lang.XMultiServiceFactory multiServiceFactory = (unoidl.com.sun.star.lang.XMultiServiceFactory)localContext.getServiceManager();
@@ -136,6 +142,12 @@ namespace Words.Slideshow.Impress.Bridge
 			{
 				base.OnLoaded(false);
 			}
+		}
+
+		void Area_WindowSizeChanged(object sender, EventArgs e)
+		{
+			if (presentationHandle != IntPtr.Zero)
+				MoveWindow(presentationHandle, 0, 0, Area.WindowSize.Width, Area.WindowSize.Height, true);
 		}
 
 		private int GetDisplayIndex()
@@ -184,19 +196,26 @@ namespace Words.Slideshow.Impress.Bridge
 			GetWindowHandles(out presenterConsoleHandle, out presentationHandle);
 
 			//int CS_DROPSHADOW = 0x20000;
-			//var bit = GetClassLongPtr(hWnd, -26).ToInt32() | CS_DROPSHADOW;
-			//SetClassLong(hWnd, -26, new IntPtr(GetClassLongPtr(hWnd, -26).ToInt32() ^ CS_DROPSHADOW));
-			//bit = GetClassLongPtr(hWnd, -26).ToInt32() | CS_DROPSHADOW;
+			//var bit = GetClassLongPtr(presentationHandle, -26).ToInt32() & CS_DROPSHADOW;
+			//SetClassLong(presentationHandle, -26, new IntPtr(GetClassLongPtr(presentationHandle, -26).ToInt32() & ~CS_DROPSHADOW));
+			//Console.WriteLine(Marshal.GetLastWin32Error()); // 5 = Access denied
+			//bit = GetClassLongPtr(presentationHandle, -26).ToInt32() & CS_DROPSHADOW;
 
-			// Resizing the window works (but a dropshadow remains) and moving doesn't, so we stay fullscreen
-			//MoveWindow(hWnd, 0, 0, 800, 600, true);
+
+			//IntPtr child = FindWindowEx(presentationHandle, IntPtr.Zero, "SALOBJECT", null);
+			//IntPtr child2 = FindWindowEx(child, IntPtr.Zero, "SALOBJECTCHILD", null);
+
+			// Resizing the window works, but a dropshadow remains and moving doesn't, so we'll ignore Area.WindowLocation
+			MoveWindow(presentationHandle, 0, 0, Area.WindowSize.Width, Area.WindowSize.Height, true);
 
 			Words.Presentation.Wpf.AeroPeekHelper.RemoveFromAeroPeek(presentationHandle);
 
 			ShowWindow(presenterConsoleHandle, 0); // hide presenter console
 
-			if(!isShown)
+			if (!isShown)
+			{
 				ShowWindow(presentationHandle, 0); // hide presentation window if needed
+			}
 		}
 
 		private void GetWindowHandles(out IntPtr presenterConsoleHandle, out IntPtr presentationHandle)
@@ -249,33 +268,54 @@ namespace Words.Slideshow.Impress.Bridge
 
 		public override void GotoSlide(int index)
 		{
-			if (presentationEnded || controller.getCurrentSlideIndex() == -1)
+			try
 			{
-				controller.removeSlideShowListener(listener);
-				presentation.end();
-				Start();
-				Controller.FocusMainWindow();
-				presentationEnded = false;
+				if (presentationEnded || controller.getCurrentSlideIndex() == -1)
+				{
+					controller.removeSlideShowListener(listener);
+					presentation.end();
+					Start();
+					Controller.FocusMainWindow();
+					presentationEnded = false;
+				}
+				controller.gotoSlideIndex(index);
 			}
-			controller.gotoSlideIndex(index);
+			catch (DisposedException)
+			{
+				OnClosedExternally();
+			}
 		}
 
 		public override void NextStep()
 		{
-			if (!presentationEnded)
-				controller.gotoNextEffect();
+			try
+			{
+				if (!presentationEnded)
+					controller.gotoNextEffect();
+			}
+			catch (DisposedException)
+			{
+				OnClosedExternally();
+			}
 		}
 
 		public override void PreviousStep()
 		{
-			if (!presentationEnded)
-				controller.gotoPreviousEffect();
+			try
+			{ 
+				if (!presentationEnded)
+					controller.gotoPreviousEffect();
+			}
+			catch (DisposedException)
+			{
+				OnClosedExternally();
+			}
 		}
 
 		public override void Show()
 		{
 			isShown = true;
-			ShowWindow(presentationHandle, 1);
+			ShowWindow(presentationHandle, 8);
 			Controller.FocusMainWindow();
 		}
 
