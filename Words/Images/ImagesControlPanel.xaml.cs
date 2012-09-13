@@ -133,7 +133,7 @@ namespace Words.Images
 				if (resetAutoAdvance)
 					ResetAutoAdvanceTimer();
 
-				pres.ShowImage((ImageInfo)slideListView.SelectedItem);
+				pres.CurrentImage = (ImageInfo)slideListView.SelectedItem;
 				this.Cursor = Cursors.Wait;
 			}
 			slideListView.ScrollIntoView(slideListView.SelectedItem);
