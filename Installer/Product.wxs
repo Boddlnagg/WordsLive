@@ -4,10 +4,10 @@
 	<?define Manufacturer="WordsLive"?>
 	<?define UpgradeCode="178f61e3-6be1-4081-9383-af3d34b29d08"?>
 	
-	<Product Id="*" Name="$(var.ProductName)" Language="1031" Version="!(bind.FileVersion.MainApplicationExe)" Manufacturer="$(var.Manufacturer)" UpgradeCode="$(var.UpgradeCode)">
+	<Product Id="*" Name="$(var.ProductName)" Language="!(loc.LANG)" Version="!(bind.FileVersion.MainApplicationExe)" Manufacturer="$(var.Manufacturer)" UpgradeCode="$(var.UpgradeCode)">
 		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
 
-		<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+		<MajorUpgrade DowngradeErrorMessage="!(loc.DowngradeErrorMessage)" />
 		<Media Id="1" Cabinet="media1.cab" EmbedCab="yes"/>
 
 		<!-- ARP Support Oder wie konfiguriert man Add/Remove Programs mit dem Windows Installer
@@ -19,8 +19,7 @@
 		<Property Id="ARPURLINFOABOUT" Value="http://www.wordslive.org" />
 		<Property Id="ARPPRODUCTICON" Value="Viewer.ico" />
 
-		<Feature Id="ProductFeature" Title="MainFeature" Description="The complete package."
-						 ConfigurableDirectory="APPLICATIONFOLDER" Level="1">
+		<Feature Id="ProductFeature" ConfigurableDirectory="APPLICATIONFOLDER" Level="1">
 			<ComponentGroupRef Id="MainAssemblies" />
 			<ComponentGroupRef Id="ThirdPartyAssemblies" />
 			<ComponentGroupRef Id="VlcDotNetAssemblies" />
@@ -29,8 +28,11 @@
 			<ComponentGroupRef Id="I18n"/>
 			<ComponentRef Id="StartMenuShortcutsFolder"/>
 		</Feature>
+
+		<Property Id="WIXUI_INSTALLDIR" Value="APPLICATIONFOLDER" />
+		
 		<UI>
-			<UIRef Id="WixUI_Mondo" />
+			<UIRef Id="WixUI_InstallDir" />
 			<UIRef Id="WixUI_ErrorProgressText" />
 		</UI>
 		<WixVariable Id="WixUIBannerBmp" Value="$(var.Words.ProjectDir)Artwork\InstallerBanner.bmp" />
