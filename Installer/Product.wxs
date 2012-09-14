@@ -23,6 +23,7 @@
 			<ComponentGroupRef Id="MainAssemblies" />
 			<ComponentGroupRef Id="ThirdPartyAssemblies" />
 			<ComponentGroupRef Id="VlcDotNetAssemblies" />
+			<ComponentGroupRef Id="PowerpointViewerLibComponents" />
 			<ComponentGroupRef Id="AwesomiumComponents" />
 			<ComponentGroupRef Id="DataComponents" />
 			<ComponentGroupRef Id="I18n"/>
@@ -110,6 +111,14 @@
 			</Component>
 			<Component Id="VlcDotNetWpfComponent">
 				<File Source="$(var.Words.TargetDir)Vlc.DotNet.Wpf.dll" Name="Vlc.DotNet.Wpf.dll" KeyPath="yes" />
+			</Component>
+		</ComponentGroup>
+		<ComponentGroup Id="PowerpointViewerLibComponents" Directory="APPLICATIONFOLDER">
+			<Component Id="PptviewlibDllComponent">
+				<File Source="$(var.Words.TargetDir)pptviewlib.dll" Name="pptviewlib.dll" KeyPath="yes" />
+			</Component>
+			<Component Id="PowerpointViewerLibDllComponent">
+				<File Source="$(var.Words.TargetDir)PowerpointViewerLib.dll" Name="PowerpointViewerLib.dll" KeyPath="yes" />
 			</Component>
 		</ComponentGroup>
 		<ComponentGroup Id="AwesomiumComponents" Directory="APPLICATIONFOLDER">
