@@ -1,38 +1,149 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-	<Product Id="*" Name="WordsLive" Language="1031" Version="1.0.0.0" Manufacturer="WordsLive" UpgradeCode="178f61e3-6be1-4081-9383-af3d34b29d08">
+	<?define ProductName="WordsLive"?>
+	<?define Manufacturer="WordsLive"?>
+	<?define UpgradeCode="178f61e3-6be1-4081-9383-af3d34b29d08"?>
+	
+	<Product Id="*" Name="$(var.ProductName)" Language="1031" Version="!(bind.FileVersion.MainApplicationExe)" Manufacturer="$(var.Manufacturer)" UpgradeCode="$(var.UpgradeCode)">
 		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
 
 		<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
-		<MediaTemplate />
+		<Media Id="1" Cabinet="media1.cab" EmbedCab="yes"/>
+
+		<!-- ARP Support Oder wie konfiguriert man Add/Remove Programs mit dem Windows Installer
+				Siehe auch http://msdn.microsoft.com/en-us/library/aa368032.aspx
+		-->
+		<Property Id="ARPHELPLINK" Value="http://www.wordslive.org" />
+		<Property Id="ARPCONTACT" Value="WordsLive" />
+		<Property Id="ARPCOMMENTS" Value="Worship Projection Software" />
+		<Property Id="ARPURLINFOABOUT" Value="http://www.wordslive.org" />
+		<Property Id="ARPPRODUCTICON" Value="Viewer.ico" />
 
 		<Feature Id="ProductFeature" Title="MainFeature" Description="The complete package."
 						 ConfigurableDirectory="APPLICATIONFOLDER" Level="1">
-			<ComponentGroupRef Id="ProductComponents" />
+			<ComponentGroupRef Id="MainAssemblies" />
+			<ComponentGroupRef Id="ThirdPartyAssemblies" />
+			<ComponentGroupRef Id="VlcDotNetAssemblies" />
+			<ComponentGroupRef Id="AwesomiumComponents" />
+			<ComponentGroupRef Id="DataComponents" />
+			<ComponentGroupRef Id="I18n"/>
+			<ComponentRef Id="StartMenuShortcutsFolder"/>
 		</Feature>
-		<!--<Property Id="ApplicationFolderName" Value="WordsProject" />
-		<Property Id="WixAppFolder" Value="WixPerMachineFolder" />-->
 		<UI>
 			<UIRef Id="WixUI_Mondo" />
 			<UIRef Id="WixUI_ErrorProgressText" />
 		</UI>
 		<WixVariable Id="WixUIBannerBmp" Value="$(var.Words.ProjectDir)Artwork\InstallerBanner.bmp" />
 		<WixVariable Id="WixUIDialogBmp" Value="$(var.Words.ProjectDir)Artwork\InstallerDialog.bmp" />
+
+		<Directory Id="TARGETDIR" Name="SourceDir">
+			<Directory Id="ProgramFilesFolder">
+				<Directory Id="APPLICATIONFOLDER" Name="$(var.ProductName)">
+					<Directory Id="DataFolder" Name="Data"/>
+					<Directory Id="I18nEnFolder" Name="en"/>
+				</Directory>
+			</Directory>
+
+			<Directory Id="ProgramMenuFolder">
+				<Directory Id="StartMenuShortcutsFolder" Name="$(var.ProductName)">
+					<Component Id="StartMenuShortcutsFolder" Guid="A2FEC1B6-FE5E-11E1-B4D2-FD4D6188709B">
+						<RemoveFolder Id='StartMenuShortcutsFolder' On='uninstall' />
+						<RegistryValue Root='HKCU' Key='Software\[Manufacturer]\[ProductName]' Type='string' Value='' KeyPath='yes' />
+					</Component>
+				</Directory>
+			</Directory>
+			<!-- Wird benötigt um den Desktop Shortcut anlegen zu können -->
+			<Directory Id="DesktopFolder" Name="Desktop" />
+		</Directory>
+
+		<Icon Id="Viewer.ico" SourceFile="$(var.Words.ProjectDir)Artwork\Viewer.ico" />
 	</Product>
 
 	<Fragment>
-		<Directory Id="TARGETDIR" Name="SourceDir">
-			<Directory Id="ProgramFilesFolder">
-				<Directory Id="APPLICATIONFOLDER" Name="WordsProject" />
-			</Directory>
-		</Directory>
-	</Fragment>
-
-	<Fragment>
-		<ComponentGroup Id="ProductComponents" Directory="APPLICATIONFOLDER">
-			<!-- TODO: Remove the comments around this Component element and the ComponentRef below in order to add resources to this installer. -->
-			<Component Id="ProductComponent">
-				<File Source="$(var.Words.TargetPath)" Name="Words.exe" />
+		<ComponentGroup Id="MainAssemblies" Directory="APPLICATIONFOLDER">
+			<Component Id="MainComponent">
+				<File Id="MainApplicationExe" Source="$(var.Words.TargetDir)Words.exe" Name="Words.exe" KeyPath="yes" />
+				<File Source="$(var.Words.TargetDir)Words.exe.config" Name="Words.exe.config"/>
+				<Shortcut Id="StartmenuApplicationShortcut" Directory="StartMenuShortcutsFolder" Name="$(var.ProductName)"
+									WorkingDirectory='APPLICATIONFOLDER' Icon="Viewer.ico" IconIndex="0" Advertise="yes" />
+				<Shortcut Id="DesktopApplicationShortcut" Directory="DesktopFolder" Name="$(var.ProductName)"
+					WorkingDirectory='APPLICATIONFOLDER' Icon="Viewer.ico" IconIndex="0" Advertise="yes" />
+			</Component>
+			<Component Id="CoreDllComponent">
+				<File Source="$(var.Words.TargetDir)Words.Core.dll" Name="Words.Core.dll" KeyPath="yes" />
+			</Component>
+			<Component Id="AwesomiumExeComponent">
+				<File Source="$(var.Words.TargetDir)Words.Awesomium.exe" Name="Words.Awesomium.exe" KeyPath="yes" />
+			</Component>
+			<Component Id="PresentationDllComponent">
+				<File Source="$(var.Words.TargetDir)Words.Presentation.dll" Name="Words.Presentation.dll" KeyPath="yes" />
+			</Component>
+			<Component Id="PresentationWpfDllComponent">
+				<File Source="$(var.Words.TargetDir)Words.Presentation.Wpf.dll" Name="Words.Presentation.Wpf.dll" KeyPath="yes" />
+			</Component>
+			<Component Id="SlideshowDllComponent">
+				<File Source="$(var.Words.TargetDir)Words.Slideshow.dll" Name="Words.Slideshow.dll" KeyPath="yes" />
+			</Component>
+			<Component Id="SlideshowImpressBridgeDllComponent">
+				<File Source="$(var.Words.TargetDir)Words.Slideshow.Impress.Bridge.dll" Name="Words.Slideshow.Impress.Bridge.dll" KeyPath="yes" />
+			</Component>
+		</ComponentGroup>
+		<ComponentGroup Id="ThirdPartyAssemblies" Directory="APPLICATIONFOLDER">
+			<Component Id="IonicZipComponent">
+				<File Source="$(var.Words.TargetDir)Ionic.Zip.dll" Name="Ionic.Zip.dll" KeyPath="yes" />
+			</Component>
+			<Component Id="MonitoredUndoComponent">
+				<File Source="$(var.Words.TargetDir)MonitoredUndo.dll" Name="MonitoredUndo.dll" KeyPath="yes" />
+			</Component>
+			<Component Id="WpfToolkitComponent">
+				<File Source="$(var.Words.TargetDir)WPFToolkit.Extended.dll" Name="WPFToolkit.Extended.dll" KeyPath="yes" />
+			</Component>
+		</ComponentGroup>
+		<ComponentGroup Id="VlcDotNetAssemblies" Directory="APPLICATIONFOLDER">
+			<Component Id="VlcDotNetCoreComponent">
+				<File Source="$(var.Words.TargetDir)Vlc.DotNet.Core.dll" Name="Vlc.DotNet.Core.dll" KeyPath="yes" />
+			</Component>
+			<Component Id="VlcDotNetCoreInteropsComponent">
+				<File Source="$(var.Words.TargetDir)Vlc.DotNet.Core.Interops.dll" Name="Vlc.DotNet.Core.Interops.dll" KeyPath="yes" />
+			</Component>
+			<Component Id="VlcDotNetWpfComponent">
+				<File Source="$(var.Words.TargetDir)Vlc.DotNet.Wpf.dll" Name="Vlc.DotNet.Wpf.dll" KeyPath="yes" />
+			</Component>
+		</ComponentGroup>
+		<ComponentGroup Id="AwesomiumComponents" Directory="APPLICATIONFOLDER">
+			<Component Id="AwesomiumDllComponent">
+				<File Source="$(var.Words.TargetDir)Awesomium.dll" Name="Awesomium.dll" KeyPath="yes" />
+			</Component>
+			<Component Id="AwesomiumCoreDllComponent">
+				<File Source="$(var.Words.TargetDir)Awesomium.Core.dll" Name="Awesomium.Core.dll" KeyPath="yes" />
+			</Component>
+			<Component Id="AwesomiumWindowsControlsDllComponent">
+				<File Source="$(var.Words.TargetDir)Awesomium.Windows.Controls.dll" Name="Awesomium.Windows.Controls.dll" KeyPath="yes" />
+			</Component>
+			<Component Id="AwesomiumEnDllComponent">
+				<File Source="$(var.Words.TargetDir)en-US.dll" Name="en-US.dll" KeyPath="yes" />
+			</Component>
+			<Component Id="AwesomiumIcuDllComponent">
+				<File Source="$(var.Words.TargetDir)icudt42.dll" Name="icudt42.dll" KeyPath="yes" />
+			</Component>
+		</ComponentGroup>
+		<ComponentGroup Id="DataComponents" Directory="DataFolder">
+			<Component Id="SongTemplateComponent">
+				<File Source="$(var.Words.TargetDir)Data\Standard.ppl" Name="Standard.ppl" KeyPath="yes" />
+			</Component>
+			<Component Id="SongHtmlComponent">
+				<File Source="$(var.Words.TargetDir)Data\song.html" Name="song.html" KeyPath="yes" />
+			</Component>
+			<Component Id="ScriptComponent">
+				<File Source="$(var.Words.TargetDir)Data\script.js" Name="script.js" KeyPath="yes" />
+			</Component>
+			<Component Id="JQueryComponent">
+				<File Source="$(var.Words.TargetDir)Data\jquery.js" Name="jquery.js" KeyPath="yes" />
+			</Component>
+		</ComponentGroup>
+		<ComponentGroup Id="I18n">
+			<Component Directory="I18nEnFolder">
+				<File Source="$(var.Words.TargetDir)en\Words.resources.dll" Name="Words.resources.dll" KeyPath="yes"/>
 			</Component>
 		</ComponentGroup>
 	</Fragment>
