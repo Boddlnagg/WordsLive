@@ -32,7 +32,7 @@
 		<Property Id="WIXUI_INSTALLDIR" Value="APPLICATIONFOLDER" />
 		
 		<UI>
-			<UIRef Id="WixUI_InstallDir" />
+			<UIRef Id="WixUI_InstallDirNoLicense" />
 			<UIRef Id="WixUI_ErrorProgressText" />
 		</UI>
 		<WixVariable Id="WixUIBannerBmp" Value="$(var.Words.ProjectDir)Artwork\InstallerBanner.bmp" />
