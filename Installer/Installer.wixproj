@@ -37,6 +37,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <WixExtension Include="WixNetFxExtension">
+      <HintPath>$(WixExtDir)\WixNetFxExtension.dll</HintPath>
+      <Name>WixNetFxExtension</Name>
+    </WixExtension>
     <WixExtension Include="WixUIExtension">
       <HintPath>$(WixExtDir)\WixUIExtension.dll</HintPath>
       <Name>WixUIExtension</Name>
@@ -45,6 +49,9 @@
   <ItemGroup>
     <EmbeddedResource Include="de-DE.wxl" />
     <EmbeddedResource Include="en-US.wxl" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Microsoft_VC100_CRT_x86.msm" />
   </ItemGroup>
   <Import Project="$(WixTargetsPath)" />
   <!--

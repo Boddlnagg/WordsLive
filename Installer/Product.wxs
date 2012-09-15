@@ -1,11 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi" xmlns:netfx="http://schemas.microsoft.com/wix/NetFxExtension">
 	<?define ProductName="WordsLive"?>
 	<?define Manufacturer="WordsLive"?>
 	<?define UpgradeCode="178f61e3-6be1-4081-9383-af3d34b29d08"?>
 	
 	<Product Id="*" Name="$(var.ProductName)" Language="!(loc.LANG)" Version="!(bind.FileVersion.MainApplicationExe)" Manufacturer="$(var.Manufacturer)" UpgradeCode="$(var.UpgradeCode)">
-		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
+		<Package InstallerVersion="300" Compressed="yes" InstallScope="perMachine" />
+
+		<PropertyRef Id="NETFRAMEWORK40CLIENT"/>
+
+		<Condition Message="!(loc.NetFxErrorMessage)">
+			<![CDATA[Installed OR NETFRAMEWORK40CLIENT]]>
+		</Condition>
 
 		<MajorUpgrade DowngradeErrorMessage="!(loc.DowngradeErrorMessage)" />
 		<Media Id="1" Cabinet="media1.cab" EmbedCab="yes"/>
@@ -28,6 +34,10 @@
 			<ComponentGroupRef Id="DataComponents" />
 			<ComponentGroupRef Id="I18n"/>
 			<ComponentRef Id="StartMenuShortcutsFolder"/>
+		</Feature>
+
+		<Feature Id="VCRedistFeature" Title="Visual C++ 2010 Runtime" AllowAdvertise="no" Display="hidden" Level="1">
+			<MergeRef Id="VCRedist"/>
 		</Feature>
 
 		<Property Id="WIXUI_INSTALLDIR" Value="APPLICATIONFOLDER" />
@@ -60,6 +70,10 @@
 		</Directory>
 
 		<Icon Id="Viewer.ico" SourceFile="$(var.Words.ProjectDir)Artwork\Viewer.ico" />
+
+		<DirectoryRef Id="APPLICATIONFOLDER">
+			<Merge Id="VCRedist" SourceFile="$(var.ProjectDir)Microsoft_VC100_CRT_x86.msm" DiskId="1" Language="0"/>
+		</DirectoryRef>
 	</Product>
 
 	<Fragment>
