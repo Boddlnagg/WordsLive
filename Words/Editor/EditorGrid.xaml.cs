@@ -382,47 +382,44 @@ namespace Words.Editor
 			if (!orderSelected)
 				OrderListBox.SelectedItem = null;
 
+			if (StructureTree.SelectedItem is SongNodePart)
+				PreviewControl.Node = ((SongNodePart)StructureTree.SelectedItem).Children[0];
+			else
+				PreviewControl.Node = (SongNode)StructureTree.SelectedItem;
+
+			if (StructureTree.SelectedItem is SongNodeSlide)
+				EnableSpellCheckCheckBox.IsEnabled = true;
+			else
+				EnableSpellCheckCheckBox.IsEnabled = false;
+
 			if (StructureTree.SelectedItem is SongNodeRoot)
 			{
-				PreviewControl.Node = (SongNode)StructureTree.SelectedItem;
 				EditBorder.Child = null;
 				EditHeader.Text = "";
-				EnableSpellCheckCheckBox.IsEnabled = false;
 			}
 			else if (StructureTree.SelectedItem is SongNodeSlide)
 			{
-				PreviewControl.Node = (SongNode)StructureTree.SelectedItem;
 				EditBorder.Child = (Grid)this.Resources["editTextWithTranslation"];
 				EditHeader.Text = Words.Resources.Resource.eGridTextHeader;
-				EnableSpellCheckCheckBox.IsEnabled = true;
 			}
 			else if (StructureTree.SelectedItem is SongNodePart)
 			{
-				SongNodePart p = StructureTree.SelectedItem as SongNodePart;
-				PreviewControl.Node = p.Children[0];
 				EditBorder.Child = null;
 				EditHeader.Text = "";
-				EnableSpellCheckCheckBox.IsEnabled = false;
 			}
 			else if (StructureTree.SelectedItem is SongNodeLanguage)
 			{
 				EditBorder.Child = (Grid)this.Resources["editLanguageGrid"];
-				EnableSpellCheckCheckBox.IsEnabled = false;
-				PreviewControl.Node = (SongNode)StructureTree.SelectedItem;
 				EditHeader.Text = ((SongNodeLanguage)StructureTree.SelectedItem).Title;
 			}
 			else if (StructureTree.SelectedItem is SongNodeSource)
 			{
-				PreviewControl.Node = (SongNode)StructureTree.SelectedItem;
 				EditBorder.Child = (Grid)this.Resources["editSourceGrid"];
 				EditHeader.Text = ((SongNodeSource)StructureTree.SelectedItem).Title;
-				EnableSpellCheckCheckBox.IsEnabled = false;
 			}
 			else if (StructureTree.SelectedItem is SongNodeMetadata) // copyright and category
 			{
 				EditBorder.Child = (TextBox)this.Resources["editTextBox"];
-				EnableSpellCheckCheckBox.IsEnabled = false;
-				PreviewControl.Node = (SongNode)StructureTree.SelectedItem;
 				EditHeader.Text = ((SongNodeMetadata)StructureTree.SelectedItem).Title;
 			}
 			else

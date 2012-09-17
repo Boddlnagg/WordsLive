@@ -193,13 +193,10 @@ namespace Words.Editor
 
 		public void Update()
 		{
-			if (node is SongNodeRoot)
-			{
-				controller.UpdateSlide(song, null);
-				controller.ShowCopyright(false);
-				controller.ShowSource(false);
-			}
-			else if (node is SongNodeSlide)
+			if (node == null)
+				return;
+
+			if (node is SongNodeSlide)
 			{
 				controller.UpdateSlide(song, (node as SongNodeSlide).Slide);
 				(node as SongNodeSlide).PropertyChanged += (sender, args) =>
@@ -265,6 +262,12 @@ namespace Words.Editor
 					else if (args.PropertyName == "FontSize")
 						UpdateStyle();
 				};
+			}
+			else
+			{
+				controller.UpdateSlide(song, null);
+				controller.ShowCopyright(false);
+				controller.ShowSource(false);
 			}
 		}
 
