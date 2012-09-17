@@ -544,13 +544,35 @@ namespace Words.Editor
 			}
 			else if (e.Command == EditingCommands.IncreaseFontSize)
 			{
-				SongNodeSlide slide = node as SongNodeSlide;
-				slide.ChangeFontSize(slide.FontSize + 1);
+				if (node is SongNodeSlide)
+				{
+					SongNodeSlide slide = node as SongNodeSlide;
+					slide.ChangeFontSize(slide.FontSize + 1);
+				}
+				else if (node is SongNodeCopyright)
+				{
+					(node as SongNodeCopyright).FontSize++;
+				}
+				else if (node is SongNodeSource)
+				{
+					(node as SongNodeSource).FontSize++;
+				}
 			}
 			else if (e.Command == EditingCommands.DecreaseFontSize)
 			{
-				SongNodeSlide slide = node as SongNodeSlide;
-				slide.ChangeFontSize(slide.FontSize - 1);
+				if (node is SongNodeSlide)
+				{
+					SongNodeSlide slide = node as SongNodeSlide;
+					slide.ChangeFontSize(slide.FontSize - 1);
+				}
+				else if (node is SongNodeCopyright)
+				{
+					(node as SongNodeCopyright).FontSize--;
+				}
+				else if (node is SongNodeSource)
+				{
+					(node as SongNodeSource).FontSize--;
+				}
 			}
 		}
 
@@ -577,7 +599,7 @@ namespace Words.Editor
 			}
 			else if (e.Command == EditingCommands.IncreaseFontSize || e.Command == EditingCommands.DecreaseFontSize)
 			{
-				e.CanExecute = node is SongNodeSlide;
+				e.CanExecute = node is SongNodeSlide || node is SongNodeCopyright || node is SongNodeSource;
 			}
 			else if (e.Command == CustomCommands.Split)
 			{

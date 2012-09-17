@@ -1,4 +1,5 @@
 ﻿using Words.Core.Songs;
+using MonitoredUndo;
 
 namespace Words.Editor
 {
@@ -53,6 +54,20 @@ namespace Words.Editor
 				EditorDocument.OnChangingTryMerge(this, "Number", source.Number, value);
 				source.Number = value;
 				OnNotifyPropertyChanged("Number");
+			}
+		}
+
+		public int FontSize
+		{
+			get
+			{
+				return Root.Song.Formatting.SourceText.Size;
+			}
+			set
+			{
+				DefaultChangeFactory.OnChanging(this, "FontSize", Root.Song.Formatting.SourceText.Size, value);
+				Root.Song.Formatting.SourceText.Size = value;
+				OnNotifyPropertyChanged("FontSize");
 			}
 		}
 	}

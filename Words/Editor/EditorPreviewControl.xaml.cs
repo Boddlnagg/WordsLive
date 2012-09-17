@@ -245,6 +245,8 @@ namespace Words.Editor
 
 					if (args.PropertyName == "Text")
 						controller.SetCopyright(song.Copyright);
+					else if (args.PropertyName == "FontSize")
+						UpdateStyle();
 				};
 			}
 			else if (node is SongNodeSource)
@@ -260,6 +262,8 @@ namespace Words.Editor
 
 					if (args.PropertyName == "Songbook" || args.PropertyName == "Number")
 						controller.SetSource((node as SongNodeSource).Source);
+					else if (args.PropertyName == "FontSize")
+						UpdateStyle();
 				};
 			}
 		}
