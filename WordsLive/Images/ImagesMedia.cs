@@ -4,10 +4,10 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using Ionic.Zip;
-using Words.Core;
+using WordsLive.Core;
 using System.Threading;
 
-namespace Words.Images
+namespace WordsLive.Images
 {
 	public class ImagesMedia : Media
 	{

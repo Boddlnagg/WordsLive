@@ -2,12 +2,12 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using Words.Utils;
+using WordsLive.Utils;
 using System.ComponentModel;
 using System.Collections.Specialized;
 using System.Collections;
 
-namespace Words.Utils.ActivatableListBox
+namespace WordsLive.Utils.ActivatableListBox
 {
 	public static class Activator
 	{

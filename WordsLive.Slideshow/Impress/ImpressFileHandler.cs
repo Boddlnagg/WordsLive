@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
-using Words.Core;
+using WordsLive.Core;
 
-namespace Words.Slideshow.Impress
+namespace WordsLive.Slideshow.Impress
 {
 	public class ImpressFileHandler : MediaFileHandler
 	{
@@ -51,8 +51,8 @@ namespace Words.Slideshow.Impress
 		{
 			try
 			{
-				var asm = Assembly.LoadFrom("Words.Slideshow.Impress.Bridge.dll");
-				PresentationType = asm.GetType("Words.Slideshow.Impress.Bridge.ImpressPresentation");
+				var asm = Assembly.LoadFrom("WordsLive.Slideshow.Impress.Bridge.dll");
+				PresentationType = asm.GetType("WordsLive.Slideshow.Impress.Bridge.ImpressPresentation");
 				if (PresentationType != null)
 					isAvailable = true;
 			}

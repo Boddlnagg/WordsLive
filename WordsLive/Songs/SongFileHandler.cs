@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
-using Words.Core;
-using Words.Core.Songs;
+using WordsLive.Core;
+using WordsLive.Core.Songs;
 using System.IO;
 
-namespace Words.Songs
+namespace WordsLive.Songs
 {
 	public class SongFileHandler : MediaFileHandler
 	{

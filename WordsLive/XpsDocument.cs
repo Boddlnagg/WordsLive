@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Words.Core;
+using WordsLive.Core;
 using Xps = System.Windows.Xps.Packaging;
 using System.IO;
 
-namespace Words
+namespace WordsLive
 {
 	public class XpsDocument : Media
 	{

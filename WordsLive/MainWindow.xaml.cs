@@ -7,16 +7,16 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using Words.Core;
-using Words.Core.Songs;
-using Words.Editor;
-using Words.MediaOrderList;
-using Words.Presentation;
-using Words.Resources;
-using Words.Songs;
-using Words.Utils;
+using WordsLive.Core;
+using WordsLive.Core.Songs;
+using WordsLive.Editor;
+using WordsLive.MediaOrderList;
+using WordsLive.Presentation;
+using WordsLive.Resources;
+using WordsLive.Songs;
+using WordsLive.Utils;
 
-namespace Words
+namespace WordsLive
 {
 	public partial class MainWindow : Window, INotifyPropertyChanged
 	{
@@ -212,9 +212,9 @@ namespace Words
 				this.previewBorder.Child = null;
 				return new TextBlock { Text = Resource.vNoPreviewAvailable, TextAlignment = TextAlignment.Center, Foreground = Brushes.Black };
 			}
-			else if (presentation.Preview is Words.Presentation.Wpf.WpfPreviewProvider)
+			else if (presentation.Preview is WordsLive.Presentation.Wpf.WpfPreviewProvider)
 			{
-				this.previewBorder.Child = (presentation.Preview as Words.Presentation.Wpf.WpfPreviewProvider).WpfPreviewControl;
+				this.previewBorder.Child = (presentation.Preview as WordsLive.Presentation.Wpf.WpfPreviewProvider).WpfPreviewControl;
 				return this.previewBorder;
 			}
 			else

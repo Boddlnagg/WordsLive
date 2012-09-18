@@ -1,7 +1,7 @@
 ﻿using System.Windows.Media;
-using Words.Core;
+using WordsLive.Core;
 
-namespace Words.MediaOrderList
+namespace WordsLive.MediaOrderList
 {
 	[TargetMedia(typeof(FileNotFoundMedia))]
 	class FileNotFoundIconProvider : IconProvider

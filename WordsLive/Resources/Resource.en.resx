@@ -373,7 +373,7 @@
     <value>Settings</value>
   </data>
   <data name="seWarningRelaunch" xml:space="preserve">
-    <value>Warning: Changes in this area take effect only after restarting Words.</value>
+    <value>Warning: Changes in this area take effect only after restarting WordsLive.</value>
   </data>
   <data name="eGridAddElementButton" xml:space="preserve">
     <value>Add slide/part</value>

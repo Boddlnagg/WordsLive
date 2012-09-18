@@ -1,10 +1,10 @@
 ﻿using System.Collections.ObjectModel;
 using System.Linq;
 using MonitoredUndo;
-using Words.Core.Songs;
+using WordsLive.Core.Songs;
 using System;
 
-namespace Words.Editor
+namespace WordsLive.Editor
 {
 	public class SongNodePart : SongNode
 	{

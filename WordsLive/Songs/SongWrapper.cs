@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Words.Core.Songs;
+using WordsLive.Core.Songs;
 using System.Windows.Media.Imaging;
 
-namespace Words.Songs
+namespace WordsLive.Songs
 {
 	public class SongWrapper
 	{

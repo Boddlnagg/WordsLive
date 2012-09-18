@@ -4,7 +4,7 @@ using System.Windows.Media.Imaging;
 using System;
 using System.ComponentModel;
 
-namespace Words.Images
+namespace WordsLive.Images
 {
 	public class ImageInfo : INotifyPropertyChanged
 	{

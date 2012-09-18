@@ -1,15 +1,15 @@
 ﻿using System.Windows.Controls;
 using System.Linq;
 using Awesomium.Windows.Controls;
-using Words.Core.Songs;
-using Words.Presentation.Wpf;
-using Words.Songs;
+using WordsLive.Core.Songs;
+using WordsLive.Presentation.Wpf;
+using WordsLive.Songs;
 using System;
 using System.IO;
-using Words.Core;
+using WordsLive.Core;
 using System.Windows;
 
-namespace Words.Editor
+namespace WordsLive.Editor
 {
 	public partial class EditorPreviewControl : UserControl
 	{

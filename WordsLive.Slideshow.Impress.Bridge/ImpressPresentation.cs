@@ -13,7 +13,7 @@ using unoidl.com.sun.star.lang;
 using unoidl.com.sun.star.presentation;
 using System.Threading;
 
-namespace Words.Slideshow.Impress.Bridge
+namespace WordsLive.Slideshow.Impress.Bridge
 {			
 	/// <summary>
 	/// Bridge to Open-/LibreOffice Impress
@@ -214,7 +214,7 @@ namespace Words.Slideshow.Impress.Bridge
 			// Resizing the window works, but a dropshadow remains and moving doesn't, so we'll ignore Area.WindowLocation
 			MoveWindow(presentationHandle, 0, 0, Area.WindowSize.Width, Area.WindowSize.Height, true);
 
-			Words.Presentation.Wpf.AeroPeekHelper.RemoveFromAeroPeek(presentationHandle);
+			WordsLive.Presentation.Wpf.AeroPeekHelper.RemoveFromAeroPeek(presentationHandle);
 
 			ShowWindow(presenterConsoleHandle, 0); // hide presenter console
 

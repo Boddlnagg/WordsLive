@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Words.Presentation
+namespace WordsLive.Presentation
 {
 	public interface IPresentation
 	{

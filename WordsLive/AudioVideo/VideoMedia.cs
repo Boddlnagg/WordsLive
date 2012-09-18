@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Words.Core;
+using WordsLive.Core;
 using Vlc.DotNet.Core;
 using System.IO;
 
-namespace Words.AudioVideo
+namespace WordsLive.AudioVideo
 {
 	public class VideoMedia : AudioVideoMedia
 	{

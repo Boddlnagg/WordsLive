@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using Words.Core;
+using WordsLive.Core;
 using System.ComponentModel;
 using System.Linq;
 using System.IO;
 
-namespace Words.MediaOrderList
+namespace WordsLive.MediaOrderList
 {
 	public class MediaNotificationEventArgs : EventArgs
 	{

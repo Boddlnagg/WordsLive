@@ -7,9 +7,9 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
-using Words.Utils.ImageLoader.Loaders;
+using WordsLive.Utils.ImageLoader.Loaders;
 
-namespace Words.Utils.ImageLoader
+namespace WordsLive.Utils.ImageLoader
 {
 	internal sealed class Manager
 	{

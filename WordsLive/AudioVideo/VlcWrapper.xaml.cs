@@ -1,7 +1,7 @@
 ﻿using System;
 using Vlc.DotNet.Core.Medias;
 
-namespace Words.AudioVideo
+namespace WordsLive.AudioVideo
 {
 	public partial class VlcWrapper : BaseMediaControl
 	{

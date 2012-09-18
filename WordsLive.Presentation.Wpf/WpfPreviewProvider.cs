@@ -7,7 +7,7 @@ using System.Windows;
 using WinForms = System.Windows.Forms;
 using System.Windows.Forms.Integration;
 
-namespace Words.Presentation.Wpf
+namespace WordsLive.Presentation.Wpf
 {
 	public abstract class WpfPreviewProvider : IPreviewProvider
 	{

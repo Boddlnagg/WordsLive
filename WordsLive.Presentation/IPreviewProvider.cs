@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 
-namespace Words.Presentation
+namespace WordsLive.Presentation
 {
 	public interface IPreviewProvider
 	{

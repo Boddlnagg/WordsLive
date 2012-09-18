@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
-using Words.Presentation.Wpf;
+using WordsLive.Presentation.Wpf;
 
-namespace Words.Slideshow
+namespace WordsLive.Slideshow
 {
     public class SlideshowPreviewProvider : WpfPreviewProvider
     {

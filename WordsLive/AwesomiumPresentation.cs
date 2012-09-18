@@ -6,10 +6,10 @@ using System.Windows.Media.Imaging;
 using Awesomium.Core;
 using Awesomium.Windows.Controls;
 using System;
-using Words.Presentation.Wpf;
-using Words.Presentation;
+using WordsLive.Presentation.Wpf;
+using WordsLive.Presentation;
 
-namespace Words
+namespace WordsLive
 {
 	public class AwesomiumPresentation : WpfPresentation<AwesomiumWrapper>
 	{

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Windows.Controls;
-using Words.Core;
-using Words.Core.Songs;
+using WordsLive.Core;
+using WordsLive.Core.Songs;
 
-namespace Words.Songs
+namespace WordsLive.Songs
 {
 	[TargetMedia(typeof(Song))]
 	public partial class SongControlPanel : UserControl, IMediaControlPanel

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Words.Core.Songs.Chords
+namespace WordsLive.Core.Songs.Chords
 {
 	public class Note
 	{

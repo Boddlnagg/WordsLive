@@ -5,10 +5,10 @@ using System.ComponentModel;
 using System.IO;
 using System.Windows;
 using System.Windows.Input;
-using Words.Core.Songs;
+using WordsLive.Core.Songs;
 using System.Windows.Documents;
 
-namespace Words.Editor
+namespace WordsLive.Editor
 {
 	public partial class EditorWindow : Window
 	{
@@ -73,7 +73,7 @@ namespace Words.Editor
 				template = Path.Combine("Data", "Standard.ppl");
 			}
 
-			return new Song(template) { SongTitle = Words.Resources.Resource.eNewSongTitle };
+			return new Song(template) { SongTitle = WordsLive.Resources.Resource.eNewSongTitle };
 		}
 
 		public void LoadOrImport(string filename)
@@ -96,7 +96,7 @@ namespace Words.Editor
 			else
 			{
 				Controller.ShowEditorWindow();
-				MessageBox.Show(String.Format(Words.Resources.Resource.eMsgCouldNotOpenSong, file), Words.Resources.Resource.dialogError, MessageBoxButton.OK, MessageBoxImage.Error);
+				MessageBox.Show(String.Format(WordsLive.Resources.Resource.eMsgCouldNotOpenSong, file), WordsLive.Resources.Resource.dialogError, MessageBoxButton.OK, MessageBoxImage.Error);
 			}
 		}
 
@@ -182,7 +182,7 @@ namespace Words.Editor
 
 			if (doc.IsModified)
 			{
-				var res = MessageBox.Show(String.Format(Words.Resources.Resource.eMsgSaveSongChanges, doc.Song.SongTitle), Words.Resources.Resource.eMsgSaveSongChangesTitle, MessageBoxButton.YesNoCancel);
+				var res = MessageBox.Show(String.Format(WordsLive.Resources.Resource.eMsgSaveSongChanges, doc.Song.SongTitle), WordsLive.Resources.Resource.eMsgSaveSongChangesTitle, MessageBoxButton.YesNoCancel);
 				if (res == MessageBoxResult.Cancel)
 				{
 					return false;
@@ -212,7 +212,7 @@ namespace Words.Editor
 				bg = doc.Song.Backgrounds[doc.Song.FirstSlide != null ? doc.Song.FirstSlide.BackgroundIndex : 0];
 			else
 			{
-				MessageBox.Show(Words.Resources.Resource.eMsgSelectElement);
+				MessageBox.Show(WordsLive.Resources.Resource.eMsgSelectElement);
 				return;
 			}
 

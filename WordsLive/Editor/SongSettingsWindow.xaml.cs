@@ -1,10 +1,10 @@
 ﻿using System.ComponentModel;
 using System.Windows;
-using Words.Core.Songs;
-using Words.Utils;
+using WordsLive.Core.Songs;
+using WordsLive.Utils;
 using System.Windows.Media;
 
-namespace Words.Editor
+namespace WordsLive.Editor
 {
 	public partial class SongSettingsWindow : Window, IDataErrorInfo
 	{

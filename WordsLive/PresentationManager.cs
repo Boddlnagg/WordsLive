@@ -1,21 +1,21 @@
 ﻿using System;
-using Words.Presentation;
-using Words.Presentation.Wpf;
+using WordsLive.Presentation;
+using WordsLive.Presentation.Wpf;
 using System.ComponentModel;
 
-namespace Words
+namespace WordsLive
 {
 	public class PresentationManager : INotifyPropertyChanged
 	{
 		private readonly PresentationArea area;
-		private readonly Words.Presentation.Wpf.Blackscreen blackscreen;
+		private readonly WordsLive.Presentation.Wpf.Blackscreen blackscreen;
 		private IPresentation currentPresentation;
 		private PresentationStatus status = PresentationStatus.Hide;
 
 		internal PresentationManager()
 		{
 			this.area = new PresentationArea();
-			this.blackscreen = CreatePresentation<Words.Presentation.Wpf.Blackscreen>();
+			this.blackscreen = CreatePresentation<WordsLive.Presentation.Wpf.Blackscreen>();
 		}
 
 		public T CreatePresentation<T>() where T : IPresentation, new()

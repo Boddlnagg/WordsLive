@@ -7,10 +7,10 @@ using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Input;
 using MonitoredUndo;
-using Words.Core.Songs;
-using Words.Utils;
+using WordsLive.Core.Songs;
+using WordsLive.Utils;
 
-namespace Words.Editor
+namespace WordsLive.Editor
 {
 	public partial class EditorGrid : Grid, INotifyPropertyChanged
 	{
@@ -327,8 +327,8 @@ namespace Words.Editor
 
 					if (Node.FindPartWithSlide(dragNode).Children.Count <= 1)
 					{
-						MessageBox.Show(Words.Resources.Resource.eMsgMoveLastSlideInPart,
-							Words.Resources.Resource.dialogError, MessageBoxButton.OK, MessageBoxImage.Error);
+						MessageBox.Show(WordsLive.Resources.Resource.eMsgMoveLastSlideInPart,
+							WordsLive.Resources.Resource.dialogError, MessageBoxButton.OK, MessageBoxImage.Error);
 						return;
 					}
 
@@ -400,7 +400,7 @@ namespace Words.Editor
 			else if (StructureTree.SelectedItem is SongNodeSlide)
 			{
 				EditBorder.Child = (Grid)this.Resources["editTextWithTranslation"];
-				EditHeader.Text = Words.Resources.Resource.eGridTextHeader;
+				EditHeader.Text = WordsLive.Resources.Resource.eGridTextHeader;
 			}
 			else if (StructureTree.SelectedItem is SongNodePart)
 			{

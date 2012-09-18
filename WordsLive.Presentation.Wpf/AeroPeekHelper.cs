@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace Words.Presentation.Wpf
+namespace WordsLive.Presentation.Wpf
 {
 	public class AeroPeekHelper
 	{

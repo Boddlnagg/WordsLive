@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
-using Words.Core;
-using Words.Presentation.Wpf;
+using WordsLive.Core;
+using WordsLive.Presentation.Wpf;
 using System.Collections.Generic;
 
-namespace Words
+namespace WordsLive
 {
 	[TargetMedia(typeof(WebSite))]
 	public partial class WebSiteControlPanel : UserControl, IMediaControlPanel
@@ -62,7 +62,7 @@ namespace Words
 			translationComboBox.DataContext = bibleTranslations;
 		}
 
-		private Words.Core.WebSite website;
+		private WordsLive.Core.WebSite website;
 
 		public Control Control
 		{
@@ -76,7 +76,7 @@ namespace Words
 
 		public void Init(Core.Media media)
 		{
-			website = media as Words.Core.WebSite;
+			website = media as WordsLive.Core.WebSite;
 
 			if (website == null)
 				throw new ArgumentException("media must not be null and of type WebSite");

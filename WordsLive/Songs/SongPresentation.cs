@@ -2,15 +2,15 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Words.Core;
-using Words.Core.Songs;
+using WordsLive.Core;
+using WordsLive.Core.Songs;
 using System.Windows.Media;
 using System.Windows.Controls;
 using System.Windows.Media.Animation;
 using System.Windows;
-using Words.AudioVideo;
+using WordsLive.AudioVideo;
 
-namespace Words.Songs
+namespace WordsLive.Songs
 {
 	public class SongPresentation : AwesomiumPresentation
 	{

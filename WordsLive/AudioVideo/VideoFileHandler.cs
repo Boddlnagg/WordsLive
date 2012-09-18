@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.IO;
-using Words.Core;
+using WordsLive.Core;
 
-namespace Words.AudioVideo
+namespace WordsLive.AudioVideo
 {
 	public class VideoFileHandler : MediaFileHandler
 	{

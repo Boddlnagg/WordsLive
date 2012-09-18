@@ -1,9 +1,9 @@
 ﻿using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
-using Words.Utils;
+using WordsLive.Utils;
 
-namespace Words.Editor
+namespace WordsLive.Editor
 {
     public partial class RenamePartWindow : Window, INotifyPropertyChanged, IDataErrorInfo
     {
@@ -84,12 +84,12 @@ namespace Words.Editor
                 { 
                     case "PartName":
                         if (string.IsNullOrEmpty(this.partName))
-                            return Words.Resources.Resource.rpMsgNameMustNotBeEmpty;
+                            return WordsLive.Resources.Resource.rpMsgNameMustNotBeEmpty;
 
                         foreach (var part in this.song.Parts)
                         {
                             if (this.partName == part.Title && !(part == this.part && this.part != null))
-                                return Words.Resources.Resource.rpMsgNameAlreadyExists;
+                                return WordsLive.Resources.Resource.rpMsgNameAlreadyExists;
                         }
                         break;
                 }

@@ -1,5 +1,5 @@
 ﻿<?xml version='1.0' encoding='utf-8'?>
-<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Words.Properties" GeneratedClassName="Settings">
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="WordsLive.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
     <Setting Name="MainWindowTop" Type="System.Int32" Scope="User">
@@ -99,7 +99,7 @@
     <Setting Name="EditorEnableSpellCheck" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
-    <Setting Name="ImagesFinishAction" Type="Words.Images.FinishAction" Scope="User">
+    <Setting Name="ImagesFinishAction" Type="WordsLive.Images.FinishAction" Scope="User">
       <Value Profile="(Default)">Stop</Value>
     </Setting>
     <Setting Name="ImagesEnableAutoAdvance" Type="System.Boolean" Scope="User">

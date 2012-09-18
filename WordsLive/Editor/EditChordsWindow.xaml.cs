@@ -1,9 +1,9 @@
 ﻿using System.ComponentModel;
 using System.Windows;
-using Words.Core.Songs.Chords;
+using WordsLive.Core.Songs.Chords;
 using System;
 
-namespace Words.Editor
+namespace WordsLive.Editor
 {
 	public partial class EditChordsWindow : Window, INotifyPropertyChanged, IDataErrorInfo
 	{

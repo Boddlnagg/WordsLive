@@ -3,7 +3,7 @@ using unoidl.com.sun.star.presentation;
 using unoidl.com.sun.star.lang;
 using unoidl.com.sun.star.animations;
 
-namespace Words.Slideshow.Impress.Bridge
+namespace WordsLive.Slideshow.Impress.Bridge
 {
 	/// <summary>
 	/// This implements an UNO interface and maps handlers to C# events.

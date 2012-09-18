@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Windows.Media;
 
-using Words.Core;
+using WordsLive.Core;
 
-namespace Words.MediaOrderList
+namespace WordsLive.MediaOrderList
 {
 	public class IconProvider
 	{

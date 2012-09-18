@@ -7,7 +7,7 @@ using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
 
-namespace Words.Utils
+namespace WordsLive.Utils
 {
 	public static class ExtensionMethods
 	{

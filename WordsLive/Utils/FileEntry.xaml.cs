@@ -12,7 +12,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Words.Utils
+namespace WordsLive.Utils
 {
 	public partial class FileEntry : UserControl
 	{

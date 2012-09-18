@@ -3,9 +3,9 @@ using System.Windows;
 using System.Windows.Media.Animation;
 using System.Windows.Interop;
 using System.Windows.Controls;
-using Words.Core;
+using WordsLive.Core;
 
-namespace Words.Presentation.Wpf
+namespace WordsLive.Presentation.Wpf
 {
 	public partial class WpfPresentationWindow : Window
 	{ 

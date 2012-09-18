@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.IO;
-using Words.Core.Songs;
+using WordsLive.Core.Songs;
 using System.Xml.Linq;
 
-namespace Words.Core
+namespace WordsLive.Core
 {
 	public class MediaEventArgs : EventArgs
 	{

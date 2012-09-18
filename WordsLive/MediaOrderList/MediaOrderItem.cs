@@ -1,11 +1,11 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Windows.Media;
-using Words.Core;
-using Words.Utils.ActivatableListBox;
+using WordsLive.Core;
+using WordsLive.Utils.ActivatableListBox;
 using System.IO;
 
-namespace Words.MediaOrderList
+namespace WordsLive.MediaOrderList
 {
 	public class MediaOrderItem : INotifyPropertyChanged
 	{

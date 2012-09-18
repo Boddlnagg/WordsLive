@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-using Words.Core;
+using WordsLive.Core;
 using System.IO;
 
-namespace Words
+namespace WordsLive
 {
 	public class WebSiteFileHandler : MediaFileHandler
 	{

@@ -1,6 +1,6 @@
-﻿<av:BaseMediaControl x:Class="Words.AudioVideo.WpfWrapper"
+﻿<av:BaseMediaControl x:Class="WordsLive.AudioVideo.WpfWrapper"
 			 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-			 xmlns:av="clr-namespace:Words.AudioVideo"
+			 xmlns:av="clr-namespace:WordsLive.AudioVideo"
 			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
 			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"

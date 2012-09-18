@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Xml.Linq;
 
-namespace Words.Core.Songs
+namespace WordsLive.Core.Songs
 {
 	public static class HtmlExport
 	{

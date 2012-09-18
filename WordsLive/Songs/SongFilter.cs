@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Words.Core.Songs;
-using Words.Utils;
+using WordsLive.Core.Songs;
+using WordsLive.Utils;
 
-namespace Words.Songs
+namespace WordsLive.Songs
 {
     class SongFilter
     {

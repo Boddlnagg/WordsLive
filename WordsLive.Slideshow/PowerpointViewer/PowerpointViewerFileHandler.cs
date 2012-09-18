@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.IO;
-using Words.Core;
+using WordsLive.Core;
 
-namespace Words.Slideshow.PowerpointViewer
+namespace WordsLive.Slideshow.PowerpointViewer
 {
 	// TODO: This currently only works with PowerpointViewer 2007 (older versions untested), not with 2010
 	// and Visual C++ 2010 Redistributable must be installed for pptviewlib.dll to work

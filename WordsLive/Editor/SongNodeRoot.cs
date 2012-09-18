@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using MonitoredUndo;
-using Words.Core.Songs;
-using Words.Core.Songs.Chords;
+using WordsLive.Core.Songs;
+using WordsLive.Core.Songs.Chords;
 
-namespace Words.Editor
+namespace WordsLive.Editor
 {
 	public class SongPartWrapper
 	{

@@ -6,9 +6,9 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Data;
 using WinForms = System.Windows.Forms;
-using Words.Resources;
+using WordsLive.Resources;
 
-namespace Words
+namespace WordsLive
 {
 	public partial class PresentationAreaSettingsWindow : Window, INotifyPropertyChanged
 	{

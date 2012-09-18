@@ -8,7 +8,7 @@
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <DefaultClrNameSpace>WpfTest</DefaultClrNameSpace>
-    <RootNamespace>Words</RootNamespace>
+    <RootNamespace>WordsLive</RootNamespace>
     <AssemblyName>WordsLive</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <ApplicationVersion>1.0.0.*</ApplicationVersion>

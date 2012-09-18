@@ -3,10 +3,10 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
-using Words.Presentation.Wpf;
-using Words.Utils.ImageLoader;
+using WordsLive.Presentation.Wpf;
+using WordsLive.Utils.ImageLoader;
 
-namespace Words.Images
+namespace WordsLive.Images
 {
 	public class ImagesPresentation : WpfPresentation<Grid>
 	{

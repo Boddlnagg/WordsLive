@@ -2,7 +2,7 @@
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace Words.Presentation
+namespace WordsLive.Presentation
 {
 	/// <summary>
 	/// Implements a form that has an assigned presentation area and resizes the window accordingly.

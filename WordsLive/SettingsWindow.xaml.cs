@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel;
 using System.Windows;
-using Words.Utils;
+using WordsLive.Utils;
 
-namespace Words
+namespace WordsLive
 {
 	/// <summary>
 	/// Interaktionslogik für SettingsWindow.xaml

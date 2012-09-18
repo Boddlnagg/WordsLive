@@ -1,7 +1,7 @@
-﻿using Words.Core.Songs;
+﻿using WordsLive.Core.Songs;
 using MonitoredUndo;
 
-namespace Words.Editor
+namespace WordsLive.Editor
 {
 	public class SongNodeSource : SongNode
 	{
@@ -26,7 +26,7 @@ namespace Words.Editor
 		public SongNodeSource(SongNodeRoot root, SongSource source) : base(root)
 		{
 			this.source = source;
-			this.Title = Words.Resources.Resource.eMetadataSourceTitle;
+			this.Title = WordsLive.Resources.Resource.eMetadataSourceTitle;
 		}
 
 		public string Songbook

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.ComponentModel;
 
-namespace Words.Images
+namespace WordsLive.Images
 {
 	public enum FinishAction
 	{

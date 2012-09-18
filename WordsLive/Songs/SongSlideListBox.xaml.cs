@@ -6,9 +6,9 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Media;
-using Words.Core.Songs;
+using WordsLive.Core.Songs;
 
-namespace Words.Songs
+namespace WordsLive.Songs
 {
 	public partial class SongSlideListBox : ListBox
 	{

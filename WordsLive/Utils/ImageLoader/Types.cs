@@ -1,5 +1,5 @@
 ﻿
-namespace Words.Utils.ImageLoader
+namespace WordsLive.Utils.ImageLoader
 {
 	public enum SourceType
 	{

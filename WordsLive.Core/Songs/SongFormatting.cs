@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Drawing;
 
-namespace Words.Core.Songs
+namespace WordsLive.Core.Songs
 {
 	public class SongFormatting : ICloneable
 	{

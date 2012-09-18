@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using Words.Core;
-using Words.Core.Songs;
-using Words.MediaOrderList;
+using WordsLive.Core;
+using WordsLive.Core.Songs;
+using WordsLive.MediaOrderList;
 using System.IO;
 
-namespace Words.Songs
+namespace WordsLive.Songs
 {
 	[TargetMedia(typeof(Song))]
 	public class SongIconProvider : IconProvider

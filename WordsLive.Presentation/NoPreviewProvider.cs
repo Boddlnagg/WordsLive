@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Words.Presentation
+namespace WordsLive.Presentation
 {
 	/// <summary>
 	/// An implementation of IPreviewProvider that simply provides no preview.

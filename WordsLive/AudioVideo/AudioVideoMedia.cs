@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Words.Core;
+using WordsLive.Core;
 
-namespace Words.AudioVideo
+namespace WordsLive.AudioVideo
 {
 	public abstract class AudioVideoMedia : Media
 	{

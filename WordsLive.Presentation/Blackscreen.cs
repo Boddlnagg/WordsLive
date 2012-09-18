@@ -2,7 +2,7 @@
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace Words.Presentation
+namespace WordsLive.Presentation
 {
 	/// <summary>
 	/// Implements a simple black screen on top of WinForms.

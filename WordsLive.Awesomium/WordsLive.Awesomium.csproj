@@ -8,8 +8,8 @@
     <ProjectGuid>{2114F490-5C8F-4BEC-BC84-E0B91F769F83}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Words.Awesomium</RootNamespace>
-    <AssemblyName>Words.Awesomium</AssemblyName>
+    <RootNamespace>WordsLive.Awesomium</RootNamespace>
+    <AssemblyName>WordsLive.Awesomium</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>

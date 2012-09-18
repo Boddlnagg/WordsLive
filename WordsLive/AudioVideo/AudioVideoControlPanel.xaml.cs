@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Words.Presentation.Wpf;
+using WordsLive.Presentation.Wpf;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
 using System.ComponentModel;
 
-namespace Words.AudioVideo
+namespace WordsLive.AudioVideo
 {
 	[TargetMedia(typeof(AudioVideoMedia))]
 	public partial class AudioVideoControlPanel : UserControl, IMediaControlPanel, INotifyPropertyChanged

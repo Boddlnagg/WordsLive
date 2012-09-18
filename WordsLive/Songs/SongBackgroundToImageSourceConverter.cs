@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Windows.Data;
 using System.Windows.Media;
-using Words.Core.Songs;
+using WordsLive.Core.Songs;
 using System.Windows.Media.Imaging;
 using System.IO;
-using Words.Core;
+using WordsLive.Core;
 
-namespace Words.Songs
+namespace WordsLive.Songs
 {
 	class SongBackgroundToImageSourceConverter : IValueConverter
 	{

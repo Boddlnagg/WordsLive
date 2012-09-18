@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="Words.Editor.ChooseFontControl"
+﻿<UserControl x:Class="WordsLive.Editor.ChooseFontControl"
 		xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 		xmlns:ext="http://schemas.microsoft.com/winfx/2006/xaml/presentation/toolkit/extended"

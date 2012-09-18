@@ -1,5 +1,5 @@
 ﻿
-namespace Words.Editor
+namespace WordsLive.Editor
 {
 	public abstract class SongNodeMetadata : SongNode
 	{

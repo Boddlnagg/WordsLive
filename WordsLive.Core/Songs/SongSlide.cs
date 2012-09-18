@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Words.Core.Songs
+namespace WordsLive.Core.Songs
 {
 	public class SongSlide
 	{

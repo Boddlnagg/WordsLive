@@ -1,8 +1,8 @@
-﻿<Window x:Class="Words.Editor.SongSettingsWindow"
+﻿<Window x:Class="WordsLive.Editor.SongSettingsWindow"
 		xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-		xmlns:local="clr-namespace:Words.Editor"
-		xmlns:songs="clr-namespace:Words.Core.Songs;assembly=Words.Core"
+		xmlns:local="clr-namespace:WordsLive.Editor"
+		xmlns:songs="clr-namespace:WordsLive.Core.Songs;assembly=WordsLive.Core"
 		xmlns:ext="http://schemas.microsoft.com/winfx/2006/xaml/presentation/toolkit/extended"
 		Title="Lied formatieren" Height="500" Width="352" MinHeight="500" MinWidth="350"
 		Icon="/WordsLive;component/Artwork/Formatting.png">

@@ -13,7 +13,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using WinForms = System.Windows.Forms;
 
-namespace Words.Utils
+namespace WordsLive.Utils
 {
     public partial class FolderEntry : UserControl
     {

@@ -1,9 +1,9 @@
 ﻿using System;
-using Words.Core;
+using WordsLive.Core;
 using System.Collections.Generic;
 using System.IO;
 
-namespace Words.Core
+namespace WordsLive.Core
 {
 	public abstract class MediaFileHandler
 	{

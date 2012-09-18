@@ -1,11 +1,11 @@
-﻿<Grid x:Class="Words.Editor.EditorGrid"
+﻿<Grid x:Class="WordsLive.Editor.EditorGrid"
 			 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
 			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-			 xmlns:local="clr-namespace:Words.Editor"
-			 xmlns:my="clr-namespace:Words"
-			 xmlns:resx="clr-namespace:Words.Resources"
+			 xmlns:local="clr-namespace:WordsLive.Editor"
+			 xmlns:my="clr-namespace:WordsLive"
+			 xmlns:resx="clr-namespace:WordsLive.Resources"
 			 mc:Ignorable="d" 
 			 d:DesignHeight="400" d:DesignWidth="800">
 	<Grid.CommandBindings>

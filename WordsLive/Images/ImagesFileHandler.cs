@@ -2,9 +2,9 @@
 using System.IO;
 using System.Linq;
 using System.Windows;
-using Words.Core;
+using WordsLive.Core;
 
-namespace Words.Images
+namespace WordsLive.Images
 {
 	public class ImagesFileHandler : MediaFileHandler
 	{

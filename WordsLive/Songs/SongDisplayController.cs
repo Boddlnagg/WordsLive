@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Xml.Linq;
 using System.IO;
-using Words.Core.Songs;
+using WordsLive.Core.Songs;
 using System.Globalization;
-using Words.Core;
+using WordsLive.Core;
 using Awesomium.Core;
 
-namespace Words.Songs
+namespace WordsLive.Songs
 {
 	public class SongDisplayController
 	{

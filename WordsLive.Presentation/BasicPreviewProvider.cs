@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 
-namespace Words.Presentation
+namespace WordsLive.Presentation
 {
 	/// <summary>
 	/// A basic preview provider, that provide a preview using a WinForms control.

@@ -5,7 +5,7 @@ using System.Windows.Shapes;
 using System.Windows.Forms.Integration;
 using System.Windows;
 
-namespace Words.Presentation.Wpf
+namespace WordsLive.Presentation.Wpf
 {
 	public class CloningWpfPreviewProvider<T> : WpfPreviewProvider where T : FrameworkElement, new()
 	{

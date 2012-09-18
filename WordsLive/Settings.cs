@@ -1,4 +1,4 @@
-﻿namespace Words.Properties {
+﻿namespace WordsLive.Properties {
     
     
     // Diese Klasse ermöglicht die Behandlung bestimmter Ereignisse der Einstellungsklasse:

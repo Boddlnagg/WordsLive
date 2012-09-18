@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.IO;
 
-namespace Words.Core
+namespace WordsLive.Core
 {
 	public class FileNotFoundMedia : Media
 	{

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Data;
 
-namespace Words.Utils
+namespace WordsLive.Utils
 {
 	public class EnumToBooleanConverter : IValueConverter
 	{

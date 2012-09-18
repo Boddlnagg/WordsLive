@@ -1,6 +1,6 @@
-﻿using Words.Core;
+﻿using WordsLive.Core;
 
-namespace Words.Slideshow
+namespace WordsLive.Slideshow
 {
 	public abstract class SlideshowMedia : Media
 	{

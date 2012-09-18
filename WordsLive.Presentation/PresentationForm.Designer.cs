@@ -6,7 +6,7 @@
  * 
  * Sie können diese Vorlage unter Extras > Optionen > Codeerstellung > Standardheader ändern.
  */
-namespace Words.Presentation
+namespace WordsLive.Presentation
 {
 	partial class PresentationForm
 	{

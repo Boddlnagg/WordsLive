@@ -5,7 +5,7 @@ using System.Text;
 using System.ComponentModel;
 using MonitoredUndo;
 
-namespace Words.Editor
+namespace WordsLive.Editor
 {
 	public abstract class SongNode : INotifyPropertyChanged, ISupportsUndo
 	{

@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Vlc.DotNet.Core;
-using Words.Core;
+using WordsLive.Core;
 using System.IO;
 using System.Reflection;
 
-namespace Words.AudioVideo
+namespace WordsLive.AudioVideo
 {
 	public static class VlcController
 	{

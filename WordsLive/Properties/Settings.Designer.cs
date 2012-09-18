@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Words.Properties {
+namespace WordsLive.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
@@ -401,9 +401,9 @@ namespace Words.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("Stop")]
-        public global::Words.Images.FinishAction ImagesFinishAction {
+        public global::WordsLive.Images.FinishAction ImagesFinishAction {
             get {
-                return ((global::Words.Images.FinishAction)(this["ImagesFinishAction"]));
+                return ((global::WordsLive.Images.FinishAction)(this["ImagesFinishAction"]));
             }
             set {
                 this["ImagesFinishAction"] = value;

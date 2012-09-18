@@ -2,10 +2,10 @@
 using Awesomium.Core;
 using Awesomium.Windows.Controls;
 using System;
-using Words.Core;
+using WordsLive.Core;
 using System.IO;
 
-namespace Words
+namespace WordsLive
 {
 	public class AwesomiumManager
 	{

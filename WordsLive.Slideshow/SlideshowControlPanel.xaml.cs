@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.Windows.Controls;
 using System.Windows.Input;
 
-namespace Words.Slideshow
+namespace WordsLive.Slideshow
 {
 	[TargetMedia(typeof(SlideshowMedia))]
 	public partial class SlideshowControlPanel : UserControl, IMediaControlPanel, INotifyPropertyChanged

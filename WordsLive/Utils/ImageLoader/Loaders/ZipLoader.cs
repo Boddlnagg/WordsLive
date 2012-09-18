@@ -2,7 +2,7 @@
 using System.IO;
 using Ionic.Zip;
 
-namespace Words.Utils.ImageLoader.Loaders
+namespace WordsLive.Utils.ImageLoader.Loaders
 {
 	internal class ZipLoader: ILoader
 	{

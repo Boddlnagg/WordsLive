@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Controls;
 
-namespace Words.AudioVideo
+namespace WordsLive.AudioVideo
 {
 	public abstract class BaseMediaControl : UserControl
 	{

@@ -1,7 +1,7 @@
 ﻿using System.Windows.Controls;
-using Words.Core;
+using WordsLive.Core;
 
-namespace Words
+namespace WordsLive
 {
 	[TargetMedia(typeof(XpsDocument))]
 	public partial class XpsDocumentControlPanel : UserControl, IMediaControlPanel

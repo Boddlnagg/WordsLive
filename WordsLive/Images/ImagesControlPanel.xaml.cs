@@ -7,9 +7,9 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Threading;
-using Words.Utils;
+using WordsLive.Utils;
 
-namespace Words.Images
+namespace WordsLive.Images
 {
 	[TargetMedia(typeof(ImagesMedia))]
 	public partial class ImagesControlPanel : UserControl, IMediaControlPanel, INotifyPropertyChanged

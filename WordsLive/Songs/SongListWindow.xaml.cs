@@ -6,11 +6,11 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
-using Words.Core;
-using Words.Core.Songs;
-using Words.Resources;
+using WordsLive.Core;
+using WordsLive.Core.Songs;
+using WordsLive.Resources;
 
-namespace Words.Songs
+namespace WordsLive.Songs
 {
 	public partial class SongListWindow : Window
 	{

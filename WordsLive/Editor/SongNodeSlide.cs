@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using MonitoredUndo;
-using Words.Core.Songs;
-using Words.Core.Songs.Chords;
+using WordsLive.Core.Songs;
+using WordsLive.Core.Songs.Chords;
 
-namespace Words.Editor
+namespace WordsLive.Editor
 {
 	public class SongNodeSlide : SongNode
 	{
@@ -172,13 +172,13 @@ namespace Words.Editor
 
 		public SongNodeSlide(SongNodeRoot root, SongSlide slide) : base(root)
 		{
-			this.Title = Words.Resources.Resource.eGridSlideTitle;
+			this.Title = WordsLive.Resources.Resource.eGridSlideTitle;
 			this.slide = slide;
 		}
 
 		public SongNodeSlide(SongNodeRoot root) : base(root)
 		{
-			this.Title = Words.Resources.Resource.eGridSlideTitle;
+			this.Title = WordsLive.Resources.Resource.eGridSlideTitle;
 			this.slide = new SongSlide();
 			this.FontSize = Root.Song.Formatting.MainText.Size;
 		}

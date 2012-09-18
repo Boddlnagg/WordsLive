@@ -1,12 +1,12 @@
 ﻿
 using MonitoredUndo;
-namespace Words.Editor
+namespace WordsLive.Editor
 {
 	public class SongNodeCopyright : SongNodeMetadata
 	{
 		public SongNodeCopyright(SongNodeRoot root) : base(root)
 		{
-			this.Title = Words.Resources.Resource.eMetadataCopyrightTitle;
+			this.Title = WordsLive.Resources.Resource.eMetadataCopyrightTitle;
 			this.Text = root.Song.Copyright;
 		}
 

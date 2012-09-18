@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Words.Slideshow.Impress
+namespace WordsLive.Slideshow.Impress
 {
 	public class ImpressMedia : SlideshowMedia
 	{

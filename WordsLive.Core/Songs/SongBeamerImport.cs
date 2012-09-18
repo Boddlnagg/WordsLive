@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace Words.Core.Songs
+namespace WordsLive.Core.Songs
 {
 	public static class SongBeamerImport
 	{

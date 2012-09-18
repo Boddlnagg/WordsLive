@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Words.AudioVideo
+namespace WordsLive.AudioVideo
 {
 	public enum PlayState
 	{

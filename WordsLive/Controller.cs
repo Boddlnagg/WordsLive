@@ -2,20 +2,20 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Words.MediaOrderList;
-using Words.Core.Songs;
-using Words.Core;
+using WordsLive.MediaOrderList;
+using WordsLive.Core.Songs;
+using WordsLive.Core;
 using System.Windows;
-using Words.Editor;
-using Words.Songs;
+using WordsLive.Editor;
+using WordsLive.Songs;
 using System.Configuration;
 using System.IO;
 using System.Reflection;
-using Words.Resources;
+using WordsLive.Resources;
 using Microsoft.Win32;
 using System.Threading;
 
-namespace Words
+namespace WordsLive
 {
 	public class Controller
 	{
@@ -45,16 +45,16 @@ namespace Words
 			SystemEvents.DisplaySettingsChanged += HandleDisplaySettingsChanged;
 			DisplaySettingsChanged += (sender, args) => UpdatePresentationAreaFromSettings();
 
-			LoadAttributes(Assembly.GetAssembly(typeof(Media))); // Words.Core.dll
-			LoadAttributes(Assembly.GetExecutingAssembly()); // Words.exe
-			LoadAttributes(Assembly.GetAssembly(typeof(Words.Presentation.Wpf.WpfPresentationWindow))); // Words.Presentation.Wpf.dll
+			LoadAttributes(Assembly.GetAssembly(typeof(Media))); // WordsLive.Core.dll
+			LoadAttributes(Assembly.GetExecutingAssembly()); // WordsLive.exe
+			LoadAttributes(Assembly.GetAssembly(typeof(WordsLive.Presentation.Wpf.WpfPresentationWindow))); // WordsLive.Presentation.Wpf.dll
 
 			string startupDir = new FileInfo(Assembly.GetExecutingAssembly().Location).Directory.FullName;
 			LoadAttributes(Assembly.LoadFrom(Path.Combine(startupDir, "WordsLive.Slideshow.dll"))); // TODO (Words): automatically load plugins
 
 			InitDataDirectories();
 
-			Words.Utils.ImageLoader.Manager.Instance.LoadingImage = new System.Windows.Media.Imaging.BitmapImage(new Uri("/WordsLive;component/Artwork/LoadingAnimation.png", UriKind.Relative));
+			WordsLive.Utils.ImageLoader.Manager.Instance.LoadingImage = new System.Windows.Media.Imaging.BitmapImage(new Uri("/WordsLive;component/Artwork/LoadingAnimation.png", UriKind.Relative));
 		}
 
 		void HandleDisplaySettingsChanged(object sender, EventArgs e)
@@ -314,7 +314,7 @@ namespace Words
 			}
 
 			PresentationManager.Shutdown();
-			//Words.Presentation.Wpf.WpfPresentationWindow.Instance.Close();
+			//WordsLive.Presentation.Wpf.WpfPresentationWindow.Instance.Close();
 
 			foreach (var action in instance.shutdownActions)
 			{

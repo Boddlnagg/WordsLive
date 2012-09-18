@@ -1,5 +1,5 @@
 ﻿
-namespace Words
+namespace WordsLive
 {
 	public enum ControlPanelLoadState
 	{

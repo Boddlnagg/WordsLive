@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel;
 using System.Windows;
-using Words.Utils;
+using WordsLive.Utils;
 
-namespace Words.Editor
+namespace WordsLive.Editor
 {
     /// <summary>
     /// Interaktionslogik für RenameSongWindow.xaml
@@ -57,7 +57,7 @@ namespace Words.Editor
                 {
                     case "SongName":
                         if (string.IsNullOrEmpty(this.songName))
-                            return Words.Resources.Resource.rsMsgNameMustNotBeEmpty;
+                            return WordsLive.Resources.Resource.rsMsgNameMustNotBeEmpty;
                         break;
                 }
                 return null;

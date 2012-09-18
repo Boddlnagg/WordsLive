@@ -3,12 +3,12 @@ using System.Windows.Media.Imaging;
 using System.Windows.Media;
 using Awesomium.Core;
 using System.Windows;
-using Words.Presentation;
+using WordsLive.Presentation;
 using System.Windows.Media.Animation;
 using System;
 using Awesomium.Windows.Controls;
 
-namespace Words
+namespace WordsLive
 {
 	/// <summary>
 	/// Interaktionslogik für AwesomiumWrapper.xaml

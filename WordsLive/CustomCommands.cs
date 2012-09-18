@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Input;
 
-namespace Words
+namespace WordsLive
 {
 	// TODO: move some commands to class where they are used
 	public static class CustomCommands

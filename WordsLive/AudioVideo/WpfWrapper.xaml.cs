@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Controls;
 
-namespace Words.AudioVideo
+namespace WordsLive.AudioVideo
 {
 	public partial class WpfWrapper : BaseMediaControl
 	{

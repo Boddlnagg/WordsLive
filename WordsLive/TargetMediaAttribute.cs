@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Words.Core;
+using WordsLive.Core;
 
-namespace Words
+namespace WordsLive
 {
 	[AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
 	public class TargetMediaAttribute : Attribute

@@ -1,4 +1,4 @@
-﻿<Window x:Class="Words.Editor.EditChordsWindow"
+﻿<Window x:Class="WordsLive.Editor.EditChordsWindow"
 		xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 		Title="Akkorde bearbeiten" Height="330" Width="325" MinHeight="330" MinWidth="325">

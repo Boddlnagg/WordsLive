@@ -1,11 +1,11 @@
 ﻿
-namespace Words.Editor
+namespace WordsLive.Editor
 {
 	public class SongNodeLanguage : SongNode
 	{
 		public SongNodeLanguage(SongNodeRoot root) : base(root)
 		{
-			this.Title = Words.Resources.Resource.eMetadataLanguageTitle;
+			this.Title = WordsLive.Resources.Resource.eMetadataLanguageTitle;
 		}
 
 		public string Language

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.ComponentModel;
 using WinForms = System.Windows.Forms;
-using Words.Resources;
+using WordsLive.Resources;
 
-namespace Words
+namespace WordsLive
 {
 	public enum ScreenIndex
 	{

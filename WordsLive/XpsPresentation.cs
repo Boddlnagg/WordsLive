@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Words.Presentation.Wpf;
+using WordsLive.Presentation.Wpf;
 using System.Windows.Controls;
 using System.Windows;
 
 
-namespace Words
+namespace WordsLive
 {
 	public class XpsPresentation : WpfPresentation<DocumentViewer>
 	{

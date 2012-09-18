@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using Words.Presentation;
+using WordsLive.Presentation;
 
-namespace Words.Slideshow
+namespace WordsLive.Slideshow
 {
 	public abstract class SlideshowPresentationBase : ISlideshowPresentation
 	{

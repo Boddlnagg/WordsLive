@@ -1,9 +1,9 @@
 ﻿using System;
-using Words.Presentation;
+using WordsLive.Presentation;
 using System.Windows.Controls;
 using System.Windows;
 
-namespace Words.Presentation.Wpf
+namespace WordsLive.Presentation.Wpf
 {
 	/// <summary>
 	/// Implements a presentation on top of a WPF FrameworkElement/Control.

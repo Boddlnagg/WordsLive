@@ -10,10 +10,10 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using Words.Core.Songs;
+using WordsLive.Core.Songs;
 using System.ComponentModel;
 
-namespace Words.Editor
+namespace WordsLive.Editor
 {
 	public partial class ChooseFontControl : UserControl
 	{

@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Words.Core.Songs;
+using WordsLive.Core.Songs;
 using System.IO;
 using System.ComponentModel;
 using MonitoredUndo;
 
-namespace Words.Editor
+namespace WordsLive.Editor
 {
 	public class EditorDocument : INotifyPropertyChanged
 	{

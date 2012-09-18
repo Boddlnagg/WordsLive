@@ -1,6 +1,6 @@
 ﻿using System.Windows.Media;
 
-namespace Words.Slideshow
+namespace WordsLive.Slideshow
 {
 	public class SlideThumbnail
 	{

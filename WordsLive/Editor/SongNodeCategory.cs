@@ -1,11 +1,11 @@
 ﻿
-namespace Words.Editor
+namespace WordsLive.Editor
 {
 	public class SongNodeCategory : SongNodeMetadata
 	{
 		public SongNodeCategory(SongNodeRoot root) : base(root)
 		{
-			this.Title = Words.Resources.Resource.eMetadataCategoryTitle;
+			this.Title = WordsLive.Resources.Resource.eMetadataCategoryTitle;
 			this.Text = root.Song.Category;
 		}
 

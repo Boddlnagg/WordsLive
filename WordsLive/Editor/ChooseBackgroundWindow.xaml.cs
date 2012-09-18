@@ -10,12 +10,12 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using Words.Core;
-using Words.Core.Songs;
-using Words.Utils;
+using WordsLive.Core;
+using WordsLive.Core.Songs;
+using WordsLive.Utils;
 using Ionic.Zip;
 
-namespace Words.Editor
+namespace WordsLive.Editor
 {
 	public partial class ChooseBackgroundWindow : Window, INotifyPropertyChanged
 	{
@@ -185,7 +185,7 @@ namespace Words.Editor
 	class BackgroundEntry
 	{
 		public FileInfo File { get; set; }
-		public Words.Utils.ImageLoader.DisplayOptions DisplayOptions { get; set; }
+		public WordsLive.Utils.ImageLoader.DisplayOptions DisplayOptions { get; set; }
 		public bool IsVideo { get; set; }
 	}
 

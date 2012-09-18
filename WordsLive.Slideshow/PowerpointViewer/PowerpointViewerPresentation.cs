@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Media.Imaging;
 using PowerpointViewerLib;
-using Words.Presentation;
+using WordsLive.Presentation;
 using System.Threading;
 
-namespace Words.Slideshow.PowerpointViewer
+namespace WordsLive.Slideshow.PowerpointViewer
 {
 	public class PowerpointViewerPresentation : SlideshowPresentationBase
 	{
@@ -62,7 +62,7 @@ namespace Words.Slideshow.PowerpointViewer
 					{
 						if (!isClosing)
 						{
-							Words.Presentation.Wpf.AeroPeekHelper.RemoveFromAeroPeek(doc.WindowHandle);
+							WordsLive.Presentation.Wpf.AeroPeekHelper.RemoveFromAeroPeek(doc.WindowHandle);
 							if (showOnLoaded)
 							{
 								doc.Move(Area.WindowLocation.X, Area.WindowLocation.Y);

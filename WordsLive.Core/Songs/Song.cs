@@ -6,7 +6,7 @@ using System.Drawing;
 using System.IO;
 using System.Text.RegularExpressions;
 
-namespace Words.Core.Songs
+namespace WordsLive.Core.Songs
 {
 	public class Song : Media
 	{

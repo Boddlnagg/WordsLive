@@ -1,8 +1,8 @@
-﻿using Words.Core;
+﻿using WordsLive.Core;
 using System.Collections.Generic;
 using System.IO;
 
-namespace Words.Slideshow.PowerpointViewer
+namespace WordsLive.Slideshow.PowerpointViewer
 {
 	public class PowerpointViewerMedia : SlideshowMedia
 	{

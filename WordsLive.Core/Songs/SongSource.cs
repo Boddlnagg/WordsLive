@@ -1,6 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 
-namespace Words.Core.Songs
+namespace WordsLive.Core.Songs
 {
     public class SongSource
     {

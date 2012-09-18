@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Words.Core;
+using WordsLive.Core;
 
-namespace Words.MediaOrderList
+namespace WordsLive.MediaOrderList
 {
 	public class IconProviderManager
 	{
