@@ -1,0 +1,83 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{7B989242-0A40-4E64-B976-751E01810525}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>WordsLive.Slideshow.Impress.Bridge</RootNamespace>
+    <AssemblyName>WordsLive.Slideshow.Impress.Bridge</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="cli_basetypes, Version=1.0.19.0, Culture=neutral, PublicKeyToken=ce2cb7e279207b9e, processorArchitecture=MSIL" />
+    <Reference Include="cli_cppuhelper, Version=1.0.22.0, Culture=neutral, PublicKeyToken=ce2cb7e279207b9e, processorArchitecture=x86" />
+    <Reference Include="cli_oootypes, Version=1.0.8.0, Culture=neutral, PublicKeyToken=ce2cb7e279207b9e, processorArchitecture=MSIL" />
+    <Reference Include="cli_ure, Version=1.0.22.0, Culture=neutral, PublicKeyToken=ce2cb7e279207b9e, processorArchitecture=MSIL" />
+    <Reference Include="cli_uretypes, Version=1.0.8.0, Culture=neutral, PublicKeyToken=ce2cb7e279207b9e, processorArchitecture=MSIL" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ImpressPresentation.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SlideShowListener.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\WordsLive.Core\WordsLive.Core.csproj">
+      <Project>{AABDBF78-74B7-40DD-A327-FABF1FA758F8}</Project>
+      <Name>WordsLive.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WordsLive.Presentation.Wpf\WordsLive.Presentation.Wpf.csproj">
+      <Project>{5CA13F98-4FCA-4DED-8468-366DD89932BD}</Project>
+      <Name>WordsLive.Presentation.Wpf</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WordsLive.Presentation\WordsLive.Presentation.csproj">
+      <Project>{7103EF3D-12DE-4381-95D4-1A440F0AA1D9}</Project>
+      <Name>WordsLive.Presentation</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WordsLive.Slideshow\WordsLive.Slideshow.csproj">
+      <Project>{8FC44A35-F11F-49EE-B15C-CB400B318447}</Project>
+      <Name>WordsLive.Slideshow</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WordsLive\WordsLive.csproj">
+      <Project>{B2DF371C-DCAE-43FF-817A-34FBC21234D8}</Project>
+      <Name>WordsLive</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

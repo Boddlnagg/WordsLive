@@ -1,0 +1,236 @@
+﻿<Window x:Class="Words.Editor.SongSettingsWindow"
+		xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+		xmlns:local="clr-namespace:Words.Editor"
+		xmlns:songs="clr-namespace:Words.Core.Songs;assembly=Words.Core"
+		xmlns:ext="http://schemas.microsoft.com/winfx/2006/xaml/presentation/toolkit/extended"
+		Title="Lied formatieren" Height="500" Width="352" MinHeight="500" MinWidth="350"
+		Icon="/WordsLive;component/Artwork/Formatting.png">
+	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="*"/>
+			<RowDefinition Height="Auto"/>
+		</Grid.RowDefinitions>
+		<TabControl Grid.Row="0">
+			<TabItem Header="Liedtext">
+				<Grid>
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="Auto"/>
+						<ColumnDefinition Width="*"/>
+					</Grid.ColumnDefinitions>
+					<Grid.RowDefinitions>
+						<RowDefinition Height="Auto"/>
+						<RowDefinition Height="Auto"/>
+						<RowDefinition Height="Auto"/>
+						<RowDefinition Height="Auto"/>
+					</Grid.RowDefinitions>
+					<GroupBox Header="Textausrichtung" Grid.Column="0" Grid.Row="0" Grid.RowSpan="2">
+						<Grid>
+							<Grid.RowDefinitions>
+								<RowDefinition Height="Auto"/>
+								<RowDefinition Height="Auto"/>
+								<RowDefinition Height="Auto"/>
+							</Grid.RowDefinitions>
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition Width="Auto"/>
+								<ColumnDefinition Width="Auto"/>
+								<ColumnDefinition Width="Auto"/>
+							</Grid.ColumnDefinitions>
+							<RadioButton Style="{StaticResource {x:Type ToggleButton}}" Grid.Column="0" Grid.Row="0"
+									 IsChecked="{Binding TextOrientation, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static local:CombinedTextOrientation.TopLeft}}">
+								<Image Source="/WordsLive;component/Artwork/AlignTopLeft.png" Width="32"></Image>
+							</RadioButton>
+							<RadioButton Style="{StaticResource {x:Type ToggleButton}}" Grid.Column="1" Grid.Row="0"
+									 IsChecked="{Binding TextOrientation, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static local:CombinedTextOrientation.TopCenter}}">
+								<Image Source="/WordsLive;component/Artwork/AlignTopCenter.png" Width="32"></Image>
+							</RadioButton>
+							<RadioButton Style="{StaticResource {x:Type ToggleButton}}" Grid.Column="2" Grid.Row="0"
+									 IsChecked="{Binding TextOrientation, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static local:CombinedTextOrientation.TopRight}}">
+								<Image Source="/WordsLive;component/Artwork/AlignTopRight.png" Width="32"></Image>
+							</RadioButton>
+							<RadioButton Style="{StaticResource {x:Type ToggleButton}}" Grid.Column="0" Grid.Row="1"
+									 IsChecked="{Binding TextOrientation, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static local:CombinedTextOrientation.CenterLeft}}">
+								<Image Source="/WordsLive;component/Artwork/AlignMiddleLeft.png" Width="32"></Image>
+							</RadioButton>
+							<RadioButton Style="{StaticResource {x:Type ToggleButton}}" Grid.Column="1" Grid.Row="1"
+									 IsChecked="{Binding TextOrientation, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static local:CombinedTextOrientation.CenterCenter}}">
+								<Image Source="/WordsLive;component/Artwork/AlignMiddleCenter.png" Width="32"></Image>
+							</RadioButton>
+							<RadioButton Style="{StaticResource {x:Type ToggleButton}}" Grid.Column="2" Grid.Row="1"
+									 IsChecked="{Binding TextOrientation, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static local:CombinedTextOrientation.CenterRight}}">
+								<Image Source="/WordsLive;component/Artwork/AlignMiddleRight.png" Width="32"></Image>
+							</RadioButton>
+							<RadioButton Style="{StaticResource {x:Type ToggleButton}}" Grid.Column="0" Grid.Row="2"
+									 IsChecked="{Binding TextOrientation, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static local:CombinedTextOrientation.BottomLeft}}">
+								<Image Source="/WordsLive;component/Artwork/AlignBottomLeft.png" Width="32"></Image>
+							</RadioButton>
+							<RadioButton Style="{StaticResource {x:Type ToggleButton}}" Grid.Column="1" Grid.Row="2"
+									 IsChecked="{Binding TextOrientation, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static local:CombinedTextOrientation.BottomCenter}}">
+								<Image Source="/WordsLive;component/Artwork/AlignBottomCenter.png" Width="32"></Image>
+							</RadioButton>
+							<RadioButton Style="{StaticResource {x:Type ToggleButton}}" Grid.Column="2" Grid.Row="2"
+									 IsChecked="{Binding TextOrientation, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static local:CombinedTextOrientation.BottomRight}}">
+								<Image Source="/WordsLive;component/Artwork/AlignBottomRight.png" Width="32"></Image>
+							</RadioButton>
+						</Grid>
+					</GroupBox>
+					<GroupBox Header="Seitenränder" Grid.Column="1" Grid.Row="0">
+						<Grid>
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition Width="Auto"/>
+								<ColumnDefinition Width="*"/>
+								<ColumnDefinition Width="Auto"/>
+								<ColumnDefinition Width="*"/>
+							</Grid.ColumnDefinitions>
+							<Grid.RowDefinitions>
+								<RowDefinition Height="Auto"/>
+								<RowDefinition Height="Auto"/>
+							</Grid.RowDefinitions>
+							<Label Grid.Row="0" Grid.Column="0">Oben:</Label>
+							<TextBox Grid.Row="0" Grid.Column="1" Text="{Binding BorderTop, ValidatesOnDataErrors=True}" Style="{StaticResource textBoxInError}"/>
+							<Label Grid.Row="1" Grid.Column="0">Unten:</Label>
+							<TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Formatting.BorderBottom, ValidatesOnDataErrors=True}" Style="{StaticResource textBoxInError}"/>
+							<Label Grid.Row="0" Grid.Column="2">Links:</Label>
+							<TextBox Grid.Row="0" Grid.Column="3" Text="{Binding Formatting.BorderLeft, ValidatesOnDataErrors=True}" Style="{StaticResource textBoxInError}"/>
+							<Label Grid.Row="1" Grid.Column="2">Rechts:</Label>
+							<TextBox Grid.Row="1" Grid.Column="3" Text="{Binding Formatting.BorderRight, ValidatesOnDataErrors=True}" Style="{StaticResource textBoxInError}"/>
+							</Grid>
+					</GroupBox>
+					<Grid Grid.Row="1" Grid.Column="1">
+						<Grid.RowDefinitions>
+							<RowDefinition Height="Auto"/>
+						</Grid.RowDefinitions>
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="Auto"/>
+							<ColumnDefinition Width="*"/>
+						</Grid.ColumnDefinitions>
+						<GroupBox Grid.Column="1" Header="Zeilenabstand">
+							<Grid>
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition Width="Auto"/>
+									<ColumnDefinition/>
+								</Grid.ColumnDefinitions>
+								<Label Grid.Row="0" Grid.Column="0">Abstand zwischen Zeilen:</Label>
+								<TextBox Grid.Row="0" Grid.Column="1" Text="{Binding TextLineSpacing, ValidatesOnDataErrors=True}" Style="{StaticResource textBoxInError}"/>
+							</Grid>
+						</GroupBox>
+						</Grid>
+					<GroupBox Header="Formatierung" Grid.Row="2" Grid.ColumnSpan="2">
+						<Grid>
+							<Grid.RowDefinitions>
+								<RowDefinition Height="Auto"/>
+								<RowDefinition Height="Auto"/>
+								<RowDefinition Height="Auto"/>
+							</Grid.RowDefinitions>
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition Width="Auto"/>
+								<ColumnDefinition Width="Auto"/>
+								<ColumnDefinition Width="Auto"/>
+								<ColumnDefinition Width="*"/>
+							</Grid.ColumnDefinitions>
+							<CheckBox x:Name="OutlineCheckbox" Grid.Row="0" VerticalAlignment="Center" IsChecked="{Binding IsOutlineEnabled}">Umrandung</CheckBox>
+							<ext:ColorPicker SelectedColor="{Binding OutlineColor}" IsEnabled="{Binding ElementName=OutlineCheckbox, Path=IsChecked}" Grid.Row="0" Grid.Column="1" Width="50" Margin="6,0,0,3" HorizontalAlignment="Left"/>
+							<CheckBox x:Name="ShadowCheckbox" Grid.Row="1" VerticalAlignment="Center" IsChecked="{Binding IsShadowEnabled}">Schatten</CheckBox>
+							<ext:ColorPicker SelectedColor="{Binding ShadowColor}" IsEnabled="{Binding ElementName=ShadowCheckbox, Path=IsChecked}" Grid.Row="1" Grid.Column="1" Width="50" Margin="6,0,0,3"  HorizontalAlignment="Left"/>
+							<Label Grid.Row="1" Grid.Column="2">Richtung:</Label>
+							<TextBox IsEnabled="{Binding ElementName=ShadowCheckbox, Path=IsChecked}" Grid.Row="1" Grid.Column="3" Text="{Binding ShadowDirection}"></TextBox>
+							<local:ChooseFontControl Grid.ColumnSpan="4" Grid.Row="2" Font="{Binding MainText}"/>
+						</Grid>
+					</GroupBox>
+					<GroupBox Header="Übersetzung" Grid.Row="3" Grid.ColumnSpan="2">
+						<Grid>
+							<Grid.RowDefinitions>
+								<RowDefinition Height="Auto"/>
+								<RowDefinition Height="Auto"/>
+								<RowDefinition Height="Auto"/>
+								<RowDefinition Height="Auto"/>
+							</Grid.RowDefinitions>
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition Width="Auto"/>
+								<ColumnDefinition Width="*"/>
+							</Grid.ColumnDefinitions>
+							<RadioButton Grid.ColumnSpan="2" Grid.Row="0" IsChecked="{Binding TranslationPosition, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static songs:TranslationPosition.Inline}}">Zwischen den Liedzeilen</RadioButton>
+							<RadioButton Grid.ColumnSpan="2" Grid.Row="1" IsEnabled="False" IsChecked="{Binding TranslationPosition, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static songs:TranslationPosition.Block}}">Als Block unter dem Liedtext</RadioButton>
+							<Label Grid.Row="2" Grid.Column="0">Abstand zwischen Liedzeile und Übersetzung:</Label>
+							<TextBox Grid.Row="2" Grid.Column="1" Text="{Binding TranslationLineSpacing, ValidatesOnDataErrors=True}" Style="{StaticResource textBoxInError}"/>
+							<local:ChooseFontControl Margin="0,6,0,0" Grid.Row="3" Grid.ColumnSpan="2" Font="{Binding TranslationText}"/>
+						</Grid>
+					</GroupBox>
+				</Grid>
+			</TabItem>
+			<TabItem Header="Copyright/Quelle">
+				<Grid>
+					<Grid.RowDefinitions>
+						<RowDefinition Height="Auto"/>
+						<RowDefinition Height="Auto"/>
+					</Grid.RowDefinitions>
+					<GroupBox Header="Copyright" Grid.Row="0">
+						<Grid>
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition Width="Auto"/>
+								<ColumnDefinition Width="*"/>
+							</Grid.ColumnDefinitions>
+							<Grid.RowDefinitions>
+								<RowDefinition Height="Auto"/>
+								<RowDefinition Height="Auto"/>
+							</Grid.RowDefinitions>
+							<StackPanel Grid.Column="0" Grid.Row="0" Margin="0,0,6,0">
+								<RadioButton IsChecked="{Binding CopyrightDisplayPosition, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static songs:MetadataDisplayPosition.FirstSlide}}">Erste Folie</RadioButton>
+								<RadioButton IsChecked="{Binding CopyrightDisplayPosition, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static songs:MetadataDisplayPosition.LastSlide}}">Letzte Folie</RadioButton>
+								<RadioButton IsChecked="{Binding CopyrightDisplayPosition, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static songs:MetadataDisplayPosition.AllSlides}}">Alle Folien</RadioButton>
+								<RadioButton IsChecked="{Binding CopyrightDisplayPosition, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static songs:MetadataDisplayPosition.None}}">Nicht anzeigen</RadioButton>
+							</StackPanel>
+							<Grid Grid.Column="1" Grid.Row="0">
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition Width="Auto"/>
+									<ColumnDefinition Width="*"/>
+								</Grid.ColumnDefinitions>
+								<Grid.RowDefinitions>
+									<RowDefinition Height="Auto"/>
+								</Grid.RowDefinitions>
+								<Label Grid.Column="0" Grid.Row="0">Abstand unten:</Label>
+								<TextBox Grid.Column="1" Grid.Row="0" Text="{Binding CopyrightBorderBottom}"/>
+							</Grid>
+							<local:ChooseFontControl Margin="0,6,0,0" Grid.Row="1" Grid.ColumnSpan="2" Font="{Binding CopyrightText}"/>
+						</Grid>
+					</GroupBox>
+					<GroupBox Header="Quelle" Grid.Row="1">
+						<Grid>
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition Width="Auto"/>
+								<ColumnDefinition Width="*"/>
+							</Grid.ColumnDefinitions>
+							<Grid.RowDefinitions>
+								<RowDefinition Height="Auto"/>
+								<RowDefinition Height="Auto"/>
+							</Grid.RowDefinitions>
+							<StackPanel Grid.Column="0" Margin="0,0,6,0">
+								<RadioButton IsChecked="{Binding SourceDisplayPosition, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static songs:MetadataDisplayPosition.FirstSlide}}">Erste Folie</RadioButton>
+								<RadioButton IsChecked="{Binding SourceDisplayPosition, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static songs:MetadataDisplayPosition.LastSlide}}">Letzte Folie</RadioButton>
+								<RadioButton IsChecked="{Binding SourceDisplayPosition, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static songs:MetadataDisplayPosition.AllSlides}}">Alle Folien</RadioButton>
+								<RadioButton IsChecked="{Binding SourceDisplayPosition, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static songs:MetadataDisplayPosition.None}}">Nicht anzeigen</RadioButton>
+							</StackPanel>
+							<Grid Grid.Column="1">
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition Width="Auto"/>
+									<ColumnDefinition Width="*"/>
+								</Grid.ColumnDefinitions>
+								<Grid.RowDefinitions>
+									<RowDefinition Height="Auto"/>
+									<RowDefinition Height="Auto"/>
+								</Grid.RowDefinitions>
+								<Label Grid.Column="0" Grid.Row="0">Abstand oben:</Label>
+								<TextBox Grid.Column="1" Grid.Row="0" Text="{Binding SourceBorderTop}"/>
+								<Label Grid.Column="0" Grid.Row="1">Abstand rechts:</Label>
+								<TextBox Grid.Column="1" Grid.Row="1" Text="{Binding SourceBorderRight}"/>
+							</Grid>
+							<local:ChooseFontControl Margin="0,6,0,0" Grid.Row="1" Grid.ColumnSpan="2" Font="{Binding SourceText}"/>
+						</Grid>
+					</GroupBox>
+				</Grid>
+			</TabItem>
+		</TabControl>
+		<Button IsDefault="True" Height="23" Width="90" Margin="0,6,6,6" HorizontalAlignment="Right" Click="ButtonOK_Click" Grid.Row="1">OK</Button>
+		<Button IsCancel="True" Height="23" Margin="0,6,102,6" HorizontalAlignment="Right" Width="90" Grid.Row="1">Abbrechen</Button>
+	</Grid>
+</Window>

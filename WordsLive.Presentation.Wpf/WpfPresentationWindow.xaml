@@ -1,0 +1,40 @@
+﻿<Window x:Class="Words.Presentation.Wpf.WpfPresentationWindow"
+		xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+		Title="WpfPresentationWindow" Height="100" Width="100"
+		ResizeMode="NoResize" WindowStyle="None" Focusable="False" ShowInTaskbar="False"
+		Background="Transparent" AllowsTransparency="True" Topmost="True">
+		<!--AllowsTransparency="True" Background="Transparent"-->
+	<Window.Resources>
+		<Storyboard x:Key="ContentTransition">
+			<DoubleAnimationUsingKeyFrames
+				Storyboard.TargetName="MainContainer" 
+				Storyboard.TargetProperty="Opacity"
+				Completed="ContentTransition_Completed">
+				<LinearDoubleKeyFrame Value="0.0" KeyTime="0:0:0" />
+				<LinearDoubleKeyFrame Value="1.0" KeyTime="100%"/>
+			</DoubleAnimationUsingKeyFrames>
+		</Storyboard>
+		<Storyboard x:Key="ContentFadeOut">
+			<DoubleAnimationUsingKeyFrames
+				Storyboard.TargetName="MainContainer" 
+				Storyboard.TargetProperty="Opacity"
+				Completed="ContentTransition_Completed">
+				<LinearDoubleKeyFrame Value="1.0" KeyTime="0:0:0" />
+				<LinearDoubleKeyFrame Value="1.0" KeyTime="0:0:0.2" />
+				<LinearDoubleKeyFrame Value="0.0" KeyTime="100%"/>
+			</DoubleAnimationUsingKeyFrames>
+		</Storyboard>
+	</Window.Resources>
+	<Grid>
+		<Grid x:Name="ContentContainer">
+			<Border x:Name="PreviousContainer"/>
+			<Border x:Name="MainContainer"/>
+		</Grid>
+		<!--
+		TODO: ability to set Child (using transition) and Alignment
+		<Border x:Name="AlertContainer" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+		-->
+	</Grid>
+</Window>
+  

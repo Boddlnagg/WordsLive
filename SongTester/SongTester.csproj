@@ -44,7 +44,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Words.Core\WordsLive.Core.csproj">
+    <ProjectReference Include="..\WordsLive.Core\WordsLive.Core.csproj">
       <Project>{AABDBF78-74B7-40DD-A327-FABF1FA758F8}</Project>
       <Name>WordsLive.Core</Name>
     </ProjectReference>

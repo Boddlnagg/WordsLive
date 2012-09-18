@@ -1,0 +1,492 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ExpressionBlendVersion>4.0.20621.0</ExpressionBlendVersion>
+    <ProjectGuid>{B2DF371C-DCAE-43FF-817A-34FBC21234D8}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <DefaultClrNameSpace>WpfTest</DefaultClrNameSpace>
+    <RootNamespace>Words</RootNamespace>
+    <AssemblyName>WordsLive</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <ApplicationVersion>1.0.0.*</ApplicationVersion>
+    <ApplicationRevision>0</ApplicationRevision>
+    <AlwaysCompileMarkupFilesInSeparateDomain>false</AlwaysCompileMarkupFilesInSeparateDomain>
+    <ApplicationIcon>Artwork\Viewer.ico</ApplicationIcon>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+    <SourceAnalysisOverrideSettingsFile>C:\Users\Administrator\AppData\Roaming\ICSharpCode/SharpDevelop3.0\Settings.SourceAnalysis</SourceAnalysisOverrideSettingsFile>
+    <AllowUnsafeBlocks>False</AllowUnsafeBlocks>
+    <NoStdLib>False</NoStdLib>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation />
+    <Utf8Output>true</Utf8Output>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>Full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <CheckForOverflowUnderflow>False</CheckForOverflowUnderflow>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Platform)' == 'AnyCPU' ">
+    <RegisterForComInterop>False</RegisterForComInterop>
+    <GenerateSerializationAssemblies>Auto</GenerateSerializationAssemblies>
+    <BaseAddress>4194304</BaseAddress>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Awesomium.Core, Version=1.6.6.0, Culture=neutral, PublicKeyToken=e1a0d7c8071a5214, processorArchitecture=x86">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Awesomium.Windows.Controls, Version=1.6.6.0, Culture=neutral, PublicKeyToken=7a34e179b8b61c39, processorArchitecture=x86">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Ionic.Zip">
+      <HintPath>..\3rdParty\Ionic.Zip.dll</HintPath>
+    </Reference>
+    <Reference Include="MonitoredUndo">
+      <HintPath>..\3rdParty\MonitoredUndo.dll</HintPath>
+    </Reference>
+    <Reference Include="ReachFramework" />
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Xml" />
+    <Reference Include="Vlc.DotNet.Core">
+      <HintPath>..\3rdParty\Vlc.DotNet.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Vlc.DotNet.Core.Interops">
+      <HintPath>..\3rdParty\Vlc.DotNet.Core.Interops.dll</HintPath>
+    </Reference>
+    <Reference Include="Vlc.DotNet.Wpf">
+      <HintPath>..\3rdParty\Vlc.DotNet.Wpf.dll</HintPath>
+    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="WindowsFormsIntegration" />
+    <Reference Include="WPFToolkit.Extended">
+      <HintPath>..\3rdParty\WPFToolkit.Extended.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Compile Include="ControlPanelLoadState.cs" />
+    <Compile Include="Images\FinishAction.cs" />
+    <Compile Include="Images\ImageInfo.cs" />
+    <Compile Include="Images\ImagesControlPanel.xaml.cs">
+      <DependentUpon>ImagesControlPanel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Images\ImagesFileHandler.cs" />
+    <Compile Include="Images\ImagesMedia.cs" />
+    <Compile Include="Images\ImagesPresentation.cs" />
+    <Compile Include="TestPresentation.cs" />
+    <Compile Include="Utils\InsertionAdorner.cs" />
+    <Compile Include="Utils\EnumToIndexConverter.cs" />
+    <Compile Include="XpsDocument.cs" />
+    <Compile Include="XpsDocumentControlPanel.xaml.cs">
+      <DependentUpon>XpsDocumentControlPanel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="XpsDocumentFileHandler.cs" />
+    <Compile Include="XpsPresentation.cs" />
+    <Page Include="Images\ImagesControlPanel.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="XpsDocumentControlPanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Resource Include="Artwork\PresentationArea.png" />
+    <Resource Include="Artwork\Settings.png" />
+    <Resource Include="Artwork\Small_Plus.png" />
+    <Resource Include="Artwork\Small_Folder.png" />
+    <Resource Include="Artwork\New.png" />
+    <Resource Include="Artwork\Open.png" />
+    <Resource Include="Artwork\Save.png" />
+    <Resource Include="Artwork\ShowChords.png" />
+    <Resource Include="Artwork\ChooseBackground.png" />
+    <Resource Include="Artwork\Redo.png" />
+    <Resource Include="Artwork\Small_Delete.png" />
+    <Resource Include="Artwork\Undo.png" />
+    <Resource Include="Artwork\Viewer.png" />
+    <Resource Include="Artwork\AlignBottomCenter.png" />
+    <Resource Include="Artwork\AlignBottomLeft.png" />
+    <Resource Include="Artwork\AlignBottomRight.png" />
+    <Resource Include="Artwork\AlignMiddleCenter.png" />
+    <Resource Include="Artwork\AlignMiddleLeft.png" />
+    <Resource Include="Artwork\AlignMiddleRight.png" />
+    <Resource Include="Artwork\AlignTopCenter.png" />
+    <Resource Include="Artwork\AlignTopLeft.png" />
+    <Resource Include="Artwork\AlignTopRight.png" />
+    <Resource Include="Artwork\DecreaseFontSize.png" />
+    <Resource Include="Artwork\IncreaseFontSize.png" />
+    <Resource Include="Artwork\Small_DownArrow.png" />
+    <Resource Include="Artwork\Small_Reload.png" />
+    <Resource Include="Artwork\Small_UpArrow.png" />
+    <Resource Include="Artwork\Icon.ico" />
+    <Resource Include="Artwork\Formatting.png" />
+    <Resource Include="Artwork\Pause.png" />
+    <Resource Include="Artwork\Play.png" />
+    <Resource Include="Artwork\Stop.png" />
+    <Resource Include="Artwork\Small_Slide.png" />
+    <Resource Include="Artwork\Small_Song.png" />
+    <Resource Include="Artwork\Tiny_Songlist.png" />
+    <Resource Include="Artwork\Small_Copyright.png" />
+    <Resource Include="Artwork\Small_Source.png" />
+    <Resource Include="Artwork\Small_Language.png" />
+    <Resource Include="Artwork\Small_Category.png" />
+    <Resource Include="Artwork\Movie.png" />
+    <Resource Include="Artwork\LoadingAnimation.png" />
+    <Resource Include="Artwork\LoadingFailed.png" />
+    <SplashScreen Include="Artwork\Banner.png" />
+    <Content Include="Data\jquery.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\song.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="AudioVideo\AudioFileHandler.cs" />
+    <Compile Include="AudioVideo\AudioMedia.cs" />
+    <Compile Include="AudioVideo\AudioVideoControlPanel.xaml.cs">
+      <DependentUpon>AudioVideoControlPanel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="AudioVideo\AudioVideoMedia.cs" />
+    <Compile Include="AudioVideo\BaseMediaControl.cs" />
+    <Compile Include="AudioVideo\IAudioVideoPresentation.cs" />
+    <Compile Include="AudioVideo\PlayState.cs" />
+    <Compile Include="AudioVideo\VideoFileHandler.cs" />
+    <Compile Include="AudioVideo\VideoMedia.cs" />
+    <Compile Include="AudioVideo\VlcController.cs" />
+    <Compile Include="AudioVideo\VlcWrapper.xaml.cs">
+      <DependentUpon>VlcWrapper.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="AudioVideo\AudioVideoPresentation.cs" />
+    <Compile Include="AudioVideo\WpfWrapper.xaml.cs">
+      <DependentUpon>WpfWrapper.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="AwesomiumManager.cs" />
+    <Compile Include="AwesomiumPresentation.cs" />
+    <Compile Include="Editor\ChooseFontControl.xaml.cs">
+      <DependentUpon>ChooseFontControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Editor\EditChordsWindow.xaml.cs">
+      <DependentUpon>EditChordsWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Editor\SongNodeCategory.cs" />
+    <Compile Include="Editor\SongNodeCopyright.cs" />
+    <Compile Include="Editor\SongNodeLanguage.cs" />
+    <Compile Include="Editor\SongNodeMetadata.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Editor\SongSettingsWindow.xaml.cs">
+      <DependentUpon>SongSettingsWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="AwesomiumWrapper.xaml.cs">
+      <DependentUpon>AwesomiumWrapper.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Utils\ActivatableListBox\Activator.cs" />
+    <Compile Include="Utils\ImageLoader\Loaders\ExternalLoader.cs" />
+    <Compile Include="Utils\ImageLoader\Loaders\ILoader.cs" />
+    <Compile Include="Utils\ImageLoader\Loaders\LoaderFactory.cs" />
+    <Compile Include="Utils\ImageLoader\Loaders\LocalDiskLoader.cs" />
+    <Compile Include="Utils\ImageLoader\Loaders\ZipLoader.cs" />
+    <Compile Include="Utils\ImageLoader\Loader.cs" />
+    <Compile Include="Utils\ImageLoader\Manager.cs" />
+    <Compile Include="Utils\ImageLoader\Types.cs" />
+    <Compile Include="Resources\Resource.en.Designer.cs">
+      <DependentUpon>Resource.en.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Resources\Resource.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resource.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Songs\SongBackgroundToImageSourceConverter.cs" />
+    <Compile Include="TargetMediaAttribute.cs" />
+    <Compile Include="Editor\ChooseBackgroundWindow.xaml.cs">
+      <DependentUpon>ChooseBackgroundWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controller.cs" />
+    <Compile Include="CustomCommands.cs" />
+    <Compile Include="Editor\EditorDocument.cs" />
+    <Compile Include="Editor\EditorGrid.xaml.cs">
+      <DependentUpon>EditorGrid.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Editor\EditorPreviewControl.xaml.cs">
+      <DependentUpon>EditorPreviewControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Editor\EditorWindow.xaml.cs">
+      <DependentUpon>EditorWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Editor\SongNodeSource.cs" />
+    <Compile Include="Editor\RenamePartWindow.xaml.cs">
+      <DependentUpon>RenamePartWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Editor\RenameSongWindow.xaml.cs">
+      <DependentUpon>RenameSongWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Editor\SongNode.cs" />
+    <Compile Include="Editor\SongNodePart.cs" />
+    <Compile Include="Editor\SongNodeRoot.cs" />
+    <Compile Include="Editor\SongNodeSlide.cs" />
+    <Compile Include="Songs\SongFileHandler.cs" />
+    <Compile Include="Utils\StringSplitConverter.cs" />
+    <Compile Include="WebSiteFileHandler.cs" />
+    <Compile Include="UnhandledExceptionWindow.xaml.cs">
+      <DependentUpon>UnhandledExceptionWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Utils\EnumToBooleanConverter.cs" />
+    <Compile Include="Utils\ExtensionMethods.cs" />
+    <Compile Include="Utils\FileEntry.xaml.cs">
+      <DependentUpon>FileEntry.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Utils\FolderEntry.xaml.cs">
+      <DependentUpon>FolderEntry.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="IMediaControlPanel.cs" />
+    <Compile Include="ControlPanelManager.cs" />
+    <Compile Include="MediaOrderList\IconProvider.cs" />
+    <Compile Include="MediaOrderList\IconProviderManager.cs" />
+    <Compile Include="MediaOrderList\MediaOrderItem.cs" />
+    <Compile Include="MediaOrderList\MediaOrderList.cs" />
+    <Compile Include="PresentationAreaSetting.cs" />
+    <Compile Include="PresentationAreaSettingsWindow.xaml.cs">
+      <DependentUpon>PresentationAreaSettingsWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PresentationManager.cs" />
+    <Compile Include="PresentationStatus.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="Settings.cs" />
+    <Compile Include="SettingsWindow.xaml.cs">
+      <DependentUpon>SettingsWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Songs\SongFilter.cs" />
+    <Compile Include="Songs\SongDisplayController.cs" />
+    <Compile Include="Songs\SongPresentation.cs" />
+    <Compile Include="Songs\SongIconProvider.cs" />
+    <Compile Include="Songs\SongWrapper.cs" />
+    <Compile Include="Songs\SongControlPanel.xaml.cs">
+      <DependentUpon>SongControlPanel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Songs\SongListWindow.xaml.cs">
+      <DependentUpon>SongListWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MediaOrderList\FileNotFoundIconProvider.cs" />
+    <Compile Include="Songs\SongSlideListBox.xaml.cs">
+      <DependentUpon>SongSlideListBox.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WebSiteControlPanel.xaml.cs">
+      <DependentUpon>WebSiteControlPanel.xaml</DependentUpon>
+    </Compile>
+    <Content Include="Data\Standard.ppl">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Page Include="AudioVideo\AudioVideoControlPanel.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="AudioVideo\VlcWrapper.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="AudioVideo\WpfWrapper.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Editor\ChooseBackgroundWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Editor\ChooseFontControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Editor\EditChordsWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Editor\EditorGrid.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Editor\EditorPreviewControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Editor\EditorWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Editor\RenamePartWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Editor\RenameSongWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Editor\SongSettingsWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="AwesomiumWrapper.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Utils\ImageLoader\Resources.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UnhandledExceptionWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Utils\FileEntry.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Utils\FolderEntry.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="PresentationAreaSettingsWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SettingsWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Songs\SongControlPanel.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <AppDesigner Include="Properties\" />
+    <None Include="app.config" />
+    <None Include="Application.ico">
+      <Visible>false</Visible>
+    </None>
+    <Page Include="Songs\SongListWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Songs\SongSlideListBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WebSiteControlPanel.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <ProjectReference Include="..\WordsLive.Core\WordsLive.Core.csproj">
+      <Project>{AABDBF78-74B7-40DD-A327-FABF1FA758F8}</Project>
+      <Name>WordsLive.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WordsLive.Presentation.Wpf\WordsLive.Presentation.Wpf.csproj">
+      <Project>{5CA13F98-4FCA-4DED-8468-366DD89932BD}</Project>
+      <Name>WordsLive.Presentation.Wpf</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WordsLive.Presentation\WordsLive.Presentation.csproj">
+      <Project>{7103EF3D-12DE-4381-95D4-1A440F0AA1D9}</Project>
+      <Name>WordsLive.Presentation</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Artwork\Blackscreen.png" />
+    <Resource Include="Artwork\Editor.png" />
+    <Resource Include="Artwork\HidePresentation.png" />
+    <Resource Include="Artwork\ShowPresentation.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Artwork\Songlist.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Artwork\EditCurrent.png" />
+    <Resource Include="Artwork\ViewCurrent.png" />
+    <Content Include="Data\script.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Resource.en.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resource.en.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Resource.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resource.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+		 Other similar extension points exist, see Microsoft.Common.targets.
+	<Target Name="BeforeBuild">
+	</Target>
+	<Target Name="AfterBuild">
+	</Target>
+	-->
+</Project>
