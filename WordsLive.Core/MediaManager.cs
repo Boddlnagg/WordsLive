@@ -249,7 +249,7 @@ namespace Words.Core
 				)
 			);
 
-			doc.Add(new XComment("This file was written using Words"));
+			doc.Add(new XComment("This file was written using WordsLive"));
 			doc.Add(root);
 
 			StreamWriter writer = new StreamWriter(fileName, false, System.Text.Encoding.GetEncoding("iso-8859-1"));

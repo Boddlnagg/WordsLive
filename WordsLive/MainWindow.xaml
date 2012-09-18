@@ -116,7 +116,7 @@
 				</MenuItem>
 			</MenuItem>
 			<!-- TODO <MenuItem Header="Hilfe">
-				<MenuItem Header="Über Words ..."/>
+				<MenuItem Header="Über WordsLive ..."/>
 			</MenuItem>-->
 		</Menu>
 		<ToolBar Grid.Row="1" Margin="0" VerticalAlignment="Top" ToolBarTray.IsLocked="True">

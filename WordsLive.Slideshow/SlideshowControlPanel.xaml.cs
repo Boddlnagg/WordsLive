@@ -60,7 +60,7 @@ namespace Words.Slideshow
 				{
 					Controller.PresentationManager.CurrentPresentation = null;
 					Controller.FocusMainWindow();
-					System.Windows.MessageBox.Show("Die Präsentation wurde unerwartet geschlossen. Words hat die Anzeige schwarz geschaltet und wird versuchen, die Präsentation neu zu laden."); // TODO: localize
+					System.Windows.MessageBox.Show("Die Präsentation wurde unerwartet geschlossen. WordsLive hat die Anzeige schwarz geschaltet und wird versuchen, die Präsentation neu zu laden."); // TODO: localize
 					Controller.ReloadActiveMedia();
 				}));
 			};

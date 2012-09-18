@@ -296,11 +296,11 @@ namespace Words.Songs
 
 		private string GenerateCss(Song song, int width)
 		{
-			// TODO (Words - song formatting): use Powerpraise's song settings for stroke and shadow size?
+			// TODO (WordsLive - song formatting): use Powerpraise's song settings for stroke and shadow size?
 			SongFormatting formatting = song.Formatting;
 
 			if (song.HasTranslation && formatting.TranslationPosition == TranslationPosition.Block)
-				throw new NotImplementedException("Translation block positioning is not yet supported"); // TODO (Words - song formatting): support translation block positioning
+				throw new NotImplementedException("Translation block positioning is not yet supported"); // TODO (WordsLive - song formatting): support translation block positioning
 
 			factor = (double)width / 1024;
 			double strokeFactor = 0.1; // factor used for stroke and shadow

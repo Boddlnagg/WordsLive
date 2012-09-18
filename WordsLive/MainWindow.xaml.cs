@@ -44,7 +44,7 @@ namespace Words
 		{
 			get
 			{
-				return (PortfolioFile == null ? Resource.vTitleUnnamedPortfolio : PortfolioFile.Name) + " - Words";
+				return (PortfolioFile == null ? Resource.vTitleUnnamedPortfolio : PortfolioFile.Name) + " - WordsLive";
 			}
 		}
 
