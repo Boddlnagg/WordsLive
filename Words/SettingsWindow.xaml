@@ -4,7 +4,7 @@
 		xmlns:utils="clr-namespace:Words.Utils"
 		xmlns:resx="clr-namespace:Words.Resources"
 		Title="{x:Static resx:Resource.seTitle}" MinHeight="200" MinWidth="350" Width="400" Height="400"
-		Icon="/Words;component/Artwork/Settings.png" >
+		Icon="/WordsLive;component/Artwork/Settings.png" >
 	<Grid>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="Auto"/>

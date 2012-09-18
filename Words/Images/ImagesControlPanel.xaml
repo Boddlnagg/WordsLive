@@ -14,7 +14,7 @@
 		<ToolBar DockPanel.Dock="Top" ToolBarTray.IsLocked="True">
 			<Button Command="Save" CommandTarget="{Binding ElementName=slideListView}" Style="{StaticResource markDisabledButton}">
 				<StackPanel Orientation="Horizontal">
-					<Image Width="16" Height="16" Source="/Words;component/Artwork/Save.png" />
+					<Image Width="16" Height="16" Source="/WordsLive;component/Artwork/Save.png" />
 					<Label Content="{x:Static resx:Resource.vImagesSave}"/>
 				</StackPanel>
 			</Button>

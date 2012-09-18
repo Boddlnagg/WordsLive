@@ -5,7 +5,7 @@
 		xmlns:songs="clr-namespace:Words.Core.Songs;assembly=Words.Core"
 		xmlns:ext="http://schemas.microsoft.com/winfx/2006/xaml/presentation/toolkit/extended"
 		Title="Lied formatieren" Height="500" Width="352" MinHeight="500" MinWidth="350"
-		Icon="/Words;component/Artwork/Formatting.png">
+		Icon="/WordsLive;component/Artwork/Formatting.png">
 	<Grid>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="*"/>
@@ -38,39 +38,39 @@
 							</Grid.ColumnDefinitions>
 							<RadioButton Style="{StaticResource {x:Type ToggleButton}}" Grid.Column="0" Grid.Row="0"
 									 IsChecked="{Binding TextOrientation, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static local:CombinedTextOrientation.TopLeft}}">
-								<Image Source="/Words;component/Artwork/AlignTopLeft.png" Width="32"></Image>
+								<Image Source="/WordsLive;component/Artwork/AlignTopLeft.png" Width="32"></Image>
 							</RadioButton>
 							<RadioButton Style="{StaticResource {x:Type ToggleButton}}" Grid.Column="1" Grid.Row="0"
 									 IsChecked="{Binding TextOrientation, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static local:CombinedTextOrientation.TopCenter}}">
-								<Image Source="/Words;component/Artwork/AlignTopCenter.png" Width="32"></Image>
+								<Image Source="/WordsLive;component/Artwork/AlignTopCenter.png" Width="32"></Image>
 							</RadioButton>
 							<RadioButton Style="{StaticResource {x:Type ToggleButton}}" Grid.Column="2" Grid.Row="0"
 									 IsChecked="{Binding TextOrientation, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static local:CombinedTextOrientation.TopRight}}">
-								<Image Source="/Words;component/Artwork/AlignTopRight.png" Width="32"></Image>
+								<Image Source="/WordsLive;component/Artwork/AlignTopRight.png" Width="32"></Image>
 							</RadioButton>
 							<RadioButton Style="{StaticResource {x:Type ToggleButton}}" Grid.Column="0" Grid.Row="1"
 									 IsChecked="{Binding TextOrientation, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static local:CombinedTextOrientation.CenterLeft}}">
-								<Image Source="/Words;component/Artwork/AlignMiddleLeft.png" Width="32"></Image>
+								<Image Source="/WordsLive;component/Artwork/AlignMiddleLeft.png" Width="32"></Image>
 							</RadioButton>
 							<RadioButton Style="{StaticResource {x:Type ToggleButton}}" Grid.Column="1" Grid.Row="1"
 									 IsChecked="{Binding TextOrientation, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static local:CombinedTextOrientation.CenterCenter}}">
-								<Image Source="/Words;component/Artwork/AlignMiddleCenter.png" Width="32"></Image>
+								<Image Source="/WordsLive;component/Artwork/AlignMiddleCenter.png" Width="32"></Image>
 							</RadioButton>
 							<RadioButton Style="{StaticResource {x:Type ToggleButton}}" Grid.Column="2" Grid.Row="1"
 									 IsChecked="{Binding TextOrientation, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static local:CombinedTextOrientation.CenterRight}}">
-								<Image Source="/Words;component/Artwork/AlignMiddleRight.png" Width="32"></Image>
+								<Image Source="/WordsLive;component/Artwork/AlignMiddleRight.png" Width="32"></Image>
 							</RadioButton>
 							<RadioButton Style="{StaticResource {x:Type ToggleButton}}" Grid.Column="0" Grid.Row="2"
 									 IsChecked="{Binding TextOrientation, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static local:CombinedTextOrientation.BottomLeft}}">
-								<Image Source="/Words;component/Artwork/AlignBottomLeft.png" Width="32"></Image>
+								<Image Source="/WordsLive;component/Artwork/AlignBottomLeft.png" Width="32"></Image>
 							</RadioButton>
 							<RadioButton Style="{StaticResource {x:Type ToggleButton}}" Grid.Column="1" Grid.Row="2"
 									 IsChecked="{Binding TextOrientation, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static local:CombinedTextOrientation.BottomCenter}}">
-								<Image Source="/Words;component/Artwork/AlignBottomCenter.png" Width="32"></Image>
+								<Image Source="/WordsLive;component/Artwork/AlignBottomCenter.png" Width="32"></Image>
 							</RadioButton>
 							<RadioButton Style="{StaticResource {x:Type ToggleButton}}" Grid.Column="2" Grid.Row="2"
 									 IsChecked="{Binding TextOrientation, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static local:CombinedTextOrientation.BottomRight}}">
-								<Image Source="/Words;component/Artwork/AlignBottomRight.png" Width="32"></Image>
+								<Image Source="/WordsLive;component/Artwork/AlignBottomRight.png" Width="32"></Image>
 							</RadioButton>
 						</Grid>
 					</GroupBox>

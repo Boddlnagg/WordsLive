@@ -37,7 +37,7 @@ namespace Words
 					/*LogPath = My.Application.UserAppDataPath,*/
 					LogLevel = LogLevel.Verbose,
 					AcceptLanguageOverride = "de-DE", // TODO: set this to the correct system language (needed for bibleserver)
-					ChildProcessPath = System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "Words.Awesomium.exe"),
+					ChildProcessPath = System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "WordsLive.Awesomium.exe"), // TODO: This doesn't always work ...
 				};
 
 				WebCore.Started += (sender, args) => WebCore.BaseDirectory = Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "Data");

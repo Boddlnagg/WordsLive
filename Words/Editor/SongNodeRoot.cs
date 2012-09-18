@@ -100,7 +100,7 @@ namespace Words.Editor
 
 		public override string IconUri
 		{
-			get { return "/Words;component/Artwork/Small_Song.png"; }
+			get { return "/WordsLive;component/Artwork/Small_Song.png"; }
 		}
 
 		public SongNodeRoot(Song song) : base(null)

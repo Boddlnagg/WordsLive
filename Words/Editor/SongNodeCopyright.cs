@@ -17,7 +17,7 @@ namespace Words.Editor
 
 		public override string IconUri
 		{
-			get { return "/Words;component/Artwork/Small_Copyright.png"; }
+			get { return "/WordsLive;component/Artwork/Small_Copyright.png"; }
 		}
 
 		public int FontSize

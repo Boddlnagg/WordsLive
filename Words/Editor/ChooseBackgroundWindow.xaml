@@ -11,7 +11,7 @@
 	Width = "{Binding Source={StaticResource settings}, Path=Default.ChooseBackgroundWindowWidth, Mode=TwoWay}"
 	Top="{Binding Source={StaticResource settings}, Path=Default.ChooseBackgroundWindowTop, Mode=TwoWay}"
 	Left="{Binding Source={StaticResource settings}, Path=Default.ChooseBackgroundWindowLeft, Mode=TwoWay}"
-	WindowState="{Binding Source={StaticResource settings}, Path=Default.ChooseBackgroundWindowState, Mode=TwoWay}" Icon="/Words;component/Artwork/ChooseBackground.png">
+	WindowState="{Binding Source={StaticResource settings}, Path=Default.ChooseBackgroundWindowState, Mode=TwoWay}" Icon="/WordsLive;component/Artwork/ChooseBackground.png">
 	<DockPanel>
 		<Grid DockPanel.Dock="Bottom" Height="35">
 			<CheckBox IsChecked="{Binding Path=UseColor, Mode=TwoWay}" Height="Auto" VerticalAlignment="Center" Name="UseColorCheckbox" HorizontalAlignment="Left" Margin="6,0,0,0" Content="{x:Static resx:Resource.cbUseSingleColor}"/>
@@ -37,7 +37,7 @@
 					<TreeView.Resources>
 						<HierarchicalDataTemplate DataType="{x:Type local:BackgroundsDirectory}" ItemsSource="{Binding Directories}" >
 							<StackPanel Orientation="Horizontal" Margin="2">
-								<Image Source="/Words;component/Artwork/Small_Folder.png" Width="16" Height="16"/>
+								<Image Source="/WordsLive;component/Artwork/Small_Folder.png" Width="16" Height="16"/>
 								<TextBlock Text="{Binding Info.Name}"/>
 							</StackPanel>
 						</HierarchicalDataTemplate>
@@ -69,7 +69,7 @@
 								imageloader:Loader.Source="{Binding File.FullName}"
 								imageloader:Loader.DisplayWaitingAnimationDuringLoading="True"
 								imageloader:Loader.DisplayErrorThumbnailOnError="True"/>
-							<Image Source="/Words;component/Artwork/Movie.png" Grid.Column="1" Grid.Row="0" VerticalAlignment="Top" Margin="3">
+							<Image Source="/WordsLive;component/Artwork/Movie.png" Grid.Column="1" Grid.Row="0" VerticalAlignment="Top" Margin="3">
 									<Image.Style>
 										<Style TargetType="Image">
 											<Setter Property="Visibility" Value="Hidden"/>

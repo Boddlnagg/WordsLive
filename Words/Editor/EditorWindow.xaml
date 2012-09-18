@@ -12,7 +12,7 @@
 	Left="{Binding Source={StaticResource settings}, Path=Default.EditorWindowLeft, Mode=TwoWay}"
 	WindowState="{Binding Source={StaticResource settings}, Path=Default.EditorWindowState, Mode=TwoWay}"
 	Closing="Window_Closing"
-	Icon="/Words;component/Artwork/Editor.png ">
+	Icon="/WordsLive;component/Artwork/Editor.png ">
 	<Window.CommandBindings>
 		<CommandBinding Command="Undo" CanExecute="OnCommandCanExecute" Executed="OnExecuteCommand"/>
 		<CommandBinding Command="Redo" CanExecute="OnCommandCanExecute" Executed="OnExecuteCommand"/>
@@ -45,18 +45,18 @@
 			<MenuItem Header="{x:Static resx:Resource.eMenuFile}">
 				<MenuItem Header="{x:Static resx:Resource.eMenuNewSong}" Command="New">
 					<MenuItem.Icon>
-						<Image Width="24" Source="/Words;component/Artwork/New.png" />
+						<Image Width="24" Source="/WordsLive;component/Artwork/New.png" />
 					</MenuItem.Icon>
 				</MenuItem>
 				<MenuItem Header="{x:Static resx:Resource.eMenuOpenSong}" Command="Open">
 					<MenuItem.Icon>
-						<Image Width="24" Source="/Words;component/Artwork/Open.png" />
+						<Image Width="24" Source="/WordsLive;component/Artwork/Open.png" />
 					</MenuItem.Icon>
 				</MenuItem>
 				<MenuItem
 					Header="{x:Static resx:Resource.eMenuSaveSong}" Command="Save">
 					<MenuItem.Icon>
-						<Image Width="24" Source="/Words;component/Artwork/Save.png" />
+						<Image Width="24" Source="/WordsLive;component/Artwork/Save.png" />
 					</MenuItem.Icon>
 				</MenuItem>
 				<MenuItem
@@ -70,31 +70,31 @@
 			<MenuItem Header="{x:Static resx:Resource.eMenuEdit}">
 				<MenuItem Header="{x:Static resx:Resource.eMenuUndo}" Command="Undo">
 					<MenuItem.Icon>
-						<Image Width="24" Source="/Words;component/Artwork/Undo.png" />
+						<Image Width="24" Source="/WordsLive;component/Artwork/Undo.png" />
 					</MenuItem.Icon>
 				</MenuItem>
 				<MenuItem Header="{x:Static resx:Resource.eMenuRedo}" Command="Redo">
 					<MenuItem.Icon>
-						<Image Width="24" Source="/Words;component/Artwork/Redo.png" />
+						<Image Width="24" Source="/WordsLive;component/Artwork/Redo.png" />
 					</MenuItem.Icon>
 				</MenuItem>
 				<MenuItem Header="{x:Static resx:Resource.eMenuSplitTextAtCursor}" Command="{x:Static local:CustomCommands.Split}"/>
 				<MenuItem Header="{x:Static resx:Resource.eMenuEditChords}" Command="{x:Static local:CustomCommands.EditChords}"/>
 				<MenuItem Header="{x:Static resx:Resource.eMenuFormatSong}" Command="{x:Static local:CustomCommands.SongSettings}">
 					<MenuItem.Icon>
-						<Image Width="24" Source="/Words;component/Artwork/Formatting.png" />
+						<Image Width="24" Source="/WordsLive;component/Artwork/Formatting.png" />
 					</MenuItem.Icon>
 				</MenuItem>
 			</MenuItem>
 			<MenuItem Header="{x:Static resx:Resource.veMenuWindow}">
 				<MenuItem Header="{x:Static resx:Resource.veMenuShowSonglist}" Command="{x:Static local:CustomCommands.ShowSonglist}">
 					<MenuItem.Icon>
-						<Image Width="24" Source="/Words;component/Artwork/Songlist.png" />
+						<Image Width="24" Source="/WordsLive;component/Artwork/Songlist.png" />
 					</MenuItem.Icon>
 				</MenuItem>
 				<MenuItem Header="{x:Static resx:Resource.eMenuShowPresenter}" Command="{x:Static local:CustomCommands.SwitchWindow}">
 					<MenuItem.Icon>
-						<Image Width="24" Source="/Words;component/Artwork/Viewer.png" />
+						<Image Width="24" Source="/WordsLive;component/Artwork/Viewer.png" />
 					</MenuItem.Icon>
 				</MenuItem>
 			</MenuItem>
@@ -104,67 +104,67 @@
 				<Image
 					Width="32"
 					Height="32"
-					Source="/Words;component/Artwork/Viewer.png" />
+					Source="/WordsLive;component/Artwork/Viewer.png" />
 			</Button>
 			<Button Command="{x:Static local:CustomCommands.ViewCurrent}" Style="{StaticResource markDisabledButton}" ToolTip="{x:Static resx:Resource.eToolbarSaveAndReload}">
 				<Image
 					Width="32"
 					Height="32"
-					Source="/Words;component/Artwork/ViewCurrent.png" />
+					Source="/WordsLive;component/Artwork/ViewCurrent.png" />
 			</Button>
 			<Separator/>
 			<Button Command="New" ToolTip="{x:Static resx:Resource.eToolbarNewSong}">
 				<Image
 					Width="32"
 					Height="32"
-					Source="/Words;component/Artwork/New.png" />
+					Source="/WordsLive;component/Artwork/New.png" />
 			</Button>
 			<Button Command="Open" ToolTip="{x:Static resx:Resource.eToolbarOpenSong}">
 				<Image
 					Width="32"
 					Height="32"
-					Source="/Words;component/Artwork/Open.png" />
+					Source="/WordsLive;component/Artwork/Open.png" />
 			</Button>
 			<Button Command="Save" Style="{StaticResource markDisabledButton}" ToolTip="{x:Static resx:Resource.eToolbarSaveSong}" >
 				<Image
 					Width="32"
 					Height="32"
-					Source="/Words;component/Artwork/Save.png" />
+					Source="/WordsLive;component/Artwork/Save.png" />
 			</Button>
 			<Separator/>
 			<Button Command="Undo" Style="{StaticResource markDisabledButton}" ToolTip="{x:Static resx:Resource.eToolbarUndo}" >
 				<Image
 					Width="32"
 					Height="32"
-					Source="/Words;component/Artwork/Undo.png"/>
+					Source="/WordsLive;component/Artwork/Undo.png"/>
 			</Button>
 			<Button Command="Redo" Style="{StaticResource markDisabledButton}" ToolTip="{x:Static resx:Resource.eToolbarRedo}" >
 				<Image
 					Width="32"
 					Height="32"
-					Source="/Words;component/Artwork/Redo.png" />
+					Source="/WordsLive;component/Artwork/Redo.png" />
 			</Button>
 			<Separator/>
 			<Button Command="{x:Static local:CustomCommands.ChooseBackground}" Style="{StaticResource markDisabledButton}" ToolTip="{x:Static resx:Resource.eToolbarChangeBackground}">
 				<Image
 					Width="32"
 					Height="32"
-					Source="/Words;component/Artwork/ChooseBackground.png" />
+					Source="/WordsLive;component/Artwork/ChooseBackground.png" />
 			</Button>
 			<Button Command="DecreaseFontSize" Style="{StaticResource markDisabledButton}" ToolTip="{x:Static resx:Resource.eToolbarDecreaseFontSize}">
 				<Image
 					Width="32"
 					Height="32"
-					Source="/Words;component/Artwork/DecreaseFontSize.png" />
+					Source="/WordsLive;component/Artwork/DecreaseFontSize.png" />
 			</Button>
 			<Button Command="IncreaseFontSize" Style="{StaticResource markDisabledButton}" ToolTip="{x:Static resx:Resource.eToolbarIncreaseFontSize}">
 				<Image
 					Width="32"
 					Height="32"
-					Source="/Words;component/Artwork/IncreaseFontSize.png" />
+					Source="/WordsLive;component/Artwork/IncreaseFontSize.png" />
 			</Button>
 			<CheckBox ToolTip="{x:Static resx:Resource.eToolbarShowChords}" IsChecked="{Binding ShowChords}">
-				<Image Width="32" Height="32" Source="/Words;component/Artwork/ShowChords.png" />
+				<Image Width="32" Height="32" Source="/WordsLive;component/Artwork/ShowChords.png" />
 			</CheckBox>
 		</ToolBar>
 		<Grid Grid.Row="2" Grid.Column="0" AllowDrop="True" Drop="Tabs_Drop" DragEnter="Tabs_DragEnterOrOver" DragOver="Tabs_DragEnterOrOver" Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}">

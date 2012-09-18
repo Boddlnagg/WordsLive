@@ -123,7 +123,7 @@
 			<Style TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"/>
 		</DockPanel.Resources>
 		<Button ToolTip="{x:Static resx:Resource.eGridAddElementButton}" CommandTarget="{Binding ElementName=StructureTree}" Command="{x:Static my:CustomCommands.Insert}" HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="0,2" DockPanel.Dock="Right" Focusable="False">
-			<Image Width="16" Height="16" Source="/Words;component/Artwork/Small_Plus.png" />
+			<Image Width="16" Height="16" Source="/WordsLive;component/Artwork/Small_Plus.png" />
 		</Button>
 		<TextBlock
 			Padding="5"
@@ -245,16 +245,16 @@
 		Padding="5"
 		Text="{x:Static resx:Resource.eGridOrderHeader}"/>
 		<Button CommandTarget="{Binding ElementName=OrderListBox}" Command="Delete" Style="{StaticResource markDisabledToolbarButton}" ToolTip="{x:Static resx:Resource.eGridOrderRemoveButton}"  HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="0,2" DockPanel.Dock="Right" Focusable="False">
-			<Image Width="16" Height="16" Source="/Words;component/Artwork/Small_Delete.png" />
+			<Image Width="16" Height="16" Source="/WordsLive;component/Artwork/Small_Delete.png" />
 		</Button>
 		<Button CommandTarget="{Binding ElementName=OrderListBox}" Command="{x:Static my:CustomCommands.MoveDown}" Style="{StaticResource markDisabledToolbarButton}" ToolTip="{x:Static resx:Resource.eGridOrderMoveDownButton}"  HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="0,2" DockPanel.Dock="Right" Focusable="False">
-			<Image Width="16" Height="16" Source="/Words;component/Artwork/Small_DownArrow.png" />
+			<Image Width="16" Height="16" Source="/WordsLive;component/Artwork/Small_DownArrow.png" />
 		</Button>
 		<Button CommandTarget="{Binding ElementName=OrderListBox}" Command="{x:Static my:CustomCommands.MoveUp}" Style="{StaticResource markDisabledToolbarButton}" ToolTip="{x:Static resx:Resource.eGridOrderMoveUpButton}"  HorizontalAlignment="Left" VerticalAlignment="Stretch" DockPanel.Dock="Right" Margin="0,2" Focusable="False">
-			<Image Width="16" Height="16" Source="/Words;component/Artwork/Small_UpArrow.png" />
+			<Image Width="16" Height="16" Source="/WordsLive;component/Artwork/Small_UpArrow.png" />
 		</Button>
 		<Button CommandTarget="{Binding ElementName=OrderListBox}" Command="{x:Static my:CustomCommands.Insert}" Style="{StaticResource markDisabledToolbarButton}" ToolTip="{x:Static resx:Resource.eGridOrderAddButton}"  HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="0,2" DockPanel.Dock="Right" Focusable="False">
-			<Image Width="16" Height="16" Source="/Words;component/Artwork/Small_Plus.png" />
+			<Image Width="16" Height="16" Source="/WordsLive;component/Artwork/Small_Plus.png" />
 		</Button>
 		<CheckBox x:Name="showSlidesCheckBox" VerticalAlignment="Center" DockPanel.Dock="Right" IsChecked="True" Margin="2,0">
 			<TextBlock TextTrimming="CharacterEllipsis" ToolTip="{Binding Path=Text, RelativeSource={RelativeSource Self}}" Text="{x:Static resx:Resource.eGridOrderShowSlidesCheckbox}"/>

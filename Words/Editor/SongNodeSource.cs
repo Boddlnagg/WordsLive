@@ -19,7 +19,7 @@ namespace Words.Editor
 		{
 			get
 			{
-				return "/Words;component/Artwork/Small_Source.png";
+				return "/WordsLive;component/Artwork/Small_Source.png";
 			}
 		}
 

@@ -44,9 +44,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Words.Core\Words.Core.csproj">
+    <ProjectReference Include="..\Words.Core\WordsLive.Core.csproj">
       <Project>{AABDBF78-74B7-40DD-A327-FABF1FA758F8}</Project>
-      <Name>Words.Core</Name>
+      <Name>WordsLive.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -18,7 +18,7 @@ namespace Words.Editor
 		{
 			get
 			{
-				return "/Words;component/Artwork/Small_Category.png";
+				return "/WordsLive;component/Artwork/Small_Category.png";
 			}
 		}
 	}

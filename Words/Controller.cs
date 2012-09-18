@@ -50,11 +50,11 @@ namespace Words
 			LoadAttributes(Assembly.GetAssembly(typeof(Words.Presentation.Wpf.WpfPresentationWindow))); // Words.Presentation.Wpf.dll
 
 			string startupDir = new FileInfo(Assembly.GetExecutingAssembly().Location).Directory.FullName;
-			LoadAttributes(Assembly.LoadFrom(Path.Combine(startupDir, "Words.Slideshow.dll"))); // TODO (Words): automatically load plugins
+			LoadAttributes(Assembly.LoadFrom(Path.Combine(startupDir, "WordsLive.Slideshow.dll"))); // TODO (Words): automatically load plugins
 
 			InitDataDirectories();
 
-			Words.Utils.ImageLoader.Manager.Instance.LoadingImage = new System.Windows.Media.Imaging.BitmapImage(new Uri("/Words;component/Artwork/LoadingAnimation.png", UriKind.Relative));
+			Words.Utils.ImageLoader.Manager.Instance.LoadingImage = new System.Windows.Media.Imaging.BitmapImage(new Uri("/WordsLive;component/Artwork/LoadingAnimation.png", UriKind.Relative));
 		}
 
 		void HandleDisplaySettingsChanged(object sender, EventArgs e)

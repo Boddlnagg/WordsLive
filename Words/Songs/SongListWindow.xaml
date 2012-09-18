@@ -10,7 +10,7 @@
 		Top="{Binding Source={StaticResource settings}, Path=Default.SongListWindowTop, Mode=TwoWay}"
 		Left="{Binding Source={StaticResource settings}, Path=Default.SongListWindowLeft, Mode=TwoWay}"
 		WindowState="{Binding Source={StaticResource settings}, Path=Default.SongListWindowState, Mode=TwoWay}"
-		Icon="/Words;component/Artwork/Tiny_Songlist.png"
+		Icon="/WordsLive;component/Artwork/Tiny_Songlist.png"
 		Title="{x:Static resx:Resource.slTitle}">
 	<Window.Resources>
 		<DataTemplate x:Key="titleTemplate">

@@ -7,7 +7,7 @@
 		Height="375" Width="409"
 		MinHeight="375" MinWidth="375"
 		Name="win"
-		Icon="/Words;component/Artwork/PresentationArea.png">
+		Icon="/WordsLive;component/Artwork/PresentationArea.png">
 	<Grid>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="*"/>

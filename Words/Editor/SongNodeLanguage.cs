@@ -38,7 +38,7 @@ namespace Words.Editor
 
 		public override string IconUri
 		{
-			get { return "/Words;component/Artwork/Small_Language.png"; }
+			get { return "/WordsLive;component/Artwork/Small_Language.png"; }
 		}
 	}
 }
