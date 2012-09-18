@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // Allgemeine Informationen über eine Assembly werden über die folgenden 
 // Attribute gesteuert. Ändern Sie diese Attributwerte, um die Informationen zu ändern,
 // die mit einer Assembly verknüpft sind.
-[assembly: AssemblyTitle("Words.Awesomium")]
-[assembly: AssemblyDescription("Awesomium child process for Words")]
+[assembly: AssemblyTitle("WordsLive.Awesomium")]
+[assembly: AssemblyDescription("Awesomium child process for WordsLive")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Words.Awesomium")]
+[assembly: AssemblyProduct("WordsLive.Awesomium")]
 [assembly: AssemblyCopyright("")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
