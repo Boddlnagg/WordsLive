@@ -100,11 +100,13 @@ namespace WordsLive.Slideshow
 			if (e.Key == Key.Right || e.Key == Key.Down || e.Key == Key.PageDown)
 			{
 				pres.NextStep();
+				(pres.Preview as SlideshowPreviewProvider).Update();
 				e.Handled = true;
 			}
 			else if (e.Key == Key.Left || e.Key == Key.Up || e.Key == Key.PageUp)
 			{
 				pres.PreviousStep();
+				(pres.Preview as SlideshowPreviewProvider).Update();
 				e.Handled = true;
 			}
 		}

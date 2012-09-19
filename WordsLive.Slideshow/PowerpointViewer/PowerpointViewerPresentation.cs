@@ -5,6 +5,7 @@ using System.Windows.Media.Imaging;
 using PowerpointViewerLib;
 using WordsLive.Presentation;
 using System.Threading;
+using System.Windows.Media;
 
 namespace WordsLive.Slideshow.PowerpointViewer
 {
@@ -27,7 +28,7 @@ namespace WordsLive.Slideshow.PowerpointViewer
 						int animations = doc.GetSlideStepCount(i - 1) - 1;
 						thumbnails.Add(new SlideThumbnail
 						{
-							Image = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(bmp.GetHbitmap(), IntPtr.Zero, System.Windows.Int32Rect.Empty, BitmapSizeOptions.FromWidthAndHeight(bmp.Width, bmp.Height)),
+							Image = SlideshowPreviewProvider.ConvertBitmap(bmp),
 							Title = String.Format("Folie {0} ({1})", i, animations == 0 ? "keine Animation" : (animations == 1 ? " 1 Animationsschritt" : animations + " Animationsschritte"))
 						});
 						i++;
@@ -129,6 +130,8 @@ namespace WordsLive.Slideshow.PowerpointViewer
 			isClosing = true;
 			if (doc != null)
 				doc.Close();
+
+			base.Close();
 		}
 
 		public override void Hide()
@@ -179,5 +182,12 @@ namespace WordsLive.Slideshow.PowerpointViewer
 		{
 			doc.PrevStep();
 		}
+
+		public override BitmapSource CaptureWindow(int width)
+		{
+			return SlideshowPreviewProvider.ConvertBitmap(doc.CaptureWindow(width));
+		}
+
+		
 	}
 }

@@ -12,6 +12,7 @@ using unoidl.com.sun.star.frame;
 using unoidl.com.sun.star.lang;
 using unoidl.com.sun.star.presentation;
 using System.Threading;
+using System.Drawing;
 
 namespace WordsLive.Slideshow.Impress.Bridge
 {			
@@ -71,6 +72,12 @@ namespace WordsLive.Slideshow.Impress.Bridge
 		[DllImport("user32.dll", EntryPoint="GetClassLongPtr", SetLastError=true)]
 		public static extern IntPtr GetClassLongPtr64(IntPtr hWnd, int nIndex);
 		*/
+
+		[DllImport("user32.dll")]
+		private static extern bool PrintWindow(IntPtr hwnd, IntPtr hdcBlt, uint nFlags);
+
+		[DllImport("user32.dll")]
+		private static extern int GetWindowRect(IntPtr hwnd, out System.Drawing.Rectangle rc);
 		#endregion
 
 		XPresentation2 presentation;
@@ -134,12 +141,9 @@ namespace WordsLive.Slideshow.Impress.Bridge
 				OnSlideIndexChanged();
 			};
 
-			listener.SlideEnded += (sender, args) =>
+			listener.Paused += (sender, args) =>
 			{
-				if (controller.getNextSlideIndex() == -1) // presentation has ended
-				{
-					presentationEnded = true;
-				}
+				presentationEnded = true;
 			};
 
 			Start();
@@ -329,9 +333,11 @@ namespace WordsLive.Slideshow.Impress.Bridge
 		{
 			try
 			{
-				presentation.end();
-				component.dispose();
-				if (desktop.getCurrentComponent() == null) // no component is running anymore
+				if (presentation != null)
+					presentation.end();
+				if (component != null)
+					component.dispose();
+				if (desktop != null && desktop.getCurrentComponent() == null) // no component is running anymore
 					desktop.terminate();
 			}
 			catch (DisposedException)
@@ -339,6 +345,8 @@ namespace WordsLive.Slideshow.Impress.Bridge
 				// ignore
 			}
 			controller = null;
+
+			base.Close();
 		}
 
 		public override void Hide()
@@ -362,7 +370,42 @@ namespace WordsLive.Slideshow.Impress.Bridge
 				return controller.getCurrentSlideIndex();
 			}
 		}
-	
-		
+
+		private Bitmap Capture(int thumbnailWidth)
+		{
+			System.Drawing.Rectangle rc;
+			GetWindowRect(presentationHandle, out rc);
+
+			Bitmap bm = new Bitmap(Area.WindowSize.Width, Area.WindowSize.Height);
+			Graphics g = Graphics.FromImage(bm);
+			IntPtr hdc = g.GetHdc();
+
+			PrintWindow(presentationHandle, hdc, 0);
+
+			g.ReleaseHdc(hdc);
+			g.Flush();
+			g.Dispose();
+
+			if (thumbnailWidth > 0)
+			{
+				double ratio = (double)Area.WindowSize.Width / Area.WindowSize.Height;
+				int thumbnailHeight = (int)(thumbnailWidth / ratio);
+
+				Bitmap result = new Bitmap(thumbnailWidth, thumbnailHeight);
+				using (Graphics gg = Graphics.FromImage((Image)result))
+					gg.DrawImage(bm, 0, 0, thumbnailWidth, thumbnailHeight);
+				bm.Dispose();
+				return result;
+			}
+			else
+			{
+				return bm; // do not resize
+			}
+		}
+
+		public override System.Windows.Media.Imaging.BitmapSource CaptureWindow(int width)
+		{
+			return SlideshowPreviewProvider.ConvertBitmap(Capture(width));
+		}
 	}
 }

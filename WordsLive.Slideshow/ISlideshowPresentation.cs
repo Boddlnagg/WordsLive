@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using WordsLive.Presentation;
+using System.Windows.Media.Imaging;
 
 namespace WordsLive.Slideshow
 {
@@ -20,6 +21,7 @@ namespace WordsLive.Slideshow
 		void GotoSlide(int index);
 		void NextStep();
 		void PreviousStep();
+		BitmapSource CaptureWindow(int width);
 		int SlideIndex { get; }
 		IList<SlideThumbnail> Thumbnails { get; }
 		event EventHandler<SlideshowLoadedEventArgs> Loaded;

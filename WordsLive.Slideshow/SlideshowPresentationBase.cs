@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using WordsLive.Presentation;
+using System.Windows.Media.Imaging;
 
 namespace WordsLive.Slideshow
 {
@@ -69,6 +70,12 @@ namespace WordsLive.Slideshow
 			}
 		}
 
+		public virtual void Close()
+		{
+			if (preview != null)
+				preview.Close();
+		}
+
 		#region Events
 		
 		public event EventHandler SlideIndexChanged;
@@ -107,9 +114,9 @@ namespace WordsLive.Slideshow
 
 		public abstract void Show();
 
-		public abstract void Close();
-
 		public abstract void Hide();
+
+		public abstract BitmapSource CaptureWindow(int width);
 
 		public abstract IList<SlideThumbnail> Thumbnails { get; }
 

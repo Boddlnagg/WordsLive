@@ -13,6 +13,7 @@ namespace WordsLive.Slideshow.Impress.Bridge
 		public event EventHandler SlideTransitionStarted;
 		public event EventHandler SlideTransitionEnded;
 		public event EventHandler SlideEnded;
+		public event EventHandler Paused;
 
 		public void slideTransitionStarted()
 		{
@@ -32,12 +33,17 @@ namespace WordsLive.Slideshow.Impress.Bridge
 				SlideEnded(this, EventArgs.Empty);
 		}
 
+		public void paused()
+		{
+			if (Paused != null)
+				Paused(this, EventArgs.Empty);
+		}
+
 		public void beginEvent(XAnimationNode Node) { }
 		public void endEvent(XAnimationNode Node) { }
 		public void repeat(XAnimationNode Node, int Repeat) { }
 		public void disposing(EventObject Source) { }
 		public void hyperLinkClicked(string hyperLink) { }
-		public void paused() { }
 		public void resumed() { }
 		public void slideAnimationsEnded() { }
 	}
