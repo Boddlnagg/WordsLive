@@ -56,6 +56,18 @@ namespace WordsLive.Slideshow.PowerpointViewer
 			try
 			{
 				doc = PowerpointViewerController.Open(ppt.File, new Rectangle(Area.WindowLocation.X, Area.WindowLocation.Y, Area.WindowSize.Width, Area.WindowSize.Height), openHidden: true, thumbnailWidth: 200);
+				doc.Error += (sender, args) =>
+				{
+					if (!doc.HasLoaded)
+					{
+						Controller.Dispatcher.Invoke(new Action(() => OnLoaded(false)));
+					}
+					else
+					{
+						base.OnClosedExternally();
+					}
+				};
+
 				doc.Loaded += (sender, args) =>
 				{
 					Controller.Dispatcher.Invoke(new Action(() =>
