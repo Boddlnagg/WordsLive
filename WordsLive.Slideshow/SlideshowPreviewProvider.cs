@@ -43,10 +43,10 @@ namespace WordsLive.Slideshow
 
 			this.presentation = presentation;
 
-			if (presentation.CaptureWindow(100) != null)
+			if (WordsLive.Controller.SlideshowEnableLivePreview &&  presentation.CaptureWindow(100) != null)
 			{
 				timer = new DispatcherTimer();
-				timer.Interval = new TimeSpan(0, 0, 0, 0, 500); // 2 seconds
+				timer.Interval = new TimeSpan(0, 0, 2); // 2 seconds (TODO: make configurable)
 				timer.Tick += (sender, args) =>
 				{
 					Update();
@@ -61,6 +61,11 @@ namespace WordsLive.Slideshow
 		void presentation_SlideIndexChanged(object sender, EventArgs e)
 		{
 			Update();
+			if (timer != null)
+			{
+				timer.Stop();
+				timer.Start();
+			}
 		}
 
 		protected override UIElement WpfControl
@@ -75,11 +80,12 @@ namespace WordsLive.Slideshow
 		{
 			if (timer != null && Controller.PresentationManager.CurrentPresentation == presentation && Controller.PresentationManager.Status == PresentationStatus.Show) // only use CaptureWindow() if timer is initialized
 			{
-				image.Dispatcher.Invoke(new Action(() => { image.Source = presentation.CaptureWindow((int)image.ActualWidth); }));
+				var cap = presentation.CaptureWindow((int)image.ActualWidth);
+				image.Dispatcher.Invoke(new Action(() => { image.Source = cap; }));
 			}
 			else
 			{
-				if (presentation.SlideIndex != -1)
+				if (presentation.SlideIndex >= 0 && presentation.SlideIndex < presentation.Thumbnails.Count)
 				{
 					image.Dispatcher.Invoke(new Action(() => { image.Source = presentation.Thumbnails[presentation.SlideIndex].Image; }));
 				}

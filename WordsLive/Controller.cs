@@ -282,6 +282,19 @@ namespace WordsLive
 		{
 			instance.window.TryActivateNext();
 		}
+
+		// TODO: build generic way for plugins/extensions to store settings
+		public static bool SlideshowEnableLivePreview
+		{
+			get
+			{
+				return Properties.Settings.Default.SlideshowEnabledLivePreview;
+			}
+			set
+			{
+				Properties.Settings.Default.SlideshowEnabledLivePreview = value;
+			}
+		}
 		#endregion
 
 		#region Internal members

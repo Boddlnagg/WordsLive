@@ -445,5 +445,17 @@ namespace WordsLive.Properties {
                 this["ImageTransition"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool SlideshowEnabledLivePreview {
+            get {
+                return ((bool)(this["SlideshowEnabledLivePreview"]));
+            }
+            set {
+                this["SlideshowEnabledLivePreview"] = value;
+            }
+        }
     }
 }
