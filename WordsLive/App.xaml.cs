@@ -18,6 +18,8 @@ namespace WordsLive
 	 * - Fix song preview when set to blackscreen/hide after it has been shown once (slides mess up)
 	 * - Maintain correct window z-order using SetWindowPos, especially for ImpressPresentation
 	 *   (see http://msdn.microsoft.com/en-us/library/windows/desktop/ms633545%28v=vs.85%29.aspx)
+	 * - Transition song -> blackscreen -> PPT isn't smooth
+	 * - Add "Edit" entry in context menu for songs
 	 */
 
 	public partial class App : Application
