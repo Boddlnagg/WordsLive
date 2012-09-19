@@ -11,7 +11,6 @@ namespace WordsLive
 	/*
 	 * TODO:
 	 * - PDF support via pdf.js?
-	 * - sometimes AwesomiumProcess is used instead of WordsLive.Awesomium.exe
 	 * - Shortcuts in the menu are shown as "Ctrl" instead of "Strg" in German language
 	 * - Add alerts to Presentation.Wpf to be able to display messages over any WPF presentation
 	 * - Improve audio/video support (look at DMediaPlayer) and support start/stop times
