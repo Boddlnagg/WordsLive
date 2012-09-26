@@ -20,6 +20,8 @@ namespace WordsLive
 	 *   (see http://msdn.microsoft.com/en-us/library/windows/desktop/ms633545%28v=vs.85%29.aspx)
 	 * - Transition song -> blackscreen -> PPT isn't smooth
 	 * - Add "Edit" entry in context menu for songs
+	 * - Put WordsLive.Slideshow (+Bridge) under GPLv3 and add COPYING.txt and README.txt
+	 *   (with note that PowerpointViewerLib and WordsLive.Slideshow are under GPL) to distribution/installer
 	 */
 
 	public partial class App : Application
