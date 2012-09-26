@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using WordsLive.Core;
@@ -644,8 +645,32 @@ namespace WordsLive
 			}
 		}
 
+		#region Drag & Drop
+
 		int oldIndex;
 		Point startPoint;
+		InsertionAdorner insertionAdorner;
+
+		private void CreateInsertionAdorner(FrameworkElement targetItemContainer, bool isInFirstHalf)
+		{
+			if (targetItemContainer != null)
+			{
+				// Here, I need to get adorner layer from targetItemContainer and not targetItemsControl.
+				// This way I get the AdornerLayer within ScrollContentPresenter, and not the one under AdornerDecorator (Snoop is awesome).
+				// If I used targetItemsControl, the adorner would hang out of ItemsControl when there's a horizontal scroll bar.
+				var adornerLayer = AdornerLayer.GetAdornerLayer(targetItemContainer);
+				this.insertionAdorner = new InsertionAdorner(true, isInFirstHalf, targetItemContainer, adornerLayer);
+			}
+		}
+
+		private void RemoveInsertionAdorner()
+		{
+			if (this.insertionAdorner != null)
+			{
+				this.insertionAdorner.Detach();
+				this.insertionAdorner = null;
+			}
+		}
 
 		void OrderListBox_PreviewMouseMove(object sender, MouseEventArgs e)
 		{
@@ -673,17 +698,35 @@ namespace WordsLive
 
 		void OrderListBox_Drop(object sender, DragEventArgs e)
 		{
+			this.RemoveInsertionAdorner();
+
 			int index = OrderListBox.GetIndexAtPosition(e.GetPosition(OrderListBox));
+
+			FrameworkElement container;
+			bool isInFirstHalf = false;
+
+			if (index >= 0)
+			{
+				container = OrderListBox.ItemContainerGenerator.ContainerFromIndex(index) as FrameworkElement;
+				isInFirstHalf = e.GetPosition(container).IsInFirstHalf(container, true);
+			}
+			else
+			{
+				index = OrderListBox.HasItems ? OrderListBox.Items.Count - 1 : 0;
+			}
 
 			// Data comes from list itself
 			if (e.Data.GetData(typeof(MediaOrderItem)) != null)
 			{
 
-				if (oldIndex < 0)
+				if (oldIndex < 0 || index == oldIndex)
 					return;
 
-				if (index == oldIndex)
-					return;
+				if (index < oldIndex)
+					index++;
+
+				if (isInFirstHalf)
+					index--;
 
 				MediaOrderItem movedItem = orderList[oldIndex];
 
@@ -697,6 +740,11 @@ namespace WordsLive
 			// Data comes from explorer
 			else if (e.Data.GetData(DataFormats.FileDrop) != null)
 			{
+				index++;
+
+				if (isInFirstHalf)
+					index--;
+
 				string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
 
 				IEnumerable<Media> result;
@@ -711,20 +759,14 @@ namespace WordsLive
 					else
 					{
 						Media m = MediaManager.LoadMediaMetadata(files[0]);
-						if (index < 0)
-							orderList.Add(m);
-						else
-							orderList.Insert(index, m);
+						orderList.Insert(index, m);
 					}
 				}
 				else
 				{
 					foreach (var m in MediaManager.LoadMultipleMediaMetadata(files))
 					{
-						if (index < 0)
-							orderList.Add(m);
-						else
-							orderList.Insert(index, m);
+						orderList.Insert(index++, m);
 					}
 				}
 			}
@@ -737,5 +779,31 @@ namespace WordsLive
 			if (oldIndex >= 0)
 				startPoint = p;
 		}
+
+		private void OrderListBox_DragEnterOrOver(object sender, DragEventArgs e)
+		{
+			int index = OrderListBox.GetIndexAtPosition(e.GetPosition(OrderListBox));
+			this.RemoveInsertionAdorner();
+
+			if (index >= 0)
+			{
+				var container = OrderListBox.ItemContainerGenerator.ContainerFromIndex(index) as FrameworkElement;
+				this.CreateInsertionAdorner(container, e.GetPosition(container).IsInFirstHalf(container, true));
+			}
+			else if (OrderListBox.HasItems)
+			{
+				var container = OrderListBox.ItemContainerGenerator.ContainerFromIndex(OrderListBox.Items.Count - 1) as FrameworkElement;
+				this.CreateInsertionAdorner(container, false);
+			}
+
+			e.Effects = DragDropEffects.Move;
+		}
+
+		private void OrderListBox_DragLeave(object sender, DragEventArgs e)
+		{
+			this.RemoveInsertionAdorner();
+		}
+
+		#endregion
 	}
 }
