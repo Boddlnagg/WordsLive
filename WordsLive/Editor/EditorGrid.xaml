@@ -267,6 +267,7 @@
 		Drop="OrderListBox_Drop"
 		DragOver="OrderListBox_DragEnterOrOver"
 		DragEnter="OrderListBox_DragEnterOrOver"
+		DragLeave="OrderListBox_DragLeave"
 		ScrollViewer.CanContentScroll="False"
 		PreviewMouseMove="OrderListBox_PreviewMouseMove"
 		PreviewMouseLeftButtonDown="OrderListBox_PreviewMouseLeftButtonDown"

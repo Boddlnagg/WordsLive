@@ -6,7 +6,6 @@ namespace WordsLive.Utils
 {
 	/// <summary>
 	/// Taken from http://code.google.com/p/snoopmyversion/source/browse/trunk/Snoop/Drag%26Drop/?r=2
-	/// TODO: use this for more drag & drop operations
 	/// </summary>
 	public class InsertionAdorner : Adorner
 	{
