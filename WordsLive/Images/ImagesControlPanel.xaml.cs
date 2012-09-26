@@ -227,8 +227,12 @@ namespace WordsLive.Images
 
 			if (i >= 0)
 			{
-				var container = slideListView.ItemContainerGenerator.ContainerFromIndex(i) as FrameworkElement;
-				this.CreateInsertionAdorner(container, e.GetPosition(container).IsInFirstHalf(container, false));
+				if (slideListView.HasItems)
+				{
+					var container = slideListView.ItemContainerGenerator.ContainerFromIndex(i) as FrameworkElement;
+					this.CreateInsertionAdorner(container, e.GetPosition(container).IsInFirstHalf(container, false));
+				}
+
 				if (e.Data.GetData(typeof(ImageInfo)) != null)
 					e.Effects = DragDropEffects.Move;
 				else if (((string[])e.Data.GetData(DataFormats.FileDrop)).Where((f) => media.IsValidImageFile(f)).Any())
@@ -254,11 +258,19 @@ namespace WordsLive.Images
 			this.RemoveInsertionAdorner();
 
 			int i = GetIndexAtPosition(e.GetPosition(slideListView));
+			bool isInFirstHalf = false;
 
 			if (i >= 0)
 			{
-				var container = slideListView.ItemContainerGenerator.ContainerFromIndex(i) as FrameworkElement;
-				bool isInFirstHalf = e.GetPosition(container).IsInFirstHalf(container, false);
+				if (slideListView.HasItems)
+				{
+					var container = slideListView.ItemContainerGenerator.ContainerFromIndex(i) as FrameworkElement;
+					isInFirstHalf = e.GetPosition(container).IsInFirstHalf(container, false);
+				}
+				else
+				{
+					i = 0;
+				}
 
 				// Data comes from list itself
 				if (e.Data.GetData(typeof(ImageInfo)) != null)

@@ -740,7 +740,8 @@ namespace WordsLive
 			// Data comes from explorer
 			else if (e.Data.GetData(DataFormats.FileDrop) != null)
 			{
-				index++;
+				if (OrderListBox.HasItems)
+					index++;
 
 				if (isInFirstHalf)
 					index--;
