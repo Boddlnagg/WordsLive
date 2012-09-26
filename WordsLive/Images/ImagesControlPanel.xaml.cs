@@ -222,12 +222,13 @@ namespace WordsLive.Images
 
 		private void slideListView_DragEnterOrOver(object sender, System.Windows.DragEventArgs e)
 		{
-			int i = GetInsertionIndex(e.GetPosition(slideListView));
+			int i = GetIndexAtPosition(e.GetPosition(slideListView));
 			this.RemoveInsertionAdorner();
 
 			if (i >= 0)
 			{
-				this.CreateInsertionAdorner(slideListView.ItemContainerGenerator.ContainerFromIndex(i) as FrameworkElement);
+				var container = slideListView.ItemContainerGenerator.ContainerFromIndex(i) as FrameworkElement;
+				this.CreateInsertionAdorner(container, e.GetPosition(container).IsInFirstHalf(container, false));
 				if (e.Data.GetData(typeof(ImageInfo)) != null)
 					e.Effects = DragDropEffects.Move;
 				else if (((string[])e.Data.GetData(DataFormats.FileDrop)).Where((f) => media.IsValidImageFile(f)).Any())
@@ -252,20 +253,26 @@ namespace WordsLive.Images
 		{
 			this.RemoveInsertionAdorner();
 
-			int i = GetInsertionIndex(e.GetPosition(slideListView));
+			int i = GetIndexAtPosition(e.GetPosition(slideListView));
 
 			if (i >= 0)
 			{
+				var container = slideListView.ItemContainerGenerator.ContainerFromIndex(i) as FrameworkElement;
+				bool isInFirstHalf = e.GetPosition(container).IsInFirstHalf(container, false);
+
 				// Data comes from list itself
 				if (e.Data.GetData(typeof(ImageInfo)) != null)
 				{
-					if (oldIndex < 0)
+					if (oldIndex < 0 || i == oldIndex)
 						return;
 
-					if (i == oldIndex)
-						return;
+					if (i < oldIndex)
+						i++;
 
-					media.Images.Move(oldIndex, i < oldIndex ? i + 1 : i);
+					if (isInFirstHalf)
+						i--;
+
+					media.Images.Move(oldIndex, i);
 					oldIndex = -1;
 				}
 				// Data comes from explorer
@@ -276,14 +283,26 @@ namespace WordsLive.Images
 					{
 						if (media.IsValidImageFile(file))
 						{
-							media.Images.Insert(media.Images.Count > 0 ? i + 1 : 0, new ImageInfo(file));
+							if (media.Images.Count > 0)
+							{
+								i++;
+
+								if (isInFirstHalf)
+									i--;
+							}
+							else
+							{
+								i = 0;
+							}
+
+							media.Images.Insert(i, new ImageInfo(file));
 						}
 					}
 				}
 			}
 		}
 
-		private int GetInsertionIndex(Point p)
+		private int GetIndexAtPosition(Point p)
 		{
 			int index = slideListView.GetIndexAtPosition(p);
 			if (index == -1 && slideListView.Items.Count > 0)
@@ -311,7 +330,7 @@ namespace WordsLive.Images
 		int oldIndex = -1;
 		Point startPoint;
 
-		private void CreateInsertionAdorner(FrameworkElement targetItemContainer)
+		private void CreateInsertionAdorner(FrameworkElement targetItemContainer, bool isInFirstHalf)
 		{
 			if (targetItemContainer != null)
 			{
@@ -319,7 +338,7 @@ namespace WordsLive.Images
 				// This way I get the AdornerLayer within ScrollContentPresenter, and not the one under AdornerDecorator (Snoop is awesome).
 				// If I used targetItemsControl, the adorner would hang out of ItemsControl when there's a horizontal scroll bar.
 				var adornerLayer = AdornerLayer.GetAdornerLayer(targetItemContainer);
-				this.insertionAdorner = new InsertionAdorner(false, false, targetItemContainer, adornerLayer);
+				this.insertionAdorner = new InsertionAdorner(false, isInFirstHalf, targetItemContainer, adornerLayer);
 			}
 		}
 

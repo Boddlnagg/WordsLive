@@ -171,6 +171,17 @@ namespace WordsLive.Utils
 				Math.Abs(point.Y - other.Y) > SystemParameters.MinimumVerticalDragDistance);
 		}
 
+		public static bool IsInFirstHalf(this Point clickedPoint, FrameworkElement container, bool hasVerticalOrientation)
+		{
+			if (hasVerticalOrientation)
+			{
+				return clickedPoint.Y < container.ActualHeight / 2;
+			}
+			return clickedPoint.X < container.ActualWidth / 2;
+		}
+
+
+
 		public static bool ContainsIgnoreCase(this string str, string value)
 		{
 			return str.IndexOf(value, StringComparison.OrdinalIgnoreCase) >= 0;
