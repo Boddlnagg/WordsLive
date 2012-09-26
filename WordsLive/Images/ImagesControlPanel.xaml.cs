@@ -278,24 +278,24 @@ namespace WordsLive.Images
 				// Data comes from explorer
 				else if (e.Data.GetData(DataFormats.FileDrop) != null)
 				{
+					if (media.Images.Count > 0)
+					{
+						i++;
+
+						if (isInFirstHalf)
+							i--;
+					}
+					else
+					{
+						i = 0;
+					}
+
 					string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
 					foreach (string file in files)
 					{
 						if (media.IsValidImageFile(file))
 						{
-							if (media.Images.Count > 0)
-							{
-								i++;
-
-								if (isInFirstHalf)
-									i--;
-							}
-							else
-							{
-								i = 0;
-							}
-
-							media.Images.Insert(i, new ImageInfo(file));
+							media.Images.Insert(i++, new ImageInfo(file));
 						}
 					}
 				}
