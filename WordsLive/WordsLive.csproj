@@ -241,10 +241,10 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="Resources\Resource.Designer.cs">
+    <Compile Include="Resources\Resource.de.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>Resource.resx</DependentUpon>
+      <DependentUpon>Resource.de.resx</DependentUpon>
     </Compile>
     <Compile Include="Songs\SongBackgroundToImageSourceConverter.cs" />
     <Compile Include="TargetMediaAttribute.cs" />
@@ -477,9 +477,9 @@
       <LastGenOutput>Resource.en.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Resources\Resource.resx">
+    <EmbeddedResource Include="Resources\Resource.de.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resource.Designer.cs</LastGenOutput>
+      <LastGenOutput>Resource.de.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
