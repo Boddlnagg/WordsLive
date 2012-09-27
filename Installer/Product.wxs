@@ -53,7 +53,7 @@
 			<Directory Id="ProgramFilesFolder">
 				<Directory Id="APPLICATIONFOLDER" Name="$(var.ProductName)">
 					<Directory Id="DataFolder" Name="Data"/>
-					<Directory Id="I18nEnFolder" Name="en"/>
+					<Directory Id="I18nDeFolder" Name="de"/>
 				</Directory>
 			</Directory>
 
@@ -167,8 +167,11 @@
 			</Component>
 		</ComponentGroup>
 		<ComponentGroup Id="I18n">
-			<Component Directory="I18nEnFolder">
-				<File Source="$(var.WordsLive.TargetDir)en\WordsLive.resources.dll" Name="WordsLive.resources.dll" KeyPath="yes"/>
+			<Component Directory="I18nDeFolder">
+				<File Source="$(var.WordsLive.TargetDir)de\WordsLive.resources.dll" Name="WordsLive.resources.dll" KeyPath="yes"/>
+			</Component>
+			<Component Directory="I18nDeFolder">
+				<File Source="$(var.WordsLive.TargetDir)de\WordsLive.Slideshow.resources.dll" Name="WordsLive.Slideshow.resources.dll" KeyPath="yes"/>
 			</Component>
 		</ComponentGroup>
 	</Fragment>
