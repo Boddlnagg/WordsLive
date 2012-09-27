@@ -51,6 +51,7 @@
     <Compile Include="Impress\ImpressMedia.cs" />
     <Compile Include="ISlideshowPresentation.cs" />
     <Compile Include="PowerpointViewer\PowerpointViewerFileHandler.cs" />
+    <Compile Include="Settings.cs" />
     <Compile Include="SlideThumbnail.cs" />
     <Compile Include="SlideshowMedia.cs" />
     <Compile Include="SlideshowPresentationBase.cs" />

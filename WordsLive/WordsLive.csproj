@@ -117,6 +117,7 @@
     <Compile Include="Images\ImagesFileHandler.cs" />
     <Compile Include="Images\ImagesMedia.cs" />
     <Compile Include="Images\ImagesPresentation.cs" />
+    <Compile Include="PluginSettingsDictionary.cs" />
     <Compile Include="TestPresentation.cs" />
     <Compile Include="Utils\InsertionAdorner.cs" />
     <Compile Include="Utils\EnumToIndexConverter.cs" />
@@ -486,7 +487,7 @@
 		 Other similar extension points exist, see Microsoft.Common.targets.
 	<Target Name="BeforeBuild">
 	</Target>-->
-	<Target Name="AfterBuild">
-		<Move SourceFiles="$(TargetDir)AwesomiumProcess" DestinationFiles="$(TargetDir)WordsLive.Awesomium.exe"/>
-	</Target>
+  <Target Name="AfterBuild">
+    <Move SourceFiles="$(TargetDir)AwesomiumProcess" DestinationFiles="$(TargetDir)WordsLive.Awesomium.exe" />
+  </Target>
 </Project>

@@ -43,7 +43,7 @@ namespace WordsLive.Slideshow
 
 			this.presentation = presentation;
 
-			if (WordsLive.Controller.SlideshowEnableLivePreview &&  presentation.CaptureWindow(100) != null)
+			if (Settings.EnableLivePreview &&  presentation.CaptureWindow(100) != null)
 			{
 				timer = new DispatcherTimer();
 				timer.Interval = new TimeSpan(0, 0, 2); // 2 seconds (TODO: make configurable)

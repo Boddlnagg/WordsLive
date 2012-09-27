@@ -448,13 +448,12 @@ namespace WordsLive.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool SlideshowEnabledLivePreview {
+        public global::WordsLive.PluginSettingsDictionary PluginSettings {
             get {
-                return ((bool)(this["SlideshowEnabledLivePreview"]));
+                return ((global::WordsLive.PluginSettingsDictionary)(this["PluginSettings"]));
             }
             set {
-                this["SlideshowEnabledLivePreview"] = value;
+                this["PluginSettings"] = value;
             }
         }
     }

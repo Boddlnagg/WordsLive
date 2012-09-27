@@ -111,8 +111,8 @@
     <Setting Name="ImageTransition" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">500</Value>
     </Setting>
-    <Setting Name="SlideshowEnabledLivePreview" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
+    <Setting Name="PluginSettings" Type="WordsLive.PluginSettingsDictionary" Scope="User">
+      <Value Profile="(Default)" />
     </Setting>
   </Settings>
 </SettingsFile>
