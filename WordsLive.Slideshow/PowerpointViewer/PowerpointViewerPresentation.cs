@@ -29,7 +29,10 @@ namespace WordsLive.Slideshow.PowerpointViewer
 						thumbnails.Add(new SlideThumbnail
 						{
 							Image = SlideshowPreviewProvider.ConvertBitmap(bmp),
-							Title = String.Format("Folie {0} ({1})", i, animations == 0 ? "keine Animation" : (animations == 1 ? " 1 Animationsschritt" : animations + " Animationsschritte"))
+							Title = String.Format(Resources.Resource.slideN, i) + " (" +
+								(animations == 0 ? Resources.Resource.animations0 :
+								(animations == 1 ? Resources.Resource.animations1 :
+								String.Format(Resources.Resource.animationsPl, animations))) + ")"
 						});
 						i++;
 					}

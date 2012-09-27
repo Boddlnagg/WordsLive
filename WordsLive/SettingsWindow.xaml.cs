@@ -1,5 +1,8 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.Windows;
+using System.Windows.Controls;
 using WordsLive.Utils;
 
 namespace WordsLive
@@ -9,9 +12,26 @@ namespace WordsLive
 	/// </summary>
 	public partial class SettingsWindow : Window, IDataErrorInfo
 	{
+		private static List<Type> tabs = new List<Type>();
+
+		internal static List<Type> Tabs
+		{
+			get
+			{
+				return tabs;
+			}
+		}
+
 		public SettingsWindow()
 		{
 			InitializeComponent();
+
+			foreach(var tabType in tabs)
+			{
+				var tab = (ISettingsTab)Activator.CreateInstance(tabType);
+				this.TabControl.Items.Add(new TabItem { Header = tab.Header, Content = tab.Control });
+			}
+
 			this.DataContext = this;
 		}
 

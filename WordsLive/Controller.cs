@@ -45,12 +45,12 @@ namespace WordsLive
 			SystemEvents.DisplaySettingsChanged += HandleDisplaySettingsChanged;
 			DisplaySettingsChanged += (sender, args) => UpdatePresentationAreaFromSettings();
 
-			LoadAttributes(Assembly.GetAssembly(typeof(Media))); // WordsLive.Core.dll
-			LoadAttributes(Assembly.GetExecutingAssembly()); // WordsLive.exe
-			LoadAttributes(Assembly.GetAssembly(typeof(WordsLive.Presentation.Wpf.WpfPresentationWindow))); // WordsLive.Presentation.Wpf.dll
+			LoadTypes(Assembly.GetAssembly(typeof(Media))); // WordsLive.Core.dll
+			LoadTypes(Assembly.GetExecutingAssembly()); // WordsLive.exe
+			LoadTypes(Assembly.GetAssembly(typeof(WordsLive.Presentation.Wpf.WpfPresentationWindow))); // WordsLive.Presentation.Wpf.dll
 
 			string startupDir = new FileInfo(Assembly.GetExecutingAssembly().Location).Directory.FullName;
-			LoadAttributes(Assembly.LoadFrom(Path.Combine(startupDir, "WordsLive.Slideshow.dll"))); // TODO (Words): automatically load plugins
+			LoadTypes(Assembly.LoadFrom(Path.Combine(startupDir, "WordsLive.Slideshow.dll"))); // TODO (Words): automatically load plugins
 
 			InitDataDirectories();
 
@@ -88,7 +88,7 @@ namespace WordsLive
 			}
 		}
 
-		private void LoadAttributes(Assembly assembly)
+		private void LoadTypes(Assembly assembly)
 		{
 			Type[] types;
 			try
@@ -113,6 +113,10 @@ namespace WordsLive
 									 where (method.IsStatic && method.GetParameters().Length == 0 &&
 										 method.GetCustomAttributes(typeof(ShutdownAttribute), true).Cast<ShutdownAttribute>().Count() > 0)
 									 select (new Action(() => method.Invoke(null, null))));
+
+			SettingsWindow.Tabs.AddRange(from type in types
+										 where type.GetInterfaces().Contains(typeof(ISettingsTab))
+										 select type);
 		}
 
 		private void InitDataDirectories()

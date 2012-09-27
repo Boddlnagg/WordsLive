@@ -26,6 +26,14 @@ namespace WordsLive.Utils
 				bool isValid = !Validation.GetHasError(node);
 				if (!isValid)
 				{
+					// If the object is a child of a TabItem, select that item
+					var tab = node.FindLogicalParent<TabItem>();
+					if (tab != null)
+					{
+						var tabControl = tab.FindLogicalParent<TabControl>();
+						tabControl.SelectedItem = tab;
+					}
+
 					// If the dependency object is invalid, and it can receive the focus,
 					// set the focus
 					if (node is IInputElement) Keyboard.Focus((IInputElement)node);
@@ -88,6 +96,14 @@ namespace WordsLive.Utils
 			}
 
 			return false;
+		}
+
+		public static T FindLogicalParent<T>(this DependencyObject source) where T : DependencyObject
+		{
+			while (source != null && source.GetType() != typeof(T))
+				source = LogicalTreeHelper.GetParent(source);
+
+			return (T)source;
 		}
 
 		public static T FindVisualParent<T>(this DependencyObject source) where T : DependencyObject

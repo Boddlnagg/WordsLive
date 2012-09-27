@@ -261,7 +261,7 @@ namespace WordsLive.Slideshow.Impress.Bridge
 				{
 					var decoder = new PngBitmapDecoder(reader.BaseStream, BitmapCreateOptions.PreservePixelFormat, BitmapCacheOption.OnLoad);
 					decoder.Frames[0].Freeze();
-					thumbnails.Add(new SlideThumbnail { Image = decoder.Frames[0], Title = name + " (Folie "+(i+1)+")"});
+					thumbnails.Add(new SlideThumbnail { Image = decoder.Frames[0], Title = name + " ("+ String.Format(Resources.Resource.slideN, i+1)+")"});
 				}
 			}
 			File.Delete(file);
