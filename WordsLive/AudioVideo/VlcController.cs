@@ -11,14 +11,30 @@ namespace WordsLive.AudioVideo
 {
 	public static class VlcController
 	{
+		public static string Path
+		{
+			get
+			{
+				// TODO: make VLC path configurable
+				string directory;
+				if (Environment.Is64BitOperatingSystem)
+				{
+					directory = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86);
+				}
+				else
+				{
+					directory = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles);
+				}
+
+				return directory + @"\VideoLAN\VLC";
+			}
+		}
+
 		public static bool IsAvailable
 		{
 			get
 			{
-				// TODO: returns true if 64-bit VLC is installed,
-				// but this can't be used by 32-bit Words
-				// TODO: make VLC path configurable
-				return Directory.Exists(@"C:\Program Files\VideoLAN\VLC") || Directory.Exists(@"C:\Programme\VideoLAN\VLC");
+				return Directory.Exists(Path);
 			}
 		}
 
@@ -28,12 +44,6 @@ namespace WordsLive.AudioVideo
 		{
 			if (!IsAvailable)
 				throw new InvalidOperationException("VLC is not available (not installed).");
-
-			string path;
-			if (Directory.Exists(@"C:\Program Files\VideoLAN\VLC"))
-				path = @"C:\Program Files\VideoLAN\VLC";
-			else
-				path = @"C:\Programme\VideoLAN\VLC";
 
 			//Set libvlc.dll and libvlccore.dll directory path
 			//VlcContext.LibVlcDllsPath = CommonStrings.LIBVLC_DLLS_PATH_DEFAULT_VALUE_AMD64;
@@ -48,8 +58,8 @@ namespace WordsLive.AudioVideo
 			//VlcContext.StartupOptions.LogOptions.ShowLoggerConsole = true;
 			VlcContext.StartupOptions.LogOptions.Verbosity = VlcLogVerbosities.Debug;
 			VlcContext.StartupOptions.AddOption("--no-osd");
-			VlcContext.LibVlcDllsPath = path;
-			VlcContext.LibVlcPluginsPath = path + @"\plugins";
+			VlcContext.LibVlcDllsPath = Path;
+			VlcContext.LibVlcPluginsPath = Path + @"\plugins";
 
 			//Initialize the VlcContext
 			try
