@@ -76,6 +76,14 @@ namespace WordsLive.Presentation.Wpf
 
 			contentTransitionCallback = callback;
 
+			// if the current control is blackscreen, then remove the previous control first
+			// (because it has not been removed in ContentTransition_Completed)
+			if (Instance.MainContainer.Child is BlackscreenControl)
+			{
+				Instance.PreviousContainer.Child = null;
+				Instance.PreviousContainer.Opacity = 1;
+			}
+
 			Storyboard sbd = (Storyboard)Instance.FindResource("ContentFadeOut");
 			sbd.Children[0].Duration = new TimeSpan(0, 0, 0, 0, milliseconds);
 			sbd.Begin(Instance);
