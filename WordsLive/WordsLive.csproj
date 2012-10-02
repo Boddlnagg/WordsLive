@@ -179,6 +179,8 @@
     <Resource Include="Artwork\LoadingAnimation.png" />
     <Resource Include="Artwork\LoadingFailed.png" />
     <SplashScreen Include="Artwork\Banner.png" />
+    <Resource Include="Artwork\Small_ArrowLeft.png" />
+    <Resource Include="Artwork\Small_ArrowRight.png" />
     <Content Include="Data\jquery.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

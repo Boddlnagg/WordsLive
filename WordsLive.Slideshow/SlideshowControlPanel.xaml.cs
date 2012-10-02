@@ -142,5 +142,25 @@ namespace WordsLive.Slideshow
 			if (PropertyChanged != null)
 				PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 		}
+
+		private void CommandExecuted(object sender, ExecutedRoutedEventArgs e)
+		{
+			if (e.Command == NavigationCommands.PreviousPage)
+			{
+				pres.PreviousStep();
+			}
+			else if (e.Command == NavigationCommands.NextPage)
+			{
+				pres.NextStep();
+			}
+		}
+
+		private void CanExecuteCommand(object sender, CanExecuteRoutedEventArgs e)
+		{
+			if (e.Command == NavigationCommands.PreviousPage || e.Command == NavigationCommands.NextPage)
+			{
+				e.CanExecute = LoadState == ControlPanelLoadState.Loaded;
+			}
+		}
 	}
 }

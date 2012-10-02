@@ -126,6 +126,12 @@
   <data name="animationsPl" xml:space="preserve">
     <value>{0} animations</value>
   </data>
+  <data name="next" xml:space="preserve">
+    <value>Next</value>
+  </data>
+  <data name="previous" xml:space="preserve">
+    <value>Previous</value>
+  </data>
   <data name="seEnableLivePreview" xml:space="preserve">
     <value>Enable Live-Preview</value>
   </data>
