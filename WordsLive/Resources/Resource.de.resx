@@ -636,25 +636,28 @@
   <data name="seTemplateMaster" xml:space="preserve">
     <value>Template als Master verwenden</value>
   </data>
-  <data name="seTemplateMasterOverwriteCopyrightFormatting" xml:space="preserve">
+  <data name="seTemplateMasterOverrideCopyrightFormatting" xml:space="preserve">
     <value>Copyright: Formatierung</value>
   </data>
-  <data name="seTemplateMasterOverwriteCopyrightPosition" xml:space="preserve">
+  <data name="seTemplateMasterOverrideCopyrightPosition" xml:space="preserve">
     <value>Copyright: Sichtbarkeit/Position</value>
   </data>
-  <data name="seTemplateMasterOverwriteFollowingAttributes" xml:space="preserve">
+  <data name="seTemplateMasterOverrideFollowingAttributes" xml:space="preserve">
     <value>Folgende Attribute aus Template überschreiben:</value>
   </data>
-  <data name="seTemplateMasterOverwriteSourceFormatting" xml:space="preserve">
+  <data name="seTemplateMasterOverrideOutlineShadow" xml:space="preserve">
+    <value>Schriftumrandung und -schatten</value>
+  </data>
+  <data name="seTemplateMasterOverrideSourceFormatting" xml:space="preserve">
     <value>Quelle: Formatierung</value>
   </data>
-  <data name="seTemplateMasterOverwriteSourcePosition" xml:space="preserve">
+  <data name="seTemplateMasterOverrideSourcePosition" xml:space="preserve">
     <value>Quelle: Sichtbarkeit/Position</value>
   </data>
-  <data name="seTemplateMasterOverwriteTextFormatting" xml:space="preserve">
+  <data name="seTemplateMasterOverrideTextFormatting" xml:space="preserve">
     <value>Text und Übersetzung: Formatierung</value>
   </data>
-  <data name="seTemplateMasterOverwriteTextPosition" xml:space="preserve">
+  <data name="seTemplateMasterOverrideTextPosition" xml:space="preserve">
     <value>Text und Übersetzung: Positionen und Abstände</value>
   </data>
 </root>

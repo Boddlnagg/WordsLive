@@ -119,6 +119,7 @@
     <Compile Include="Images\ImagesPresentation.cs" />
     <Compile Include="ISettingsTab.cs" />
     <Compile Include="PluginSettingsDictionary.cs" />
+    <Compile Include="Songs\MasterOverrideOptions.cs" />
     <Compile Include="TestPresentation.cs" />
     <Compile Include="Utils\InsertionAdorner.cs" />
     <Compile Include="Utils\EnumToIndexConverter.cs" />

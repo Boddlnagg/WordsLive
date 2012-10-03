@@ -472,72 +472,84 @@ namespace WordsLive.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool TemplateMasterOverwriteTextFormatting {
+        public bool TemplateMasterOverrideTextFormatting {
             get {
-                return ((bool)(this["TemplateMasterOverwriteTextFormatting"]));
+                return ((bool)(this["TemplateMasterOverrideTextFormatting"]));
             }
             set {
-                this["TemplateMasterOverwriteTextFormatting"] = value;
+                this["TemplateMasterOverrideTextFormatting"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool TemplateMasterOverwriteTextPosition {
+        public bool TemplateMasterOverrideTextPosition {
             get {
-                return ((bool)(this["TemplateMasterOverwriteTextPosition"]));
+                return ((bool)(this["TemplateMasterOverrideTextPosition"]));
             }
             set {
-                this["TemplateMasterOverwriteTextPosition"] = value;
+                this["TemplateMasterOverrideTextPosition"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool TemplateMasterOverwriteSourceFormatting {
+        public bool TemplateMasterOverrideSourceFormatting {
             get {
-                return ((bool)(this["TemplateMasterOverwriteSourceFormatting"]));
+                return ((bool)(this["TemplateMasterOverrideSourceFormatting"]));
             }
             set {
-                this["TemplateMasterOverwriteSourceFormatting"] = value;
+                this["TemplateMasterOverrideSourceFormatting"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool TemplateMasterOverwriteSourcePosition {
+        public bool TemplateMasterOverrideSourcePosition {
             get {
-                return ((bool)(this["TemplateMasterOverwriteSourcePosition"]));
+                return ((bool)(this["TemplateMasterOverrideSourcePosition"]));
             }
             set {
-                this["TemplateMasterOverwriteSourcePosition"] = value;
+                this["TemplateMasterOverrideSourcePosition"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool TemplateMasterOverwriteCopyrightFormatting {
+        public bool TemplateMasterOverrideCopyrightFormatting {
             get {
-                return ((bool)(this["TemplateMasterOverwriteCopyrightFormatting"]));
+                return ((bool)(this["TemplateMasterOverrideCopyrightFormatting"]));
             }
             set {
-                this["TemplateMasterOverwriteCopyrightFormatting"] = value;
+                this["TemplateMasterOverrideCopyrightFormatting"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool TemplateMasterOverwriteCopyrightPosition {
+        public bool TemplateMasterOverrideCopyrightPosition {
             get {
-                return ((bool)(this["TemplateMasterOverwriteCopyrightPosition"]));
+                return ((bool)(this["TemplateMasterOverrideCopyrightPosition"]));
             }
             set {
-                this["TemplateMasterOverwriteCopyrightPosition"] = value;
+                this["TemplateMasterOverrideCopyrightPosition"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool TemplateMasterOverrideOutlineShadow {
+            get {
+                return ((bool)(this["TemplateMasterOverrideOutlineShadow"]));
+            }
+            set {
+                this["TemplateMasterOverrideOutlineShadow"] = value;
             }
         }
     }

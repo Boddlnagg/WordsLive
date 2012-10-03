@@ -963,63 +963,72 @@ namespace WordsLive.Resources {
         /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Copyright: formatting ähnelt.
         /// </summary>
-        public static string seTemplateMasterOverwriteCopyrightFormatting {
+        public static string seTemplateMasterOverrideCopyrightFormatting {
             get {
-                return ResourceManager.GetString("seTemplateMasterOverwriteCopyrightFormatting", resourceCulture);
+                return ResourceManager.GetString("seTemplateMasterOverrideCopyrightFormatting", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Copyright: visibility/position ähnelt.
         /// </summary>
-        public static string seTemplateMasterOverwriteCopyrightPosition {
+        public static string seTemplateMasterOverrideCopyrightPosition {
             get {
-                return ResourceManager.GetString("seTemplateMasterOverwriteCopyrightPosition", resourceCulture);
+                return ResourceManager.GetString("seTemplateMasterOverrideCopyrightPosition", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Overwrite the following attributes from the template: ähnelt.
         /// </summary>
-        public static string seTemplateMasterOverwriteFollowingAttributes {
+        public static string seTemplateMasterOverrideFollowingAttributes {
             get {
-                return ResourceManager.GetString("seTemplateMasterOverwriteFollowingAttributes", resourceCulture);
+                return ResourceManager.GetString("seTemplateMasterOverrideFollowingAttributes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Outline and shadow ähnelt.
+        /// </summary>
+        public static string seTemplateMasterOverrideOutlineShadow {
+            get {
+                return ResourceManager.GetString("seTemplateMasterOverrideOutlineShadow", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Source: formatting ähnelt.
         /// </summary>
-        public static string seTemplateMasterOverwriteSourceFormatting {
+        public static string seTemplateMasterOverrideSourceFormatting {
             get {
-                return ResourceManager.GetString("seTemplateMasterOverwriteSourceFormatting", resourceCulture);
+                return ResourceManager.GetString("seTemplateMasterOverrideSourceFormatting", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Source: visibility/position ähnelt.
         /// </summary>
-        public static string seTemplateMasterOverwriteSourcePosition {
+        public static string seTemplateMasterOverrideSourcePosition {
             get {
-                return ResourceManager.GetString("seTemplateMasterOverwriteSourcePosition", resourceCulture);
+                return ResourceManager.GetString("seTemplateMasterOverrideSourcePosition", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Text and translation: formatting ähnelt.
         /// </summary>
-        public static string seTemplateMasterOverwriteTextFormatting {
+        public static string seTemplateMasterOverrideTextFormatting {
             get {
-                return ResourceManager.GetString("seTemplateMasterOverwriteTextFormatting", resourceCulture);
+                return ResourceManager.GetString("seTemplateMasterOverrideTextFormatting", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Text and translation: positions and borders ähnelt.
         /// </summary>
-        public static string seTemplateMasterOverwriteTextPosition {
+        public static string seTemplateMasterOverrideTextPosition {
             get {
-                return ResourceManager.GetString("seTemplateMasterOverwriteTextPosition", resourceCulture);
+                return ResourceManager.GetString("seTemplateMasterOverrideTextPosition", resourceCulture);
             }
         }
         

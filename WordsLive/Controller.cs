@@ -271,6 +271,25 @@ namespace WordsLive
 			return editor;
 		}
 
+		/// <summary>
+		/// Creates a new instance of <see cref="Song"/> from the template file (the SongTemplateFile application setting).
+		/// This is used for creating new (empty) songs and for importing songs.
+		/// </summary>
+		/// <returns>The created song.</returns>
+		public static Song CreateSongFromTemplate()
+		{
+			// init song template file
+			var template = Properties.Settings.Default.SongTemplateFile;
+
+			if (string.IsNullOrEmpty(template) || !File.Exists(template))
+			{
+				// fall back to standard template in data directory
+				template = Path.Combine("Data", "Standard.ppl");
+			}
+
+			return new Song(template) { SongTitle = WordsLive.Resources.Resource.eNewSongTitle };
+		}
+
 		public static void FocusMainWindow()
 		{
 			instance.window.Activate();

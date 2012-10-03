@@ -110,7 +110,9 @@ namespace WordsLive
 		private void Button_Click(object sender, RoutedEventArgs e)
 		{
 			if (this.IsValid())
-				this.Close();
+			{
+				this.DialogResult = true;
+			}
 		}
 
 		public string Error

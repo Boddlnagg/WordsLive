@@ -57,25 +57,6 @@ namespace WordsLive.Editor
 			return null;
 		}
 
-		/// <summary>
-		/// Creates a new instance of <see cref="Song"/> from the template file (the SongTemplateFile application setting).
-		/// This is used for creating new (empty) songs and for importing songs.
-		/// </summary>
-		/// <returns>The created song.</returns>
-		private Song CreateSongFromTemplate()
-		{
-			// init song template file
-			var template = Properties.Settings.Default.SongTemplateFile;
-
-			if (string.IsNullOrEmpty(template) || !File.Exists(template))
-			{
-				// fall back to standard template in data directory
-				template = Path.Combine("Data", "Standard.ppl");
-			}
-
-			return new Song(template) { SongTitle = WordsLive.Resources.Resource.eNewSongTitle };
-		}
-
 		public void LoadOrImport(string filename)
 		{
 			if (filename == null)
@@ -89,7 +70,7 @@ namespace WordsLive.Editor
 			}
 			else if (file.Extension == ".sng")
 			{
-				var song = CreateSongFromTemplate();
+				var song = Controller.CreateSongFromTemplate();
 				SongBeamerImport.Import(song, filename);
 				Load(filename, song, true);
 			}
@@ -172,7 +153,7 @@ namespace WordsLive.Editor
 
 		private void NewSong()
 		{
-			Load(CreateSongFromTemplate());
+			Load(Controller.CreateSongFromTemplate());
 		}
 
 		private bool CloseSong(EditorDocument doc)

@@ -117,22 +117,25 @@
     <Setting Name="TemplateMasterEnable" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
-    <Setting Name="TemplateMasterOverwriteTextFormatting" Type="System.Boolean" Scope="User">
+    <Setting Name="TemplateMasterOverrideTextFormatting" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
-    <Setting Name="TemplateMasterOverwriteTextPosition" Type="System.Boolean" Scope="User">
+    <Setting Name="TemplateMasterOverrideTextPosition" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
-    <Setting Name="TemplateMasterOverwriteSourceFormatting" Type="System.Boolean" Scope="User">
+    <Setting Name="TemplateMasterOverrideSourceFormatting" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
-    <Setting Name="TemplateMasterOverwriteSourcePosition" Type="System.Boolean" Scope="User">
+    <Setting Name="TemplateMasterOverrideSourcePosition" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
-    <Setting Name="TemplateMasterOverwriteCopyrightFormatting" Type="System.Boolean" Scope="User">
+    <Setting Name="TemplateMasterOverrideCopyrightFormatting" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
-    <Setting Name="TemplateMasterOverwriteCopyrightPosition" Type="System.Boolean" Scope="User">
+    <Setting Name="TemplateMasterOverrideCopyrightPosition" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="TemplateMasterOverrideOutlineShadow" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
   </Settings>

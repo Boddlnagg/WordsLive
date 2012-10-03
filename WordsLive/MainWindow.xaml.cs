@@ -141,14 +141,69 @@ namespace WordsLive
 
 		void MediaManager_MediaLoaded(object sender, MediaEventArgs args)
 		{
-			if (args.Media is Song && UsePortfolioBackground == true)
+			if (args.Media is Song)
 			{
 				Song song = args.Media as Song;
-				for (int i = 0; i < song.Backgrounds.Count; i++)
-				{
-					song.Backgrounds.RemoveAt(i);
-					song.Backgrounds.Insert(i, portfolioBackground);
+
+				if (UsePortfolioBackground == true)
+				{	
+					for (int i = 0; i < song.Backgrounds.Count; i++)
+					{
+						song.Backgrounds.RemoveAt(i);
+						song.Backgrounds.Insert(i, portfolioBackground);
+					}
 				}
+
+				if (Properties.Settings.Default.TemplateMasterEnable)
+				{
+					ApplySongTemplateMaster(song, MasterOverrideOptions.CreateFromSettings());
+				}
+			}
+		}
+
+		void ApplySongTemplateMaster(Song song, MasterOverrideOptions options)
+		{
+			SongFormatting master = Controller.CreateSongFromTemplate().Formatting;
+
+			if (options.TextFormatting)
+			{
+				song.Formatting.MainText = master.MainText;
+				song.Formatting.TranslationText = master.TranslationText;
+			}
+			if (options.TextPosition)
+			{
+				song.Formatting.HorizontalOrientation = master.HorizontalOrientation;
+				song.Formatting.VerticalOrientation = master.VerticalOrientation;
+				song.Formatting.TextLineSpacing = master.TextLineSpacing;
+				song.Formatting.TranslationPosition = master.TranslationPosition;
+				song.Formatting.TranslationLineSpacing = master.TranslationLineSpacing;
+			}
+			if (options.SourceFormatting)
+			{
+				song.Formatting.SourceText = master.SourceText;
+			}
+			if (options.SourcePosition)
+			{
+				song.Formatting.SourceDisplayPosition = master.SourceDisplayPosition;
+				song.Formatting.SourceBorderRight = master.SourceBorderRight;
+				song.Formatting.SourceBorderTop = master.SourceBorderTop;
+			}
+			if (options.CopyrightFormatting)
+			{
+				song.Formatting.CopyrightText = master.CopyrightText;
+			}
+			if (options.CopyrightPosition)
+			{
+				song.Formatting.CopyrightDisplayPosition = master.CopyrightDisplayPosition;
+				song.Formatting.CopyrightBorderBottom = master.CopyrightBorderBottom;
+			}
+			if (options.OutlineShadow)
+			{
+				song.Formatting.IsOutlineEnabled = master.IsOutlineEnabled;
+				song.Formatting.IsShadowEnabled = master.IsShadowEnabled;
+				song.Formatting.OutlineColor = master.OutlineColor;
+				song.Formatting.ShadowColor = master.ShadowColor;
+				song.Formatting.ShadowDirection = master.ShadowDirection;
 			}
 		}
 
@@ -476,7 +531,14 @@ namespace WordsLive
 		{
 			var win = new SettingsWindow();
 			win.Owner = this;
+			MasterOverrideOptions oldOptions = MasterOverrideOptions.CreateFromSettings();
 			win.ShowDialog();
+
+			if (win.DialogResult.HasValue && win.DialogResult.Value &&
+				ActiveMedia is Song && !oldOptions.Equals(MasterOverrideOptions.CreateFromSettings()))
+			{
+				ReloadActiveMedia();
+			}
 		}
 
 		private void ShowPresentationAreaSettingsWindow()

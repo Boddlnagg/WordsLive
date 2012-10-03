@@ -79,22 +79,25 @@
 								<RowDefinition Height="Auto"/>
 								<RowDefinition Height="Auto"/>
 								<RowDefinition Height="Auto"/>
+								<RowDefinition Height="Auto"/>
 							</Grid.RowDefinitions>
 							<Label>
-								<TextBlock Grid.Row="0" TextWrapping="Wrap" Text="{x:Static resx:Resource.seTemplateMasterOverwriteFollowingAttributes}"/>
+								<TextBlock Grid.Row="0" TextWrapping="Wrap" Text="{x:Static resx:Resource.seTemplateMasterOverrideFollowingAttributes}"/>
 							</Label>
-							<CheckBox Grid.Row="1" Margin="5,2" Content="{x:Static resx:Resource.seTemplateMasterOverwriteTextFormatting}"
-									  IsChecked="{Binding Source={StaticResource settings}, Path=Default.TemplateMasterOverwriteTextFormatting}"/>
-							<CheckBox Grid.Row="2" Margin="5,2" Content="{x:Static resx:Resource.seTemplateMasterOverwriteTextPosition}"
-									  IsChecked="{Binding Source={StaticResource settings}, Path=Default.TemplateMasterOverwriteTextPosition}"/>
-							<CheckBox Grid.Row="3" Margin="5,2"  Content="{x:Static resx:Resource.seTemplateMasterOverwriteSourceFormatting}"
-									  IsChecked="{Binding Source={StaticResource settings}, Path=Default.TemplateMasterOverwriteSourceFormatting}"/>
-							<CheckBox Grid.Row="4" Margin="5,2"  Content="{x:Static resx:Resource.seTemplateMasterOverwriteSourcePosition}"
-									  IsChecked="{Binding Source={StaticResource settings}, Path=Default.TemplateMasterOverwriteSourcePosition}"/>
-							<CheckBox Grid.Row="5" Margin="5,2"  Content="{x:Static resx:Resource.seTemplateMasterOverwriteCopyrightFormatting}"
-									  IsChecked="{Binding Source={StaticResource settings}, Path=Default.TemplateMasterOverwriteCopyrightFormatting}"/>
-							<CheckBox Grid.Row="6" Margin="5,2"  Content="{x:Static resx:Resource.seTemplateMasterOverwriteCopyrightPosition}"
-									  IsChecked="{Binding Source={StaticResource settings}, Path=Default.TemplateMasterOverwriteCopyrightPosition}"/>
+							<CheckBox Grid.Row="1" Margin="5,2" Content="{x:Static resx:Resource.seTemplateMasterOverrideTextFormatting}"
+									  IsChecked="{Binding Source={StaticResource settings}, Path=Default.TemplateMasterOverrideTextFormatting}"/>
+							<CheckBox Grid.Row="2" Margin="5,2" Content="{x:Static resx:Resource.seTemplateMasterOverrideTextPosition}"
+									  IsChecked="{Binding Source={StaticResource settings}, Path=Default.TemplateMasterOverrideTextPosition}"/>
+							<CheckBox Grid.Row="3" Margin="5,2"  Content="{x:Static resx:Resource.seTemplateMasterOverrideSourceFormatting}"
+									  IsChecked="{Binding Source={StaticResource settings}, Path=Default.TemplateMasterOverrideSourceFormatting}"/>
+							<CheckBox Grid.Row="4" Margin="5,2"  Content="{x:Static resx:Resource.seTemplateMasterOverrideSourcePosition}"
+									  IsChecked="{Binding Source={StaticResource settings}, Path=Default.TemplateMasterOverrideSourcePosition}"/>
+							<CheckBox Grid.Row="5" Margin="5,2"  Content="{x:Static resx:Resource.seTemplateMasterOverrideCopyrightFormatting}"
+									  IsChecked="{Binding Source={StaticResource settings}, Path=Default.TemplateMasterOverrideCopyrightFormatting}"/>
+							<CheckBox Grid.Row="6" Margin="5,2"  Content="{x:Static resx:Resource.seTemplateMasterOverrideCopyrightPosition}"
+									  IsChecked="{Binding Source={StaticResource settings}, Path=Default.TemplateMasterOverrideCopyrightPosition}"/>
+							<CheckBox Grid.Row="7" Margin="5,2"  Content="{x:Static resx:Resource.seTemplateMasterOverrideOutlineShadow}"
+									  IsChecked="{Binding Source={StaticResource settings}, Path=Default.TemplateMasterOverrideOutlineShadow}"/>
 						</Grid>
 					</GroupBox>
 				</Grid>
