@@ -627,4 +627,34 @@
   <data name="vImagesSave" xml:space="preserve">
     <value>Speichern</value>
   </data>
+  <data name="seTabGeneral" xml:space="preserve">
+    <value>Allgemein</value>
+  </data>
+  <data name="seTabTemplate" xml:space="preserve">
+    <value>Template</value>
+  </data>
+  <data name="seTemplateMaster" xml:space="preserve">
+    <value>Template als Master verwenden</value>
+  </data>
+  <data name="seTemplateMasterOverwriteCopyrightFormatting" xml:space="preserve">
+    <value>Copyright: Formatierung</value>
+  </data>
+  <data name="seTemplateMasterOverwriteCopyrightPosition" xml:space="preserve">
+    <value>Copyright: Sichtbarkeit/Position</value>
+  </data>
+  <data name="seTemplateMasterOverwriteFollowingAttributes" xml:space="preserve">
+    <value>Folgende Attribute aus Template überschreiben:</value>
+  </data>
+  <data name="seTemplateMasterOverwriteSourceFormatting" xml:space="preserve">
+    <value>Quelle: Formatierung</value>
+  </data>
+  <data name="seTemplateMasterOverwriteSourcePosition" xml:space="preserve">
+    <value>Quelle: Sichtbarkeit/Position</value>
+  </data>
+  <data name="seTemplateMasterOverwriteTextFormatting" xml:space="preserve">
+    <value>Text und Übersetzung: Formatierung</value>
+  </data>
+  <data name="seTemplateMasterOverwriteTextPosition" xml:space="preserve">
+    <value>Text und Übersetzung: Positionen und Abstände</value>
+  </data>
 </root>

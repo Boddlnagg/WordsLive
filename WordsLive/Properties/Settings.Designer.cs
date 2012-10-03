@@ -456,5 +456,89 @@ namespace WordsLive.Properties {
                 this["PluginSettings"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool TemplateMasterEnable {
+            get {
+                return ((bool)(this["TemplateMasterEnable"]));
+            }
+            set {
+                this["TemplateMasterEnable"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool TemplateMasterOverwriteTextFormatting {
+            get {
+                return ((bool)(this["TemplateMasterOverwriteTextFormatting"]));
+            }
+            set {
+                this["TemplateMasterOverwriteTextFormatting"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool TemplateMasterOverwriteTextPosition {
+            get {
+                return ((bool)(this["TemplateMasterOverwriteTextPosition"]));
+            }
+            set {
+                this["TemplateMasterOverwriteTextPosition"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool TemplateMasterOverwriteSourceFormatting {
+            get {
+                return ((bool)(this["TemplateMasterOverwriteSourceFormatting"]));
+            }
+            set {
+                this["TemplateMasterOverwriteSourceFormatting"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool TemplateMasterOverwriteSourcePosition {
+            get {
+                return ((bool)(this["TemplateMasterOverwriteSourcePosition"]));
+            }
+            set {
+                this["TemplateMasterOverwriteSourcePosition"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool TemplateMasterOverwriteCopyrightFormatting {
+            get {
+                return ((bool)(this["TemplateMasterOverwriteCopyrightFormatting"]));
+            }
+            set {
+                this["TemplateMasterOverwriteCopyrightFormatting"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool TemplateMasterOverwriteCopyrightPosition {
+            get {
+                return ((bool)(this["TemplateMasterOverwriteCopyrightPosition"]));
+            }
+            set {
+                this["TemplateMasterOverwriteCopyrightPosition"] = value;
+            }
+        }
     }
 }

@@ -11,34 +11,92 @@
 			<RowDefinition Height="Auto" />
 		</Grid.RowDefinitions>
 		<TabControl Margin="6" x:Name="TabControl">
-			<TabItem Header="Allgemein">
+			<TabItem Header="{x:Static resx:Resource.seTabGeneral}">
 				<Grid>
 					<Grid.RowDefinitions>
 						<RowDefinition Height="Auto"/>
-						<RowDefinition Height="*" />
+						<RowDefinition Height="Auto"/>
+						<RowDefinition Height="Auto"/>
+						<RowDefinition Height="Auto"/>
 					</Grid.RowDefinitions>
-					<DockPanel Grid.Row="0">
-						<GroupBox Header="{x:Static resx:Resource.seHeaderDirectories}" DockPanel.Dock="Top">
-							<Grid>
-								<Label Content="{x:Static resx:Resource.seLabelSongs}" Height="28" HorizontalAlignment="Left" Margin="6,6,0,0" VerticalAlignment="Top" />
-								<utils:FolderEntry Height="23" Margin="95,7,6,0" Text="{Binding SongsDirectory}" VerticalAlignment="Top"/>
-								<Label Content="{x:Static resx:Resource.seLabelBackgrounds}" Height="28" HorizontalAlignment="Left" Margin="6,40,0,0" VerticalAlignment="Top" />
-								<utils:FolderEntry Height="23" Margin="95,41,6,0" Text="{Binding BackgroundsDirectory}" VerticalAlignment="Top"/>
-								<TextBlock Margin="6,65,6,0" Padding="5" Width="354" TextWrapping="Wrap" Text="{x:Static resx:Resource.seWarningRelaunch}"/>
-							</Grid>
-						</GroupBox>
-					</DockPanel>
-					<Label Grid.Row="1" Content="{x:Static resx:Resource.seLabelTransitionPresentations}" HorizontalAlignment="Left" Margin="12,6,0,0" VerticalAlignment="Top" />
-					<TextBox Grid.Row="1" Height="23" Margin="217,8,27,0" VerticalAlignment="Top" Text="{Binding PresentationTransition, Mode=TwoWay, ValidatesOnDataErrors=True}" TextAlignment="Right" Style="{StaticResource textBoxInError}"/>
-					<TextBlock Grid.Row="1" Height="23" Margin="0,11,6,0" Text="ms" VerticalAlignment="Top" HorizontalAlignment="Right" Width="15" />
-					<Label Grid.Row="1" Content="{x:Static resx:Resource.seLabelNewSongTemplate}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="12,99,0,0" />
-					<utils:FileEntry Grid.Row="1" Height="23" Margin="163,102,6,0" Text="{Binding SongTemplateFile}" Filter="Powerpraise Lied|*.ppl" VerticalAlignment="Top"/>
-					<Label Content="{x:Static resx:Resource.seLabelTransitionSlides}" HorizontalAlignment="Left" Margin="12,35,0,0" VerticalAlignment="Top" Grid.Row="1" />
-					<TextBox Height="23" Margin="217,37,27,0" Style="{StaticResource textBoxInError}" Text="{Binding SongSlideTransition, Mode=TwoWay, ValidatesOnDataErrors=True}" TextAlignment="Right" VerticalAlignment="Top" Grid.Row="1" />
-					<TextBlock Height="23" HorizontalAlignment="Right" Margin="0,40,6,0" Text="ms" VerticalAlignment="Top" Width="15" Grid.Row="1" />
-					<Label Content="{x:Static resx:Resource.seLabelTransitionImages}" HorizontalAlignment="Left" Margin="12,63,0,0" VerticalAlignment="Top" Grid.Row="1" />
-					<TextBox Height="23" Margin="217,66,27,0" Style="{StaticResource textBoxInError}" Text="{Binding ImageTransition, Mode=TwoWay, ValidatesOnDataErrors=True}" TextAlignment="Right" VerticalAlignment="Top" Grid.Row="1" />
-					<TextBlock Height="23" HorizontalAlignment="Right" Margin="0,68,6,0" Text="ms" VerticalAlignment="Top" Width="15" Grid.Row="1" />
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="Auto"/>
+						<ColumnDefinition Width="*"/>
+						<ColumnDefinition Width="Auto"/>
+					</Grid.ColumnDefinitions>
+					<GroupBox Header="{x:Static resx:Resource.seHeaderDirectories}" Grid.Row="0" Grid.ColumnSpan="3">
+						<Grid>
+							<Grid.RowDefinitions>
+								<RowDefinition Height="Auto"/>
+								<RowDefinition Height="Auto"/>
+								<RowDefinition Height="Auto"/>
+							</Grid.RowDefinitions>
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition Width="Auto"/>
+								<ColumnDefinition Width="*"/>
+							</Grid.ColumnDefinitions>
+							<Label Grid.Row="0" Grid.Column="0" Content="{x:Static resx:Resource.seLabelSongs}" Height="28" HorizontalAlignment="Left" Margin="3,0,0,0" VerticalAlignment="Top" />
+							<utils:FolderEntry Grid.Row="0" Grid.Column="1"  Height="23" Margin="0" Text="{Binding SongsDirectory}" VerticalAlignment="Center"/>
+							<Label Grid.Row="1" Grid.Column="0"  Content="{x:Static resx:Resource.seLabelBackgrounds}" Height="28" HorizontalAlignment="Left" Margin="3,0,0,0" VerticalAlignment="Top" />
+							<utils:FolderEntry Grid.Row="1" Grid.Column="1"  Height="23" Margin="0" Text="{Binding BackgroundsDirectory}" VerticalAlignment="Center"/>
+							<TextBlock Grid.Row="2" Grid.ColumnSpan="2"  Margin="3,0,0,0" Padding="5" TextWrapping="Wrap" Text="{x:Static resx:Resource.seWarningRelaunch}"/>
+						</Grid>
+					</GroupBox>
+					<Label Grid.Row="1" Content="{x:Static resx:Resource.seLabelTransitionPresentations}" HorizontalAlignment="Left" Margin="0" VerticalAlignment="Top" />
+					<TextBox Grid.Row="1" Grid.Column="1" Height="23" Margin="0" VerticalAlignment="Center" Text="{Binding PresentationTransition, Mode=TwoWay, ValidatesOnDataErrors=True}" TextAlignment="Right" Style="{StaticResource textBoxInError}"/>
+					<TextBlock Grid.Row="1" Grid.Column="2" Height="23" Margin="3,0,0,0" Text="ms" VerticalAlignment="Center" />
+					<Label Grid.Row="2" Content="{x:Static resx:Resource.seLabelTransitionSlides}" Margin="0" VerticalAlignment="Top"/>
+					<TextBox Grid.Row="2" Grid.Column="1" Height="23" Margin="0" Style="{StaticResource textBoxInError}" Text="{Binding SongSlideTransition, Mode=TwoWay, ValidatesOnDataErrors=True}" TextAlignment="Right" VerticalAlignment="Center" />
+					<TextBlock Grid.Row="2" Grid.Column="2" Height="23" Margin="3,0,0,0" Text="ms" VerticalAlignment="Center" />
+					<Label Grid.Row="3" Content="{x:Static resx:Resource.seLabelTransitionImages}" HorizontalAlignment="Left" Margin="0" VerticalAlignment="Top" />
+					<TextBox Grid.Row="3" Grid.Column="1" Height="23" Margin="0" Style="{StaticResource textBoxInError}" Text="{Binding ImageTransition, Mode=TwoWay, ValidatesOnDataErrors=True}" TextAlignment="Right" VerticalAlignment="Top" />
+					<TextBlock Grid.Row="3" Grid.Column="2" Height="23" Margin="3,0,0,0" Text="ms" VerticalAlignment="Center" />
+				</Grid>
+			</TabItem>
+			<TabItem Header="{x:Static resx:Resource.seTabTemplate}">
+				<Grid>
+					<Grid.RowDefinitions>
+						<RowDefinition Height="Auto"/>
+						<RowDefinition Height="Auto"/>
+					</Grid.RowDefinitions>
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="Auto"/>
+						<ColumnDefinition Width="*"/>
+					</Grid.ColumnDefinitions>
+					<Label Content="{x:Static resx:Resource.seLabelNewSongTemplate}" HorizontalAlignment="Left" />
+					<utils:FileEntry Grid.Row="0" Grid.Column="1" Margin="0" Text="{Binding SongTemplateFile}" Filter="Powerpraise Lied|*.ppl" VerticalAlignment="Center"/>
+					<!-- TODO: localize Filter (above) -->
+					<GroupBox Grid.Row="1" Grid.ColumnSpan="2">
+						<GroupBox.Header>
+							<CheckBox Content="{x:Static resx:Resource.seTemplateMaster}" IsChecked="{Binding Source={StaticResource settings}, Path=Default.TemplateMasterEnable}"/>
+						</GroupBox.Header>
+						<Grid IsEnabled="{Binding Source={StaticResource settings}, Path=Default.TemplateMasterEnable}">
+							<Grid.RowDefinitions>
+								<RowDefinition Height="Auto"/>
+								<RowDefinition Height="Auto"/>
+								<RowDefinition Height="Auto"/>
+								<RowDefinition Height="Auto"/>
+								<RowDefinition Height="Auto"/>
+								<RowDefinition Height="Auto"/>
+								<RowDefinition Height="Auto"/>
+							</Grid.RowDefinitions>
+							<Label>
+								<TextBlock Grid.Row="0" TextWrapping="Wrap" Text="{x:Static resx:Resource.seTemplateMasterOverwriteFollowingAttributes}"/>
+							</Label>
+							<CheckBox Grid.Row="1" Margin="5,2" Content="{x:Static resx:Resource.seTemplateMasterOverwriteTextFormatting}"
+									  IsChecked="{Binding Source={StaticResource settings}, Path=Default.TemplateMasterOverwriteTextFormatting}"/>
+							<CheckBox Grid.Row="2" Margin="5,2" Content="{x:Static resx:Resource.seTemplateMasterOverwriteTextPosition}"
+									  IsChecked="{Binding Source={StaticResource settings}, Path=Default.TemplateMasterOverwriteTextPosition}"/>
+							<CheckBox Grid.Row="3" Margin="5,2"  Content="{x:Static resx:Resource.seTemplateMasterOverwriteSourceFormatting}"
+									  IsChecked="{Binding Source={StaticResource settings}, Path=Default.TemplateMasterOverwriteSourceFormatting}"/>
+							<CheckBox Grid.Row="4" Margin="5,2"  Content="{x:Static resx:Resource.seTemplateMasterOverwriteSourcePosition}"
+									  IsChecked="{Binding Source={StaticResource settings}, Path=Default.TemplateMasterOverwriteSourcePosition}"/>
+							<CheckBox Grid.Row="5" Margin="5,2"  Content="{x:Static resx:Resource.seTemplateMasterOverwriteCopyrightFormatting}"
+									  IsChecked="{Binding Source={StaticResource settings}, Path=Default.TemplateMasterOverwriteCopyrightFormatting}"/>
+							<CheckBox Grid.Row="6" Margin="5,2"  Content="{x:Static resx:Resource.seTemplateMasterOverwriteCopyrightPosition}"
+									  IsChecked="{Binding Source={StaticResource settings}, Path=Default.TemplateMasterOverwriteCopyrightPosition}"/>
+						</Grid>
+					</GroupBox>
 				</Grid>
 			</TabItem>
 		</TabControl>

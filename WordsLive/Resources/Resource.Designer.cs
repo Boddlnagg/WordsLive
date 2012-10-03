@@ -934,6 +934,96 @@ namespace WordsLive.Resources {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die General ähnelt.
+        /// </summary>
+        public static string seTabGeneral {
+            get {
+                return ResourceManager.GetString("seTabGeneral", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Template ähnelt.
+        /// </summary>
+        public static string seTabTemplate {
+            get {
+                return ResourceManager.GetString("seTabTemplate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Use template as master ähnelt.
+        /// </summary>
+        public static string seTemplateMaster {
+            get {
+                return ResourceManager.GetString("seTemplateMaster", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Copyright: formatting ähnelt.
+        /// </summary>
+        public static string seTemplateMasterOverwriteCopyrightFormatting {
+            get {
+                return ResourceManager.GetString("seTemplateMasterOverwriteCopyrightFormatting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Copyright: visibility/position ähnelt.
+        /// </summary>
+        public static string seTemplateMasterOverwriteCopyrightPosition {
+            get {
+                return ResourceManager.GetString("seTemplateMasterOverwriteCopyrightPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Overwrite the following attributes from the template: ähnelt.
+        /// </summary>
+        public static string seTemplateMasterOverwriteFollowingAttributes {
+            get {
+                return ResourceManager.GetString("seTemplateMasterOverwriteFollowingAttributes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Source: formatting ähnelt.
+        /// </summary>
+        public static string seTemplateMasterOverwriteSourceFormatting {
+            get {
+                return ResourceManager.GetString("seTemplateMasterOverwriteSourceFormatting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Source: visibility/position ähnelt.
+        /// </summary>
+        public static string seTemplateMasterOverwriteSourcePosition {
+            get {
+                return ResourceManager.GetString("seTemplateMasterOverwriteSourcePosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Text and translation: formatting ähnelt.
+        /// </summary>
+        public static string seTemplateMasterOverwriteTextFormatting {
+            get {
+                return ResourceManager.GetString("seTemplateMasterOverwriteTextFormatting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Text and translation: positions and borders ähnelt.
+        /// </summary>
+        public static string seTemplateMasterOverwriteTextPosition {
+            get {
+                return ResourceManager.GetString("seTemplateMasterOverwriteTextPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Settings ähnelt.
         /// </summary>
         public static string seTitle {

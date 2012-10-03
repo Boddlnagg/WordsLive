@@ -114,5 +114,26 @@
     <Setting Name="PluginSettings" Type="WordsLive.PluginSettingsDictionary" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
+    <Setting Name="TemplateMasterEnable" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="TemplateMasterOverwriteTextFormatting" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="TemplateMasterOverwriteTextPosition" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="TemplateMasterOverwriteSourceFormatting" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="TemplateMasterOverwriteSourcePosition" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="TemplateMasterOverwriteCopyrightFormatting" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="TemplateMasterOverwriteCopyrightPosition" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
