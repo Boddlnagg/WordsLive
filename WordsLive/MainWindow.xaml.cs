@@ -818,7 +818,10 @@ namespace WordsLive
 				if (files.Length == 1)
 				{
 					if (MediaManager.TryLoadPortfolio(files[0], out result))
+					{
+						// TODO: maybe insert contents at drop position if the portfolio isn't empty?
 						Controller.OpenPortfolio(files[0]);
+					}
 					else
 					{
 						Media m = MediaManager.LoadMediaMetadata(files[0]);

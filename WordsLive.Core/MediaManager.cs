@@ -180,7 +180,7 @@ namespace WordsLive.Core
 				{
 					XDocument doc = XDocument.Load(file.FullName);
 					XElement root = doc.Element("ppp");
-					if (root.Attribute("version").Value == "3.0")
+					if (root.Attribute("version").Value == "3.0" || root.Attribute("version").Value == "4.0")
 					{
 						foreach (Media m in from i in root.Element("order").Elements("item")
 													select i.Attribute("mediatype").Value == "powerpraise-song" ?
@@ -213,16 +213,17 @@ namespace WordsLive.Core
 		public static void SavePortfolio(IEnumerable<Media> enumerable, string fileName)
 		{ 
 			XDocument doc = new XDocument(new XDeclaration("1.0","ISO-8859-1","yes"));
-			XElement root = new XElement("ppp", new XAttribute("version", "3.0"),
+			XElement root = new XElement("ppp", new XAttribute("version", "4.0"),
 				new XElement("order",
 					from m in enumerable
 					select new XElement(
 						"item",
-						new XAttribute("mediatype", m is Song ? "powerpraise-song" : "unknown"),
+						new XAttribute("mediatype", m is Song ? "powerpraise-song" : "file"),
 						new XElement("file", m is Song ? m.File.Replace(SongsDirectory + Path.DirectorySeparatorChar, "") : m.File)
 					)
 				),
 				new XElement("settings",
+					new XComment("These settings are ignored in WordsLive"),
 					new XElement("showonslide",
 						new XElement("translation", "true"),
 						new XElement("source", "true"),
@@ -237,8 +238,8 @@ namespace WordsLive.Core
 						new XElement("onslidechange", new XElement("steps", 40)),
 						new XElement("onslidechange2", new XElement("steps", 20))),
 					new XElement("master",
-						new XElement("enabled", "false"),
-						new XElement("masterfile", "Standard.ppl"),
+						new XElement("enabled", false),
+						new XElement("masterfile"),
 						new XElement("ovrfontformatting", false),
 						new XElement("ovrtextpositioning", false),
 						new XElement("ovrcopyright", false),
