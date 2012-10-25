@@ -6,7 +6,7 @@ namespace WordsLive.Slideshow.Impress
 	{
 		Type presentationType;
 
-		public ImpressMedia(Type presentationType)
+		public ImpressMedia(string file, Type presentationType) : base(file)
 		{
 			this.presentationType = presentationType;
 		}
@@ -16,6 +16,11 @@ namespace WordsLive.Slideshow.Impress
 			var pres = (ISlideshowPresentation)Controller.PresentationManager.CreatePresentation(presentationType);
 			presentationType.GetMethod("Init", new Type[] { typeof(ImpressMedia) }).Invoke(pres, new object[] { this });
 			return pres;
+		}
+
+		public override void Load()
+		{
+			// do nothing (loading is done in presentation)
 		}
 	}
 }

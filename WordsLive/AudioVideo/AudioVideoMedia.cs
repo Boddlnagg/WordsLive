@@ -8,6 +8,8 @@ namespace WordsLive.AudioVideo
 {
 	public abstract class AudioVideoMedia : Media
 	{
+		public AudioVideoMedia(string file) : base(file) { }
+
 		public abstract bool HasVideo { get; }
 	}
 }

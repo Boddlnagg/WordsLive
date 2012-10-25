@@ -20,12 +20,11 @@ namespace WordsLive.Images
 
 		public override Media TryHandle(FileInfo file)
 		{
-			var media = new ImagesMedia();
-			media.LoadMetadata(file.FullName);
+			var media = new ImagesMedia(file.FullName);
 			return media;
 		}
 
-		public override Media[] TryHandleMultiple(FileInfo[] files)
+		public override IEnumerable<Media> TryHandleMultiple(IEnumerable<FileInfo> files)
 		{
 			if (files.All(f => f.Extension.ToLower() != ".show"))
 			{
@@ -45,8 +44,7 @@ namespace WordsLive.Images
 							foreach (var f in files)
 								writer.WriteLine(f.FullName);
 						}
-						var media = new ImagesMedia();
-						media.LoadMetadata(dlg.FileName);
+						var media = new ImagesMedia(dlg.FileName);
 						return new Media[] { media };
 					}
 					else

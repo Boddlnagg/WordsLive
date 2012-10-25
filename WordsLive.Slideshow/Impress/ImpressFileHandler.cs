@@ -27,9 +27,7 @@ namespace WordsLive.Slideshow.Impress
 			if (!IsAvailable)
 				return null;
 
-			var media = new ImpressMedia(PresentationType);
-			media.LoadMetadata(file.FullName);
-			return media;
+			return new ImpressMedia(file.FullName, PresentationType);
 		}
 
 		private bool? isAvailable = null;

@@ -23,9 +23,7 @@ namespace WordsLive.Slideshow.PowerpointViewer
 			if (!PowerpointViewerLib.PowerpointViewerController.IsAvailable)
 				return null;
 
-			var media = new PowerpointViewerMedia();
-			media.LoadMetadata(file.FullName);
-			return media;
+			return new PowerpointViewerMedia(file.FullName);
 		}
 	}
 }

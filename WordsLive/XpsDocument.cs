@@ -11,10 +11,12 @@ namespace WordsLive
 	public class XpsDocument : Media
 	{
 		public Xps.XpsDocument Document { get; private set; }
+
+		public XpsDocument(string file) : base(file) { }
+
 		public override void Load()
 		{
 			Document = new Xps.XpsDocument(this.File, FileAccess.Read);
-			base.Load();
 		}
 	}
 }

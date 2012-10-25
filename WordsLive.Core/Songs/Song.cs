@@ -92,20 +92,10 @@ namespace WordsLive.Core.Songs
 			return (from p in this.Parts where p.Name == partName select p).SingleOrDefault();
 		}
 
-		public Song()
-		{ }
-
-		public Song(string filename)
+		public Song(string filename, bool metadataOnly = false) : base(filename)
 		{
-			FileInfo file = new FileInfo(filename);
-			if (file.Extension == ".ppl")
-			{
-				LoadPowerpraise(file, false);
-			}
-			else
-			{
-				throw new Exception("Invalid song format");
-			}
+			if (!metadataOnly)
+				Load();
 		}
 
 		public override void Load()
@@ -114,10 +104,10 @@ namespace WordsLive.Core.Songs
 		}
 
 		/// <summary>
-		/// Only loads title and backgrounds
+		/// Only loads title and backgrounds (for icon)
 		/// </summary>
 		/// <param name="filename">The filename.</param>
-		public override void LoadMetadata(string filename)
+		protected override void LoadMetadata(string filename)
 		{
 			base.LoadMetadata(filename);
 

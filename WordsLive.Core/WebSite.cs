@@ -8,6 +8,8 @@ namespace WordsLive.Core
 {
 	public class WebSite : Media
 	{
+		public WebSite(string file) : base(file) { }
+
 		public string Url { get; private set; }
 
 		public override string Title

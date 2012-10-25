@@ -19,6 +19,8 @@ namespace WordsLive.Images
 
 		public bool CanEdit { get; private set; }
 
+		public ImagesMedia(string file) : base(file) { }
+
 		public override void Load()
 		{
 			FileInfo file = new FileInfo(this.File);

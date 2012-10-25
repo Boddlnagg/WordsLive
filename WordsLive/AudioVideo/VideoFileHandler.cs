@@ -18,9 +18,7 @@ namespace WordsLive.AudioVideo
 
 		public override Media TryHandle(FileInfo file)
 		{
-			var media = new VideoMedia();
-			media.LoadMetadata(file.FullName);
-			return media;
+			return new VideoMedia(file.FullName);
 		}
 	}
 }

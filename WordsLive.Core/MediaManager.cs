@@ -8,22 +8,18 @@ using System.Xml.Linq;
 
 namespace WordsLive.Core
 {
-	public class MediaEventArgs : EventArgs
-	{
-		public Media Media { get; private set; }
-
-		public MediaEventArgs(Media media)
-		{
-			Media = media;
-		}
-	}
-
-	public delegate void MediaEventHandler(object sender, MediaEventArgs args);
-
+	/// <summary>
+	/// Manages the available media types and file handlers.
+	/// </summary>
 	public static class MediaManager
 	{
 		private static List<MediaFileHandler> fileHandlers = new List<MediaFileHandler>();
 
+		/// <summary>
+		/// Registers file handlers from the given types. Any non-abstract subclass of <see cref="MediaFileHandler"/>
+		/// that is found will be registered.
+		/// </summary>
+		/// <param name="types"></param>
 		public static void RegisterHandlersFromTypes(IEnumerable<Type> types)
 		{
 			foreach (var type in types)
@@ -36,6 +32,9 @@ namespace WordsLive.Core
 			}
 		}
 
+		/// <summary>
+		/// Gets the registered media file handlers.
+		/// </summary>
 		public static IEnumerable<MediaFileHandler> FileHandlers
 		{
 			get
@@ -44,6 +43,13 @@ namespace WordsLive.Core
 			}
 		}
 
+		/// <summary>
+		/// Creates a media object from a file. If the file doesn't exist, a <see cref="FileNotFoundMedia"/> is returned.
+		/// If no appropiate file handler is found, a <see cref="UnsupportedMedia"/> is returned.
+		/// Otherwise the correct <see cref="Media"/> type is returned.
+		/// </summary>
+		/// <param name="file">The <see cref="FileInfo"/> with the path.</param>
+		/// <returns>A <see cref="Media"/> object.</returns>
 		public static Media LoadMediaMetadata(FileInfo file)
 		{
 			if (file.Exists)
@@ -58,18 +64,21 @@ namespace WordsLive.Core
 						return result;
 				}
 
-				var notSupported = new UnsupportedMedia();
-				notSupported.LoadMetadata(file.FullName);
-				return notSupported;
+				return new UnsupportedMedia(file.FullName);
 			}
 			else
 			{
-				var notFound = new FileNotFoundMedia();
-				notFound.LoadMetadata(file.FullName);
-				return notFound;
+				return new FileNotFoundMedia(file.FullName);
 			}
 		}
 
+		/// <summary>
+		/// Creates a media object from a file. If the file doesn't exist, a <see cref="FileNotFoundMedia"/> is returned.
+		/// If no appropiate file handler is found, a <see cref="UnsupportedMedia"/> is returned.
+		/// Otherwise the correct <see cref="Media"/> type is returned.
+		/// </summary>
+		/// <param name="file">The full path as a string.<param>
+		/// <returns>A <see cref="Media"/> object.</returns>
 		public static Media LoadMediaMetadata(string file)
 		{
 			if (String.IsNullOrEmpty(file))
@@ -78,53 +87,18 @@ namespace WordsLive.Core
 			return LoadMediaMetadata(new FileInfo(file));
 		}
 
-		public static Media ReloadMediaMetadata(Media media)
+		/// <summary>
+		/// Loads multiple files at once, trying to call a single handler's <see cref="MediaFileHandler.TryHandleMultiple"/> method
+		/// in order to load them into a single media object if supported.
+		/// </summary>
+		/// <param name="files">The paths to the files to load.</param>
+		/// <returns>The loaded media objects, either one per file or less.</returns>
+		public static IEnumerable<Media> LoadMultipleMediaMetadata(IEnumerable<string> files)
 		{
-			var file = new FileInfo(media.File);
-			if (file.Exists)
-			{
-				if (media is FileNotFoundMedia)
-				{
-					return LoadMediaMetadata(file);
-				}
-				else
-				{
-					media.LoadMetadata(file.FullName);
-					return media;
-				}
-			}
-			else
-			{
-				var notFound = new FileNotFoundMedia();
-				notFound.LoadMetadata(file.FullName);
-				return notFound;
-			}
-		}
-
-		public static Media LoadMedia(Media media)
-		{
-			if (media == null)
-				throw new ArgumentNullException("media");
-
-			media.Load();
-			OnMediaLoaded(media);
-			return media;
-		}
-
-		public static event MediaEventHandler MediaLoaded;
-
-		private static void OnMediaLoaded(Media media)
-		{
-			if (MediaLoaded != null)
-				MediaLoaded(null, new MediaEventArgs(media));
-		}
-
-		public static IEnumerable<Media> LoadMultipleMediaMetadata(IEnumerable<string> fileName)
-		{
-			var files = from f in fileName select new FileInfo(f);
+			var fileInfos = from f in files select new FileInfo(f);
 
 			// if not all of them exist load them seperately
-			if (!files.All(f => f.Exists))
+			if (!fileInfos.All(f => f.Exists))
 			{
 				foreach (var file in files)
 				{
@@ -132,15 +106,15 @@ namespace WordsLive.Core
 				}
 			}
 
-			var extensions = (from f in files select f.Extension.ToLower()).Distinct();
+			var extensions = (from f in fileInfos select f.Extension.ToLower()).Distinct();
 
 			// select handlers that can handle all selected file types
 			var handlers = from h in fileHandlers where !extensions.Except(h.Extensions).Any() select h;
 
-			Media[] result;
+			IEnumerable<Media> result;
 			foreach (var h in handlers)
 			{
-				result = h.TryHandleMultiple(files.ToArray());
+				result = h.TryHandleMultiple(fileInfos);
 				if (result != null)
 				{
 					foreach (var r in result)
@@ -157,6 +131,65 @@ namespace WordsLive.Core
 			}
 		}
 
+		/// <summary>
+		/// Reloads the metadata of a media object.
+		/// </summary>
+		/// <param name="media">The object to reload.</param>
+		/// <returns>The reloaded media object. Possibly but not necessarily the same object that was given as input.</returns>
+		public static Media ReloadMediaMetadata(Media media)
+		{
+			var file = new FileInfo(media.File);
+			if (file.Exists)
+			{
+				if (media is FileNotFoundMedia)
+				{
+					return LoadMediaMetadata(file);
+				}
+				else
+				{
+					media.ReloadMetadata();
+					return media;
+				}
+			}
+			else
+			{
+				return new FileNotFoundMedia(file.FullName);
+			}
+		}
+
+		/// <summary>
+		/// Loads a given media object by calling it's <see cref="Media.Load"/> method and
+		/// triggering the <see cref="MediaLoaded"/> event.
+		/// </summary>
+		/// <param name="media"></param>
+		/// <returns></returns>
+		public static Media LoadMedia(Media media)
+		{
+			if (media == null)
+				throw new ArgumentNullException("media");
+
+			media.Load();
+			OnMediaLoaded(media);
+			return media;
+		}
+
+		/// <summary>
+		/// This event is called when a media object was loaded.
+		/// </summary>
+		public static event EventHandler<MediaEventArgs> MediaLoaded;
+
+		private static void OnMediaLoaded(Media media)
+		{
+			if (MediaLoaded != null)
+				MediaLoaded(null, new MediaEventArgs(media));
+		}
+
+		/// <summary>
+		/// Tries to load a file as Powerpraise portfolio file.
+		/// </summary>
+		/// <param name="fileName">The file.</param>
+		/// <param name="result">The loaded media objects or <c>null</c> if loading failed.</param>
+		/// <returns><c>True</c> if the file was a valid Powerpraise portfolio and has been loaded, <c>false</c> otherwise.</returns>
 		public static bool TryLoadPortfolio(string fileName, out IEnumerable<Media> result)
 		{
 			result = LoadPortfolio(fileName);
@@ -171,6 +204,12 @@ namespace WordsLive.Core
 			}
 		}
 
+		/// <summary>
+		/// Loads a Powerpraise portfolio file.
+		/// TODO: move to a separate class
+		/// </summary>
+		/// <param name="fileName">The portfolio file.</param>
+		/// <returns>The loaded media objects in the order they appear in the portfolio.</returns>
 		public static IEnumerable<Media> LoadPortfolio(string fileName)
 		{
 			if (File.Exists(fileName))
@@ -210,6 +249,14 @@ namespace WordsLive.Core
 			}
 		}
 
+		/// <summary>
+		/// Saves a number of media objects to a Powerpraise portfolio file.
+		/// As a portfolio file contains some settings besides the list of media objects, 
+		/// these settings are filled with default values.
+		/// TODO: move to a separate class
+		/// </summary>
+		/// <param name="enumerable">The media objects.</param>
+		/// <param name="fileName">The target portfolio file.</param>
 		public static void SavePortfolio(IEnumerable<Media> enumerable, string fileName)
 		{ 
 			XDocument doc = new XDocument(new XDeclaration("1.0","ISO-8859-1","yes"));
@@ -258,11 +305,11 @@ namespace WordsLive.Core
 			writer.Close();
 		}
 
-		private static string GetPowerpointTempPath()
-		{
-			return Path.Combine(Path.Combine(Path.GetTempPath(), "Powerpraise"), Path.GetRandomFileName()) + Path.DirectorySeparatorChar;
-		}
-
+		/// <summary>
+		/// Initializes the directories for songs and backgrounds.
+		/// </summary>
+		/// <param name="songsDirectory">The directory for songs.</param>
+		/// <param name="backgroundsDirectory">The directory for backgrounds.</param>
 		public static void InitDirectories(string songsDirectory, string backgroundsDirectory)
 		{
 			SongsDirectory = songsDirectory;
@@ -274,7 +321,14 @@ namespace WordsLive.Core
 				BackgroundsDirectory = BackgroundsDirectory.Substring(0, BackgroundsDirectory.Length - 1);
 		}
 
+		/// <summary>
+		/// Gets the directory for songs.
+		/// </summary>
 		public static string SongsDirectory { get; private set; }
+
+		/// <summary>
+		/// Gets the directory for backgrounds.
+		/// </summary>
 		public static string BackgroundsDirectory { get; private set; }
 	}
 }

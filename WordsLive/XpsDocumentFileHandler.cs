@@ -18,9 +18,7 @@ namespace WordsLive
 
 		public override Media TryHandle(FileInfo file)
 		{
-			var media = new XpsDocument();
-			media.LoadMetadata(file.FullName);
-			return media;
+			return new XpsDocument(file.FullName);
 		}
 	}
 }
