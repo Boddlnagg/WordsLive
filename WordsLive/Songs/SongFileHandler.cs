@@ -19,7 +19,7 @@ namespace WordsLive.Songs
 
 		public override Media TryHandle(FileInfo file)
 		{
-			return new Song(file.FullName);
+			return new Song(file.FullName, true);
 		}
 	}
 }
