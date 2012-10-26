@@ -16,46 +16,32 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-using System.Drawing;
-
 namespace WordsLive.Core.Songs
 {
 	/// <summary>
-	/// Represents a song background. This is either an image or a color.
-	/// TODO: support video backgrounds
+	/// Represents a reference to a song part.
 	/// </summary>
-	public class SongBackground
+	public struct SongPartReference
 	{
 		/// <summary>
-		/// Gets a value indicating whether this background is an image.
+		/// The name of the referenced <see cref="SongPart"/>
 		/// </summary>
-		public bool IsImage
+		public string Name { get; set; }
+
+		/// <summary>
+		/// Initializes a new instance of the <see cref="SongPartReference"/> class.
+		/// </summary>
+		/// <param name="name">The name of the referenced <see cref="SongPart"/>.</param>
+		public SongPartReference(string name) : this()
 		{
-			get
-			{
-				return (!string.IsNullOrEmpty(ImagePath));
-			}
+			Name = name;
 		}
 
 		/// <summary>
-		/// Gets or sets the image path. Set this to <c>null</c> to use a color instead.
+		/// Initializes a new instance of the <see cref="SongPartReference"/> class.
 		/// </summary>
-		public string ImagePath { get; set; }
-
-		/// <summary>
-		/// Gets or sets the color (only valid if <see cref="IsImage"/> is <c>false</c>).
-		/// </summary>
-		public Color Color { get; set; }
-
-		/// <summary>
-		/// Initializes a new instance of the <see cref="SongBackground"/> class
-		/// using a black background color.
-		/// </summary>
-		public SongBackground()
-		{
-			ImagePath = "";
-			Color = Color.Black;
-		}
+		/// <param name="part">The referenced part.</param>
+		public SongPartReference(SongPart part) : this(part.Name) { }
 
 		/// <summary>
 		/// Determines whether the specified <see cref="System.Object"/> is equal to this instance.
@@ -66,18 +52,10 @@ namespace WordsLive.Core.Songs
 		/// </returns>
 		public override bool Equals(object obj)
 		{
-			SongBackground bg = obj as SongBackground;
-			if (bg == null)
+			if (obj == null || !(obj is SongPartReference))
 				return false;
 
-			if (this.IsImage)
-			{
-				return bg.IsImage && bg.ImagePath == this.ImagePath;
-			}
-			else
-			{
-				return !bg.IsImage && bg.Color == this.Color;
-			}
+			return (((SongPartReference)obj).Name == this.Name);
 		}
 
 		/// <summary>
@@ -88,10 +66,7 @@ namespace WordsLive.Core.Songs
 		/// </returns>
 		public override int GetHashCode()
 		{
-			if (this.IsImage)
-				return IsImage.GetHashCode() ^ this.ImagePath.GetHashCode();
-			else
-				return IsImage.GetHashCode() ^ this.Color.GetHashCode();
+			return this.Name.GetHashCode();
 		}
 	}
 }

@@ -1,17 +1,39 @@
-﻿using System;
+﻿/*
+ * WordsLive - worship projection software
+ * Copyright (c) 2012 Patrick Reisert
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
 namespace WordsLive.Core.Songs
 {
+	/// <summary>
+	/// Static class to import songs from the SongBeamer .sng format.
+	/// TODO: introduce generalized import/export infrastructure
+	/// </summary>
 	public static class SongBeamerImport
 	{
 		/// <summary>
 		/// Imports a song from a SongBeamer *.sng file. This takes an initialized prototype song and overwrites any imported content.
 		/// </summary>
-		/// <param name="prototype">The prototype.</param>
-		/// <param name="filename">The filename.</param>
+		/// <param name="prototype">The prototype song.</param>
+		/// <param name="filename">The .sng file to import.</param>
 		public static void Import(Song prototype, string filename)
 		{
 			if (prototype == null)
@@ -49,7 +71,7 @@ namespace WordsLive.Core.Songs
 						else if (line == "---")
 						{
 							PreProcessSongBeamerProperties(prototype, properties, out langcount); // langcount > 2 is not supported (text will be ignored)
-							currentPart = new SongPart() { Name = FindUnusedPartName(prototype) };
+							currentPart = new SongPart(FindUnusedPartName(prototype));
 						}
 					}
 					else
@@ -59,7 +81,7 @@ namespace WordsLive.Core.Songs
 							currentPart.Slides.Add(new SongSlide { Size = prototype.Formatting.MainText.Size, Text = currentText, Translation = currentTrans });
 							currentText = null;
 							prototype.Parts.Add(currentPart);
-							currentPart = new SongPart { Name = FindUnusedPartName(prototype) };
+							currentPart = new SongPart(FindUnusedPartName(prototype));
 							linenum = 0;
 						}
 						else if (line == "--" || line == "--A")
@@ -114,20 +136,31 @@ namespace WordsLive.Core.Songs
 			}
 		}
 
+		/// <summary>
+		/// Helper function to generate an unused part name.
+		/// </summary>
+		/// <param name="song">The song to generate the name for.</param>
+		/// <returns>A part name that is guaranteed to be unused in that song.</returns>
 		private static string FindUnusedPartName(Song song)
 		{
 			int i = 1;
-			while (song.FindPartByName(i.ToString()) != null)
+			while (song.FindPartByReference(new SongPartReference(i.ToString())) != null)
 			{
 				i++;
 			}
 			return i.ToString();
 		}
 
+		/// <summary>
+		/// Checks whether the given part name is a SongBeamer part name
+		/// (see http://wiki.songbeamer.de/index.php?title=Song#Vers_Marker).
+		/// </summary>
+		/// <param name="value">The part name to check.</param>
+		/// <returns>
+		///   <c>true</c> if the specified value is a SongBeamer part name; otherwise, <c>false</c>.
+		/// </returns>
 		private static bool IsSongBeamerPartName(string value)
 		{
-			// See http://wiki.songbeamer.de/index.php?title=Song#Vers_Marker
-
 			string[] parts = value.Split(' ');
 			if (parts.Length > 2)
 				return false;
@@ -161,6 +194,12 @@ namespace WordsLive.Core.Songs
 			}
 		}
 
+		/// <summary>
+		/// Helper function to process the imported properties before the actual song content is loaded.
+		/// </summary>
+		/// <param name="song">The imported song.</param>
+		/// <param name="properties">A dictionary with properties.</param>
+		/// <param name="langcount">Will be assigned the number of languages as indicated by the 'langcount' property.</param>
 		private static void PreProcessSongBeamerProperties(Song song, Dictionary<string, string> properties, out int langcount)
 		{
 			/* We ignore the following properties:
@@ -222,17 +261,23 @@ namespace WordsLive.Core.Songs
 			// TODO: is there a "lang2" property for the language of the first translation? -> Put it in song.TranslationLanguage
 		}
 
+		/// <summary>
+		/// Helper function to process the imported properties after the actual song content is loaded.
+		/// </summary>
+		/// <param name="song">The imported song.</param>
+		/// <param name="properties">A dictionary with properties.</param>
 		private static void PostProcessSongBeamerProperties(Song song, Dictionary<string, string> properties)
 		{
 			if (properties.ContainsKey("verseorder"))
 			{
-				song.Order = properties["verseorder"].Split(',').ToList();
+				song.Order = properties["verseorder"].Split(',').Select((name) => new SongPartReference(name)).ToList();
 			}
 			else
 			{
+				// if no verseorder is specified, add each part once in order
 				foreach (SongPart part in song.Parts)
 				{
-					song.Order.Add(part.Name);
+					song.Order.Add(new SongPartReference(part.Name));
 				}
 			}
 		}

@@ -134,7 +134,7 @@ namespace WordsLive.Songs
 
 		private void GotoSlide(int index, bool update = false)
 		{
-			int maxSlideIndex = (from partName in song.Order select song.FindPartByName(partName).Slides.Count).Sum();
+			int maxSlideIndex = (from partRef in song.Order select song.FindPartByReference(partRef).Slides.Count).Sum();
 
 			bool showSource = ((song.Formatting.SourceDisplayPosition == MetadataDisplayPosition.AllSlides ||
 				(index == 1 && song.Formatting.SourceDisplayPosition == MetadataDisplayPosition.FirstSlide) ||
@@ -192,9 +192,9 @@ namespace WordsLive.Songs
 		private SongSlide FindSlideByIndex(int index)
 		{
 			int i = 1;
-			foreach (var partName in song.Order)
+			foreach (var partRef in song.Order)
 			{
-				SongPart part = song.FindPartByName(partName);
+				SongPart part = song.FindPartByReference(partRef);
 				foreach (var slide in part.Slides)
 				{
 					if (i++ == index)

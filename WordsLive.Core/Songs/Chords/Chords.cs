@@ -1,15 +1,49 @@
-﻿using System;
+﻿/*
+ * WordsLive - worship projection software
+ * Copyright (c) 2012 Patrick Reisert
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 
 namespace WordsLive.Core.Songs.Chords
 {
-	public class Chords
+	/// <summary>
+	/// Static class to deal with chords.
+	/// </summary>
+	public static class Chords
 	{
+		/// <summary>
+		/// Gets or sets a value indicating whether to use the german notation
+		/// (H instead of B and B instead of Bb).
+		/// </summary>
 		public static bool GermanNotation { get; set; }
+
+		/// <summary>
+		/// Gets or sets a value indicationg whether to use long german chord names
+		/// (i.e. Fis instead of F#).
+		/// </summary>
 		public static bool LongChordNames { get; set; }
 
+		/// <summary>
+		/// Parses a text and returns all chord symbols in it.
+		/// </summary>
+		/// <param name="text">A text that contains chord symbols in square brackets.</param>
+		/// <returns></returns>
 		public static IEnumerable<ChordSymbol> GetChords(string text)
 		{
 			string rest = text;
@@ -42,6 +76,13 @@ namespace WordsLive.Core.Songs.Chords
 			}
 		}
 
+		/// <summary>
+		/// Replaces all chords in a text by applying a function.
+		/// </summary>
+		/// <param name="text">The text to process.</param>
+		/// <param name="func">A function that returns a new string for each <see cref="ChordSymbol"/>.
+		/// When this function returns <c>null</c> the chord is removed.</param>
+		/// <returns>The text with the chords replaced.</returns>
 		public static string ReplaceChords(string text, Func<ChordSymbol, string> func)
 		{
 			StringBuilder sb = new StringBuilder();
@@ -58,7 +99,7 @@ namespace WordsLive.Core.Songs.Chords
 					sb.Append(replace);
 					sb.Append("]");
 				}
-				start = ch.Position + ch.Chord.Length + 2;
+				start = ch.Position + ch.Name.Length + 2;
 			}
 
 			sb.Append(text.Substring(start));
@@ -66,19 +107,36 @@ namespace WordsLive.Core.Songs.Chords
 			return sb.ToString();
 		}
 
+		/// <summary>
+		/// Removes all chords from the text.
+		/// </summary>
+		/// <param name="text">The text to process.</param>
+		/// <returns>The text with all chords removed.</returns>
 		public static string RemoveAll(string text)
 		{
 			return ReplaceChords(text, (chord) => null);
 		}
 
+		/// <summary>
+		/// Pretty prints the text by replacing the 'b' and '#' characters in chords with the correct unicode symbols.
+		/// </summary>
+		/// <param name="text">The text to process.</param>
+		/// <returns>The resulting text.</returns>
 		public static string PrettyPrint(string text)
 		{
-			return ReplaceChords(text, (chord) => chord.Chord.Replace('b', '♭').Replace('#', '♯'));
+			return ReplaceChords(text, (chord) => chord.Name.Replace('b', '♭').Replace('#', '♯'));
 		}
 
+		/// <summary>
+		/// Transposes all chords in a text.
+		/// </summary>
+		/// <param name="text">The text to process.</param>
+		/// <param name="originalKey">The original key to transpose from.</param>
+		/// <param name="amount">The amount of semitones to transpose by.</param>
+		/// <returns>The text with all chords transposed.</returns>
 		public static string Transpose(string text, Key originalKey, int amount)
 		{
-			return ReplaceChords(text, (chord) => chord.Transpose(originalKey, amount).Chord);
+			return ReplaceChords(text, (chord) => chord.Transpose(originalKey, amount).Name);
 		}
 	}
 }

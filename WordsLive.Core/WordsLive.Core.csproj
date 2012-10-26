@@ -69,14 +69,17 @@
     <Compile Include="Songs\Chords\ChordSymbol.cs" />
     <Compile Include="Songs\Chords\Key.cs" />
     <Compile Include="Songs\Chords\Note.cs" />
+    <Compile Include="Songs\Chords\NoteSymbol.cs" />
     <Compile Include="Songs\HtmlExport.cs" />
     <Compile Include="Songs\Song.cs" />
     <Compile Include="Songs\SongBackground.cs" />
     <Compile Include="Songs\SongBeamerImport.cs" />
     <Compile Include="Songs\SongFormatting.cs" />
     <Compile Include="Songs\SongPart.cs" />
+    <Compile Include="Songs\SongPartReference.cs" />
     <Compile Include="Songs\SongSlide.cs" />
     <Compile Include="Songs\SongSource.cs" />
+    <Compile Include="Songs\SongTextFormatting.cs" />
     <Compile Include="UnsupportedMedia.cs" />
     <Compile Include="WebSite.cs" />
   </ItemGroup>

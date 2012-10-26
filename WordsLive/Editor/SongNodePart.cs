@@ -47,9 +47,9 @@ namespace WordsLive.Editor
 					if (this.part.Name != this.Title)
 					{
 						int i;
-						while ((i = song.Order.IndexOf(this.part.Name)) >= 0)
+						while ((i = song.Order.IndexOf(new SongPartReference(this.part))) >= 0)
 						{
-							song.Order[i] = this.Title;
+							song.Order[i] = new SongPartReference(this.Title);
 						}
 
 						this.part.Name = this.Title;
@@ -64,7 +64,7 @@ namespace WordsLive.Editor
 			};
 		}
 
-		public SongNodePart(SongNodeRoot root, Song song, string name) : this(root, song, new SongPart {Name = name})
+		public SongNodePart(SongNodeRoot root, Song song, string name) : this(root, song, new SongPart(name))
 		{
 			this.AddSlide();
 		}

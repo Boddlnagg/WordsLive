@@ -1,16 +1,43 @@
-﻿using System;
+﻿/*
+ * WordsLive - worship projection software
+ * Copyright (c) 2012 Patrick Reisert
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Xml.Linq;
 
 namespace WordsLive.Core.Songs
 {
+	/// <summary>
+	/// Static class for HTML export of songs (unfinished, but working).
+	/// TODO: add entry point for this in the UI
+	/// TODO: add generalized way for importing and exporting songs
+	/// </summary>
 	public static class HtmlExport
 	{
 		private static List<string> printedParts;
 
-		// TODO: use this somewhere in the UI (entry in the editor's menu)
+		/// <summary>
+		/// Exports a song to a HTML file.
+		/// </summary>
+		/// <param name="song">The song to export.</param>
+		/// <param name="file">The target HTML file.</param>
+		/// <param name="printChords">Whether to include chords in the output.</param>
 		public static void ExportSong(Song song, string file, bool printChords = true)
 		{
 			printedParts = new List<string>();
@@ -23,7 +50,7 @@ namespace WordsLive.Core.Songs
 						),
 					new XElement("body",
 						new XElement("h1", song.SongTitle),
-						from part in song.Order select ExportPart(song.FindPartByName(part), printChords),
+						from partRef in song.Order select ExportPart(song.FindPartByReference(partRef), printChords),
 						new XElement("p",
 							new XAttribute("id", "copyright"),
 							song.Copyright)
@@ -49,8 +76,7 @@ namespace WordsLive.Core.Songs
 			}
 		}
 
-		// TODO: this method is copied from SongDisplayController -> find a way to no duplicate it
-		private static IEnumerable<object> ParseLine(string line, bool showChords)
+		private static IEnumerable<XNode> ParseLine(string line, bool showChords)
 		{
 			string rest;
 
@@ -58,42 +84,30 @@ namespace WordsLive.Core.Songs
 				rest = String.Empty;
 			else
 				rest = "\uFEFF" + line.Replace(" ", " "); // not sure if we need the replace, but the \uFEFF (zero-width space)
-			// makes sure that the lines starts correcty
+														  // makes sure that the lines starts correcty
 
-			List<object> elements = new List<object>();
+			var elements = new List<XNode>();
+			int i = 0;
 
-			int i;
-
-			while ((i = rest.IndexOf('[')) != -1)
+			foreach (var ch in WordsLive.Core.Songs.Chords.Chords.GetChords(rest))
 			{
-				string before = rest.Substring(0, i);
-				int end = rest.IndexOf(']', i);
-				if (end < 0)
-					break;
-
-				int next = rest.IndexOf('[', i + 1);
-				if (next >= 0 && next < end)
-				{
-					elements.Add(before + "[");
-					rest = rest.Substring(i + 1);
-					continue;
-				}
-
-				string chord = rest.Substring(i + 1, end - (i + 1));
-
-				rest = rest.Substring(end + 1);
-				elements.Add(before);
+				elements.Add(new XText(rest.Substring(0, ch.Position - i)));
 
 				if (showChords)
 				{
 					// abusing the <b> tag for chords for brevity
 					// we need two nested tags, the outer one with position:relative,
 					// the inner one with position:absolute (see css below)
-					elements.Add(new XElement("b", new XElement("b", chord))); // TODO: pretty printing (see original method in SongDisplayController)
+					elements.Add(new XElement("b", new XElement("b", ch.Name)));
 				}
+
+				int delta = (ch.Position - i) + ch.Name.Length + 2;
+
+				rest = rest.Substring(delta);
+				i += delta;
 			}
 
-			elements.Add(rest);
+			elements.Add(new XText(rest));
 			return elements;
 		}
 

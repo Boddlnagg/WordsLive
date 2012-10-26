@@ -1,17 +1,44 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Xml.Linq;
+﻿/*
+ * WordsLive - worship projection software
+ * Copyright (c) 2012 Patrick Reisert
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Text.RegularExpressions;
+using System.Xml.Linq;
 
 namespace WordsLive.Core.Songs
 {
+	/// <summary>
+	/// Represents a song media object.
+	/// </summary>
 	public class Song : Media
 	{
+		/// <summary>
+		/// Gets or sets the song title.
+		/// </summary>
 		public string SongTitle { get; set; }
 
+		/// <summary>
+		/// Gets the title of this media object.
+		/// </summary>
 		public override string Title
 		{
 			get
@@ -20,17 +47,59 @@ namespace WordsLive.Core.Songs
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets the category of this song.
+		/// </summary>
 		public string Category { get; set; }
+
+		/// <summary>
+		/// Gets or sets the language of this song.
+		/// </summary>
 		public string Language { get; set; }
+
+		/// <summary>
+		/// Gets or sets the language of the translation.
+		/// </summary>
 		public string TranslationLanguage { get; set; } // TODO: this setting is currently not saved (not supported in .ppl)
+
+		/// <summary>
+		/// Gets or sets the comment for this song.
+		/// </summary>
 		public string Comment { get; set; }
-		public IList<SongBackground> Backgrounds { get; set; }
+
+		/// <summary>
+		/// Gets or sets the copyright information of this song.
+		/// </summary>
+		public string Copyright { get; set; }
+
+		/// <summary>
+		/// Gets or sets a list of sources.
+		/// </summary>
+		public List<SongSource> Sources { get; set; }
+
+		/// <summary>
+		/// Gets or sets a list of backgrounds.
+		/// </summary>
+		public List<SongBackground> Backgrounds { get; set; }
+
+		/// <summary>
+		/// Gets or sets the formatting for this song.
+		/// </summary>
 		public SongFormatting Formatting { get; set; }
 		
-		public IList<SongPart> Parts { get; set; }
+		/// <summary>
+		/// Gets or sets a list of song parts.
+		/// </summary>
+		public List<SongPart> Parts { get; set; }
 		
-		public IList<string> Order { get; set; }
+		/// <summary>
+		/// Gets or sets the order of song parts indicated by a list of song part references.
+		/// </summary>
+		public List<SongPartReference> Order { get; set; }
 
+		/// <summary>
+		/// Gets the text of all parts at once.
+		/// </summary>
 		public string Text
 		{
 			get
@@ -39,6 +108,9 @@ namespace WordsLive.Core.Songs
 			}
 		}
 
+		/// <summary>
+		/// Gets the text of all parts but with chords symbols removed.
+		/// </summary>
 		public string TextWithoutChords
 		{
 			get
@@ -46,31 +118,36 @@ namespace WordsLive.Core.Songs
 				return string.Join("\n", Parts.Select(part => part.TextWithoutChords).ToArray());
 			}
 		}
-		
-		public string Copyright { get; set; }
-	   
-		public IList<SongSource> Sources { get; set; }
 
+		/// <summary>
+		/// Gets the first slide of this song or <c>null</c> if the song has no slides.
+		/// </summary>
 		public SongSlide FirstSlide
 		{
 			get
 			{
 				if (this.Order.Count == 0)
 					return null;
-				return (from p in this.Parts where p.Name == this.Order[0] select p.Slides[0]).Single();
+				return (from p in this.Parts where p.Name == this.Order[0].Name select p.Slides[0]).Single();
 			}
 		}
 
+		/// <summary>
+		/// Gets the last slide of this song or <c>null</c> if the song has no slides.
+		/// </summary>
 		public SongSlide LastSlide
 		{
 			get
 			{
 				if (this.Order.Count == 0)
 					return null;
-				return (from p in this.Parts where p.Name == this.Order[this.Order.Count - 1] select p.Slides[p.Slides.Count - 1]).Single();
+				return (from p in this.Parts where p.Name == this.Order[this.Order.Count - 1].Name select p.Slides[p.Slides.Count - 1]).Single();
 			}
 		}
 
+		/// <summary>
+		/// Gets a value indicating whether any slide in this song has a translation.
+		/// </summary>
 		public bool HasTranslation
 		{
 			get
@@ -79,6 +156,9 @@ namespace WordsLive.Core.Songs
 			}
 		}
 
+		/// <summary>
+		/// Gets a valule indicating whether any slide in this song has chords.
+		/// </summary>
 		public bool HasChords
 		{
 			get
@@ -87,26 +167,41 @@ namespace WordsLive.Core.Songs
 			}
 		}
 
-		public SongPart FindPartByName(string partName)
+		/// <summary>
+		/// Finds a part using a <see cref="SongPartReference"/>.
+		/// </summary>
+		/// <param name="reference">A reference to the song to find.</param>
+		/// <returns>The found <see cref="SongPart"/> or <c>null</c> if there was no part with the name given in the reference.</returns>
+		public SongPart FindPartByReference(SongPartReference reference)
 		{
-			return (from p in this.Parts where p.Name == partName select p).SingleOrDefault();
+			return (from p in this.Parts where p.Name == reference.Name select p).SingleOrDefault();
 		}
 
+		/// <summary>
+		/// Initializes a new instance of the <see cref="Song"/> class.
+		/// </summary>
+		/// <param name="filename">The file to load.</param>
+		/// <param name="metadataOnly">If set to <c>true</c> load metadata (title and backgrounds) only.</param>
 		public Song(string filename, bool metadataOnly = false) : base(filename)
 		{
 			if (!metadataOnly)
 				Load();
 		}
 
+		/// <summary>
+		/// Loads the media object from the file specified in the <see cref="File"/> field into memory.
+		/// This is always called before the control panel and/or presentation is shown.
+		/// Use <see cref="MediaManager.LoadMedia"/> to call this safely.
+		/// </summary>
 		public override void Load()
 		{
-			LoadPowerpraise(new FileInfo(this.File), false);
+			LoadPowerpraise(new FileInfo(this.File));
 		}
 
 		/// <summary>
-		/// Only loads title and backgrounds (for icon)
+		/// Only loads title and backgrounds (for icon).
 		/// </summary>
-		/// <param name="filename">The filename.</param>
+		/// <param name="filename">The file to load.</param>
 		protected override void LoadMetadata(string filename)
 		{
 			base.LoadMetadata(filename);
@@ -124,7 +219,12 @@ namespace WordsLive.Core.Songs
 
 		#region Powerpraise compatibility
 
-		private void LoadPowerpraise(FileInfo file, bool metadataOnly)
+		/// <summary>
+		/// Loads a song from a Powerpraise XML file (ppl)
+		/// </summary>
+		/// <param name="file">The file to load.</param>
+		/// <param name="metadataOnly">If set to <c>true</c> load metadata (title and backgrounds) only.</param>
+		private void LoadPowerpraise(FileInfo file, bool metadataOnly = false)
 		{
 			XDocument doc = XDocument.Load(file.FullName);
 			XElement root = doc.Element("ppl");
@@ -173,9 +273,8 @@ namespace WordsLive.Core.Songs
 					Comment = String.Empty;
 
 				this.Parts = (from part in root.Element("songtext").Elements("part")
-							  select new SongPart
+							  select new SongPart(part.Attribute("caption").Value)
 							  {
-								  Name = part.Attribute("caption").Value,
 								  Slides = (from slide in part.Elements("slide")
 											select new SongSlide
 											{
@@ -185,7 +284,7 @@ namespace WordsLive.Core.Songs
 												Size = slide.Attribute("mainsize") != null ? int.Parse(slide.Attribute("mainsize").Value) : Formatting.MainText.Size
 											}).ToList()
 							  }).ToList();
-				this.Order = (from item in root.Element("order").Elements("item") select item.Value).ToList();
+				this.Order = (from item in root.Element("order").Elements("item") select new SongPartReference(item.Value)).ToList();
 
 				this.Copyright = string.Join("\n", root.Element("information").Element("copyright").Element("text").Elements("line").Select(line => line.Value).ToArray());
 				this.Sources = new List<SongSource>
@@ -195,6 +294,11 @@ namespace WordsLive.Core.Songs
 			}
 		}
 
+		/// <summary>
+		/// Saves the song to a Powerpraise XML file (ppl version 3.0).
+		/// TODO: move to a separate class
+		/// </summary>
+		/// <param name="fileName">The file to save to.</param>
 		public void SavePowerpraise(string fileName)
 		{
 			XDocument doc = new XDocument(new XDeclaration("1.0","ISO-8859-1","yes"));
@@ -218,7 +322,7 @@ namespace WordsLive.Core.Songs
 					)
 				),
 				new XElement("order",
-					from item in this.Order select new XElement("item", item)
+					from item in this.Order select new XElement("item", item.Name)
 				),
 				new XElement("information",
 					new XElement("copyright",
@@ -283,11 +387,22 @@ namespace WordsLive.Core.Songs
 			writer.Close();
 		}
 
+		/// <summary>
+		/// Removes all line break characters (\n and \r).
+		/// </summary>
+		/// <param name="input">The input.</param>
+		/// <returns>The processed input.</returns>
 		private string RemoveLineBreaks(string input)
 		{
 			return input.Replace("\n", "").Replace("\r", "");
 		}
 
+		/// <summary>
+		/// Helper method to generate an XML object from a <see cref="SongTextFormatting"/> object.
+		/// </summary>
+		/// <param name="formatting">The formatting object.</param>
+		/// <param name="elementName">The element name to generate.</param>
+		/// <returns>The generated XML.</returns>
 		private static XElement SavePowerpraiseTextFormatting(SongTextFormatting formatting, string elementName)
 		{
 			return new XElement(elementName,
@@ -301,6 +416,11 @@ namespace WordsLive.Core.Songs
 			);
 		}
 
+		/// <summary>
+		/// Helper method to load a <see cref="SongTextFormatting"/> object from an XML object.
+		/// </summary>
+		/// <param name="element">The XML element.</param>
+		/// <returns>The loaded formatting object.</returns>
 		private static SongTextFormatting LoadPowerpraiseTextFormatting(XElement element)
 		{
 			return new SongTextFormatting
@@ -315,6 +435,11 @@ namespace WordsLive.Core.Songs
 			};
 		}
 
+		/// <summary>
+		/// Helper method to save a <see cref="SongBackground"/> object to XML.
+		/// </summary>
+		/// <param name="background">The background object.</param>
+		/// <returns>The path if the background is an image, otherwise the encoded color.</returns>
 		private static string SavePowerpraiseBackground(SongBackground background)
 		{
 			if (background.IsImage)
@@ -323,6 +448,11 @@ namespace WordsLive.Core.Songs
 				return CreatePowerpraiseColor(background.Color).ToString();
 		}
 
+		/// <summary>
+		/// Helper method to load a <see cref="SongBackground"/> from XML.
+		/// </summary>
+		/// <param name="background">The string encoding of the background object.</param>
+		/// <returns>The loaded background object.</returns>
 		private static SongBackground LoadPowerpraiseBackground(string background)
 		{
 			var bg = new SongBackground();
@@ -341,11 +471,21 @@ namespace WordsLive.Core.Songs
 			return bg;
 		}
 
+		/// <summary>
+		/// Helper method to create the color encoding used in Powerpraise XML.
+		/// </summary>
+		/// <param name="color">The color to encode.</param>
+		/// <returns>The encoded color.</returns>
 		private static int CreatePowerpraiseColor(Color color)
 		{
 			return color.R | (color.G << 8) | (color.B << 16);
 		}
 
+		/// <summary>
+		/// Helper method to parse a color encoded in Powerpraise XML.
+		/// </summary>
+		/// <param name="color">The string containing the encoded color.</param>
+		/// <returns>The color.</returns>
 		private static Color ParsePowerpraiseColor(string color)
 		{
 			int col = int.Parse(color);

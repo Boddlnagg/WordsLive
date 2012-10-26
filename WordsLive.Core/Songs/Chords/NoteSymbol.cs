@@ -16,49 +16,39 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace WordsLive.Core.Songs
+namespace WordsLive.Core.Songs.Chords
 {
 	/// <summary>
-	/// Represents a slide in a song.
+	/// Represents a note symbol.
 	/// </summary>
-	public class SongSlide
+	public class NoteSymbol
 	{
-		private string text;
+		/// <summary>
+		/// The actual note.
+		/// </summary>
+		public Note Note { get; private set; }
 
 		/// <summary>
-		/// Gets or sets the text on this slide.
+		/// The note's position in the original string.
 		/// </summary>
-		public string Text
+		public int Position { get; private set; }
+
+		/// <summary>
+		/// The original name of the note as it appeared in the parsed string.
+		/// </summary>
+		public string OriginalName { get; private set; }
+
+		/// <summary>
+		/// Initializes a new instance of the <see cref="NoteSymbol"/> class.
+		/// </summary>
+		/// <param name="note">The note.</param>
+		/// <param name="position">The position in the original string.</param>
+		/// <param name="originalString">The original name.</param>
+		public NoteSymbol(Note note, int position, string originalName)
 		{
-			get
-			{
-				return text;
-			}
-			set
-			{
-				text = value;
-				TextWithoutChords = Chords.Chords.RemoveAll(text);
-			}
+			Note = note;
+			Position = position;
+			OriginalName = originalName;
 		}
-
-		/// <summary>
-		/// Gets the text on this slide, but with chords removed.
-		/// </summary>
-		public string TextWithoutChords { get; private set; }
-
-		/// <summary>
-		/// Gets or sets the translation of the text on this slide.
-		/// </summary>
-		public string Translation { get; set; }
-
-		/// <summary>
-		/// Gets or sets the index pointing to the background of this slide.
-		/// </summary>
-		public int BackgroundIndex { get; set; }
-
-		/// <summary>
-		/// Gets or sets the font size of the text on this slide.
-		/// </summary>
-		public int Size { get; set; }
 	}
 }

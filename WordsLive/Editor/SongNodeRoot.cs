@@ -24,11 +24,11 @@ namespace WordsLive.Editor
 		{
 			get
 			{
-				foreach (var name in Song.Order)
+				foreach (var partRef in Song.Order)
 				{
 					foreach(var part in this.partNodes)
 					{
-						if (part.Title == name)
+						if (part.Title == partRef.Name)
 						{
 							yield return new SongPartWrapper {Content = part};
 							break;
@@ -146,15 +146,15 @@ namespace WordsLive.Editor
 		public void RemovePart(SongNodePart part)
 		{
 			int i = partNodes.IndexOf(part);
-			string[] backup = Song.Order.ToArray();
+			SongPartReference[] backup = Song.Order.ToArray();
 
 			Action redo = () =>
 			{
 				bool notify = false;
-				while(Song.Order.Contains(part.Title))
+				while(Song.Order.Contains(new SongPartReference(part.Title)))
 				{
 					notify = true;
-					Song.Order.Remove(part.Title);
+					Song.Order.Remove(new SongPartReference(part.Title));
 				}
 
 				if (notify)
@@ -167,7 +167,7 @@ namespace WordsLive.Editor
 			Action undo = () =>
 			{
 				partNodes.Insert(i, part);
-				Song.Order = new List<string>(backup);
+				Song.Order = new List<SongPartReference>(backup);
 				OnNotifyPropertyChanged("PartOrder");
 				UpdateParts();
 			};
@@ -284,7 +284,7 @@ namespace WordsLive.Editor
 				if (index < 0)
 					index = Song.Order.Count;
 
-				Song.Order.Insert(index, part.Title);
+				Song.Order.Insert(index, new SongPartReference(part.Part));
 
 				OnNotifyPropertyChanged("PartOrder");
 			};
@@ -305,18 +305,18 @@ namespace WordsLive.Editor
 			if (newIndex >= Song.Order.Count)
 					newIndex = Song.Order.Count - 1;
 
-				string title = Song.Order[index];
+				var reference = Song.Order[index];
 
 			Action redo = () =>
 			{
 				Song.Order.RemoveAt(index);
-				Song.Order.Insert(newIndex, title);
+				Song.Order.Insert(newIndex, reference);
 				OnNotifyPropertyChanged("PartOrder");
 			};
 			Action undo = () =>
 			{
 				Song.Order.RemoveAt(newIndex);
-				Song.Order.Insert(index, title);
+				Song.Order.Insert(index, reference);
 				OnNotifyPropertyChanged("PartOrder");
 			};
 
@@ -328,7 +328,7 @@ namespace WordsLive.Editor
 
 		public void RemovePartFromOrder(int index)
 		{
-			string title = Song.Order[index];
+			var reference = Song.Order[index];
 			Action redo = () =>
 			{
 				Song.Order.RemoveAt(index);
@@ -337,7 +337,7 @@ namespace WordsLive.Editor
 
 			Action undo = () =>
 			{
-				Song.Order.Insert(index, title);
+				Song.Order.Insert(index, reference);
 				OnNotifyPropertyChanged("PartOrder");
 			};
 
