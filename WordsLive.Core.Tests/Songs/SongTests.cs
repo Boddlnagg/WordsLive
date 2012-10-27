@@ -262,12 +262,29 @@ namespace WordsLive.Core.Tests.Songs
 		{
 			var part1 = new SongPart(song, "NewPart1", new SongSlide[] { new SongSlide(song) });
 			var part2 = new SongPart(song, "NewPart2", new SongSlide[] { new SongSlide(song) });
-			song.AddPartToOrder(part1);
-			song.AddPartToOrder(part2);
+			var ref1 = song.AddPartToOrder(part1);
+			var ref2 = song.AddPartToOrder(part2);
+			var ref3 = song.AddPartToOrder(part2);
 			ClearUndoRedoStack();
 
-			song.MovePartInOrder(2, 0); // move part2 to beginning
+			song.MovePartInOrder(ref2, 0); // move part2 to beginning
 			Assert.AreSame(part2, song.Order[0].Part);
+			Assert.AreSame(ref2, song.Order[0]);
+			Assert.AreSame(ref3, song.Order[3]);
+		}
+
+		[Test]
+		public void RemovePartUndoRedo2()
+		{
+			var part1 = new SongPart(song, "NewPart1", new SongSlide[] { new SongSlide(song) });
+			song.AddPartToOrder(part1);
+			ClearUndoRedoStack();
+
+			Assert.AreEqual(2, song.Order.Count);
+			song.RemovePart(part1);
+			Assert.AreEqual(1, song.Parts.Count);
+			Assert.AreEqual(1, song.Order.Count);
+			// todo: undo/redo
 		}
 	}
 }

@@ -155,10 +155,12 @@ namespace WordsLive.Editor
 			Action redo = () =>
 			{
 				bool notify = false;
-				while(Song.Order.Contains(new SongPartReference(part.Part)))
+				SongPartReference pRef;
+
+				while ((pRef = Song.Order.Where(partRef => partRef.Part == part.Part).FirstOrDefault()) != null)
 				{
 					notify = true;
-					Song.Order.Remove(new SongPartReference(part.Part));
+					Song.Order.Remove(pRef);
 				}
 
 				if (notify)

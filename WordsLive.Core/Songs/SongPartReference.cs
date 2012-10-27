@@ -24,7 +24,7 @@ namespace WordsLive.Core.Songs
 	/// <summary>
 	/// Represents a reference to a song part.
 	/// </summary>
-	public struct SongPartReference
+	public class SongPartReference
 	{
 		private Song root;
 		private SongPart part;
@@ -50,39 +50,13 @@ namespace WordsLive.Core.Songs
 		/// Initializes a new instance of the <see cref="SongPartReference"/> class.
 		/// </summary>
 		/// <param name="part">The referenced part.</param>
-		public SongPartReference(SongPart part) : this()
+		public SongPartReference(SongPart part)
 		{
 			if (part == null)
 				throw new ArgumentNullException("part");
 
 			this.root = part.Root;
 			this.part = part;
-		}
-
-		/// <summary>
-		/// Determines whether the specified <see cref="System.Object"/> is equal to this instance.
-		/// </summary>
-		/// <param name="obj">The <see cref="System.Object"/> to compare with this instance.</param>
-		/// <returns>
-		///   <c>true</c> if the specified <see cref="System.Object"/> is equal to this instance; otherwise, <c>false</c>.
-		/// </returns>
-		public override bool Equals(object obj)
-		{
-			if (obj == null || !(obj is SongPartReference))
-				return false;
-
-			return (((SongPartReference)obj).Part.Name == this.Part.Name);
-		}
-
-		/// <summary>
-		/// Returns a hash code for this instance.
-		/// </summary>
-		/// <returns>
-		/// A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table. 
-		/// </returns>
-		public override int GetHashCode()
-		{
-			return this.Part.Name.GetHashCode();
 		}
 	}
 }

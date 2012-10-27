@@ -208,7 +208,7 @@ namespace WordsLive.Core.Tests.Songs
 
 			Assert.IsFalse(notified);
 			part.Name = "NewPartName";
-			Assert.AreEqual(new SongPartReference(song, "NewPartName"), partRef);
+			Assert.AreEqual(new SongPartReference(song, "NewPartName").Part, partRef.Part);
 			Assert.IsTrue(notified);
 			notified = false;
 			Assert.AreEqual(1, UndoStackSize);
@@ -217,7 +217,7 @@ namespace WordsLive.Core.Tests.Songs
 			notified = false;
 			Redo();
 			Assert.IsTrue(notified);
-			Assert.AreEqual(new SongPartReference(song, "NewPartName"), partRef);
+			Assert.AreEqual(new SongPartReference(song, "NewPartName").Part, partRef.Part);
 		}
 
 		[Test]

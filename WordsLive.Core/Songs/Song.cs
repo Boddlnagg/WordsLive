@@ -378,10 +378,12 @@ namespace WordsLive.Core.Songs
 			Action redo = () =>
 			{
 				bool notify = false;
-				while (Order.Contains(new SongPartReference(part)))
+				SongPartReference pRef;
+
+				while ((pRef = Order.Where(partRef => partRef.Part == part).FirstOrDefault()) != null)
 				{
 					notify = true;
-					Order.Remove(new SongPartReference(part));
+					Order.Remove(pRef);
 				}
 
 				if (notify)
@@ -568,14 +570,18 @@ namespace WordsLive.Core.Songs
 		/// </summary>
 		/// <param name="part">The part to add.</param>
 		/// <param name="index">The index where to insert it in the order. If omitted, append at the end.</param>
-		public void AddPartToOrder(SongPart part, int index = -1)
+		/// <returns>A reference to the part in the order.</returns>
+		public SongPartReference AddPartToOrder(SongPart part, int index = -1)
 		{
+			SongPartReference reference = null;
+
 			Action redo = () =>
 			{
 				if (index < 0)
 					index = Order.Count;
 
-				Order.Insert(index, new SongPartReference(part));
+				reference = new SongPartReference(part);
+				Order.Insert(index, reference);
 
 				//OnNotifyPropertyChanged("Order");
 			};
@@ -589,19 +595,21 @@ namespace WordsLive.Core.Songs
 			UndoService.Current[UndoKey].AddChange(ch, "AddPartToOrder");
 
 			redo();
+
+			return reference;
 		}
 
 		/// <summary>
 		/// Moves a part in the order.
 		/// </summary>
-		/// <param name="index">The index of the part reference to move.</param>
+		/// <param name="reference">The reference in the order to the part to move.</param>
 		/// <param name="target">The target index.</param>
-		public void MovePartInOrder(int index, int target)
+		public void MovePartInOrder(SongPartReference reference, int target)
 		{
 			if (target >= Order.Count)
 				target = Order.Count - 1;
 
-			var reference = Order[index];
+			int index = Order.IndexOf(reference);
 
 			Action redo = () =>
 			{
