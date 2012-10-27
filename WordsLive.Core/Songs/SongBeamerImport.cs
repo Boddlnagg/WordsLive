@@ -71,22 +71,22 @@ namespace WordsLive.Core.Songs
 						else if (line == "---")
 						{
 							PreProcessSongBeamerProperties(prototype, properties, out langcount); // langcount > 2 is not supported (text will be ignored)
-							currentPart = new SongPart(FindUnusedPartName(prototype));
+							currentPart = new SongPart(prototype, FindUnusedPartName(prototype));
 						}
 					}
 					else
 					{
 						if (line == "---")
 						{
-							currentPart.Slides.Add(new SongSlide { Size = prototype.Formatting.MainText.Size, Text = currentText, Translation = currentTrans });
+							currentPart.Slides.Add(new SongSlide(prototype) { Size = prototype.Formatting.MainText.Size, Text = currentText, Translation = currentTrans });
 							currentText = null;
 							prototype.Parts.Add(currentPart);
-							currentPart = new SongPart(FindUnusedPartName(prototype));
+							currentPart = new SongPart(prototype, FindUnusedPartName(prototype));
 							linenum = 0;
 						}
 						else if (line == "--" || line == "--A")
 						{
-							currentPart.Slides.Add(new SongSlide { Size = prototype.Formatting.MainText.Size, Text = currentText, Translation = currentTrans });
+							currentPart.Slides.Add(new SongSlide(prototype) { Size = prototype.Formatting.MainText.Size, Text = currentText, Translation = currentTrans });
 							currentText = "";
 							linenum = 0;
 						}
@@ -129,7 +129,7 @@ namespace WordsLive.Core.Songs
 					}
 				}
 
-				currentPart.Slides.Add(new SongSlide { Size = prototype.Formatting.MainText.Size, Text = currentText, Translation = currentTrans });
+				currentPart.Slides.Add(new SongSlide(prototype) { Size = prototype.Formatting.MainText.Size, Text = currentText, Translation = currentTrans });
 				prototype.Parts.Add(currentPart);
 
 				PostProcessSongBeamerProperties(prototype, properties);

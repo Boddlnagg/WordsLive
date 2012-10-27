@@ -26,6 +26,8 @@ Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "Installer", "Installer\Inst
 		{5CA13F98-4FCA-4DED-8468-366DD89932BD} = {5CA13F98-4FCA-4DED-8468-366DD89932BD}
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WordsLive.Core.Tests", "WordsLive.Core.Tests\WordsLive.Core.Tests.csproj", "{EC7B2E3F-F040-4CDA-83CE-F7768C52A77F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -120,6 +122,16 @@ Global
 		{BC64FB21-0D66-46A6-BBB7-0AA9AE432A07}.Release|Mixed Platforms.Build.0 = Release|x86
 		{BC64FB21-0D66-46A6-BBB7-0AA9AE432A07}.Release|x86.ActiveCfg = Release|x86
 		{BC64FB21-0D66-46A6-BBB7-0AA9AE432A07}.Release|x86.Build.0 = Release|x86
+		{EC7B2E3F-F040-4CDA-83CE-F7768C52A77F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EC7B2E3F-F040-4CDA-83CE-F7768C52A77F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EC7B2E3F-F040-4CDA-83CE-F7768C52A77F}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{EC7B2E3F-F040-4CDA-83CE-F7768C52A77F}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{EC7B2E3F-F040-4CDA-83CE-F7768C52A77F}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{EC7B2E3F-F040-4CDA-83CE-F7768C52A77F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EC7B2E3F-F040-4CDA-83CE-F7768C52A77F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EC7B2E3F-F040-4CDA-83CE-F7768C52A77F}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{EC7B2E3F-F040-4CDA-83CE-F7768C52A77F}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{EC7B2E3F-F040-4CDA-83CE-F7768C52A77F}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

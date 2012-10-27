@@ -59,12 +59,12 @@ namespace WordsLive.Editor
 
 			slides.CollectionChanged += (sender, args) =>
 			{
-				part.Slides = (from slide in slides select slide.Slide).ToList();
+				part.Slides = new ObservableCollection<SongSlide>(from slide in slides select slide.Slide);
 				//DefaultChangeFactory.OnCollectionChanged(this, "Children", this.Children, args); // this does not work correctly
 			};
 		}
 
-		public SongNodePart(SongNodeRoot root, Song song, string name) : this(root, song, new SongPart(name))
+		public SongNodePart(SongNodeRoot root, Song song, string name) : this(root, song, new SongPart(song, name))
 		{
 			this.AddSlide();
 		}

@@ -179,7 +179,7 @@ namespace WordsLive.Editor
 		public SongNodeSlide(SongNodeRoot root) : base(root)
 		{
 			this.Title = WordsLive.Resources.Resource.eGridSlideTitle;
-			this.slide = new SongSlide();
+			this.slide = new SongSlide(root.Song);
 			this.FontSize = Root.Song.Formatting.MainText.Size;
 		}
 

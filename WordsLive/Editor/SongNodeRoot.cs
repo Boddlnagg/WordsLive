@@ -4,6 +4,7 @@ using System.Linq;
 using MonitoredUndo;
 using WordsLive.Core.Songs;
 using WordsLive.Core.Songs.Chords;
+using System.Collections.ObjectModel;
 
 namespace WordsLive.Editor
 {
@@ -138,7 +139,7 @@ namespace WordsLive.Editor
 		// don't forget to call this when modifying parts
 		private void UpdateParts()
 		{
-			Song.Parts = (from p in partNodes select p.Part).ToList();
+			Song.Parts = new ObservableCollection<SongPart>(from p in partNodes select p.Part);
 			OnNotifyPropertyChanged("Children");
 			OnNotifyPropertyChanged("Parts");
 		}

@@ -18,19 +18,32 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
+using MonitoredUndo;
 
 namespace WordsLive.Core.Songs
 {
 	/// <summary>
 	/// Represents a song media object.
 	/// </summary>
-	public class Song : Media
+	public class Song : Media, INotifyPropertyChanged, ISongElement
 	{
+		internal UndoKey UndoKey { get; private set; }
+
+		public UndoRoot UndoRoot
+		{
+			get
+			{
+				return UndoService.Current[UndoKey];
+			}
+		}
+
 		/// <summary>
 		/// Gets or sets the song title.
 		/// </summary>
@@ -90,7 +103,7 @@ namespace WordsLive.Core.Songs
 		/// <summary>
 		/// Gets or sets a list of song parts.
 		/// </summary>
-		public List<SongPart> Parts { get; set; }
+		public ObservableCollection<SongPart> Parts { get; set; }
 		
 		/// <summary>
 		/// Gets or sets the order of song parts indicated by a list of song part references.
@@ -184,6 +197,9 @@ namespace WordsLive.Core.Songs
 		/// <param name="metadataOnly">If set to <c>true</c> load metadata (title and backgrounds) only.</param>
 		public Song(string filename, bool metadataOnly = false) : base(filename)
 		{
+			if (UndoKey == null)
+				UndoKey = new Songs.UndoKey();
+
 			if (!metadataOnly)
 				Load();
 		}
@@ -206,6 +222,9 @@ namespace WordsLive.Core.Songs
 		{
 			base.LoadMetadata(filename);
 
+			if (UndoKey == null)
+				UndoKey = new Songs.UndoKey();
+
 			FileInfo file = new FileInfo(filename);
 			if (file.Extension == ".ppl")
 			{
@@ -216,6 +235,266 @@ namespace WordsLive.Core.Songs
 				throw new Exception("Invalid song format");
 			}
 		}
+
+		/// <summary>
+		/// Removes a part from the song (can be undone).
+		/// </summary>
+		/// <param name="part">The part to remove.</param>
+		public void RemovePart(SongPart part)
+		{
+			int i = Parts.IndexOf(part);
+			SongPartReference[] backup = Order.ToArray();
+
+			Action redo = () =>
+			{
+				bool notify = false;
+				while (Order.Contains(new SongPartReference(part.Name)))
+				{
+					notify = true;
+					Order.Remove(new SongPartReference(part.Name));
+				}
+
+				if (notify)
+					OnNotifyPropertyChanged("PartOrder");
+
+				Parts.Remove(part);
+				//UpdateParts();
+			};
+
+			Action undo = () =>
+			{
+				Parts.Insert(i, part);
+				Order = new List<SongPartReference>(backup);
+				OnNotifyPropertyChanged("Order");
+				//UpdateParts();
+			};
+
+			var ch = new DelegateChange(this, undo, redo, new ChangeKey<object, string>(this, "Parts"));
+			UndoService.Current[UndoKey].AddChange(ch, "RemovePart");
+
+			redo();
+		}
+
+		/// <summary>
+		/// Adds a part to the song (can be undone).
+		/// </summary>
+		/// <param name="part">The part to add.</param>
+		public void AddPart(SongPart part)
+		{
+			Action undo = () =>
+			{
+				Parts.Remove(part);
+				//UpdateParts();
+			};
+
+			Action redo = () =>
+			{
+				Parts.Add(part);
+				//UpdateParts();
+			};
+
+			var ch = new DelegateChange(this, undo, redo, new ChangeKey<object, string>(this, "Parts"));
+			UndoService.Current[UndoKey].AddChange(ch, "AddPart");
+
+			redo();
+		}
+
+		/// <summary>
+		/// Moves a part to the index of another one in the song structure (can be undone).
+		/// </summary>
+		/// <param name="part">The part to move.</param>
+		/// <param name="target">
+		/// The target part position where it will be moved to.
+		/// If it was before the target, move it directly after the target,
+		/// otherwise move it directly before the target.
+		/// </param>
+		public void MovePart(SongPart part, SongPart target)
+		{
+			if (part == target)
+				return;
+
+			int originalIndex = Parts.IndexOf(part);
+			int newIndex = Parts.IndexOf(target);
+
+			Action redo = () =>
+			{
+				Parts.Remove(part);
+				Parts.Insert(newIndex, part);
+				//UpdateParts();
+			};
+
+			Action undo = () =>
+			{
+				Parts.Remove(part);
+				Parts.Insert(originalIndex, part);
+				//UpdateParts();
+			};
+
+			var ch = new DelegateChange(this, undo, redo, new ChangeKey<object, string>(this, "Parts"));
+			UndoService.Current[UndoKey].AddChange(ch, "MovePart");
+
+			redo();
+		}
+
+		/// <summary>
+		/// Moves a slide to another part (can be undone).
+		/// </summary>
+		/// <param name="slide">The slide to move.</param>
+		/// <param name="target">The target part.</param>
+		public void MoveSlide(SongSlide slide, SongPart target)
+		{
+			var part = FindPartWithSlide(slide);
+
+			using (new UndoBatch(UndoRoot, "MoveSlide", false))
+			{
+				part.RemoveSlide(slide);
+				target.AddSlide(slide);
+			}
+		}
+
+		/// <summary>
+		/// Moves a slide to the position directly after another slide (can be undone).
+		/// </summary>
+		/// <param name="slide">The slide to move.</param>
+		/// <param name="target">The target slide.</param>
+		public void MoveSlideAfter(SongSlide slide, SongSlide target)
+		{
+			if (slide == target)
+				return;
+
+			var part = FindPartWithSlide(slide);
+			var targetPart = FindPartWithSlide(target);
+
+			using (new UndoBatch(UndoKey, "MoveSlide", false))
+			{
+				part.RemoveSlide(slide);
+				targetPart.InsertSlideAfter(slide, target);
+			}
+		}
+
+		/// <summary>
+		/// Finds the part that contains a given slide.
+		/// </summary>
+		/// <param name="slide">The slide. Slide instances must always be unique in a song structure.</param>
+		/// <returns>The part that contains the slide.</returns>
+		public SongPart FindPartWithSlide(SongSlide slide)
+		{
+			return Parts.Where(p => p.Slides.Contains(slide)).SingleOrDefault();
+		}
+
+		/// <summary>
+		/// Adds the given background to the song's background list if it doesn't already exist (can be undone).
+		/// </summary>
+		/// <param name="bg"></param>
+		/// <returns>The index of the new background.</returns>
+		public int AddBackground(SongBackground bg)
+		{
+			bool contains = Backgrounds.Contains(bg);
+
+			Action redo = () =>
+			{
+				if (!contains)
+					Backgrounds.Add(bg);
+			};
+
+			Action undo = () =>
+			{
+				if (!contains)
+					Backgrounds.Remove(bg);
+			};
+
+			var ch = new DelegateChange(this, undo, redo, new ChangeKey<object, string>(this, "Song.Backgrounds"));
+			UndoService.Current[UndoKey].AddChange(ch, "AddBackground");
+
+			if (contains)
+			{
+				return Backgrounds.IndexOf(bg);
+			}
+			else
+			{
+				Backgrounds.Add(bg);
+				return Backgrounds.Count - 1;
+			}
+		}
+
+		/// <summary>
+		/// Removes unreferenced backgrounds and updates the the slide accordingly.
+		/// </summary>
+		public void CleanBackgrounds()
+		{
+			Dictionary<int, int> indices = new Dictionary<int, int>();
+			var backup = Backgrounds.ToArray();
+
+			// collect all backgrounds in use
+			foreach (SongPart part in Parts)
+			{
+				foreach (SongSlide slide in part.Slides)
+				{
+					indices[slide.BackgroundIndex] = 0;
+				}
+			}
+
+			Action redo = () =>
+			{
+				// remove the ones not in use and store offsets for the rest
+				int offset = 0;
+				for (int i = 0; i < Backgrounds.Count; )
+				{
+					if (!indices.ContainsKey(i - offset)) // background is not in use
+					{
+						Backgrounds.RemoveAt(i);
+						offset--;
+					}
+					else
+					{
+						indices[i - offset] = offset;
+						i++;
+					}
+				}
+			};
+
+			Action undo = () =>
+			{
+				Backgrounds = new List<SongBackground>(backup);
+			};
+
+			using (new UndoBatch(UndoKey, "CleanBackgrounds", false))
+			{
+				redo();
+
+				// update every slide's background index
+				foreach (SongPart part in Parts)
+				{
+					foreach (SongSlide slide in part.Slides)
+					{
+						slide.BackgroundIndex = slide.BackgroundIndex + indices[slide.BackgroundIndex];
+					}
+				}
+
+				var ch = new DelegateChange(this, undo, redo, new ChangeKey<object, string>(this, "Song.Backgrounds"));
+				UndoService.Current[UndoKey].AddChange(ch, "CleanBackgrounds");
+			}
+		}
+
+		#region Interface implementations
+
+		public event PropertyChangedEventHandler PropertyChanged;
+
+		protected void OnNotifyPropertyChanged(string name)
+		{
+			if (PropertyChanged != null)
+				PropertyChanged(this, new PropertyChangedEventArgs(name));
+		}
+
+		public Song SongRoot
+		{
+			get
+			{
+				return this;
+			}
+		}
+
+		#endregion
 
 		#region Powerpraise compatibility
 
@@ -272,18 +551,18 @@ namespace WordsLive.Core.Songs
 				else
 					Comment = String.Empty;
 
-				this.Parts = (from part in root.Element("songtext").Elements("part")
-							  select new SongPart(part.Attribute("caption").Value)
+				this.Parts = new ObservableCollection<SongPart>(from part in root.Element("songtext").Elements("part")
+							  select new SongPart(this, part.Attribute("caption").Value)
 							  {
-								  Slides = (from slide in part.Elements("slide")
-											select new SongSlide
+								  Slides = new ObservableCollection<SongSlide>(from slide in part.Elements("slide")
+											select new SongSlide(this)
 											{
 												Text = string.Join("\n", slide.Elements("line").Select(line => line.Value).ToArray())/*.Trim()*/,
 												Translation = string.Join("\n", slide.Elements("translation").Select(line => line.Value).ToArray())/*.Trim()*/,
 												BackgroundIndex = slide.Attribute("backgroundnr") != null ? int.Parse(slide.Attribute("backgroundnr").Value) : 0,
 												Size = slide.Attribute("mainsize") != null ? int.Parse(slide.Attribute("mainsize").Value) : Formatting.MainText.Size
-											}).ToList()
-							  }).ToList();
+											})
+							  });
 				this.Order = (from item in root.Element("order").Elements("item") select new SongPartReference(item.Value)).ToList();
 
 				this.Copyright = string.Join("\n", root.Element("information").Element("copyright").Element("text").Elements("line").Select(line => line.Value).ToArray());
@@ -292,6 +571,8 @@ namespace WordsLive.Core.Songs
 					SongSource.Parse(string.Join("\n", root.Element("information").Element("source").Element("text").Elements("line").Select(line => line.Value).ToArray()))
 				};
 			}
+
+			UndoRoot.Clear();
 		}
 
 		/// <summary>

@@ -228,7 +228,7 @@ namespace WordsLive.Editor
 						controller.UpdateSlide(song, song.LastSlide);
 						break;
 					case MetadataDisplayPosition.None:
-						controller.UpdateSlide(song, new SongSlide());
+						controller.UpdateSlide(song, new SongSlide(song));
 						break;
 				}
 

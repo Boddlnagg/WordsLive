@@ -76,7 +76,7 @@ namespace WordsLive.Core.Songs
 			}
 			else
 			{
-				return !bg.IsImage && bg.Color == this.Color;
+				return !bg.IsImage && bg.Color.ToArgb() == this.Color.ToArgb();
 			}
 		}
 
