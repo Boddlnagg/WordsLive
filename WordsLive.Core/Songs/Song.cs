@@ -553,17 +553,17 @@ namespace WordsLive.Core.Songs
 					Comment = String.Empty;
 
 				this.Parts = new ObservableCollection<SongPart>(from part in root.Element("songtext").Elements("part")
-							  select new SongPart(this, part.Attribute("caption").Value)
-							  {
-								  Slides = new ObservableCollection<SongSlide>(from slide in part.Elements("slide")
-											select new SongSlide(this)
-											{
-												Text = string.Join("\n", slide.Elements("line").Select(line => line.Value).ToArray())/*.Trim()*/,
-												Translation = string.Join("\n", slide.Elements("translation").Select(line => line.Value).ToArray())/*.Trim()*/,
-												BackgroundIndex = slide.Attribute("backgroundnr") != null ? int.Parse(slide.Attribute("backgroundnr").Value) : 0,
-												Size = slide.Attribute("mainsize") != null ? int.Parse(slide.Attribute("mainsize").Value) : Formatting.MainText.Size
-											})
-							  });
+								select new SongPart(this,
+									part.Attribute("caption").Value,
+									from slide in part.Elements("slide") select new SongSlide(this)
+									{
+										Text = string.Join("\n", slide.Elements("line").Select(line => line.Value).ToArray())/*.Trim()*/,
+										Translation = string.Join("\n", slide.Elements("translation").Select(line => line.Value).ToArray())/*.Trim()*/,
+										BackgroundIndex = slide.Attribute("backgroundnr") != null ? int.Parse(slide.Attribute("backgroundnr").Value) : 0,
+										Size = slide.Attribute("mainsize") != null ? int.Parse(slide.Attribute("mainsize").Value) : Formatting.MainText.Size
+									}
+								)
+							  );
 				this.Order = (from item in root.Element("order").Elements("item") select new SongPartReference(this, item.Value)).ToList();
 
 				this.Copyright = string.Join("\n", root.Element("information").Element("copyright").Element("text").Elements("line").Select(line => line.Value).ToArray());

@@ -33,6 +33,7 @@ namespace WordsLive.Core.Songs
 		private int size;
 		private bool hasTranslation;
 		private bool hasChords;
+		private int backgroundIndex;
 
 		/// <summary>
 		/// Gets or sets the text on this slide.
@@ -89,7 +90,32 @@ namespace WordsLive.Core.Songs
 		/// <summary>
 		/// Gets or sets the index pointing to the background of this slide.
 		/// </summary>
-		public int BackgroundIndex { get; set; }
+		public int BackgroundIndex
+		{
+			get
+			{
+				return backgroundIndex;
+			}
+			set
+			{
+				// need to notify even if the index stays the same!
+				Undo.ChangeFactory.OnChanging(this, "BackgroundIndex", backgroundIndex, value);
+				backgroundIndex = value;
+				OnPropertyChanged("BackgroundIndex");
+				OnPropertyChanged("Background");
+			}
+		}
+
+		/// <summary>
+		/// Gets the background that is assigned to this slide.
+		/// </summary>
+		public SongBackground Background
+		{
+			get
+			{
+				return Root.Backgrounds[BackgroundIndex];
+			}
+		}
 
 		/// <summary>
 		/// Gets or sets the font size of the text on this slide.
@@ -182,6 +208,20 @@ namespace WordsLive.Core.Songs
 			s.BackgroundIndex = BackgroundIndex;
 			s.Size = Size;
 			return s;
+		}
+
+		/// <summary>
+		/// Sets the background that is assigned to this slide.
+		/// </summary>
+		/// <param name="bg">The background to use.</param>
+		public void SetBackground(SongBackground bg)
+		{
+			using (new UndoBatch(Root.UndoKey, "SetBackground", false))
+			{
+				int index = Root.AddBackground(bg);
+				this.BackgroundIndex = index;
+				Root.CleanBackgrounds();
+			}
 		}
 
 		#region Interface implementations

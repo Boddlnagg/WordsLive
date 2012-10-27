@@ -59,7 +59,9 @@ namespace WordsLive.Editor
 
 			slides.CollectionChanged += (sender, args) =>
 			{
-				part.Slides = new ObservableCollection<SongSlide>(from slide in slides select slide.Slide);
+				part.Slides.Clear();
+				foreach (var slide in slides)
+					part.Slides.Add(slide.Slide);
 				//DefaultChangeFactory.OnCollectionChanged(this, "Children", this.Children, args); // this does not work correctly
 			};
 		}

@@ -17,6 +17,7 @@
  */
 
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
@@ -59,7 +60,7 @@ namespace WordsLive.Core.Songs
 		/// <summary>
 		/// Gets or sets a list of slides.
 		/// </summary>
-		public ObservableCollection<SongSlide> Slides { get; set; }
+		public ObservableCollection<SongSlide> Slides { get; private set; }
 
 		/// <summary>
 		/// Gets the text of all slides in this part.
@@ -113,6 +114,25 @@ namespace WordsLive.Core.Songs
 
 			this.name = name;
 			this.Slides = new ObservableCollection<SongSlide>();
+		}
+
+		/// <summary>
+		/// Initializes a new instance of the <see cref="SongPart"/> class.
+		/// </summary>
+		/// <param name="root">The song this part belongs to.</param>
+		/// <param name="name">The part's name.</param>
+		/// <param name="slides">The slides to add to the part.</param>
+		public SongPart(Song root, string name, IEnumerable<SongSlide> slides)
+		{
+			this.Root = root;
+
+			if (Root.Parts != null && Root.FindPartByName(name) != null)
+			{
+				throw new InvalidOperationException("part with that name already exists");
+			}
+
+			this.name = name;
+			this.Slides = new ObservableCollection<SongSlide>(slides);
 		}
 
 		/// <summary>

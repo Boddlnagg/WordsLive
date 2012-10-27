@@ -123,5 +123,19 @@ namespace WordsLive.Core.Tests.Songs
 			Undo();
 			Assert.AreEqual("A", slide.Text);
 		}
+
+		[Test]
+		public void SetBackgroundUndoRedo()
+		{
+			Assert.AreEqual(System.Drawing.Color.Black.ToArgb(), slide.Background.Color.ToArgb());
+			var newBg = new SongBackground(System.Drawing.Color.Red);
+			slide.SetBackground(newBg);
+			Assert.AreEqual(System.Drawing.Color.Red.ToArgb(), slide.Background.Color.ToArgb());
+			Assert.AreEqual(1, UndoStackSize);
+			Undo();
+			Assert.AreEqual(System.Drawing.Color.Black.ToArgb(), slide.Background.Color.ToArgb());
+			Redo();
+			Assert.AreEqual(System.Drawing.Color.Red.ToArgb(), slide.Background.Color.ToArgb());
+		}
 	}
 }

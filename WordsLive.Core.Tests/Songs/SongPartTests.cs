@@ -219,5 +219,26 @@ namespace WordsLive.Core.Tests.Songs
 			Assert.IsTrue(notified);
 			Assert.AreEqual(new SongPartReference(song, "NewPartName"), partRef);
 		}
+
+		[Test]
+		public void PartSetBackgroundUndoRedo()
+		{
+			song.AddBackground(new SongBackground(System.Drawing.Color.Red));
+			part.AddSlide();
+			part.Slides[0].BackgroundIndex = 1;
+			ClearUndoRedoStack();
+
+			var newBg = new SongBackground(System.Drawing.Color.Green);
+
+			part.SetBackground(newBg);
+			Assert.AreEqual(newBg, song.Backgrounds.Single());
+			Assert.AreEqual(0, part.Slides[0].BackgroundIndex);
+			Assert.AreEqual(0, part.Slides[1].BackgroundIndex);
+			Assert.AreEqual(1, UndoStackSize);
+			Undo();
+			Assert.AreEqual(song.Backgrounds.Count, 2);
+			Assert.AreEqual(1, part.Slides[0].BackgroundIndex);
+			Assert.AreEqual(0, part.Slides[1].BackgroundIndex);
+		}
 	}
 }

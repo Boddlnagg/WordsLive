@@ -125,8 +125,8 @@ namespace WordsLive.Core.Tests.Songs
 		{
 			var slide1 = new SongSlide(song);
 			var slide2 = new SongSlide(song);
-			song.AddPart(new SongPart(song, "NewPart1") { Slides = new ObservableCollection<SongSlide> { slide1 }});
-			song.AddPart(new SongPart(song, "NewPart2") { Slides = new ObservableCollection<SongSlide> { slide2 }});
+			song.AddPart(new SongPart(song, "NewPart1", new SongSlide[] { slide1 }));
+			song.AddPart(new SongPart(song, "NewPart2", new SongSlide[] { slide2 }));
 			Assert.AreEqual("NewPart2", song.FindPartWithSlide(slide2).Name);
 		}
 
@@ -134,7 +134,7 @@ namespace WordsLive.Core.Tests.Songs
 		public void MoveSlide()
 		{
 			var part1 = song.Parts.Single();
-			var part2 = new SongPart(song, "NewPart") { Slides = new ObservableCollection<SongSlide> { new SongSlide(song) } };
+			var part2 = new SongPart(song, "NewPart", new SongSlide[] { new SongSlide(song) });
 			var slide0 = part1.Slides.Single();
 			var slide1 = part1.AddSlide();
 			song.AddPart(part2);
@@ -157,7 +157,7 @@ namespace WordsLive.Core.Tests.Songs
 			var slide0 = part1.Slides.Single();
 			var slide1 = part1.AddSlide();
 			var slide2 = new SongSlide(song);
-			var part2 = new SongPart(song, "NewPart") { Slides = new ObservableCollection<SongSlide> { slide2 } };
+			var part2 = new SongPart(song, "NewPart", new SongSlide[] { slide2 });
 			song.AddPart(part2);
 			ClearUndoRedoStack();
 
