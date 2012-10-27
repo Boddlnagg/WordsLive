@@ -50,7 +50,7 @@ namespace WordsLive.Core.Songs
 						),
 					new XElement("body",
 						new XElement("h1", song.SongTitle),
-						from partRef in song.Order select ExportPart(song.FindPartByReference(partRef), printChords),
+						from partRef in song.Order select ExportPart(partRef.Part, printChords),
 						new XElement("p",
 							new XAttribute("id", "copyright"),
 							song.Copyright)

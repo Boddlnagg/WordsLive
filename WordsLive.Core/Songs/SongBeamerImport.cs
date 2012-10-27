@@ -144,7 +144,7 @@ namespace WordsLive.Core.Songs
 		private static string FindUnusedPartName(Song song)
 		{
 			int i = 1;
-			while (song.FindPartByReference(new SongPartReference(i.ToString())) != null)
+			while (song.FindPartByName(i.ToString()) != null)
 			{
 				i++;
 			}
@@ -270,14 +270,14 @@ namespace WordsLive.Core.Songs
 		{
 			if (properties.ContainsKey("verseorder"))
 			{
-				song.Order = properties["verseorder"].Split(',').Select((name) => new SongPartReference(name)).ToList();
+				song.Order = properties["verseorder"].Split(',').Select((name) => new SongPartReference(song, name)).ToList();
 			}
 			else
 			{
 				// if no verseorder is specified, add each part once in order
 				foreach (SongPart part in song.Parts)
 				{
-					song.Order.Add(new SongPartReference(part.Name));
+					song.Order.Add(new SongPartReference(part));
 				}
 			}
 		}

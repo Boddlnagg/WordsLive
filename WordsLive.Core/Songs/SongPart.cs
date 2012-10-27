@@ -29,10 +29,32 @@ namespace WordsLive.Core.Songs
 	/// </summary>
 	public class SongPart : INotifyPropertyChanged, ISongElement
 	{
+		private string name;
+
 		/// <summary>
 		/// Gets or sets the name of the part. Must be unique in a song.
 		/// </summary>
-		public string Name { get; set; }
+		public string Name
+		{
+			get
+			{
+				return name;
+			}
+			set
+			{
+				if (value != name)
+				{
+					if (Root.FindPartByName(value) != null)
+					{
+						throw new InvalidOperationException("part with that name already exists");
+					}
+
+					Undo.ChangeFactory.OnChanging(this, "Name", name, value);
+					name = value;
+					OnPropertyChanged("Name");
+				}
+			}
+		}
 		
 		/// <summary>
 		/// Gets or sets a list of slides.
@@ -41,6 +63,7 @@ namespace WordsLive.Core.Songs
 
 		/// <summary>
 		/// Gets the text of all slides in this part.
+		/// Changes to this property are not notified.
 		/// </summary>
 		public string Text
 		{
@@ -52,6 +75,7 @@ namespace WordsLive.Core.Songs
 
 		/// <summary>
 		/// Gets the text of all slides in this part, but with chords removed.
+		/// Changes to this property are not notified.
 		/// </summary>
 		public string TextWithoutChords
 		{
@@ -63,17 +87,13 @@ namespace WordsLive.Core.Songs
 
 		/// <summary>
 		/// Gets a value indicating whether any slide in this part has a translation.
+		/// Changes to this property are not notified.
 		/// </summary>
 		public bool HasTranslation
 		{
 			get
 			{
-				foreach (SongSlide slide in this.Slides)
-				{
-					if (!String.IsNullOrEmpty(slide.Translation))
-						return true;
-				}
-				return false;
+				return Slides.Where(s => s.HasTranslation).Any();
 			}
 		}
 
@@ -85,7 +105,13 @@ namespace WordsLive.Core.Songs
 		public SongPart(Song root, string name)
 		{
 			this.Root = root;
-			this.Name = name;
+
+			if (Root.Parts != null && Root.FindPartByName(name) != null)
+			{
+				throw new InvalidOperationException("part with that name already exists");
+			}
+
+			this.name = name;
 			this.Slides = new ObservableCollection<SongSlide>();
 		}
 
@@ -232,7 +258,7 @@ namespace WordsLive.Core.Songs
 
 		public event PropertyChangedEventHandler PropertyChanged;
 
-		protected void OnNotifyPropertyChanged(string name)
+		protected void OnPropertyChanged(string name)
 		{
 			if (PropertyChanged != null)
 				PropertyChanged(this, new PropertyChangedEventArgs(name));

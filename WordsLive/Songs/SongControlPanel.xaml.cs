@@ -105,16 +105,16 @@ namespace WordsLive.Songs
 
 			foreach (var partRef in song.Order)
 			{
-				if (partRef.Name == selection.PartName)
+				if (partRef.Part.Name == selection.PartName)
 				{
 					var newDist = Math.Abs(selection.PartIndex - i);
 					if (i > selection.PartIndex && newDist > dist && dist >= 0)
 						break;
 					dist = newDist;
-					part = song.FindPartByReference(partRef);
+					part = partRef.Part;
 					index = slideCount;
 				}
-				slideCount += song.FindPartByReference(partRef).Slides.Count;
+				slideCount += partRef.Part.Slides.Count;
 				i++;
 			}
 

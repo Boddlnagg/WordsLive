@@ -142,7 +142,7 @@ namespace WordsLive.Core.Songs
 			{
 				if (this.Order.Count == 0)
 					return null;
-				return (from p in this.Parts where p.Name == this.Order[0].Name select p.Slides[0]).Single();
+				return (from p in this.Parts where p.Name == this.Order[0].Part.Name select p.Slides[0]).Single();
 			}
 		}
 
@@ -155,7 +155,7 @@ namespace WordsLive.Core.Songs
 			{
 				if (this.Order.Count == 0)
 					return null;
-				return (from p in this.Parts where p.Name == this.Order[this.Order.Count - 1].Name select p.Slides[p.Slides.Count - 1]).Single();
+				return (from p in this.Parts where p.Name == this.Order[this.Order.Count - 1].Part.Name select p.Slides[p.Slides.Count - 1]).Single();
 			}
 		}
 
@@ -182,13 +182,13 @@ namespace WordsLive.Core.Songs
 		}
 
 		/// <summary>
-		/// Finds a part using a <see cref="SongPartReference"/>.
+		/// Finds a part using a name.
 		/// </summary>
-		/// <param name="reference">A reference to the song to find.</param>
-		/// <returns>The found <see cref="SongPart"/> or <c>null</c> if there was no part with the name given in the reference.</returns>
-		public SongPart FindPartByReference(SongPartReference reference)
+		/// <param name="reference">The name of the part to find.</param>
+		/// <returns>The found <see cref="SongPart"/> or <c>null</c> if there was no part with specified name.</returns>
+		public SongPart FindPartByName(string name)
 		{
-			return (from p in this.Parts where p.Name == reference.Name select p).SingleOrDefault();
+			return (from p in this.Parts where p.Name == name select p).SingleOrDefault();
 		}
 
 		/// <summary>
@@ -249,14 +249,14 @@ namespace WordsLive.Core.Songs
 			Action redo = () =>
 			{
 				bool notify = false;
-				while (Order.Contains(new SongPartReference(part.Name)))
+				while (Order.Contains(new SongPartReference(part)))
 				{
 					notify = true;
-					Order.Remove(new SongPartReference(part.Name));
+					Order.Remove(new SongPartReference(part));
 				}
 
 				if (notify)
-					OnNotifyPropertyChanged("PartOrder");
+					OnPropertyChanged("PartOrder");
 
 				Parts.Remove(part);
 				//UpdateParts();
@@ -266,7 +266,7 @@ namespace WordsLive.Core.Songs
 			{
 				Parts.Insert(i, part);
 				Order = new List<SongPartReference>(backup);
-				OnNotifyPropertyChanged("Order");
+				OnPropertyChanged("Order");
 				//UpdateParts();
 			};
 
@@ -481,7 +481,7 @@ namespace WordsLive.Core.Songs
 
 		public event PropertyChangedEventHandler PropertyChanged;
 
-		protected void OnNotifyPropertyChanged(string name)
+		protected void OnPropertyChanged(string name)
 		{
 			if (PropertyChanged != null)
 				PropertyChanged(this, new PropertyChangedEventArgs(name));
@@ -564,7 +564,7 @@ namespace WordsLive.Core.Songs
 												Size = slide.Attribute("mainsize") != null ? int.Parse(slide.Attribute("mainsize").Value) : Formatting.MainText.Size
 											})
 							  });
-				this.Order = (from item in root.Element("order").Elements("item") select new SongPartReference(item.Value)).ToList();
+				this.Order = (from item in root.Element("order").Elements("item") select new SongPartReference(this, item.Value)).ToList();
 
 				this.Copyright = string.Join("\n", root.Element("information").Element("copyright").Element("text").Elements("line").Select(line => line.Value).ToArray());
 				this.Sources = new List<SongSource>
@@ -604,7 +604,7 @@ namespace WordsLive.Core.Songs
 					)
 				),
 				new XElement("order",
-					from item in this.Order select new XElement("item", item.Name)
+					from item in this.Order select new XElement("item", item.Part.Name)
 				),
 				new XElement("information",
 					new XElement("copyright",

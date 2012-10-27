@@ -194,5 +194,30 @@ namespace WordsLive.Core.Tests.Songs
 			Assert.AreEqual("Second", part.Slides[1].Text);
 			Assert.AreEqual("Third", part.Slides[2].Text);
 		}
+
+		[Test]
+		public void PartReferenceNotify()
+		{
+			var partRef = new SongPartReference(part);
+			bool notified = false;
+
+			partRef.Part.PropertyChanged += (sender, args) =>
+			{
+				notified = true;
+			};
+
+			Assert.IsFalse(notified);
+			part.Name = "NewPartName";
+			Assert.AreEqual(new SongPartReference(song, "NewPartName"), partRef);
+			Assert.IsTrue(notified);
+			notified = false;
+			Assert.AreEqual(1, UndoStackSize);
+			Undo();
+			Assert.IsTrue(notified);
+			notified = false;
+			Redo();
+			Assert.IsTrue(notified);
+			Assert.AreEqual(new SongPartReference(song, "NewPartName"), partRef);
+		}
 	}
 }

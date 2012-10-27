@@ -54,8 +54,8 @@ namespace WordsLive.Core.Songs
 					text = value;
 					HasChords = Chords.Chords.GetChords(text).Any();
 					TextWithoutChords = Chords.Chords.RemoveAll(text);
-					OnNotifyPropertyChanged("Text");
-					OnNotifyPropertyChanged("TextWithoutChords");
+					OnPropertyChanged("Text");
+					OnPropertyChanged("TextWithoutChords");
 				}
 			}
 		}
@@ -81,7 +81,7 @@ namespace WordsLive.Core.Songs
 					Undo.ChangeFactory.OnChangingTryMerge(this, "Translation", translation, value);
 					translation = value;
 					HasTranslation = !String.IsNullOrEmpty(translation);
-					OnNotifyPropertyChanged("Translation");
+					OnPropertyChanged("Translation");
 				}
 			}
 		}
@@ -119,7 +119,7 @@ namespace WordsLive.Core.Songs
 				UndoService.Current[Root.UndoKey].AddChange(ch, "ChangeTextSize");
 				redo();
 
-				OnNotifyPropertyChanged("Size");
+				OnPropertyChanged("Size");
 			}
 		}
 
@@ -137,7 +137,7 @@ namespace WordsLive.Core.Songs
 				if (value != hasTranslation)
 				{
 					hasTranslation = value;
-					OnNotifyPropertyChanged("HasTranslation");
+					OnPropertyChanged("HasTranslation");
 				}
 			}
 		}
@@ -156,7 +156,7 @@ namespace WordsLive.Core.Songs
 				if (value != hasChords)
 				{
 					hasChords = value;
-					OnNotifyPropertyChanged("HasChords");
+					OnPropertyChanged("HasChords");
 				}
 			}
 		}
@@ -188,7 +188,7 @@ namespace WordsLive.Core.Songs
 
 		public event PropertyChangedEventHandler PropertyChanged;
 
-		protected void OnNotifyPropertyChanged(string name)
+		protected void OnPropertyChanged(string name)
 		{
 			if (PropertyChanged != null)
 				PropertyChanged(this, new PropertyChangedEventArgs(name));

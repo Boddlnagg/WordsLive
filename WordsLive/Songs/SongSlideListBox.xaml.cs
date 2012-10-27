@@ -59,30 +59,30 @@ namespace WordsLive.Songs
 				string accessKey;
 				int accessIndex;
 
-				if (!partAccessIndices.ContainsKey(partRef.Name))
+				if (!partAccessIndices.ContainsKey(partRef.Part.Name))
 				{
-					var match = Regex.Match(partRef.Name, @"^[^\d]*(\d)[^\d]*$");
+					var match = Regex.Match(partRef.Part.Name, @"^[^\d]*(\d)[^\d]*$");
 					if (match != Match.Empty)
 					{
 						var keyIndex = match.Groups[1].Index + match.Groups[1].Length - 1;
 						accessIndex = keyIndex;
-						accessKey = partRef.Name.Substring(keyIndex, 1).ToUpper();
+						accessKey = partRef.Part.Name.Substring(keyIndex, 1).ToUpper();
 					}
 					else
 					{
 						// use first letter
 						accessIndex = 0;
-						accessKey = partRef.Name[0].ToString().ToUpper();
+						accessKey = partRef.Part.Name[0].ToString().ToUpper();
 					}
 
 					if (!partAccessKeys.ContainsKey(accessKey))
 					{
-						partAccessKeys.Add(accessKey, partRef.Name);
-						partAccessIndices.Add(partRef.Name, accessIndex);
+						partAccessKeys.Add(accessKey, partRef.Part.Name);
+						partAccessIndices.Add(partRef.Part.Name, accessIndex);
 					}
 					else
 					{
-						partAccessIndices.Add(partRef.Name, -1); // no access key possible
+						partAccessIndices.Add(partRef.Part.Name, -1); // no access key possible
 					}
 				}
 			}
@@ -109,21 +109,21 @@ namespace WordsLive.Songs
 			foreach (var partRef in song.Order)
 			{
 				int slideIndex = 0;
-				foreach (var s in (from p in this.song.Parts where p.Name == partRef.Name select p).Single().Slides)
+				foreach (var s in (from p in this.song.Parts where p.Name == partRef.Part.Name select p).Single().Slides)
 				{
-					var accIndex = partAccessIndices[partRef.Name];
+					var accIndex = partAccessIndices[partRef.Part.Name];
 					string pre;
 					string acc;
 					string post;
 					if (accIndex >= 0)
 					{
-						pre = partRef.Name.Substring(0, partAccessIndices[partRef.Name]);
-						acc = partRef.Name[partAccessIndices[partRef.Name]].ToString();
-						post = partRef.Name.Substring(partAccessIndices[partRef.Name] + 1);
+						pre = partRef.Part.Name.Substring(0, partAccessIndices[partRef.Part.Name]);
+						acc = partRef.Part.Name[partAccessIndices[partRef.Part.Name]].ToString();
+						post = partRef.Part.Name.Substring(partAccessIndices[partRef.Part.Name] + 1);
 					}
 					else
 					{
-						pre = partRef.Name;
+						pre = partRef.Part.Name;
 						acc = "";
 						post = "";
 					}
@@ -134,7 +134,7 @@ namespace WordsLive.Songs
 						Translation = s.Translation,
 						Background = song.Backgrounds[s.BackgroundIndex],
 						PartIndex = partIndex,
-						PartName = partRef.Name,
+						PartName = partRef.Part.Name,
 						PreAccessName = pre,
 						AccessKey = acc,
 						PostAccessName = post,

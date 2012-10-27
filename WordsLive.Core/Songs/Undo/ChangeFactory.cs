@@ -34,7 +34,7 @@ namespace WordsLive.Core.Songs.Undo
 		/// <param name="oldValue">The old value of the property.</param>
 		/// <param name="newValue">The new value of the property.</param>
 		/// <returns>A Change that can be added to the UndoRoot's undo stack.</returns>
-		public static Change GetChange(object instance, string propertyName, object oldValue, object newValue)
+		public static Change GetChange(ISongElement instance, string propertyName, object oldValue, object newValue)
 		{
 			var change = new DelegateChange(instance,
 								() => instance.GetType().GetProperty(propertyName).SetValue(instance, oldValue, null),
@@ -67,7 +67,7 @@ namespace WordsLive.Core.Songs.Undo
 		/// <param name="descriptionOfChange">A description of this change.</param>
 		public static void OnChanging(ISongElement instance, string propertyName, object oldValue, object newValue, string descriptionOfChange)
 		{
-			Change change = GetChange(instance.Root, propertyName, oldValue, newValue);
+			Change change = GetChange(instance, propertyName, oldValue, newValue);
 			UndoService.Current[instance.Root.UndoKey].AddChange(change, descriptionOfChange);
 		}
 

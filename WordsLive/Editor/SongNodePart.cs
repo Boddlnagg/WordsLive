@@ -40,7 +40,7 @@ namespace WordsLive.Editor
 
 			this.Title = part.Name;
 
-			this.PropertyChanged += (sender, args) =>
+			/*this.PropertyChanged += (sender, args) =>
 			{
 				if (args.PropertyName == "Title")
 				{
@@ -49,13 +49,13 @@ namespace WordsLive.Editor
 						int i;
 						while ((i = song.Order.IndexOf(new SongPartReference(this.part))) >= 0)
 						{
-							song.Order[i] = new SongPartReference(this.Title);
+							song.Order[i] = new SongPartReference(this.part);
 						}
 
 						this.part.Name = this.Title;
 					}
 				}
-			};
+			};*/
 
 			slides.CollectionChanged += (sender, args) =>
 			{

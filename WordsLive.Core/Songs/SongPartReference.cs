@@ -16,6 +16,9 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+using System;
+using System.ComponentModel;
+
 namespace WordsLive.Core.Songs
 {
 	/// <summary>
@@ -23,25 +26,38 @@ namespace WordsLive.Core.Songs
 	/// </summary>
 	public struct SongPartReference
 	{
-		/// <summary>
-		/// The name of the referenced <see cref="SongPart"/>
-		/// </summary>
-		public string Name { get; set; }
+		private Song root;
+		private SongPart part;
 
 		/// <summary>
-		/// Initializes a new instance of the <see cref="SongPartReference"/> class.
+		/// Gets the referenced <see cref="SongPart"/>.
 		/// </summary>
-		/// <param name="name">The name of the referenced <see cref="SongPart"/>.</param>
-		public SongPartReference(string name) : this()
+		public SongPart Part
 		{
-			Name = name;
+			get
+			{
+				return part;
+			}
 		}
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="SongPartReference"/> class.
 		/// </summary>
+		/// <param name="name">The name of the referenced <see cref="SongPart"/>.</param>
+		public SongPartReference(Song root, string name) : this(root.FindPartByName(name)) { }
+
+		/// <summary>
+		/// Initializes a new instance of the <see cref="SongPartReference"/> class.
+		/// </summary>
 		/// <param name="part">The referenced part.</param>
-		public SongPartReference(SongPart part) : this(part.Name) { }
+		public SongPartReference(SongPart part) : this()
+		{
+			if (part == null)
+				throw new ArgumentNullException("part");
+
+			this.root = part.Root;
+			this.part = part;
+		}
 
 		/// <summary>
 		/// Determines whether the specified <see cref="System.Object"/> is equal to this instance.
@@ -55,7 +71,7 @@ namespace WordsLive.Core.Songs
 			if (obj == null || !(obj is SongPartReference))
 				return false;
 
-			return (((SongPartReference)obj).Name == this.Name);
+			return (((SongPartReference)obj).Part.Name == this.Part.Name);
 		}
 
 		/// <summary>
@@ -66,7 +82,7 @@ namespace WordsLive.Core.Songs
 		/// </returns>
 		public override int GetHashCode()
 		{
-			return this.Name.GetHashCode();
+			return this.Part.Name.GetHashCode();
 		}
 	}
 }

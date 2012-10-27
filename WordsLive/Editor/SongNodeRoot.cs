@@ -29,7 +29,7 @@ namespace WordsLive.Editor
 				{
 					foreach(var part in this.partNodes)
 					{
-						if (part.Title == partRef.Name)
+						if (part.Title == partRef.Part.Name)
 						{
 							yield return new SongPartWrapper {Content = part};
 							break;
@@ -152,10 +152,10 @@ namespace WordsLive.Editor
 			Action redo = () =>
 			{
 				bool notify = false;
-				while(Song.Order.Contains(new SongPartReference(part.Title)))
+				while(Song.Order.Contains(new SongPartReference(part.Part)))
 				{
 					notify = true;
-					Song.Order.Remove(new SongPartReference(part.Title));
+					Song.Order.Remove(new SongPartReference(part.Part));
 				}
 
 				if (notify)
