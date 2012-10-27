@@ -139,7 +139,10 @@ namespace WordsLive.Editor
 		// don't forget to call this when modifying parts
 		private void UpdateParts()
 		{
-			Song.Parts = new ObservableCollection<SongPart>(from p in partNodes select p.Part);
+			Song.Parts.Clear();
+			foreach (var p in partNodes)
+				Song.Parts.Add(p.Part);
+
 			OnNotifyPropertyChanged("Children");
 			OnNotifyPropertyChanged("Parts");
 		}
@@ -147,7 +150,7 @@ namespace WordsLive.Editor
 		public void RemovePart(SongNodePart part)
 		{
 			int i = partNodes.IndexOf(part);
-			SongPartReference[] backup = Song.Order.ToArray();
+			string[] backup = Song.Order.Select(partRef => partRef.Part.Name).ToArray();
 
 			Action redo = () =>
 			{
@@ -168,7 +171,7 @@ namespace WordsLive.Editor
 			Action undo = () =>
 			{
 				partNodes.Insert(i, part);
-				Song.Order = new List<SongPartReference>(backup);
+				Song.SetOrder(backup);
 				OnNotifyPropertyChanged("PartOrder");
 				UpdateParts();
 			};
@@ -488,7 +491,11 @@ namespace WordsLive.Editor
 
 			Action undo = () =>
 			{
-				Song.Backgrounds = new List<SongBackground>(backup);
+				Song.Backgrounds.Clear();
+				foreach (var back in backup)
+				{
+					Song.Backgrounds.Add(back);
+				}
 			};
 
 			using (new UndoBatch(this, "SetBackground", false))
@@ -545,7 +552,11 @@ namespace WordsLive.Editor
 
 			Action undo = () =>
 			{
-				Song.Backgrounds = new List<SongBackground>(backup);
+				Song.Backgrounds.Clear();
+				foreach (var back in backup)
+				{
+					Song.Backgrounds.Add(back);
+				}
 			};
 
 			using (new UndoBatch(this, "CleanBackgrounds", false))

@@ -35,6 +35,16 @@ namespace WordsLive.Core.Songs
 	/// </summary>
 	public class Song : Media, INotifyPropertyChanged, ISongElement
 	{
+		private string songTitle;
+		private string category;
+		private string language;
+		private string translationLanguage;
+		private string comment;
+		private string copyright;
+		private SongFormatting formatting;
+
+		#region Undo/Redo
+
 		internal UndoKey UndoKey { get; private set; }
 
 		public UndoRoot UndoRoot
@@ -45,74 +55,176 @@ namespace WordsLive.Core.Songs
 			}
 		}
 
+		#endregion
+
 		/// <summary>
 		/// Gets or sets the song title.
 		/// </summary>
-		public string SongTitle { get; set; }
-
-		/// <summary>
-		/// Gets the title of this media object.
-		/// </summary>
-		public override string Title
+		public string SongTitle
 		{
 			get
 			{
-				return SongTitle;
+				return songTitle;
+			}
+			set
+			{
+				if (String.IsNullOrWhiteSpace(value))
+					throw new ArgumentException("value");
+
+				if (value != songTitle)
+				{
+					Undo.ChangeFactory.OnChanging(this, "SongTitle", songTitle, value);
+					songTitle = value;
+					OnPropertyChanged("SongTitle");
+					OnPropertyChanged("Title");
+				}
 			}
 		}
 
 		/// <summary>
 		/// Gets or sets the category of this song.
 		/// </summary>
-		public string Category { get; set; }
+		public string Category
+		{
+			get
+			{
+				return category;
+			}
+			set
+			{
+				if (value != category)
+				{
+					Undo.ChangeFactory.OnChanging(this, "Category", category, value);
+					category = value;
+					OnPropertyChanged("Category");
+				}
+			}
+		}
 
 		/// <summary>
 		/// Gets or sets the language of this song.
 		/// </summary>
-		public string Language { get; set; }
+		public string Language
+		{
+			get
+			{
+				return language;
+			}
+			set
+			{
+				if (value != language)
+				{
+					Undo.ChangeFactory.OnChanging(this, "Language", language, value);
+					language = value;
+					OnPropertyChanged("Language");
+				}
+			}
+		}
 
 		/// <summary>
 		/// Gets or sets the language of the translation.
+		/// TODO: this setting is currently not saved (not supported in .ppl)
 		/// </summary>
-		public string TranslationLanguage { get; set; } // TODO: this setting is currently not saved (not supported in .ppl)
+		public string TranslationLanguage
+		{
+			get
+			{
+				return translationLanguage;
+			}
+			set
+			{
+				if (value != translationLanguage)
+				{
+					Undo.ChangeFactory.OnChanging(this, "TranslationLanguage", translationLanguage, value);
+					translationLanguage = value;
+					OnPropertyChanged("TranslationLanguage");
+				}
+			}
+		}
 
 		/// <summary>
 		/// Gets or sets the comment for this song.
 		/// </summary>
-		public string Comment { get; set; }
+		public string Comment
+		{
+			get
+			{
+				return comment;
+			}
+			set
+			{
+				if (value != comment)
+				{
+					Undo.ChangeFactory.OnChanging(this, "Comment", comment, value);
+					comment = value;
+					OnPropertyChanged("Comment");
+				}
+			}
+		}
 
 		/// <summary>
 		/// Gets or sets the copyright information of this song.
 		/// </summary>
-		public string Copyright { get; set; }
+		public string Copyright
+		{
+			get
+			{
+				return copyright;
+			}
+			set
+			{
+				if (value != copyright)
+				{
+					Undo.ChangeFactory.OnChanging(this, "Copyright", copyright, value);
+					copyright = value;
+					OnPropertyChanged("Copyright");
+				}
+			}
+		}
 
 		/// <summary>
-		/// Gets or sets a list of sources.
+		/// Gets a list of sources.
 		/// </summary>
-		public List<SongSource> Sources { get; set; }
+		public ObservableCollection<SongSource> Sources { get; private set; }
 
 		/// <summary>
 		/// Gets or sets a list of backgrounds.
 		/// </summary>
-		public List<SongBackground> Backgrounds { get; set; }
+		public ObservableCollection<SongBackground> Backgrounds { get; private set; }
 
 		/// <summary>
 		/// Gets or sets the formatting for this song.
 		/// </summary>
-		public SongFormatting Formatting { get; set; }
+		public SongFormatting Formatting
+		{
+			get
+			{
+				return formatting;
+			}
+			set
+			{
+				if (value != formatting)
+				{
+					Undo.ChangeFactory.OnChanging(this, "Formatting", formatting, value);
+					formatting = value;
+					OnPropertyChanged("Formatting");
+				}
+			}
+		}
 		
 		/// <summary>
-		/// Gets or sets a list of song parts.
+		/// Gets a list of song parts.
 		/// </summary>
-		public ObservableCollection<SongPart> Parts { get; set; }
+		public ObservableCollection<SongPart> Parts { get; private set; }
 		
 		/// <summary>
 		/// Gets or sets the order of song parts indicated by a list of song part references.
 		/// </summary>
-		public List<SongPartReference> Order { get; set; }
+		public ObservableCollection<SongPartReference> Order { get; private set; }
 
 		/// <summary>
 		/// Gets the text of all parts at once.
+		/// Changes to this property are not notified.
 		/// </summary>
 		public string Text
 		{
@@ -124,6 +236,7 @@ namespace WordsLive.Core.Songs
 
 		/// <summary>
 		/// Gets the text of all parts but with chords symbols removed.
+		/// Changes to this property are not notified.
 		/// </summary>
 		public string TextWithoutChords
 		{
@@ -135,6 +248,7 @@ namespace WordsLive.Core.Songs
 
 		/// <summary>
 		/// Gets the first slide of this song or <c>null</c> if the song has no slides.
+		/// Changes to this property are not notified.
 		/// </summary>
 		public SongSlide FirstSlide
 		{
@@ -148,6 +262,7 @@ namespace WordsLive.Core.Songs
 
 		/// <summary>
 		/// Gets the last slide of this song or <c>null</c> if the song has no slides.
+		/// Changes to this property are not notified.
 		/// </summary>
 		public SongSlide LastSlide
 		{
@@ -161,6 +276,7 @@ namespace WordsLive.Core.Songs
 
 		/// <summary>
 		/// Gets a value indicating whether any slide in this song has a translation.
+		/// Changes to this property are not notified.
 		/// </summary>
 		public bool HasTranslation
 		{
@@ -172,6 +288,7 @@ namespace WordsLive.Core.Songs
 
 		/// <summary>
 		/// Gets a valule indicating whether any slide in this song has chords.
+		/// Changes to this property are not notified.
 		/// </summary>
 		public bool HasChords
 		{
@@ -199,10 +316,22 @@ namespace WordsLive.Core.Songs
 		public Song(string filename, bool metadataOnly = false) : base(filename)
 		{
 			if (UndoKey == null)
-				UndoKey = new Undo.UndoKey();
+				Init();
 
 			if (!metadataOnly)
 				Load();
+		}
+
+		/// <summary>
+		/// Initializes some attributes.
+		/// </summary>
+		private void Init()
+		{
+			UndoKey = new Undo.UndoKey();
+			Parts = new ObservableCollection<SongPart>();
+			Sources = new ObservableCollection<SongSource>();
+			Order = new ObservableCollection<SongPartReference>();
+			Backgrounds = new ObservableCollection<SongBackground>();
 		}
 
 		/// <summary>
@@ -224,7 +353,7 @@ namespace WordsLive.Core.Songs
 			base.LoadMetadata(filename);
 
 			if (UndoKey == null)
-				UndoKey = new Undo.UndoKey();
+				Init();
 
 			FileInfo file = new FileInfo(filename);
 			if (file.Extension == ".ppl")
@@ -244,7 +373,7 @@ namespace WordsLive.Core.Songs
 		public void RemovePart(SongPart part)
 		{
 			int i = Parts.IndexOf(part);
-			SongPartReference[] backup = Order.ToArray();
+			string[] backup = Order.Select(partRef => partRef.Part.Name).ToArray();
 
 			Action redo = () =>
 			{
@@ -265,7 +394,7 @@ namespace WordsLive.Core.Songs
 			Action undo = () =>
 			{
 				Parts.Insert(i, part);
-				Order = new List<SongPartReference>(backup);
+				SetOrder(backup);
 				OnPropertyChanged("Order");
 				//UpdateParts();
 			};
@@ -393,6 +522,107 @@ namespace WordsLive.Core.Songs
 		}
 
 		/// <summary>
+		/// Copies the specified slide into a given part.
+		/// The copy will be appended to the part's slide list.
+		/// </summary>
+		/// <param name="slide">The slide to copy.</param>
+		/// <param name="target">The part where the copy will be inserted.</param>
+		/// <returns>The copy.</returns>
+		public SongSlide CopySlide(SongSlide slide, SongPart target)
+		{
+			SongSlide s;
+			var part = FindPartWithSlide(slide);
+
+			using (new UndoBatch(UndoKey, "CopySlide", false))
+			{
+				s = slide.Copy();
+				target.AddSlide(s);
+			}
+
+			return s;
+		}
+
+		/// <summary>
+		/// Copies a slide and inserts it after another slide.
+		/// </summary>
+		/// <param name="slide">The slide to copy</param>
+		/// <param name="target">The slide after which the copy will be inserted.</param>
+		/// <returns>The copy.</returns>
+		public SongSlide CopySlideAfter(SongSlide slide, SongSlide target)
+		{
+			SongSlide s;
+			var part = FindPartWithSlide(slide);
+			var targetPart = FindPartWithSlide(target);
+
+			using (new UndoBatch(UndoKey, "CopySlideAfter", false))
+			{
+				s = slide.Copy();
+				targetPart.InsertSlideAfter(s, target);
+			}
+
+			return s;
+		}
+
+		/// <summary>
+		/// Adds a part to the part order.
+		/// </summary>
+		/// <param name="part">The part to add.</param>
+		/// <param name="index">The index where to insert it in the order. If omitted, append at the end.</param>
+		public void AddPartToOrder(SongPart part, int index = -1)
+		{
+			Action redo = () =>
+			{
+				if (index < 0)
+					index = Order.Count;
+
+				Order.Insert(index, new SongPartReference(part));
+
+				//OnNotifyPropertyChanged("Order");
+			};
+			Action undo = () =>
+			{
+				Order.RemoveAt(index);
+				//OnNotifyPropertyChanged("Order");
+			};
+
+			var ch = new DelegateChange(this, undo, redo, new ChangeKey<object, string>(this, "Order"));
+			UndoService.Current[UndoKey].AddChange(ch, "AddPartToOrder");
+
+			redo();
+		}
+
+		/// <summary>
+		/// Moves a part in the order.
+		/// </summary>
+		/// <param name="index">The index of the part reference to move.</param>
+		/// <param name="target">The target index.</param>
+		public void MovePartInOrder(int index, int target)
+		{
+			if (target >= Order.Count)
+				target = Order.Count - 1;
+
+			var reference = Order[index];
+
+			Action redo = () =>
+			{
+				Order.RemoveAt(index);
+				Order.Insert(target, reference);
+				//OnNotifyPropertyChanged("Order");
+			};
+			Action undo = () =>
+			{
+				Order.RemoveAt(target);
+				Order.Insert(index, reference);
+				//OnNotifyPropertyChanged("Order");
+			};
+
+			var ch = new DelegateChange(this, undo, redo, new ChangeKey<object, string>(this, "Order"));
+			UndoService.Current[this].AddChange(ch, "MovePartInOrder");
+
+			redo();
+		}
+
+		/// <summary>
 		/// Finds the part that contains a given slide.
 		/// </summary>
 		/// <param name="slide">The slide. Slide instances must always be unique in a song structure.</param>
@@ -475,7 +705,11 @@ namespace WordsLive.Core.Songs
 
 			Action undo = () =>
 			{
-				Backgrounds = new List<SongBackground>(backup);
+				Backgrounds.Clear();
+				foreach (var back in backup)
+				{
+					Backgrounds.Add(back);
+				}
 			};
 
 			using (new UndoBatch(UndoKey, "CleanBackgrounds", false))
@@ -493,6 +727,19 @@ namespace WordsLive.Core.Songs
 
 				var ch = new DelegateChange(this, undo, redo, new ChangeKey<object, string>(this, "Song.Backgrounds"));
 				UndoService.Current[UndoKey].AddChange(ch, "CleanBackgrounds");
+			}
+		}
+
+		/// <summary>
+		/// Sets the part order using the part's names. Parts with these names must already exist in the parts list.
+		/// </summary>
+		/// <param name="partNames">The names of the parts in the order they should appear.</param>
+		public void SetOrder(IEnumerable<string> partNames)
+		{
+			Order.Clear();
+			foreach (var n in partNames)
+			{
+				Order.Add(new SongPartReference(this, n));
 			}
 		}
 
@@ -514,6 +761,17 @@ namespace WordsLive.Core.Songs
 			}
 		}
 
+		/// <summary>
+		/// Gets the title of this media object.
+		/// </summary>
+		public override string Title
+		{
+			get
+			{
+				return SongTitle;
+			}
+		}
+
 		#endregion
 
 		#region Powerpraise compatibility
@@ -530,7 +788,12 @@ namespace WordsLive.Core.Songs
 			this.SongTitle = root.Element("general").Element("title").Value;
 
 			var formatting = root.Element("formatting");
-			this.Backgrounds = (from bg in root.Element("formatting").Element("background").Elements("file") select LoadPowerpraiseBackground(bg.Value)).ToList();
+
+			this.Backgrounds.Clear(); // this is needed, because the indices must be correct
+			foreach (var bg in root.Element("formatting").Element("background").Elements("file"))
+			{
+				this.Backgrounds.Add(LoadPowerpraiseBackground(bg.Value));
+			}
 			
 			if (!metadataOnly)
 			{
@@ -571,25 +834,24 @@ namespace WordsLive.Core.Songs
 				else
 					Comment = String.Empty;
 
-				this.Parts = new ObservableCollection<SongPart>(from part in root.Element("songtext").Elements("part")
-								select new SongPart(this,
+				foreach (var part in root.Element("songtext").Elements("part"))
+				{
+					this.Parts.Add(new SongPart(this,
 									part.Attribute("caption").Value,
 									from slide in part.Elements("slide") select new SongSlide(this)
 									{
-										Text = string.Join("\n", slide.Elements("line").Select(line => line.Value).ToArray())/*.Trim()*/,
-										Translation = string.Join("\n", slide.Elements("translation").Select(line => line.Value).ToArray())/*.Trim()*/,
+										Text = String.Join("\n", slide.Elements("line").Select(line => line.Value).ToArray())/*.Trim()*/,
+										Translation = String.Join("\n", slide.Elements("translation").Select(line => line.Value).ToArray())/*.Trim()*/,
 										BackgroundIndex = slide.Attribute("backgroundnr") != null ? int.Parse(slide.Attribute("backgroundnr").Value) : 0,
 										Size = slide.Attribute("mainsize") != null ? int.Parse(slide.Attribute("mainsize").Value) : Formatting.MainText.Size
 									}
-								)
-							  );
-				this.Order = (from item in root.Element("order").Elements("item") select new SongPartReference(this, item.Value)).ToList();
+								));
+				}
 
-				this.Copyright = string.Join("\n", root.Element("information").Element("copyright").Element("text").Elements("line").Select(line => line.Value).ToArray());
-				this.Sources = new List<SongSource>
-				{
-					SongSource.Parse(string.Join("\n", root.Element("information").Element("source").Element("text").Elements("line").Select(line => line.Value).ToArray()))
-				};
+				this.SetOrder(from item in root.Element("order").Elements("item") select item.Value);
+
+				this.Copyright = String.Join("\n", root.Element("information").Element("copyright").Element("text").Elements("line").Select(line => line.Value).ToArray());
+				this.Sources.Add(SongSource.Parse(String.Join("\n", root.Element("information").Element("source").Element("text").Elements("line").Select(line => line.Value))));
 			}
 
 			UndoRoot.Clear();

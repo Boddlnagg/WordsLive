@@ -215,5 +215,59 @@ namespace WordsLive.Core.Tests.Songs
 			Redo();
 			Assert.AreEqual(2, song.Parts.Count);
 		}
+
+		[Test]
+		public void CopySlideUndoRedo()
+		{
+			var part0 = song.Parts.Single();
+			var slide = new SongSlide(song);
+			var part1 = new SongPart(song, "NewPart", new SongSlide[] { slide });
+			song.AddPart(part1);
+			ClearUndoRedoStack();
+
+			song.CopySlide(part0.Slides.Single(), part1);
+			Assert.AreEqual(2, part1.Slides.Count);
+			Assert.AreEqual("SimpleLine", part1.Slides[1].Text);
+			Assert.AreEqual(1, UndoStackSize);
+			Undo();
+			Assert.AreSame(slide, part1.Slides.Single());
+			Redo();
+			Assert.AreEqual(2, part1.Slides.Count);
+			Assert.AreEqual(1, part0.Slides.Count);
+		}
+
+		[Test]
+		public void AddPartToOrderUndoRedo()
+		{
+			var part1 = new SongPart(song, "NewPart1", new SongSlide[] { new SongSlide(song) });
+			var part2 = new SongPart(song, "NewPart2", new SongSlide[] { new SongSlide(song) });
+			ClearUndoRedoStack();
+
+			song.AddPartToOrder(part1);
+			Assert.AreEqual(2, song.Order.Count);
+			Assert.AreEqual("NewPart1", song.Order[1].Part.Name);
+			song.AddPartToOrder(part2, 0);
+			Assert.AreEqual(3, song.Order.Count);
+			Assert.AreEqual("NewPart2", song.Order[0].Part.Name);
+			Assert.AreEqual("NewPart1", song.Order[2].Part.Name);
+			Assert.AreEqual(2, UndoStackSize);
+			Undo();
+			Assert.AreEqual("NewPart1", song.Order[1].Part.Name);
+			Redo();
+			Assert.AreEqual(3, song.Order.Count);
+		}
+
+		[Test]
+		public void MovePartInOrder()
+		{
+			var part1 = new SongPart(song, "NewPart1", new SongSlide[] { new SongSlide(song) });
+			var part2 = new SongPart(song, "NewPart2", new SongSlide[] { new SongSlide(song) });
+			song.AddPartToOrder(part1);
+			song.AddPartToOrder(part2);
+			ClearUndoRedoStack();
+
+			song.MovePartInOrder(2, 0); // move part2 to beginning
+			Assert.AreSame(part2, song.Order[0].Part);
+		}
 	}
 }
