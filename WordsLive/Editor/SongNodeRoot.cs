@@ -150,7 +150,7 @@ namespace WordsLive.Editor
 		public void RemovePart(SongNodePart part)
 		{
 			int i = partNodes.IndexOf(part);
-			string[] backup = Song.Order.Select(partRef => partRef.Part.Name).ToArray();
+			SongPartReference[] backup = Song.Order.ToArray();
 
 			Action redo = () =>
 			{

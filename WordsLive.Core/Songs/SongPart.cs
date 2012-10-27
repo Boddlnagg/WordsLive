@@ -261,6 +261,11 @@ namespace WordsLive.Core.Songs
 		/// <param name="bg">The background to use.</param>
 		public void SetBackground(SongBackground bg)
 		{
+			if (!Root.Parts.Contains(this))
+			{
+				throw new InvalidOperationException("part has not been added to a song");
+			}
+
 			using (new UndoBatch(Root.UndoKey, "SetBackground", false))
 			{
 				int index = Root.AddBackground(bg);

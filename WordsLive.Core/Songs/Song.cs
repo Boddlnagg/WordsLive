@@ -373,7 +373,7 @@ namespace WordsLive.Core.Songs
 		public void RemovePart(SongPart part)
 		{
 			int i = Parts.IndexOf(part);
-			string[] backup = Order.Select(partRef => partRef.Part.Name).ToArray();
+			SongPartReference[] backup = Order.ToArray();
 
 			Action redo = () =>
 			{
@@ -395,6 +395,9 @@ namespace WordsLive.Core.Songs
 
 			Action undo = () =>
 			{
+				if (i == Parts.Count)
+					i--;
+
 				Parts.Insert(i, part);
 				SetOrder(backup);
 				OnPropertyChanged("Order");
@@ -525,7 +528,8 @@ namespace WordsLive.Core.Songs
 
 		/// <summary>
 		/// Copies the specified slide into a given part.
-		/// The copy will be appended to the part's slide list.
+		/// The copy will be appended to the part's slide list
+		/// (can be undone).
 		/// </summary>
 		/// <param name="slide">The slide to copy.</param>
 		/// <param name="target">The part where the copy will be inserted.</param>
@@ -545,7 +549,7 @@ namespace WordsLive.Core.Songs
 		}
 
 		/// <summary>
-		/// Copies a slide and inserts it after another slide.
+		/// Copies a slide and inserts it after another slide (can be undone).
 		/// </summary>
 		/// <param name="slide">The slide to copy</param>
 		/// <param name="target">The slide after which the copy will be inserted.</param>
@@ -566,13 +570,16 @@ namespace WordsLive.Core.Songs
 		}
 
 		/// <summary>
-		/// Adds a part to the part order.
+		/// Adds a part to the part order (can be undone).
 		/// </summary>
 		/// <param name="part">The part to add.</param>
 		/// <param name="index">The index where to insert it in the order. If omitted, append at the end.</param>
 		/// <returns>A reference to the part in the order.</returns>
 		public SongPartReference AddPartToOrder(SongPart part, int index = -1)
 		{
+			if (Parts.IndexOf(part) < 0)
+				throw new ArgumentException("part has not been added to this song");
+
 			SongPartReference reference = null;
 
 			Action redo = () =>
@@ -600,7 +607,7 @@ namespace WordsLive.Core.Songs
 		}
 
 		/// <summary>
-		/// Moves a part in the order.
+		/// Moves a part in the order (can be undone).
 		/// </summary>
 		/// <param name="reference">The reference in the order to the part to move.</param>
 		/// <param name="target">The target index.</param>
@@ -626,6 +633,32 @@ namespace WordsLive.Core.Songs
 
 			var ch = new DelegateChange(this, undo, redo, new ChangeKey<object, string>(this, "Order"));
 			UndoService.Current[this].AddChange(ch, "MovePartInOrder");
+
+			redo();
+		}
+
+		/// <summary>
+		/// Removes a part from the order (can be undone).
+		/// </summary>
+		/// <param name="reference">The part to remove, identified by a <see cref="SongPartReference"/>.</param>
+		public void RemovePartFromOrder(SongPartReference reference)
+		{
+			int index = Order.IndexOf(reference);
+
+			Action redo = () =>
+			{
+				Order.RemoveAt(index);
+				//OnNotifyPropertyChanged("PartOrder");
+			};
+
+			Action undo = () =>
+			{
+				Order.Insert(index, reference);
+				//OnNotifyPropertyChanged("PartOrder");
+			};
+
+			var ch = new DelegateChange(this, undo, redo, new ChangeKey<object, string>(this, "PartOrder"));
+			UndoService.Current[this].AddChange(ch, "RemovePartFromOrder");
 
 			redo();
 		}
@@ -739,6 +772,45 @@ namespace WordsLive.Core.Songs
 		}
 
 		/// <summary>
+		/// Sets the background of every slide in the song.
+		/// </summary>
+		/// <param name="bg">The background to use.</param>
+		public void SetBackground(SongBackground bg)
+		{
+			var backup = Backgrounds.ToArray();
+			Action redo = () =>
+			{
+				Backgrounds.Clear();
+				Backgrounds.Add(bg);
+
+			};
+
+			Action undo = () =>
+			{
+				Backgrounds.Clear();
+				foreach (var back in backup)
+				{
+					Backgrounds.Add(back);
+				}
+			};
+
+			using (new UndoBatch(UndoKey, "SetBackground", false))
+			{
+				Backgrounds.Clear();
+				Backgrounds.Add(bg);
+
+				foreach (var part in this.Parts)
+				{
+					foreach (var slide in part.Slides)
+						slide.BackgroundIndex = 0;
+				}
+
+				var ch = new DelegateChange(this, undo, redo, new ChangeKey<object, string>(this, "Song.Backgrounds"));
+				UndoService.Current[UndoKey].AddChange(ch, "SetBackground");
+			}
+		}
+
+		/// <summary>
 		/// Sets the part order using the part's names. Parts with these names must already exist in the parts list.
 		/// </summary>
 		/// <param name="partNames">The names of the parts in the order they should appear.</param>
@@ -748,6 +820,19 @@ namespace WordsLive.Core.Songs
 			foreach (var n in partNames)
 			{
 				Order.Add(new SongPartReference(this, n));
+			}
+		}
+
+		/// <summary>
+		/// Sets the part order using the part's names. Parts with these names must already exist in the parts list.
+		/// </summary>
+		/// <param name="partNames">The names of the parts in the order they should appear.</param>
+		public void SetOrder(IEnumerable<SongPartReference> partReferences)
+		{
+			Order.Clear();
+			foreach (var r in partReferences)
+			{
+				Order.Add(r);
 			}
 		}
 
