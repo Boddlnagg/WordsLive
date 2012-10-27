@@ -4,6 +4,8 @@
 			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
 			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 			 xmlns:local="clr-namespace:WordsLive.Editor"
+			 xmlns:nodes="clr-namespace:WordsLive.Editor.Nodes"
+			 xmlns:songs="clr-namespace:WordsLive.Core.Songs;assembly=WordsLive.Core"
 			 xmlns:my="clr-namespace:WordsLive"
 			 xmlns:resx="clr-namespace:WordsLive.Resources"
 			 mc:Ignorable="d" 
@@ -191,6 +193,93 @@
 							</ContextMenu>
 						</TextBlock.ContextMenu>
 					</TextBlock>
+				</StackPanel>
+			</HierarchicalDataTemplate>
+		</TreeView.Resources>
+		<TreeView.ItemContainerStyle>
+			<Style TargetType="{x:Type TreeViewItem}">
+				<Setter Property="TreeViewItem.IsExpanded" Value="True"/>
+				<!-- We have to select the item which is right-clicked on -->
+				<EventSetter Event="TreeViewItem.PreviewMouseRightButtonDown" Handler="TreeViewItem_PreviewMouseRightButtonDown"/>
+			</Style>
+		</TreeView.ItemContainerStyle>
+	</TreeView>
+	<!-- TODO: add event handlers (drag & drop, ...) -->
+	<TreeView
+		x:Name="StructureTree2" ItemsSource="{Binding}"
+		Grid.Row="0" Grid.Column="0" Margin="0,26,0,0" Grid.RowSpan="3">
+		<!--<TreeView.CommandBindings>
+			<CommandBinding Command="{x:Static my:CustomCommands.Duplicate}" Executed="OnExecuteCommand"/>
+			<CommandBinding Command="{x:Static my:CustomCommands.Rename}" Executed="OnExecuteCommand"/>
+			<CommandBinding Command="Delete" Executed="OnExecuteCommand" CanExecute="OnCanExecuteCommand"/>
+			<CommandBinding Command="{x:Static my:CustomCommands.Insert}" Executed="OnExecuteCommand"/>
+			<CommandBinding Command="{x:Static my:CustomCommands.AddPart}" Executed="OnExecuteCommand"/>
+		</TreeView.CommandBindings>-->
+		<TreeView.Resources>
+			<nodes:SlideNameConverter x:Key="SlideNameConverter"/>
+			<nodes:ChildNodesConverter x:Key="ChildNodesConverter"/>
+			<HierarchicalDataTemplate DataType="{x:Type songs:Song}" ItemsSource="{Binding Converter={StaticResource ChildNodesConverter}}">
+				<StackPanel Orientation="Horizontal">
+					<Image Width="16" Height="16" Margin="0, 1, 2, 1" Source="/WordsLive;component/Artwork/Small_Song.png" />
+					<TextBlock Text="{Binding SongTitle}">
+						<TextBlock.ContextMenu>
+							<ContextMenu>
+								<MenuItem Header="{x:Static resx:Resource.eGridContextRenameSong}" Command="{x:Static my:CustomCommands.Rename}" CommandParameter="{Binding}"/>
+								<MenuItem Header="{x:Static resx:Resource.eGridContextAddPart}" Command="{x:Static my:CustomCommands.Insert}" CommandParameter="{Binding}"/>
+							</ContextMenu>
+						</TextBlock.ContextMenu>
+					</TextBlock>
+				</StackPanel>
+			</HierarchicalDataTemplate>
+			<HierarchicalDataTemplate DataType="{x:Type songs:SongPart}" ItemsSource="{Binding Slides}">
+				<StackPanel Orientation="Horizontal">
+					<Image Width="16" Height="16" Margin="0, 1, 2, 1" Source="/WordsLive;component/Artwork/Small_Folder.png" />
+					<TextBlock Text="{Binding Name}">
+						<TextBlock.ContextMenu>
+							<ContextMenu>
+								<MenuItem Header="{x:Static resx:Resource.eGridContextRename}" Command="{x:Static my:CustomCommands.Rename}" CommandParameter="{Binding}"/>
+								<MenuItem Header="{x:Static resx:Resource.eGridContextRemovePart}" Command="Delete" CommandParameter="{Binding}"/>
+								<MenuItem Header="{x:Static resx:Resource.eGridContextAddSlide}" Command="{x:Static my:CustomCommands.Insert}" CommandParameter="{Binding}"/>
+							</ContextMenu>
+						</TextBlock.ContextMenu>
+					</TextBlock>
+				</StackPanel>
+			</HierarchicalDataTemplate>
+			<HierarchicalDataTemplate DataType="{x:Type songs:SongSlide}">
+				<StackPanel Orientation="Horizontal">
+					<Image Width="16" Height="16" Margin="0, 1, 2, 1" Source="/WordsLive;component/Artwork/Small_Slide.png" />
+					<TextBlock Text="{Binding Converter={StaticResource SlideNameConverter}}">
+						<TextBlock.ContextMenu>
+							<ContextMenu>
+								<MenuItem Header="{x:Static resx:Resource.eGridContextRemoveSlide}" Command="Delete" CommandParameter="{Binding}"/>
+								<MenuItem Header="{x:Static resx:Resource.eGridContextDuplicateSlide}" Command="{x:Static my:CustomCommands.Duplicate}" CommandParameter="{Binding}"/>
+							</ContextMenu>
+						</TextBlock.ContextMenu>
+					</TextBlock>
+				</StackPanel>
+			</HierarchicalDataTemplate>
+			<HierarchicalDataTemplate DataType="{x:Type nodes:SourceNode}">
+				<StackPanel Orientation="Horizontal">
+					<Image Width="16" Height="16" Margin="0, 1, 2, 1" Source="/WordsLive;component/Artwork/Small_Source.png" />
+					<TextBlock Text="{x:Static resx:Resource.eMetadataSourceTitle}"/>
+				</StackPanel>
+			</HierarchicalDataTemplate>
+			<HierarchicalDataTemplate DataType="{x:Type nodes:CopyrightNode}">
+				<StackPanel Orientation="Horizontal">
+					<Image Width="16" Height="16" Margin="0, 1, 2, 1" Source="/WordsLive;component/Artwork/Small_Copyright.png" />
+					<TextBlock Text="{x:Static resx:Resource.eMetadataCopyrightTitle}"/>
+				</StackPanel>
+			</HierarchicalDataTemplate>
+			<HierarchicalDataTemplate DataType="{x:Type nodes:LanguageNode}">
+				<StackPanel Orientation="Horizontal">
+					<Image Width="16" Height="16" Margin="0, 1, 2, 1" Source="/WordsLive;component/Artwork/Small_Language.png" />
+					<TextBlock Text="{x:Static resx:Resource.eMetadataLanguageTitle}"/>
+				</StackPanel>
+			</HierarchicalDataTemplate>
+			<HierarchicalDataTemplate DataType="{x:Type nodes:CategoryNode}">
+				<StackPanel Orientation="Horizontal">
+					<Image Width="16" Height="16" Margin="0, 1, 2, 1" Source="/WordsLive;component/Artwork/Small_Category.png" />
+					<TextBlock Text="{x:Static resx:Resource.eMetadataCategoryTitle}"/>
 				</StackPanel>
 			</HierarchicalDataTemplate>
 		</TreeView.Resources>

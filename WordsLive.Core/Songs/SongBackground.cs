@@ -22,7 +22,8 @@ using System.Drawing;
 namespace WordsLive.Core.Songs
 {
 	/// <summary>
-	/// Represents a song background. This is either an image or a color.
+	/// Represents a song background (either an image or a color).
+	/// This class is immutable.
 	/// TODO: support video backgrounds
 	/// </summary>
 	public class SongBackground

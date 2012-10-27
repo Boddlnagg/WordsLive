@@ -55,6 +55,7 @@ namespace WordsLive.Editor
 			this.songNode = new SongNodeRoot(song);
 
 			this.StructureTree.DataContext = new SongNode[] { this.songNode };
+			this.StructureTree2.DataContext = new Song[] { song };
 			this.OrderListBox.DataContext = this.songNode;
 
 			this.StructureTree.IsEnabled = false;
@@ -530,7 +531,10 @@ namespace WordsLive.Editor
 
 		private void TreeViewItem_PreviewMouseRightButtonDown(object sender, MouseEventArgs e)
 		{
-			// Select item when right-clicked
+			// Focus the tree and select the item when right-clicked
+			TreeView tree = (e.OriginalSource as DependencyObject).FindVisualParent<TreeView>();
+			tree.Focus();
+
 			TreeViewItem item = (e.OriginalSource as DependencyObject).FindVisualParent<TreeViewItem, TreeView>();
 
 			if (item != null)
