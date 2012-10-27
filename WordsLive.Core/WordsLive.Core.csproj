@@ -75,6 +75,7 @@
     <Compile Include="Songs\Chords\Note.cs" />
     <Compile Include="Songs\Chords\NoteSymbol.cs" />
     <Compile Include="Songs\HtmlExport.cs" />
+    <Compile Include="Songs\ISongElement.cs" />
     <Compile Include="Songs\Song.cs" />
     <Compile Include="Songs\SongBackground.cs" />
     <Compile Include="Songs\SongBeamerImport.cs" />
@@ -84,7 +85,8 @@
     <Compile Include="Songs\SongSlide.cs" />
     <Compile Include="Songs\SongSource.cs" />
     <Compile Include="Songs\SongTextFormatting.cs" />
-    <Compile Include="Songs\UndoChangeFactory.cs" />
+    <Compile Include="Songs\Undo\ChangeFactory.cs" />
+    <Compile Include="Songs\Undo\UndoKey.cs" />
     <Compile Include="UnsupportedMedia.cs" />
     <Compile Include="WebSite.cs" />
   </ItemGroup>

@@ -26,6 +26,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
 using MonitoredUndo;
+using WordsLive.Core.Songs.Undo;
 
 namespace WordsLive.Core.Songs
 {
@@ -198,7 +199,7 @@ namespace WordsLive.Core.Songs
 		public Song(string filename, bool metadataOnly = false) : base(filename)
 		{
 			if (UndoKey == null)
-				UndoKey = new Songs.UndoKey();
+				UndoKey = new Undo.UndoKey();
 
 			if (!metadataOnly)
 				Load();
@@ -223,7 +224,7 @@ namespace WordsLive.Core.Songs
 			base.LoadMetadata(filename);
 
 			if (UndoKey == null)
-				UndoKey = new Songs.UndoKey();
+				UndoKey = new Undo.UndoKey();
 
 			FileInfo file = new FileInfo(filename);
 			if (file.Extension == ".ppl")
@@ -486,7 +487,7 @@ namespace WordsLive.Core.Songs
 				PropertyChanged(this, new PropertyChangedEventArgs(name));
 		}
 
-		public Song SongRoot
+		public Song Root
 		{
 			get
 			{

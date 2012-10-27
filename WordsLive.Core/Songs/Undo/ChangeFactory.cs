@@ -22,14 +22,9 @@ using System.Linq;
 using System.Text;
 using MonitoredUndo;
 
-namespace WordsLive.Core.Songs
+namespace WordsLive.Core.Songs.Undo
 {
-	public interface ISongElement
-	{
-		Song SongRoot { get; }
-	}
-
-	internal static class UndoChangeFactory
+	internal static class ChangeFactory
 	{
 		/// <summary>
 		/// Construct a Change instance with actions for undo / redo.
@@ -72,8 +67,8 @@ namespace WordsLive.Core.Songs
 		/// <param name="descriptionOfChange">A description of this change.</param>
 		public static void OnChanging(ISongElement instance, string propertyName, object oldValue, object newValue, string descriptionOfChange)
 		{
-			Change change = GetChange(instance.SongRoot, propertyName, oldValue, newValue);
-			UndoService.Current[instance.SongRoot.UndoKey].AddChange(change, descriptionOfChange);
+			Change change = GetChange(instance.Root, propertyName, oldValue, newValue);
+			UndoService.Current[instance.Root.UndoKey].AddChange(change, descriptionOfChange);
 		}
 
 		/// <summary>
@@ -88,29 +83,18 @@ namespace WordsLive.Core.Songs
 		{
 			var ch = DefaultChangeFactory.GetChange(instance, propertyName, oldValue, newValue);
 			var x = ch.ChangeKey.GetType();
-			if (UndoService.Current[instance.SongRoot.UndoKey].UndoStack.Count() > 0 &&
-				UndoService.Current[instance.SongRoot.UndoKey].UndoStack.First().Changes.Count() > 0 &&
-				UndoService.Current[instance.SongRoot.UndoKey].UndoStack.First().Changes.First().Target == instance &&
-				UndoService.Current[instance.SongRoot.UndoKey].UndoStack.First().Changes.Count() == 1 &&
-				((ChangeKey<object, string>)UndoService.Current[instance.SongRoot.UndoKey].UndoStack.First().Changes.First().ChangeKey).Item2 == propertyName)
+			if (UndoService.Current[instance.Root.UndoKey].UndoStack.Count() > 0 &&
+				UndoService.Current[instance.Root.UndoKey].UndoStack.First().Changes.Count() > 0 &&
+				UndoService.Current[instance.Root.UndoKey].UndoStack.First().Changes.First().Target == instance &&
+				UndoService.Current[instance.Root.UndoKey].UndoStack.First().Changes.Count() == 1 &&
+				((ChangeKey<object, string>)UndoService.Current[instance.Root.UndoKey].UndoStack.First().Changes.First().ChangeKey).Item2 == propertyName)
 			{
-				UndoService.Current[instance.SongRoot.UndoKey].UndoStack.First().Changes.First().MergeWith(ch);
+				UndoService.Current[instance.Root.UndoKey].UndoStack.First().Changes.First().MergeWith(ch);
 			}
 			else
 			{
-				UndoService.Current[instance.SongRoot.UndoKey].AddChange(ch, propertyName);
+				UndoService.Current[instance.Root.UndoKey].AddChange(ch, propertyName);
 			}
-		}
-	}
-
-	/// <summary>
-	/// Internal helper class to be used as undo root.
-	/// </summary>
-	internal class UndoKey : ISupportsUndo
-	{
-		public object GetUndoRoot()
-		{
-			return this;
 		}
 	}
 }

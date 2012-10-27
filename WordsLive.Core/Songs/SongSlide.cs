@@ -50,7 +50,7 @@ namespace WordsLive.Core.Songs
 					if (value == null)
 						value = String.Empty;
 
-					UndoChangeFactory.OnChangingTryMerge(this, "Text", text, value);
+					Undo.ChangeFactory.OnChangingTryMerge(this, "Text", text, value);
 					text = value;
 					HasChords = Chords.Chords.GetChords(text).Any();
 					TextWithoutChords = Chords.Chords.RemoveAll(text);
@@ -78,7 +78,7 @@ namespace WordsLive.Core.Songs
 			{
 				if (value != translation)
 				{
-					UndoChangeFactory.OnChangingTryMerge(this, "Translation", translation, value);
+					Undo.ChangeFactory.OnChangingTryMerge(this, "Translation", translation, value);
 					translation = value;
 					HasTranslation = !String.IsNullOrEmpty(translation);
 					OnNotifyPropertyChanged("Translation");
@@ -103,20 +103,20 @@ namespace WordsLive.Core.Songs
 			}
 			set
 			{
-				int oldMainSize = SongRoot.Formatting.MainText.Size;
+				int oldMainSize = Root.Formatting.MainText.Size;
 				int oldSize = this.size;
 
 				Action undo = () => {
 					this.size = oldSize;
-					SongRoot.Formatting.MainText.Size = oldMainSize;
+					Root.Formatting.MainText.Size = oldMainSize;
 				};
 				Action redo = () => { 
 					this.size = value;
-					SongRoot.Formatting.MainText.Size = this.size;
+					Root.Formatting.MainText.Size = this.size;
 				};
 
 				var ch = new DelegateChange(this, undo, redo, new ChangeKey<object, string>(this, "TextSize"));
-				UndoService.Current[SongRoot.UndoKey].AddChange(ch, "ChangeTextSize");
+				UndoService.Current[Root.UndoKey].AddChange(ch, "ChangeTextSize");
 				redo();
 
 				OnNotifyPropertyChanged("Size");
@@ -167,7 +167,7 @@ namespace WordsLive.Core.Songs
 		/// <param name="root">The song this slide belongs to.</param>
 		public SongSlide(Song root)
 		{
-			this.SongRoot = root;
+			this.Root = root;
 		}
 
 		/// <summary>
@@ -176,7 +176,7 @@ namespace WordsLive.Core.Songs
 		/// <returns>A clone of this slide.</returns>
 		public SongSlide Clone()
 		{
-			var s = new SongSlide(SongRoot);
+			var s = new SongSlide(Root);
 			s.Text = Text;
 			s.Translation = Translation;
 			s.BackgroundIndex = BackgroundIndex;
@@ -194,7 +194,7 @@ namespace WordsLive.Core.Songs
 				PropertyChanged(this, new PropertyChangedEventArgs(name));
 		}
 
-		public Song SongRoot { get; private set; }
+		public Song Root { get; private set; }
 
 		#endregion
 	}

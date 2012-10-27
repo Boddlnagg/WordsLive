@@ -84,7 +84,7 @@ namespace WordsLive.Core.Songs
 		/// <param name="name">The part's name.</param>
 		public SongPart(Song root, string name)
 		{
-			this.SongRoot = root;
+			this.Root = root;
 			this.Name = name;
 			this.Slides = new ObservableCollection<SongSlide>();
 		}
@@ -95,7 +95,7 @@ namespace WordsLive.Core.Songs
 		/// <returns>The newly created slide.</returns>
 		public SongSlide AddSlide()
 		{
-			var slide = new SongSlide(SongRoot);
+			var slide = new SongSlide(Root);
 			AddSlide(slide);
 			return slide;
 		}
@@ -110,7 +110,7 @@ namespace WordsLive.Core.Songs
 				() => { Slides.Remove(slide); },
 				() => { Slides.Add(slide); },
 				new ChangeKey<object, string>(this, "Slides"));
-			UndoService.Current[SongRoot.UndoKey].AddChange(ch, "AddSlide");
+			UndoService.Current[Root.UndoKey].AddChange(ch, "AddSlide");
 			Slides.Add(slide);
 		}
 
@@ -135,7 +135,7 @@ namespace WordsLive.Core.Songs
 				() => { Slides.Remove(slide); },
 				() => { Slides.Insert(index + 1, slide); },
 				new ChangeKey<object, string>(this, "Children"));
-				UndoService.Current[SongRoot.UndoKey].AddChange(ch, "InsertSlideAfter");
+				UndoService.Current[Root.UndoKey].AddChange(ch, "InsertSlideAfter");
 				this.Slides.Insert(index + 1, slide);
 			}
 		}
@@ -157,7 +157,7 @@ namespace WordsLive.Core.Songs
 				() => { Slides.Insert(i, slide); },
 				() => { Slides.Remove(slide); },
 				new ChangeKey<object, string>(this, "Slides"));
-			UndoService.Current[SongRoot.UndoKey].AddChange(ch, "RemoveSlide");
+			UndoService.Current[Root.UndoKey].AddChange(ch, "RemoveSlide");
 			this.Slides.Remove(slide);
 		}
 
@@ -171,14 +171,14 @@ namespace WordsLive.Core.Songs
 		{
 			SongSlide s;
 			int i = Slides.IndexOf(slide);
-			using (new UndoBatch(SongRoot.UndoKey, "DuplicateSlide", false))
+			using (new UndoBatch(Root.UndoKey, "DuplicateSlide", false))
 			{
 				s = slide.Clone();
 				var ch = new DelegateChange(this,
 					() => { Slides.Remove(s); },
 					() => { Slides.Insert(i + 1, s); },
 					new ChangeKey<object, string>(this, "Children"));
-				UndoService.Current[SongRoot.UndoKey].AddChange(ch, "DuplicateSlide");
+				UndoService.Current[Root.UndoKey].AddChange(ch, "DuplicateSlide");
 				Slides.Insert(i + 1, s);
 			}
 			return s;
@@ -194,7 +194,7 @@ namespace WordsLive.Core.Songs
 		public SongSlide SplitSlide(SongSlide slide, int splitIndex)
 		{
 			SongSlide newSlide;
-			using (new UndoBatch(SongRoot.UndoKey, "SplitSlide", false))
+			using (new UndoBatch(Root.UndoKey, "SplitSlide", false))
 			{
 				var textBefore = slide.Text.Substring(0, splitIndex);
 				if (textBefore.EndsWith("\r\n"))
@@ -215,16 +215,16 @@ namespace WordsLive.Core.Songs
 		/// <param name="bg">The background to use.</param>
 		public void SetBackground(SongBackground bg)
 		{
-			using (new UndoBatch(SongRoot.UndoKey, "SetBackground", false))
+			using (new UndoBatch(Root.UndoKey, "SetBackground", false))
 			{
-				int index = SongRoot.AddBackground(bg);
+				int index = Root.AddBackground(bg);
 
 				foreach (var slide in Slides)
 				{
 					slide.BackgroundIndex = index;
 				}
 
-				SongRoot.CleanBackgrounds();
+				Root.CleanBackgrounds();
 			}
 		}
 
@@ -238,7 +238,7 @@ namespace WordsLive.Core.Songs
 				PropertyChanged(this, new PropertyChangedEventArgs(name));
 		}
 
-		public Song SongRoot { get; private set; }
+		public Song Root { get; private set; }
 
 		#endregion
 	}
