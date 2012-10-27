@@ -16,6 +16,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+using System;
 using System.Drawing;
 
 namespace WordsLive.Core.Songs
@@ -26,6 +27,11 @@ namespace WordsLive.Core.Songs
 	/// </summary>
 	public class SongBackground
 	{
+		/// <summary>
+		/// The default background (black).
+		/// </summary>
+		public static readonly SongBackground Default = new SongBackground(Color.Black);
+
 		/// <summary>
 		/// Gets a value indicating whether this background is an image.
 		/// </summary>
@@ -38,22 +44,31 @@ namespace WordsLive.Core.Songs
 		}
 
 		/// <summary>
-		/// Gets or sets the image path. Set this to <c>null</c> to use a color instead.
+		/// Gets the image path. (only valid if <see cref="IsImage"/> is <c>true</c>).
 		/// </summary>
-		public string ImagePath { get; set; }
+		public string ImagePath { get; private set; }
 
 		/// <summary>
 		/// Gets or sets the color (only valid if <see cref="IsImage"/> is <c>false</c>).
 		/// </summary>
-		public Color Color { get; set; }
+		public Color Color { get; private set; }
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="SongBackground"/> class
 		/// using a black background color.
 		/// </summary>
-		public SongBackground()
+		public SongBackground(Color color)
 		{
-			ImagePath = "";
+			ImagePath = null;
+			Color = color;
+		}
+
+		public SongBackground(string imagePath)
+		{
+			if (String.IsNullOrEmpty(imagePath))
+				throw new ArgumentException("imagePath");
+
+			ImagePath = imagePath;
 			Color = Color.Black;
 		}
 
@@ -66,9 +81,10 @@ namespace WordsLive.Core.Songs
 		/// </returns>
 		public override bool Equals(object obj)
 		{
-			SongBackground bg = obj as SongBackground;
-			if (bg == null)
+			if (obj == null || !(obj is SongBackground))
 				return false;
+
+			var bg = (SongBackground)obj;
 
 			if (this.IsImage)
 			{

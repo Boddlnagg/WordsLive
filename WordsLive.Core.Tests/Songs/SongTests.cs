@@ -174,31 +174,31 @@ namespace WordsLive.Core.Tests.Songs
 		[Test]
 		public void AddBackground()
 		{
-			Assert.AreEqual(song.Backgrounds.Single(), new SongBackground { Color = System.Drawing.Color.Black });
-			song.AddBackground(new SongBackground { Color = System.Drawing.Color.Red });
+			Assert.AreEqual(song.Backgrounds.Single(), new SongBackground(System.Drawing.Color.Black));
+			song.AddBackground(new SongBackground(System.Drawing.Color.Red));
 			Assert.AreEqual(2, song.Backgrounds.Count);
-			song.AddBackground(new SongBackground { Color = System.Drawing.Color.Black }); // black is already there
+			song.AddBackground(new SongBackground(System.Drawing.Color.Black)); // black is already there
 			Assert.AreEqual(2, song.Backgrounds.Count);
 			Assert.AreEqual(2, UndoStackSize);
 			Undo();
 			Undo();
-			Assert.AreEqual(song.Backgrounds.Single(), new SongBackground { Color = System.Drawing.Color.Black });
+			Assert.AreEqual(song.Backgrounds.Single(), new SongBackground(System.Drawing.Color.Black));
 		}
 
 		[Test]
 		public void CleanBackgrounds()
 		{
-			song.AddBackground(new SongBackground { Color = System.Drawing.Color.Red });
+			song.AddBackground(new SongBackground(System.Drawing.Color.Red));
 			ClearUndoRedoStack();
 
 			song.CleanBackgrounds();
-			Assert.AreEqual(song.Backgrounds.Single(), new SongBackground { Color = System.Drawing.Color.Black });
+			Assert.AreEqual(song.Backgrounds.Single(), new SongBackground(System.Drawing.Color.Black));
 			Assert.AreEqual(1, UndoStackSize);
 			Undo();
 			Assert.AreEqual(2, song.Backgrounds.Count);
 			song.Parts[0].Slides[0].BackgroundIndex = 1;
 			song.CleanBackgrounds();
-			Assert.AreEqual(song.Backgrounds.Single(), new SongBackground { Color = System.Drawing.Color.Red });
+			Assert.AreEqual(song.Backgrounds.Single(), new SongBackground(System.Drawing.Color.Red));
 		}
 	}
 }

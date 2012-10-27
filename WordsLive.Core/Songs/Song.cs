@@ -737,18 +737,18 @@ namespace WordsLive.Core.Songs
 		/// <returns>The loaded background object.</returns>
 		private static SongBackground LoadPowerpraiseBackground(string background)
 		{
-			var bg = new SongBackground();
+			SongBackground bg;
 			if (background == "none")
 			{
-				bg.Color = Color.Black;
+				bg = new SongBackground(Color.Black);
 			}
 			else if (Regex.IsMatch(background, @"^\d{1,8}$"))
 			{
-				bg.Color = ParsePowerpraiseColor(background);
+				bg = new SongBackground(ParsePowerpraiseColor(background));
 			}
 			else
 			{
-				bg.ImagePath = background;
+				bg = new SongBackground(background);
 			}
 			return bg;
 		}
