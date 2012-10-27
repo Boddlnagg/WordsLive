@@ -37,12 +37,12 @@ namespace WordsLive.Core.Tests.Songs
 		}
 
 		[Test]
-		public void CloneSlide()
+		public void CopySlide()
 		{
-			var clone = slide.Clone();
-			Assert.AreEqual("SimpleLine", clone.Text);
-			Assert.AreEqual(30, clone.Size);
-			clone.Size = 20;
+			var copy = slide.Copy();
+			Assert.AreEqual("SimpleLine", copy.Text);
+			Assert.AreEqual(30, copy.Size);
+			copy.Size = 20;
 			Assert.AreEqual(30, slide.Size);
 		}
 

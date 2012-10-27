@@ -219,7 +219,7 @@ namespace WordsLive.Core.Songs
 			int i = Slides.IndexOf(slide);
 			using (new UndoBatch(Root.UndoKey, "DuplicateSlide", false))
 			{
-				s = slide.Clone();
+				s = slide.Copy();
 				var ch = new DelegateChange(this,
 					() => { Slides.Remove(s); },
 					() => { Slides.Insert(i + 1, s); },
@@ -272,6 +272,16 @@ namespace WordsLive.Core.Songs
 
 				Root.CleanBackgrounds();
 			}
+		}
+
+		/// <summary>
+		/// Creates a copy of this <see cref="SongPart"/>.
+		/// </summary>
+		/// <param name="name">The name of the copy.</param>
+		/// <returns>The newly created copy.</returns>
+		public SongPart Copy(string name)
+		{
+			return new SongPart(Root, name, Slides.Select(s => s.Copy()));
 		}
 
 		#region Interface implementations

@@ -338,6 +338,25 @@ namespace WordsLive.Core.Songs
 		}
 
 		/// <summary>
+		/// Copies a specified part and inserts the copy at the index of a target part.
+		/// </summary>
+		/// <param name="source">The part to copy.</param>
+		/// <param name="name">The name that will be given to the copy.</param>
+		/// <param name="target">The target position.</param>
+		/// <returns>The created copy.</returns>
+		public SongPart CopyPart(SongPart source, string name, SongPart target)
+		{
+			SongPart newPart;
+			using (new UndoBatch(Root.UndoKey, "CopyPart", false))
+			{
+				newPart = source.Copy(name);
+				AddPart(newPart);
+				MovePart(newPart, target);
+			}
+			return newPart;
+		}
+
+		/// <summary>
 		/// Moves a slide to another part (can be undone).
 		/// </summary>
 		/// <param name="slide">The slide to move.</param>

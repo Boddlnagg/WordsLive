@@ -200,5 +200,20 @@ namespace WordsLive.Core.Tests.Songs
 			song.CleanBackgrounds();
 			Assert.AreEqual(song.Backgrounds.Single(), new SongBackground(System.Drawing.Color.Red));
 		}
+
+		[Test]
+		public void CopyPartUndoRedo()
+		{
+			var part0 = song.Parts.Single();
+			var part1 = song.CopyPart(part0, "PartCopy", part0); // inserts the copy before part0
+			Assert.AreEqual(2, song.Parts.Count);
+			Assert.AreEqual("PartCopy", song.Parts[0].Name);
+			Assert.AreEqual("SimpleLine", song.Parts[0].Text);
+			Assert.AreEqual(1, UndoStackSize);
+			Undo();
+			Assert.AreEqual("SimplePart", song.Parts.Single().Name);
+			Redo();
+			Assert.AreEqual(2, song.Parts.Count);
+		}
 	}
 }

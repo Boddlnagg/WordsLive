@@ -197,20 +197,6 @@ namespace WordsLive.Core.Songs
 		}
 
 		/// <summary>
-		/// Clones this slide.
-		/// </summary>
-		/// <returns>A clone of this slide.</returns>
-		public SongSlide Clone()
-		{
-			var s = new SongSlide(Root);
-			s.Text = Text;
-			s.Translation = Translation;
-			s.BackgroundIndex = BackgroundIndex;
-			s.Size = Size;
-			return s;
-		}
-
-		/// <summary>
 		/// Sets the background that is assigned to this slide.
 		/// </summary>
 		/// <param name="bg">The background to use.</param>
@@ -222,6 +208,20 @@ namespace WordsLive.Core.Songs
 				this.BackgroundIndex = index;
 				Root.CleanBackgrounds();
 			}
+		}
+
+		/// <summary>
+		/// Copies this slide.
+		/// </summary>
+		/// <returns>A copy of this slide.</returns>
+		public SongSlide Copy()
+		{
+			var s = new SongSlide(Root);
+			s.Text = Text;
+			s.Translation = Translation;
+			s.BackgroundIndex = BackgroundIndex;
+			s.Size = Size;
+			return s;
 		}
 
 		#region Interface implementations

@@ -240,5 +240,15 @@ namespace WordsLive.Core.Tests.Songs
 			Assert.AreEqual(1, part.Slides[0].BackgroundIndex);
 			Assert.AreEqual(0, part.Slides[1].BackgroundIndex);
 		}
+
+		[Test]
+		public void CopyPart()
+		{
+			var copy = part.Copy("PartCopy");
+			Assert.AreEqual("PartCopy", copy.Name);
+			Assert.AreEqual("SimpleLine", copy.Text);
+			part.Slides[0].Text = "ChangedLine";
+			Assert.AreEqual("SimpleLine", copy.Text);
+		}
 	}
 }
