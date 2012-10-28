@@ -55,7 +55,11 @@ namespace WordsLive.Editor
 			this.songNode = new SongNodeRoot(song);
 
 			this.StructureTree.DataContext = new SongNode[] { this.songNode };
+			var tnp = (Nodes.TreeNodeProvider)FindResource("treeNodeProvider");
+			tnp.Song = this.songNode.Song;
+
 			this.StructureTree2.DataContext = new Song[] { song };
+
 			this.OrderListBox.DataContext = this.songNode;
 
 			this.StructureTree.IsEnabled = false;
@@ -297,41 +301,49 @@ namespace WordsLive.Editor
 				startPoint = p;
 		}
 
-		private void StructureTree_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+		private void StructureTree2_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
 		{
-			if (e.OriginalSource is TextBlock || e.OriginalSource is Image || e.OriginalSource is StackPanel)
+			var tree = (TreeView)sender;
+			// TODO: test
+			var item = tree.GetItemAtPosition(e.GetPosition(tree));
+
+			if (item != null)
 			{
-				startPoint = e.GetPosition(null);
+				startPoint = e.GetPosition(tree);
 				canDrag = true;
 			}
 			else
 				canDrag = false;
 		}
 
-		private void StructureTree_PreviewMouseMove(object sender, MouseEventArgs e)
+		private void StructureTree2_PreviewMouseMove(object sender, MouseEventArgs e)
 		{
+			var tree = (TreeView)sender;
+
 			if (e.LeftButton == MouseButtonState.Pressed && canDrag)
 			{
-				if (e.GetPosition(null).ExceedsMinimumDragDistance(startPoint))
+				if (e.GetPosition(tree).ExceedsMinimumDragDistance(startPoint))
 				{
-					if (StructureTree.SelectedItem is SongNodePart)
+					if (tree.SelectedItem is SongPart)
 					{
-						DragDropEffects de = DragDrop.DoDragDrop(StructureTree, StructureTree.SelectedItem as SongNodePart, DragDropEffects.Move | DragDropEffects.Copy);
+						DragDropEffects de = DragDrop.DoDragDrop(tree, tree.SelectedItem as SongPart, DragDropEffects.Move | DragDropEffects.Copy);
 					}
-					else if (StructureTree.SelectedItem is SongNodeSlide)
+					else if (tree.SelectedItem is SongSlide)
 					{
-						DragDropEffects de = DragDrop.DoDragDrop(StructureTree, StructureTree.SelectedItem as SongNodeSlide, DragDropEffects.Move | DragDropEffects.Copy);
+						DragDropEffects de = DragDrop.DoDragDrop(tree, tree.SelectedItem as SongSlide, DragDropEffects.Move | DragDropEffects.Copy);
 					}
 				}
 			}
 		}
 
-		private void StructureTree_DragEnterOrOver(object sender, DragEventArgs e)
+		private void StructureTree2_DragEnterOrOver(object sender, DragEventArgs e)
 		{
-			if (e.Data.GetData(typeof(SongNodeSlide)) != null)
+			var tree = (TreeView)sender;
+
+			if (e.Data.GetData(typeof(SongSlide)) != null)
 			{
-				var item = StructureTree.GetItemAtPosition(e.GetPosition(StructureTree));
-				if (item != null && (item.Header is SongNodeSlide || item.Header is SongNodePart))
+				var item = tree.GetItemAtPosition(e.GetPosition(tree));
+				if (item != null && (item.Header is SongSlide || item.Header is SongPart))
 				{
 					if (e.KeyStates.HasFlag(DragDropKeyStates.ControlKey))
 						e.Effects = DragDropEffects.Copy;
@@ -345,10 +357,10 @@ namespace WordsLive.Editor
 
 				e.Handled = true;
 			}
-			else if (e.Data.GetData(typeof(SongNodePart)) != null)
+			else if (e.Data.GetData(typeof(SongPart)) != null)
 			{
-				var item = StructureTree.GetItemAtPosition(e.GetPosition(StructureTree));
-				if (item != null && (item.Header is SongNodePart || item.Header is SongNodeSlide))
+				var item = tree.GetItemAtPosition(e.GetPosition(tree));
+				if (item != null && (item.Header is SongPart || item.Header is SongSlide))
 				{
 					if (e.KeyStates.HasFlag(DragDropKeyStates.ControlKey))
 						e.Effects = DragDropEffects.Copy;
@@ -364,49 +376,55 @@ namespace WordsLive.Editor
 			}
 		}
 
-		private void StructureTree_Drop(object sender, DragEventArgs e)
+		private void StructureTree2_Drop(object sender, DragEventArgs e)
 		{
-			if (e.Data.GetData(typeof(SongNodeSlide)) != null)
+			var tree = (TreeView)sender;
+
+			if (e.Data.GetData(typeof(SongSlide)) != null)
 			{
-				SongNode targetNode = StructureTree.GetItemAtPosition(e.GetPosition(StructureTree)).Header as SongNode;
-				SongNodeSlide dragNode = e.Data.GetData(typeof(SongNodeSlide)) as SongNodeSlide;
+				ISongElement targetNode = tree.GetItemAtPosition(e.GetPosition(tree)).Header as ISongElement;
+				SongSlide dragNode = e.Data.GetData(typeof(SongSlide)) as SongSlide;
 
 				if (e.KeyStates.HasFlag(DragDropKeyStates.ControlKey)) // copy
 				{
-					if (targetNode is SongNodeSlide)
-						Node.CopySlide(dragNode, targetNode as SongNodeSlide);
-					else if (targetNode is SongNodePart)
-						Node.CopySlide(dragNode, targetNode as SongNodePart);
+					if (targetNode is SongSlide)
+						songNode.Song.CopySlideAfter(dragNode, targetNode as SongSlide);
+					else if (targetNode is SongPart)
+						songNode.Song.CopySlide(dragNode, targetNode as SongPart);
 				}
 				else
 				{
 					if (targetNode == dragNode)
 						return;
 
-					if (Node.FindPartWithSlide(dragNode).Children.Count <= 1)
+					if (songNode.Song.FindPartWithSlide(dragNode).Slides.Count <= 1)
 					{
 						MessageBox.Show(WordsLive.Resources.Resource.eMsgMoveLastSlideInPart,
 							WordsLive.Resources.Resource.dialogError, MessageBoxButton.OK, MessageBoxImage.Error);
 						return;
 					}
 
-					if (targetNode is SongNodeSlide)
-						Node.MoveSlide(dragNode, targetNode as SongNodeSlide);
-					else if (targetNode is SongNodePart)
-						Node.MoveSlide(dragNode, targetNode as SongNodePart);
+					if (targetNode is SongSlide)
+						songNode.Song.MoveSlideAfter(dragNode, targetNode as SongSlide);
+					else if (targetNode is SongPart)
+						songNode.Song.MoveSlide(dragNode, targetNode as SongPart);
 
-					StructureTree.SetSelectedItem(dragNode);
+					tree.SetSelectedItem(dragNode);
 				}
 			}
-			else if (e.Data.GetData(typeof(SongNodePart)) != null)
+			else if (e.Data.GetData(typeof(SongPart)) != null)
 			{
-				SongNode targetNode = StructureTree.GetItemAtPosition(e.GetPosition(StructureTree)).Header as SongNode;
-				SongNodePart dragNode = e.Data.GetData(typeof(SongNodePart)) as SongNodePart;
-				SongNodePart targetPart;
-				if (targetNode is SongNodeSlide)
-					targetPart = Node.FindPartWithSlide(targetNode as SongNodeSlide);
+				ISongElement targetNode = tree.GetItemAtPosition(e.GetPosition(tree)).Header as ISongElement;
+				SongPart dragNode = e.Data.GetData(typeof(SongPart)) as SongPart;
+				SongPart targetPart;
+				if (targetNode is SongSlide)
+				{
+					targetPart = songNode.Song.FindPartWithSlide(targetNode as SongSlide);
+				}
 				else
-					targetPart = (SongNodePart)targetNode;
+				{
+					targetPart = (SongPart)targetNode;
+				}
 
 				if (e.KeyStates.HasFlag(DragDropKeyStates.ControlKey))
 				{
@@ -414,20 +432,14 @@ namespace WordsLive.Editor
 					var res = ShowRenamePartDialog(null);
 					if (res.DialogResult.HasValue && res.DialogResult.Value)
 					{
-						SongNodePart newPart;
-						using (new UndoBatch(songNode, "CopyPart", false))
-						{
-							newPart = dragNode.Copy(res.PartName);
-							Node.AddPart(newPart);
-							Node.MovePart(newPart, targetPart);
-						}
-						this.StructureTree.SetSelectedItem(newPart);
+						SongPart newPart = songNode.Song.CopyPart(dragNode, res.PartName, targetPart);
+						tree.SetSelectedItem(newPart);
 					}
 				}
 				else
 				{
-					Node.MovePart(dragNode, targetPart);
-					StructureTree.SetSelectedItem(dragNode);
+					songNode.Song.MovePart(dragNode, targetPart);
+					tree.SetSelectedItem(dragNode);
 				}
 			}
 		}
@@ -565,9 +577,6 @@ namespace WordsLive.Editor
 		/// <returns>The window.</returns>
 		private RenamePartWindow ShowRenamePartDialog(SongPart part)
 		{
-			if (part == null)
-				throw new ArgumentNullException("part");
-
 			RenamePartWindow win = new RenamePartWindow(songNode.Song, part);
 			win.Owner = parent;
 			win.ShowDialog();

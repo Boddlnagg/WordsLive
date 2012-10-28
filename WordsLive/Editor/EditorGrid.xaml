@@ -18,6 +18,7 @@
 	<Grid.Resources>
 		<local:LanguageToLanguageCodeConverter x:Key="languageToLanguageCodeConverter"/>
 		<local:EditControlHeaderConverter x:Key="editControlHeaderConverter"/>
+		<nodes:TreeNodeProvider x:Key="treeNodeProvider"/>
 		<DataTemplate x:Key="emptyEditTemplate"/>
 		<DataTemplate x:Key="editCopyrightTextBoxTemplate">
 			<TextBox AcceptsReturn="True" IsUndoEnabled="False"
@@ -156,10 +157,7 @@
 	</DockPanel>
 	<TreeView
 		x:Name="StructureTree" ItemsSource="{Binding}"
-		Grid.Row="0" Grid.Column="0" Margin="0,26,0,0" Grid.RowSpan="3"
-		AllowDrop="True" Drop="StructureTree_Drop" DragOver="StructureTree_DragEnterOrOver" DragEnter="StructureTree_DragEnterOrOver"
-		PreviewMouseLeftButtonDown="StructureTree_PreviewMouseLeftButtonDown"
-		PreviewMouseMove="StructureTree_PreviewMouseMove">
+		Grid.Row="0" Grid.Column="0" Margin="0,26,0,0" Grid.RowSpan="3">
 		<TreeView.CommandBindings>
 			<CommandBinding Command="{x:Static my:CustomCommands.Duplicate}" Executed="OnExecuteCommand"/>
 			<CommandBinding Command="{x:Static my:CustomCommands.Rename}" Executed="OnExecuteCommand"/>
@@ -230,6 +228,9 @@
 	<TreeView
 		x:Name="StructureTree2" ItemsSource="{Binding}"
 		SelectedItemChanged="StructureTree2_SelectedItemChanged"
+		AllowDrop="True" Drop="StructureTree2_Drop" DragOver="StructureTree2_DragEnterOrOver" DragEnter="StructureTree2_DragEnterOrOver"
+		PreviewMouseLeftButtonDown="StructureTree2_PreviewMouseLeftButtonDown"
+		PreviewMouseMove="StructureTree2_PreviewMouseMove"
 		Grid.Row="0" Grid.Column="0" Margin="0,26,0,0" Grid.RowSpan="3">
 		<TreeView.CommandBindings>
 			<CommandBinding Command="{x:Static my:CustomCommands.Duplicate}" Executed="StructureTreeCommand_Executed"/>
@@ -239,8 +240,7 @@
 			<CommandBinding Command="{x:Static my:CustomCommands.AddPart}" Executed="StructureTreeCommand_Executed"/>
 		</TreeView.CommandBindings>
 		<TreeView.Resources>
-			<nodes:ChildNodesConverter x:Key="ChildNodesConverter"/>
-			<HierarchicalDataTemplate DataType="{x:Type songs:Song}" ItemsSource="{Binding Converter={StaticResource ChildNodesConverter}}">
+			<HierarchicalDataTemplate DataType="{x:Type songs:Song}" ItemsSource="{Binding Source={StaticResource treeNodeProvider}, Path=Nodes}">
 				<StackPanel Orientation="Horizontal">
 					<Image Width="16" Height="16" Margin="0, 1, 2, 1" Source="/WordsLive;component/Artwork/Small_Song.png" />
 					<TextBlock Text="{Binding SongTitle}">

@@ -113,11 +113,11 @@
     <Compile Include="Editor\EditControlTemplateSelector.cs" />
     <Compile Include="Editor\LanguageToLanguageCodeConverter.cs" />
     <Compile Include="Editor\Nodes\CategoryNode.cs" />
-    <Compile Include="Editor\Nodes\ChildNodesConverter.cs" />
     <Compile Include="Editor\Nodes\CopyrightNode.cs" />
     <Compile Include="Editor\Nodes\LanguageNode.cs" />
     <Compile Include="Editor\Nodes\MetadataNode.cs" />
     <Compile Include="Editor\Nodes\SourceNode.cs" />
+    <Compile Include="Editor\Nodes\TreeNodeProvider.cs" />
     <Compile Include="Images\FinishAction.cs" />
     <Compile Include="Images\ImageInfo.cs" />
     <Compile Include="Images\ImagesControlPanel.xaml.cs">

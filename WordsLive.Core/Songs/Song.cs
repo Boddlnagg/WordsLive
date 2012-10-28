@@ -387,7 +387,6 @@ namespace WordsLive.Core.Songs
 					OnPropertyChanged("PartOrder");
 
 				Parts.Remove(part);
-				//UpdateParts();
 			};
 
 			Action undo = () =>
@@ -398,7 +397,6 @@ namespace WordsLive.Core.Songs
 				Parts.Insert(i, part);
 				SetOrder(backup);
 				OnPropertyChanged("Order");
-				//UpdateParts();
 			};
 
 			var ch = new DelegateChange(this, undo, redo, new ChangeKey<object, string>(this, "Parts"));
@@ -416,13 +414,11 @@ namespace WordsLive.Core.Songs
 			Action undo = () =>
 			{
 				Parts.Remove(part);
-				//UpdateParts();
 			};
 
 			Action redo = () =>
 			{
 				Parts.Add(part);
-				//UpdateParts();
 			};
 
 			var ch = new DelegateChange(this, undo, redo, new ChangeKey<object, string>(this, "Parts"));
@@ -467,16 +463,12 @@ namespace WordsLive.Core.Songs
 
 			Action redo = () =>
 			{
-				Parts.Remove(part);
-				Parts.Insert(newIndex, part);
-				//UpdateParts();
+				Parts.Move(originalIndex, newIndex);
 			};
 
 			Action undo = () =>
 			{
-				Parts.Remove(part);
-				Parts.Insert(originalIndex, part);
-				//UpdateParts();
+				Parts.Move(newIndex, originalIndex);
 			};
 
 			var ch = new DelegateChange(this, undo, redo, new ChangeKey<object, string>(this, "Parts"));
