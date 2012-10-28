@@ -687,6 +687,19 @@ namespace WordsLive.Core.Songs
 			return Parts.Where(p => p.Slides.Contains(slide)).SingleOrDefault();
 		}
 
+		
+		/// <summary>
+		/// Adds a new source from a string.
+		/// </summary>
+		/// <param name="source">The string.</param>
+		/// <returns>The added <see cref="SongSource"/> object.</returns>
+		public SongSource AddSource(string source)
+		{
+			var src = SongSource.Parse(source, this);
+			Sources.Add(src);
+			return src;
+		}
+
 		/// <summary>
 		/// Adds the given background to the song's background list if it doesn't already exist (can be undone).
 		/// </summary>
@@ -958,7 +971,7 @@ namespace WordsLive.Core.Songs
 				this.SetOrder(from item in root.Element("order").Elements("item") select item.Value);
 
 				this.Copyright = String.Join("\n", root.Element("information").Element("copyright").Element("text").Elements("line").Select(line => line.Value).ToArray());
-				this.Sources.Add(SongSource.Parse(String.Join("\n", root.Element("information").Element("source").Element("text").Elements("line").Select(line => line.Value))));
+				this.AddSource(String.Join("\n", root.Element("information").Element("source").Element("text").Elements("line").Select(line => line.Value)));
 			}
 
 			UndoRoot.Clear();

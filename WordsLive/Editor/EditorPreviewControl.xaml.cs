@@ -154,7 +154,7 @@ namespace WordsLive.Editor
 
 		private void UpdateSourceCopyright()
 		{
-			if (!(node is SongNodeSlide))
+			if (!(element is SongSlide))
 				return;
 
 			bool showSource = ((song.Formatting.SourceDisplayPosition == MetadataDisplayPosition.AllSlides ||
@@ -171,17 +171,17 @@ namespace WordsLive.Editor
 			controller.ShowSource(showSource);
 		}
 
-		private SongNode node;
+		private ISongElement element;
 
-		public SongNode Node
+		public ISongElement Element
 		{
 			get
 			{
-				return node;
+				return element;
 			}
 			set
 			{
-				node = value;
+				element = value;
 				Update();
 			}
 		}
@@ -193,19 +193,20 @@ namespace WordsLive.Editor
 
 		public void Update()
 		{
-			if (node == null)
+			if (element == null)
 				return;
 
-			if (node is SongNodeSlide)
+			if (element is SongSlide)
 			{
-				controller.UpdateSlide(song, (node as SongNodeSlide).Slide);
-				(node as SongNodeSlide).PropertyChanged += (sender, args) =>
+				controller.UpdateSlide(song, (element as SongSlide));
+				// TODO: remove event handler when element changes
+				(element as SongSlide).PropertyChanged += (sender, args) =>
 				{
-					if (node != sender)
+					if (element != sender)
 						return;
 
-					if (args.PropertyName == "Text" || args.PropertyName == "Translation" ||args.PropertyName == "BackgroundIndex" || args.PropertyName == "FontSize")
-						controller.UpdateSlide(song, (node as SongNodeSlide).Slide);
+					if (args.PropertyName == "Text" || args.PropertyName == "Translation" ||args.PropertyName == "Background" || args.PropertyName == "Size")
+						controller.UpdateSlide(song, (element as SongSlide));
 
 					if (args.PropertyName == "HasTranslation" || args.PropertyName == "HasChords")
 					{
@@ -216,7 +217,7 @@ namespace WordsLive.Editor
 
 				UpdateSourceCopyright();
 			}
-			else if (node is SongNodeCopyright)
+			else if (element is Nodes.CopyrightNode)
 			{
 				switch (song.Formatting.CopyrightDisplayPosition)
 				{
@@ -235,32 +236,36 @@ namespace WordsLive.Editor
 				controller.SetCopyright(song.Copyright);
 				controller.ShowCopyright(true);
 				controller.ShowSource(false);
-				(node as SongNodeCopyright).PropertyChanged += (sender, args) =>
+
+				// TODO: remove event handler when element changes
+				element.Root.PropertyChanged += (sender, args) =>
 				{
-					if (node != sender)
+					if (element.Root != sender)
 						return;
 
-					if (args.PropertyName == "Text")
+					if (args.PropertyName == "Copyright")
 						controller.SetCopyright(song.Copyright);
-					else if (args.PropertyName == "FontSize")
-						UpdateStyle();
+					
+					// TODO: UpdateStyle() on song.Formatting change
 				};
 			}
-			else if (node is SongNodeSource)
+			else if (element is Nodes.SourceNode)
 			{
 				controller.UpdateSlide(song, song.FirstSlide);
-				controller.SetSource((node as SongNodeSource).Source);
+				controller.SetSource(song.Sources[0]);
 				controller.ShowSource(true);
 				controller.ShowCopyright(false);
-				(node as SongNodeSource).PropertyChanged += (sender, args) =>
+
+				// TODO: remove event handler when element changes
+				song.Sources[0].PropertyChanged += (sender, args) =>
 				{
-					if (node != sender)
+					if (song.Sources[0] != sender)
 						return;
 
 					if (args.PropertyName == "Songbook" || args.PropertyName == "Number")
-						controller.SetSource((node as SongNodeSource).Source);
-					else if (args.PropertyName == "FontSize")
-						UpdateStyle();
+						controller.SetSource(song.Sources[0]);
+
+					// TODO: UpdateStyle() on song.Formatting change
 				};
 			}
 			else

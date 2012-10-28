@@ -252,7 +252,7 @@ namespace WordsLive.Core.Songs
 				song.Sources.Clear();
 				foreach (var s in properties["songbook"].Split(','))
 				{
-					song.Sources.Add(SongSource.Parse(s));
+					song.AddSource(s);
 				}
 			}
 

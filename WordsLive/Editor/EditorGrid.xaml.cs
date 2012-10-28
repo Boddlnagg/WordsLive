@@ -51,7 +51,7 @@ namespace WordsLive.Editor
 				throw new ArgumentNullException("song");
 
 			this.parent = parent;
-			
+
 			this.songNode = new SongNodeRoot(song);
 
 			this.StructureTree.DataContext = new SongNode[] { this.songNode };
@@ -454,55 +454,23 @@ namespace WordsLive.Editor
 		}
 		#endregion
 
-		private void StructureTree_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+		private void StructureTree2_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
 		{
+			var tree = (TreeView)sender;
+
 			if (!orderSelected)
 				OrderListBox.SelectedItem = null;
 
-			if (StructureTree.SelectedItem is SongNodePart)
-				PreviewControl.Node = ((SongNodePart)StructureTree.SelectedItem).Children[0];
+			if (tree.SelectedItem is SongPart)
+				PreviewControl.Element = ((SongPart)tree.SelectedItem).Slides[0];
 			else
-				PreviewControl.Node = (SongNode)StructureTree.SelectedItem;
+				PreviewControl.Element = (ISongElement)tree.SelectedItem;
 
-			if (StructureTree.SelectedItem is SongNodeSlide)
+			// enable/disable spellcheck checkbox
+			if (tree.SelectedItem is SongSlide)
 				EnableSpellCheckCheckBox.IsEnabled = true;
 			else
 				EnableSpellCheckCheckBox.IsEnabled = false;
-
-			if (StructureTree.SelectedItem is SongNodeRoot)
-			{
-				EditBorder.Child = null;
-				EditHeader.Text = "";
-			}
-			else if (StructureTree.SelectedItem is SongNodeSlide)
-			{
-				EditBorder.Child = (Grid)this.Resources["editTextWithTranslation"];
-				EditHeader.Text = WordsLive.Resources.Resource.eGridTextHeader;
-			}
-			else if (StructureTree.SelectedItem is SongNodePart)
-			{
-				EditBorder.Child = null;
-				EditHeader.Text = "";
-			}
-			else if (StructureTree.SelectedItem is SongNodeLanguage)
-			{
-				EditBorder.Child = (Grid)this.Resources["editLanguageGrid"];
-				EditHeader.Text = ((SongNodeLanguage)StructureTree.SelectedItem).Title;
-			}
-			else if (StructureTree.SelectedItem is SongNodeSource)
-			{
-				EditBorder.Child = (Grid)this.Resources["editSourceGrid"];
-				EditHeader.Text = ((SongNodeSource)StructureTree.SelectedItem).Title;
-			}
-			else if (StructureTree.SelectedItem is SongNodeMetadata) // copyright and category
-			{
-				EditBorder.Child = (TextBox)this.Resources["editTextBox"];
-				EditHeader.Text = ((SongNodeMetadata)StructureTree.SelectedItem).Title;
-			}
-			else
-			{
-				throw new NotSupportedException();
-			}
 
 			OnPropertyChanged("SelectedPart");
 		}
@@ -884,7 +852,7 @@ namespace WordsLive.Editor
 					}
 				}
 				else if (node is Song)
-				{ 
+				{
 					var res = ShowRenameSongDialog(songNode.Song);
 					if (res.DialogResult.HasValue && res.DialogResult.Value)
 					{
@@ -982,66 +950,6 @@ namespace WordsLive.Editor
 					e.CanExecute = songNode.Song.FindPartWithSlide(node as SongSlide).Slides.Count > 1;
 				}
 			}
-		}
-
-		private void StructureTree2_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
-		{
-			var tree = (TreeView)sender;
-
-			if (!orderSelected)
-				OrderListBox.SelectedItem = null;
-
-			/*if (tree.SelectedItem is SongPart)
-				PreviewControl.Element = ((SongPart)tree.SelectedItem).Slides[0];
-			else
-				PreviewControl.Element = (ISongElement)tree.SelectedItem;*/
-
-			if (tree.SelectedItem is SongSlide)
-				EnableSpellCheckCheckBox.IsEnabled = true;
-			else
-				EnableSpellCheckCheckBox.IsEnabled = false;
-
-			if (tree.SelectedItem is Song)
-			{
-				EditBorder.Child = null;
-				EditHeader.Text = "";
-			}
-			else if (tree.SelectedItem is SongSlide)
-			{
-				EditBorder.Child = (Grid)this.Resources["editTextWithTranslation"];
-				EditHeader.Text = WordsLive.Resources.Resource.eGridTextHeader;
-			}
-			else if (tree.SelectedItem is SongPart)
-			{
-				EditBorder.Child = null;
-				EditHeader.Text = "";
-			}
-			else if (tree.SelectedItem is Nodes.LanguageNode)
-			{
-				EditBorder.Child = (Grid)this.Resources["editLanguageGrid"];
-				EditHeader.Text = WordsLive.Resources.Resource.eMetadataLanguageTitle;
-			}
-			else if (tree.SelectedItem is Nodes.SourceNode)
-			{
-				EditBorder.Child = (Grid)this.Resources["editSourceGrid"];
-				EditHeader.Text = WordsLive.Resources.Resource.eMetadataSourceTitle;
-			}
-			else if (tree.SelectedItem is Nodes.CopyrightNode)
-			{
-				EditBorder.Child = (TextBox)this.Resources["editCopyrightTextBox"];
-				EditHeader.Text = WordsLive.Resources.Resource.eMetadataCopyrightTitle;
-			}
-			else if (tree.SelectedItem is Nodes.CategoryNode)
-			{
-				EditBorder.Child = (TextBox)this.Resources["editCategoryTextBox"];
-				EditHeader.Text = WordsLive.Resources.Resource.eMetadataCategoryTitle;
-			}
-			else
-			{
-				throw new NotSupportedException();
-			}
-
-			OnPropertyChanged("SelectedPart");
 		}
 	}
 }

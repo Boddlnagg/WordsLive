@@ -16,22 +16,60 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+using System.ComponentModel;
+
 namespace WordsLive.Core.Songs
 {
 	/// <summary>
 	/// Represents the source information of a song.
 	/// </summary>
-	public class SongSource
+	public class SongSource : ISongElement, INotifyPropertyChanged
 	{
+		private string songbook;
+		private int number;
+
 		/// <summary>
 		/// Gets or sets the songbook.
 		/// </summary>
-		public string Songbook { get; set;}
+		public string Songbook
+		{
+			get
+			{
+				return songbook;
+			}
+			set
+			{
+				Undo.ChangeFactory.OnChangingTryMerge(this, "Songbook", songbook, value);
+				songbook = value;
+				OnPropertyChanged("Songbook");
+			}
+		}
 
 		/// <summary>
 		/// Gets or sets the number of the song in the songbook (0 if unknown)
 		/// </summary>
-		public int Number { get; set;}
+		public int Number
+		{
+			get
+			{
+				return number;
+			}
+			set
+			{
+				Undo.ChangeFactory.OnChangingTryMerge(this, "Number", number, value);
+				number = value;
+				OnPropertyChanged("Number");
+			}
+		}
+
+		/// <summary>
+		/// Initializes a new instance of the <see cref="SongSource"/> class.
+		/// </summary>
+		/// <param name="root">The song this source belongs to.</param>
+		public SongSource(Song root)
+		{
+			this.Root = root;
+		}
 		
 		/// <summary>
 		/// Generated a <see cref="SongSource"/> by parsing a string.
@@ -39,9 +77,9 @@ namespace WordsLive.Core.Songs
 		/// </summary>
 		/// <param name="source">The string to parse.</param>
 		/// <returns>The parsed source object.</returns>
-		public static SongSource Parse(string source)
+		public static SongSource Parse(string source, Song root)
 		{
-			SongSource result = new SongSource();
+			SongSource result = new SongSource(root);
 			
 			if(source.Trim() == "")
 				return result;
@@ -98,5 +136,19 @@ namespace WordsLive.Core.Songs
 			else
 				return Songbook + " / " + Number;
 		}
+
+		#region Interface implementations
+
+		public event PropertyChangedEventHandler PropertyChanged;
+
+		protected void OnPropertyChanged(string name)
+		{
+			if (PropertyChanged != null)
+				PropertyChanged(this, new PropertyChangedEventArgs(name));
+		}
+
+		public Song Root { get; private set; }
+
+		#endregion
 	}
 }

@@ -17,69 +17,86 @@
 	</Grid.CommandBindings>
 	<Grid.Resources>
 		<local:LanguageToLanguageCodeConverter x:Key="languageToLanguageCodeConverter"/>
-		<TextBox x:Key="editCopyrightTextBox"
-			AcceptsReturn="True" IsUndoEnabled="False"
-			Text="{Binding ElementName=StructureTree2, Path=SelectedItem.Root.Copyright, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-		<TextBox x:Key="editCategoryTextBox"
-			AcceptsReturn="True" IsUndoEnabled="False"
-			Text="{Binding ElementName=StructureTree2, Path=SelectedItem.Root.Category, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-		<Grid x:Key="editTextWithTranslation" Background="White">
-			<Grid.ColumnDefinitions>
-				<ColumnDefinition Width="*"/>
-				<ColumnDefinition Width="5"/>
-				<ColumnDefinition Width="Auto">
-				</ColumnDefinition>
-			</Grid.ColumnDefinitions>
-			<!-- The name 'TextTextBox' is used to find the cursor position (for splitting) -->
-			<TextBox Name="TextTextBox" Grid.Column="0" AcceptsReturn="True" IsUndoEnabled="False"
-					 Language="{Binding ElementName=StructureTree2, Path=SelectedItem.Root.Language, Converter={StaticResource languageToLanguageCodeConverter}, ConverterCulture=en-US}"
-					 Text="{Binding ElementName=StructureTree2, Path=SelectedItem.Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+		<local:EditControlHeaderConverter x:Key="editControlHeaderConverter"/>
+		<DataTemplate x:Key="emptyEditTemplate"/>
+		<DataTemplate x:Key="editCopyrightTextBoxTemplate">
+			<TextBox AcceptsReturn="True" IsUndoEnabled="False"
+			Text="{Binding Path=Root.Copyright, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+		</DataTemplate>
+		<DataTemplate x:Key="editCategoryTextBoxTemplate">
+			<TextBox AcceptsReturn="True" IsUndoEnabled="False"
+			Text="{Binding Path=Root.Category, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+		</DataTemplate>
+		<DataTemplate x:Key="editTextWithTranslationTemplate">
+			<Grid Background="White">
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="*"/>
+					<ColumnDefinition Width="5"/>
+					<ColumnDefinition Width="Auto">
+					</ColumnDefinition>
+				</Grid.ColumnDefinitions>
+				<!-- The name 'TextTextBox' is used to find the cursor position (for splitting) -->
+				<TextBox Name="TextTextBox" Grid.Column="0" AcceptsReturn="True" IsUndoEnabled="False"
+					 Language="{Binding Path=Root.Language, Converter={StaticResource languageToLanguageCodeConverter}, ConverterCulture=en-US}"
+					 Text="{Binding Path=Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
 					 SpellCheck.IsEnabled="{Binding ElementName=EnableSpellCheckCheckBox, Path=IsChecked, Mode=OneWay}"/>
-			<Expander Grid.Column="2" ExpandDirection="Left" IsExpanded="{Binding ElementName=StructureTree2, Path=SelectedItem.Root.HasTranslation, Mode=OneTime}"
+				<Expander Grid.Column="2" ExpandDirection="Left" IsExpanded="{Binding ElementName=StructureTree2, Path=SelectedItem.Root.HasTranslation, Mode=OneTime}"
 					  Expanded="TranslationExpanderExpandedCollapsed" Collapsed="TranslationExpanderExpandedCollapsed" >
-				<Expander.Header>
-					<TextBlock Text="{x:Static resx:Resource.eGridTranslation}">
+					<Expander.Header>
+						<TextBlock Text="{x:Static resx:Resource.eGridTranslation}">
 						<TextBlock.LayoutTransform>
 							<RotateTransform Angle="90"/>
 						</TextBlock.LayoutTransform>
-					</TextBlock>
-				</Expander.Header>
-				<TextBox Name="TranslationTextBox" AcceptsReturn="True" IsUndoEnabled="False"
-					 Text="{Binding ElementName=StructureTree2,Path=SelectedItem.Translation, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-					 Language="{Binding ElementName=StructureTree2, Path=SelectedItem.Root.TranslationLanguage, Converter={StaticResource languageToLanguageCodeConverter}, ConverterCulture=en-US}"
+						</TextBlock>
+					</Expander.Header>
+					<TextBox Name="TranslationTextBox" AcceptsReturn="True" IsUndoEnabled="False"
+					 Text="{Binding Path=Translation, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+					 Language="{Binding Path=Root.TranslationLanguage, Converter={StaticResource languageToLanguageCodeConverter}, ConverterCulture=en-US}"
 					 SpellCheck.IsEnabled="{Binding ElementName=EnableSpellCheckCheckBox, Path=IsChecked, Mode=OneWay}"/>
-			</Expander>
-		</Grid>
-		<Grid x:Key="editLanguageGrid" Margin="10">
-			<Grid.ColumnDefinitions>
-				<ColumnDefinition Width="Auto"></ColumnDefinition>
-				<ColumnDefinition></ColumnDefinition>
-			</Grid.ColumnDefinitions>
-			<Grid.RowDefinitions>
-				<RowDefinition Height="Auto"></RowDefinition>
-				<RowDefinition Height="Auto"></RowDefinition>
-			</Grid.RowDefinitions>
-			<Label Grid.Row="0" Grid.Column="0" Content="{x:Static resx:Resource.eGridLanguageText}"/>
-			<ComboBox Grid.Row="0" Grid.Column="1" Height="24" VerticalAlignment="Top" IsEditable="True" Text="{Binding ElementName=StructureTree2,Path=SelectedItem.Root.Language, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+				</Expander>
+			</Grid>
+		</DataTemplate>
+		<DataTemplate x:Key="editLanguageGridTemplate">
+			<Grid Margin="10">
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="Auto"></ColumnDefinition>
+					<ColumnDefinition></ColumnDefinition>
+				</Grid.ColumnDefinitions>
+				<Grid.RowDefinitions>
+					<RowDefinition Height="Auto"></RowDefinition>
+					<RowDefinition Height="Auto"></RowDefinition>
+				</Grid.RowDefinitions>
+				<Label Grid.Row="0" Grid.Column="0" Content="{x:Static resx:Resource.eGridLanguageText}"/>
+				<ComboBox Grid.Row="0" Grid.Column="1" Height="24" VerticalAlignment="Top" IsEditable="True" Text="{Binding Path=Root.Language, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
 					  ItemsSource="{Binding Source={x:Static resx:Resource.eGridLanguages}, Converter={StaticResource StringSplitConverter}, ConverterParameter=';'}"/>
-			<Label Grid.Row="1" Grid.Column="0" Content="{x:Static resx:Resource.eGridLanguageTranslation}"/>
-			<ComboBox Grid.Row="1" Grid.Column="1" Height="24" VerticalAlignment="Top" IsEditable="True" Text="{Binding ElementName=StructureTree2,Path=SelectedItem.Root.TranslationLanguage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+				<Label Grid.Row="1" Grid.Column="0" Content="{x:Static resx:Resource.eGridLanguageTranslation}"/>
+				<ComboBox Grid.Row="1" Grid.Column="1" Height="24" VerticalAlignment="Top" IsEditable="True" Text="{Binding Path=Root.TranslationLanguage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
 					  ItemsSource="{Binding Source={x:Static resx:Resource.eGridLanguages}, Converter={StaticResource StringSplitConverter}, ConverterParameter=';'}" />
-		</Grid>
-		<Grid x:Key="editSourceGrid" Margin="10" VerticalAlignment="Top">
-			<Grid.ColumnDefinitions>
-				<ColumnDefinition Width="Auto"></ColumnDefinition>
-				<ColumnDefinition></ColumnDefinition>
-			</Grid.ColumnDefinitions>
-			<Grid.RowDefinitions>
-				<RowDefinition Height="Auto"></RowDefinition>
-				<RowDefinition Height="Auto"></RowDefinition>
-			</Grid.RowDefinitions>
-			<Label Grid.Column="0" Grid.Row="0" Content="{x:Static resx:Resource.eGridSourceSongbookLabel}"/>
-			<TextBox Grid.Column="1" Grid.Row="0" Margin="0,2,0,2" IsUndoEnabled="False" Text="{Binding ElementName=StructureTree2, Path=SelectedItem.Root.Sources[0].Songbook, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-			<Label Grid.Column="0" Grid.Row="1" Content="{x:Static resx:Resource.eGridSourceNumberLabel}"/>
-			<TextBox Grid.Column="1" Grid.Row="1" IsUndoEnabled="False" Text="{Binding ElementName=StructureTree2, Path=SelectedItem.Root.Sources[0].Number, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-		</Grid>
+			</Grid>
+		</DataTemplate>
+		<DataTemplate x:Key="editSourceGridTemplate">
+			<Grid Margin="10" VerticalAlignment="Top">
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="Auto"></ColumnDefinition>
+					<ColumnDefinition></ColumnDefinition>
+				</Grid.ColumnDefinitions>
+				<Grid.RowDefinitions>
+					<RowDefinition Height="Auto"></RowDefinition>
+					<RowDefinition Height="Auto"></RowDefinition>
+				</Grid.RowDefinitions>
+				<Label Grid.Column="0" Grid.Row="0" Content="{x:Static resx:Resource.eGridSourceSongbookLabel}"/>
+				<TextBox Grid.Column="1" Grid.Row="0" Margin="0,2,0,2" IsUndoEnabled="False" Text="{Binding Path=Root.Sources[0].Songbook, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+				<Label Grid.Column="0" Grid.Row="1" Content="{x:Static resx:Resource.eGridSourceNumberLabel}"/>
+				<TextBox Grid.Column="1" Grid.Row="1" IsUndoEnabled="False" Text="{Binding Path=Root.Sources[0].Number, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+			</Grid>
+		</DataTemplate>
+		<local:EditControlTemplateSelector x:Key="editControlTemplateSelector"
+			EmptyTemplate="{StaticResource emptyEditTemplate}"
+			EditCategoryTemplate="{StaticResource editCategoryTextBoxTemplate}"
+			EditCopyrightTemplate="{StaticResource editCopyrightTextBoxTemplate}"
+			EditLanguageTemlate="{StaticResource editLanguageGridTemplate}"
+			EditSourceTemplate="{StaticResource editSourceGridTemplate}"
+			EditTextWithTranslationTemplate="{StaticResource editTextWithTranslationTemplate}"/>
 	</Grid.Resources>
 	<Grid.RowDefinitions>
 		<RowDefinition Height="2*" MinHeight="50" />
@@ -140,7 +157,6 @@
 	<TreeView
 		x:Name="StructureTree" ItemsSource="{Binding}"
 		Grid.Row="0" Grid.Column="0" Margin="0,26,0,0" Grid.RowSpan="3"
-		SelectedItemChanged="StructureTree_SelectedItemChanged"
 		AllowDrop="True" Drop="StructureTree_Drop" DragOver="StructureTree_DragEnterOrOver" DragEnter="StructureTree_DragEnterOrOver"
 		PreviewMouseLeftButtonDown="StructureTree_PreviewMouseLeftButtonDown"
 		PreviewMouseMove="StructureTree_PreviewMouseMove">
@@ -322,11 +338,12 @@
 			<Style TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"/>
 		</DockPanel.Resources>
 		<CheckBox x:Name="EnableSpellCheckCheckBox" DockPanel.Dock="Right" VerticalAlignment="Center" IsEnabled="False" IsChecked="{Binding Source={StaticResource settings}, Path=Default.EditorEnableSpellCheck, Mode=TwoWay}" Content="{x:Static resx:Resource.eGridSpellCheckCheckbox}"/>
-		<TextBlock x:Name="EditHeader" Padding="5"/>
+		<TextBlock x:Name="EditHeader" Padding="5" Text="{Binding ElementName=StructureTree2, Path=SelectedItem, Converter={StaticResource editControlHeaderConverter}}"/>
 	</DockPanel>
 	<Border Grid.Row="2"
 		Grid.Column="2"
 		Margin="0,26,0,0" Background="LightGray" x:Name="EditBorder">
+		<ContentControl Content="{Binding ElementName=StructureTree2, Path=SelectedItem}" ContentTemplateSelector="{StaticResource editControlTemplateSelector}"/>
 	</Border>
 	<DockPanel
 		Grid.Row="0"
