@@ -22,11 +22,11 @@ namespace WordsLive.Editor
 		{
 			get
 			{
-				return Formatting.BorderTop;
+				return formatting.BorderTop;
 			}
 			set
 			{
-				Formatting.BorderTop = value;
+				formatting.BorderTop = value;
 			}
 		}
 
@@ -34,11 +34,11 @@ namespace WordsLive.Editor
 		{
 			get
 			{
-				return Formatting.BorderBottom;
+				return formatting.BorderBottom;
 			}
 			set
 			{
-				Formatting.BorderBottom = value;
+				formatting.BorderBottom = value;
 			}
 		}
 
@@ -46,11 +46,11 @@ namespace WordsLive.Editor
 		{
 			get
 			{
-				return Formatting.BorderLeft;
+				return formatting.BorderLeft;
 			}
 			set
 			{
-				Formatting.BorderLeft = value;
+				formatting.BorderLeft = value;
 			}
 		}
 
@@ -58,11 +58,11 @@ namespace WordsLive.Editor
 		{
 			get
 			{
-				return Formatting.BorderRight;
+				return formatting.BorderRight;
 			}
 			set
 			{
-				Formatting.BorderRight = value;
+				formatting.BorderRight = value;
 			}
 		}
 
@@ -70,11 +70,11 @@ namespace WordsLive.Editor
 		{
 			get
 			{
-				return Formatting.TextLineSpacing;
+				return formatting.TextLineSpacing;
 			}
 			set
 			{
-				Formatting.TextLineSpacing = value;
+				formatting.TextLineSpacing = value;
 			}
 		}
 
@@ -82,11 +82,11 @@ namespace WordsLive.Editor
 		{
 			get
 			{
-				return Formatting.TranslationLineSpacing;
+				return formatting.TranslationLineSpacing;
 			}
 			set
 			{
-				Formatting.TranslationLineSpacing = value;
+				formatting.TranslationLineSpacing = value;
 			}
 		}
 
@@ -107,11 +107,11 @@ namespace WordsLive.Editor
 		{
 			get
 			{
-				return Formatting.TranslationPosition;
+				return formatting.TranslationPosition;
 			}
 			set
 			{
-				Formatting.TranslationPosition = value;
+				formatting.TranslationPosition = value;
 			}
 		}
 
@@ -119,11 +119,11 @@ namespace WordsLive.Editor
 		{
 			get
 			{
-				return Formatting.CopyrightDisplayPosition;
+				return formatting.CopyrightDisplayPosition;
 			}
 			set
 			{
-				Formatting.CopyrightDisplayPosition = value;
+				formatting.CopyrightDisplayPosition = value;
 			}
 		}
 
@@ -131,11 +131,11 @@ namespace WordsLive.Editor
 		{
 			get
 			{
-				return Formatting.SourceDisplayPosition;
+				return formatting.SourceDisplayPosition;
 			}
 			set
 			{
-				Formatting.SourceDisplayPosition = value;
+				formatting.SourceDisplayPosition = value;
 			}
 		}
 
@@ -143,11 +143,11 @@ namespace WordsLive.Editor
 		{
 			get
 			{
-				return Formatting.CopyrightBorderBottom;
+				return formatting.CopyrightBorderBottom;
 			}
 			set
 			{
-				Formatting.CopyrightBorderBottom = value;
+				formatting.CopyrightBorderBottom = value;
 			}
 		}
 
@@ -155,11 +155,11 @@ namespace WordsLive.Editor
 		{
 			get
 			{
-				return Formatting.SourceBorderTop;
+				return formatting.SourceBorderTop;
 			}
 			set
 			{
-				Formatting.SourceBorderTop = value;
+				formatting.SourceBorderTop = value;
 			}
 		}
 
@@ -167,11 +167,11 @@ namespace WordsLive.Editor
 		{
 			get
 			{
-				return Formatting.SourceBorderRight;
+				return formatting.SourceBorderRight;
 			}
 			set
 			{
-				Formatting.SourceBorderRight = value;
+				formatting.SourceBorderRight = value;
 			}
 		}
 
@@ -179,11 +179,11 @@ namespace WordsLive.Editor
 		{
 			get
 			{
-				return Formatting.CopyrightText;
+				return formatting.CopyrightText;
 			}
 			set
 			{
-				Formatting.CopyrightText = value;
+				formatting.CopyrightText = value;
 			}
 		}
 
@@ -191,11 +191,11 @@ namespace WordsLive.Editor
 		{
 			get
 			{
-				return Formatting.SourceText;
+				return formatting.SourceText;
 			}
 			set
 			{
-				Formatting.SourceText = value;
+				formatting.SourceText = value;
 			}
 		}
 
@@ -203,11 +203,11 @@ namespace WordsLive.Editor
 		{
 			get
 			{
-				return Formatting.TranslationText;
+				return formatting.TranslationText;
 			}
 			set
 			{
-				Formatting.TranslationText = value;
+				formatting.TranslationText = value;
 			}
 		}
 
@@ -215,11 +215,11 @@ namespace WordsLive.Editor
 		{
 			get
 			{
-				return Formatting.MainText;
+				return formatting.MainText;
 			}
 			set
 			{
-				Formatting.MainText = value;
+				formatting.MainText = value;
 			}
 		}
 
@@ -227,11 +227,11 @@ namespace WordsLive.Editor
 		{
 			get
 			{
-				return Formatting.IsOutlineEnabled;
+				return formatting.IsOutlineEnabled;
 			}
 			set
 			{
-				Formatting.IsOutlineEnabled = value;
+				formatting.IsOutlineEnabled = value;
 			}
 		}
 
@@ -239,11 +239,11 @@ namespace WordsLive.Editor
 		{
 			get
 			{
-				return Color.FromRgb(Formatting.OutlineColor.R, Formatting.OutlineColor.G, Formatting.OutlineColor.B);
+				return Color.FromRgb(formatting.OutlineColor.R, formatting.OutlineColor.G, formatting.OutlineColor.B);
 			}
 			set
 			{
-				Formatting.OutlineColor = System.Drawing.Color.FromArgb(value.R, value.G, value.B);
+				formatting.OutlineColor = System.Drawing.Color.FromArgb(value.R, value.G, value.B);
 			}
 		}
 
@@ -251,11 +251,11 @@ namespace WordsLive.Editor
 		{
 			get
 			{
-				return Formatting.IsShadowEnabled;
+				return formatting.IsShadowEnabled;
 			}
 			set
 			{
-				Formatting.IsShadowEnabled = value;
+				formatting.IsShadowEnabled = value;
 			}
 		}
 
@@ -263,11 +263,11 @@ namespace WordsLive.Editor
 		{
 			get
 			{
-				return Formatting.ShadowDirection;
+				return formatting.ShadowDirection;
 			}
 			set
 			{
-				Formatting.ShadowDirection = value;
+				formatting.ShadowDirection = value;
 			}
 		}
 
@@ -275,11 +275,11 @@ namespace WordsLive.Editor
 		{
 			get
 			{
-				return Color.FromRgb(Formatting.ShadowColor.R, Formatting.ShadowColor.G, Formatting.ShadowColor.B);
+				return Color.FromRgb(formatting.ShadowColor.R, formatting.ShadowColor.G, formatting.ShadowColor.B);
 			}
 			set
 			{
-				Formatting.ShadowColor = System.Drawing.Color.FromArgb(value.R, value.G, value.B);
+				formatting.ShadowColor = System.Drawing.Color.FromArgb(value.R, value.G, value.B);
 			}
 		}
 
@@ -287,7 +287,7 @@ namespace WordsLive.Editor
 		public SongSettingsWindow(SongFormatting formatting)
 		{
 			InitializeComponent();
-			this.formatting = (SongFormatting)formatting.Clone();
+			this.formatting = formatting;
 			this.DataContext = this;
 		}
 

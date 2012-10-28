@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using MonitoredUndo;
 using WordsLive.Core.Songs;
@@ -136,12 +137,23 @@ namespace WordsLive.Editor
 			{
 				this.FontSize = newSize;
 				int oldSize = Root.Song.Formatting.MainText.Size;
-				var ch = new DelegateChange(this,
-					() => { Root.Song.Formatting.MainText.Size = oldSize; },
-					() => { Root.Song.Formatting.MainText.Size = this.FontSize; },
-					new ChangeKey<object, string>(this, "MainTextSize"));
+				Action undo = () =>
+				{
+					var formatting = Root.Song.Formatting;
+					formatting.MainText.Size = oldSize;
+					Root.Song.Formatting = formatting;
+				};
+				Action redo = () =>
+				{
+					var formatting = Root.Song.Formatting;
+					formatting.MainText.Size = this.FontSize;
+					Root.Song.Formatting = formatting;
+				};
+
+				var ch = new DelegateChange(this, undo, redo, new ChangeKey<object, string>(this, "MainTextSize"));
 				UndoService.Current[Root].AddChange(ch, "ChangeMainTextSize");
-				Root.Song.Formatting.MainText.Size = this.FontSize;
+
+				redo();
 			}
 		}
 

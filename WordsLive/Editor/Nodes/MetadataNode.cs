@@ -24,12 +24,12 @@ namespace WordsLive.Editor.Nodes
 	/// Represents an abstract base class for metadata nodes
 	/// in the song structure tree.
 	/// </summary>
-	public abstract class MetadataNode
+	public abstract class MetadataNode : ISongElement
 	{
 		/// <summary>
 		/// Gets the song this metadata belongs to.
 		/// </summary>
-		public Song Song { get; private set; }
+		public Song Root { get; private set; }
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="MetadataNode"/> class.
@@ -37,7 +37,7 @@ namespace WordsLive.Editor.Nodes
 		/// <param name="song">The song.</param>
 		public MetadataNode(Song song)
 		{
-			this.Song = song;
+			this.Root = song;
 		}
 	}
 }

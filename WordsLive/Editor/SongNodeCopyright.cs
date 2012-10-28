@@ -29,7 +29,9 @@ namespace WordsLive.Editor
 			set
 			{
 				DefaultChangeFactory.OnChanging(this, "FontSize", Root.Song.Formatting.CopyrightText.Size, value);
-				Root.Song.Formatting.CopyrightText.Size = value;
+				var formatting = Root.Song.Formatting;
+				formatting.CopyrightText.Size = value;
+				Root.Song.Formatting = formatting;
 				OnNotifyPropertyChanged("FontSize");
 			}
 		}

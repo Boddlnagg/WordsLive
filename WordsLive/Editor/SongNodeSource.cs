@@ -66,7 +66,9 @@ namespace WordsLive.Editor
 			set
 			{
 				DefaultChangeFactory.OnChanging(this, "FontSize", Root.Song.Formatting.SourceText.Size, value);
-				Root.Song.Formatting.SourceText.Size = value;
+				var formatting = Root.Song.Formatting;
+				formatting.SourceText.Size = value;
+				Root.Song.Formatting = formatting;
 				OnNotifyPropertyChanged("FontSize");
 			}
 		}

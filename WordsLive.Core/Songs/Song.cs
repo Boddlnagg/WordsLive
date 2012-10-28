@@ -203,12 +203,9 @@ namespace WordsLive.Core.Songs
 			}
 			set
 			{
-				if (value != formatting)
-				{
-					Undo.ChangeFactory.OnChanging(this, "Formatting", formatting, value);
-					formatting = value;
-					OnPropertyChanged("Formatting");
-				}
+				Undo.ChangeFactory.OnChanging(this, "Formatting", formatting, value);
+				formatting = value;
+				OnPropertyChanged("Formatting");
 			}
 		}
 		
@@ -432,6 +429,23 @@ namespace WordsLive.Core.Songs
 			UndoService.Current[UndoKey].AddChange(ch, "AddPart");
 
 			redo();
+		}
+
+		/// <summary>
+		/// Adds a new part with an empty slide to the song (can be undone).
+		/// </summary>
+		/// <param name="name">The name.</param>
+		/// <returns>The added part.</returns>
+		public SongPart AddPart(string name)
+		{
+			SongPart newPart;
+			using (new UndoBatch(UndoKey, "AddPart", false))
+			{
+				newPart = new SongPart(this, name, new SongSlide[] { new SongSlide(this) });
+				AddPart(newPart);
+			}
+
+			return newPart;
 		}
 
 		/// <summary>

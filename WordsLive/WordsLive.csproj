@@ -114,7 +114,6 @@
     <Compile Include="Editor\Nodes\CopyrightNode.cs" />
     <Compile Include="Editor\Nodes\LanguageNode.cs" />
     <Compile Include="Editor\Nodes\MetadataNode.cs" />
-    <Compile Include="Editor\Nodes\SlideNameConverter.cs" />
     <Compile Include="Editor\Nodes\SourceNode.cs" />
     <Compile Include="Images\FinishAction.cs" />
     <Compile Include="Images\ImageInfo.cs" />

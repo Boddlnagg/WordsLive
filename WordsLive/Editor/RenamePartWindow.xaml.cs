@@ -1,16 +1,19 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
+using WordsLive.Core.Songs;
 using WordsLive.Utils;
 
 namespace WordsLive.Editor
 {
 	public partial class RenamePartWindow : Window, INotifyPropertyChanged, IDataErrorInfo
 	{
-		SongNodeRoot song;
-		SongNodePart part;
+		private Song song;
+		private SongPart part;
+		private string partName;
 
-		public RenamePartWindow(SongNodeRoot song, SongNodePart part)
+		public RenamePartWindow(Song song, SongPart part)
 		{
 			InitializeComponent();
 			this.song = song;
@@ -18,11 +21,10 @@ namespace WordsLive.Editor
 			this.DataContext = this;
 			if (this.part != null)
 			{
-				this.PartName = this.part.Title;
+				this.PartName = this.part.Name;
 			}
 		}
-
-		private string partName;
+		
 		public string PartName
 		{
 			get
@@ -98,7 +100,7 @@ namespace WordsLive.Editor
 
 						foreach (var part in this.song.Parts)
 						{
-							if (this.partName == part.Title && !(part == this.part && this.part != null))
+							if (this.partName == part.Name && !(part == this.part && this.part != null))
 								return WordsLive.Resources.Resource.rpMsgNameAlreadyExists;
 						}
 						break;

@@ -1,29 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using WordsLive.Core.Songs;
-using System.ComponentModel;
 
 namespace WordsLive.Editor
 {
 	public partial class ChooseFontControl : UserControl
 	{
-		public static readonly DependencyProperty FontProperty = DependencyProperty.Register("Font", typeof(SongTextFormatting), typeof(ChooseFontControl), new FrameworkPropertyMetadata(null, new PropertyChangedCallback(FontPropertyChanged)));
+		public static readonly DependencyProperty FontProperty = DependencyProperty.Register("Font", typeof(SongTextFormatting), typeof(ChooseFontControl), new PropertyMetadata(new SongTextFormatting(), new PropertyChangedCallback(FontPropertyChanged)));
 
 		public SongTextFormatting Font
 		{
 			get
 			{
-				return GetValue(FontProperty) as SongTextFormatting;
+				return (SongTextFormatting)GetValue(FontProperty);
 			}
 			set
 			{
@@ -44,12 +35,16 @@ namespace WordsLive.Editor
 			InitializeComponent();
 			FontComboBox.SelectionChanged += (sender, args) =>
 			{
-				this.Font.Name = ((FontFamily)FontComboBox.SelectedItem).Source;
+				var font = this.Font;
+				font.Name = ((FontFamily)FontComboBox.SelectedItem).Source;
+				this.Font = font;
 			};
 			ColorPicker.SelectedColorChanged += (sender, args) =>
 			{
 				var col = ColorPicker.SelectedColor;
-				this.Font.Color = System.Drawing.Color.FromArgb(col.R, col.G, col.B);
+				var font = this.Font;
+				font.Color = System.Drawing.Color.FromArgb(col.R, col.G, col.B);
+				this.Font = font;
 			};
 		}
 	}

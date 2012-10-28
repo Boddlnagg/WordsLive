@@ -129,21 +129,14 @@ namespace WordsLive.Core.Songs
 			}
 			set
 			{
-				int oldMainSize = Root.Formatting.MainText.Size;
-				int oldSize = this.size;
-
-				Action undo = () => {
-					this.size = oldSize;
-					Root.Formatting.MainText.Size = oldMainSize;
-				};
-				Action redo = () => { 
-					this.size = value;
-					Root.Formatting.MainText.Size = this.size;
-				};
-
-				var ch = new DelegateChange(this, undo, redo, new ChangeKey<object, string>(this, "TextSize"));
-				UndoService.Current[Root.UndoKey].AddChange(ch, "ChangeTextSize");
-				redo();
+				using (new UndoBatch(Root.UndoKey, "ChangeTextSize", false))
+				{
+					Undo.ChangeFactory.OnChanging(this, "Size", size, value);
+					size = value;
+					var formatting = Root.Formatting;
+					formatting.MainText.Size = value;
+					Root.Formatting = formatting;
+				}
 
 				OnPropertyChanged("Size");
 			}

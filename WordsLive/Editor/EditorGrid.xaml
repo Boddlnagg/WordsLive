@@ -11,9 +11,9 @@
 			 mc:Ignorable="d" 
 			 d:DesignHeight="400" d:DesignWidth="800">
 	<Grid.CommandBindings>
-		<CommandBinding Command="{x:Static my:CustomCommands.Split}" CanExecute="OnCanExecuteCommand" Executed="OnExecuteCommand"/>
-		<CommandBinding Command="IncreaseFontSize" Executed="OnExecuteCommand" CanExecute="OnCanExecuteCommand"/>
-		<CommandBinding Command="DecreaseFontSize" Executed="OnExecuteCommand" CanExecute="OnCanExecuteCommand"/>
+		<CommandBinding Command="{x:Static my:CustomCommands.Split}" CanExecute="GridCommand_CanExecute" Executed="GridCommand_Executed"/>
+		<CommandBinding Command="IncreaseFontSize"  CanExecute="GridCommand_CanExecute" Executed="GridCommand_Executed"/>
+		<CommandBinding Command="DecreaseFontSize" CanExecute="GridCommand_CanExecute" Executed="GridCommand_Executed"/>
 	</Grid.CommandBindings>
 	<Grid.Resources>
 		<TextBox x:Key="editTextBox"
@@ -26,6 +26,7 @@
 				<ColumnDefinition Width="Auto">
 				</ColumnDefinition>
 			</Grid.ColumnDefinitions>
+			<!-- The name 'TextTextBox' is used to find the cursor position (for splitting) -->
 			<TextBox Name="TextTextBox" Grid.Column="0" AcceptsReturn="True" IsUndoEnabled="False" Language="{Binding ElementName=StructureTree, Path=Items[0].LanguageCode, ConverterCulture=en-US}"
 					Text="{Binding ElementName=StructureTree,Path=SelectedItem.Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
 					 SpellCheck.IsEnabled="{Binding ElementName=EnableSpellCheckCheckBox, Path=IsChecked, Mode=OneWay}"/>
@@ -208,15 +209,14 @@
 	<TreeView
 		x:Name="StructureTree2" ItemsSource="{Binding}"
 		Grid.Row="0" Grid.Column="0" Margin="0,26,0,0" Grid.RowSpan="3">
-		<!--<TreeView.CommandBindings>
-			<CommandBinding Command="{x:Static my:CustomCommands.Duplicate}" Executed="OnExecuteCommand"/>
-			<CommandBinding Command="{x:Static my:CustomCommands.Rename}" Executed="OnExecuteCommand"/>
-			<CommandBinding Command="Delete" Executed="OnExecuteCommand" CanExecute="OnCanExecuteCommand"/>
-			<CommandBinding Command="{x:Static my:CustomCommands.Insert}" Executed="OnExecuteCommand"/>
-			<CommandBinding Command="{x:Static my:CustomCommands.AddPart}" Executed="OnExecuteCommand"/>
-		</TreeView.CommandBindings>-->
+		<TreeView.CommandBindings>
+			<CommandBinding Command="{x:Static my:CustomCommands.Duplicate}" Executed="StructureTreeCommand_Executed"/>
+			<CommandBinding Command="{x:Static my:CustomCommands.Rename}" Executed="StructureTreeCommand_Executed"/>
+			<CommandBinding Command="Delete" CanExecute="StructureTreeCommand_CanExecute" Executed="StructureTreeCommand_Executed" />
+			<CommandBinding Command="{x:Static my:CustomCommands.Insert}" Executed="StructureTreeCommand_Executed"/>
+			<CommandBinding Command="{x:Static my:CustomCommands.AddPart}" Executed="StructureTreeCommand_Executed"/>
+		</TreeView.CommandBindings>
 		<TreeView.Resources>
-			<nodes:SlideNameConverter x:Key="SlideNameConverter"/>
 			<nodes:ChildNodesConverter x:Key="ChildNodesConverter"/>
 			<HierarchicalDataTemplate DataType="{x:Type songs:Song}" ItemsSource="{Binding Converter={StaticResource ChildNodesConverter}}">
 				<StackPanel Orientation="Horizontal">
@@ -248,7 +248,7 @@
 			<HierarchicalDataTemplate DataType="{x:Type songs:SongSlide}">
 				<StackPanel Orientation="Horizontal">
 					<Image Width="16" Height="16" Margin="0, 1, 2, 1" Source="/WordsLive;component/Artwork/Small_Slide.png" />
-					<TextBlock Text="{Binding Converter={StaticResource SlideNameConverter}}">
+					<TextBlock Text="{x:Static resx:Resource.eGridSlideTitle}">
 						<TextBlock.ContextMenu>
 							<ContextMenu>
 								<MenuItem Header="{x:Static resx:Resource.eGridContextRemoveSlide}" Command="Delete" CommandParameter="{Binding}"/>

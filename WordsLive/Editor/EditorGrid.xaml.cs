@@ -75,26 +75,28 @@ namespace WordsLive.Editor
 			}
 		}
 
+		[Obsolete]
 		private void AddSlide(SongNodePart item)
 		{
 			this.StructureTree.SetSelectedItem(item.AddSlide());
 		}
 
+		private void AddSlide(SongPart part)
+		{
+			this.StructureTree.SetSelectedItem(part.AddSlide());
+		}
+
 		private void AddPart()
 		{
-			var res = ShowRenamePartDialog(songNode, null);
+			var res = ShowRenamePartDialog(null);
 			if (res.DialogResult.HasValue && res.DialogResult.Value)
 			{
-				SongNodePart newPart;
-				using (new UndoBatch(songNode, "AddPart", false))
-				{
-					newPart = new SongNodePart(songNode, this.songNode.Song, res.PartName);
-					this.songNode.AddPart(newPart);
-				}
+				var newPart = songNode.Song.AddPart(res.PartName);
 				this.StructureTree.SetSelectedItem(newPart);
 			}
-	}
+		}
 
+		[Obsolete]
 		private void RenameSong()
 		{
 			var res = ShowRenameSongDialog(songNode);
@@ -105,6 +107,7 @@ namespace WordsLive.Editor
 			}
 		}
 
+		[Obsolete]
 		private void RenamePart(SongNodePart item)
 		{
 			var res = ShowRenamePartDialog(songNode, item);
@@ -114,16 +117,19 @@ namespace WordsLive.Editor
 			}
 		}
 
+		[Obsolete]
 		private void RemovePart(SongNodePart item)
 		{
 			this.songNode.RemovePart(item);
 		}
 
+		[Obsolete]
 		public void RemoveSlide(SongNodeSlide item)
 		{
 			this.songNode.RemoveSlide(item);
 		}
 
+		[Obsolete]
 		public void DuplicateSlide(SongNodeSlide item)
 		{
 			var newSlide = this.songNode.FindPartWithSlide(item).DuplicateSlide(item);
@@ -405,7 +411,7 @@ namespace WordsLive.Editor
 				if (e.KeyStates.HasFlag(DragDropKeyStates.ControlKey))
 				{
 					// copy part: request name for the copy first
-					var res = ShowRenamePartDialog(songNode, null);
+					var res = ShowRenamePartDialog(null);
 					if (res.DialogResult.HasValue && res.DialogResult.Value)
 					{
 						SongNodePart newPart;
@@ -544,6 +550,7 @@ namespace WordsLive.Editor
 			}
 		}
 
+		[Obsolete]
 		private RenameSongWindow ShowRenameSongDialog(SongNodeRoot song)
 		{
 			if (song == null)
@@ -555,12 +562,47 @@ namespace WordsLive.Editor
 			return win;
 		}
 
+		/// <summary>
+		/// Shows a window to prompt for a new name for the song.
+		/// </summary>
+		/// <param name="song">The song.</param>
+		/// <returns>The window.</returns>
+		private RenameSongWindow ShowRenameSongDialog(Song song)
+		{
+			if (song == null)
+				throw new ArgumentNullException("song");
+
+			RenameSongWindow win = new RenameSongWindow(song.Title);
+			win.Owner = parent;
+			win.ShowDialog();
+			return win;
+		}
+
+
+		[Obsolete]
 		private RenamePartWindow ShowRenamePartDialog(SongNodeRoot song, SongNodePart part)
 		{
 			if (song == null)
 				throw new ArgumentNullException("song");
 
-			RenamePartWindow win = new RenamePartWindow(song, part);
+			//RenamePartWindow win = new RenamePartWindow(song, part);
+			//win.Owner = parent;
+			//win.ShowDialog();
+			//return win;
+			return null;
+		}
+
+		/// <summary>
+		/// Show a dialog to prompt for a new name for a part.
+		/// </summary>
+		/// <param name="part">The part to rename or <c>null</c> to prompt for a name for a new part.</param>
+		/// <returns>The window.</returns>
+		private RenamePartWindow ShowRenamePartDialog(SongPart part)
+		{
+			if (part == null)
+				throw new ArgumentNullException("part");
+
+			RenamePartWindow win = new RenamePartWindow(songNode.Song, part);
 			win.Owner = parent;
 			win.ShowDialog();
 			return win;
@@ -670,19 +712,6 @@ namespace WordsLive.Editor
 					e.CanExecute = songNode.FindPartWithSlide(node as SongNodeSlide).Children.Count > 1;
 				}
 			}
-			else if (e.Command == EditingCommands.IncreaseFontSize || e.Command == EditingCommands.DecreaseFontSize)
-			{
-				e.CanExecute = node is SongNodeSlide || node is SongNodeCopyright || node is SongNodeSource;
-			}
-			else if (e.Command == CustomCommands.Split)
-			{
-				if (node is SongNodeSlide)
-				{
-					var tb = LogicalTreeHelper.FindLogicalNode(EditBorder.Child, "TextTextBox") as TextBox;
-					if (tb != null)
-						e.CanExecute = (tb.SelectionLength == 0);
-				}
-			}
 		}
 
 		private void TranslationExpanderExpandedCollapsed(object sender, RoutedEventArgs e)
@@ -772,6 +801,188 @@ namespace WordsLive.Editor
 			else if (e.Command == CustomCommands.Insert)
 			{
 				e.CanExecute = SelectedPart != null;
+			}
+		}
+
+		private void GridCommand_Executed(object sender, ExecutedRoutedEventArgs e) // TODO
+		{
+			ISongElement node = StructureTree.SelectedItem as ISongElement;
+
+			if (e.Command == CustomCommands.Split)
+			{
+				// get text cursor position
+				var tb = LogicalTreeHelper.FindLogicalNode(EditBorder.Child, "TextTextBox") as TextBox;
+				var newSlide = this.songNode.Song.FindPartWithSlide(node as SongSlide).SplitSlide(node as SongSlide, tb.SelectionStart);
+			}
+			else if (e.Command == EditingCommands.IncreaseFontSize)
+			{
+				if (node is SongSlide)
+				{
+					SongSlide slide = node as SongSlide;
+					slide.Size++;
+				}
+				else if (node is Nodes.CopyrightNode)
+				{
+					var formatting = songNode.Song.Formatting;
+					formatting.CopyrightText.Size++;
+					songNode.Song.Formatting = formatting;
+				}
+				else if (node is Nodes.SourceNode)
+				{
+					var formatting = songNode.Song.Formatting;
+					formatting.SourceText.Size++;
+					songNode.Song.Formatting = formatting;
+				}
+			}
+			else if (e.Command == EditingCommands.DecreaseFontSize)
+			{
+				if (node is SongSlide)
+				{
+					SongSlide slide = node as SongSlide;
+					slide.Size--;
+				}
+				else if (node is Nodes.CopyrightNode)
+				{
+					var formatting = songNode.Song.Formatting;
+					formatting.CopyrightText.Size--;
+					songNode.Song.Formatting = formatting;
+				}
+				else if (node is Nodes.SourceNode)
+				{
+					var formatting = songNode.Song.Formatting;
+					formatting.SourceText.Size--;
+					songNode.Song.Formatting = formatting;
+				}
+			}
+		}
+
+		private void StructureTreeCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+		{
+			ISongElement node;
+
+			if (e.Parameter != null)
+			{
+				// called from context menu
+				node = e.Parameter as ISongElement;
+			}
+			else
+			{
+				// called from button/keyboard
+				node = StructureTree2.SelectedItem as ISongElement;
+			}
+
+			if (node == null)
+				throw new InvalidOperationException("node is not a song element");
+
+			if (e.Command == CustomCommands.Rename)
+			{
+				if (node is SongPart)
+				{
+					var res = ShowRenamePartDialog(node as SongPart);
+					if (res.DialogResult.HasValue && res.DialogResult.Value)
+					{
+						// apply change
+						(node as SongPart).Name = res.PartName;
+					}
+				}
+				else if (node is Song)
+				{ 
+					var res = ShowRenameSongDialog(songNode.Song);
+					if (res.DialogResult.HasValue && res.DialogResult.Value)
+					{
+						// apply change
+						songNode.Title = res.SongName;
+						// TODO (Editor): ask whether to rename file?
+					}
+				}
+			}
+			else if (e.Command == ApplicationCommands.Delete)
+			{
+				if (node is SongPart)
+				{
+					songNode.Song.RemovePart(node as SongPart);
+				}
+				else if (node is SongSlide)
+				{
+					var part = node.Root.FindPartWithSlide(node as SongSlide);
+					part.RemoveSlide(node as SongSlide);
+				}
+			}
+			else if (e.Command == CustomCommands.Insert)
+			{
+				if (node is Song)
+				{
+					AddPart();
+				}
+				else if (node is SongPart)
+				{
+					AddSlide(node as SongPart);
+				}
+				else if (node is SongSlide)
+				{
+					AddSlide(songNode.Song.FindPartWithSlide(node as SongSlide));
+				}
+			}
+			else if (e.Command == CustomCommands.AddPart)
+			{
+				AddPart();
+			}
+			else if (e.Command == CustomCommands.Duplicate)
+			{
+				var newSlide = this.songNode.Song.FindPartWithSlide(node as SongSlide).DuplicateSlide(node as SongSlide);
+				this.StructureTree.SetSelectedItem(newSlide);
+			}
+		}
+
+		private void GridCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+		{
+			ISongElement node = StructureTree2.SelectedItem as ISongElement;
+
+			if (e.Command == EditingCommands.IncreaseFontSize || e.Command == EditingCommands.DecreaseFontSize)
+			{
+				e.CanExecute = node is SongSlide || node is Nodes.CopyrightNode || node is Nodes.SourceNode;
+			}
+			else if (e.Command == CustomCommands.Split)
+			{
+				if (node is SongSlide)
+				{
+					// get selection length
+					var tb = LogicalTreeHelper.FindLogicalNode(EditBorder.Child, "TextTextBox") as TextBox;
+					if (tb != null)
+						e.CanExecute = (tb.SelectionLength == 0);
+				}
+			}
+		}
+
+		private void StructureTreeCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+		{
+			ISongElement node;
+
+			if (e.Parameter != null)
+			{
+				// called from context menu
+				node = e.Parameter as ISongElement;
+			}
+			else
+			{
+				// called from button/keyboard
+				node = StructureTree2.SelectedItem as ISongElement;
+			}
+
+			if (node == null)
+				throw new InvalidOperationException("node is not a song element");
+
+			if (e.Command == ApplicationCommands.Delete)
+			{
+				if (node is SongPart)
+				{
+					e.CanExecute = true;
+				}
+				else if (node is SongSlide)
+				{
+					// don't delete when there's only one slide left
+					e.CanExecute = songNode.Song.FindPartWithSlide(node as SongSlide).Slides.Count > 1;
+				}
 			}
 		}
 	}
