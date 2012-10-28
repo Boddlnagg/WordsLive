@@ -109,6 +109,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="ControlPanelLoadState.cs" />
+    <Compile Include="Editor\LanguageToLanguageCodeConverter.cs" />
     <Compile Include="Editor\Nodes\CategoryNode.cs" />
     <Compile Include="Editor\Nodes\ChildNodesConverter.cs" />
     <Compile Include="Editor\Nodes\CopyrightNode.cs" />

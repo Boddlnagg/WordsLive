@@ -15,6 +15,8 @@ namespace WordsLive.Editor
 	public partial class EditorGrid : Grid, INotifyPropertyChanged
 	{
 		private SongNodeRoot songNode;
+		private bool orderSelected;
+		private EditorWindow parent;
 
 		public SongNodeRoot Node
 		{
@@ -24,7 +26,7 @@ namespace WordsLive.Editor
 			}
 		}
 
-		public SongNodePart SelectedPart
+		public SongNodePart SelectedPart // TODO
 		{
 			get
 			{
@@ -40,8 +42,6 @@ namespace WordsLive.Editor
 				return part;
 			}
 		}
-
-		private EditorWindow parent;
 
 		public EditorGrid(Song song, EditorWindow parent)
 		{
@@ -453,8 +453,6 @@ namespace WordsLive.Editor
 			}
 		}
 		#endregion
-
-		bool orderSelected;
 
 		private void StructureTree_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
 		{
@@ -868,7 +866,7 @@ namespace WordsLive.Editor
 			else
 			{
 				// called from button/keyboard
-				node = StructureTree2.SelectedItem as ISongElement;
+				node = (sender as TreeView).SelectedItem as ISongElement;
 			}
 
 			if (node == null)
@@ -966,7 +964,7 @@ namespace WordsLive.Editor
 			else
 			{
 				// called from button/keyboard
-				node = StructureTree2.SelectedItem as ISongElement;
+				node = (sender as TreeView).SelectedItem as ISongElement;
 			}
 
 			if (node == null)
@@ -984,6 +982,66 @@ namespace WordsLive.Editor
 					e.CanExecute = songNode.Song.FindPartWithSlide(node as SongSlide).Slides.Count > 1;
 				}
 			}
+		}
+
+		private void StructureTree2_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+		{
+			var tree = (TreeView)sender;
+
+			if (!orderSelected)
+				OrderListBox.SelectedItem = null;
+
+			/*if (tree.SelectedItem is SongPart)
+				PreviewControl.Element = ((SongPart)tree.SelectedItem).Slides[0];
+			else
+				PreviewControl.Element = (ISongElement)tree.SelectedItem;*/
+
+			if (tree.SelectedItem is SongSlide)
+				EnableSpellCheckCheckBox.IsEnabled = true;
+			else
+				EnableSpellCheckCheckBox.IsEnabled = false;
+
+			if (tree.SelectedItem is Song)
+			{
+				EditBorder.Child = null;
+				EditHeader.Text = "";
+			}
+			else if (tree.SelectedItem is SongSlide)
+			{
+				EditBorder.Child = (Grid)this.Resources["editTextWithTranslation"];
+				EditHeader.Text = WordsLive.Resources.Resource.eGridTextHeader;
+			}
+			else if (tree.SelectedItem is SongPart)
+			{
+				EditBorder.Child = null;
+				EditHeader.Text = "";
+			}
+			else if (tree.SelectedItem is Nodes.LanguageNode)
+			{
+				EditBorder.Child = (Grid)this.Resources["editLanguageGrid"];
+				EditHeader.Text = WordsLive.Resources.Resource.eMetadataLanguageTitle;
+			}
+			else if (tree.SelectedItem is Nodes.SourceNode)
+			{
+				EditBorder.Child = (Grid)this.Resources["editSourceGrid"];
+				EditHeader.Text = WordsLive.Resources.Resource.eMetadataSourceTitle;
+			}
+			else if (tree.SelectedItem is Nodes.CopyrightNode)
+			{
+				EditBorder.Child = (TextBox)this.Resources["editCopyrightTextBox"];
+				EditHeader.Text = WordsLive.Resources.Resource.eMetadataCopyrightTitle;
+			}
+			else if (tree.SelectedItem is Nodes.CategoryNode)
+			{
+				EditBorder.Child = (TextBox)this.Resources["editCategoryTextBox"];
+				EditHeader.Text = WordsLive.Resources.Resource.eMetadataCategoryTitle;
+			}
+			else
+			{
+				throw new NotSupportedException();
+			}
+
+			OnPropertyChanged("SelectedPart");
 		}
 	}
 }

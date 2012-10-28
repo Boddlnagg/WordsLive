@@ -16,9 +16,13 @@
 		<CommandBinding Command="DecreaseFontSize" CanExecute="GridCommand_CanExecute" Executed="GridCommand_Executed"/>
 	</Grid.CommandBindings>
 	<Grid.Resources>
-		<TextBox x:Key="editTextBox"
+		<local:LanguageToLanguageCodeConverter x:Key="languageToLanguageCodeConverter"/>
+		<TextBox x:Key="editCopyrightTextBox"
 			AcceptsReturn="True" IsUndoEnabled="False"
-			Text="{Binding ElementName=StructureTree, Path=SelectedItem.Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+			Text="{Binding ElementName=StructureTree2, Path=SelectedItem.Root.Copyright, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+		<TextBox x:Key="editCategoryTextBox"
+			AcceptsReturn="True" IsUndoEnabled="False"
+			Text="{Binding ElementName=StructureTree2, Path=SelectedItem.Root.Category, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 		<Grid x:Key="editTextWithTranslation" Background="White">
 			<Grid.ColumnDefinitions>
 				<ColumnDefinition Width="*"/>
@@ -27,10 +31,11 @@
 				</ColumnDefinition>
 			</Grid.ColumnDefinitions>
 			<!-- The name 'TextTextBox' is used to find the cursor position (for splitting) -->
-			<TextBox Name="TextTextBox" Grid.Column="0" AcceptsReturn="True" IsUndoEnabled="False" Language="{Binding ElementName=StructureTree, Path=Items[0].LanguageCode, ConverterCulture=en-US}"
-					Text="{Binding ElementName=StructureTree,Path=SelectedItem.Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+			<TextBox Name="TextTextBox" Grid.Column="0" AcceptsReturn="True" IsUndoEnabled="False"
+					 Language="{Binding ElementName=StructureTree2, Path=SelectedItem.Root.Language, Converter={StaticResource languageToLanguageCodeConverter}, ConverterCulture=en-US}"
+					 Text="{Binding ElementName=StructureTree2, Path=SelectedItem.Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
 					 SpellCheck.IsEnabled="{Binding ElementName=EnableSpellCheckCheckBox, Path=IsChecked, Mode=OneWay}"/>
-			<Expander Grid.Column="2" ExpandDirection="Left" IsExpanded="{Binding ElementName=StructureTree,Path=SelectedItem.Root.Song.HasTranslation, Mode=OneTime}"
+			<Expander Grid.Column="2" ExpandDirection="Left" IsExpanded="{Binding ElementName=StructureTree2, Path=SelectedItem.Root.HasTranslation, Mode=OneTime}"
 					  Expanded="TranslationExpanderExpandedCollapsed" Collapsed="TranslationExpanderExpandedCollapsed" >
 				<Expander.Header>
 					<TextBlock Text="{x:Static resx:Resource.eGridTranslation}">
@@ -40,8 +45,8 @@
 					</TextBlock>
 				</Expander.Header>
 				<TextBox Name="TranslationTextBox" AcceptsReturn="True" IsUndoEnabled="False"
-					 Text="{Binding ElementName=StructureTree,Path=SelectedItem.Translation, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-					 Language="{Binding ElementName=StructureTree, Path=Items[0].TranslationLanguageCode, ConverterCulture=en-US}"
+					 Text="{Binding ElementName=StructureTree2,Path=SelectedItem.Translation, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+					 Language="{Binding ElementName=StructureTree2, Path=SelectedItem.Root.TranslationLanguage, Converter={StaticResource languageToLanguageCodeConverter}, ConverterCulture=en-US}"
 					 SpellCheck.IsEnabled="{Binding ElementName=EnableSpellCheckCheckBox, Path=IsChecked, Mode=OneWay}"/>
 			</Expander>
 		</Grid>
@@ -55,10 +60,10 @@
 				<RowDefinition Height="Auto"></RowDefinition>
 			</Grid.RowDefinitions>
 			<Label Grid.Row="0" Grid.Column="0" Content="{x:Static resx:Resource.eGridLanguageText}"/>
-			<ComboBox Grid.Row="0" Grid.Column="1" Height="24" VerticalAlignment="Top" IsEditable="True" Text="{Binding ElementName=StructureTree,Path=SelectedItem.Language, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+			<ComboBox Grid.Row="0" Grid.Column="1" Height="24" VerticalAlignment="Top" IsEditable="True" Text="{Binding ElementName=StructureTree2,Path=SelectedItem.Root.Language, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
 					  ItemsSource="{Binding Source={x:Static resx:Resource.eGridLanguages}, Converter={StaticResource StringSplitConverter}, ConverterParameter=';'}"/>
 			<Label Grid.Row="1" Grid.Column="0" Content="{x:Static resx:Resource.eGridLanguageTranslation}"/>
-			<ComboBox Grid.Row="1" Grid.Column="1" Height="24" VerticalAlignment="Top" IsEditable="True" Text="{Binding ElementName=StructureTree,Path=SelectedItem.TranslationLanguage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+			<ComboBox Grid.Row="1" Grid.Column="1" Height="24" VerticalAlignment="Top" IsEditable="True" Text="{Binding ElementName=StructureTree2,Path=SelectedItem.Root.TranslationLanguage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
 					  ItemsSource="{Binding Source={x:Static resx:Resource.eGridLanguages}, Converter={StaticResource StringSplitConverter}, ConverterParameter=';'}" />
 		</Grid>
 		<Grid x:Key="editSourceGrid" Margin="10" VerticalAlignment="Top">
@@ -71,9 +76,9 @@
 				<RowDefinition Height="Auto"></RowDefinition>
 			</Grid.RowDefinitions>
 			<Label Grid.Column="0" Grid.Row="0" Content="{x:Static resx:Resource.eGridSourceSongbookLabel}"/>
-			<TextBox Grid.Column="1" Grid.Row="0" Margin="0,2,0,2" IsUndoEnabled="False" Text="{Binding ElementName=StructureTree, Path=SelectedItem.Songbook, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+			<TextBox Grid.Column="1" Grid.Row="0" Margin="0,2,0,2" IsUndoEnabled="False" Text="{Binding ElementName=StructureTree2, Path=SelectedItem.Root.Sources[0].Songbook, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 			<Label Grid.Column="0" Grid.Row="1" Content="{x:Static resx:Resource.eGridSourceNumberLabel}"/>
-			<TextBox Grid.Column="1" Grid.Row="1" IsUndoEnabled="False" Text="{Binding ElementName=StructureTree, Path=SelectedItem.Number, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+			<TextBox Grid.Column="1" Grid.Row="1" IsUndoEnabled="False" Text="{Binding ElementName=StructureTree2, Path=SelectedItem.Root.Sources[0].Number, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 		</Grid>
 	</Grid.Resources>
 	<Grid.RowDefinitions>
@@ -208,6 +213,7 @@
 	<!-- TODO: add event handlers (drag & drop, ...) -->
 	<TreeView
 		x:Name="StructureTree2" ItemsSource="{Binding}"
+		SelectedItemChanged="StructureTree2_SelectedItemChanged"
 		Grid.Row="0" Grid.Column="0" Margin="0,26,0,0" Grid.RowSpan="3">
 		<TreeView.CommandBindings>
 			<CommandBinding Command="{x:Static my:CustomCommands.Duplicate}" Executed="StructureTreeCommand_Executed"/>
