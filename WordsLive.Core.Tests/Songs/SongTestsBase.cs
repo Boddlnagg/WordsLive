@@ -28,24 +28,24 @@ namespace WordsLive.Core.Tests.Songs
 
 		protected void ClearUndoRedoStack()
 		{
-			song.UndoRoot.Clear();
+			song.UndoManager.Root.Clear();
 		}
 
 		protected void Undo()
 		{
-			song.UndoRoot.Undo();
+			song.UndoManager.Undo();
 		}
 
 		protected void Redo()
 		{
-			song.UndoRoot.Redo();
+			song.UndoManager.Redo();
 		}
 
 		protected int UndoStackSize
 		{
 			get
 			{
-				return song.UndoRoot.UndoStack.Count();
+				return song.UndoManager.Root.UndoStack.Count();
 			}
 		}
 
@@ -53,7 +53,7 @@ namespace WordsLive.Core.Tests.Songs
 		{
 			get
 			{
-				return song.UndoRoot.RedoStack.Count();
+				return song.UndoManager.Root.RedoStack.Count();
 			}
 		}
 

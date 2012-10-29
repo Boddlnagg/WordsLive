@@ -247,6 +247,9 @@ namespace WordsLive.Editor
 
 				listBox.SelectedIndex = index;
 
+				// update undo/redo commands in toolbar
+				CommandManager.InvalidateRequerySuggested();
+
 				oldIndex = -1;
 
 				e.Handled = true;
@@ -791,11 +794,19 @@ namespace WordsLive.Editor
 			}
 		}
 
-		private void GridCommand_Executed(object sender, ExecutedRoutedEventArgs e) // TODO
+		private void GridCommand_Executed(object sender, ExecutedRoutedEventArgs e)
 		{
 			ISongElement node = StructureTree2.SelectedItem as ISongElement;
 
-			if (e.Command == CustomCommands.Split)
+			if (e.Command == ApplicationCommands.Undo)
+			{
+				songNode.Song.UndoManager.Undo();
+			}
+			else if (e.Command == ApplicationCommands.Redo)
+			{
+				songNode.Song.UndoManager.Redo();
+			}
+			else if (e.Command == CustomCommands.Split)
 			{
 				// get text cursor position
 				var tb = LogicalTreeHelper.FindLogicalNode(EditBorder.Child, "TextTextBox") as TextBox;
@@ -841,6 +852,8 @@ namespace WordsLive.Editor
 					songNode.Song.Formatting = formatting;
 				}
 			}
+
+			e.Handled = true;
 		}
 
 		private void StructureTreeCommand_Executed(object sender, ExecutedRoutedEventArgs e)
@@ -925,7 +938,15 @@ namespace WordsLive.Editor
 		{
 			ISongElement node = StructureTree2.SelectedItem as ISongElement;
 
-			if (e.Command == EditingCommands.IncreaseFontSize || e.Command == EditingCommands.DecreaseFontSize)
+			if (e.Command == ApplicationCommands.Undo)
+			{
+				e.CanExecute = songNode.Song.UndoManager.CanUndo;
+			}
+			else if (e.Command == ApplicationCommands.Redo)
+			{
+				e.CanExecute = songNode.Song.UndoManager.CanRedo;
+			}
+			else if (e.Command == EditingCommands.IncreaseFontSize || e.Command == EditingCommands.DecreaseFontSize)
 			{
 				e.CanExecute = node is SongSlide || node is Nodes.CopyrightNode || node is Nodes.SourceNode;
 			}
@@ -939,6 +960,8 @@ namespace WordsLive.Editor
 						e.CanExecute = (tb.SelectionLength == 0);
 				}
 			}
+
+			e.Handled = true;
 		}
 
 		private void StructureTreeCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)

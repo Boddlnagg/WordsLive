@@ -45,13 +45,18 @@ namespace WordsLive.Core.Songs
 
 		#region Undo/Redo
 
+		private UndoManager undoManager;
+
 		internal UndoKey UndoKey { get; private set; }
 
-		public UndoRoot UndoRoot
+		public UndoManager UndoManager
 		{
 			get
 			{
-				return UndoService.Current[UndoKey];
+				if (undoManager == null)
+					undoManager = new UndoManager(UndoService.Current[UndoKey]);
+				
+				return undoManager;
 			}
 		}
 
@@ -505,7 +510,7 @@ namespace WordsLive.Core.Songs
 		{
 			var part = FindPartWithSlide(slide);
 
-			using (new UndoBatch(UndoRoot, "MoveSlide", false))
+			using (new UndoBatch(UndoKey, "MoveSlide", false))
 			{
 				part.RemoveSlide(slide);
 				target.AddSlide(slide);
@@ -638,7 +643,7 @@ namespace WordsLive.Core.Songs
 			};
 
 			var ch = new DelegateChange(this, undo, redo, new ChangeKey<object, string>(this, "Order"));
-			UndoService.Current[this].AddChange(ch, "MovePartInOrder");
+			UndoService.Current[UndoKey].AddChange(ch, "MovePartInOrder");
 
 			redo();
 		}
@@ -966,7 +971,7 @@ namespace WordsLive.Core.Songs
 				this.AddSource(String.Join("\n", root.Element("information").Element("source").Element("text").Elements("line").Select(line => line.Value)));
 			}
 
-			UndoRoot.Clear();
+			UndoService.Current[UndoKey].Clear();
 		}
 
 		/// <summary>

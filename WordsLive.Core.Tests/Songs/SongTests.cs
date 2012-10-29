@@ -260,7 +260,7 @@ namespace WordsLive.Core.Tests.Songs
 		}
 
 		[Test]
-		public void MovePartInOrder()
+		public void MovePartInOrderUndoRedo()
 		{
 			var part1 = new SongPart(song, "NewPart1", new SongSlide[] { new SongSlide(song) });
 			var part2 = new SongPart(song, "NewPart2", new SongSlide[] { new SongSlide(song) });
@@ -275,6 +275,12 @@ namespace WordsLive.Core.Tests.Songs
 			Assert.AreSame(part2, song.Order[0].Part);
 			Assert.AreSame(ref2, song.Order[0]);
 			Assert.AreSame(ref3, song.Order[3]);
+			Assert.AreEqual(1, UndoStackSize);
+			Undo();
+			Assert.AreSame(ref2, song.Order[2]);
+			Assert.AreSame(ref3, song.Order[3]);
+			Redo();
+			Assert.AreSame(ref2, song.Order[0]);
 		}
 
 		[Test]

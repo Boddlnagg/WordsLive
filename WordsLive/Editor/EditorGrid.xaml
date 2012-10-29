@@ -14,6 +14,8 @@
 		<CommandBinding Command="{x:Static my:CustomCommands.Split}" CanExecute="GridCommand_CanExecute" Executed="GridCommand_Executed"/>
 		<CommandBinding Command="IncreaseFontSize"  CanExecute="GridCommand_CanExecute" Executed="GridCommand_Executed"/>
 		<CommandBinding Command="DecreaseFontSize" CanExecute="GridCommand_CanExecute" Executed="GridCommand_Executed"/>
+		<CommandBinding Command="Undo" CanExecute="GridCommand_CanExecute" Executed="GridCommand_Executed"/>
+		<CommandBinding Command="Redo" CanExecute="GridCommand_CanExecute" Executed="GridCommand_Executed"/>
 	</Grid.CommandBindings>
 	<Grid.Resources>
 		<local:LanguageToLanguageCodeConverter x:Key="languageToLanguageCodeConverter"/>

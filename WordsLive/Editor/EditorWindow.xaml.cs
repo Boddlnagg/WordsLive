@@ -272,15 +272,7 @@ namespace WordsLive.Editor
 			else 
 				doc = Tabs != null ? (Tabs.SelectedItem as EditorDocument) : null;
 
-			if (e.Command == ApplicationCommands.Undo)
-			{
-				e.CanExecute = doc != null && doc.CanUndo;
-			}
-			else if (e.Command == ApplicationCommands.Redo)
-			{
-				e.CanExecute = doc != null && doc.CanRedo;
-			}
-			else if (e.Command == ApplicationCommands.Save)
+			if (e.Command == ApplicationCommands.Save)
 			{
 				e.CanExecute = doc != null && doc.IsModified;
 			}
@@ -316,15 +308,7 @@ namespace WordsLive.Editor
 			else
 				doc = Tabs != null ? (Tabs.SelectedItem as EditorDocument) : null;
 
-			if (e.Command == ApplicationCommands.Undo)
-			{
-				doc.Undo();
-			}
-			else if (e.Command == ApplicationCommands.Redo)
-			{
-				doc.Redo();
-			}
-			else if (e.Command == ApplicationCommands.New)
+			if (e.Command == ApplicationCommands.New)
 			{
 				NewSong();
 			}

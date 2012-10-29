@@ -14,8 +14,6 @@
 	Closing="Window_Closing"
 	Icon="/WordsLive;component/Artwork/Editor.png ">
 	<Window.CommandBindings>
-		<CommandBinding Command="Undo" CanExecute="OnCommandCanExecute" Executed="OnExecuteCommand"/>
-		<CommandBinding Command="Redo" CanExecute="OnCommandCanExecute" Executed="OnExecuteCommand"/>
 		<CommandBinding Command="New" Executed="OnExecuteCommand"/>
 		<CommandBinding Command="Open" Executed="OnExecuteCommand"/>
 		<CommandBinding Command="Save" Executed="OnExecuteCommand" CanExecute="OnCommandCanExecute"/>
@@ -68,12 +66,12 @@
 					Header="{x:Static resx:Resource.eMenuCloseSong}" Command="Close"/>
 			</MenuItem>
 			<MenuItem Header="{x:Static resx:Resource.eMenuEdit}">
-				<MenuItem Header="{x:Static resx:Resource.eMenuUndo}" Command="Undo">
+				<MenuItem Header="{x:Static resx:Resource.eMenuUndo}" Command="Undo" CommandTarget="{Binding ElementName=Tabs, Path=SelectedItem.Grid}" >
 					<MenuItem.Icon>
 						<Image Width="24" Source="/WordsLive;component/Artwork/Undo.png" />
 					</MenuItem.Icon>
 				</MenuItem>
-				<MenuItem Header="{x:Static resx:Resource.eMenuRedo}" Command="Redo">
+				<MenuItem Header="{x:Static resx:Resource.eMenuRedo}" Command="Redo" CommandTarget="{Binding ElementName=Tabs, Path=SelectedItem.Grid}">
 					<MenuItem.Icon>
 						<Image Width="24" Source="/WordsLive;component/Artwork/Redo.png" />
 					</MenuItem.Icon>
@@ -132,13 +130,13 @@
 					Source="/WordsLive;component/Artwork/Save.png" />
 			</Button>
 			<Separator/>
-			<Button Command="Undo" Style="{StaticResource markDisabledButton}" ToolTip="{x:Static resx:Resource.eToolbarUndo}" >
+			<Button Command="Undo" CommandTarget="{Binding ElementName=Tabs, Path=SelectedItem.Grid}" Style="{StaticResource markDisabledButton}" ToolTip="{x:Static resx:Resource.eToolbarUndo}" >
 				<Image
 					Width="32"
 					Height="32"
 					Source="/WordsLive;component/Artwork/Undo.png"/>
 			</Button>
-			<Button Command="Redo" Style="{StaticResource markDisabledButton}" ToolTip="{x:Static resx:Resource.eToolbarRedo}" >
+			<Button Command="Redo" CommandTarget="{Binding ElementName=Tabs, Path=SelectedItem.Grid}" Style="{StaticResource markDisabledButton}" ToolTip="{x:Static resx:Resource.eToolbarRedo}" >
 				<Image
 					Width="32"
 					Height="32"

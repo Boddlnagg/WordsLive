@@ -30,12 +30,20 @@ namespace WordsLive.Editor
 			Grid = new EditorGrid(song, parent);
 			Grid.PreviewControl.ShowChords = parent.ShowChords;
 
-			UndoService.Current[Grid.Node].Clear();
-
-			UndoService.Current[Grid.Node].UndoStackChanged += (sender, args) =>
+			Song.UndoManager.PropertyChanged += (sender, args) =>
 			{
-				IsModified = true;
+				if (Song.UndoManager.CanUndo)
+				{
+					IsModified = true;
+				}
 			};
+
+			//UndoService.Current[Grid.Node].Clear();
+
+			//UndoService.Current[Grid.Node].UndoStackChanged += (sender, args) =>
+			//{
+			//	IsModified = true;
+			//};
 		}
 
 		public static void OnChangingTryMerge(ISupportsUndo instance, string propertyName, object oldValue, object newValue)
@@ -136,19 +144,19 @@ namespace WordsLive.Editor
 
 		public void Undo()
 		{
-			UndoService.Current[this.Grid.Node].Undo();
+			Song.UndoManager.Undo();
 		}
 
 		public void Redo()
 		{
-			UndoService.Current[this.Grid.Node].Redo();
+			Song.UndoManager.Redo();
 		}
 
 		public bool CanUndo
 		{
 			get
 			{
-				return UndoService.Current[this.Grid.Node].CanUndo;
+				return Song.UndoManager.CanUndo;
 			}
 		}
 
@@ -156,7 +164,7 @@ namespace WordsLive.Editor
 		{
 			get
 			{
-				return UndoService.Current[this.Grid.Node].CanRedo;
+				return Song.UndoManager.CanRedo;
 			}
 		}
 
