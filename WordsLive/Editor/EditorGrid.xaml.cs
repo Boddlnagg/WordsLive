@@ -26,6 +26,9 @@ namespace WordsLive.Editor
 			}
 		}
 
+		/// <summary>
+		/// Gets the part that is currently selected in the structure tree.
+		/// </summary>
 		public SongPart SelectedPart
 		{
 			get
@@ -37,7 +40,7 @@ namespace WordsLive.Editor
 				}
 				else if (StructureTree2.SelectedItem is SongSlide)
 				{
-					part = songNode.Song.FindPartWithSlide(StructureTree.SelectedItem as SongSlide);
+					part = songNode.Song.FindPartWithSlide(StructureTree2.SelectedItem as SongSlide);
 				}
 				return part;
 			}
@@ -517,9 +520,9 @@ namespace WordsLive.Editor
 			orderSelected = true;
 			var selectedPart = ((SongPartReference)listBox.SelectedItem).Part;
 			if (selectedPart.Slides.Count > 0)
-				StructureTree.SetSelectedItem(selectedPart.Slides[0]);
+				StructureTree2.SetSelectedItem(selectedPart.Slides[0]);
 			else
-				StructureTree.SetSelectedItem(selectedPart);
+				StructureTree2.SetSelectedItem(selectedPart);
 			orderSelected = false;
 
 			listBox.Focus();
