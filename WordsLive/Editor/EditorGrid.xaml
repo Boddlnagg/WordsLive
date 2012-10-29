@@ -43,7 +43,7 @@
 					 Language="{Binding Path=Root.Language, Converter={StaticResource languageToLanguageCodeConverter}, ConverterCulture=en-US}"
 					 Text="{Binding Path=Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
 					 SpellCheck.IsEnabled="{Binding ElementName=EnableSpellCheckCheckBox, Path=IsChecked, Mode=OneWay}"/>
-				<Expander Grid.Column="2" ExpandDirection="Left" IsExpanded="{Binding ElementName=StructureTree2, Path=SelectedItem.Root.HasTranslation, Mode=OneTime}"
+				<Expander Grid.Column="2" ExpandDirection="Left" IsExpanded="{Binding ElementName=StructureTree, Path=SelectedItem.Root.HasTranslation, Mode=OneTime}"
 					  Expanded="TranslationExpanderExpandedCollapsed" Collapsed="TranslationExpanderExpandedCollapsed" >
 					<Expander.Header>
 						<TextBlock Text="{x:Static resx:Resource.eGridTranslation}">
@@ -158,11 +158,11 @@
 			Text="{x:Static resx:Resource.eGridPartsHeader}" />
 	</DockPanel>
 	<TreeView
-		x:Name="StructureTree2" ItemsSource="{Binding Source={StaticResource treeNodeProvider}, Path=Root}"
-		SelectedItemChanged="StructureTree2_SelectedItemChanged"
-		AllowDrop="True" Drop="StructureTree2_Drop" DragOver="StructureTree2_DragEnterOrOver" DragEnter="StructureTree2_DragEnterOrOver"
-		PreviewMouseLeftButtonDown="StructureTree2_PreviewMouseLeftButtonDown"
-		PreviewMouseMove="StructureTree2_PreviewMouseMove"
+		x:Name="StructureTree" ItemsSource="{Binding Source={StaticResource treeNodeProvider}, Path=Root}"
+		SelectedItemChanged="StructureTree_SelectedItemChanged"
+		AllowDrop="True" Drop="StructureTree_Drop" DragOver="StructureTree_DragEnterOrOver" DragEnter="StructureTree_DragEnterOrOver"
+		PreviewMouseLeftButtonDown="StructureTree_PreviewMouseLeftButtonDown"
+		PreviewMouseMove="StructureTree_PreviewMouseMove"
 		Grid.Row="0" Grid.Column="0" Margin="0,26,0,0" Grid.RowSpan="3">
 		<TreeView.CommandBindings>
 			<CommandBinding Command="{x:Static my:CustomCommands.Duplicate}" Executed="StructureTreeCommand_Executed"/>
@@ -270,12 +270,12 @@
 			<Style TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"/>
 		</DockPanel.Resources>
 		<CheckBox x:Name="EnableSpellCheckCheckBox" DockPanel.Dock="Right" VerticalAlignment="Center" IsEnabled="False" IsChecked="{Binding Source={StaticResource settings}, Path=Default.EditorEnableSpellCheck, Mode=TwoWay}" Content="{x:Static resx:Resource.eGridSpellCheckCheckbox}"/>
-		<TextBlock x:Name="EditHeader" Padding="5" Text="{Binding ElementName=StructureTree2, Path=SelectedItem, Converter={StaticResource editControlHeaderConverter}}"/>
+		<TextBlock x:Name="EditHeader" Padding="5" Text="{Binding ElementName=StructureTree, Path=SelectedItem, Converter={StaticResource editControlHeaderConverter}}"/>
 	</DockPanel>
 	<Border Grid.Row="2"
 		Grid.Column="2"
 		Margin="0,26,0,0" Background="LightGray" x:Name="EditBorder">
-		<ContentControl Content="{Binding ElementName=StructureTree2, Path=SelectedItem}" ContentTemplateSelector="{StaticResource editControlTemplateSelector}"/>
+		<ContentControl Content="{Binding ElementName=StructureTree, Path=SelectedItem}" ContentTemplateSelector="{StaticResource editControlTemplateSelector}"/>
 	</Border>
 	<DockPanel
 		Grid.Row="0"

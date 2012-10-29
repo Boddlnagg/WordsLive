@@ -186,7 +186,7 @@ namespace WordsLive.Editor
 		{
 			SongBackground bg = null;
 
-			var element = (ISongElement)doc.Grid.StructureTree2.SelectedItem;
+			var element = (ISongElement)doc.Grid.StructureTree.SelectedItem;
 
 			if (element is SongSlide)
 				bg = (element as SongSlide).Background;

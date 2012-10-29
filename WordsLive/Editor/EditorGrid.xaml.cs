@@ -34,13 +34,13 @@ namespace WordsLive.Editor
 			get
 			{
 				SongPart part = null;
-				if (StructureTree2.SelectedItem is SongPart)
+				if (StructureTree.SelectedItem is SongPart)
 				{
-					part = StructureTree2.SelectedItem as SongPart;
+					part = StructureTree.SelectedItem as SongPart;
 				}
-				else if (StructureTree2.SelectedItem is SongSlide)
+				else if (StructureTree.SelectedItem is SongSlide)
 				{
-					part = songNode.Song.FindPartWithSlide(StructureTree2.SelectedItem as SongSlide);
+					part = songNode.Song.FindPartWithSlide(StructureTree.SelectedItem as SongSlide);
 				}
 				return part;
 			}
@@ -60,7 +60,7 @@ namespace WordsLive.Editor
 			var tnp = (Nodes.TreeNodeProvider)FindResource("treeNodeProvider");
 			tnp.Song = this.songNode.Song;
 
-			this.StructureTree2.IsEnabled = false;
+			this.StructureTree.IsEnabled = false;
 
 			this.OrderListBox.DataContext = songNode.Song;
 
@@ -70,18 +70,18 @@ namespace WordsLive.Editor
 
 		private void InitSelection()
 		{
-			this.StructureTree2.IsEnabled = true;
+			this.StructureTree.IsEnabled = true;
 
-			if (this.StructureTree2.IsLoaded)
+			if (this.StructureTree.IsLoaded)
 			{
-				this.StructureTree2.SetSelectedItem(songNode.Song);
-				this.StructureTree2.Focus();
+				this.StructureTree.SetSelectedItem(songNode.Song);
+				this.StructureTree.Focus();
 			}
 		}
 
 		private void AddSlide(SongPart part)
 		{
-			this.StructureTree2.SetSelectedItem(part.AddSlide());
+			this.StructureTree.SetSelectedItem(part.AddSlide());
 		}
 
 		private void AddPart()
@@ -90,7 +90,7 @@ namespace WordsLive.Editor
 			if (res.DialogResult.HasValue && res.DialogResult.Value)
 			{
 				var newPart = songNode.Song.AddPart(res.PartName);
-				this.StructureTree2.SetSelectedItem(newPart);
+				this.StructureTree.SetSelectedItem(newPart);
 			}
 		}
 
@@ -257,7 +257,7 @@ namespace WordsLive.Editor
 				startPoint = p;
 		}
 
-		private void StructureTree2_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+		private void StructureTree_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
 		{
 			var tree = (TreeView)sender;
 			// TODO: test
@@ -272,7 +272,7 @@ namespace WordsLive.Editor
 				canDrag = false;
 		}
 
-		private void StructureTree2_PreviewMouseMove(object sender, MouseEventArgs e)
+		private void StructureTree_PreviewMouseMove(object sender, MouseEventArgs e)
 		{
 			var tree = (TreeView)sender;
 
@@ -292,7 +292,7 @@ namespace WordsLive.Editor
 			}
 		}
 
-		private void StructureTree2_DragEnterOrOver(object sender, DragEventArgs e)
+		private void StructureTree_DragEnterOrOver(object sender, DragEventArgs e)
 		{
 			var tree = (TreeView)sender;
 
@@ -332,7 +332,7 @@ namespace WordsLive.Editor
 			}
 		}
 
-		private void StructureTree2_Drop(object sender, DragEventArgs e)
+		private void StructureTree_Drop(object sender, DragEventArgs e)
 		{
 			var tree = (TreeView)sender;
 
@@ -422,7 +422,7 @@ namespace WordsLive.Editor
 		}
 		#endregion
 
-		private void StructureTree2_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+		private void StructureTree_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
 		{
 			var tree = (TreeView)sender;
 
@@ -463,9 +463,9 @@ namespace WordsLive.Editor
 			orderSelected = true;
 			var selectedPart = ((SongPartReference)listBox.SelectedItem).Part;
 			if (selectedPart.Slides.Count > 0)
-				StructureTree2.SetSelectedItem(selectedPart.Slides[0]);
+				StructureTree.SetSelectedItem(selectedPart.Slides[0]);
 			else
-				StructureTree2.SetSelectedItem(selectedPart);
+				StructureTree.SetSelectedItem(selectedPart);
 			orderSelected = false;
 
 			listBox.Focus();
@@ -636,7 +636,7 @@ namespace WordsLive.Editor
 
 		private void GridCommand_Executed(object sender, ExecutedRoutedEventArgs e)
 		{
-			ISongElement node = StructureTree2.SelectedItem as ISongElement;
+			ISongElement node = StructureTree.SelectedItem as ISongElement;
 
 			if (e.Command == ApplicationCommands.Undo)
 			{
@@ -770,13 +770,13 @@ namespace WordsLive.Editor
 			else if (e.Command == CustomCommands.Duplicate)
 			{
 				var newSlide = this.songNode.Song.FindPartWithSlide(node as SongSlide).DuplicateSlide(node as SongSlide);
-				this.StructureTree2.SetSelectedItem(newSlide);
+				this.StructureTree.SetSelectedItem(newSlide);
 			}
 		}
 
 		private void GridCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
 		{
-			ISongElement node = StructureTree2.SelectedItem as ISongElement;
+			ISongElement node = StructureTree.SelectedItem as ISongElement;
 
 			if (e.Command == ApplicationCommands.Undo)
 			{
