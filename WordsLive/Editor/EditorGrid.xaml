@@ -227,7 +227,7 @@
 		</TreeView.ItemContainerStyle>
 	</TreeView>
 	<TreeView
-		x:Name="StructureTree2" ItemsSource="{Binding}"
+		x:Name="StructureTree2" ItemsSource="{Binding Source={StaticResource treeNodeProvider}, Path=Root}"
 		SelectedItemChanged="StructureTree2_SelectedItemChanged"
 		AllowDrop="True" Drop="StructureTree2_Drop" DragOver="StructureTree2_DragEnterOrOver" DragEnter="StructureTree2_DragEnterOrOver"
 		PreviewMouseLeftButtonDown="StructureTree2_PreviewMouseLeftButtonDown"
@@ -384,7 +384,8 @@
 		ScrollViewer.CanContentScroll="False"
 		PreviewMouseMove="OrderListBox_PreviewMouseMove"
 		PreviewMouseLeftButtonDown="OrderListBox_PreviewMouseLeftButtonDown"
-		ItemsSource="{Binding Order}" SelectionChanged="OrderListBox_SelectionChanged">
+		SelectionChanged="OrderListBox_SelectionChanged"
+		ItemsSource="{Binding Source={StaticResource treeNodeProvider}, Path=Song.Order}">
 		<ListBox.CommandBindings>
 			<CommandBinding Command="Delete" Executed="OrderListCommand_Executed" CanExecute="OrderListCommand_CanExecute"/>
 			<CommandBinding Command="{x:Static my:CustomCommands.Insert}" Executed="OrderListCommand_Executed" CanExecute="OrderListCommand_CanExecute"/>

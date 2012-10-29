@@ -57,15 +57,12 @@ namespace WordsLive.Editor
 
 			this.songNode = new SongNodeRoot(song);
 
-			this.StructureTree.DataContext = new SongNode[] { this.songNode };
 			var tnp = (Nodes.TreeNodeProvider)FindResource("treeNodeProvider");
 			tnp.Song = this.songNode.Song;
 
-			this.StructureTree2.DataContext = new Song[] { song };
+			this.StructureTree2.IsEnabled = false;
 
 			this.OrderListBox.DataContext = songNode.Song;
-
-			this.StructureTree.IsEnabled = false;
 
 			this.PreviewControl.FinishedLoading += (sender, args) => InitSelection();
 			this.PreviewControl.Song = song;
@@ -73,12 +70,12 @@ namespace WordsLive.Editor
 
 		private void InitSelection()
 		{
-			this.StructureTree.IsEnabled = true;
+			this.StructureTree2.IsEnabled = true;
 
-			if (this.StructureTree.IsLoaded)
+			if (this.StructureTree2.IsLoaded)
 			{
-				this.StructureTree.SetSelectedItem(songNode);
-				this.StructureTree.Focus();
+				this.StructureTree2.SetSelectedItem(songNode.Song);
+				this.StructureTree2.Focus();
 			}
 		}
 

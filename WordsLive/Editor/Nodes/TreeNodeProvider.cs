@@ -55,6 +55,18 @@ namespace WordsLive.Editor.Nodes
 				}
 				
 				OnPropertyChanged("Song");
+				OnPropertyChanged("Root");
+			}
+		}
+
+		/// <summary>
+		/// Gets the root level tree nodes. This is just the song.
+		/// </summary>
+		public IEnumerable<Song> Root
+		{
+			get
+			{
+				yield return Song;
 			}
 		}
 
