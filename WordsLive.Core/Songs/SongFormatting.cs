@@ -24,123 +24,137 @@ namespace WordsLive.Core.Songs
 	/// <summary>
 	/// Represents the formatting options for a song.
 	/// </summary>
-	public struct SongFormatting
+	public class SongFormatting : ICloneable
 	{
 		/// <summary>
 		/// Gets or sets the text formatting options for the main text.
 		/// </summary>
-		public SongTextFormatting MainText;
+		public SongTextFormatting MainText { get; set; }
 
 		/// <summary>
 		/// Gets or sets the text formatting options for the translation.
 		/// </summary>
-		public SongTextFormatting TranslationText;
+		public SongTextFormatting TranslationText { get; set; }
 
 		/// <summary>
 		/// Gets or sets the text formatting options for the source.
 		/// </summary>
-		public SongTextFormatting SourceText;
+		public SongTextFormatting SourceText { get; set; }
 
 		/// <summary>
 		/// Gets or sets the text formatting options for the copyright.
 		/// </summary>
-		public SongTextFormatting CopyrightText;
+		public SongTextFormatting CopyrightText { get; set; }
 
 		/// <summary>
 		/// Gets or sets the spacing between two lines of text.
 		/// </summary>
-		public int TextLineSpacing;
+		public int TextLineSpacing { get; set; }
 
 		/// <summary>
 		/// Gets or sets the spacing between a line and its translation.
 		/// </summary>
-		public int TranslationLineSpacing;
+		public int TranslationLineSpacing { get; set; }
 
 		/// <summary>
 		/// Gets or sets the margin below the copyright.
 		/// </summary>
-		public int CopyrightBorderBottom;
+		public int CopyrightBorderBottom { get; set; }
 
 		/// <summary>
 		/// Gets or sets the margin above the source.
 		/// </summary>
-		public int SourceBorderTop;
+		public int SourceBorderTop { get; set; }
 
 		/// <summary>
 		/// Gets or sets the right margin of the source.
 		/// </summary>
-		public int SourceBorderRight;
+		public int SourceBorderRight { get; set; }
 
 		/// <summary>
 		/// Gets or sets the horizontal text orientation.
 		/// </summary>
-		public HorizontalTextOrientation HorizontalOrientation;
+		public HorizontalTextOrientation HorizontalOrientation { get; set; }
 
 		/// <summary>
 		/// Gets or sets the vertical text orientation.
 		/// </summary>
-		public VerticalTextOrientation VerticalOrientation;
+		public VerticalTextOrientation VerticalOrientation { get; set; }
 		
 		/// <summary>
 		/// Gets or sets the left text margin.
 		/// </summary>
-		public int BorderLeft;
+		public int BorderLeft { get; set; }
 
 		/// <summary>
 		/// Gets or sets the right text margin.
 		/// </summary>
-		public int BorderRight;
+		public int BorderRight { get; set; }
 
 		/// <summary>
 		/// Gets or sets the top text margin.
 		/// </summary>
-		public int BorderTop;
+		public int BorderTop { get; set; }
 
 		/// <summary>
 		/// Gets or sets the bottom text margin.
 		/// </summary>
-		public int BorderBottom;
+		public int BorderBottom { get; set; }
 		
 		/// <summary>
 		/// Gets or sets a value indicating whether the text outline is enabled.
 		/// </summary>
-		public bool IsOutlineEnabled;
+		public bool IsOutlineEnabled { get; set; }
 
 		/// <summary>
 		/// Gets or sets the color for the outline if <see cref="IsOutlineEnabled"/> is <c>true</c>.
 		/// </summary>
-		public Color OutlineColor;
+		public Color OutlineColor { get; set; }
 
 		/// <summary>
 		/// Gets or sets a value indicating whether the text shadow is enabled.
 		/// </summary>
-		public bool IsShadowEnabled;
+		public bool IsShadowEnabled { get; set; }
 
 		/// <summary>
 		/// Gets or sets the color for the shadow if <see cref="IsShadowEnabled"/> is <c>true</c>.
 		/// </summary>
-		public Color ShadowColor;
+		public Color ShadowColor { get; set; }
 
 		/// <summary>
 		/// Gets or sets the direction of the shadow.
 		/// TODO: currently ignored
 		/// </summary>
-		public int ShadowDirection;
+		public int ShadowDirection { get; set; }
 
 		/// <summary>
 		/// Gets or sets the position where the translation will be shown.
 		/// </summary>
-		public TranslationPosition TranslationPosition;
+		public TranslationPosition TranslationPosition { get; set; }
 
 		/// <summary>
 		/// Gets or sets the display position of the copyright information.
 		/// </summary>
-		public MetadataDisplayPosition CopyrightDisplayPosition;
+		public MetadataDisplayPosition CopyrightDisplayPosition { get; set; }
 
 		/// <summary>
 		/// Gets or sets the display position of the source information.
 		/// </summary>
-		public MetadataDisplayPosition SourceDisplayPosition;
+		public MetadataDisplayPosition SourceDisplayPosition { get; set; }
+
+		/// <summary>
+		/// Creates a deep copy of this instance.
+		/// </summary>
+		/// <returns>A clone of this instance.</returns>
+		public object Clone()
+		{
+			var clone = (SongFormatting)this.MemberwiseClone();
+			clone.MainText = (SongTextFormatting)this.MainText.Clone();
+			clone.TranslationText = (SongTextFormatting)this.TranslationText.Clone();
+			clone.SourceText = (SongTextFormatting)this.SourceText.Clone();
+			clone.CopyrightText = (SongTextFormatting)this.CopyrightText.Clone();
+			return clone;
+		}
 	}
 
 	#region Enums

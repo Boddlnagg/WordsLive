@@ -89,11 +89,11 @@
 							<Label Grid.Row="0" Grid.Column="0">Oben:</Label>
 							<TextBox Grid.Row="0" Grid.Column="1" Text="{Binding BorderTop, ValidatesOnDataErrors=True}" Style="{StaticResource textBoxInError}"/>
 							<Label Grid.Row="1" Grid.Column="0">Unten:</Label>
-							<TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Formatting.BorderBottom, ValidatesOnDataErrors=True}" Style="{StaticResource textBoxInError}"/>
+							<TextBox Grid.Row="1" Grid.Column="1" Text="{Binding BorderBottom, ValidatesOnDataErrors=True}" Style="{StaticResource textBoxInError}"/>
 							<Label Grid.Row="0" Grid.Column="2">Links:</Label>
-							<TextBox Grid.Row="0" Grid.Column="3" Text="{Binding Formatting.BorderLeft, ValidatesOnDataErrors=True}" Style="{StaticResource textBoxInError}"/>
+							<TextBox Grid.Row="0" Grid.Column="3" Text="{Binding BorderLeft, ValidatesOnDataErrors=True}" Style="{StaticResource textBoxInError}"/>
 							<Label Grid.Row="1" Grid.Column="2">Rechts:</Label>
-							<TextBox Grid.Row="1" Grid.Column="3" Text="{Binding Formatting.BorderRight, ValidatesOnDataErrors=True}" Style="{StaticResource textBoxInError}"/>
+							<TextBox Grid.Row="1" Grid.Column="3" Text="{Binding BorderRight, ValidatesOnDataErrors=True}" Style="{StaticResource textBoxInError}"/>
 							</Grid>
 					</GroupBox>
 					<Grid Grid.Row="1" Grid.Column="1">

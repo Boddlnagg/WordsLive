@@ -24,43 +24,52 @@ namespace WordsLive.Core.Songs
 	/// <summary>
 	/// Represents the text formatting options used on a song slide.
 	/// </summary>
-	public struct SongTextFormatting
+	public class SongTextFormatting : ICloneable
 	{
 		/// <summary>
 		/// Gets or sets the font size.
 		/// </summary>
-		public int Size;
+		public int Size { get; set; }
 
 		/// <summary>
 		/// Gets or sets the font name.
 		/// </summary>
-		public string Name;
+		public string Name { get; set; }
 
 		/// <summary>
 		/// Gets or sets a value indicating whether bold text should be used.
 		/// </summary>
-		public bool Bold;
+		public bool Bold { get; set; }
 
 		/// <summary>
 		/// Gets or sets a value indicating whether italic text should be used.
 		/// </summary>
-		public bool Italic;
+		public bool Italic { get; set; }
 
 		/// <summary>
 		/// Gets or sets the text color.
 		/// </summary>
-		public Color Color;
+		public Color Color { get; set; }
 
 		/// <summary>
 		/// Gets or sets the size of the outline.
 		/// TODO: currently unused
 		/// </summary>
-		public int Outline;
+		public int Outline { get; set; }
 
 		/// <summary>
 		/// Gets or sets the size of the shadow.
 		/// TODO: currently unused
 		/// </summary>
-		public int Shadow;
+		public int Shadow { get; set; }
+
+		/// <summary>
+		/// Clones this instance.
+		/// </summary>
+		/// <returns>A clone of this instance.</returns>
+		public object Clone()
+		{
+			return this.MemberwiseClone();
+		}
 	}
 }

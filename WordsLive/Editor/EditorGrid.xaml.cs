@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Input;
-using MonitoredUndo;
 using WordsLive.Core.Songs;
 using WordsLive.Utils;
 
@@ -14,15 +11,15 @@ namespace WordsLive.Editor
 {
 	public partial class EditorGrid : Grid, INotifyPropertyChanged
 	{
-		private SongNodeRoot songNode;
+		private Song song;
 		private bool orderSelected;
 		private EditorWindow parent;
 
-		public SongNodeRoot Node
+		public Song Song
 		{
 			get
 			{
-				return songNode;
+				return song;
 			}
 		}
 
@@ -40,7 +37,7 @@ namespace WordsLive.Editor
 				}
 				else if (StructureTree.SelectedItem is SongSlide)
 				{
-					part = songNode.Song.FindPartWithSlide(StructureTree.SelectedItem as SongSlide);
+					part = song.FindPartWithSlide(StructureTree.SelectedItem as SongSlide);
 				}
 				return part;
 			}
@@ -55,14 +52,12 @@ namespace WordsLive.Editor
 
 			this.parent = parent;
 
-			this.songNode = new SongNodeRoot(song);
+			this.song = song;
 
 			var tnp = (Nodes.TreeNodeProvider)FindResource("treeNodeProvider");
-			tnp.Song = this.songNode.Song;
+			tnp.Song = song;
 
 			this.StructureTree.IsEnabled = false;
-
-			this.OrderListBox.DataContext = songNode.Song;
 
 			this.PreviewControl.FinishedLoading += (sender, args) => InitSelection();
 			this.PreviewControl.Song = song;
@@ -74,7 +69,7 @@ namespace WordsLive.Editor
 
 			if (this.StructureTree.IsLoaded)
 			{
-				this.StructureTree.SetSelectedItem(songNode.Song);
+				this.StructureTree.SetSelectedItem(song);
 				this.StructureTree.Focus();
 			}
 		}
@@ -89,7 +84,7 @@ namespace WordsLive.Editor
 			var res = ShowRenamePartDialog(null);
 			if (res.DialogResult.HasValue && res.DialogResult.Value)
 			{
-				var newPart = songNode.Song.AddPart(res.PartName);
+				var newPart = song.AddPart(res.PartName);
 				this.StructureTree.SetSelectedItem(newPart);
 			}
 		}
@@ -174,7 +169,7 @@ namespace WordsLive.Editor
 					if (isInFirstHalf)
 						index--;
 
-					songNode.Song.AddPartToOrder(songNode.Song.Order[oldIndex].Part, index);
+					song.AddPartToOrder(song.Order[oldIndex].Part, index);
 				}
 				else
 				{
@@ -188,7 +183,7 @@ namespace WordsLive.Editor
 					if (isInFirstHalf)
 						index--;
 
-					songNode.Song.MovePartInOrder(songNode.Song.Order[oldIndex], index);
+					song.MovePartInOrder(song.Order[oldIndex], index);
 				}
 
 				listBox.SelectedIndex = index;
@@ -212,7 +207,7 @@ namespace WordsLive.Editor
 				if (isInFirstHalf)
 					index--;
 
-				songNode.Song.AddPartToOrder((SongPart)e.Data.GetData(typeof(SongPart)), index);
+				song.AddPartToOrder((SongPart)e.Data.GetData(typeof(SongPart)), index);
 
 				e.Handled = true;
 			}
@@ -344,16 +339,16 @@ namespace WordsLive.Editor
 				if (e.KeyStates.HasFlag(DragDropKeyStates.ControlKey)) // copy
 				{
 					if (targetNode is SongSlide)
-						songNode.Song.CopySlideAfter(dragNode, targetNode as SongSlide);
+						song.CopySlideAfter(dragNode, targetNode as SongSlide);
 					else if (targetNode is SongPart)
-						songNode.Song.CopySlide(dragNode, targetNode as SongPart);
+						song.CopySlide(dragNode, targetNode as SongPart);
 				}
 				else
 				{
 					if (targetNode == dragNode)
 						return;
 
-					if (songNode.Song.FindPartWithSlide(dragNode).Slides.Count <= 1)
+					if (song.FindPartWithSlide(dragNode).Slides.Count <= 1)
 					{
 						MessageBox.Show(WordsLive.Resources.Resource.eMsgMoveLastSlideInPart,
 							WordsLive.Resources.Resource.dialogError, MessageBoxButton.OK, MessageBoxImage.Error);
@@ -361,9 +356,9 @@ namespace WordsLive.Editor
 					}
 
 					if (targetNode is SongSlide)
-						songNode.Song.MoveSlideAfter(dragNode, targetNode as SongSlide);
+						song.MoveSlideAfter(dragNode, targetNode as SongSlide);
 					else if (targetNode is SongPart)
-						songNode.Song.MoveSlide(dragNode, targetNode as SongPart);
+						song.MoveSlide(dragNode, targetNode as SongPart);
 
 					tree.SetSelectedItem(dragNode);
 				}
@@ -375,7 +370,7 @@ namespace WordsLive.Editor
 				SongPart targetPart;
 				if (targetNode is SongSlide)
 				{
-					targetPart = songNode.Song.FindPartWithSlide(targetNode as SongSlide);
+					targetPart = song.FindPartWithSlide(targetNode as SongSlide);
 				}
 				else
 				{
@@ -388,13 +383,13 @@ namespace WordsLive.Editor
 					var res = ShowRenamePartDialog(null);
 					if (res.DialogResult.HasValue && res.DialogResult.Value)
 					{
-						SongPart newPart = songNode.Song.CopyPart(dragNode, res.PartName, targetPart);
+						SongPart newPart = song.CopyPart(dragNode, res.PartName, targetPart);
 						tree.SetSelectedItem(newPart);
 					}
 				}
 				else
 				{
-					songNode.Song.MovePart(dragNode, targetPart);
+					song.MovePart(dragNode, targetPart);
 					tree.SetSelectedItem(dragNode);
 				}
 			}
@@ -486,18 +481,6 @@ namespace WordsLive.Editor
 			}
 		}
 
-		[Obsolete]
-		private RenameSongWindow ShowRenameSongDialog(SongNodeRoot song)
-		{
-			if (song == null)
-				throw new ArgumentNullException("song");
-
-			RenameSongWindow win = new RenameSongWindow(song.Title);
-			win.Owner = parent;
-			win.ShowDialog();
-			return win;
-		}
-
 		/// <summary>
 		/// Shows a window to prompt for a new name for the song.
 		/// </summary>
@@ -521,7 +504,7 @@ namespace WordsLive.Editor
 		/// <returns>The window.</returns>
 		private RenamePartWindow ShowRenamePartDialog(SongPart part)
 		{
-			RenamePartWindow win = new RenamePartWindow(songNode.Song, part);
+			RenamePartWindow win = new RenamePartWindow(song, part);
 			win.Owner = parent;
 			win.ShowDialog();
 			return win;
@@ -566,7 +549,7 @@ namespace WordsLive.Editor
 			{
 				var oldIndex = listBox.SelectedIndex;
 
-				songNode.Song.RemovePartFromOrder((SongPartReference)listBox.SelectedItem);
+				song.RemovePartFromOrder((SongPartReference)listBox.SelectedItem);
 				if (oldIndex >= 0)
 					listBox.SelectedIndex = oldIndex < listBox.Items.Count ? oldIndex : listBox.Items.Count - 1;
 			}
@@ -582,7 +565,7 @@ namespace WordsLive.Editor
 					else
 						index = listBox.SelectedIndex + 1;
 
-					songNode.Song.AddPartToOrder(part, index);
+					song.AddPartToOrder(part, index);
 
 					if (index == -1)
 						listBox.SelectedIndex = listBox.Items.Count - 1;
@@ -595,7 +578,7 @@ namespace WordsLive.Editor
 				int moveUpIndex = listBox.SelectedIndex - 1;
 				if (moveUpIndex < 0)
 					moveUpIndex = 0;
-				songNode.Song.MovePartInOrder((SongPartReference)listBox.SelectedItem, moveUpIndex);
+				song.MovePartInOrder((SongPartReference)listBox.SelectedItem, moveUpIndex);
 				listBox.SelectedIndex = moveUpIndex;
 			}
 			else if (e.Command == CustomCommands.MoveDown)
@@ -603,7 +586,7 @@ namespace WordsLive.Editor
 				int moveDownIndex = listBox.SelectedIndex + 1;
 				if (moveDownIndex > listBox.Items.Count - 1)
 					moveDownIndex = listBox.Items.Count - 1;
-				songNode.Song.MovePartInOrder((SongPartReference)listBox.SelectedItem, moveDownIndex);
+				song.MovePartInOrder((SongPartReference)listBox.SelectedItem, moveDownIndex);
 				listBox.SelectedIndex = moveDownIndex;
 			}
 		}
@@ -626,17 +609,17 @@ namespace WordsLive.Editor
 
 			if (e.Command == ApplicationCommands.Undo)
 			{
-				songNode.Song.UndoManager.Undo();
+				song.UndoManager.Undo();
 			}
 			else if (e.Command == ApplicationCommands.Redo)
 			{
-				songNode.Song.UndoManager.Redo();
+				song.UndoManager.Redo();
 			}
 			else if (e.Command == CustomCommands.Split)
 			{
 				// get text cursor position
 				var tb = LogicalTreeHelper.FindLogicalNode(EditBorder.Child, "TextTextBox") as TextBox;
-				var newSlide = this.songNode.Song.FindPartWithSlide(node as SongSlide).SplitSlide(node as SongSlide, tb.SelectionStart);
+				var newSlide = song.FindPartWithSlide(node as SongSlide).SplitSlide(node as SongSlide, tb.SelectionStart);
 			}
 			else if (e.Command == EditingCommands.IncreaseFontSize)
 			{
@@ -647,15 +630,15 @@ namespace WordsLive.Editor
 				}
 				else if (node is Nodes.CopyrightNode)
 				{
-					var formatting = songNode.Song.Formatting;
+					var formatting = song.Formatting;
 					formatting.CopyrightText.Size++;
-					songNode.Song.Formatting = formatting;
+					song.Formatting = formatting;
 				}
 				else if (node is Nodes.SourceNode)
 				{
-					var formatting = songNode.Song.Formatting;
+					var formatting = song.Formatting;
 					formatting.SourceText.Size++;
-					songNode.Song.Formatting = formatting;
+					song.Formatting = formatting;
 				}
 			}
 			else if (e.Command == EditingCommands.DecreaseFontSize)
@@ -667,15 +650,15 @@ namespace WordsLive.Editor
 				}
 				else if (node is Nodes.CopyrightNode)
 				{
-					var formatting = songNode.Song.Formatting;
+					var formatting = song.Formatting;
 					formatting.CopyrightText.Size--;
-					songNode.Song.Formatting = formatting;
+					song.Formatting = formatting;
 				}
 				else if (node is Nodes.SourceNode)
 				{
-					var formatting = songNode.Song.Formatting;
+					var formatting = song.Formatting;
 					formatting.SourceText.Size--;
-					songNode.Song.Formatting = formatting;
+					song.Formatting = formatting;
 				}
 			}
 
@@ -713,11 +696,11 @@ namespace WordsLive.Editor
 				}
 				else if (node is Song)
 				{
-					var res = ShowRenameSongDialog(songNode.Song);
+					var res = ShowRenameSongDialog(song);
 					if (res.DialogResult.HasValue && res.DialogResult.Value)
 					{
 						// apply change
-						songNode.Title = res.SongName;
+						song.SongTitle = res.SongName;
 						// TODO (Editor): ask whether to rename file?
 					}
 				}
@@ -726,7 +709,7 @@ namespace WordsLive.Editor
 			{
 				if (node is SongPart)
 				{
-					songNode.Song.RemovePart(node as SongPart);
+					song.RemovePart(node as SongPart);
 				}
 				else if (node is SongSlide)
 				{
@@ -746,7 +729,7 @@ namespace WordsLive.Editor
 				}
 				else if (node is SongSlide)
 				{
-					AddSlide(songNode.Song.FindPartWithSlide(node as SongSlide));
+					AddSlide(song.FindPartWithSlide(node as SongSlide));
 				}
 			}
 			else if (e.Command == CustomCommands.AddPart)
@@ -755,7 +738,7 @@ namespace WordsLive.Editor
 			}
 			else if (e.Command == CustomCommands.Duplicate)
 			{
-				var newSlide = this.songNode.Song.FindPartWithSlide(node as SongSlide).DuplicateSlide(node as SongSlide);
+				var newSlide = song.FindPartWithSlide(node as SongSlide).DuplicateSlide(node as SongSlide);
 				this.StructureTree.SetSelectedItem(newSlide);
 			}
 		}
@@ -766,11 +749,11 @@ namespace WordsLive.Editor
 
 			if (e.Command == ApplicationCommands.Undo)
 			{
-				e.CanExecute = songNode.Song.UndoManager.CanUndo;
+				e.CanExecute = song.UndoManager.CanUndo;
 			}
 			else if (e.Command == ApplicationCommands.Redo)
 			{
-				e.CanExecute = songNode.Song.UndoManager.CanRedo;
+				e.CanExecute = song.UndoManager.CanRedo;
 			}
 			else if (e.Command == EditingCommands.IncreaseFontSize || e.Command == EditingCommands.DecreaseFontSize)
 			{
@@ -817,7 +800,7 @@ namespace WordsLive.Editor
 				else if (node is SongSlide)
 				{
 					// don't delete when there's only one slide left
-					e.CanExecute = songNode.Song.FindPartWithSlide(node as SongSlide).Slides.Count > 1;
+					e.CanExecute = song.FindPartWithSlide(node as SongSlide).Slides.Count > 1;
 				}
 			}
 		}

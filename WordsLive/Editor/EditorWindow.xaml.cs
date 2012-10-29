@@ -350,10 +350,10 @@ namespace WordsLive.Editor
 			}
 			else if (e.Command == CustomCommands.SongSettings)
 			{
-				var win = new SongSettingsWindow(doc.Song.Formatting);
+				var win = new SongSettingsWindow(doc.Song.Formatting.Clone() as SongFormatting);
 				if (win.ShowDialog() == true)
 				{
-					doc.UpdateFormatting(win.Formatting);
+					doc.Song.Formatting = win.Formatting;
 				}
 			}
 			else if (e.Command == CustomCommands.EditChords)

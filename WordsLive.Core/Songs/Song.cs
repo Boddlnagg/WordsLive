@@ -208,7 +208,7 @@ namespace WordsLive.Core.Songs
 			}
 			set
 			{
-				Undo.ChangeFactory.OnChanging(this, "Formatting", formatting, value);
+				Undo.ChangeFactory.OnChanging(this, "Formatting", formatting == null ? null : formatting.Clone(), value);
 				formatting = value;
 				OnPropertyChanged("Formatting");
 			}

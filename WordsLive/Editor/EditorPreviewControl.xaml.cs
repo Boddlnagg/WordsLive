@@ -84,7 +84,13 @@ namespace WordsLive.Editor
 			}
 			set
 			{
+				if (this.song != null)
+					this.song.PropertyChanged -= Song_PropertyChanged;
+
 				this.song = value;
+
+				if (this.song != null)
+					this.song.PropertyChanged += Song_PropertyChanged;
 
 				if (!Web.IsDomReady)
 				{
@@ -94,6 +100,15 @@ namespace WordsLive.Editor
 				{
 					Load();
 				}
+			}
+		}
+
+		void Song_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+		{
+			if (e.PropertyName == "Formatting")
+			{
+				UpdateStyle();
+				Update();
 			}
 		}
 

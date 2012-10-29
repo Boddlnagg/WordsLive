@@ -8,7 +8,7 @@ namespace WordsLive.Editor
 {
 	public partial class ChooseFontControl : UserControl
 	{
-		public static readonly DependencyProperty FontProperty = DependencyProperty.Register("Font", typeof(SongTextFormatting), typeof(ChooseFontControl), new PropertyMetadata(new SongTextFormatting(), new PropertyChangedCallback(FontPropertyChanged)));
+		public static readonly DependencyProperty FontProperty = DependencyProperty.Register("Font", typeof(SongTextFormatting), typeof(ChooseFontControl), new PropertyMetadata(null, new PropertyChangedCallback(FontPropertyChanged)));
 
 		public SongTextFormatting Font
 		{

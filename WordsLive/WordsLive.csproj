@@ -68,9 +68,6 @@
     <Reference Include="Ionic.Zip">
       <HintPath>..\3rdParty\Ionic.Zip.dll</HintPath>
     </Reference>
-    <Reference Include="MonitoredUndo">
-      <HintPath>..\3rdParty\MonitoredUndo.dll</HintPath>
-    </Reference>
     <Reference Include="ReachFramework" />
     <Reference Include="System" />
     <Reference Include="System.configuration" />
@@ -227,12 +224,6 @@
     <Compile Include="Editor\EditChordsWindow.xaml.cs">
       <DependentUpon>EditChordsWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Editor\SongNodeCategory.cs" />
-    <Compile Include="Editor\SongNodeCopyright.cs" />
-    <Compile Include="Editor\SongNodeLanguage.cs" />
-    <Compile Include="Editor\SongNodeMetadata.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Editor\SongSettingsWindow.xaml.cs">
       <DependentUpon>SongSettingsWindow.xaml</DependentUpon>
     </Compile>
@@ -275,17 +266,12 @@
     <Compile Include="Editor\EditorWindow.xaml.cs">
       <DependentUpon>EditorWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Editor\SongNodeSource.cs" />
     <Compile Include="Editor\RenamePartWindow.xaml.cs">
       <DependentUpon>RenamePartWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Editor\RenameSongWindow.xaml.cs">
       <DependentUpon>RenameSongWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Editor\SongNode.cs" />
-    <Compile Include="Editor\SongNodePart.cs" />
-    <Compile Include="Editor\SongNodeRoot.cs" />
-    <Compile Include="Editor\SongNodeSlide.cs" />
     <Compile Include="Songs\SongFileHandler.cs" />
     <Compile Include="Utils\StringSplitConverter.cs" />
     <Compile Include="WebSiteFileHandler.cs" />
