@@ -19,6 +19,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using MonitoredUndo;
 
 namespace WordsLive.Core.Songs.Chords
 {
@@ -137,6 +138,44 @@ namespace WordsLive.Core.Songs.Chords
 		public static string Transpose(string text, Key originalKey, int amount)
 		{
 			return ReplaceChords(text, (chord) => chord.Transpose(originalKey, amount).Name);
+		}
+
+		/// <summary>
+		/// Transpose all chords in a song (can be undone).
+		/// </summary>
+		/// <param name="song">The song to process.</param>
+		/// <param name="originalKey">The original key to transpose from.</param>
+		/// <param name="amount">The amount of semitones to transpose by.</param>
+		public static void Transpose(Song song, Key originalKey, int amount)
+		{
+			using (new UndoBatch(song.UndoKey, "TransposeChords", false))
+			{
+				foreach (var part in song.Parts)
+				{
+					foreach (var slide in part.Slides)
+					{
+						slide.Text = Transpose(slide.Text, originalKey, amount);
+					}
+				}
+			}
+		}
+
+		/// <summary>
+		/// Removes all chords from a song (can be undone).
+		/// </summary>
+		/// <param name="song">The song to process.</param>
+		public static void RemoveAll(Song song)
+		{
+			using (new UndoBatch(song.UndoKey, "RemoveChords", false))
+			{
+				foreach (var part in song.Parts)
+				{
+					foreach (var slide in part.Slides)
+					{
+						slide.Text = RemoveAll(slide.Text);
+					}
+				}
+			}
 		}
 	}
 }

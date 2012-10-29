@@ -358,7 +358,7 @@ namespace WordsLive.Editor
 			}
 			else if (e.Command == CustomCommands.EditChords)
 			{
-				var win = new EditChordsWindow(doc.Grid.Node);
+				var win = new EditChordsWindow(doc.Song);
 				win.Owner = this;
 				win.ShowDialog();
 				doc.Grid.PreviewControl.UpdateStyle();	

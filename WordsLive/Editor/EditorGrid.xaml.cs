@@ -514,20 +514,6 @@ namespace WordsLive.Editor
 			return win;
 		}
 
-
-		[Obsolete]
-		private RenamePartWindow ShowRenamePartDialog(SongNodeRoot song, SongNodePart part)
-		{
-			if (song == null)
-				throw new ArgumentNullException("song");
-
-			//RenamePartWindow win = new RenamePartWindow(song, part);
-			//win.Owner = parent;
-			//win.ShowDialog();
-			//return win;
-			return null;
-		}
-
 		/// <summary>
 		/// Show a dialog to prompt for a new name for a part.
 		/// </summary>

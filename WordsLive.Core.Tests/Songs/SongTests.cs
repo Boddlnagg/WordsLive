@@ -336,5 +336,37 @@ namespace WordsLive.Core.Tests.Songs
 			Redo();
 			Assert.AreEqual(System.Drawing.Color.Green.ToArgb(), song.Backgrounds.Single().Color.ToArgb());
 		}
+
+		[Test]
+		public void RemoveAllChordsUndoRedo()
+		{
+			var slide = song.Parts.Single().Slides.Single();
+			slide.Text = "Test[Em]Test2[G]";
+			ClearUndoRedoStack();
+
+			Core.Songs.Chords.Chords.RemoveAll(song);
+			Assert.AreEqual(slide.Text, "TestTest2");
+			Assert.AreEqual(1, UndoStackSize);
+			Undo();
+			Assert.AreEqual(slide.Text, "Test[Em]Test2[G]");
+			Redo();
+			Assert.AreEqual(slide.Text, "TestTest2");
+		}
+
+		[Test]
+		public void TransposeChordsUndoRedo()
+		{
+			var slide = song.Parts.Single().Slides.Single();
+			slide.Text = "Test[Em]Test2[G]";
+			ClearUndoRedoStack();
+
+			Core.Songs.Chords.Chords.Transpose(song, new Core.Songs.Chords.Key("Em"), 5);
+			Assert.AreEqual(slide.Text, "Test[Am]Test2[C]");
+			Assert.AreEqual(1, UndoStackSize);
+			Undo();
+			Assert.AreEqual(slide.Text, "Test[Em]Test2[G]");
+			Redo();
+			Assert.AreEqual(slide.Text, "Test[Am]Test2[C]");
+		}
 	}
 }
