@@ -185,12 +185,15 @@ namespace WordsLive.Editor
 		private void ChooseBackground(EditorDocument doc)
 		{
 			SongBackground bg = null;
-			if (doc.Grid.StructureTree.SelectedItem is SongNodeSlide)
-				bg = doc.Song.Backgrounds[(doc.Grid.StructureTree.SelectedItem as SongNodeSlide).BackgroundIndex];
-			else if (doc.Grid.StructureTree.SelectedItem is SongNodePart)
-				bg = doc.Song.Backgrounds[(doc.Grid.StructureTree.SelectedItem as SongNodePart).Children[0].BackgroundIndex];
-			else if (doc.Grid.StructureTree.SelectedItem is SongNodeRoot)
-				bg = doc.Song.Backgrounds[doc.Song.FirstSlide != null ? doc.Song.FirstSlide.BackgroundIndex : 0];
+
+			var element = (ISongElement)doc.Grid.StructureTree2.SelectedItem;
+
+			if (element is SongSlide)
+				bg = (element as SongSlide).Background;
+			else if (element is SongPart)
+				bg = (element as SongPart).Slides[0].Background;
+			else if (element is Song)
+				bg = element.Root.FirstSlide != null ? element.Root.FirstSlide.Background : element.Root.Backgrounds[0];
 			else
 			{
 				MessageBox.Show(WordsLive.Resources.Resource.eMsgSelectElement);
@@ -202,23 +205,23 @@ namespace WordsLive.Editor
 			win.ShowDialog();
 			if (win.DialogResult.HasValue && win.DialogResult.Value)
 			{
-				if (doc.Grid.StructureTree.SelectedItem is SongNodeRoot)
+				if (element is Song)
 				{
-					var song = doc.Grid.StructureTree.SelectedItem as SongNodeRoot;
+					var song = element as Song;
 					song.SetBackground(win.ChosenBackground);
 
 					// this needs to be called manually, because the preview can not listen to background changes
 					// when the root node is selected
 					doc.Grid.PreviewControl.Update();
 				}
-				else if (doc.Grid.StructureTree.SelectedItem is SongNodePart)
+				else if (element is SongPart)
 				{
-					var part = doc.Grid.StructureTree.SelectedItem as SongNodePart;
+					var part = element as SongPart;
 					part.SetBackground(win.ChosenBackground);
 				}
-				else if (doc.Grid.StructureTree.SelectedItem is SongNodeSlide)
+				else if (element is SongSlide)
 				{
-					var slide = doc.Grid.StructureTree.SelectedItem as SongNodeSlide;
+					var slide = element as SongSlide;
 					slide.SetBackground(win.ChosenBackground);
 				}
 			}

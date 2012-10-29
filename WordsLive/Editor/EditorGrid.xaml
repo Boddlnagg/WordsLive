@@ -226,7 +226,6 @@
 			</Style>
 		</TreeView.ItemContainerStyle>
 	</TreeView>
-	<!-- TODO: add event handlers (drag & drop, ...) -->
 	<TreeView
 		x:Name="StructureTree2" ItemsSource="{Binding}"
 		SelectedItemChanged="StructureTree2_SelectedItemChanged"
