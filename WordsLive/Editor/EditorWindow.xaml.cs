@@ -81,14 +81,6 @@ namespace WordsLive.Editor
 			}
 		}
 
-		public void Load(Song song)
-		{
-			if (song == null)
-				throw new ArgumentNullException("song");
-
-			Load(null, song, false);
-		}
-
 		private void Load(string file, Song song, bool imported)
 		{
 			var opened = CheckSongOpened(file, song);
@@ -153,7 +145,7 @@ namespace WordsLive.Editor
 
 		private void NewSong()
 		{
-			Load(Controller.CreateSongFromTemplate());
+			Load(null, Controller.CreateSongFromTemplate(), false);
 		}
 
 		private bool CloseSong(EditorDocument doc)

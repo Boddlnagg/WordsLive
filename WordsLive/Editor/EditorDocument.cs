@@ -62,6 +62,8 @@ namespace WordsLive.Editor
 		//    }
 		//}
 
+		//TODO: move the following to model class, refactor save/load/import/export infrastructure
+
 		private bool isModified;
 
 		public bool IsModified

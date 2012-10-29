@@ -99,7 +99,7 @@ namespace WordsLive.Core.Songs
 			{
 				if (value != category)
 				{
-					Undo.ChangeFactory.OnChanging(this, "Category", category, value);
+					Undo.ChangeFactory.OnChangingTryMerge(this, "Category", category, value);
 					category = value;
 					OnPropertyChanged("Category");
 				}
@@ -119,7 +119,7 @@ namespace WordsLive.Core.Songs
 			{
 				if (value != language)
 				{
-					Undo.ChangeFactory.OnChanging(this, "Language", language, value);
+					Undo.ChangeFactory.OnChangingTryMerge(this, "Language", language, value);
 					language = value;
 					OnPropertyChanged("Language");
 				}
@@ -140,7 +140,7 @@ namespace WordsLive.Core.Songs
 			{
 				if (value != translationLanguage)
 				{
-					Undo.ChangeFactory.OnChanging(this, "TranslationLanguage", translationLanguage, value);
+					Undo.ChangeFactory.OnChangingTryMerge(this, "TranslationLanguage", translationLanguage, value);
 					translationLanguage = value;
 					OnPropertyChanged("TranslationLanguage");
 				}
@@ -160,7 +160,7 @@ namespace WordsLive.Core.Songs
 			{
 				if (value != comment)
 				{
-					Undo.ChangeFactory.OnChanging(this, "Comment", comment, value);
+					Undo.ChangeFactory.OnChangingTryMerge(this, "Comment", comment, value);
 					comment = value;
 					OnPropertyChanged("Comment");
 				}
@@ -180,7 +180,7 @@ namespace WordsLive.Core.Songs
 			{
 				if (value != copyright)
 				{
-					Undo.ChangeFactory.OnChanging(this, "Copyright", copyright, value);
+					Undo.ChangeFactory.OnChangingTryMerge(this, "Copyright", copyright, value);
 					copyright = value;
 					OnPropertyChanged("Copyright");
 				}
