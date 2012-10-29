@@ -79,15 +79,9 @@ namespace WordsLive.Editor
 			}
 		}
 
-		[Obsolete]
-		private void AddSlide(SongNodePart item)
-		{
-			this.StructureTree.SetSelectedItem(item.AddSlide());
-		}
-
 		private void AddSlide(SongPart part)
 		{
-			this.StructureTree.SetSelectedItem(part.AddSlide());
+			this.StructureTree2.SetSelectedItem(part.AddSlide());
 		}
 
 		private void AddPart()
@@ -96,56 +90,8 @@ namespace WordsLive.Editor
 			if (res.DialogResult.HasValue && res.DialogResult.Value)
 			{
 				var newPart = songNode.Song.AddPart(res.PartName);
-				this.StructureTree.SetSelectedItem(newPart);
+				this.StructureTree2.SetSelectedItem(newPart);
 			}
-		}
-
-		[Obsolete]
-		private void RenameSong()
-		{
-			var res = ShowRenameSongDialog(songNode);
-			if (res.DialogResult.HasValue && res.DialogResult.Value)
-			{
-				songNode.Title = res.SongName;
-				// TODO (Editor): ask whether to rename file?
-			}
-		}
-
-		[Obsolete]
-		private void RenamePart(SongNodePart item)
-		{
-			var res = ShowRenamePartDialog(songNode, item);
-			if (res.DialogResult.HasValue && res.DialogResult.Value)
-			{
-				item.Title = res.PartName;
-			}
-		}
-
-		[Obsolete]
-		private void RemovePart(SongNodePart item)
-		{
-			this.songNode.RemovePart(item);
-		}
-
-		[Obsolete]
-		public void RemoveSlide(SongNodeSlide item)
-		{
-			this.songNode.RemoveSlide(item);
-		}
-
-		[Obsolete]
-		public void DuplicateSlide(SongNodeSlide item)
-		{
-			var newSlide = this.songNode.FindPartWithSlide(item).DuplicateSlide(item);
-			if (newSlide != null)
-				this.StructureTree.SetSelectedItem(newSlide);
-		}
-
-		public void SplitSlide(SongNodeSlide item, int splitIndex)
-		{
-			var newSlide = this.songNode.FindPartWithSlide(item).SplitSlide(item, splitIndex);
-			if (newSlide != null)
-				this.StructureTree.SetSelectedItem(newSlide);
 		}
 
 		#region Drag & Drop
@@ -595,112 +541,6 @@ namespace WordsLive.Editor
 			return win;
 		}
 
-		private void OnExecuteCommand(object sender, ExecutedRoutedEventArgs e)
-		{
-			SongNode node;
-
-			if (e.Parameter as SongNode != null)
-				node = e.Parameter as SongNode;
-			else
-				node = StructureTree.SelectedItem as SongNode;
-
-			if (e.Command == CustomCommands.Rename)
-			{
-				if (node is SongNodePart)
-					RenamePart(node as SongNodePart);
-				else if (node is SongNodeRoot)
-					RenameSong();
-			}
-			else if (e.Command == ApplicationCommands.Delete)
-			{
-				if (node is SongNodePart)
-					RemovePart(node as SongNodePart);
-				else if (node is SongNodeSlide)
-					RemoveSlide(node as SongNodeSlide);
-			}
-			else if (e.Command == CustomCommands.Insert)
-			{
-				if (node is SongNodeRoot)
-					AddPart();
-				else if (node is SongNodePart)
-					AddSlide(node as SongNodePart);
-				else if (node is SongNodeSlide)
-					AddSlide(songNode.FindPartWithSlide(node as SongNodeSlide));
-			}
-			else if (e.Command == CustomCommands.AddPart)
-			{
-				AddPart();
-			}
-			else if (e.Command == CustomCommands.Duplicate)
-			{
-				if (node is SongNodeSlide)
-					DuplicateSlide(node as SongNodeSlide);
-			}
-			else if (e.Command == CustomCommands.Split)
-			{
-				var tb = LogicalTreeHelper.FindLogicalNode(EditBorder.Child, "TextTextBox") as TextBox;
-				if (tb != null)
-				{
-					SplitSlide(node as SongNodeSlide, tb.SelectionStart);
-				}
-			}
-			else if (e.Command == EditingCommands.IncreaseFontSize)
-			{
-				if (node is SongNodeSlide)
-				{
-					SongNodeSlide slide = node as SongNodeSlide;
-					slide.ChangeFontSize(slide.FontSize + 1);
-				}
-				else if (node is SongNodeCopyright)
-				{
-					(node as SongNodeCopyright).FontSize++;
-				}
-				else if (node is SongNodeSource)
-				{
-					(node as SongNodeSource).FontSize++;
-				}
-			}
-			else if (e.Command == EditingCommands.DecreaseFontSize)
-			{
-				if (node is SongNodeSlide)
-				{
-					SongNodeSlide slide = node as SongNodeSlide;
-					slide.ChangeFontSize(slide.FontSize - 1);
-				}
-				else if (node is SongNodeCopyright)
-				{
-					(node as SongNodeCopyright).FontSize--;
-				}
-				else if (node is SongNodeSource)
-				{
-					(node as SongNodeSource).FontSize--;
-				}
-			}
-		}
-
-		private void OnCanExecuteCommand(object sender, CanExecuteRoutedEventArgs e)
-		{
-			SongNode node;
-
-			if (e.Parameter as SongNode != null)
-				node = e.Parameter as SongNode;
-			else
-				node = StructureTree.SelectedItem as SongNode;
-
-			if (e.Command == ApplicationCommands.Delete)
-			{
-				if (node is SongNodePart)
-				{
-					e.CanExecute = true;
-				}
-				else if (node is SongNodeSlide)
-				{
-					// don't delete when there's only one slide left
-					e.CanExecute = songNode.FindPartWithSlide(node as SongNodeSlide).Children.Count > 1;
-				}
-			}
-		}
-
 		private void TranslationExpanderExpandedCollapsed(object sender, RoutedEventArgs e)
 		{
 			// HACK
@@ -930,7 +770,7 @@ namespace WordsLive.Editor
 			else if (e.Command == CustomCommands.Duplicate)
 			{
 				var newSlide = this.songNode.Song.FindPartWithSlide(node as SongSlide).DuplicateSlide(node as SongSlide);
-				this.StructureTree.SetSelectedItem(newSlide);
+				this.StructureTree2.SetSelectedItem(newSlide);
 			}
 		}
 
