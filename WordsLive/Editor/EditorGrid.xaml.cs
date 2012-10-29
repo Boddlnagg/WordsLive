@@ -26,18 +26,18 @@ namespace WordsLive.Editor
 			}
 		}
 
-		public SongNodePart SelectedPart // TODO
+		public SongPart SelectedPart
 		{
 			get
 			{
-				SongNodePart part = null;
-				if (StructureTree.SelectedItem is SongNodePart)
+				SongPart part = null;
+				if (StructureTree2.SelectedItem is SongPart)
 				{
-					part = StructureTree.SelectedItem as SongNodePart;
+					part = StructureTree2.SelectedItem as SongPart;
 				}
-				else if (StructureTree.SelectedItem is SongNodeSlide)
+				else if (StructureTree2.SelectedItem is SongSlide)
 				{
-					part = songNode.FindPartWithSlide((SongNodeSlide)StructureTree.SelectedItem);
+					part = songNode.Song.FindPartWithSlide(StructureTree.SelectedItem as SongSlide);
 				}
 				return part;
 			}
@@ -60,7 +60,7 @@ namespace WordsLive.Editor
 
 			this.StructureTree2.DataContext = new Song[] { song };
 
-			this.OrderListBox.DataContext = this.songNode;
+			this.OrderListBox.DataContext = songNode.Song;
 
 			this.StructureTree.IsEnabled = false;
 
@@ -156,22 +156,24 @@ namespace WordsLive.Editor
 
 		private void OrderListBox_DragEnterOrOver(object sender, DragEventArgs e)
 		{
+			var listBox = (ListBox)sender;
+
 			this.RemoveInsertionAdorner();
 
-			int index = OrderListBox.GetIndexAtPosition(e.GetPosition(OrderListBox));
+			int index = listBox.GetIndexAtPosition(e.GetPosition(listBox));
 
 			if (index >= 0)
 			{
-				var container = OrderListBox.ItemContainerGenerator.ContainerFromIndex(index) as FrameworkElement;
+				var container = listBox.ItemContainerGenerator.ContainerFromIndex(index) as FrameworkElement;
 				this.CreateInsertionAdorner(container, e.GetPosition(container).IsInFirstHalf(container, true));
 			}
-			else if (OrderListBox.HasItems)
+			else if (listBox.HasItems)
 			{
-				var container = OrderListBox.ItemContainerGenerator.ContainerFromIndex(OrderListBox.Items.Count - 1) as FrameworkElement;
+				var container = listBox.ItemContainerGenerator.ContainerFromIndex(listBox.Items.Count - 1) as FrameworkElement;
 				this.CreateInsertionAdorner(container, false);
 			}
 
-			if (e.Data.GetData(typeof(SongPartWrapper)) is SongPartWrapper)
+			if (e.Data.GetData(typeof(SongPartReference)) != null)
 			{
 				if (e.KeyStates.HasFlag(DragDropKeyStates.ControlKey))
 					e.Effects = DragDropEffects.Copy;
@@ -179,7 +181,7 @@ namespace WordsLive.Editor
 					e.Effects = DragDropEffects.Move;
 				e.Handled = true;
 			}
-			else if (e.Data.GetData(typeof(SongNodePart)) is SongNodePart)
+			else if (e.Data.GetData(typeof(SongPart)) != null)
 			{
 				e.Effects = DragDropEffects.Copy;
 				e.Handled = true;
@@ -193,28 +195,30 @@ namespace WordsLive.Editor
 
 		private void OrderListBox_Drop(object sender, DragEventArgs e)
 		{
+			var listBox = (ListBox)sender;
+
 			this.RemoveInsertionAdorner();
 
-			int index = OrderListBox.GetIndexAtPosition(e.GetPosition(OrderListBox));
+			int index = listBox.GetIndexAtPosition(e.GetPosition(listBox));
 			bool isInFirstHalf = false;
 			if (index >= 0)
 			{
-				var container = OrderListBox.ItemContainerGenerator.ContainerFromIndex(index) as FrameworkElement;
+				var container = listBox.ItemContainerGenerator.ContainerFromIndex(index) as FrameworkElement;
 				isInFirstHalf = e.GetPosition(container).IsInFirstHalf(container, true);
 			}
 			else
 			{
-				index = OrderListBox.HasItems ? OrderListBox.Items.Count - 1 : 0;
+				index = listBox.HasItems ? listBox.Items.Count - 1 : 0;
 			}
 
 			// Data comes from list itself
-			if (e.Data.GetData(typeof(SongPartWrapper)) is SongPartWrapper)
+			if (e.Data.GetData(typeof(SongPartReference)) != null)
 			{
 				if (oldIndex < 0)
 					return;
 
 				if (index < 0)
-					index = OrderListBox.Items.Count;
+					index = listBox.Items.Count;
 
 				if (e.KeyStates.HasFlag(DragDropKeyStates.ControlKey))
 				{
@@ -224,7 +228,7 @@ namespace WordsLive.Editor
 					if (isInFirstHalf)
 						index--;
 
-					songNode.AddPartToOrder(songNode.PartOrder.Skip(oldIndex).First().Content, index);
+					songNode.Song.AddPartToOrder(songNode.Song.Order[oldIndex].Part, index);
 				}
 				else
 				{
@@ -238,28 +242,28 @@ namespace WordsLive.Editor
 					if (isInFirstHalf)
 						index--;
 
-					songNode.MovePartInOrder(oldIndex, index);
+					songNode.Song.MovePartInOrder(songNode.Song.Order[oldIndex], index);
 				}
 
-				OrderListBox.SelectedIndex = index;
+				listBox.SelectedIndex = index;
 
 				oldIndex = -1;
 
 				e.Handled = true;
 			}
 			// Data comes from treeview
-			else if (e.Data.GetData(typeof(SongNodePart)) is SongNodePart)
+			else if (e.Data.GetData(typeof(SongPart)) != null)
 			{
 				if (index < 0)
-					index = OrderListBox.Items.Count;
+					index = listBox.Items.Count;
 
-				if (OrderListBox.HasItems)
+				if (listBox.HasItems)
 					index++;
 
 				if (isInFirstHalf)
 					index--;
 
-				songNode.AddPartToOrder((SongNodePart)e.Data.GetData(typeof(SongNodePart)), index);
+				songNode.Song.AddPartToOrder((SongPart)e.Data.GetData(typeof(SongPart)), index);
 
 				e.Handled = true;
 			}
@@ -267,17 +271,18 @@ namespace WordsLive.Editor
 
 		private void OrderListBox_PreviewMouseMove(object sender, MouseEventArgs e)
 		{
+			var listBox = (ListBox)sender;
+
 			if (e.LeftButton != MouseButtonState.Pressed)
 				oldIndex = -1;
 
 			if (oldIndex < 0)
 				return;
 
-			if (e.GetPosition(OrderListBox).ExceedsMinimumDragDistance(startPoint))
+			if (e.GetPosition(listBox).ExceedsMinimumDragDistance(startPoint))
 			{
-
-				OrderListBox.SelectedIndex = oldIndex;
-				SongPartWrapper selectedItem = OrderListBox.SelectedItem as SongPartWrapper;
+				listBox.SelectedIndex = oldIndex;
+				SongPartReference selectedItem = (SongPartReference)listBox.SelectedItem;
 
 				if (selectedItem == null)
 					return;
@@ -288,15 +293,17 @@ namespace WordsLive.Editor
 				{
 					// The item was dropped into a new location,
 					// so make it the new selected item. 
-					//OrderListBox.SelectedItem = selectedItem;
+					//listBox.SelectedItem = selectedItem;
 				}
 			}
 		}
 
 		private void OrderListBox_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
 		{
-			Point p = e.GetPosition(OrderListBox);
-			oldIndex = OrderListBox.GetIndexAtPosition(p);
+			var listBox = (ListBox)sender;
+
+			Point p = e.GetPosition(listBox);
+			oldIndex = listBox.GetIndexAtPosition(p);
 			if (oldIndex >= 0)
 				startPoint = p;
 		}
@@ -489,28 +496,30 @@ namespace WordsLive.Editor
 
 		private void OrderListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
-			if (OrderListBox.SelectedItem == null)
+			var listBox = (ListBox)sender;
+
+			if (listBox.SelectedItem == null)
 				return;
 
-			if (OrderListBox.SelectedIndex == 0)
+			if (listBox.SelectedIndex == 0)
 				PreviewControl.IsFirstSelected = true;
 			else
 				PreviewControl.IsFirstSelected = false;
 
-			if (OrderListBox.SelectedIndex == OrderListBox.Items.Count - 1)
+			if (listBox.SelectedIndex == listBox.Items.Count - 1)
 				PreviewControl.IsLastSelected = true;
 			else
 				PreviewControl.IsLastSelected = false;
 
 			orderSelected = true;
-			var selectedPart = ((SongPartWrapper)OrderListBox.SelectedItem).Content;
-			if (selectedPart.Children.Count > 0)
-				StructureTree.SetSelectedItem(selectedPart.Children[0]);
+			var selectedPart = ((SongPartReference)listBox.SelectedItem).Part;
+			if (selectedPart.Slides.Count > 0)
+				StructureTree.SetSelectedItem(selectedPart.Slides[0]);
 			else
 				StructureTree.SetSelectedItem(selectedPart);
 			orderSelected = false;
 
-			OrderListBox.Focus();
+			listBox.Focus();
 		}
 
 		private void TreeViewItem_PreviewMouseRightButtonDown(object sender, MouseEventArgs e)
@@ -720,54 +729,57 @@ namespace WordsLive.Editor
 			PreviewControl.Cleanup();
 		}
 
-		private void OrderListBox_OnExecuteCommand(object sender, ExecutedRoutedEventArgs e)
+		private void OrderListCommand_Executed(object sender, ExecutedRoutedEventArgs e)
 		{
+			var listBox = (ListBox)sender;
+
 			if (e.Command == ApplicationCommands.Delete)
 			{
-				int selectedIndex = OrderListBox.SelectedIndex;
-				songNode.RemovePartFromOrder(OrderListBox.SelectedIndex);
-				if (selectedIndex >= 0)
-					OrderListBox.SelectedIndex = selectedIndex < OrderListBox.Items.Count ? selectedIndex : OrderListBox.Items.Count - 1;
+				var oldIndex = listBox.SelectedIndex;
+
+				songNode.Song.RemovePartFromOrder((SongPartReference)listBox.SelectedItem);
+				if (oldIndex >= 0)
+					listBox.SelectedIndex = oldIndex < listBox.Items.Count ? oldIndex : listBox.Items.Count - 1;
 			}
 			else if (e.Command == CustomCommands.Insert)
 			{
-				SongNodePart part = SelectedPart;
+				SongPart part = SelectedPart;
 
 				if (part != null)
 				{
 					int index;
-					if (OrderListBox.SelectedIndex == -1)
+					if (listBox.SelectedIndex == -1)
 						index = -1;
 					else
-						index = OrderListBox.SelectedIndex + 1;
+						index = listBox.SelectedIndex + 1;
 
-					songNode.AddPartToOrder(part, index);
+					songNode.Song.AddPartToOrder(part, index);
 
 					if (index == -1)
-						OrderListBox.SelectedIndex = OrderListBox.Items.Count - 1;
+						listBox.SelectedIndex = listBox.Items.Count - 1;
 					else
-						OrderListBox.SelectedIndex = index;
+						listBox.SelectedIndex = index;
 				}
 			}
 			else if (e.Command == CustomCommands.MoveUp)
 			{
-				int moveUpIndex = OrderListBox.SelectedIndex - 1;
+				int moveUpIndex = listBox.SelectedIndex - 1;
 				if (moveUpIndex < 0)
 					moveUpIndex = 0;
-				songNode.MovePartInOrder(OrderListBox.SelectedIndex, moveUpIndex);
-				OrderListBox.SelectedIndex = moveUpIndex;
+				songNode.Song.MovePartInOrder((SongPartReference)listBox.SelectedItem, moveUpIndex);
+				listBox.SelectedIndex = moveUpIndex;
 			}
 			else if (e.Command == CustomCommands.MoveDown)
 			{
-				int moveDownIndex = OrderListBox.SelectedIndex + 1;
-				if (moveDownIndex > OrderListBox.Items.Count - 1)
-					moveDownIndex = OrderListBox.Items.Count - 1;
-				songNode.MovePartInOrder(OrderListBox.SelectedIndex, moveDownIndex);
-				OrderListBox.SelectedIndex = moveDownIndex;
+				int moveDownIndex = listBox.SelectedIndex + 1;
+				if (moveDownIndex > listBox.Items.Count - 1)
+					moveDownIndex = listBox.Items.Count - 1;
+				songNode.Song.MovePartInOrder((SongPartReference)listBox.SelectedItem, moveDownIndex);
+				listBox.SelectedIndex = moveDownIndex;
 			}
 		}
 
-		private void OrderListBox_OnCanExecuteCommand(object sender, CanExecuteRoutedEventArgs e)
+		private void OrderListCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
 		{
 			if (e.Command == ApplicationCommands.Delete || e.Command == CustomCommands.MoveUp || e.Command == CustomCommands.MoveDown)
 			{
@@ -781,7 +793,7 @@ namespace WordsLive.Editor
 
 		private void GridCommand_Executed(object sender, ExecutedRoutedEventArgs e) // TODO
 		{
-			ISongElement node = StructureTree.SelectedItem as ISongElement;
+			ISongElement node = StructureTree2.SelectedItem as ISongElement;
 
 			if (e.Command == CustomCommands.Split)
 			{
