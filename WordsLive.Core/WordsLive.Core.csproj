@@ -62,6 +62,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Data\BackgroundDataProvider.cs" />
+    <Compile Include="Data\BackgroundsDirectory.cs" />
+    <Compile Include="Data\LocalBackgroundDataProvider.cs" />
     <Compile Include="Data\LocalSongDataProvider.cs" />
     <Compile Include="Data\SongDataProvider.cs" />
     <Compile Include="Data\SongData.cs" />
