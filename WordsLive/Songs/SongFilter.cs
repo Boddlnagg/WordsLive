@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using WordsLive.Core.Songs;
+﻿using System.Linq;
+using WordsLive.Core.Data;
 using WordsLive.Utils;
 
 namespace WordsLive.Songs
@@ -21,8 +18,7 @@ namespace WordsLive.Songs
                 Properties.Settings.Default.SongListSearchInText = value;
             }
         }
-        public string SourceSongbook { get; set; }
-        public string SourceNumber { get; set; }
+        public string Source { get; set; }
         public string Copyright { get; set; }
 
         public SongFilter()
@@ -31,26 +27,16 @@ namespace WordsLive.Songs
             //SearchInText = true;
         }
 
-        public bool Matches(Song song)
+        public bool Matches(SongData song)
         {
             if (IsEmpty)
             {
                 return true;
             }
 
-            if (SourceSongbook != "")
+            if (Source != "")
             {
-                if ((from s in song.Sources where s.Songbook != null && s.Songbook.ContainsIgnoreCase(SourceSongbook) select s).Count() == 0)
-                {
-                    return false;
-                }
-            }
-
-            int n;
-
-            if (SourceNumber != "" && int.TryParse(SourceNumber, out n))
-            {
-                if ((from s in song.Sources where s.Number == n select s).Count() == 0)
+                if (!song.Sources.ContainsIgnoreCase(Source))
                 {
                     return false;
                 }
@@ -66,7 +52,7 @@ namespace WordsLive.Songs
 
             if (Keyword != "")
             {
-                if (!(song.SongTitle.ContainsIgnoreCase(Keyword) || (SearchInText && song.TextWithoutChords.ContainsIgnoreCase(Keyword))))
+                if (!(song.Title.ContainsIgnoreCase(Keyword) || (SearchInText && song.Text.ContainsIgnoreCase(Keyword))))
                 {
                     return false;
                 }
@@ -79,15 +65,14 @@ namespace WordsLive.Songs
         {
             get
             {
-                return Keyword == "" && SourceSongbook == "" && SourceNumber == "" && Copyright == "";
+                return Keyword == "" && Source == "" && Copyright == "";
             }
         }
 
         public void Reset()
         {
             Keyword = "";
-            SourceSongbook = "";
-            SourceNumber = "";
+            Source = "";
             Copyright = "";
         }
     }

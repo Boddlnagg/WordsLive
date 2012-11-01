@@ -1168,20 +1168,11 @@ namespace WordsLive.Resources {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Songbook: ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die Source: ähnelt.
         /// </summary>
-        public static string slSongbook {
+        public static string slSource {
             get {
-                return ResourceManager.GetString("slSongbook", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Song #: ähnelt.
-        /// </summary>
-        public static string slSongnumber {
-            get {
-                return ResourceManager.GetString("slSongnumber", resourceCulture);
+                return ResourceManager.GetString("slSource", resourceCulture);
             }
         }
         

@@ -62,6 +62,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Data\LocalSongDataProvider.cs" />
+    <Compile Include="Data\SongDataProvider.cs" />
+    <Compile Include="Data\SongData.cs" />
+    <Compile Include="Extensions.cs" />
     <Compile Include="FileNotFoundMedia.cs" />
     <Compile Include="Media.cs" />
     <Compile Include="MediaEventArgs.cs" />
@@ -91,5 +95,4 @@
     <Compile Include="UnsupportedMedia.cs" />
     <Compile Include="WebSite.cs" />
   </ItemGroup>
-  <ItemGroup />
 </Project>

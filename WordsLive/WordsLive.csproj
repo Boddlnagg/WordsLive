@@ -315,7 +315,6 @@
     <Compile Include="Songs\SongDisplayController.cs" />
     <Compile Include="Songs\SongPresentation.cs" />
     <Compile Include="Songs\SongIconProvider.cs" />
-    <Compile Include="Songs\SongWrapper.cs" />
     <Compile Include="Songs\SongControlPanel.xaml.cs">
       <DependentUpon>SongControlPanel.xaml</DependentUpon>
     </Compile>

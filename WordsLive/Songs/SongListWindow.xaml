@@ -14,7 +14,7 @@
 		Title="{x:Static resx:Resource.slTitle}">
 	<Window.Resources>
 		<DataTemplate x:Key="titleTemplate">
-			<TextBlock Text="{Binding Title}" ToolTip="{Binding Path}"/>
+			<TextBlock Text="{Binding Title}" ToolTip="{Binding Filename}"/>
 		</DataTemplate>
 	</Window.Resources>
 	<Window.CommandBindings>
@@ -34,10 +34,8 @@
 				<CheckBox Content="{x:Static resx:Resource.slSearchInText}" IsChecked="{Binding Path=SearchInText}" Height="16" HorizontalAlignment="Right" Margin="0,8,146,0" Name="filterCheckBox" VerticalAlignment="Top" />
 				<Expander Header="{x:Static resx:Resource.slAdvanced}" HorizontalAlignment="Left" Margin="6,34,0,0" VerticalAlignment="Top" Width="564" IsExpanded="{Binding Source={StaticResource settings}, Path=Default.SongListSearchExpanded, Mode=TwoWay}">
 					<Grid>
-						<Label Content="{x:Static resx:Resource.slSongbook}" HorizontalAlignment="Left" Margin="-1,1,0,0" Height="28" VerticalAlignment="Top" />
-						<TextBox Text="{Binding Path=SourceSongbook}" Height="23" HorizontalAlignment="Left" Margin="84,3,0,0" Name="filterSourceSongbookTextBox" VerticalAlignment="Top" Width="120" />
-						<Label Content="{x:Static resx:Resource.slSongnumber}" Height="28" HorizontalAlignment="Left" Margin="-1,25,0,0" VerticalAlignment="Top" />
-						<TextBox Text="{Binding Path=SourceNumber}" Height="23" HorizontalAlignment="Left" Margin="84,27,0,0" Name="filterSourceNumberTextBox" VerticalAlignment="Top" Width="120" />
+						<Label Content="{x:Static resx:Resource.slSource}" HorizontalAlignment="Left" Margin="-1,1,0,0" Height="28" VerticalAlignment="Top" />
+						<TextBox Text="{Binding Path=Source}" Height="23" HorizontalAlignment="Left" Margin="84,3,0,0" Name="filterSourceSongbookTextBox" VerticalAlignment="Top" Width="120" />
 						<Label Content="{x:Static resx:Resource.slCopyright}" Height="28" HorizontalAlignment="Left" Margin="210,1,0,0" VerticalAlignment="Top" />
 						<TextBox Text="{Binding Path=Copyright}" Height="23" HorizontalAlignment="Left" Margin="281,3,0,0" Name="filterCopyrightTextBox" VerticalAlignment="Top" Width="120" />
 					</Grid>
@@ -55,9 +53,9 @@
 			<ListView.View>
 				<GridView>
 					<GridViewColumn Header="{x:Static resx:Resource.slGridTitle}" Width="250" CellTemplate="{StaticResource titleTemplate}"/>
-					<GridViewColumn Header="{x:Static resx:Resource.slGridSource}" Width="150" DisplayMemberBinding="{Binding SourcesString}" />
-					<GridViewColumn Header="{x:Static resx:Resource.slGridCopyright}" Width="170" DisplayMemberBinding="{Binding CopyrightTrimmed}" />
-					<GridViewColumn Header="{x:Static resx:Resource.slGridLanguage}" Width="100" DisplayMemberBinding="{Binding Language}" />
+					<GridViewColumn Header="{x:Static resx:Resource.slGridSource}" Width="150" DisplayMemberBinding="{Binding Sources}" />
+					<GridViewColumn Header="{x:Static resx:Resource.slGridCopyright}" Width="170" DisplayMemberBinding="{Binding Copyright}" />
+					<!--<GridViewColumn Header="{x:Static resx:Resource.slGridLanguage}" Width="100" DisplayMemberBinding="{Binding Language}" />-->
 				</GridView>
 			</ListView.View>
 			<ListView.ItemContainerStyle>

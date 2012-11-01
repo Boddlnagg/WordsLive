@@ -219,11 +219,8 @@
   <data name="slSearchInText" xml:space="preserve">
     <value>Liedtext auch durchsuchen</value>
   </data>
-  <data name="slSongbook" xml:space="preserve">
-    <value>Liederbuch:</value>
-  </data>
-  <data name="slSongnumber" xml:space="preserve">
-    <value>Liednummer:</value>
+  <data name="slSource" xml:space="preserve">
+    <value>Quelle:</value>
   </data>
   <data name="slTitle" xml:space="preserve">
     <value>Liederliste</value>

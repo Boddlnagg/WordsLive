@@ -219,11 +219,8 @@
   <data name="slSearchInText" xml:space="preserve">
     <value>Search in song text</value>
   </data>
-  <data name="slSongbook" xml:space="preserve">
-    <value>Songbook:</value>
-  </data>
-  <data name="slSongnumber" xml:space="preserve">
-    <value>Song #:</value>
+  <data name="slSource" xml:space="preserve">
+    <value>Source:</value>
   </data>
   <data name="slTitle" xml:space="preserve">
     <value>Songlist</value>

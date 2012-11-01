@@ -9,17 +9,21 @@ using System.Windows.Input;
 using WordsLive.Core;
 using WordsLive.Core.Songs;
 using WordsLive.Resources;
+using WordsLive.Core.Data;
 
 namespace WordsLive.Songs
 {
 	public partial class SongListWindow : Window
 	{
 		private SongFilter filter;
-		ObservableCollection<SongWrapper> songList = new ObservableCollection<SongWrapper>();
+		private SongDataProvider provider;
+		ObservableCollection<SongData> list = new ObservableCollection<SongData>();
 
 		public SongListWindow()
 		{
 			InitializeComponent();
+
+			provider = new LocalSongDataProvider(MediaManager.SongsDirectory); // TODO: use factory or something
 		}
 
 		private void filterButton_Click(object sender, RoutedEventArgs e)
@@ -41,12 +45,12 @@ namespace WordsLive.Songs
 
 		private bool FilterCallback(object item)
 		{
-			return filter.Matches(((SongWrapper)item).Song);
+			return filter.Matches((SongData)item);
 		}
 
 		private void Window_Loaded(object sender, RoutedEventArgs e)
 		{
-			songListView.DataContext = this.songList;
+			songListView.DataContext = this.list;
 			songListView.Items.SortDescriptions.Add(new SortDescription("Title", ListSortDirection.Ascending));
 			filter = new SongFilter();
 			filterGroupBox.DataContext = filter;
@@ -56,15 +60,10 @@ namespace WordsLive.Songs
 
 		private void LoadSongs()
 		{
-			foreach (string file in Directory.GetFiles(MediaManager.SongsDirectory))
+			foreach (var song in provider.All())
 			{
-				try
-				{
-					SongWrapper sm = new SongWrapper(new Song(file), file);
-					this.Dispatcher.BeginInvoke(new Action<SongWrapper>(this.songList.Add), sm);
-					this.Dispatcher.BeginInvoke(new Action<bool>(LoadUpdateUI), System.Windows.Threading.DispatcherPriority.Normal, false);
-				}
-				catch { }
+				this.Dispatcher.BeginInvoke(new Action<SongData>(this.list.Add), song);
+				this.Dispatcher.BeginInvoke(new Action<bool>(LoadUpdateUI), System.Windows.Threading.DispatcherPriority.Normal, false);
 			}
 
 			this.Dispatcher.BeginInvoke(new Action<bool>(LoadUpdateUI), System.Windows.Threading.DispatcherPriority.Normal, true);
@@ -73,9 +72,9 @@ namespace WordsLive.Songs
 		private void LoadUpdateUI(bool finished)
 		{
 			if (finished)
-				this.labelStatus.Content = String.Format(Resource.slFinishedLoadingN, this.songList.Count);
+				this.labelStatus.Content = String.Format(Resource.slFinishedLoadingN, this.list.Count);
 			else
-				this.labelStatus.Content = String.Format(Resource.slLoadingN, this.songList.Count);
+				this.labelStatus.Content = String.Format(Resource.slLoadingN, this.list.Count);
 		}
 
 		ListViewItem dragItem;
@@ -90,10 +89,10 @@ namespace WordsLive.Songs
 			if (dragItem == null)
 				return;
 
-			SongWrapper song = (SongWrapper)songListView.ItemContainerGenerator.ItemFromContainer(dragItem);
+			SongData song = (SongData)songListView.ItemContainerGenerator.ItemFromContainer(dragItem);
 
 			// Initialize the drag & drop operation
-			DataObject dragData = new DataObject(DataFormats.FileDrop, new string[] { song.Path });
+			DataObject dragData = new DataObject(DataFormats.FileDrop, new string[] { provider.GetFullPath(song) });
 			DragDrop.DoDragDrop(dragItem, dragData, DragDropEffects.Copy);
 			dragItem = null;
 		}
@@ -108,8 +107,8 @@ namespace WordsLive.Songs
 			if (e.ChangedButton != MouseButton.Left)
 				return;
 
-			var song = (SongWrapper)songListView.ItemContainerGenerator.ItemFromContainer(sender as ListViewItem);
-			Controller.AddToPortfolio(song.Path);
+			var song = (SongData)songListView.ItemContainerGenerator.ItemFromContainer(sender as ListViewItem);
+			Controller.AddToPortfolio(provider.GetFullPath(song));
 		}
 
 		private void OnCanExecuteCommand(object sender, CanExecuteRoutedEventArgs e)
@@ -124,8 +123,8 @@ namespace WordsLive.Songs
 		{
 			if (e.Command == CustomCommands.AddMedia)
 			{
-				var song = (SongWrapper)songListView.SelectedItem;
-				Controller.AddToPortfolio(song.Path);
+				var song = (SongData)songListView.SelectedItem;
+				Controller.AddToPortfolio(provider.GetFullPath(song));
 			}
 			else if (e.Command == ApplicationCommands.Close)
 			{
