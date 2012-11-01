@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using WordsLive.Core.Songs;
-using System.IO;
 using System.ComponentModel;
-using MonitoredUndo;
+using System.IO;
+using WordsLive.Core.Songs;
 
 namespace WordsLive.Editor
 {
@@ -30,30 +26,15 @@ namespace WordsLive.Editor
 			Grid = new EditorGrid(song, parent);
 			Grid.PreviewControl.ShowChords = parent.ShowChords;
 
-			UndoService.Current[Grid.Node].Clear();
+			Song.IsUndoEnabled = true;
 
-			UndoService.Current[Grid.Node].UndoStackChanged += (sender, args) =>
+			Song.UndoManager.PropertyChanged += (sender, args) =>
 			{
-				IsModified = true;
+				if (Song.UndoManager.CanUndo)
+				{
+					IsModified = true;
+				}
 			};
-		}
-
-		public static void OnChangingTryMerge(ISupportsUndo instance, string propertyName, object oldValue, object newValue)
-		{
-			var root = instance.GetUndoRoot();
-			var ch = DefaultChangeFactory.GetChange(instance, propertyName, oldValue, newValue);
-			var x = ch.ChangeKey.GetType();
-			if (UndoService.Current[root].UndoStack.Count() > 0 &&
-				UndoService.Current[root].UndoStack.First().Changes.Count() > 0 &&
-				UndoService.Current[root].UndoStack.First().Changes.First().Target == instance &&
-				((ChangeKey<object, string>)UndoService.Current[root].UndoStack.First().Changes.First().ChangeKey).Item2 == propertyName)
-			{
-				UndoService.Current[root].UndoStack.First().Changes.First().MergeWith(ch);
-			}
-			else
-			{
-				UndoService.Current[root].AddChange(ch, propertyName);
-			}
 		}
 
 		//private string GetChangesetText(ChangeSet set)
@@ -82,6 +63,8 @@ namespace WordsLive.Editor
 		//        return set.Description + " in " + name;
 		//    }
 		//}
+
+		//TODO: move the following to model class, refactor save/load/import/export infrastructure
 
 		private bool isModified;
 
@@ -132,55 +115,6 @@ namespace WordsLive.Editor
 			this.Song.SavePowerpraise(this.File.FullName);
 			IsModified = false;
 			IsImported = false;
-		}
-
-		public void Undo()
-		{
-			UndoService.Current[this.Grid.Node].Undo();
-		}
-
-		public void Redo()
-		{
-			UndoService.Current[this.Grid.Node].Redo();
-		}
-
-		public bool CanUndo
-		{
-			get
-			{
-				return UndoService.Current[this.Grid.Node].CanUndo;
-			}
-		}
-
-		public bool CanRedo
-		{
-			get
-			{
-				return UndoService.Current[this.Grid.Node].CanRedo;
-			}
-		}
-
-		public void UpdateFormatting(SongFormatting formatting)
-		{
-			SongFormatting oldFormatting = this.Song.Formatting;
-
-			Action redo = () =>
-			{
-				this.Song.Formatting = formatting;
-				this.Grid.PreviewControl.UpdateStyle();
-				this.Grid.PreviewControl.Update();
-			};
-			Action undo = () =>
-			{
-				this.Song.Formatting = oldFormatting;
-				this.Grid.PreviewControl.UpdateStyle();
-				this.Grid.PreviewControl.Update();
-			};
-
-			var ch = new MonitoredUndo.DelegateChange(this.Grid.Node, undo, redo, new MonitoredUndo.ChangeKey<object, string>(this.Grid.Node, "SongFormatting"));
-			MonitoredUndo.UndoService.Current[this.Grid.Node].AddChange(ch, "SongFormatting");
-
-			redo();		
 		}
 
 		public Song Song

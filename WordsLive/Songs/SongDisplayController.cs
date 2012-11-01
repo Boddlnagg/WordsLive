@@ -228,7 +228,7 @@ namespace WordsLive.Songs
 				new XElement("div", new XAttribute("class", clsMain), (object)inner ?? String.Empty));
 		}
 
-		private IEnumerable<object> ParseLine(string line, bool chords)
+		private IEnumerable<XNode> ParseLine(string line, bool chords)
 		{
 			string rest;
 
@@ -238,44 +238,32 @@ namespace WordsLive.Songs
 				rest = "\uFEFF" + line.Replace(" ", " "); // not sure if we need the replace, but the \uFEFF (zero-width space)
 														  // makes sure that the lines starts correcty
 			
-			List<object> elements = new List<object>();
+			var elements = new List<XNode>();
 
 			if (chords)
 			{
-				int i;
+				int i = 0;
 
-				while ((i = rest.IndexOf('[')) != -1)
+				foreach (var ch in WordsLive.Core.Songs.Chords.Chords.GetChords(rest))
 				{
-					string before = rest.Substring(0, i);
-					int end = rest.IndexOf(']', i);
-					if (end < 0)
-						break;
-
-					int next = rest.IndexOf('[', i + 1);
-					if (next >= 0 && next < end)
-					{
-						elements.Add(before + "[");
-						rest = rest.Substring(i + 1);
-						continue;
-					}
-
-					string chord = rest.Substring(i + 1, end - (i + 1));
-
-					rest = rest.Substring(end + 1);
-					elements.Add(before);
+					elements.Add(new XText(rest.Substring(0, ch.Position - i)));
 
 					if (ShowChords)
 					{
 						// abusing the <b> tag for chords for brevity
 						// we need two nested tags, the outer one with position:relative,
 						// the inner one with position:absolute (see css below)
-						elements.Add(new XElement("b", new XElement("b", chord)));
+						elements.Add(new XElement("b", new XElement("b", ch.Name)));
 					}
+
+					int delta = (ch.Position - i) + ch.Name.Length + 2;
+
+					rest = rest.Substring(delta);
+					i += delta;
 				}
-				
 			}
 
-			elements.Add(rest);
+			elements.Add(new XText(rest));
 			return elements;
 		}
 

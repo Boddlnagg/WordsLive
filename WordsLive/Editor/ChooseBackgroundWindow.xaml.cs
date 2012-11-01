@@ -136,7 +136,6 @@ namespace WordsLive.Editor
 
 		private void SetResultAndClose()
 		{
-			ChosenBackground = new SongBackground();
 			if (UseImage)
 			{
 				var entry = (BackgroundEntry)imageListView.SelectedItem;
@@ -151,11 +150,11 @@ namespace WordsLive.Editor
 					throw new NotSupportedException();
 
 				// make the path relative (remove BackgroundsDirectory and slash)
-				ChosenBackground.ImagePath = entry.File.FullName.Remove(0, MediaManager.BackgroundsDirectory.Length + 1);
+				ChosenBackground = new SongBackground(entry.File.FullName.Remove(0, MediaManager.BackgroundsDirectory.Length + 1));
 			}
 			else
 			{
-				ChosenBackground.Color = System.Drawing.Color.FromArgb(ColorPicker.SelectedColor.R, ColorPicker.SelectedColor.G, ColorPicker.SelectedColor.B);
+				ChosenBackground = new SongBackground(System.Drawing.Color.FromArgb(ColorPicker.SelectedColor.R, ColorPicker.SelectedColor.G, ColorPicker.SelectedColor.B));
 			}
 
 			this.DialogResult = true;

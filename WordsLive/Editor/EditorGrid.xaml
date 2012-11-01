@@ -4,74 +4,102 @@
 			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
 			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 			 xmlns:local="clr-namespace:WordsLive.Editor"
+			 xmlns:nodes="clr-namespace:WordsLive.Editor.Nodes"
+			 xmlns:songs="clr-namespace:WordsLive.Core.Songs;assembly=WordsLive.Core"
 			 xmlns:my="clr-namespace:WordsLive"
 			 xmlns:resx="clr-namespace:WordsLive.Resources"
 			 mc:Ignorable="d" 
 			 d:DesignHeight="400" d:DesignWidth="800">
 	<Grid.CommandBindings>
-		<CommandBinding Command="{x:Static my:CustomCommands.Split}" CanExecute="OnCanExecuteCommand" Executed="OnExecuteCommand"/>
-		<CommandBinding Command="IncreaseFontSize" Executed="OnExecuteCommand" CanExecute="OnCanExecuteCommand"/>
-		<CommandBinding Command="DecreaseFontSize" Executed="OnExecuteCommand" CanExecute="OnCanExecuteCommand"/>
+		<CommandBinding Command="{x:Static my:CustomCommands.Split}" CanExecute="GridCommand_CanExecute" Executed="GridCommand_Executed"/>
+		<CommandBinding Command="IncreaseFontSize"  CanExecute="GridCommand_CanExecute" Executed="GridCommand_Executed"/>
+		<CommandBinding Command="DecreaseFontSize" CanExecute="GridCommand_CanExecute" Executed="GridCommand_Executed"/>
+		<CommandBinding Command="Undo" CanExecute="GridCommand_CanExecute" Executed="GridCommand_Executed"/>
+		<CommandBinding Command="Redo" CanExecute="GridCommand_CanExecute" Executed="GridCommand_Executed"/>
 	</Grid.CommandBindings>
 	<Grid.Resources>
-		<TextBox x:Key="editTextBox"
-			AcceptsReturn="True" IsUndoEnabled="False"
-			Text="{Binding ElementName=StructureTree, Path=SelectedItem.Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-		<Grid x:Key="editTextWithTranslation" Background="White">
-			<Grid.ColumnDefinitions>
-				<ColumnDefinition Width="*"/>
-				<ColumnDefinition Width="5"/>
-				<ColumnDefinition Width="Auto">
-				</ColumnDefinition>
-			</Grid.ColumnDefinitions>
-			<TextBox Name="TextTextBox" Grid.Column="0" AcceptsReturn="True" IsUndoEnabled="False" Language="{Binding ElementName=StructureTree, Path=Items[0].LanguageCode, ConverterCulture=en-US}"
-					Text="{Binding ElementName=StructureTree,Path=SelectedItem.Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+		<local:LanguageToLanguageCodeConverter x:Key="languageToLanguageCodeConverter"/>
+		<local:EditControlHeaderConverter x:Key="editControlHeaderConverter"/>
+		<nodes:TreeNodeProvider x:Key="treeNodeProvider"/>
+		<DataTemplate x:Key="emptyEditTemplate"/>
+		<DataTemplate x:Key="editCopyrightTextBoxTemplate">
+			<TextBox AcceptsReturn="True" IsUndoEnabled="False"
+			Text="{Binding Path=Root.Copyright, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+		</DataTemplate>
+		<DataTemplate x:Key="editCategoryTextBoxTemplate">
+			<TextBox AcceptsReturn="True" IsUndoEnabled="False"
+			Text="{Binding Path=Root.Category, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+		</DataTemplate>
+		<DataTemplate x:Key="editTextWithTranslationTemplate">
+			<Grid Background="White">
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="*"/>
+					<ColumnDefinition Width="5"/>
+					<ColumnDefinition Width="Auto">
+					</ColumnDefinition>
+				</Grid.ColumnDefinitions>
+				<!-- The name 'TextTextBox' is used to find the cursor position (for splitting) -->
+				<TextBox Name="TextTextBox" Grid.Column="0" AcceptsReturn="True" IsUndoEnabled="False"
+					 Language="{Binding Path=Root.Language, Converter={StaticResource languageToLanguageCodeConverter}, ConverterCulture=en-US}"
+					 Text="{Binding Path=Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
 					 SpellCheck.IsEnabled="{Binding ElementName=EnableSpellCheckCheckBox, Path=IsChecked, Mode=OneWay}"/>
-			<Expander Grid.Column="2" ExpandDirection="Left" IsExpanded="{Binding ElementName=StructureTree,Path=SelectedItem.Root.Song.HasTranslation, Mode=OneTime}"
+				<Expander Grid.Column="2" ExpandDirection="Left" IsExpanded="{Binding ElementName=StructureTree, Path=SelectedItem.Root.HasTranslation, Mode=OneTime}"
 					  Expanded="TranslationExpanderExpandedCollapsed" Collapsed="TranslationExpanderExpandedCollapsed" >
-				<Expander.Header>
-					<TextBlock Text="{x:Static resx:Resource.eGridTranslation}">
+					<Expander.Header>
+						<TextBlock Text="{x:Static resx:Resource.eGridTranslation}">
 						<TextBlock.LayoutTransform>
 							<RotateTransform Angle="90"/>
 						</TextBlock.LayoutTransform>
-					</TextBlock>
-				</Expander.Header>
-				<TextBox Name="TranslationTextBox" AcceptsReturn="True" IsUndoEnabled="False"
-					 Text="{Binding ElementName=StructureTree,Path=SelectedItem.Translation, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-					 Language="{Binding ElementName=StructureTree, Path=Items[0].TranslationLanguageCode, ConverterCulture=en-US}"
+						</TextBlock>
+					</Expander.Header>
+					<TextBox Name="TranslationTextBox" AcceptsReturn="True" IsUndoEnabled="False"
+					 Text="{Binding Path=Translation, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+					 Language="{Binding Path=Root.TranslationLanguage, Converter={StaticResource languageToLanguageCodeConverter}, ConverterCulture=en-US}"
 					 SpellCheck.IsEnabled="{Binding ElementName=EnableSpellCheckCheckBox, Path=IsChecked, Mode=OneWay}"/>
-			</Expander>
-		</Grid>
-		<Grid x:Key="editLanguageGrid" Margin="10">
-			<Grid.ColumnDefinitions>
-				<ColumnDefinition Width="Auto"></ColumnDefinition>
-				<ColumnDefinition></ColumnDefinition>
-			</Grid.ColumnDefinitions>
-			<Grid.RowDefinitions>
-				<RowDefinition Height="Auto"></RowDefinition>
-				<RowDefinition Height="Auto"></RowDefinition>
-			</Grid.RowDefinitions>
-			<Label Grid.Row="0" Grid.Column="0" Content="{x:Static resx:Resource.eGridLanguageText}"/>
-			<ComboBox Grid.Row="0" Grid.Column="1" Height="24" VerticalAlignment="Top" IsEditable="True" Text="{Binding ElementName=StructureTree,Path=SelectedItem.Language, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+				</Expander>
+			</Grid>
+		</DataTemplate>
+		<DataTemplate x:Key="editLanguageGridTemplate">
+			<Grid Margin="10">
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="Auto"></ColumnDefinition>
+					<ColumnDefinition></ColumnDefinition>
+				</Grid.ColumnDefinitions>
+				<Grid.RowDefinitions>
+					<RowDefinition Height="Auto"></RowDefinition>
+					<RowDefinition Height="Auto"></RowDefinition>
+				</Grid.RowDefinitions>
+				<Label Grid.Row="0" Grid.Column="0" Content="{x:Static resx:Resource.eGridLanguageText}"/>
+				<ComboBox Grid.Row="0" Grid.Column="1" Height="24" VerticalAlignment="Top" IsEditable="True" Text="{Binding Path=Root.Language, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
 					  ItemsSource="{Binding Source={x:Static resx:Resource.eGridLanguages}, Converter={StaticResource StringSplitConverter}, ConverterParameter=';'}"/>
-			<Label Grid.Row="1" Grid.Column="0" Content="{x:Static resx:Resource.eGridLanguageTranslation}"/>
-			<ComboBox Grid.Row="1" Grid.Column="1" Height="24" VerticalAlignment="Top" IsEditable="True" Text="{Binding ElementName=StructureTree,Path=SelectedItem.TranslationLanguage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+				<Label Grid.Row="1" Grid.Column="0" Content="{x:Static resx:Resource.eGridLanguageTranslation}"/>
+				<ComboBox Grid.Row="1" Grid.Column="1" Height="24" VerticalAlignment="Top" IsEditable="True" Text="{Binding Path=Root.TranslationLanguage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
 					  ItemsSource="{Binding Source={x:Static resx:Resource.eGridLanguages}, Converter={StaticResource StringSplitConverter}, ConverterParameter=';'}" />
-		</Grid>
-		<Grid x:Key="editSourceGrid" Margin="10" VerticalAlignment="Top">
-			<Grid.ColumnDefinitions>
-				<ColumnDefinition Width="Auto"></ColumnDefinition>
-				<ColumnDefinition></ColumnDefinition>
-			</Grid.ColumnDefinitions>
-			<Grid.RowDefinitions>
-				<RowDefinition Height="Auto"></RowDefinition>
-				<RowDefinition Height="Auto"></RowDefinition>
-			</Grid.RowDefinitions>
-			<Label Grid.Column="0" Grid.Row="0" Content="{x:Static resx:Resource.eGridSourceSongbookLabel}"/>
-			<TextBox Grid.Column="1" Grid.Row="0" Margin="0,2,0,2" IsUndoEnabled="False" Text="{Binding ElementName=StructureTree, Path=SelectedItem.Songbook, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-			<Label Grid.Column="0" Grid.Row="1" Content="{x:Static resx:Resource.eGridSourceNumberLabel}"/>
-			<TextBox Grid.Column="1" Grid.Row="1" IsUndoEnabled="False" Text="{Binding ElementName=StructureTree, Path=SelectedItem.Number, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-		</Grid>
+			</Grid>
+		</DataTemplate>
+		<DataTemplate x:Key="editSourceGridTemplate">
+			<Grid Margin="10" VerticalAlignment="Top">
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="Auto"></ColumnDefinition>
+					<ColumnDefinition></ColumnDefinition>
+				</Grid.ColumnDefinitions>
+				<Grid.RowDefinitions>
+					<RowDefinition Height="Auto"></RowDefinition>
+					<RowDefinition Height="Auto"></RowDefinition>
+				</Grid.RowDefinitions>
+				<Label Grid.Column="0" Grid.Row="0" Content="{x:Static resx:Resource.eGridSourceSongbookLabel}"/>
+				<TextBox Grid.Column="1" Grid.Row="0" Margin="0,2,0,2" IsUndoEnabled="False" Text="{Binding Path=Root.Sources[0].Songbook, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+				<Label Grid.Column="0" Grid.Row="1" Content="{x:Static resx:Resource.eGridSourceNumberLabel}"/>
+				<TextBox Grid.Column="1" Grid.Row="1" IsUndoEnabled="False" Text="{Binding Path=Root.Sources[0].Number, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+			</Grid>
+		</DataTemplate>
+		<local:EditControlTemplateSelector x:Key="editControlTemplateSelector"
+			EmptyTemplate="{StaticResource emptyEditTemplate}"
+			EditCategoryTemplate="{StaticResource editCategoryTextBoxTemplate}"
+			EditCopyrightTemplate="{StaticResource editCopyrightTextBoxTemplate}"
+			EditLanguageTemlate="{StaticResource editLanguageGridTemplate}"
+			EditSourceTemplate="{StaticResource editSourceGridTemplate}"
+			EditTextWithTranslationTemplate="{StaticResource editTextWithTranslationTemplate}"/>
 	</Grid.Resources>
 	<Grid.RowDefinitions>
 		<RowDefinition Height="2*" MinHeight="50" />
@@ -130,31 +158,37 @@
 			Text="{x:Static resx:Resource.eGridPartsHeader}" />
 	</DockPanel>
 	<TreeView
-		x:Name="StructureTree" ItemsSource="{Binding}"
-		Grid.Row="0" Grid.Column="0" Margin="0,26,0,0" Grid.RowSpan="3"
+		x:Name="StructureTree" ItemsSource="{Binding Source={StaticResource treeNodeProvider}, Path=Root}"
 		SelectedItemChanged="StructureTree_SelectedItemChanged"
 		AllowDrop="True" Drop="StructureTree_Drop" DragOver="StructureTree_DragEnterOrOver" DragEnter="StructureTree_DragEnterOrOver"
 		PreviewMouseLeftButtonDown="StructureTree_PreviewMouseLeftButtonDown"
-		PreviewMouseMove="StructureTree_PreviewMouseMove">
+		PreviewMouseMove="StructureTree_PreviewMouseMove"
+		Grid.Row="0" Grid.Column="0" Margin="0,26,0,0" Grid.RowSpan="3">
 		<TreeView.CommandBindings>
-			<CommandBinding Command="{x:Static my:CustomCommands.Duplicate}" Executed="OnExecuteCommand"/>
-			<CommandBinding Command="{x:Static my:CustomCommands.Rename}" Executed="OnExecuteCommand"/>
-			<CommandBinding Command="Delete" Executed="OnExecuteCommand" CanExecute="OnCanExecuteCommand"/>
-			<CommandBinding Command="{x:Static my:CustomCommands.Insert}" Executed="OnExecuteCommand"/>
-			<CommandBinding Command="{x:Static my:CustomCommands.AddPart}" Executed="OnExecuteCommand"/>
+			<CommandBinding Command="{x:Static my:CustomCommands.Duplicate}" Executed="StructureTreeCommand_Executed"/>
+			<CommandBinding Command="{x:Static my:CustomCommands.Rename}" Executed="StructureTreeCommand_Executed"/>
+			<CommandBinding Command="Delete" CanExecute="StructureTreeCommand_CanExecute" Executed="StructureTreeCommand_Executed" />
+			<CommandBinding Command="{x:Static my:CustomCommands.Insert}" Executed="StructureTreeCommand_Executed"/>
+			<CommandBinding Command="{x:Static my:CustomCommands.AddPart}" Executed="StructureTreeCommand_Executed"/>
 		</TreeView.CommandBindings>
 		<TreeView.Resources>
-			<HierarchicalDataTemplate DataType="{x:Type local:SongNode}">
+			<HierarchicalDataTemplate DataType="{x:Type songs:Song}" ItemsSource="{Binding Source={StaticResource treeNodeProvider}, Path=Nodes}">
 				<StackPanel Orientation="Horizontal">
-					<Image Width="16" Height="16" Margin="0, 1, 2, 1" Source="{Binding IconUri}" />
-					<TextBlock Text="{Binding Title}"/>
+					<Image Width="16" Height="16" Margin="0, 1, 2, 1" Source="/WordsLive;component/Artwork/Small_Song.png" />
+					<TextBlock Text="{Binding SongTitle}">
+						<TextBlock.ContextMenu>
+							<ContextMenu>
+								<MenuItem Header="{x:Static resx:Resource.eGridContextRenameSong}" Command="{x:Static my:CustomCommands.Rename}" CommandParameter="{Binding}"/>
+								<MenuItem Header="{x:Static resx:Resource.eGridContextAddPart}" Command="{x:Static my:CustomCommands.Insert}" CommandParameter="{Binding}"/>
+							</ContextMenu>
+						</TextBlock.ContextMenu>
+					</TextBlock>
 				</StackPanel>
 			</HierarchicalDataTemplate>
-			<HierarchicalDataTemplate DataType="{x:Type local:SongNodePart}"
-				ItemsSource="{Binding Path=Children}">
+			<HierarchicalDataTemplate DataType="{x:Type songs:SongPart}" ItemsSource="{Binding Slides}">
 				<StackPanel Orientation="Horizontal">
-					<Image Width="16" Height="16" Margin="0, 1, 2, 1" Source="{Binding IconUri}" />
-					<TextBlock Text="{Binding Title}">
+					<Image Width="16" Height="16" Margin="0, 1, 2, 1" Source="/WordsLive;component/Artwork/Small_Folder.png" />
+					<TextBlock Text="{Binding Name}">
 						<TextBlock.ContextMenu>
 							<ContextMenu>
 								<MenuItem Header="{x:Static resx:Resource.eGridContextRename}" Command="{x:Static my:CustomCommands.Rename}" CommandParameter="{Binding}"/>
@@ -165,25 +199,10 @@
 					</TextBlock>
 				</StackPanel>
 			</HierarchicalDataTemplate>
-			<HierarchicalDataTemplate DataType="{x:Type local:SongNodeRoot}"
-				ItemsSource="{Binding Path=Children}">
+			<HierarchicalDataTemplate DataType="{x:Type songs:SongSlide}">
 				<StackPanel Orientation="Horizontal">
-					<Image Width="16" Height="16" Margin="0, 1, 2, 1" Source="{Binding IconUri}" />
-					<TextBlock Text="{Binding Title}">
-						<TextBlock.ContextMenu>
-							<ContextMenu>
-								<MenuItem Header="{x:Static resx:Resource.eGridContextRenameSong}" Command="{x:Static my:CustomCommands.Rename}" CommandParameter="{Binding}"/>
-								<MenuItem Header="{x:Static resx:Resource.eGridContextAddPart}" Command="{x:Static my:CustomCommands.Insert}" CommandParameter="{Binding}"/>
-							</ContextMenu>
-						</TextBlock.ContextMenu>
-					</TextBlock>
-				</StackPanel>
-			</HierarchicalDataTemplate>
-			<HierarchicalDataTemplate DataType="{x:Type local:SongNodeSlide}"
-				ItemsSource="{Binding Path=Children}">
-				<StackPanel Orientation="Horizontal">
-					<Image Width="16" Height="16" Margin="0, 1, 2, 1" Source="{Binding IconUri}" />
-					<TextBlock Text="{Binding Title}">
+					<Image Width="16" Height="16" Margin="0, 1, 2, 1" Source="/WordsLive;component/Artwork/Small_Slide.png" />
+					<TextBlock Text="{x:Static resx:Resource.eGridSlideTitle}">
 						<TextBlock.ContextMenu>
 							<ContextMenu>
 								<MenuItem Header="{x:Static resx:Resource.eGridContextRemoveSlide}" Command="Delete" CommandParameter="{Binding}"/>
@@ -191,6 +210,30 @@
 							</ContextMenu>
 						</TextBlock.ContextMenu>
 					</TextBlock>
+				</StackPanel>
+			</HierarchicalDataTemplate>
+			<HierarchicalDataTemplate DataType="{x:Type nodes:SourceNode}">
+				<StackPanel Orientation="Horizontal">
+					<Image Width="16" Height="16" Margin="0, 1, 2, 1" Source="/WordsLive;component/Artwork/Small_Source.png" />
+					<TextBlock Text="{x:Static resx:Resource.eMetadataSourceTitle}"/>
+				</StackPanel>
+			</HierarchicalDataTemplate>
+			<HierarchicalDataTemplate DataType="{x:Type nodes:CopyrightNode}">
+				<StackPanel Orientation="Horizontal">
+					<Image Width="16" Height="16" Margin="0, 1, 2, 1" Source="/WordsLive;component/Artwork/Small_Copyright.png" />
+					<TextBlock Text="{x:Static resx:Resource.eMetadataCopyrightTitle}"/>
+				</StackPanel>
+			</HierarchicalDataTemplate>
+			<HierarchicalDataTemplate DataType="{x:Type nodes:LanguageNode}">
+				<StackPanel Orientation="Horizontal">
+					<Image Width="16" Height="16" Margin="0, 1, 2, 1" Source="/WordsLive;component/Artwork/Small_Language.png" />
+					<TextBlock Text="{x:Static resx:Resource.eMetadataLanguageTitle}"/>
+				</StackPanel>
+			</HierarchicalDataTemplate>
+			<HierarchicalDataTemplate DataType="{x:Type nodes:CategoryNode}">
+				<StackPanel Orientation="Horizontal">
+					<Image Width="16" Height="16" Margin="0, 1, 2, 1" Source="/WordsLive;component/Artwork/Small_Category.png" />
+					<TextBlock Text="{x:Static resx:Resource.eMetadataCategoryTitle}"/>
 				</StackPanel>
 			</HierarchicalDataTemplate>
 		</TreeView.Resources>
@@ -227,11 +270,12 @@
 			<Style TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"/>
 		</DockPanel.Resources>
 		<CheckBox x:Name="EnableSpellCheckCheckBox" DockPanel.Dock="Right" VerticalAlignment="Center" IsEnabled="False" IsChecked="{Binding Source={StaticResource settings}, Path=Default.EditorEnableSpellCheck, Mode=TwoWay}" Content="{x:Static resx:Resource.eGridSpellCheckCheckbox}"/>
-		<TextBlock x:Name="EditHeader" Padding="5"/>
+		<TextBlock x:Name="EditHeader" Padding="5" Text="{Binding ElementName=StructureTree, Path=SelectedItem, Converter={StaticResource editControlHeaderConverter}}"/>
 	</DockPanel>
 	<Border Grid.Row="2"
 		Grid.Column="2"
 		Margin="0,26,0,0" Background="LightGray" x:Name="EditBorder">
+		<ContentControl Content="{Binding ElementName=StructureTree, Path=SelectedItem}" ContentTemplateSelector="{StaticResource editControlTemplateSelector}"/>
 	</Border>
 	<DockPanel
 		Grid.Row="0"
@@ -271,18 +315,19 @@
 		ScrollViewer.CanContentScroll="False"
 		PreviewMouseMove="OrderListBox_PreviewMouseMove"
 		PreviewMouseLeftButtonDown="OrderListBox_PreviewMouseLeftButtonDown"
-		ItemsSource="{Binding PartOrder}" SelectionChanged="OrderListBox_SelectionChanged">
+		SelectionChanged="OrderListBox_SelectionChanged"
+		ItemsSource="{Binding Source={StaticResource treeNodeProvider}, Path=Song.Order}">
 		<ListBox.CommandBindings>
-			<CommandBinding Command="Delete" Executed="OrderListBox_OnExecuteCommand" CanExecute="OrderListBox_OnCanExecuteCommand"/>
-			<CommandBinding Command="{x:Static my:CustomCommands.Insert}" Executed="OrderListBox_OnExecuteCommand" CanExecute="OrderListBox_OnCanExecuteCommand"/>
-			<CommandBinding Command="{x:Static my:CustomCommands.MoveUp}" Executed="OrderListBox_OnExecuteCommand" CanExecute="OrderListBox_OnCanExecuteCommand"/>
-			<CommandBinding Command="{x:Static my:CustomCommands.MoveDown}" Executed="OrderListBox_OnExecuteCommand" CanExecute="OrderListBox_OnCanExecuteCommand"/>
+			<CommandBinding Command="Delete" Executed="OrderListCommand_Executed" CanExecute="OrderListCommand_CanExecute"/>
+			<CommandBinding Command="{x:Static my:CustomCommands.Insert}" Executed="OrderListCommand_Executed" CanExecute="OrderListCommand_CanExecute"/>
+			<CommandBinding Command="{x:Static my:CustomCommands.MoveUp}" Executed="OrderListCommand_Executed" CanExecute="OrderListCommand_CanExecute"/>
+			<CommandBinding Command="{x:Static my:CustomCommands.MoveDown}" Executed="OrderListCommand_Executed" CanExecute="OrderListCommand_CanExecute"/>
 		</ListBox.CommandBindings>
 		<ListBox.ItemTemplate>
 			<DataTemplate>
 				<StackPanel Orientation="Vertical">
-					<TextBlock Text="{Binding Content.Title}" FontWeight="Bold" FontSize="13" Margin="2" Foreground="Gray"/>
-					<ItemsControl ItemsSource="{Binding Content.Children}">
+					<TextBlock Text="{Binding Part.Name}" FontWeight="Bold" FontSize="13" Margin="2" Foreground="Gray"/>
+					<ItemsControl ItemsSource="{Binding Part.Slides}">
 						<ItemsControl.Style>
 							<Style>
 								<Style.Setters>

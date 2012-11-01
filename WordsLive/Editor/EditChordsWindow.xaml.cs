@@ -1,7 +1,8 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Windows;
+using WordsLive.Core.Songs;
 using WordsLive.Core.Songs.Chords;
-using System;
 
 namespace WordsLive.Editor
 {
@@ -12,9 +13,9 @@ namespace WordsLive.Editor
 		private bool germanNotation;
 		private bool longChordNames;
 
-		private SongNodeRoot song;
+		private Song song;
 
-		public EditChordsWindow(SongNodeRoot song)
+		public EditChordsWindow(Song song)
 		{
 			InitializeComponent();
 
@@ -104,7 +105,7 @@ namespace WordsLive.Editor
 
 		private void ButtonTranspose_Click(object sender, RoutedEventArgs e)
 		{
-			song.TransposeChords(originalKey, TransposeAmount);
+			Chords.Transpose(song, originalKey, TransposeAmount);
 		}
 
 		public string Error
@@ -130,7 +131,7 @@ namespace WordsLive.Editor
 
 		private void ButtonRemoveChords_Click(object sender, RoutedEventArgs e)
 		{
-			song.RemoveAllChords();
+			Chords.RemoveAll(song);
 		}
 	}
 }

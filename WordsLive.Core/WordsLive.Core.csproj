@@ -7,7 +7,7 @@
     <OutputType>Library</OutputType>
     <RootNamespace>WordsLive.Core</RootNamespace>
     <AssemblyName>WordsLive.Core</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <SourceAnalysisOverrideSettingsFile>C:\Users\Administrator\AppData\Roaming\ICSharpCode/SharpDevelop3.0\Settings.SourceAnalysis</SourceAnalysisOverrideSettingsFile>
     <AllowUnsafeBlocks>False</AllowUnsafeBlocks>
@@ -18,6 +18,7 @@
     </FileUpgradeFlags>
     <OldToolsVersion>3.5</OldToolsVersion>
     <UpgradeBackupLocation />
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Platform)' == 'x86' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -47,6 +48,9 @@
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
   <ItemGroup>
+    <Reference Include="MonitoredUndo, Version=1.0.0.1, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\3rdParty\MonitoredUndo.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -69,14 +73,21 @@
     <Compile Include="Songs\Chords\ChordSymbol.cs" />
     <Compile Include="Songs\Chords\Key.cs" />
     <Compile Include="Songs\Chords\Note.cs" />
+    <Compile Include="Songs\Chords\NoteSymbol.cs" />
     <Compile Include="Songs\HtmlExport.cs" />
+    <Compile Include="Songs\ISongElement.cs" />
     <Compile Include="Songs\Song.cs" />
     <Compile Include="Songs\SongBackground.cs" />
     <Compile Include="Songs\SongBeamerImport.cs" />
     <Compile Include="Songs\SongFormatting.cs" />
     <Compile Include="Songs\SongPart.cs" />
+    <Compile Include="Songs\SongPartReference.cs" />
     <Compile Include="Songs\SongSlide.cs" />
     <Compile Include="Songs\SongSource.cs" />
+    <Compile Include="Songs\SongTextFormatting.cs" />
+    <Compile Include="Songs\Undo\ChangeFactory.cs" />
+    <Compile Include="Songs\Undo\UndoKey.cs" />
+    <Compile Include="Songs\Undo\UndoManager.cs" />
     <Compile Include="UnsupportedMedia.cs" />
     <Compile Include="WebSite.cs" />
   </ItemGroup>

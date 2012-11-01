@@ -164,47 +164,50 @@ namespace WordsLive
 		void ApplySongTemplateMaster(Song song, MasterOverrideOptions options)
 		{
 			SongFormatting master = Controller.CreateSongFromTemplate().Formatting;
+			var changed = song.Formatting;
 
 			if (options.TextFormatting)
 			{
-				song.Formatting.MainText = master.MainText;
-				song.Formatting.TranslationText = master.TranslationText;
+				changed.MainText = master.MainText;
+				changed.TranslationText = master.TranslationText;
 			}
 			if (options.TextPosition)
 			{
-				song.Formatting.HorizontalOrientation = master.HorizontalOrientation;
-				song.Formatting.VerticalOrientation = master.VerticalOrientation;
-				song.Formatting.TextLineSpacing = master.TextLineSpacing;
-				song.Formatting.TranslationPosition = master.TranslationPosition;
-				song.Formatting.TranslationLineSpacing = master.TranslationLineSpacing;
+				changed.HorizontalOrientation = master.HorizontalOrientation;
+				changed.VerticalOrientation = master.VerticalOrientation;
+				changed.TextLineSpacing = master.TextLineSpacing;
+				changed.TranslationPosition = master.TranslationPosition;
+				changed.TranslationLineSpacing = master.TranslationLineSpacing;
 			}
 			if (options.SourceFormatting)
 			{
-				song.Formatting.SourceText = master.SourceText;
+				changed.SourceText = master.SourceText;
 			}
 			if (options.SourcePosition)
 			{
-				song.Formatting.SourceDisplayPosition = master.SourceDisplayPosition;
-				song.Formatting.SourceBorderRight = master.SourceBorderRight;
-				song.Formatting.SourceBorderTop = master.SourceBorderTop;
+				changed.SourceDisplayPosition = master.SourceDisplayPosition;
+				changed.SourceBorderRight = master.SourceBorderRight;
+				changed.SourceBorderTop = master.SourceBorderTop;
 			}
 			if (options.CopyrightFormatting)
 			{
-				song.Formatting.CopyrightText = master.CopyrightText;
+				changed.CopyrightText = master.CopyrightText;
 			}
 			if (options.CopyrightPosition)
 			{
-				song.Formatting.CopyrightDisplayPosition = master.CopyrightDisplayPosition;
-				song.Formatting.CopyrightBorderBottom = master.CopyrightBorderBottom;
+				changed.CopyrightDisplayPosition = master.CopyrightDisplayPosition;
+				changed.CopyrightBorderBottom = master.CopyrightBorderBottom;
 			}
 			if (options.OutlineShadow)
 			{
-				song.Formatting.IsOutlineEnabled = master.IsOutlineEnabled;
-				song.Formatting.IsShadowEnabled = master.IsShadowEnabled;
-				song.Formatting.OutlineColor = master.OutlineColor;
-				song.Formatting.ShadowColor = master.ShadowColor;
-				song.Formatting.ShadowDirection = master.ShadowDirection;
+				changed.IsOutlineEnabled = master.IsOutlineEnabled;
+				changed.IsShadowEnabled = master.IsShadowEnabled;
+				changed.OutlineColor = master.OutlineColor;
+				changed.ShadowColor = master.ShadowColor;
+				changed.ShadowDirection = master.ShadowDirection;
 			}
+
+			song.Formatting = changed;
 		}
 
 		void UpdatePreview()
@@ -593,7 +596,7 @@ namespace WordsLive
 					if (usePortfolioBackground == true)
 					{
 						if (portfolioBackground == null)
-							portfolioBackground = new SongBackground();
+							portfolioBackground = SongBackground.Default;
 
 						var win = new ChooseBackgroundWindow(portfolioBackground);
 						win.Owner = this;
