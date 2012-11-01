@@ -37,9 +37,9 @@ namespace WordsLive.Core.Data
 		/// <summary>
 		/// Gets the parent directory.
 		/// </summary>
-		public BackgroundsDirectory Parent { get; private set; }
+		public BackgroundDirectory Parent { get; private set; }
 
-		internal BackgroundFile(BackgroundDataProvider provider, BackgroundsDirectory parent, string name, bool isVideo)
+		internal BackgroundFile(BackgroundDataProvider provider, BackgroundDirectory parent, string name, bool isVideo)
 		{
 			this.provider = provider;
 			this.Name = name;

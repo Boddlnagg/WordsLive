@@ -24,11 +24,11 @@ namespace WordsLive.Core.Data
 	/// Represents a directory that contains backgrounds. An instance of this class can only be obtained
 	/// using an instance of <see cref="BackgroundDataProvider"/>.
 	/// </summary>
-	public class BackgroundsDirectory
+	public class BackgroundDirectory
 	{
 		private BackgroundDataProvider provider;
 
-		internal BackgroundsDirectory(BackgroundDataProvider provider, BackgroundsDirectory parent, string name)
+		internal BackgroundDirectory(BackgroundDataProvider provider, BackgroundDirectory parent, string name)
 		{
 			this.provider = provider;
 			this.Parent = parent;
@@ -43,7 +43,7 @@ namespace WordsLive.Core.Data
 		/// <summary>
 		/// Gets the parent director.
 		/// </summary>
-		public BackgroundsDirectory Parent { get; private set; }
+		public BackgroundDirectory Parent { get; private set; }
 		
 		/// <summary>
 		/// Gets a value indicating whether this is the root directory.
@@ -71,7 +71,7 @@ namespace WordsLive.Core.Data
 		/// <summary>
 		/// Gets the subdirectories in this directory.
 		/// </summary>
-		public IEnumerable<BackgroundsDirectory> Directories
+		public IEnumerable<BackgroundDirectory> Directories
 		{
 			get
 			{
@@ -90,7 +90,7 @@ namespace WordsLive.Core.Data
 			}
 		}
 
-		private string GetPath(BackgroundsDirectory dir)
+		private string GetPath(BackgroundDirectory dir)
 		{
 			if (dir.IsRoot)
 				return "/";
@@ -100,7 +100,7 @@ namespace WordsLive.Core.Data
 
 		public override bool Equals(object obj)
 		{
-			var other = obj as BackgroundsDirectory;
+			var other = obj as BackgroundDirectory;
 
 			if (other == null)
 				return false;

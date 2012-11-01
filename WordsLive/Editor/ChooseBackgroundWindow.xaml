@@ -39,7 +39,7 @@
 					VerticalAlignment="Stretch"/>
 				<TreeView Grid.Column="0" Name="directoryView" ItemsSource="{Binding}" SelectedItemChanged="directoryView_SelectedItemChanged">
 					<TreeView.Resources>
-						<HierarchicalDataTemplate DataType="{x:Type data:BackgroundsDirectory}" ItemsSource="{Binding Directories}" >
+						<HierarchicalDataTemplate DataType="{x:Type data:BackgroundDirectory}" ItemsSource="{Binding Directories}" >
 							<StackPanel Orientation="Horizontal" Margin="2">
 								<Image Source="/WordsLive;component/Artwork/Small_Folder.png" Width="16" Height="16"/>
 								<TextBlock Text="{Binding Name}"/>

@@ -40,11 +40,11 @@ namespace WordsLive.Core.Data
 		/// <summary>
 		/// Gets the root directory.
 		/// </summary>
-		public override BackgroundsDirectory Root
+		public override BackgroundDirectory Root
 		{
 			get
 			{
-				return new BackgroundsDirectory(this, null, Path.GetFileName(directory));
+				return new BackgroundDirectory(this, null, Path.GetFileName(directory));
 			}
 		}
 
@@ -70,7 +70,7 @@ namespace WordsLive.Core.Data
 		/// <returns>
 		/// A list of background filenames (relative to the specified directory).
 		/// </returns>
-		public override IEnumerable<BackgroundFile> GetFiles(BackgroundsDirectory dir)
+		public override IEnumerable<BackgroundFile> GetFiles(BackgroundDirectory dir)
 		{
 			if (dir == null)
 				throw new ArgumentNullException("dir");
@@ -100,7 +100,7 @@ namespace WordsLive.Core.Data
 		/// <returns>
 		/// A list of subdirectories.
 		/// </returns>
-		public override IEnumerable<BackgroundsDirectory> GetDirectories(BackgroundsDirectory parent)
+		public override IEnumerable<BackgroundDirectory> GetDirectories(BackgroundDirectory parent)
 		{
 			if (parent == null)
 				throw new ArgumentNullException("parent");
@@ -112,7 +112,7 @@ namespace WordsLive.Core.Data
 
 			foreach (var dir in info.GetDirectories().Where(d => d.Name != "[Thumbnails]"))
 			{
-				yield return new BackgroundsDirectory(this, parent, dir.Name);
+				yield return new BackgroundDirectory(this, parent, dir.Name);
 			}
 		}
 
@@ -121,7 +121,7 @@ namespace WordsLive.Core.Data
 		/// </summary>
 		/// <param name="dir">The directory to get the path for.</param>
 		/// <returns>The path.</returns>
-		private string GetPath(BackgroundsDirectory dir)
+		private string GetPath(BackgroundDirectory dir)
 		{
 			if (dir.IsRoot)
 				return directory;

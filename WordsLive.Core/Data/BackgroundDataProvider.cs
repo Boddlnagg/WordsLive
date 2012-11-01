@@ -30,7 +30,7 @@ namespace WordsLive.Core.Data
 		/// <summary>
 		/// Gets the root directory.
 		/// </summary>
-		public abstract BackgroundsDirectory Root { get; }
+		public abstract BackgroundDirectory Root { get; }
 
 		/// <summary>
 		/// Gets all available background files in a specified directory.
@@ -39,7 +39,7 @@ namespace WordsLive.Core.Data
 		/// <returns>
 		/// A list of background filenames (relative to the specified directory).
 		/// </returns>
-		public abstract IEnumerable<BackgroundFile> GetFiles(BackgroundsDirectory directory);
+		public abstract IEnumerable<BackgroundFile> GetFiles(BackgroundDirectory directory);
 
 		/// <summary>
 		/// Gets all subdirectories of a specified directory.
@@ -48,6 +48,6 @@ namespace WordsLive.Core.Data
 		/// <returns>
 		/// A list of subdirectories.
 		/// </returns>
-		public abstract IEnumerable<BackgroundsDirectory> GetDirectories(BackgroundsDirectory parent);
+		public abstract IEnumerable<BackgroundDirectory> GetDirectories(BackgroundDirectory parent);
 	}
 }

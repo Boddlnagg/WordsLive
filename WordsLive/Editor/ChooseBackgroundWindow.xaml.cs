@@ -81,7 +81,7 @@ namespace WordsLive.Editor
 				AllowedVideoExtensions = AllowedVideoExtensions
 			};
 
-			directoryView.DataContext = new BackgroundsDirectory[] { provider.Root };
+			directoryView.DataContext = new BackgroundDirectory[] { provider.Root };
 
 			if (UseImage)
 			{
@@ -104,11 +104,11 @@ namespace WordsLive.Editor
 
 		private void SelectEntry(string path)
 		{ 
-			var beginItem = (BackgroundsDirectory)directoryView.Items[0];
+			var beginItem = (BackgroundDirectory)directoryView.Items[0];
 			SelectEntry(path, beginItem, (TreeViewItem)directoryView.ItemContainerGenerator.ContainerFromItem(beginItem));
 		}
 
-		private void SelectEntry(string remainingSelectPath, BackgroundsDirectory currentNode, TreeViewItem currentContainer)
+		private void SelectEntry(string remainingSelectPath, BackgroundDirectory currentNode, TreeViewItem currentContainer)
 		{
 			var i = remainingSelectPath.IndexOf('\\');
 			if (i >= 0)
