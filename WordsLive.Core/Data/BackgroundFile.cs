@@ -44,7 +44,7 @@ namespace WordsLive.Core.Data
 			this.provider = provider;
 			this.Name = name;
 			this.Parent = parent;
-			this.IsVideo = IsVideo;
+			this.IsVideo = isVideo;
 		}
 
 		/// <summary>
@@ -56,6 +56,17 @@ namespace WordsLive.Core.Data
 			get
 			{
 				return Parent.Path + Name;
+			}
+		}
+
+		/// <summary>
+		/// Gets the URI of this file.
+		/// </summary>
+		public Uri Uri
+		{
+			get
+			{
+				return provider.GetFileUri(this);
 			}
 		}
 

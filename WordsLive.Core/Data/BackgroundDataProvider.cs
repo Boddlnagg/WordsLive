@@ -16,6 +16,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+using System;
 using System.Collections.Generic;
 
 namespace WordsLive.Core.Data
@@ -49,5 +50,12 @@ namespace WordsLive.Core.Data
 		/// A list of subdirectories.
 		/// </returns>
 		public abstract IEnumerable<BackgroundDirectory> GetDirectories(BackgroundDirectory parent);
+
+		/// <summary>
+		/// Gets the URI of a background file.
+		/// </summary>
+		/// <param name="file">The file.</param>
+		/// <returns>The file's URI.</returns>
+		public abstract Uri GetFileUri(BackgroundFile file);
 	}
 }

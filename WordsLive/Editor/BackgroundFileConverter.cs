@@ -34,7 +34,7 @@ namespace WordsLive.Editor
 			if (targetType == typeof(DisplayOptions))
 				return val.IsVideo ? DisplayOptions.VideoPreview : DisplayOptions.Preview;
 			else
-				return Path.Combine(MediaManager.BackgroundsDirectory, val.Path.Substring(1).Replace('/', '\\'));
+				throw new InvalidOperationException();
 		}
 
 		public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)

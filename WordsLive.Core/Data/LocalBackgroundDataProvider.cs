@@ -117,6 +117,19 @@ namespace WordsLive.Core.Data
 		}
 
 		/// <summary>
+		/// Gets the URI of a background file.
+		/// </summary>
+		/// <param name="file">The file.</param>
+		/// <returns>
+		/// The file's URI.
+		/// </returns>
+		public override Uri GetFileUri(BackgroundFile file)
+		{
+			var realPath = Path.Combine(directory, file.Path.Substring(1).Replace('/', Path.DirectorySeparatorChar));
+			return new Uri(realPath);
+		}
+
+		/// <summary>
 		/// Helper function to get path string for a given directory by recursivly walking up the directory structure.
 		/// </summary>
 		/// <param name="dir">The directory to get the path for.</param>

@@ -205,7 +205,8 @@ namespace WordsLive.Utils.ImageLoader
 					System.Diagnostics.Debug.WriteLine("EndLoading() - unexpected condition: there is no running task for this image!");
 				}
 
-				loadTask.Stream.Close();
+				if (loadTask.Stream != null)
+					loadTask.Stream.Close();
 
 				image.Dispatcher.BeginInvoke(new ThreadStart(delegate
 				{
@@ -375,6 +376,13 @@ namespace WordsLive.Utils.ImageLoader
 							player.Position = new TimeSpan(0, 0, 20); // go to 20 seconds (if the video is shorter, a black image will be captured)
 							
 							Thread.Sleep(1000);
+
+							int i = 0;
+							while (i < 10 && (player.NaturalDuration.TimeSpan.TotalSeconds* player.BufferingProgress) <= 20)
+							{
+								Thread.Sleep(100);
+								i++;
+							}
 
 							var pixelW = player.NaturalVideoWidth;
 							var pixelH = player.NaturalVideoHeight;
