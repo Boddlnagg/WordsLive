@@ -39,7 +39,7 @@ namespace WordsLive.Core.Data
 		/// <returns>
 		/// A list of background filenames (relative to the specified directory).
 		/// </returns>
-		public abstract IEnumerable<string> GetFiles(BackgroundsDirectory directory);
+		public abstract IEnumerable<BackgroundFile> GetFiles(BackgroundsDirectory directory);
 
 		/// <summary>
 		/// Gets all subdirectories of a specified directory.

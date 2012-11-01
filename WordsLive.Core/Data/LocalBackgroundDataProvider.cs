@@ -44,7 +44,7 @@ namespace WordsLive.Core.Data
 		{
 			get
 			{
-				return new BackgroundsDirectory(this, null, Path.GetDirectoryName(directory));
+				return new BackgroundsDirectory(this, null, Path.GetFileName(directory));
 			}
 		}
 
@@ -70,7 +70,7 @@ namespace WordsLive.Core.Data
 		/// <returns>
 		/// A list of background filenames (relative to the specified directory).
 		/// </returns>
-		public override IEnumerable<string> GetFiles(BackgroundsDirectory dir)
+		public override IEnumerable<BackgroundFile> GetFiles(BackgroundsDirectory dir)
 		{
 			if (dir == null)
 				throw new ArgumentNullException("dir");
@@ -82,9 +82,14 @@ namespace WordsLive.Core.Data
 
 			foreach (var file in info.GetFiles())
 			{
-				if ((AllowedImageExtensions != null && AllowedImageExtensions.Contains(file.Extension, StringComparer.OrdinalIgnoreCase)) ||
-					(AllowedVideoExtensions != null && AllowedVideoExtensions.Contains(file.Extension, StringComparer.OrdinalIgnoreCase)))
-				yield return file.Name;
+				if (AllowedImageExtensions != null && AllowedImageExtensions.Contains(file.Extension, StringComparer.OrdinalIgnoreCase))
+				{
+					yield return new BackgroundFile(this, dir, file.Name, false);
+				}
+				else if (AllowedVideoExtensions != null && AllowedVideoExtensions.Contains(file.Extension, StringComparer.OrdinalIgnoreCase))
+				{
+					yield return new BackgroundFile(this, dir, file.Name, true);
+				}
 			}
 		}
 

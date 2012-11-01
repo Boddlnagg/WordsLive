@@ -5,6 +5,7 @@
 		xmlns:ext="http://schemas.microsoft.com/winfx/2006/xaml/presentation/toolkit/extended"
 		xmlns:resx="clr-namespace:WordsLive.Resources"
 		xmlns:imageloader="clr-namespace:WordsLive.Utils.ImageLoader"
+		xmlns:data="clr-namespace:WordsLive.Core.Data;assembly=WordsLive.Core"
 		Title="{x:Static resx:Resource.cbTitle}"
 		MinWidth="600" MinHeight="350"
 		Height = "{Binding Source={StaticResource settings}, Path=Default.ChooseBackgroundWindowHeight, Mode=TwoWay}"
@@ -12,6 +13,9 @@
 	Top="{Binding Source={StaticResource settings}, Path=Default.ChooseBackgroundWindowTop, Mode=TwoWay}"
 	Left="{Binding Source={StaticResource settings}, Path=Default.ChooseBackgroundWindowLeft, Mode=TwoWay}"
 	WindowState="{Binding Source={StaticResource settings}, Path=Default.ChooseBackgroundWindowState, Mode=TwoWay}" Icon="/WordsLive;component/Artwork/ChooseBackground.png">
+	<Window.Resources>
+		<local:BackgroundFileConverter x:Key="backgroundFileConverter"/>
+	</Window.Resources>
 	<DockPanel>
 		<Grid DockPanel.Dock="Bottom" Height="35">
 			<CheckBox IsChecked="{Binding Path=UseColor, Mode=TwoWay}" Height="Auto" VerticalAlignment="Center" Name="UseColorCheckbox" HorizontalAlignment="Left" Margin="6,0,0,0" Content="{x:Static resx:Resource.cbUseSingleColor}"/>
@@ -35,10 +39,10 @@
 					VerticalAlignment="Stretch"/>
 				<TreeView Grid.Column="0" Name="directoryView" ItemsSource="{Binding}" SelectedItemChanged="directoryView_SelectedItemChanged">
 					<TreeView.Resources>
-						<HierarchicalDataTemplate DataType="{x:Type local:BackgroundsDirectory}" ItemsSource="{Binding Directories}" >
+						<HierarchicalDataTemplate DataType="{x:Type data:BackgroundsDirectory}" ItemsSource="{Binding Directories}" >
 							<StackPanel Orientation="Horizontal" Margin="2">
 								<Image Source="/WordsLive;component/Artwork/Small_Folder.png" Width="16" Height="16"/>
-								<TextBlock Text="{Binding Info.Name}"/>
+								<TextBlock Text="{Binding Name}"/>
 							</StackPanel>
 						</HierarchicalDataTemplate>
 					</TreeView.Resources>
@@ -52,10 +56,10 @@
 						</Style>
 					</TreeView.ItemContainerStyle>
 				</TreeView>
-				<ListView Grid.Column="2" ItemsSource="{Binding ElementName=directoryView, Path=SelectedItem.Images}" Name="imageListView">
+				<ListView Grid.Column="2" ItemsSource="{Binding ElementName=directoryView, Path=SelectedItem.Files}" Name="imageListView">
 					<ListView.ItemTemplate>
 						<DataTemplate>
-							<Grid MaxWidth="{Binding ElementName=PreviewSizeSlider, Path=Value}" MaxHeight="{Binding ElementName=PreviewSizeSlider, Path=Value}"  Margin="1,2,3,1" ToolTip="{Binding File.Name}" MouseDown="Grid_MouseDown">
+							<Grid MaxWidth="{Binding ElementName=PreviewSizeSlider, Path=Value}" MaxHeight="{Binding ElementName=PreviewSizeSlider, Path=Value}"  Margin="1,2,3,1" ToolTip="{Binding Name}" MouseDown="Grid_MouseDown">
 								<Grid.ColumnDefinitions>
 									<ColumnDefinition Width="4*"/>
 									<ColumnDefinition Width="1*"/>
@@ -65,10 +69,11 @@
 									<RowDefinition Height="Auto"/>
 								</Grid.RowDefinitions>
 								<Image Name="img" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0"
-								imageloader:Loader.DisplayOption="{Binding DisplayOptions}"
-								imageloader:Loader.Source="{Binding File.FullName}"
+								imageloader:Loader.DisplayOption="{Binding Path=., Converter={StaticResource backgroundFileConverter}}"
+								imageloader:Loader.Source="{Binding Path=., Converter={StaticResource backgroundFileConverter}}"
 								imageloader:Loader.DisplayWaitingAnimationDuringLoading="True"
-								imageloader:Loader.DisplayErrorThumbnailOnError="True"/>
+								imageloader:Loader.DisplayErrorThumbnailOnError="True"
+								imageloader:Loader.Loaded="image_ImageLoaderLoaded"/>
 							<Image Source="/WordsLive;component/Artwork/Movie.png" Grid.Column="1" Grid.Row="0" VerticalAlignment="Top" Margin="3">
 									<Image.Style>
 										<Style TargetType="Image">
@@ -81,7 +86,7 @@
 										</Style>
 									</Image.Style>
 								</Image>
-								<TextBlock Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" TextTrimming="CharacterEllipsis" Text="{Binding File.Name}" Margin="0,0,0,5"/>
+								<TextBlock Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" TextTrimming="CharacterEllipsis" Text="{Binding Name}" Margin="0,0,0,5"/>
 							</Grid>
 						<DataTemplate.Triggers>
 							<DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Grid}}, Path=IsEnabled}" Value="False">

@@ -106,6 +106,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="ControlPanelLoadState.cs" />
+    <Compile Include="Editor\BackgroundFileConverter.cs" />
     <Compile Include="Editor\EditControlHeaderConverter.cs" />
     <Compile Include="Editor\EditControlTemplateSelector.cs" />
     <Compile Include="Editor\LanguageToLanguageCodeConverter.cs" />

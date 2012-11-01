@@ -11,11 +11,17 @@ using System.Windows.Media;
 using WordsLive.Core;
 using WordsLive.Core.Songs;
 using WordsLive.Utils;
+using WordsLive.Core.Data;
 
 namespace WordsLive.Editor
 {
 	public partial class ChooseBackgroundWindow : Window, INotifyPropertyChanged
 	{
+		public readonly static string[] AllowedImageExtensions = new string[] { ".png", ".jpg", ".jpeg" };
+		public readonly static string[] AllowedVideoExtensions = new string[] { ".mp4", ".wmv", ".avi" };
+
+		private BackgroundDataProvider provider;
+
 		public SongBackground ChosenBackground
 		{
 			get;
@@ -69,14 +75,13 @@ namespace WordsLive.Editor
 
 			UseImage = background.IsImage;
 
-			var root = new ObservableCollection<BackgroundsDirectory>{
-				new BackgroundsDirectory {
-					Info = new DirectoryInfo(MediaManager.BackgroundsDirectory),
-					Parent = this,
-					IsRoot = true
-				}
+			provider = new LocalBackgroundDataProvider(MediaManager.BackgroundsDirectory)
+			{
+				AllowedImageExtensions = AllowedImageExtensions,
+				AllowedVideoExtensions = AllowedVideoExtensions
 			};
-			directoryView.DataContext = root;
+
+			directoryView.DataContext = new BackgroundsDirectory[] { provider.Root };
 
 			if (UseImage)
 			{
@@ -97,8 +102,6 @@ namespace WordsLive.Editor
 			}
 		}
 
-		internal string SelectImage;
-
 		private void SelectEntry(string path)
 		{ 
 			var beginItem = (BackgroundsDirectory)directoryView.Items[0];
@@ -113,7 +116,7 @@ namespace WordsLive.Editor
 				string next = remainingSelectPath.Substring(0, i);
 				remainingSelectPath = remainingSelectPath.Substring(i + 1);
 
-				currentNode = currentNode.Directories.First((dir) => dir.Info.Name == next);
+				currentNode = currentNode.Directories.First((dir) => dir.Name == next);
 				currentContainer = currentContainer.ItemContainerGenerator.ContainerFromItem(currentNode) as TreeViewItem;
 				currentContainer.IsExpanded = true;
 				currentContainer.ItemContainerGenerator.StatusChanged += (sender, args) =>
@@ -124,7 +127,7 @@ namespace WordsLive.Editor
 			}
 			else
 			{
-				SelectImage = remainingSelectPath;
+				imageListView.SelectedItem = currentNode.Files.Where(file => file.Name == remainingSelectPath).SingleOrDefault();
 				currentContainer.IsSelected = true;
 				currentContainer.BringIntoView();
 				imageListView.Focus();
@@ -135,19 +138,14 @@ namespace WordsLive.Editor
 		{
 			if (UseImage)
 			{
-				var entry = (BackgroundEntry)imageListView.SelectedItem;
+				var entry = (BackgroundFile)imageListView.SelectedItem;
 				if (entry == null)
 				{
 					MessageBox.Show("Es ist kein Bild ausgewählt.");
 					return;
 				}
 
-				// no idea if this could happen ...
-				if (!entry.File.FullName.StartsWith(MediaManager.BackgroundsDirectory))
-					throw new NotSupportedException();
-
-				// make the path relative (remove BackgroundsDirectory and slash)
-				ChosenBackground = new SongBackground(entry.File.FullName.Remove(0, MediaManager.BackgroundsDirectory.Length + 1));
+				ChosenBackground = new SongBackground(entry.Path.Substring(1).Replace('/', '\\'));
 			}
 			else
 			{
@@ -176,78 +174,13 @@ namespace WordsLive.Editor
 			ScrollViewer scrollViewer = imageListView.FindVisualChild<ScrollViewer>();
 			scrollViewer.ScrollToTop();
 		}
-	}
 
-	class BackgroundEntry
-	{
-		public FileInfo File { get; set; }
-		public WordsLive.Utils.ImageLoader.DisplayOptions DisplayOptions { get; set; }
-		public bool IsVideo { get; set; }
-	}
-
-	class BackgroundsDirectory
-	{
-		private static string[] allowedImageExtensions = new string[] { ".png", ".jpg", ".jpeg" };
-		private static string[] allowedVideoExtensions = new string[] { ".mp4", ".wmv", ".avi" };
-		private List<BackgroundEntry> images;
-
-		public DirectoryInfo Info { get; set; }
-		public ChooseBackgroundWindow Parent { get; set; }
-		public bool IsRoot { get; set; }
-
-		public List<BackgroundEntry> Images
+		private void image_ImageLoaderLoaded(object sender, RoutedEventArgs e)
 		{
-			get
+			var cp = (sender as DependencyObject).FindVisualParent<ContentPresenter>();
+			if (cp.Content.Equals(imageListView.SelectedItem))
 			{
-				if (images == null)
-				{
-					images = new List<BackgroundEntry>();
-					LoadImages();
-				}
-				return images;
-			}
-		}
-
-		private void LoadImages()
-		{
-			foreach (var file in Info.GetFiles())
-			{
-				BackgroundEntry entry = null;
-				if (allowedImageExtensions.Contains(file.Extension.ToLower()))
-				{
-					entry = new BackgroundEntry { File = file, DisplayOptions = Utils.ImageLoader.DisplayOptions.Preview, IsVideo = false };
-				}
-				else if (allowedVideoExtensions.Contains(file.Extension.ToLower()))
-				{
-					entry = new BackgroundEntry { File = file, DisplayOptions = Utils.ImageLoader.DisplayOptions.VideoPreview, IsVideo = true };
-				}
-
-				if (entry != null)
-				{
-					images.Add(entry);
-					if (Parent.SelectImage == entry.File.Name)
-					{
-						Parent.Dispatcher.BeginInvoke(new Action(() =>
-						{
-							Parent.imageListView.SelectedItem = entry;
-							Parent.imageListView.ScrollIntoView(entry);
-						}));
-						Parent.SelectImage = null;
-					}
-				}
-			}
-		}
-
-		private IEnumerable<BackgroundsDirectory> directories;
-
-		public IEnumerable<BackgroundsDirectory> Directories
-		{
-			get
-			{
-				if (directories == null)
-					directories = (from di in Info.GetDirectories() where di.Name != "[Thumbnails]"
-								   select new BackgroundsDirectory { Info = di, Parent = this.Parent }).ToList();
-				return directories;
+				imageListView.ScrollIntoView(imageListView.SelectedItem);
 			}
 		}
 	}

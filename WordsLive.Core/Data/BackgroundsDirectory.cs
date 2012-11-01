@@ -57,6 +57,18 @@ namespace WordsLive.Core.Data
 		}
 
 		/// <summary>
+		/// Gets the path of this directory (relative to the root)
+		/// using '/' as a separator and with a leading and trailing '/'.
+		/// </summary>
+		public string Path
+		{
+			get
+			{
+				return GetPath(this);
+			}
+		}
+
+		/// <summary>
 		/// Gets the subdirectories in this directory.
 		/// </summary>
 		public IEnumerable<BackgroundsDirectory> Directories
@@ -70,12 +82,35 @@ namespace WordsLive.Core.Data
 		/// <summary>
 		/// Gets the actual backgrounds in this directory.
 		/// </summary>
-		public IEnumerable<string> Backgrounds
+		public IEnumerable<BackgroundFile> Files
 		{
 			get
 			{
 				return provider.GetFiles(this);
 			}
+		}
+
+		private string GetPath(BackgroundsDirectory dir)
+		{
+			if (dir.IsRoot)
+				return "/";
+
+			return GetPath(dir.Parent) + dir.Name + "/";
+		}
+
+		public override bool Equals(object obj)
+		{
+			var other = obj as BackgroundsDirectory;
+
+			if (other == null)
+				return false;
+			else
+				return other.Path == this.Path && other.provider == this.provider;
+		}
+
+		public override int GetHashCode()
+		{
+			return Path.GetHashCode() ^ provider.GetHashCode();
 		}
 	}
 }
