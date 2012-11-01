@@ -21,7 +21,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
-using MonitoredUndo;
 
 namespace WordsLive.Core.Songs
 {
@@ -141,8 +140,11 @@ namespace WordsLive.Core.Songs
 		/// <returns>The newly created slide.</returns>
 		public SongSlide AddSlide()
 		{
-			var slide = new SongSlide(Root);
+			SongSlide slide;
+
+			slide = new SongSlide(Root);
 			AddSlide(slide);
+
 			return slide;
 		}
 
@@ -152,11 +154,10 @@ namespace WordsLive.Core.Songs
 		/// <param name="slide">The slide to add.</param>
 		public void AddSlide(SongSlide slide)
 		{
-			var ch = new DelegateChange(this,
+			Undo.ChangeFactory.OnChanging(this,
 				() => { Slides.Remove(slide); },
 				() => { Slides.Add(slide); },
-				new ChangeKey<object, string>(this, "Slides"));
-			UndoService.Current[Root.UndoKey].AddChange(ch, "AddSlide");
+				"AddSlide");
 			Slides.Add(slide);
 		}
 
@@ -177,11 +178,10 @@ namespace WordsLive.Core.Songs
 			}
 			else
 			{
-				var ch = new DelegateChange(this,
-				() => { Slides.Remove(slide); },
-				() => { Slides.Insert(index + 1, slide); },
-				new ChangeKey<object, string>(this, "Children"));
-				UndoService.Current[Root.UndoKey].AddChange(ch, "InsertSlideAfter");
+				Undo.ChangeFactory.OnChanging(this,
+					() => { Slides.Remove(slide); },
+					() => { Slides.Insert(index + 1, slide); },
+					"InsertSlideAfter");
 				this.Slides.Insert(index + 1, slide);
 			}
 		}
@@ -199,11 +199,10 @@ namespace WordsLive.Core.Songs
 			if (i < 0)
 				throw new InvalidOperationException("Slide is not in this part.");
 
-			var ch = new DelegateChange(this,
+			Undo.ChangeFactory.OnChanging(this,
 				() => { Slides.Insert(i, slide); },
 				() => { Slides.Remove(slide); },
-				new ChangeKey<object, string>(this, "Slides"));
-			UndoService.Current[Root.UndoKey].AddChange(ch, "RemoveSlide");
+				"RemoveSlide");
 			this.Slides.Remove(slide);
 		}
 
@@ -217,14 +216,13 @@ namespace WordsLive.Core.Songs
 		{
 			SongSlide s;
 			int i = Slides.IndexOf(slide);
-			using (new UndoBatch(Root.UndoKey, "DuplicateSlide", false))
+			using (Undo.ChangeFactory.Batch(this, "DuplicateSlide"))
 			{
 				s = slide.Copy();
-				var ch = new DelegateChange(this,
+				Undo.ChangeFactory.OnChanging(this,
 					() => { Slides.Remove(s); },
 					() => { Slides.Insert(i + 1, s); },
-					new ChangeKey<object, string>(this, "Children"));
-				UndoService.Current[Root.UndoKey].AddChange(ch, "DuplicateSlide");
+					"DuplicateSlide");
 				Slides.Insert(i + 1, s);
 			}
 			return s;
@@ -240,7 +238,7 @@ namespace WordsLive.Core.Songs
 		public SongSlide SplitSlide(SongSlide slide, int splitIndex)
 		{
 			SongSlide newSlide;
-			using (new UndoBatch(Root.UndoKey, "SplitSlide", false))
+			using (Undo.ChangeFactory.Batch(this, "SplitSlide"))
 			{
 				var textBefore = slide.Text.Substring(0, splitIndex);
 				if (textBefore.EndsWith("\r\n"))
@@ -266,7 +264,7 @@ namespace WordsLive.Core.Songs
 				throw new InvalidOperationException("part has not been added to a song");
 			}
 
-			using (new UndoBatch(Root.UndoKey, "SetBackground", false))
+			using (Undo.ChangeFactory.Batch(this, "SetBackground"))
 			{
 				int index = Root.AddBackground(bg);
 

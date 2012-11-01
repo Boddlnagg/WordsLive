@@ -29,6 +29,9 @@ namespace WordsLive.Core.Tests.Songs
 		[Test]
 		public void VerifyLoaded()
 		{
+			Assert.AreEqual(0, UndoStackSize);
+			Assert.AreEqual(0, RedoStackSize);
+
 			Assert.AreEqual("SimpleTitle", song.SongTitle);
 			Assert.AreEqual("SimpleTitle", song.Title);
 			Assert.AreEqual("SimpleCategory", song.Category);

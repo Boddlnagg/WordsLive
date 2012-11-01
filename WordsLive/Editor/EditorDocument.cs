@@ -26,6 +26,8 @@ namespace WordsLive.Editor
 			Grid = new EditorGrid(song, parent);
 			Grid.PreviewControl.ShowChords = parent.ShowChords;
 
+			Song.IsUndoEnabled = true;
+
 			Song.UndoManager.PropertyChanged += (sender, args) =>
 			{
 				if (Song.UndoManager.CanUndo)

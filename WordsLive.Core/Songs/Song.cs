@@ -25,7 +25,6 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
-using MonitoredUndo;
 using WordsLive.Core.Songs.Undo;
 
 namespace WordsLive.Core.Songs
@@ -46,6 +45,7 @@ namespace WordsLive.Core.Songs
 		#region Undo/Redo
 
 		private UndoManager undoManager;
+		private bool isUndoEnabled = false;
 
 		internal UndoKey UndoKey { get; private set; }
 
@@ -53,10 +53,37 @@ namespace WordsLive.Core.Songs
 		{
 			get
 			{
+				if (!isUndoEnabled)
+					throw new InvalidOperationException("Undo is currently disabled.");
+
 				if (undoManager == null)
-					undoManager = new UndoManager(UndoService.Current[UndoKey]);
+					undoManager = new UndoManager(MonitoredUndo.UndoService.Current[UndoKey]);
 				
 				return undoManager;
+			}
+		}
+
+		/// <summary>
+		/// Gets or sets a value indicating whether undo is enabled for this song.
+		/// This is <c>false</c> by default.
+		/// When it has been <c>true</c> and is set to <c>false</c>, the undo/redo stack
+		/// is cleared and cannot be restored again.
+		/// </summary>
+		public bool IsUndoEnabled
+		{
+			get
+			{
+				return isUndoEnabled;
+			}
+			set
+			{
+				if (!value && isUndoEnabled)
+				{
+					// disable undo -> clear stack
+					UndoManager.Root.Clear();
+				}
+
+				isUndoEnabled = value;
 			}
 		}
 
@@ -404,8 +431,7 @@ namespace WordsLive.Core.Songs
 				OnPropertyChanged("Order");
 			};
 
-			var ch = new DelegateChange(this, undo, redo, new ChangeKey<object, string>(this, "Parts"));
-			UndoService.Current[UndoKey].AddChange(ch, "RemovePart");
+			Undo.ChangeFactory.OnChanging(this, undo, redo, "RemovePart");
 
 			redo();
 		}
@@ -426,8 +452,7 @@ namespace WordsLive.Core.Songs
 				Parts.Add(part);
 			};
 
-			var ch = new DelegateChange(this, undo, redo, new ChangeKey<object, string>(this, "Parts"));
-			UndoService.Current[UndoKey].AddChange(ch, "AddPart");
+			Undo.ChangeFactory.OnChanging(this, undo, redo, "AddPart");
 
 			redo();
 		}
@@ -440,7 +465,7 @@ namespace WordsLive.Core.Songs
 		public SongPart AddPart(string name)
 		{
 			SongPart newPart;
-			using (new UndoBatch(UndoKey, "AddPart", false))
+			using (Undo.ChangeFactory.Batch(this, "AddPart"))
 			{
 				newPart = new SongPart(this, name, new SongSlide[] { new SongSlide(this) });
 				AddPart(newPart);
@@ -476,8 +501,7 @@ namespace WordsLive.Core.Songs
 				Parts.Move(newIndex, originalIndex);
 			};
 
-			var ch = new DelegateChange(this, undo, redo, new ChangeKey<object, string>(this, "Parts"));
-			UndoService.Current[UndoKey].AddChange(ch, "MovePart");
+			Undo.ChangeFactory.OnChanging(this, undo, redo, "MovePart");
 
 			redo();
 		}
@@ -492,7 +516,7 @@ namespace WordsLive.Core.Songs
 		public SongPart CopyPart(SongPart source, string name, SongPart target)
 		{
 			SongPart newPart;
-			using (new UndoBatch(Root.UndoKey, "CopyPart", false))
+			using (Undo.ChangeFactory.Batch(this, "CopyPart"))
 			{
 				newPart = source.Copy(name);
 				AddPart(newPart);
@@ -510,7 +534,7 @@ namespace WordsLive.Core.Songs
 		{
 			var part = FindPartWithSlide(slide);
 
-			using (new UndoBatch(UndoKey, "MoveSlide", false))
+			using (Undo.ChangeFactory.Batch(this, "MoveSlide"))
 			{
 				part.RemoveSlide(slide);
 				target.AddSlide(slide);
@@ -530,7 +554,7 @@ namespace WordsLive.Core.Songs
 			var part = FindPartWithSlide(slide);
 			var targetPart = FindPartWithSlide(target);
 
-			using (new UndoBatch(UndoKey, "MoveSlide", false))
+			using (Undo.ChangeFactory.Batch(this, "MoveSlide"))
 			{
 				part.RemoveSlide(slide);
 				targetPart.InsertSlideAfter(slide, target);
@@ -550,7 +574,7 @@ namespace WordsLive.Core.Songs
 			SongSlide s;
 			var part = FindPartWithSlide(slide);
 
-			using (new UndoBatch(UndoKey, "CopySlide", false))
+			using (Undo.ChangeFactory.Batch(this, "CopySlide"))
 			{
 				s = slide.Copy();
 				target.AddSlide(s);
@@ -571,7 +595,7 @@ namespace WordsLive.Core.Songs
 			var part = FindPartWithSlide(slide);
 			var targetPart = FindPartWithSlide(target);
 
-			using (new UndoBatch(UndoKey, "CopySlideAfter", false))
+			using (Undo.ChangeFactory.Batch(this, "CopySlideAfter"))
 			{
 				s = slide.Copy();
 				targetPart.InsertSlideAfter(s, target);
@@ -600,17 +624,13 @@ namespace WordsLive.Core.Songs
 
 				reference = new SongPartReference(part);
 				Order.Insert(index, reference);
-
-				//OnNotifyPropertyChanged("Order");
 			};
 			Action undo = () =>
 			{
 				Order.RemoveAt(index);
-				//OnNotifyPropertyChanged("Order");
 			};
 
-			var ch = new DelegateChange(this, undo, redo, new ChangeKey<object, string>(this, "Order"));
-			UndoService.Current[UndoKey].AddChange(ch, "AddPartToOrder");
+			Undo.ChangeFactory.OnChanging(this, undo, redo, "AddPartToOrder");
 
 			redo();
 
@@ -633,17 +653,14 @@ namespace WordsLive.Core.Songs
 			{
 				Order.RemoveAt(index);
 				Order.Insert(target, reference);
-				//OnNotifyPropertyChanged("Order");
 			};
 			Action undo = () =>
 			{
 				Order.RemoveAt(target);
 				Order.Insert(index, reference);
-				//OnNotifyPropertyChanged("Order");
 			};
 
-			var ch = new DelegateChange(this, undo, redo, new ChangeKey<object, string>(this, "Order"));
-			UndoService.Current[UndoKey].AddChange(ch, "MovePartInOrder");
+			Undo.ChangeFactory.OnChanging(this, undo, redo, "MovePartInOrder");
 
 			redo();
 		}
@@ -668,8 +685,7 @@ namespace WordsLive.Core.Songs
 				//OnNotifyPropertyChanged("PartOrder");
 			};
 
-			var ch = new DelegateChange(this, undo, redo, new ChangeKey<object, string>(this, "PartOrder"));
-			UndoService.Current[this].AddChange(ch, "RemovePartFromOrder");
+			Undo.ChangeFactory.OnChanging(this, undo, redo, "RemovePartFromOrder");
 
 			redo();
 		}
@@ -718,8 +734,7 @@ namespace WordsLive.Core.Songs
 					Backgrounds.Remove(bg);
 			};
 
-			var ch = new DelegateChange(this, undo, redo, new ChangeKey<object, string>(this, "Song.Backgrounds"));
-			UndoService.Current[UndoKey].AddChange(ch, "AddBackground");
+			Undo.ChangeFactory.OnChanging(this, undo, redo, "AddBackground");
 
 			if (contains)
 			{
@@ -777,7 +792,7 @@ namespace WordsLive.Core.Songs
 				}
 			};
 
-			using (new UndoBatch(UndoKey, "CleanBackgrounds", false))
+			using (Undo.ChangeFactory.Batch(this, "CleanBackgrounds"))
 			{
 				redo();
 
@@ -790,8 +805,7 @@ namespace WordsLive.Core.Songs
 					}
 				}
 
-				var ch = new DelegateChange(this, undo, redo, new ChangeKey<object, string>(this, "Song.Backgrounds"));
-				UndoService.Current[UndoKey].AddChange(ch, "CleanBackgrounds");
+				Undo.ChangeFactory.OnChanging(this, undo, redo, "CleanBackgrounds");
 			}
 		}
 
@@ -818,7 +832,7 @@ namespace WordsLive.Core.Songs
 				}
 			};
 
-			using (new UndoBatch(UndoKey, "SetBackground", false))
+			using (Undo.ChangeFactory.Batch(this, "SetBackground"))
 			{
 				Backgrounds.Clear();
 				Backgrounds.Add(bg);
@@ -829,8 +843,7 @@ namespace WordsLive.Core.Songs
 						slide.BackgroundIndex = 0;
 				}
 
-				var ch = new DelegateChange(this, undo, redo, new ChangeKey<object, string>(this, "Song.Backgrounds"));
-				UndoService.Current[UndoKey].AddChange(ch, "SetBackground");
+				Undo.ChangeFactory.OnChanging(this, undo, redo, "SetBackground");
 			}
 		}
 
@@ -970,8 +983,6 @@ namespace WordsLive.Core.Songs
 				this.Copyright = String.Join("\n", root.Element("information").Element("copyright").Element("text").Elements("line").Select(line => line.Value).ToArray());
 				this.AddSource(String.Join("\n", root.Element("information").Element("source").Element("text").Elements("line").Select(line => line.Value)));
 			}
-
-			UndoService.Current[UndoKey].Clear();
 		}
 
 		/// <summary>

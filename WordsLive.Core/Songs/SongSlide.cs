@@ -19,7 +19,6 @@
 using System;
 using System.ComponentModel;
 using System.Linq;
-using MonitoredUndo;
 
 namespace WordsLive.Core.Songs
 {
@@ -129,7 +128,7 @@ namespace WordsLive.Core.Songs
 			}
 			set
 			{
-				using (new UndoBatch(Root.UndoKey, "ChangeTextSize", false))
+				using (Undo.ChangeFactory.Batch(this, "ChangeTextSize"))
 				{
 					Undo.ChangeFactory.OnChanging(this, "Size", size, value);
 					size = value;
@@ -187,6 +186,7 @@ namespace WordsLive.Core.Songs
 		public SongSlide(Song root)
 		{
 			this.Root = root;
+			this.size = Root.Formatting.MainText.Size;
 		}
 
 		/// <summary>
@@ -195,7 +195,7 @@ namespace WordsLive.Core.Songs
 		/// <param name="bg">The background to use.</param>
 		public void SetBackground(SongBackground bg)
 		{
-			using (new UndoBatch(Root.UndoKey, "SetBackground", false))
+			using (Undo.ChangeFactory.Batch(this, "SetBackground"))
 			{
 				int index = Root.AddBackground(bg);
 				this.BackgroundIndex = index;

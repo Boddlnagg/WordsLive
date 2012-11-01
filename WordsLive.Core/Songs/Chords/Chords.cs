@@ -19,7 +19,6 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using MonitoredUndo;
 
 namespace WordsLive.Core.Songs.Chords
 {
@@ -148,7 +147,7 @@ namespace WordsLive.Core.Songs.Chords
 		/// <param name="amount">The amount of semitones to transpose by.</param>
 		public static void Transpose(Song song, Key originalKey, int amount)
 		{
-			using (new UndoBatch(song.UndoKey, "TransposeChords", false))
+			using (Undo.ChangeFactory.Batch(song, "TransposeChords"))
 			{
 				foreach (var part in song.Parts)
 				{
@@ -166,7 +165,7 @@ namespace WordsLive.Core.Songs.Chords
 		/// <param name="song">The song to process.</param>
 		public static void RemoveAll(Song song)
 		{
-			using (new UndoBatch(song.UndoKey, "RemoveChords", false))
+			using (Undo.ChangeFactory.Batch(song, "RemoveChords"))
 			{
 				foreach (var part in song.Parts)
 				{

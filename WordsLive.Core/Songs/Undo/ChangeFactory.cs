@@ -67,8 +67,20 @@ namespace WordsLive.Core.Songs.Undo
 		/// <param name="descriptionOfChange">A description of this change.</param>
 		public static void OnChanging(ISongElement instance, string propertyName, object oldValue, object newValue, string descriptionOfChange)
 		{
+			if (!instance.Root.IsUndoEnabled)
+				return;
+
 			Change change = GetChange(instance, propertyName, oldValue, newValue);
 			UndoService.Current[instance.Root.UndoKey].AddChange(change, descriptionOfChange);
+		}
+
+		public static void OnChanging(ISongElement instance, Action undoAction, Action redoAction, string description)
+		{
+			if (!instance.Root.IsUndoEnabled)
+				return;
+
+			var ch = new DelegateChange(instance, undoAction, redoAction, new ChangeKey<object, string>(instance, description));
+			UndoService.Current[instance.Root.UndoKey].AddChange(ch, description);
 		}
 
 		/// <summary>
@@ -81,6 +93,9 @@ namespace WordsLive.Core.Songs.Undo
 		/// <param name="newValue">The new value of the property.</param>
 		public static void OnChangingTryMerge(ISongElement instance, string propertyName, object oldValue, object newValue)
 		{
+			if (!instance.Root.IsUndoEnabled)
+				return;
+
 			var ch = DefaultChangeFactory.GetChange(instance, propertyName, oldValue, newValue);
 			var x = ch.ChangeKey.GetType();
 			if (UndoService.Current[instance.Root.UndoKey].UndoStack.Count() > 0 &&
@@ -94,6 +109,22 @@ namespace WordsLive.Core.Songs.Undo
 			else
 			{
 				UndoService.Current[instance.Root.UndoKey].AddChange(ch, propertyName);
+			}
+		}
+
+		public static IDisposable Batch(ISongElement instance, string description)
+		{
+			if (instance.Root.IsUndoEnabled)
+				return new UndoBatch(instance.Root.UndoKey, description, false);
+			else
+				return new UndoBatchDummy();
+		}
+
+		public class UndoBatchDummy : IDisposable
+		{
+			public void Dispose()
+			{
+				// do nothing
 			}
 		}
 	}

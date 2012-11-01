@@ -37,8 +37,11 @@ namespace WordsLive.Core.Tests.Songs
 		[Test]
 		public void PartAddSlideUndoRedo()
 		{
+			int size = song.Formatting.MainText.Size;
+
 			part.AddSlide();
 			Assert.AreEqual(2, part.Slides.Count);
+			Assert.AreEqual(size, part.Slides[1].Size);
 			Assert.IsTrue(String.IsNullOrEmpty(part.Slides[1].Text));
 			Assert.AreEqual(1, UndoStackSize);
 			Undo();
