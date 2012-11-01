@@ -55,7 +55,7 @@
 					<GridViewColumn Header="{x:Static resx:Resource.slGridTitle}" Width="250" CellTemplate="{StaticResource titleTemplate}"/>
 					<GridViewColumn Header="{x:Static resx:Resource.slGridSource}" Width="150" DisplayMemberBinding="{Binding Sources}" />
 					<GridViewColumn Header="{x:Static resx:Resource.slGridCopyright}" Width="170" DisplayMemberBinding="{Binding Copyright}" />
-					<!--<GridViewColumn Header="{x:Static resx:Resource.slGridLanguage}" Width="100" DisplayMemberBinding="{Binding Language}" />-->
+					<GridViewColumn Header="{x:Static resx:Resource.slGridLanguage}" Width="100" DisplayMemberBinding="{Binding Language}" />
 				</GridView>
 			</ListView.View>
 			<ListView.ItemContainerStyle>

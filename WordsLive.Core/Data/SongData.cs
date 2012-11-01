@@ -55,6 +55,11 @@ namespace WordsLive.Core.Data
 		public string Sources { get; set; }
 
 		/// <summary>
+		/// Gets or sets the language.
+		/// </summary>
+		public string Language { get; set; }
+
+		/// <summary>
 		/// Creates a new <see cref="SongData"/> instance from a <see cref="Song"/> by
 		/// extracting the relevant data.
 		/// </summary>
@@ -68,7 +73,8 @@ namespace WordsLive.Core.Data
 				Filename = Path.GetFileName(song.File),
 				Text = song.TextWithoutChords,
 				Copyright = String.Join(" ", song.Copyright.Split('\n').Select(line => line.Trim())),
-				Sources = String.Join("; ", song.Sources)
+				Sources = String.Join("; ", song.Sources),
+				Language = song.Language
 			};
 		}
 	}
