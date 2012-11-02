@@ -8,6 +8,7 @@ using WordsLive.Core.Songs;
 using System.Globalization;
 using WordsLive.Core;
 using Awesomium.Core;
+using WordsLive.Core.Data;
 
 namespace WordsLive.Songs
 {
@@ -52,15 +53,15 @@ namespace WordsLive.Songs
 				ImagesLoaded(this, EventArgs.Empty);
 		}
 
-		public void PreloadImages(IEnumerable<string> paths)
+		public void PreloadImages(IEnumerable<Uri> uris)
 		{
-			if (paths == null || paths.Count() < 1)
+			if (uris == null || uris.Count() < 1)
 			{
 				OnImagesLoaded();
 				return;
 			}
 
-			var arg = from path in paths select PrepareJavascriptString("file://" + path).Replace('\\', '/');
+			var arg = from uri in uris select PrepareJavascriptString(uri.AbsoluteUri);
 			control.ExecuteJavascript("preloadImages([" + string.Join(",", arg) + "])");
 		}
 
@@ -98,7 +99,7 @@ namespace WordsLive.Songs
 				}
 				if (bg.Type == SongBackgroundType.Image)
 				{
-					bgString = "background-color: black; background-image: url('file://" + (Path.Combine(MediaManager.BackgroundsDirectory, bg.FilePath)).Replace('\\', '/') + "');"; // TODO: use BackgroundDataProvider
+					bgString = "background-color: black; background-image: url('" + DataManager.Backgrounds.GetFile(bg).Uri.AbsoluteUri+ "');";
 					bgString += "background-repeat: no-repeat; background-size: 100%";
 				}
 				else if (bg.Type == SongBackgroundType.Color)

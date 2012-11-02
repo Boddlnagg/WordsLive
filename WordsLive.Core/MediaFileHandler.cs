@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using WordsLive.Core.Data;
 
 namespace WordsLive.Core
 {
@@ -22,17 +23,21 @@ namespace WordsLive.Core
 		/// <summary>
 		/// Try to load a single file with this handler.
 		/// </summary>
-		/// <param name="file">The file to load.</param>
-		/// <returns>The loaded media object.</returns>
-		public abstract Media TryHandle(FileInfo file);
+		/// <param name="path">The path to load.</param>
+		/// <param name="provider">The provider to use for loading.</param>
+		/// <returns>
+		/// The loaded media object.
+		/// </returns>
+		public abstract Media TryHandle(string path, MediaDataProvider provider);
 
 		/// <summary>
 		/// Try to load multiple files at once. If this is not supported by the media type or some or all files are not supported,
 		/// <c>null</c> is returned.
 		/// </summary>
-		/// <param name="files">The files to load.</param>
+		/// <param name="paths">The paths to load.</param>
+		/// <param name="provider">The provider to use for loading.</param>
 		/// <returns>The loaded media objects or <c>null</c>.</returns>
-		public virtual IEnumerable<Media> TryHandleMultiple(IEnumerable<FileInfo> files)
+		public virtual IEnumerable<Media> TryHandleMultiple(IEnumerable<string> path, MediaDataProvider provider)
 		{
 			return null;
 		}

@@ -2,6 +2,7 @@
 using WordsLive.Core;
 using WordsLive.Core.Songs;
 using System.IO;
+using WordsLive.Core.Data;
 
 namespace WordsLive.Songs
 {
@@ -17,9 +18,9 @@ namespace WordsLive.Songs
 			get { return "Powerpraise-Lieder"; }
 		}
 
-		public override Media TryHandle(FileInfo file)
+		public override Media TryHandle(string path, MediaDataProvider provider)
 		{
-			return new Song(file.FullName, true);
+			return new Song(path, provider, true);
 		}
 	}
 }

@@ -26,6 +26,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
 using WordsLive.Core.Songs.Undo;
+using WordsLive.Core.Data;
 
 namespace WordsLive.Core.Songs
 {
@@ -353,7 +354,7 @@ namespace WordsLive.Core.Songs
 		/// </summary>
 		/// <param name="filename">The file to load.</param>
 		/// <param name="metadataOnly">If set to <c>true</c> load metadata (title and backgrounds) only.</param>
-		public Song(string filename, bool metadataOnly = false) : base(filename)
+		public Song(string filename, MediaDataProvider provider, bool metadataOnly = false) : base(filename, provider)
 		{
 			if (UndoKey == null)
 				Init();
@@ -361,6 +362,13 @@ namespace WordsLive.Core.Songs
 			if (!metadataOnly)
 				Load();
 		}
+
+		/// <summary>
+		/// Initializes a new instance of the <see cref="Song"/> class.
+		/// TODO: make public after everything compiles
+		/// </summary>
+		/// <param name="filename">The file to load.</param>
+		private Song(string filename) : this(filename, new LocalFileDataProvider(), false) { }
 
 		/// <summary>
 		/// Initializes some attributes.
@@ -381,21 +389,22 @@ namespace WordsLive.Core.Songs
 		/// </summary>
 		public override void Load()
 		{
-			LoadPowerpraise(new FileInfo(this.File));
+			FileInfo file = this.DataProvider.GetLocal(this.File); // TODO: support Get() instead of GetLocal()
+			LoadPowerpraise(file);
 		}
 
 		/// <summary>
 		/// Only loads title and backgrounds (for icon).
 		/// </summary>
 		/// <param name="filename">The file to load.</param>
-		protected override void LoadMetadata(string filename)
+		internal override void LoadMetadata()
 		{
-			base.LoadMetadata(filename);
+			base.LoadMetadata();
 
 			if (UndoKey == null)
 				Init();
 
-			FileInfo file = new FileInfo(filename);
+			FileInfo file = this.DataProvider.GetLocal(this.File); // TODO: support Get() instead of GetLocal()
 			if (file.Extension == ".ppl")
 			{
 				LoadPowerpraise(file, true);

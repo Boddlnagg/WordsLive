@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Windows.Data;
 using System.Windows.Media;
-using WordsLive.Core.Songs;
 using System.Windows.Media.Imaging;
-using System.IO;
-using WordsLive.Core;
+using WordsLive.Core.Data;
+using WordsLive.Core.Songs;
 
 namespace WordsLive.Songs
 {
@@ -35,15 +31,17 @@ namespace WordsLive.Songs
 			{
 				try
 				{
+					// TODO: support caching
 					var img = new BitmapImage();
 					img.BeginInit();
-					img.UriSource = new Uri(Path.Combine(MediaManager.BackgroundsDirectory, bg.FilePath)); // TODO: use BackgroundDataProvider
+					img.UriSource = DataManager.Backgrounds.GetFile(bg).Uri;
 					if (width > -1)
 						img.DecodePixelWidth = width;
 					img.EndInit();
-					WriteableBitmap writable = new WriteableBitmap(img);
-					writable.Freeze();
-					return writable;
+					//WriteableBitmap writable = new WriteableBitmap(img);
+					//writable.Freeze();
+					//return writable;
+					return img;
 				}
 				catch
 				{
@@ -62,10 +60,15 @@ namespace WordsLive.Songs
 			}
 		}
 
+		/// <summary>
+		/// Helper method to create a 4:3 solid color image.
+		/// </summary>
+		/// <param name="brush">The brush to use to fill the image.</param>
+		/// <returns>The created image.</returns>
 		private static ImageSource CreateColorImage(Brush brush)
 		{
-			RenderTargetBitmap rtb = new RenderTargetBitmap(1, 1, 96, 96, System.Windows.Media.PixelFormats.Pbgra32);
-			var rect = new System.Windows.Shapes.Rectangle { Width = 1, Height = 1, Fill = brush };
+			RenderTargetBitmap rtb = new RenderTargetBitmap(4, 3, 96, 96, System.Windows.Media.PixelFormats.Pbgra32);
+			var rect = new System.Windows.Shapes.Rectangle { Width = 4, Height = 3, Fill = brush };
 			rect.Arrange(new System.Windows.Rect(0, 0, rect.Width, rect.Height));
 			rtb.Render(rect);
 			return rtb;

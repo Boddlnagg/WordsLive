@@ -28,6 +28,10 @@ namespace WordsLive.Core.Data
 	{
 		private string directory;
 
+		/// <summary>
+		/// Initializes a new instance of the <see cref="LocalSongDataProvider"/> class.
+		/// </summary>
+		/// <param name="directory">The songs directory.</param>
 		public LocalSongDataProvider(string directory)
 		{
 			if (directory == null)
@@ -53,7 +57,7 @@ namespace WordsLive.Core.Data
 
 				try
 				{
-					data = SongData.Create(new Song(file));
+					data = SongData.Create(new Song(file, this));
 				}
 				catch { }
 
@@ -63,16 +67,43 @@ namespace WordsLive.Core.Data
 		}
 
 		/// <summary>
-		/// Gets the full (absolute) path for a song data object.
-		/// TODO: replace this with some kind of "MediaLocator" object
+		/// Gets the resource at the specified path.
 		/// </summary>
-		/// <param name="song">The song to get the path for.</param>
+		/// <param name="path">The path.</param>
 		/// <returns>
-		/// The full path where the specified song can be retrieved.
+		/// The resource as a stream.
 		/// </returns>
-		public override string GetFullPath(SongData song)
+		/// <exception cref="FileNotFoundException">The resource was not found.</exception>
+		public override Stream Get(string path)
 		{
-			return Path.Combine(directory, song.Filename);
+			if (path.Contains('\\') || path.Contains('/'))
+				throw new ArgumentException("Song filename must not contain a full path.");
+
+			string fullPath = Path.Combine(directory, path);
+
+			if (!File.Exists(fullPath))
+				throw new FileNotFoundException(path);
+
+			return File.OpenRead(fullPath);
+		}
+
+		/// <summary>
+		/// Gets the resource as a local file. If it actually is not a local file,
+		/// it is temporarily cached locally.
+		/// </summary>
+		/// <param name="path">The path.</param>
+		/// <returns>
+		/// The resource as a local file.
+		/// </returns>
+		/// <exception cref="FileNotFoundException">The resource was not found.</exception>
+		public override FileInfo GetLocal(string path)
+		{
+			var fi = new FileInfo(Path.Combine(directory, path));
+
+			if (!fi.Exists)
+				throw new FileNotFoundException(path);
+
+			return fi;
 		}
 	}
 }

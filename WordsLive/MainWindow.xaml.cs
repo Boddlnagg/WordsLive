@@ -16,6 +16,7 @@ using WordsLive.Presentation;
 using WordsLive.Resources;
 using WordsLive.Songs;
 using WordsLive.Utils;
+using WordsLive.Core.Data;
 
 namespace WordsLive
 {
@@ -317,11 +318,11 @@ namespace WordsLive
 			{
 				if (dlg.FileNames.Count() > 1)
 				{
-					foreach (var m in MediaManager.LoadMultipleMediaMetadata(dlg.FileNames))
+					foreach (var m in MediaManager.LoadMultipleMediaMetadata(dlg.FileNames, DataManager.LocalFiles))
 						orderList.Add(m);
 				}
 				else
-					orderList.Add(MediaManager.LoadMediaMetadata(dlg.FileName));
+					orderList.Add(MediaManager.LoadMediaMetadata(dlg.FileName, DataManager.LocalFiles));
 
 				portfolioChanged = true;
 			}
@@ -421,9 +422,10 @@ namespace WordsLive
 		/// to the end of the portfolio.
 		/// </summary>
 		/// <param name="file">The file to add.</param>
-		internal void AddToPortfolio(string file)
+		/// <param name="provider">The provider.</param>
+		internal void AddToPortfolio(string file, MediaDataProvider provider)
 		{
-			var media = MediaManager.LoadMediaMetadata(file);
+			var media = MediaManager.LoadMediaMetadata(file, provider);
 			if (ActiveMedia != null)
 			{
 				int index = orderList.IndexOf(orderList.ActiveItem);
@@ -495,7 +497,7 @@ namespace WordsLive
 				if (song != null)
 				{
 					EditorWindow win = Controller.ShowEditorWindow();
-					win.LoadOrImport(song.File);
+					win.LoadOrImport(song.File, song.DataProvider);
 				}
 			}
 			else if (e.Command == CustomCommands.ShowSettings)
@@ -827,13 +829,13 @@ namespace WordsLive
 					}
 					else
 					{
-						Media m = MediaManager.LoadMediaMetadata(files[0]);
+						Media m = MediaManager.LoadMediaMetadata(files[0], DataManager.LocalFiles);
 						orderList.Insert(index, m);
 					}
 				}
 				else
 				{
-					foreach (var m in MediaManager.LoadMultipleMediaMetadata(files))
+					foreach (var m in MediaManager.LoadMultipleMediaMetadata(files, DataManager.LocalFiles))
 					{
 						orderList.Insert(index++, m);
 					}

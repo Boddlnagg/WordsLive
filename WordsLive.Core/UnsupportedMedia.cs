@@ -3,18 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.IO;
+using WordsLive.Core.Data;
 
 namespace WordsLive.Core
 {
 	public class UnsupportedMedia : Media
 	{
-		public UnsupportedMedia(string file) : base(file) { }
+		public UnsupportedMedia(string file, MediaDataProvider provider) : base(file, provider) { }
 
 		public override string Title
 		{
 			get
 			{
-				return base.Title + " (Format wird nicht unterstützt)";
+				return base.Title + " (Format wird nicht unterstützt)"; // TODO: localize
 			}
 		}
 

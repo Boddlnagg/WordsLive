@@ -28,21 +28,13 @@ namespace WordsLive.Core.Data
 	/// are available. There is no support for a directory structure for songs, so they are identified
 	/// using only their filename.
 	/// </summary>
-	public abstract class SongDataProvider
+	public abstract class SongDataProvider : MediaDataProvider
 	{
 		/// <summary>
 		/// Gets all available songs the provider can provide.
 		/// </summary>
 		/// <returns>All available songs.</returns>
 		public abstract IEnumerable<SongData> All();
-
-		/// <summary>
-		/// Gets the full (absolute) path for a song data object.
-		/// TODO: replace this with some kind of "MediaLocator" object
-		/// </summary>
-		/// <param name="song">The song to get the path for.</param>
-		/// <returns>The full path where the specified song can be retrieved.</returns>
-		public abstract string GetFullPath(SongData song);
 
 		/// <summary>
 		/// Filters the songs by title.

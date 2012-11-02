@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.IO;
+using WordsLive.Core.Data;
 
 namespace WordsLive.Core
 {
 	public class WebSite : Media
 	{
-		public WebSite(string file) : base(file) { }
+		public WebSite(string file, MediaDataProvider provider) : base(file, provider) { }
 
 		public string Url { get; private set; }
 

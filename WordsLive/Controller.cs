@@ -14,6 +14,7 @@ using System.Reflection;
 using WordsLive.Resources;
 using Microsoft.Win32;
 using System.Threading;
+using WordsLive.Core.Data;
 
 namespace WordsLive
 {
@@ -137,7 +138,7 @@ namespace WordsLive
 				window.ShowSettingsWindow();
 			}
 
-			MediaManager.InitDirectories(Properties.Settings.Default.SongsDirectory, Properties.Settings.Default.BackgroundsDirectory);
+			DataManager.InitLocalDirectories(Properties.Settings.Default.SongsDirectory, Properties.Settings.Default.BackgroundsDirectory);
 		}
 		#endregion
 
@@ -226,9 +227,9 @@ namespace WordsLive
 			instance.window.OpenPortfolio(file);
 		}
 
-		public static void AddToPortfolio(string file)
+		public static void AddToPortfolio(string file, MediaDataProvider provider)
 		{
-			instance.window.AddToPortfolio(file);
+			instance.window.AddToPortfolio(file, provider);
 		}
 
 		public static void ShowSongList()
@@ -274,6 +275,7 @@ namespace WordsLive
 		/// <summary>
 		/// Creates a new instance of <see cref="Song"/> from the template file (the SongTemplateFile application setting).
 		/// This is used for creating new (empty) songs and for importing songs.
+		/// TODO: move to Core assembly
 		/// </summary>
 		/// <returns>The created song.</returns>
 		public static Song CreateSongFromTemplate()
@@ -287,7 +289,7 @@ namespace WordsLive
 				template = Path.Combine("Data", "Standard.ppl");
 			}
 
-			return new Song(template) { SongTitle = WordsLive.Resources.Resource.eNewSongTitle };
+			return new Song(template, DataManager.LocalFiles) { SongTitle = WordsLive.Resources.Resource.eNewSongTitle };
 		}
 
 		public static void FocusMainWindow()

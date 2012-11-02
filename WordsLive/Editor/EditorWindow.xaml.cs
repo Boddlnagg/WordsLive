@@ -1,12 +1,12 @@
 ﻿using System;
-using System.Linq;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
+using System.Linq;
 using System.Windows;
 using System.Windows.Input;
+using WordsLive.Core.Data;
 using WordsLive.Core.Songs;
-using System.Windows.Documents;
 
 namespace WordsLive.Editor
 {
@@ -57,27 +57,30 @@ namespace WordsLive.Editor
 			return null;
 		}
 
-		public void LoadOrImport(string filename)
+		public void LoadOrImport(string filename, MediaDataProvider provider)
 		{
 			if (filename == null)
 				throw new ArgumentNullException("filename");
 
-			var file = new FileInfo(filename);
+			if (!(provider is LocalFileDataProvider))
+				throw new NotImplementedException("Editing songs using a provider other than LocalFileDataProvider is not yet implemented");
 
-			if (file.Extension == ".ppl")
+			string ext = Path.GetExtension(filename).ToLower();
+
+			if (ext == ".ppl")
 			{
-				Load(filename, new Song(filename), false);
+				Load(filename, new Song(filename, provider), false);
 			}
-			else if (file.Extension == ".sng")
+			else if (ext == ".sng")
 			{
 				var song = Controller.CreateSongFromTemplate();
-				SongBeamerImport.Import(song, filename);
+				SongBeamerImport.Import(song, filename); // TODO: support providers
 				Load(filename, song, true);
 			}
 			else
 			{
 				Controller.ShowEditorWindow();
-				MessageBox.Show(String.Format(WordsLive.Resources.Resource.eMsgCouldNotOpenSong, file), WordsLive.Resources.Resource.dialogError, MessageBoxButton.OK, MessageBoxImage.Error);
+				MessageBox.Show(String.Format(WordsLive.Resources.Resource.eMsgCouldNotOpenSong, filename), WordsLive.Resources.Resource.dialogError, MessageBoxButton.OK, MessageBoxImage.Error);
 			}
 		}
 
@@ -101,7 +104,7 @@ namespace WordsLive.Editor
 
 			if (dlg.ShowDialog() == true)
 			{
-				LoadOrImport(dlg.FileName);
+				LoadOrImport(dlg.FileName, DataManager.LocalFiles);
 			}
 		}
 
@@ -261,12 +264,13 @@ namespace WordsLive.Editor
 
 		private void Tabs_Drop(object sender, DragEventArgs e)
 		{
+			// TODO: support drop from explorer (local file) and from songlist (song data provider)
 			if (e.Data.GetData(DataFormats.FileDrop) != null)
 			{
 				string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
 				foreach (var file in files)
 				{
-					LoadOrImport(file);
+					LoadOrImport(file, DataManager.LocalFiles);
 				}
 			}
 		}
@@ -397,7 +401,7 @@ namespace WordsLive.Editor
 			}
 			else if (e.Command == CustomCommands.AddMedia)
 			{
-				Controller.AddToPortfolio(doc.File.FullName);
+				Controller.AddToPortfolio(doc.File.FullName, DataManager.LocalFiles); // TODO: use correct data provider
 			}
 			else if (e.Command == CustomCommands.ShowSonglist)
 			{

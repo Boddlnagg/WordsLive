@@ -17,11 +17,6 @@ namespace WordsLive.Editor
 {
 	public partial class ChooseBackgroundWindow : Window, INotifyPropertyChanged
 	{
-		public readonly static string[] AllowedImageExtensions = new string[] { ".png", ".jpg", ".jpeg" };
-		public readonly static string[] AllowedVideoExtensions = new string[] { ".mp4", ".wmv", ".avi" };
-
-		private BackgroundDataProvider provider;
-
 		public SongBackground ChosenBackground
 		{
 			get;
@@ -75,19 +70,13 @@ namespace WordsLive.Editor
 
 			UseImage = background.IsFile;
 
-			provider = new LocalBackgroundDataProvider(MediaManager.BackgroundsDirectory)
-			{
-				AllowedImageExtensions = AllowedImageExtensions,
-				AllowedVideoExtensions = AllowedVideoExtensions
-			};
-
-			directoryView.DataContext = new BackgroundDirectory[] { provider.Root };
+			directoryView.DataContext = new BackgroundDirectory[] { DataManager.Backgrounds.Root };
 
 			if (background.IsFile)
 			{
 				try
 				{
-					var file = provider.GetFile(background);
+					var file = DataManager.Backgrounds.GetFile(background);
 					directoryView.Loaded += (sender, args) => SelectEntry(background.FilePath);
 				}
 				catch (FileNotFoundException)

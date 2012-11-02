@@ -5,6 +5,7 @@ using System.Text;
 using WordsLive.Core.Songs;
 using System.IO;
 using System.Diagnostics;
+using WordsLive.Core.Data;
 
 namespace SongTester
 {
@@ -18,7 +19,7 @@ namespace SongTester
             sw.Start();
             foreach (var f in dir.GetFiles())
             {
-                Song s = new Song(f.FullName);
+                Song s = new Song(f.FullName, DataManager.LocalFiles);
                 i++;
                 Console.WriteLine("[OK] " +s.SongTitle);
             }

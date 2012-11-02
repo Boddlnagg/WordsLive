@@ -255,7 +255,6 @@ namespace WordsLive.Editor
 		private void StructureTree_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
 		{
 			var tree = (TreeView)sender;
-			// TODO: test
 			var item = tree.GetItemAtPosition(e.GetPosition(tree));
 
 			if (item != null)

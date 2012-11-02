@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using WordsLive.Core;
-using WordsLive.Core.Songs;
-using System.Windows.Media;
-using System.Windows.Controls;
-using System.Windows.Media.Animation;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Media;
+using System.Windows.Media.Animation;
 using WordsLive.AudioVideo;
+using WordsLive.Core.Data;
+using WordsLive.Core.Songs;
 
 namespace WordsLive.Songs
 {
@@ -70,7 +69,7 @@ namespace WordsLive.Songs
 				
 				videoBackground.Autoplay = true;
 				videoBackground.Loop = true;
-				videoBackground.Load(Path.Combine(MediaManager.BackgroundsDirectory, song.VideoBackground.FilePath)); // TODO: use provider
+				videoBackground.Load(DataManager.Backgrounds.GetFile(song.VideoBackground).Uri.AbsoluteUri);
 
 				var brush = new System.Windows.Media.VisualBrush(videoBackground);
 				videoBackgroundClone = new System.Windows.Shapes.Rectangle();

@@ -158,7 +158,7 @@ namespace WordsLive.MediaOrderList
 				}
 				else
 				{
-					var newData = MediaManager.LoadMediaMetadata(item.Data.File);
+					var newData = MediaManager.LoadMediaMetadata(item.Data.File, item.Data.DataProvider);
 					Controller.CurrentPanel = null;
 					var newActive = Replace(ActiveItem, newData);
 					if (CanActivate(newActive))

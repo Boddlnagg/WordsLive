@@ -8,6 +8,7 @@ using System;
 using System.IO;
 using WordsLive.Core;
 using System.Windows;
+using WordsLive.Core.Data;
 
 namespace WordsLive.Editor
 {
@@ -130,7 +131,7 @@ namespace WordsLive.Editor
 		{
 			// TODO: previews don't load correctly when more than one file is opened simultaneously
 			UpdateStyle();
-			controller.PreloadImages(from bg in song.Backgrounds where bg.Type == SongBackgroundType.Image select Path.Combine(MediaManager.BackgroundsDirectory, bg.FilePath)); // TODO: use BackgroundDataProvider
+			controller.PreloadImages(from bg in song.Backgrounds where bg.Type == SongBackgroundType.Image select DataManager.Backgrounds.GetFile(bg).Uri);
 		}
 
 		private bool isFirstSelected;

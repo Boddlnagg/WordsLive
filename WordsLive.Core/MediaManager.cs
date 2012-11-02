@@ -5,6 +5,7 @@ using System.Text;
 using System.IO;
 using WordsLive.Core.Songs;
 using System.Xml.Linq;
+using WordsLive.Core.Data;
 
 namespace WordsLive.Core
 {
@@ -44,69 +45,46 @@ namespace WordsLive.Core
 		}
 
 		/// <summary>
-		/// Creates a media object from a file. If the file doesn't exist, a <see cref="FileNotFoundMedia"/> is returned.
+		/// Creates a media object from a file (using the specified data provider).
+		/// If the file doesn't exist, a <see cref="FileNotFoundMedia"/> is returned.
 		/// If no appropiate file handler is found, a <see cref="UnsupportedMedia"/> is returned.
 		/// Otherwise the correct <see cref="Media"/> type is returned.
 		/// </summary>
-		/// <param name="file">The <see cref="FileInfo"/> with the path.</param>
+		/// <param name="file">The path, to be handled by the data provider.</param>
+		/// <param name="provider">The data provider to use for loading.</param>
 		/// <returns>A <see cref="Media"/> object.</returns>
-		public static Media LoadMediaMetadata(FileInfo file)
+		public static Media LoadMediaMetadata(string path, MediaDataProvider provider)
 		{
-			if (file.Exists)
+			try
 			{
-				string ext = file.Extension.ToLower();
+				string ext = Path.GetExtension(path).ToLower();
 				var handlers = from h in fileHandlers where h.Extensions.Contains(ext) select h;
 				Media result;
 				foreach (var h in handlers)
 				{
-					result = h.TryHandle(file);
+					result = h.TryHandle(path, provider);
 					if (result != null)
 						return result;
 				}
 
-				return new UnsupportedMedia(file.FullName);
+				return new UnsupportedMedia(path, provider);
 			}
-			else
+			catch (FileNotFoundException)
 			{
-				return new FileNotFoundMedia(file.FullName);
+				return new FileNotFoundMedia(path, provider);
 			}
-		}
-
-		/// <summary>
-		/// Creates a media object from a file. If the file doesn't exist, a <see cref="FileNotFoundMedia"/> is returned.
-		/// If no appropiate file handler is found, a <see cref="UnsupportedMedia"/> is returned.
-		/// Otherwise the correct <see cref="Media"/> type is returned.
-		/// </summary>
-		/// <param name="file">The full path as a string.<param>
-		/// <returns>A <see cref="Media"/> object.</returns>
-		public static Media LoadMediaMetadata(string file)
-		{
-			if (String.IsNullOrEmpty(file))
-				throw new ArgumentException("file");
-
-			return LoadMediaMetadata(new FileInfo(file));
 		}
 
 		/// <summary>
 		/// Loads multiple files at once, trying to call a single handler's <see cref="MediaFileHandler.TryHandleMultiple"/> method
-		/// in order to load them into a single media object if supported.
+		/// in order to load them into a single media object if supported. This assumes that the files exist.
 		/// </summary>
-		/// <param name="files">The paths to the files to load.</param>
+		/// <param name="paths">The paths to the files to load.</param>
+		/// <param name="provider">The provider to use for loading.</param>
 		/// <returns>The loaded media objects, either one per file or less.</returns>
-		public static IEnumerable<Media> LoadMultipleMediaMetadata(IEnumerable<string> files)
+		public static IEnumerable<Media> LoadMultipleMediaMetadata(IEnumerable<string> paths, MediaDataProvider provider)
 		{
-			var fileInfos = from f in files select new FileInfo(f);
-
-			// if not all of them exist load them seperately
-			if (!fileInfos.All(f => f.Exists))
-			{
-				foreach (var file in files)
-				{
-					yield return LoadMediaMetadata(file);
-				}
-			}
-
-			var extensions = (from f in fileInfos select f.Extension.ToLower()).Distinct();
+			var extensions = (from p in paths select Path.GetExtension(p.ToLower())).Distinct();
 
 			// select handlers that can handle all selected file types
 			var handlers = from h in fileHandlers where !extensions.Except(h.Extensions).Any() select h;
@@ -114,7 +92,7 @@ namespace WordsLive.Core
 			IEnumerable<Media> result;
 			foreach (var h in handlers)
 			{
-				result = h.TryHandleMultiple(fileInfos);
+				result = h.TryHandleMultiple(paths, provider);
 				if (result != null)
 				{
 					foreach (var r in result)
@@ -125,9 +103,9 @@ namespace WordsLive.Core
 			}
 
 			// if not all of them are supported by a single handler load them seperately
-			foreach (var file in files)
+			foreach (var path in paths)
 			{
-				yield return LoadMediaMetadata(file);
+				yield return LoadMediaMetadata(path, provider);
 			}
 		}
 
@@ -138,22 +116,21 @@ namespace WordsLive.Core
 		/// <returns>The reloaded media object. Possibly but not necessarily the same object that was given as input.</returns>
 		public static Media ReloadMediaMetadata(Media media)
 		{
-			var file = new FileInfo(media.File);
-			if (file.Exists)
+			try
 			{
 				if (media is FileNotFoundMedia)
 				{
-					return LoadMediaMetadata(file);
+					return LoadMediaMetadata(media.File, media.DataProvider);
 				}
 				else
 				{
-					media.ReloadMetadata();
+					media.LoadMetadata();
 					return media;
 				}
 			}
-			else
+			catch (FileNotFoundException)
 			{
-				return new FileNotFoundMedia(file.FullName);
+				return new FileNotFoundMedia(media.File, media.DataProvider);
 			}
 		}
 
@@ -222,9 +199,9 @@ namespace WordsLive.Core
 					if (root.Attribute("version").Value == "3.0" || root.Attribute("version").Value == "4.0")
 					{
 						foreach (Media m in from i in root.Element("order").Elements("item")
-													select i.Attribute("mediatype").Value == "powerpraise-song" ?
-													LoadMediaMetadata(Path.Combine(SongsDirectory, i.Element("file").Value)) :
-													LoadMediaMetadata(i.Element("file").Value))
+											select i.Attribute("mediatype").Value == "powerpraise-song" ?
+											LoadMediaMetadata(i.Element("file").Value, DataManager.Songs) :
+											LoadMediaMetadata(i.Element("file").Value, DataManager.LocalFiles)) // TODO: don't assume local files for everything else
 						{
 							yield return m;
 						}
@@ -234,7 +211,7 @@ namespace WordsLive.Core
 					else if (root.Attribute("version").Value == "2.2")
 					{
 						foreach (Media m in from i in root.Elements("item")
-													select MediaManager.LoadMediaMetadata(Path.Combine(SongsDirectory, i.Element("file").Value)))
+													select MediaManager.LoadMediaMetadata(i.Element("file").Value, DataManager.Songs))
 						{
 							yield return m;
 						}
@@ -266,7 +243,8 @@ namespace WordsLive.Core
 					select new XElement(
 						"item",
 						new XAttribute("mediatype", m is Song ? "powerpraise-song" : "file"),
-						new XElement("file", m is Song ? m.File.Replace(SongsDirectory + Path.DirectorySeparatorChar, "") : m.File)
+						//new XElement("file", m is Song ? m.File.Replace(SongsDirectory + Path.DirectorySeparatorChar, "") : m.File)
+						new XElement("file", m.File)
 					)
 				),
 				new XElement("settings",
@@ -304,31 +282,5 @@ namespace WordsLive.Core
 			doc.Save(writer);
 			writer.Close();
 		}
-
-		/// <summary>
-		/// Initializes the directories for songs and backgrounds.
-		/// </summary>
-		/// <param name="songsDirectory">The directory for songs.</param>
-		/// <param name="backgroundsDirectory">The directory for backgrounds.</param>
-		public static void InitDirectories(string songsDirectory, string backgroundsDirectory)
-		{
-			SongsDirectory = songsDirectory;
-			if (SongsDirectory.EndsWith("\\"))
-				SongsDirectory = SongsDirectory.Substring(0, SongsDirectory.Length - 1);
-
-			BackgroundsDirectory = backgroundsDirectory;
-			if (BackgroundsDirectory.EndsWith("\\"))
-				BackgroundsDirectory = BackgroundsDirectory.Substring(0, BackgroundsDirectory.Length - 1);
-		}
-
-		/// <summary>
-		/// Gets the directory for songs.
-		/// </summary>
-		public static string SongsDirectory { get; private set; }
-
-		/// <summary>
-		/// Gets the directory for backgrounds.
-		/// </summary>
-		public static string BackgroundsDirectory { get; private set; }
 	}
 }

@@ -1,12 +1,13 @@
 ﻿using WordsLive.Core;
 using System.Collections.Generic;
 using System.IO;
+using WordsLive.Core.Data;
 
 namespace WordsLive.Slideshow.PowerpointViewer
 {
 	public class PowerpointViewerMedia : SlideshowMedia
 	{
-		public PowerpointViewerMedia(string file) : base(file) { }
+		public PowerpointViewerMedia(string file, MediaDataProvider provider) : base(file, provider) { }
 
 		public override ISlideshowPresentation CreatePresentation()
 		{

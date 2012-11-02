@@ -6,6 +6,7 @@ using System.Linq;
 using Ionic.Zip;
 using WordsLive.Core;
 using System.Threading;
+using WordsLive.Core.Data;
 
 namespace WordsLive.Images
 {
@@ -19,7 +20,7 @@ namespace WordsLive.Images
 
 		public bool CanEdit { get; private set; }
 
-		public ImagesMedia(string file) : base(file) { }
+		public ImagesMedia(string file, MediaDataProvider provider) : base(file, provider) { }
 
 		public override void Load()
 		{

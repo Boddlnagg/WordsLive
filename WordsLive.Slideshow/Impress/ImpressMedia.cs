@@ -1,4 +1,5 @@
 ﻿using System;
+using WordsLive.Core.Data;
 
 namespace WordsLive.Slideshow.Impress
 {
@@ -6,7 +7,7 @@ namespace WordsLive.Slideshow.Impress
 	{
 		Type presentationType;
 
-		public ImpressMedia(string file, Type presentationType) : base(file)
+		public ImpressMedia(string file, MediaDataProvider provider, Type presentationType) : base(file, provider)
 		{
 			this.presentationType = presentationType;
 		}

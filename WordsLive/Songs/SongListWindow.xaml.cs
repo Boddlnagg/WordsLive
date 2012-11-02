@@ -16,14 +16,11 @@ namespace WordsLive.Songs
 	public partial class SongListWindow : Window
 	{
 		private SongFilter filter;
-		private SongDataProvider provider;
 		ObservableCollection<SongData> list = new ObservableCollection<SongData>();
 
 		public SongListWindow()
 		{
 			InitializeComponent();
-
-			provider = new LocalSongDataProvider(MediaManager.SongsDirectory); // TODO: use factory or something
 		}
 
 		private void filterButton_Click(object sender, RoutedEventArgs e)
@@ -60,7 +57,7 @@ namespace WordsLive.Songs
 
 		private void LoadSongs()
 		{
-			foreach (var song in provider.All())
+			foreach (var song in DataManager.Songs.All())
 			{
 				this.Dispatcher.BeginInvoke(new Action<SongData>(this.list.Add), song);
 				this.Dispatcher.BeginInvoke(new Action<bool>(LoadUpdateUI), System.Windows.Threading.DispatcherPriority.Normal, false);
@@ -92,8 +89,9 @@ namespace WordsLive.Songs
 			SongData song = (SongData)songListView.ItemContainerGenerator.ItemFromContainer(dragItem);
 
 			// Initialize the drag & drop operation
-			DataObject dragData = new DataObject(DataFormats.FileDrop, new string[] { provider.GetFullPath(song) });
-			DragDrop.DoDragDrop(dragItem, dragData, DragDropEffects.Copy);
+			// TODO: enable this again (at least for local files)
+			//DataObject dragData = new DataObject(DataFormats.FileDrop, new string[] { DataManager.Songs.GetFullPath(song) });
+			//DragDrop.DoDragDrop(dragItem, dragData, DragDropEffects.Copy);
 			dragItem = null;
 		}
 
@@ -108,7 +106,7 @@ namespace WordsLive.Songs
 				return;
 
 			var song = (SongData)songListView.ItemContainerGenerator.ItemFromContainer(sender as ListViewItem);
-			Controller.AddToPortfolio(provider.GetFullPath(song));
+			Controller.AddToPortfolio(song.Filename, DataManager.Songs);
 		}
 
 		private void OnCanExecuteCommand(object sender, CanExecuteRoutedEventArgs e)
@@ -124,7 +122,7 @@ namespace WordsLive.Songs
 			if (e.Command == CustomCommands.AddMedia)
 			{
 				var song = (SongData)songListView.SelectedItem;
-				Controller.AddToPortfolio(provider.GetFullPath(song));
+				Controller.AddToPortfolio(song.Filename, DataManager.Songs);
 			}
 			else if (e.Command == ApplicationCommands.Close)
 			{

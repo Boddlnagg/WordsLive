@@ -16,53 +16,25 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-using System.Linq;
-using NUnit.Framework;
-using WordsLive.Core.Data;
-using WordsLive.Core.Songs;
+using System.IO;
 
-namespace WordsLive.Core.Tests.Songs
+namespace WordsLive.Core.Data
 {
-	public abstract class SongTestsBase
+	public class LocalFileDataProvider : MediaDataProvider
 	{
-		protected Song song;
-
-		protected void ClearUndoRedoStack()
+		public override Stream Get(string path)
 		{
-			song.UndoManager.Root.Clear();
+			return File.OpenRead(path);
 		}
 
-		protected void Undo()
+		public override FileInfo GetLocal(string path)
 		{
-			song.UndoManager.Undo();
-		}
+			var fi = new FileInfo(path);
 
-		protected void Redo()
-		{
-			song.UndoManager.Redo();
-		}
+			if (!fi.Exists)
+				throw new FileNotFoundException(path);
 
-		protected int UndoStackSize
-		{
-			get
-			{
-				return song.UndoManager.Root.UndoStack.Count();
-			}
-		}
-
-		protected int RedoStackSize
-		{
-			get
-			{
-				return song.UndoManager.Root.RedoStack.Count();
-			}
-		}
-
-		[SetUp]
-		public virtual void Init()
-		{
-			song = new Song(@"TestData\SimpleSong.ppl", DataManager.LocalFiles);
-			song.IsUndoEnabled = true;
+			return fi;
 		}
 	}
 }

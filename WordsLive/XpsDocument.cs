@@ -5,6 +5,7 @@ using System.Text;
 using WordsLive.Core;
 using Xps = System.Windows.Xps.Packaging;
 using System.IO;
+using WordsLive.Core.Data;
 
 namespace WordsLive
 {
@@ -12,7 +13,7 @@ namespace WordsLive
 	{
 		public Xps.XpsDocument Document { get; private set; }
 
-		public XpsDocument(string file) : base(file) { }
+		public XpsDocument(string file, MediaDataProvider provider) : base(file, provider) { }
 
 		public override void Load()
 		{
