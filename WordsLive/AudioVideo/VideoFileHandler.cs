@@ -1,24 +1,25 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using WordsLive.Core;
+using WordsLive.Core.Data;
 
 namespace WordsLive.AudioVideo
 {
-	//public class VideoFileHandler : MediaFileHandler
-	//{
-	//    public override IEnumerable<string> Extensions
-	//    {
-	//        get { return new string[] { ".wmv", ".mp4", ".avi", ".mov" }; }
-	//    }
+	public class VideoFileHandler : MediaFileHandler
+	{
+		public override IEnumerable<string> Extensions
+		{
+			get { return new string[] { ".wmv", ".mp4", ".avi", ".mov" }; }
+		}
 
-	//    public override string Description
-	//    {
-	//        get { return "Video-Dateien"; }
-	//    }
+		public override string Description
+		{
+			get { return "Video-Dateien"; } // TODO: localize
+		}
 
-	//    public override Media TryHandle(FileInfo file)
-	//    {
-	//        return new VideoMedia(file.FullName);
-	//    }
-	//}
+		public override Media TryHandle(string path, MediaDataProvider provider)
+		{
+			return new VideoMedia(path, provider);
+		}
+	}
 }

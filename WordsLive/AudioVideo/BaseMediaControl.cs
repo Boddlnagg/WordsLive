@@ -13,7 +13,7 @@ namespace WordsLive.AudioVideo
 		public abstract int Position { get; set; }
 		public abstract bool Loop { get; set; }
 		public abstract bool Autoplay { get; set; }
-		public abstract void Load(string path);
+		public abstract void Load(Uri uri);
 		public abstract void Play();
 		public abstract void Pause();
 		public abstract void Stop();

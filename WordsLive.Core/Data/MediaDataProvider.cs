@@ -16,6 +16,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+using System;
 using System.IO;
 
 namespace WordsLive.Core.Data
@@ -33,6 +34,13 @@ namespace WordsLive.Core.Data
 		/// <returns>The resource as a stream.</returns>
 		/// <exception cref="FileNotFoundException">The resource was not found.</exception>
 		public abstract Stream Get(string path);
+
+		/// <summary>
+		/// Gets an absolute Uri of the resource.
+		/// </summary>
+		/// <param name="path">The path.</param>
+		/// <returns>A Uri pointing to the resource.</returns>
+		public abstract Uri GetUri(string path);
 
 		/// <summary>
 		/// Gets the resource as a local file. If it actually is not a local file,

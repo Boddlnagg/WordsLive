@@ -20,9 +20,9 @@ namespace WordsLive.AudioVideo
 			InitializeComponent();
 		}
 
-		public override void Load(string path)
+		public override void Load(Uri uri)
 		{
-			media = new PathMedia(path);
+			media = new PathMedia(uri.AbsoluteUri);
 
 			media.StateChanged += (sender, args) =>
 			{

@@ -11,16 +11,11 @@ namespace WordsLive.AudioVideo
 {
 	public class VideoMedia : AudioVideoMedia
 	{
-		public VideoMedia(string file, MediaDataProvider provider) : base(file, provider) { }
+		public VideoMedia(string path, MediaDataProvider provider) : base(path, provider) { }
 
 		public override bool HasVideo
 		{
 			get { return true; }
-		}
-
-		public override void Load()
-		{
-			// do nothing (loading is done in presentation)
 		}
 	}
 }

@@ -87,6 +87,11 @@ namespace WordsLive.Core.Data
 			return File.OpenRead(fullPath);
 		}
 
+		public override Uri GetUri(string path)
+		{
+			return new Uri(Path.Combine(directory, path));
+		}
+
 		/// <summary>
 		/// Gets the resource as a local file. If it actually is not a local file,
 		/// it is temporarily cached locally.

@@ -58,7 +58,7 @@ namespace WordsLive.AudioVideo
 				PlaybackEnded();
 		}
 
-		public override void Load(string path)
+		public override void Load(Uri uri)
 		{
 			mediaElement.MediaOpened += (sender, args) =>
 			{
@@ -85,7 +85,7 @@ namespace WordsLive.AudioVideo
 			};
 
 			mediaElement.LoadedBehavior = MediaState.Manual;
-			mediaElement.Source = new Uri(path);
+			mediaElement.Source = uri;
 			mediaElement.Volume = 1;
 			mediaElement.Play();
 		}

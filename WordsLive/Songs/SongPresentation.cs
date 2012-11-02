@@ -69,7 +69,7 @@ namespace WordsLive.Songs
 				
 				videoBackground.Autoplay = true;
 				videoBackground.Loop = true;
-				videoBackground.Load(DataManager.Backgrounds.GetFile(song.VideoBackground).Uri.AbsoluteUri);
+				videoBackground.Load(DataManager.Backgrounds.GetFile(song.VideoBackground).Uri);
 
 				var brush = new System.Windows.Media.VisualBrush(videoBackground);
 				videoBackgroundClone = new System.Windows.Shapes.Rectangle();

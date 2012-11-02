@@ -146,7 +146,8 @@ namespace WordsLive.AudioVideo
 				presentation.MediaControl.Autoplay = true;
 				PlayState = PlayState.Playing;
 			}
-			presentation.MediaControl.Load(media.File);
+			
+			presentation.MediaControl.Load(media.MediaUri);
 		}
 
 		public bool IsUpdatable

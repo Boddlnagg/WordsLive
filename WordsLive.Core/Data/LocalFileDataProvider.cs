@@ -16,6 +16,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+using System;
 using System.IO;
 
 namespace WordsLive.Core.Data
@@ -25,6 +26,11 @@ namespace WordsLive.Core.Data
 		public override Stream Get(string path)
 		{
 			return File.OpenRead(path);
+		}
+
+		public override Uri GetUri(string path)
+		{
+			return new Uri(path);
 		}
 
 		public override FileInfo GetLocal(string path)
