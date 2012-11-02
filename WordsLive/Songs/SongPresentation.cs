@@ -90,7 +90,7 @@ namespace WordsLive.Songs
 			this.Control.Web.LoadCompleted += (sender, args) =>
 			{
 				controller.UpdateCss(this.song, this.Area.WindowSize.Width);
-				controller.PreloadImages(from bg in this.song.Backgrounds where bg.IsImage select Path.Combine(MediaManager.BackgroundsDirectory, bg.ImagePath));
+				controller.PreloadImages(from bg in this.song.Backgrounds where bg.IsImage select Path.Combine(MediaManager.BackgroundsDirectory, bg.ImagePath)); // TODO: use BackgroundDataProvider
 			};
 
 			Control.Web.IsDirtyChanged += new EventHandler(web_IsDirtyChanged);

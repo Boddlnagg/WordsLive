@@ -130,7 +130,7 @@ namespace WordsLive.Editor
 		{
 			// TODO: previews don't load correctly when more than one file is opened simultaneously
 			UpdateStyle();
-			controller.PreloadImages(from bg in song.Backgrounds where bg.IsImage select Path.Combine(MediaManager.BackgroundsDirectory, bg.ImagePath));
+			controller.PreloadImages(from bg in song.Backgrounds where bg.IsImage select Path.Combine(MediaManager.BackgroundsDirectory, bg.ImagePath)); // TODO: use BackgroundDataProvider
 		}
 
 		private bool isFirstSelected;

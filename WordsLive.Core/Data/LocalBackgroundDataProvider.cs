@@ -64,11 +64,42 @@ namespace WordsLive.Core.Data
 		}
 
 		/// <summary>
+		/// Gets the file specified by a path. The path has to start with '/' and use
+		/// '/' as directory separator.
+		/// </summary>
+		/// <param name="path">The path.</param>
+		/// <returns>The background file instance.</returns>
+		/// <exception cref="FileNotFoundException">The file was not found.</exception>
+		public override BackgroundFile GetFile(string path)
+		{
+			var file = new FileInfo(Path.Combine(directory, path.Substring(1).Replace('/', '\\')));
+
+			if (!file.Exists)
+				throw new FileNotFoundException(path + " not found.");
+
+			string dir = path.Substring(0, path.LastIndexOf('/') + 1);
+			var pointer = CreateDirectoryPointer(dir);
+
+			if (AllowedImageExtensions != null && AllowedImageExtensions.Contains(file.Extension, StringComparer.OrdinalIgnoreCase))
+			{
+				return new BackgroundFile(this, pointer, file.Name, false);
+			}
+			else if (AllowedVideoExtensions != null && AllowedVideoExtensions.Contains(file.Extension, StringComparer.OrdinalIgnoreCase))
+			{
+				return new BackgroundFile(this, pointer, file.Name, true);
+			}
+			else
+			{
+				throw new FileNotFoundException(path + " not found.");
+			}
+		}
+
+		/// <summary>
 		/// Gets all available background files in a specified directory.
 		/// </summary>
 		/// <param name="directory">The directory.</param>
 		/// <returns>
-		/// A list of background filenames (relative to the specified directory).
+		/// A list of background files (relative to the specified directory).
 		/// </returns>
 		public override IEnumerable<BackgroundFile> GetFiles(BackgroundDirectory dir)
 		{

@@ -85,11 +85,12 @@ namespace WordsLive.Editor
 
 			if (UseImage)
 			{
-				if (File.Exists(Path.Combine(MediaManager.BackgroundsDirectory, background.ImagePath)))
+				try
 				{
+					var file = provider.GetFile(background);
 					directoryView.Loaded += (sender, args) => SelectEntry(background.ImagePath);
 				}
-				else
+				catch (FileNotFoundException)
 				{
 					MessageBox.Show("Die Hintergrundbilddatei wurde nicht gefunden und wird durch einen schwarzen Hintergrund ersetzt.");
 					UseColor = true;

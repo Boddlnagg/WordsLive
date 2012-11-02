@@ -23,7 +23,7 @@ namespace WordsLive.Songs
 				{
 					var img = new BitmapImage();
 					img.BeginInit();
-					img.UriSource = new Uri(Path.Combine(MediaManager.BackgroundsDirectory, s.Backgrounds[0].ImagePath));
+					img.UriSource = new Uri(Path.Combine(MediaManager.BackgroundsDirectory, s.Backgrounds[0].ImagePath)); // TODO: use BackgroundDataProvider
 					img.DecodePixelWidth = 22;
 					img.EndInit();
 					return img;

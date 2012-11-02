@@ -34,11 +34,20 @@ namespace WordsLive.Core.Data
 		public abstract BackgroundDirectory Root { get; }
 
 		/// <summary>
+		/// Gets the file specified by a path. The path has to start with '/' and use
+		/// '/' as directory separator.
+		/// </summary>
+		/// <param name="path">The path.</param>
+		/// <returns>The background file instance.</returns>
+		/// <exception cref="FileNotFoundException">The file was not found.</exception>
+		public abstract BackgroundFile GetFile(string path);
+
+		/// <summary>
 		/// Gets all available background files in a specified directory.
 		/// </summary>
 		/// <param name="directory">The directory.</param>
 		/// <returns>
-		/// A list of background filenames (relative to the specified directory).
+		/// A list of background files.
 		/// </returns>
 		public abstract IEnumerable<BackgroundFile> GetFiles(BackgroundDirectory directory);
 
@@ -57,5 +66,33 @@ namespace WordsLive.Core.Data
 		/// <param name="file">The file.</param>
 		/// <returns>The file's URI.</returns>
 		public abstract Uri GetFileUri(BackgroundFile file);
+
+		/// <summary>
+		/// Gets the file specified by a <see cref="SongBackground"/> instance.
+		/// The background's IsImage property must be <c>true</c>.
+		/// </summary>
+		/// <param name="background">The background to get the file for.</param>
+		/// <returns>The background file.</returns>
+		public BackgroundFile GetFile(Songs.SongBackground background)
+		{
+			if (!background.IsImage)
+				throw new ArgumentException("background is not an image");
+
+			return GetFile("/" + background.ImagePath.Replace('\\', '/'));
+		}
+
+		/// <summary>
+		/// Helper method to create the required nested <see cref="BackgroundDirectory"/> instances.
+		/// </summary>
+		/// <param name="path">The path (with leading and trailing '/').</param>
+		/// <returns>An instance of <see cref="BackgroundDirectory"/>.</returns>
+		protected BackgroundDirectory CreateDirectoryPointer(string path)
+		{
+			if (path == "/")
+				return Root;
+
+			int nextIndex = path.LastIndexOf('/', path.Length - 2) + 1;
+			return new BackgroundDirectory(this, CreateDirectoryPointer(path.Substring(0, nextIndex)), path.Substring(nextIndex, path.Length - nextIndex - 1));
+		}
 	}
 }

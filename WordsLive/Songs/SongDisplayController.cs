@@ -98,7 +98,7 @@ namespace WordsLive.Songs
 				}
 				if (bg.IsImage)
 				{
-					bgString = "background-color: black; background-image: url('file://" + (Path.Combine(MediaManager.BackgroundsDirectory, bg.ImagePath)).Replace('\\', '/') + "');";
+					bgString = "background-color: black; background-image: url('file://" + (Path.Combine(MediaManager.BackgroundsDirectory, bg.ImagePath)).Replace('\\', '/') + "');"; // TODO: use BackgroundDataProvider
 					bgString += "background-repeat: no-repeat; background-size: 100%";
 				}
 				else
