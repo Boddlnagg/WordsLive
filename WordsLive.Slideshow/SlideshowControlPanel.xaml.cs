@@ -148,10 +148,12 @@ namespace WordsLive.Slideshow
 			if (e.Command == NavigationCommands.PreviousPage)
 			{
 				pres.PreviousStep();
+				(pres.Preview as SlideshowPreviewProvider).Update();
 			}
 			else if (e.Command == NavigationCommands.NextPage)
 			{
 				pres.NextStep();
+				(pres.Preview as SlideshowPreviewProvider).Update();
 			}
 		}
 
