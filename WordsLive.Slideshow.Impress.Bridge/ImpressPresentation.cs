@@ -90,13 +90,13 @@ namespace WordsLive.Slideshow.Impress.Bridge
 		bool presentationEnded;
 		bool isShown;
 
-		ImpressMedia media;
+		FileInfo file;
 
 		List<SlideThumbnail> thumbnails = new List<SlideThumbnail>();
 
-		public void Init(ImpressMedia media)
+		public void Init(FileInfo file)
 		{
-			this.media = media;
+			this.file = file;
 		}
 
 		public override void Load()
@@ -122,7 +122,7 @@ namespace WordsLive.Slideshow.Impress.Bridge
 			unoidl.com.sun.star.lang.XMultiServiceFactory multiServiceFactory = (unoidl.com.sun.star.lang.XMultiServiceFactory)localContext.getServiceManager();
 			desktop = (XDesktop)multiServiceFactory.createInstance("com.sun.star.frame.Desktop");
 			var componentLoader = (XComponentLoader)desktop;
-			component = componentLoader.loadComponentFromURL(CreateFileUrl(media.File), "_blank", 0, new PropertyValue[] { });
+			component = componentLoader.loadComponentFromURL(CreateFileUrl(file.FullName), "_blank", 0, new PropertyValue[] { });
 
 			// Get the main window's handle and hide the window
 			document = (XModel)component;
@@ -244,7 +244,7 @@ namespace WordsLive.Slideshow.Impress.Bridge
 
 		private string CreateFileUrl(string path)
 		{
-			return "file:///" + path.Replace("\\", "/").Replace(":", "|").Replace(" ", "%20");
+			return new Uri(path).AbsoluteUri;
 		}
 
 		private void CreateThumbnails()

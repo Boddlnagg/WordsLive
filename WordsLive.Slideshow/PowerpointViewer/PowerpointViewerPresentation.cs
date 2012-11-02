@@ -6,13 +6,13 @@ using PowerpointViewerLib;
 using WordsLive.Presentation;
 using System.Threading;
 using System.Windows.Media;
+using System.IO;
 
 namespace WordsLive.Slideshow.PowerpointViewer
 {
 	public class PowerpointViewerPresentation : SlideshowPresentationBase
 	{
 		private List<SlideThumbnail> thumbnails;
-		private PowerpointViewerMedia ppt;
 		bool isClosing = false;
 
 		public override IList<SlideThumbnail> Thumbnails
@@ -44,10 +44,11 @@ namespace WordsLive.Slideshow.PowerpointViewer
 		PowerpointViewerDocument doc;
 		private bool showOnLoaded = false;
 		private bool isShown = false;
+		private FileInfo file;
 		
-		public void Init(PowerpointViewerMedia ppt)
+		public void Init(FileInfo file)
 		{
-			this.ppt = ppt;
+			this.file = file;
 		}
 
 		public override void Load()
@@ -59,7 +60,7 @@ namespace WordsLive.Slideshow.PowerpointViewer
 		{
 			try
 			{
-				doc = PowerpointViewerController.Open(ppt.File, new Rectangle(Area.WindowLocation.X, Area.WindowLocation.Y, Area.WindowSize.Width, Area.WindowSize.Height), openHidden: true, thumbnailWidth: 200);
+				doc = PowerpointViewerController.Open(this.file.FullName, new Rectangle(Area.WindowLocation.X, Area.WindowLocation.Y, Area.WindowSize.Width, Area.WindowSize.Height), openHidden: true, thumbnailWidth: 200);
 				doc.Error += (sender, args) =>
 				{
 					if (!doc.HasLoaded)
