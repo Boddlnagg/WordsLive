@@ -24,35 +24,39 @@ namespace WordsLive.Core.Songs
 	/// <summary>
 	/// Represents a song background (either an image or a color).
 	/// This class is immutable.
-	/// TODO: support video backgrounds
 	/// </summary>
 	public class SongBackground
 	{
+		/// <summary>
+		/// Gets the type of this background.
+		/// </summary>
+		public SongBackgroundType Type { get; private set; }
+
 		/// <summary>
 		/// The default background (black).
 		/// </summary>
 		public static readonly SongBackground Default = new SongBackground(Color.Black);
 
 		/// <summary>
-		/// Gets a value indicating whether this background is an image.
+		/// Gets the image or video path. (only valid if <see cref="Type"/> is Image or Video).
 		/// </summary>
-		public bool IsImage
+		public string FilePath { get; private set; }
+
+		/// <summary>
+		/// Gets or sets the color (only valid if <see cref="Type"/> is Color).
+		/// </summary>
+		public Color Color { get; private set; }
+
+		/// <summary>
+		/// Gets a value indicating whether this background is based on a file (image or video).
+		/// </summary>
+		public bool IsFile
 		{
 			get
 			{
-				return (!string.IsNullOrEmpty(ImagePath));
+				return Type == SongBackgroundType.Image || Type == SongBackgroundType.Video;
 			}
 		}
-
-		/// <summary>
-		/// Gets the image path. (only valid if <see cref="IsImage"/> is <c>true</c>).
-		/// </summary>
-		public string ImagePath { get; private set; }
-
-		/// <summary>
-		/// Gets or sets the color (only valid if <see cref="IsImage"/> is <c>false</c>).
-		/// </summary>
-		public Color Color { get; private set; }
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="SongBackground"/> class
@@ -60,16 +64,23 @@ namespace WordsLive.Core.Songs
 		/// </summary>
 		public SongBackground(Color color)
 		{
-			ImagePath = null;
+			FilePath = null;
 			Color = color;
+			Type = SongBackgroundType.Color;
 		}
 
-		public SongBackground(string imagePath)
+		/// <summary>
+		/// Initializes a new instance of the <see cref="SongBackground"/> class.
+		/// </summary>
+		/// <param name="filePath">The file path (image or video).</param>
+		/// <param name="isVideo">if set to <c>true</c> the backgound is a video background.</param>
+		public SongBackground(string filePath, bool isVideo)
 		{
-			if (String.IsNullOrEmpty(imagePath))
-				throw new ArgumentException("imagePath");
+			if (String.IsNullOrEmpty(filePath))
+				throw new ArgumentException("filePath");
 
-			ImagePath = imagePath;
+			FilePath = filePath;
+			Type = isVideo ? SongBackgroundType.Video : SongBackgroundType.Image;
 			Color = Color.Black;
 		}
 
@@ -87,13 +98,13 @@ namespace WordsLive.Core.Songs
 
 			var bg = (SongBackground)obj;
 
-			if (this.IsImage)
+			if (this.IsFile)
 			{
-				return bg.IsImage && bg.ImagePath == this.ImagePath;
+				return bg.Type == this.Type && bg.FilePath == this.FilePath;
 			}
 			else
 			{
-				return !bg.IsImage && bg.Color.ToArgb() == this.Color.ToArgb();
+				return bg.Type == this.Type && bg.Color.ToArgb() == this.Color.ToArgb();
 			}
 		}
 
@@ -105,10 +116,10 @@ namespace WordsLive.Core.Songs
 		/// </returns>
 		public override int GetHashCode()
 		{
-			if (this.IsImage)
-				return IsImage.GetHashCode() ^ this.ImagePath.GetHashCode();
+			if (this.IsFile)
+				return Type.GetHashCode() ^ this.FilePath.GetHashCode();
 			else
-				return IsImage.GetHashCode() ^ this.Color.GetHashCode();
+				return Type.GetHashCode() ^ this.Color.GetHashCode();
 		}
 	}
 }

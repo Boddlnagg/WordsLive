@@ -225,6 +225,17 @@ namespace WordsLive.Core.Songs
 		public ObservableCollection<SongBackground> Backgrounds { get; private set; }
 
 		/// <summary>
+		/// Gets the video background used for this song or <c>null</c> if no video background is used.
+		/// </summary>
+		public SongBackground VideoBackground
+		{
+			get
+			{
+				return Backgrounds[0].Type == SongBackgroundType.Video ? Backgrounds[0] : null;
+			}
+		}
+
+		/// <summary>
 		/// Gets or sets the formatting for this song.
 		/// </summary>
 		public SongFormatting Formatting
@@ -919,10 +930,22 @@ namespace WordsLive.Core.Songs
 
 			var formatting = root.Element("formatting");
 
+			// reset in case it has already been loaded
 			this.Backgrounds.Clear(); // this is needed, because the indices must be correct
-			foreach (var bg in root.Element("formatting").Element("background").Elements("file"))
+			this.Sources.Clear();
+			this.Parts.Clear();
+
+			var video = root.Element("formatting").Element("background").Attribute("video");
+			if (video != null)
 			{
-				this.Backgrounds.Add(LoadPowerpraiseBackground(bg.Value));
+				this.Backgrounds.Add(new SongBackground(video.Value, true));
+			}
+			else
+			{
+				foreach (var bg in root.Element("formatting").Element("background").Elements("file"))
+				{
+					this.Backgrounds.Add(LoadPowerpraiseBackground(bg.Value));
+				}
 			}
 			
 			if (!metadataOnly)
@@ -981,6 +1004,7 @@ namespace WordsLive.Core.Songs
 				this.SetOrder(from item in root.Element("order").Elements("item") select item.Value);
 
 				this.Copyright = String.Join("\n", root.Element("information").Element("copyright").Element("text").Elements("line").Select(line => line.Value).ToArray());
+
 				this.AddSource(String.Join("\n", root.Element("information").Element("source").Element("text").Elements("line").Select(line => line.Value)));
 			}
 		}
@@ -1048,7 +1072,12 @@ namespace WordsLive.Core.Songs
 						)
 					),
 					new XElement("background",
-						from bg in this.Backgrounds select new XElement("file", SavePowerpraiseBackground(bg))
+						this.VideoBackground != null ?
+						new object[] {
+							new XAttribute("video", this.VideoBackground.FilePath),
+							new XElement("file", "none") // for backwards compatibility
+						} :
+						(from bg in this.Backgrounds select new XElement("file", SavePowerpraiseBackground(bg))).ToArray()
 					),
 					new XElement("linespacing",
 						new XElement("main", this.Formatting.TextLineSpacing),
@@ -1133,14 +1162,14 @@ namespace WordsLive.Core.Songs
 		/// <returns>The path if the background is an image, otherwise the encoded color.</returns>
 		private static string SavePowerpraiseBackground(SongBackground background)
 		{
-			if (background.IsImage)
-				return background.ImagePath;
+			if (background.IsFile)
+				return background.FilePath;
 			else
 				return CreatePowerpraiseColor(background.Color).ToString();
 		}
 
 		/// <summary>
-		/// Helper method to load a <see cref="SongBackground"/> from XML.
+		/// Helper method to load a <see cref="SongBackground"/> from XML (either an image path or a color).
 		/// </summary>
 		/// <param name="background">The string encoding of the background object.</param>
 		/// <returns>The loaded background object.</returns>
@@ -1157,7 +1186,7 @@ namespace WordsLive.Core.Songs
 			}
 			else
 			{
-				bg = new SongBackground(background);
+				bg = new SongBackground(background, false);
 			}
 			return bg;
 		}

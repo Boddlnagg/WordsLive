@@ -96,14 +96,18 @@ namespace WordsLive.Songs
 				{
 					bgString = "background-color: transparent;";
 				}
-				if (bg.IsImage)
+				if (bg.Type == SongBackgroundType.Image)
 				{
-					bgString = "background-color: black; background-image: url('file://" + (Path.Combine(MediaManager.BackgroundsDirectory, bg.ImagePath)).Replace('\\', '/') + "');"; // TODO: use BackgroundDataProvider
+					bgString = "background-color: black; background-image: url('file://" + (Path.Combine(MediaManager.BackgroundsDirectory, bg.FilePath)).Replace('\\', '/') + "');"; // TODO: use BackgroundDataProvider
 					bgString += "background-repeat: no-repeat; background-size: 100%";
+				}
+				else if (bg.Type == SongBackgroundType.Color)
+				{
+					bgString = "background-color: " + MakeCssColor(bg.Color) + ";";
 				}
 				else
 				{
-					bgString = "background-color: " + MakeCssColor(bg.Color) + ";";
+					bgString = "background-color: black;"; // TODO: show video preview somehow?
 				}
 
 				control.ExecuteJavascript("changeBackground(" + PrepareJavascriptString(bgString) + ", "+ fadeTime +")");

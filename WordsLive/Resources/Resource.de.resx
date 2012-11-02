@@ -657,4 +657,16 @@
   <data name="seTemplateMasterOverrideTextPosition" xml:space="preserve">
     <value>Text und Übersetzung: Positionen und Abstände</value>
   </data>
+  <data name="eMsgReplaceVideoBackground" xml:space="preserve">
+    <value>Das Lied verwendet momentan einen Videohintergrund. Wenn Sie den Hintergrund für dieses Element ändern, wird der Videohintergrund für das ganze Lied durch diesen ersetzt. Fortfahren?</value>
+  </data>
+  <data name="eMsgReplaceVideoBackgroundTitle" xml:space="preserve">
+    <value>Videohintergrund ersetzen?</value>
+  </data>
+  <data name="eMsgVideoBackgroundForElement" xml:space="preserve">
+    <value>Der ausgewählte Hintergrund ist ein Videohintergrund, Videohintergründe können aber nur für ein ganzes Lied gesetzt werden. Soll dieser Hintergrund für das ganze Lied verwendet werden?</value>
+  </data>
+  <data name="eMsgVideoBackgroundForElementTitle" xml:space="preserve">
+    <value>Videohintergrund verwenden?</value>
+  </data>
 </root>

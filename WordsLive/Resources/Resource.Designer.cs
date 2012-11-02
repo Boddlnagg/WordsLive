@@ -529,6 +529,24 @@ namespace WordsLive.Resources {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die This song currently uses a video background. If you change the background for this element, the video background for the whole song is replaced by the selected background. Continue? ähnelt.
+        /// </summary>
+        public static string eMsgReplaceVideoBackground {
+            get {
+                return ResourceManager.GetString("eMsgReplaceVideoBackground", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Replace video background? ähnelt.
+        /// </summary>
+        public static string eMsgReplaceVideoBackgroundTitle {
+            get {
+                return ResourceManager.GetString("eMsgReplaceVideoBackgroundTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die The song &quot;{0}&quot; might contain unsaved changes. Do you want to save? ähnelt.
         /// </summary>
         public static string eMsgSaveSongChanges {
@@ -552,6 +570,24 @@ namespace WordsLive.Resources {
         public static string eMsgSelectElement {
             get {
                 return ResourceManager.GetString("eMsgSelectElement", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die The selected background is a video background, but video backgrounds can only be used for the whole song. Shall this background be used for the whole song instead? ähnelt.
+        /// </summary>
+        public static string eMsgVideoBackgroundForElement {
+            get {
+                return ResourceManager.GetString("eMsgVideoBackgroundForElement", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Use video background? ähnelt.
+        /// </summary>
+        public static string eMsgVideoBackgroundForElementTitle {
+            get {
+                return ResourceManager.GetString("eMsgVideoBackgroundForElementTitle", resourceCulture);
             }
         }
         

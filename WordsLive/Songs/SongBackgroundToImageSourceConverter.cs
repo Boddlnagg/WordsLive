@@ -31,13 +31,13 @@ namespace WordsLive.Songs
 
 		public static ImageSource CreateBackgroundSource(SongBackground bg, int width = -1)
 		{
-			if (bg.IsImage)
+			if (bg.Type == SongBackgroundType.Image)
 			{
 				try
 				{
 					var img = new BitmapImage();
 					img.BeginInit();
-					img.UriSource = new Uri(Path.Combine(MediaManager.BackgroundsDirectory, bg.ImagePath)); // TODO: use BackgroundDataProvider
+					img.UriSource = new Uri(Path.Combine(MediaManager.BackgroundsDirectory, bg.FilePath)); // TODO: use BackgroundDataProvider
 					if (width > -1)
 						img.DecodePixelWidth = width;
 					img.EndInit();
@@ -50,11 +50,15 @@ namespace WordsLive.Songs
 					return CreateColorImage(Brushes.Black);
 				}
 			}
-			else
+			else if (bg.Type == SongBackgroundType.Color)
 			{
 				var c = bg.Color;
 				var brush = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromArgb(c.A, c.R, c.G, c.B));
 				return CreateColorImage(brush);
+			}
+			else
+			{
+				return CreateColorImage(Brushes.Black); // TODO: load video preview?
 			}
 		}
 

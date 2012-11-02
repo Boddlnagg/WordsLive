@@ -73,7 +73,7 @@ namespace WordsLive.Editor
 
 			this.DataContext = this;
 
-			UseImage = background.IsImage;
+			UseImage = background.IsFile;
 
 			provider = new LocalBackgroundDataProvider(MediaManager.BackgroundsDirectory)
 			{
@@ -83,12 +83,12 @@ namespace WordsLive.Editor
 
 			directoryView.DataContext = new BackgroundDirectory[] { provider.Root };
 
-			if (UseImage)
+			if (background.IsFile)
 			{
 				try
 				{
 					var file = provider.GetFile(background);
-					directoryView.Loaded += (sender, args) => SelectEntry(background.ImagePath);
+					directoryView.Loaded += (sender, args) => SelectEntry(background.FilePath);
 				}
 				catch (FileNotFoundException)
 				{
@@ -146,7 +146,7 @@ namespace WordsLive.Editor
 					return;
 				}
 
-				ChosenBackground = new SongBackground(entry.Path.Substring(1).Replace('/', '\\'));
+				ChosenBackground = new SongBackground(entry.Path.Substring(1).Replace('/', '\\'), entry.IsVideo);
 			}
 			else
 			{

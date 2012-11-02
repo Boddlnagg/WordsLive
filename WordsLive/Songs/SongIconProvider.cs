@@ -15,15 +15,17 @@ namespace WordsLive.Songs
 		{ }
 
 		protected override ImageSource CreateIcon()
-		{
+		{ 
+			// TODO: use provider's method to get an icon?
+
 			Song s = (Song)this.Data; // this only contains title and backgrounds
-			if (s.Backgrounds[0].IsImage)
+			if (s.Backgrounds[0].Type == SongBackgroundType.Image)
 			{
 				try
 				{
 					var img = new BitmapImage();
 					img.BeginInit();
-					img.UriSource = new Uri(Path.Combine(MediaManager.BackgroundsDirectory, s.Backgrounds[0].ImagePath)); // TODO: use BackgroundDataProvider
+					img.UriSource = new Uri(Path.Combine(MediaManager.BackgroundsDirectory, s.Backgrounds[0].FilePath)); // TODO: use BackgroundDataProvider
 					img.DecodePixelWidth = 22;
 					img.EndInit();
 					return img;
@@ -33,12 +35,16 @@ namespace WordsLive.Songs
 					return CreateColorImage(Brushes.Black);
 				}
 			}
-			else
+			else if (s.Backgrounds[0].Type == SongBackgroundType.Color)
 			{
 				// create an empty image with the given background color
 				var c = s.Backgrounds[0].Color;
 				var brush = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromArgb(c.A, c.R, c.G, c.B));
 				return CreateColorImage(brush);
+			}
+			else
+			{
+				return CreateColorImage(Brushes.Black); // video
 			}
 		}
 

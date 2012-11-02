@@ -75,10 +75,10 @@ namespace WordsLive.Core.Data
 		/// <returns>The background file.</returns>
 		public BackgroundFile GetFile(Songs.SongBackground background)
 		{
-			if (!background.IsImage)
-				throw new ArgumentException("background is not an image");
+			if (!background.IsFile)
+				throw new ArgumentException("background is not a file");
 
-			return GetFile("/" + background.ImagePath.Replace('\\', '/'));
+			return GetFile("/" + background.FilePath.Replace('\\', '/'));
 		}
 
 		/// <summary>

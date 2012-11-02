@@ -46,8 +46,6 @@ namespace WordsLive.Songs
 			if (song == null)
 				throw new ArgumentNullException("song");
 
-			string video = null; // @"C:\Users\Patrick\Documents\Visual Studio 2010\Projects\Words\bin\Debug\Test\Kerze.mp4";
-
 			this.song = song;
 
 			base.Load(false, true);
@@ -58,7 +56,7 @@ namespace WordsLive.Songs
 			Storyboard.SetTarget(ani, Control.ForegroundGrid);
 			Storyboard.SetTargetProperty(ani, new PropertyPath(Image.OpacityProperty));
 
-			if (video == null)
+			if (song.VideoBackground == null)
 			{
 				frontImage = new Image { Stretch = Stretch.Fill };
 				backImage = new Image { Stretch = Stretch.Fill };
@@ -68,11 +66,11 @@ namespace WordsLive.Songs
 			}
 			else
 			{
-				videoBackground = new AudioVideo.WpfWrapper(); // TODO: use VlcWrapper (configurable)
+				videoBackground = new AudioVideo.VlcWrapper(); // TODO: use configurable wrapper
 				
 				videoBackground.Autoplay = true;
 				videoBackground.Loop = true;
-				videoBackground.Load(video);
+				videoBackground.Load(Path.Combine(MediaManager.BackgroundsDirectory, song.VideoBackground.FilePath)); // TODO: use provider
 
 				var brush = new System.Windows.Media.VisualBrush(videoBackground);
 				videoBackgroundClone = new System.Windows.Shapes.Rectangle();
@@ -90,7 +88,7 @@ namespace WordsLive.Songs
 			this.Control.Web.LoadCompleted += (sender, args) =>
 			{
 				controller.UpdateCss(this.song, this.Area.WindowSize.Width);
-				controller.PreloadImages(from bg in this.song.Backgrounds where bg.IsImage select Path.Combine(MediaManager.BackgroundsDirectory, bg.ImagePath)); // TODO: use BackgroundDataProvider
+				OnFinishedLoading();
 			};
 
 			Control.Web.IsDirtyChanged += new EventHandler(web_IsDirtyChanged);
@@ -100,8 +98,6 @@ namespace WordsLive.Songs
 			this.Area.WindowSizeChanged += OnWindowSizeChanged;
 
 			currentSlideIndex = -1;
-
-			controller.ImagesLoaded += OnFinishedLoading;
 
 			this.Control.Web.JSConsoleMessageAdded += (obj, target) =>
 			{
@@ -126,7 +122,7 @@ namespace WordsLive.Songs
 
 		public event EventHandler FinishedLoading;
 
-		protected void OnFinishedLoading(object sender, EventArgs args)
+		protected void OnFinishedLoading()
 		{
 			if (FinishedLoading != null)
 				FinishedLoading(this, EventArgs.Empty);
@@ -182,7 +178,8 @@ namespace WordsLive.Songs
 				frontImage.Source = nextBackground;
 				nextBackground = null;
 			}
-			if (backImage.Source != null)
+
+			if (videoBackground != null || backImage.Source != null)
 			{
 				storyboard.Children[0].Duration = new TimeSpan(0, 0, 0, 0, Properties.Settings.Default.SongSlideTransition);
 				storyboard.Begin(this.Control.BackgroundGrid);

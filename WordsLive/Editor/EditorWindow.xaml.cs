@@ -200,6 +200,7 @@ namespace WordsLive.Editor
 				if (element is Song)
 				{
 					var song = element as Song;
+
 					song.SetBackground(win.ChosenBackground);
 
 					// this needs to be called manually, because the preview can not listen to background changes
@@ -209,12 +210,51 @@ namespace WordsLive.Editor
 				else if (element is SongPart)
 				{
 					var part = element as SongPart;
-					part.SetBackground(win.ChosenBackground);
+
+					// only set background if it is different
+					var bgs = part.Slides.Select(s => s.Background).Distinct();
+					if (bgs.Count() != 1 || !bgs.First().Equals(win.ChosenBackground))
+					{
+						if (win.ChosenBackground.Type == SongBackgroundType.Video)
+						{
+							var res = MessageBox.Show(WordsLive.Resources.Resource.eMsgVideoBackgroundForElement, WordsLive.Resources.Resource.eMsgVideoBackgroundForElementTitle, MessageBoxButton.YesNo);
+							if (res == MessageBoxResult.Yes)
+								part.Root.SetBackground(win.ChosenBackground);
+						}
+						else if (part.Root.VideoBackground != null)
+						{
+							var res = MessageBox.Show(WordsLive.Resources.Resource.eMsgReplaceVideoBackground, WordsLive.Resources.Resource.eMsgReplaceVideoBackgroundTitle, MessageBoxButton.YesNo);
+							if (res == MessageBoxResult.Yes)
+								part.Root.SetBackground(win.ChosenBackground);
+						}
+						else
+						{
+							part.SetBackground(win.ChosenBackground);
+						}
+					}
 				}
 				else if (element is SongSlide)
 				{
 					var slide = element as SongSlide;
-					slide.SetBackground(win.ChosenBackground);
+					if (!slide.Background.Equals(win.ChosenBackground))
+					{
+						if (win.ChosenBackground.Type == SongBackgroundType.Video)
+						{
+							var res = MessageBox.Show(WordsLive.Resources.Resource.eMsgVideoBackgroundForElement, WordsLive.Resources.Resource.eMsgVideoBackgroundForElementTitle, MessageBoxButton.YesNo);
+							if (res == MessageBoxResult.Yes)
+								slide.Root.SetBackground(win.ChosenBackground);
+						}
+						else if (slide.Root.VideoBackground != null)
+						{
+							var res = MessageBox.Show(WordsLive.Resources.Resource.eMsgReplaceVideoBackground, WordsLive.Resources.Resource.eMsgReplaceVideoBackgroundTitle, MessageBoxButton.YesNo);
+							if (res == MessageBoxResult.Yes)
+								slide.Root.SetBackground(win.ChosenBackground);
+						}
+						else
+						{
+							slide.SetBackground(win.ChosenBackground);
+						}
+					}
 				}
 			}
 		}

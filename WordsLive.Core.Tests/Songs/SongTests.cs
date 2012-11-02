@@ -60,7 +60,7 @@ namespace WordsLive.Core.Tests.Songs
 			// backgrounds
 			Assert.AreEqual(1, song.Backgrounds.Count);
 			var bg = song.Backgrounds.First();
-			Assert.IsFalse(bg.IsImage);
+			Assert.AreEqual(SongBackgroundType.Color, bg.Type);
 			Assert.AreEqual(System.Drawing.Color.Black.ToArgb(), bg.Color.ToArgb());
 		}
 

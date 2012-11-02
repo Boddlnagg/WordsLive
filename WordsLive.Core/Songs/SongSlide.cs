@@ -195,6 +195,16 @@ namespace WordsLive.Core.Songs
 		/// <param name="bg">The background to use.</param>
 		public void SetBackground(SongBackground bg)
 		{
+			if (bg.Type == SongBackgroundType.Video)
+			{
+				throw new InvalidOperationException("Can't set video background to slide only");
+			}
+
+			if (Root.VideoBackground != null)
+			{
+				throw new InvalidOperationException("Can't set background of slide only if a video background is used");
+			}
+
 			using (Undo.ChangeFactory.Batch(this, "SetBackground"))
 			{
 				int index = Root.AddBackground(bg);

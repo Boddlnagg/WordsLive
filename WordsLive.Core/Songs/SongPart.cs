@@ -264,6 +264,16 @@ namespace WordsLive.Core.Songs
 				throw new InvalidOperationException("part has not been added to a song");
 			}
 
+			if (bg.Type == SongBackgroundType.Video)
+			{
+				throw new InvalidOperationException("Can't set video background to part only");
+			}
+
+			if (Root.VideoBackground != null)
+			{
+				throw new InvalidOperationException("Can't set background of part only if a video background is used");
+			}
+
 			using (Undo.ChangeFactory.Batch(this, "SetBackground"))
 			{
 				int index = Root.AddBackground(bg);
