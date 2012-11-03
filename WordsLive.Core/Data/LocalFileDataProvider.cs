@@ -30,6 +30,9 @@ namespace WordsLive.Core.Data
 
 		public override Uri GetUri(string path)
 		{
+			if (!File.Exists(path))
+				throw new FileNotFoundException(path);
+
 			return new Uri(path);
 		}
 

@@ -95,7 +95,7 @@ namespace WordsLive.Core.Data
 			if (dir.IsRoot)
 				return "/";
 
-			return GetPath(dir.Parent) + dir.Name + "/";
+			return GetPath(dir.Parent) + dir.Name + "/"; // TODO: get rid of recursion (store path and generate Parent object on demand)
 		}
 
 		public override bool Equals(object obj)

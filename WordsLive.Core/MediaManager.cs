@@ -139,15 +139,13 @@ namespace WordsLive.Core
 		/// triggering the <see cref="MediaLoaded"/> event.
 		/// </summary>
 		/// <param name="media"></param>
-		/// <returns></returns>
-		public static Media LoadMedia(Media media)
+		public static void LoadMedia(Media media)
 		{
 			if (media == null)
 				throw new ArgumentNullException("media");
 
 			media.Load();
 			OnMediaLoaded(media);
-			return media;
 		}
 
 		/// <summary>

@@ -227,7 +227,7 @@ namespace WordsLive.AudioVideo
 		{
 			// We're setting the presentation to be the current presentation as soon as we create it,
 			// so actually there's no need to do anything here ... check anyway
-			if (Controller.PresentationManager.CurrentPresentation == presentation)
+			if (presentation != null && Controller.PresentationManager.CurrentPresentation == presentation)
 				presentation.Close();
 		}
 	}

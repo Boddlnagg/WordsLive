@@ -250,13 +250,21 @@ namespace WordsLive
 			else
 			{
 				var media = ActiveMedia;
-				MediaManager.LoadMedia(media);
-				IMediaControlPanel panel = Controller.ControlPanels.CreatePanel(media);
-				if (panel is SongControlPanel)
+				try
 				{
-					(panel as SongControlPanel).ShowChords = SongPresentationShowChords;
+					MediaManager.LoadMedia(media);
+					IMediaControlPanel panel = Controller.ControlPanels.CreatePanel(media);
+					if (panel is SongControlPanel)
+					{
+						(panel as SongControlPanel).ShowChords = SongPresentationShowChords;
+					}
+					this.CurrentPanel = panel;
 				}
-				this.CurrentPanel = panel;
+				catch (FileNotFoundException)
+				{
+					var newData = new FileNotFoundMedia(media.File, media.DataProvider);
+					orderList.ReplaceActive(newData);
+				}
 			}
 		}
 
@@ -641,7 +649,7 @@ namespace WordsLive
 
 		private void OrderListBox_OnExecuteCommand(object sender, ExecutedRoutedEventArgs e)
 		{
-			var selected = this.OrderListBox.SelectedItems.Cast<MediaOrderItem>();
+			var selected = this.OrderListBox.SelectedItems.Cast<MediaOrderItem>().ToArray();
 			bool activeSelected = selected.Any() && (selected.Count((item) => item == orderList.ActiveItem) != 0);
 			MediaOrderItem boundaryItem;
 

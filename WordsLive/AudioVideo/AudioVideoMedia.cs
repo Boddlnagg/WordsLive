@@ -13,17 +13,11 @@ namespace WordsLive.AudioVideo
 
 		public abstract bool HasVideo { get; }
 
-		public Uri MediaUri
-		{
-			get
-			{
-				return this.DataProvider.GetUri(this.File);
-			}
-		}
+		public Uri MediaUri { get; set; }
 
 		public override void Load()
 		{
-			// do nothing (loading is done in presentation)
+			MediaUri = this.DataProvider.GetUri(this.File);
 		}
 	}
 }

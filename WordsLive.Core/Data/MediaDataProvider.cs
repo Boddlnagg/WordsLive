@@ -40,6 +40,7 @@ namespace WordsLive.Core.Data
 		/// </summary>
 		/// <param name="path">The path.</param>
 		/// <returns>A Uri pointing to the resource.</returns>
+		/// <exception cref="FileNotFoundException">The resource was not found.</exception>
 		public abstract Uri GetUri(string path);
 
 		/// <summary>

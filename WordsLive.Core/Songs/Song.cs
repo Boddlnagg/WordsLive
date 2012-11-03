@@ -365,10 +365,9 @@ namespace WordsLive.Core.Songs
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="Song"/> class.
-		/// TODO: make public after everything compiles
 		/// </summary>
 		/// <param name="filename">The file to load.</param>
-		private Song(string filename) : this(filename, new LocalFileDataProvider(), false) { }
+		public Song(string filename) : this(filename, new LocalFileDataProvider(), false) { }
 
 		/// <summary>
 		/// Initializes some attributes.
@@ -389,12 +388,15 @@ namespace WordsLive.Core.Songs
 		/// </summary>
 		public override void Load()
 		{
-			FileInfo file = this.DataProvider.GetLocal(this.File); // TODO: support Get() instead of GetLocal()
+			FileInfo file = this.DataProvider.GetLocal(this.File); // TODO: use Get() instead of GetLocal()
 			LoadPowerpraise(file);
 		}
 
 		/// <summary>
 		/// Only loads title and backgrounds (for icon).
+		/// TODO: this is called even when we load it directly -> file is always read twice
+		///       read whole song instead in LoadMetadata() and simply reload in Load()
+		///       (in case something has changed), don't call Load() in constructor
 		/// </summary>
 		/// <param name="filename">The file to load.</param>
 		internal override void LoadMetadata()
@@ -404,7 +406,7 @@ namespace WordsLive.Core.Songs
 			if (UndoKey == null)
 				Init();
 
-			FileInfo file = this.DataProvider.GetLocal(this.File); // TODO: support Get() instead of GetLocal()
+			FileInfo file = this.DataProvider.GetLocal(this.File); // TODO: use Get() instead of GetLocal()
 			if (file.Extension == ".ppl")
 			{
 				LoadPowerpraise(file, true);

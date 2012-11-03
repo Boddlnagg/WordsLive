@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using WordsLive.Core;
 using System.ComponentModel;
 using System.Linq;
-using System.IO;
 
 namespace WordsLive.MediaOrderList
 {
@@ -134,6 +133,16 @@ namespace WordsLive.MediaOrderList
 			return item;
 		}
 
+		internal void ReplaceActive(Media newData)
+		{
+			Controller.CurrentPanel = null;
+			var newActive = Replace(ActiveItem, newData);
+			if (CanActivate(newActive))
+				ActiveItem = newActive;
+			else
+				ActiveItem = null;
+		}
+
 		public IEnumerable<Media> Export()
 		{
 			foreach (var i in this.Items)
@@ -149,22 +158,24 @@ namespace WordsLive.MediaOrderList
 
 			if (item == ActiveItem)
 			{
-				if (Controller.CurrentPanel != null && Controller.CurrentPanel.IsUpdatable && File.Exists(item.Path))
+				if (Controller.CurrentPanel != null && Controller.CurrentPanel.IsUpdatable)
 				{
 					item.ReloadMetadata();
-					MediaManager.LoadMedia(item.Data);
-					Controller.CurrentPanel.Init(item.Data);
-					// TODO: set (keyboard) focus to ControlPanel.Control (via event CurrentPanelChanged in MainWindow)
+					if (item.Data is FileNotFoundMedia) // file doesn't exist anymore?
+					{
+						ReplaceActive(item.Data);
+					}
+					else
+					{
+						MediaManager.LoadMedia(item.Data);
+						Controller.CurrentPanel.Init(item.Data);
+						// TODO: set (keyboard) focus to ControlPanel.Control (via event CurrentPanelChanged in MainWindow)
+					}
 				}
 				else
 				{
 					var newData = MediaManager.LoadMediaMetadata(item.Data.File, item.Data.DataProvider);
-					Controller.CurrentPanel = null;
-					var newActive = Replace(ActiveItem, newData);
-					if (CanActivate(newActive))
-						ActiveItem = newActive;
-					else
-						ActiveItem = null;
+					ReplaceActive(newData);
 				}
 			}
 			else
