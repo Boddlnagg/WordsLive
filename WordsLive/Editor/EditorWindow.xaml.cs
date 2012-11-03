@@ -42,16 +42,11 @@ namespace WordsLive.Editor
 			Tabs.DataContext = openDocuments;
 		}
 
-		public EditorDocument CheckSongOpened(string file, Song song)
+		public EditorDocument CheckSongOpened(Song song)
 		{
-			FileInfo f = String.IsNullOrEmpty(file) ? null : new FileInfo(file);
-
 			foreach (var doc in openDocuments)
 			{
-				if (f != null && doc.File != null && doc.File.FullName == f.FullName)
-					return doc;
-
-				if (song != null && doc.Song == song)
+				if (doc.Song.File != null && doc.Song.File == song.File && doc.Song.DataProvider == song.DataProvider)
 					return doc;
 			}
 			return null;
@@ -62,19 +57,18 @@ namespace WordsLive.Editor
 			if (filename == null)
 				throw new ArgumentNullException("filename");
 
-			if (!(provider is LocalFileDataProvider))
-				throw new NotImplementedException("Editing songs using a provider other than LocalFileDataProvider is not yet implemented");
-
 			string ext = Path.GetExtension(filename).ToLower();
 
 			if (ext == ".ppl")
 			{
-				Load(filename, new Song(filename, provider), false);
+				var song = new Song(filename, provider);
+				song.Load();
+				Load(filename, song, false);
 			}
 			else if (ext == ".sng")
 			{
 				var song = Controller.CreateSongFromTemplate();
-				SongBeamerImport.Import(song, filename); // TODO: support providers
+				SongBeamerImport.Import(song, filename); // TODO: support providers, use SongBeamerSongReader
 				Load(filename, song, true);
 			}
 			else
@@ -86,7 +80,7 @@ namespace WordsLive.Editor
 
 		private void Load(string file, Song song, bool imported)
 		{
-			var opened = CheckSongOpened(file, song);
+			var opened = CheckSongOpened(song);
 			if (opened == null)
 			{
 				opened = new EditorDocument(file, song, imported, this);
@@ -148,6 +142,7 @@ namespace WordsLive.Editor
 
 		private void NewSong()
 		{
+			// TODO: set song.File to null
 			Load(null, Controller.CreateSongFromTemplate(), false);
 		}
 
@@ -326,7 +321,8 @@ namespace WordsLive.Editor
 			else if (e.Command == CustomCommands.ViewCurrent)
 			{
 				// deactivate this button if the current song is not yet saved to a file or it's not currently active
-				e.CanExecute = (doc != null && doc.File != null && Controller.ActiveMedia != null && Controller.ActiveMedia.File == doc.File.FullName);
+				e.CanExecute = (doc != null && doc.File != null && Controller.ActiveMedia != null &&
+					Controller.ActiveMedia.File == doc.Song.File && Controller.ActiveMedia.DataProvider == doc.Song.DataProvider);
 			}
 			else if (e.Command == CustomCommands.EditChords)
 			{
@@ -401,7 +397,7 @@ namespace WordsLive.Editor
 			}
 			else if (e.Command == CustomCommands.AddMedia)
 			{
-				Controller.AddToPortfolio(doc.File.FullName, DataManager.LocalFiles); // TODO: use correct data provider
+				Controller.AddToPortfolio(doc.Song.File, doc.Song.DataProvider);
 			}
 			else if (e.Command == CustomCommands.ShowSonglist)
 			{

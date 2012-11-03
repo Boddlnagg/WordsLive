@@ -61,7 +61,7 @@ namespace WordsLive.Core.Tests.Songs
 		[SetUp]
 		public virtual void Init()
 		{
-			song = new Song(@"TestData\SimpleSong.ppl", DataManager.LocalFiles);
+			song = new Song(@"TestData\SimpleSong.ppl");
 			song.IsUndoEnabled = true;
 		}
 	}

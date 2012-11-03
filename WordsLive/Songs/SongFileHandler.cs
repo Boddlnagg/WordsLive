@@ -20,7 +20,7 @@ namespace WordsLive.Songs
 
 		public override Media TryHandle(string path, IMediaDataProvider provider)
 		{
-			return new Song(path, provider, true);
+			return new Song(path, provider);
 		}
 	}
 }

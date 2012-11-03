@@ -31,17 +31,21 @@ namespace WordsLive.Songs
 			{
 				try
 				{
-					// TODO: support caching
 					var img = new BitmapImage();
 					img.BeginInit();
 					img.UriSource = DataManager.Backgrounds.GetFile(bg).Uri;
 					if (width > -1)
 						img.DecodePixelWidth = width;
 					img.EndInit();
-					//WriteableBitmap writable = new WriteableBitmap(img);
-					//writable.Freeze();
-					//return writable;
-					return img;
+
+					// TODO: if this is enabled, loading from remote Uris doesn't work
+					//       if it is disabled, loading (locally) is delayed (presentation hangs)
+					//       -> find a better way, support caching
+					WriteableBitmap writable = new WriteableBitmap(img);
+					writable.Freeze();
+					return writable;
+
+					//return img;
 				}
 				catch
 				{

@@ -20,13 +20,11 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Text.RegularExpressions;
-using System.Xml.Linq;
-using WordsLive.Core.Songs.Undo;
 using WordsLive.Core.Data;
+using WordsLive.Core.Songs.IO;
+using WordsLive.Core.Songs.Undo;
 
 namespace WordsLive.Core.Songs
 {
@@ -354,25 +352,7 @@ namespace WordsLive.Core.Songs
 		/// </summary>
 		/// <param name="filename">The file to load.</param>
 		/// <param name="metadataOnly">If set to <c>true</c> load metadata (title and backgrounds) only.</param>
-		public Song(string filename, IMediaDataProvider provider, bool metadataOnly = false) : base(filename, provider)
-		{
-			if (UndoKey == null)
-				Init();
-
-			if (!metadataOnly)
-				Load();
-		}
-
-		/// <summary>
-		/// Initializes a new instance of the <see cref="Song"/> class.
-		/// </summary>
-		/// <param name="filename">The file to load.</param>
-		public Song(string filename) : this(filename, new LocalFileDataProvider(), false) { }
-
-		/// <summary>
-		/// Initializes some attributes.
-		/// </summary>
-		private void Init()
+		public Song(string filename, IMediaDataProvider provider) : base(filename, provider)
 		{
 			UndoKey = new Undo.UndoKey();
 			Parts = new ObservableCollection<SongPart>();
@@ -382,39 +362,74 @@ namespace WordsLive.Core.Songs
 		}
 
 		/// <summary>
+		/// Initializes a new instance of the <see cref="Song"/> class.
+		/// </summary>
+		/// <param name="filename">The file to load.</param>
+		public Song(string filename) : this(filename, new LocalFileDataProvider())
+		{
+			Load();
+		}
+
+		/// <summary>
 		/// Loads the media object from the file specified in the <see cref="File"/> field into memory.
 		/// This is always called before the control panel and/or presentation is shown.
 		/// Use <see cref="MediaManager.LoadMedia"/> to call this safely.
 		/// </summary>
 		public override void Load()
 		{
-			FileInfo file = this.DataProvider.GetLocal(this.File); // TODO: use Get() instead of GetLocal()
-			LoadPowerpraise(file);
+			using (Stream stream = this.DataProvider.Get(this.File))
+			{
+				var reader = new PowerpraiseSongReader();
+				reader.Read(this, stream);
+			}
+		}
+
+		public void Save()
+		{
+			var provider = this.DataProvider as IBidirectionalMediaDataProvider;
+			if (this.File == null || provider == null)
+				throw new InvalidOperationException("Can't save to unknown source.");
+
+			using (var ft = provider.Put(this.File, true))
+			{
+				var writer = new PowerpraiseSongWriter();
+				writer.Write(this, ft.Stream);
+			}
+			// TODO:
+			//IsModified = false;
+			//IsImported = false;
+		}
+
+		public void Save(string path, IBidirectionalMediaDataProvider provider)
+		{
+			if (String.IsNullOrWhiteSpace(path))
+				throw new ArgumentException("path");
+			if (provider == null)
+				throw new ArgumentNullException("provider");
+
+			using (var ft = provider.Put(path, true))
+			{
+				var writer = new PowerpraiseSongWriter();
+				writer.Write(this, ft.Stream);
+			}
+
+			File = path;
+			OnPropertyChanged("File");
+			DataProvider = provider;
+
+			// TODO:
+			//IsModified = false;
+			//IsImported = false;
 		}
 
 		/// <summary>
-		/// Only loads title and backgrounds (for icon).
-		/// TODO: this is called even when we load it directly -> file is always read twice
-		///       read whole song instead in LoadMetadata() and simply reload in Load()
-		///       (in case something has changed), don't call Load() in constructor
+		/// Load the song in order to have access to the title and background.
 		/// </summary>
 		/// <param name="filename">The file to load.</param>
 		internal override void LoadMetadata()
 		{
 			base.LoadMetadata();
-
-			if (UndoKey == null)
-				Init();
-
-			FileInfo file = this.DataProvider.GetLocal(this.File); // TODO: use Get() instead of GetLocal()
-			if (file.Extension == ".ppl")
-			{
-				LoadPowerpraise(file, true);
-			}
-			else
-			{
-				throw new Exception("Invalid song format");
-			}
+			Load();
 		}
 
 		/// <summary>
@@ -922,305 +937,6 @@ namespace WordsLive.Core.Songs
 			{
 				return SongTitle;
 			}
-		}
-
-		#endregion
-
-		#region Powerpraise compatibility
-
-		/// <summary>
-		/// Loads a song from a Powerpraise XML file (ppl)
-		/// </summary>
-		/// <param name="file">The file to load.</param>
-		/// <param name="metadataOnly">If set to <c>true</c> load metadata (title and backgrounds) only.</param>
-		private void LoadPowerpraise(FileInfo file, bool metadataOnly = false)
-		{
-			XDocument doc = XDocument.Load(file.FullName);
-			XElement root = doc.Element("ppl");
-			this.SongTitle = root.Element("general").Element("title").Value;
-
-			var formatting = root.Element("formatting");
-
-			// reset in case it has already been loaded
-			this.Backgrounds.Clear(); // this is needed, because the indices must be correct
-			this.Sources.Clear();
-			this.Parts.Clear();
-
-			var video = root.Element("formatting").Element("background").Attribute("video");
-			if (video != null)
-			{
-				this.Backgrounds.Add(new SongBackground(video.Value, true));
-			}
-			else
-			{
-				foreach (var bg in root.Element("formatting").Element("background").Elements("file"))
-				{
-					this.Backgrounds.Add(LoadPowerpraiseBackground(bg.Value));
-				}
-			}
-			
-			if (!metadataOnly)
-			{
-				this.Formatting = new SongFormatting
-				{
-					MainText = LoadPowerpraiseTextFormatting(formatting.Element("font").Element("maintext")),
-					TranslationText = LoadPowerpraiseTextFormatting(formatting.Element("font").Element("translationtext")),
-					SourceText = LoadPowerpraiseTextFormatting(formatting.Element("font").Element("sourcetext")),
-					CopyrightText = LoadPowerpraiseTextFormatting(formatting.Element("font").Element("copyrighttext")),
-					TextLineSpacing = int.Parse(formatting.Element("linespacing").Element("main").Value),
-					TranslationLineSpacing = int.Parse(formatting.Element("linespacing").Element("translation").Value),
-					SourceBorderRight = int.Parse(formatting.Element("borders").Element("sourceright").Value),
-					SourceBorderTop = int.Parse(formatting.Element("borders").Element("sourcetop").Value),
-					CopyrightBorderBottom = int.Parse(formatting.Element("borders").Element("copyrightbottom").Value),
-					HorizontalOrientation = (HorizontalTextOrientation)Enum.Parse(typeof(HorizontalTextOrientation), formatting.Element("textorientation").Element("horizontal").Value, true),
-					VerticalOrientation = (VerticalTextOrientation)Enum.Parse(typeof(VerticalTextOrientation), formatting.Element("textorientation").Element("vertical").Value, true),
-					BorderBottom = int.Parse(formatting.Element("borders").Element("mainbottom").Value),
-					BorderTop = int.Parse(formatting.Element("borders").Element("maintop").Value),
-					BorderLeft = int.Parse(formatting.Element("borders").Element("mainleft").Value),
-					BorderRight = int.Parse(formatting.Element("borders").Element("mainright").Value),
-					IsOutlineEnabled = bool.Parse(formatting.Element("font").Element("outline").Element("enabled").Value),
-					OutlineColor = ParsePowerpraiseColor(formatting.Element("font").Element("outline").Element("color").Value),
-					IsShadowEnabled = bool.Parse(formatting.Element("font").Element("shadow").Element("enabled").Value),
-					ShadowColor = ParsePowerpraiseColor(formatting.Element("font").Element("shadow").Element("color").Value),
-					ShadowDirection = int.Parse(formatting.Element("font").Element("shadow").Element("direction").Value),
-					TranslationPosition = formatting.Element("textorientation").Element("transpos") != null ?
-						(TranslationPosition)Enum.Parse(typeof(TranslationPosition), formatting.Element("textorientation").Element("transpos").Value, true) : TranslationPosition.Inline,
-					CopyrightDisplayPosition = (MetadataDisplayPosition)Enum.Parse(typeof(MetadataDisplayPosition), root.Element("information").Element("copyright").Element("position").Value, true),
-					SourceDisplayPosition = (MetadataDisplayPosition)Enum.Parse(typeof(MetadataDisplayPosition), root.Element("information").Element("source").Element("position").Value, true)
-				};
-
-				if (root.Element("general").Element("category") != null)
-					this.Category = root.Element("general").Element("category").Value;
-				if (root.Element("general").Element("language") != null)
-					this.Language = root.Element("general").Element("language").Value;
-				if (root.Element("general").Element("comment") != null)
-					Comment = root.Element("general").Element("comment").Value;
-				else
-					Comment = String.Empty;
-
-				foreach (var part in root.Element("songtext").Elements("part"))
-				{
-					this.Parts.Add(new SongPart(this,
-									part.Attribute("caption").Value,
-									from slide in part.Elements("slide") select new SongSlide(this)
-									{
-										Text = String.Join("\n", slide.Elements("line").Select(line => line.Value).ToArray())/*.Trim()*/,
-										Translation = String.Join("\n", slide.Elements("translation").Select(line => line.Value).ToArray())/*.Trim()*/,
-										BackgroundIndex = slide.Attribute("backgroundnr") != null ? int.Parse(slide.Attribute("backgroundnr").Value) : 0,
-										Size = slide.Attribute("mainsize") != null ? int.Parse(slide.Attribute("mainsize").Value) : Formatting.MainText.Size
-									}
-								));
-				}
-
-				this.SetOrder(from item in root.Element("order").Elements("item") select item.Value);
-
-				this.Copyright = String.Join("\n", root.Element("information").Element("copyright").Element("text").Elements("line").Select(line => line.Value).ToArray());
-
-				this.AddSource(String.Join("\n", root.Element("information").Element("source").Element("text").Elements("line").Select(line => line.Value)));
-			}
-		}
-
-		/// <summary>
-		/// Saves the song to a Powerpraise XML file (ppl version 3.0).
-		/// TODO: move to a separate class
-		/// </summary>
-		/// <param name="fileName">The file to save to.</param>
-		public void SavePowerpraise(string fileName)
-		{
-			XDocument doc = new XDocument(new XDeclaration("1.0","ISO-8859-1","yes"));
-			XElement root = new XElement("ppl", new XAttribute("version", "3.0"),
-				new XElement("general",
-					new XElement("title", this.SongTitle),
-					new XElement("category",this.Category),
-					new XElement("language", this.Language),
-					String.IsNullOrEmpty(this.Comment) ? null : new XElement("comment", this.Comment)),
-				new XElement("songtext",
-					from part in this.Parts select new XElement("part",
-						new XAttribute("caption", part.Name),
-						from slide in part.Slides select new XElement("slide",
-							new XAttribute("mainsize", slide.Size),
-							new XAttribute("backgroundnr", slide.BackgroundIndex),
-							!String.IsNullOrEmpty(slide.Text) ?
-								from line in slide.Text.Split('\n') select new XElement("line", RemoveLineBreaks(line)) : null,
-							!String.IsNullOrEmpty(slide.Translation) ?
-								from translationline in slide.Translation.Split('\n') select new XElement("translation", RemoveLineBreaks(translationline)) : null
-						)
-					)
-				),
-				new XElement("order",
-					from item in this.Order select new XElement("item", item.Part.Name)
-				),
-				new XElement("information",
-					new XElement("copyright",
-						new XElement("position", this.Formatting.CopyrightDisplayPosition.ToString().ToLower()),
-						new XElement("text",
-							!String.IsNullOrEmpty(this.Copyright) ?
-								from line in this.Copyright.Split('\n') select new XElement("line", line) : null
-						)
-					),
-					new XElement("source",
-						new XElement("position", this.Formatting.SourceDisplayPosition.ToString().ToLower()),
-						new XElement("text",
-							this.Sources.Count > 0 && !String.IsNullOrEmpty(this.Sources[0].ToString()) ?
-								new XElement("line", this.Sources[0].ToString()) : null
-						)
-					)
-				),
-				new XElement("formatting",
-					new XElement("font",
-						SavePowerpraiseTextFormatting(this.Formatting.MainText, "maintext"),
-						SavePowerpraiseTextFormatting(this.Formatting.TranslationText, "translationtext"),
-						SavePowerpraiseTextFormatting(this.Formatting.CopyrightText, "copyrighttext"),
-						SavePowerpraiseTextFormatting(this.Formatting.SourceText, "sourcetext"),
-						new XElement("outline",
-							new XElement("enabled", this.Formatting.IsOutlineEnabled.ToString().ToLower()),
-							new XElement("color", CreatePowerpraiseColor(this.Formatting.OutlineColor))
-						),
-						new XElement("shadow",
-							new XElement("enabled", this.Formatting.IsShadowEnabled.ToString().ToLower()),
-							new XElement("color", CreatePowerpraiseColor(this.Formatting.ShadowColor)),
-							new XElement("direction", this.Formatting.ShadowDirection)
-						)
-					),
-					new XElement("background",
-						this.VideoBackground != null ?
-						new object[] {
-							new XAttribute("video", this.VideoBackground.FilePath),
-							new XElement("file", "none") // for backwards compatibility
-						} :
-						(from bg in this.Backgrounds select new XElement("file", SavePowerpraiseBackground(bg))).ToArray()
-					),
-					new XElement("linespacing",
-						new XElement("main", this.Formatting.TextLineSpacing),
-						new XElement("translation", this.Formatting.TranslationLineSpacing)
-					),
-					new XElement("textorientation",
-						new XElement("horizontal", this.Formatting.HorizontalOrientation.ToString().ToLower()),
-						new XElement("vertical", this.Formatting.VerticalOrientation.ToString().ToLower()),
-						new XElement("transpos", this.Formatting.TranslationPosition.ToString().ToLower())
-					),
-					new XElement("borders",
-						new XElement("mainleft", this.Formatting.BorderLeft),
-						new XElement("maintop", this.Formatting.BorderTop),
-						new XElement("mainright", this.Formatting.BorderRight),
-						new XElement("mainbottom", this.Formatting.BorderBottom),
-						new XElement("copyrightbottom", this.Formatting.CopyrightBorderBottom),
-						new XElement("sourcetop", this.Formatting.SourceBorderTop),
-						new XElement("sourceright", this.Formatting.SourceBorderRight)
-					)
-				)
-			);
-			doc.Add(new XComment("This file was written using WordsLive"));
-			doc.Add(root);
-
-			StreamWriter writer = new StreamWriter(fileName, false, System.Text.Encoding.GetEncoding("iso-8859-1"));
-			doc.Save(writer);
-			writer.Close();
-		}
-
-		/// <summary>
-		/// Removes all line break characters (\n and \r).
-		/// </summary>
-		/// <param name="input">The input.</param>
-		/// <returns>The processed input.</returns>
-		private string RemoveLineBreaks(string input)
-		{
-			return input.Replace("\n", "").Replace("\r", "");
-		}
-
-		/// <summary>
-		/// Helper method to generate an XML object from a <see cref="SongTextFormatting"/> object.
-		/// </summary>
-		/// <param name="formatting">The formatting object.</param>
-		/// <param name="elementName">The element name to generate.</param>
-		/// <returns>The generated XML.</returns>
-		private static XElement SavePowerpraiseTextFormatting(SongTextFormatting formatting, string elementName)
-		{
-			return new XElement(elementName,
-				new XElement("name", formatting.Name),
-				new XElement("size", formatting.Size),
-				new XElement("bold", formatting.Bold.ToString().ToLower()),
-				new XElement("italic", formatting.Italic.ToString().ToLower()),
-				new XElement("color", CreatePowerpraiseColor(formatting.Color)),
-				new XElement("outline", formatting.Outline),
-				new XElement("shadow", formatting.Shadow)
-			);
-		}
-
-		/// <summary>
-		/// Helper method to load a <see cref="SongTextFormatting"/> object from an XML object.
-		/// </summary>
-		/// <param name="element">The XML element.</param>
-		/// <returns>The loaded formatting object.</returns>
-		private static SongTextFormatting LoadPowerpraiseTextFormatting(XElement element)
-		{
-			return new SongTextFormatting
-			{
-				Name = element.Element("name").Value,
-				Size = int.Parse(element.Element("size").Value),
-				Bold = bool.Parse(element.Element("bold").Value),
-				Italic = bool.Parse(element.Element("italic").Value),
-				Color = ParsePowerpraiseColor(element.Element("color").Value),
-				Outline = int.Parse(element.Element("outline").Value),
-				Shadow = int.Parse(element.Element("shadow").Value)
-			};
-		}
-
-		/// <summary>
-		/// Helper method to save a <see cref="SongBackground"/> object to XML.
-		/// </summary>
-		/// <param name="background">The background object.</param>
-		/// <returns>The path if the background is an image, otherwise the encoded color.</returns>
-		private static string SavePowerpraiseBackground(SongBackground background)
-		{
-			if (background.IsFile)
-				return background.FilePath;
-			else
-				return CreatePowerpraiseColor(background.Color).ToString();
-		}
-
-		/// <summary>
-		/// Helper method to load a <see cref="SongBackground"/> from XML (either an image path or a color).
-		/// </summary>
-		/// <param name="background">The string encoding of the background object.</param>
-		/// <returns>The loaded background object.</returns>
-		private static SongBackground LoadPowerpraiseBackground(string background)
-		{
-			SongBackground bg;
-			if (background == "none")
-			{
-				bg = new SongBackground(Color.Black);
-			}
-			else if (Regex.IsMatch(background, @"^\d{1,8}$"))
-			{
-				bg = new SongBackground(ParsePowerpraiseColor(background));
-			}
-			else
-			{
-				bg = new SongBackground(background, false);
-			}
-			return bg;
-		}
-
-		/// <summary>
-		/// Helper method to create the color encoding used in Powerpraise XML.
-		/// </summary>
-		/// <param name="color">The color to encode.</param>
-		/// <returns>The encoded color.</returns>
-		private static int CreatePowerpraiseColor(Color color)
-		{
-			return color.R | (color.G << 8) | (color.B << 16);
-		}
-
-		/// <summary>
-		/// Helper method to parse a color encoded in Powerpraise XML.
-		/// </summary>
-		/// <param name="color">The string containing the encoded color.</param>
-		/// <returns>The color.</returns>
-		private static Color ParsePowerpraiseColor(string color)
-		{
-			int col = int.Parse(color);
-			return Color.FromArgb(col & 255, (col >> 8) & 255, (col >> 16) & 255);
 		}
 
 		#endregion

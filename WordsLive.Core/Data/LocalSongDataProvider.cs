@@ -57,7 +57,9 @@ namespace WordsLive.Core.Data
 
 				try
 				{
-					data = SongData.Create(new Song(file, this));
+					var song = new Song(Path.GetFileName(file), this);
+					song.Load();
+					data = SongData.Create(song);
 				}
 				catch { }
 

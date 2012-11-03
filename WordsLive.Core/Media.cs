@@ -17,8 +17,6 @@ namespace WordsLive.Core
 		{
 			File = file;
 			DataProvider = provider;
-
-			LoadMetadata();
 		}
 
 		/// <summary>
@@ -33,12 +31,12 @@ namespace WordsLive.Core
 		/// <summary>
 		/// Gets the filename (relative or absolute) associated with this media object.
 		/// </summary>
-		public string File { get; private set; }
+		public string File { get; protected set; }
 
 		/// <summary>
 		/// Gets the data provider used for this media instance.
 		/// </summary>
-		public IMediaDataProvider DataProvider { get; private set; }
+		public IMediaDataProvider DataProvider { get; protected set; }
 
 		/// <summary>
 		/// Gets the title of this media object. The basic implementation just returns the file name.

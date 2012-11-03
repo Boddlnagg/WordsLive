@@ -19,7 +19,7 @@ namespace SongTester
             sw.Start();
             foreach (var f in dir.GetFiles())
             {
-                Song s = new Song(f.FullName, DataManager.LocalFiles);
+                Song s = new Song(f.FullName);
                 i++;
                 Console.WriteLine("[OK] " +s.SongTitle);
             }

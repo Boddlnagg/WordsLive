@@ -171,7 +171,7 @@
 					<Style TargetType="TabItem">
 						<Setter Property="Header" Value="{Binding Song.Title}"/>
 						<Setter Property="Content" Value="{Binding Grid}"/>
-						<Setter Property="ToolTip" Value="{Binding File.FullName}"/>
+						<Setter Property="ToolTip" Value="{Binding Song.File}"/>
 						<Setter Property="ContextMenu">
 							<Setter.Value>
 								<ContextMenu>

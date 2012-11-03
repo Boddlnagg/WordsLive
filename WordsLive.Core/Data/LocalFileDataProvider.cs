@@ -25,7 +25,14 @@ namespace WordsLive.Core.Data
 	{
 		public Stream Get(string path)
 		{
-			return File.OpenRead(path);
+			try
+			{
+				return File.OpenRead(path);
+			}
+			catch (DirectoryNotFoundException)
+			{
+				throw new FileNotFoundException(path);
+			}
 		}
 
 		public Uri GetUri(string path)

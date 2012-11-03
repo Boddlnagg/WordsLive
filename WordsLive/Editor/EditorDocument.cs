@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.IO;
 using WordsLive.Core.Songs;
+using WordsLive.Core.Data;
 
 namespace WordsLive.Editor
 {
@@ -101,18 +102,14 @@ namespace WordsLive.Editor
 
 		public void Save()
 		{
-			if (this.File == null)
-				throw new InvalidOperationException("Source file unknown.");
-
-			this.Song.SavePowerpraise(this.File.FullName);
+			Song.Save();
 			IsModified = false;
 			IsImported = false;
 		}
 
 		public void SaveAs(string file)
 		{
-			File = new FileInfo(file);
-			this.Song.SavePowerpraise(this.File.FullName);
+			Song.Save(file, DataManager.LocalFiles);
 			IsModified = false;
 			IsImported = false;
 		}

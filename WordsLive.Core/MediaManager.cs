@@ -64,7 +64,10 @@ namespace WordsLive.Core
 				{
 					result = h.TryHandle(path, provider);
 					if (result != null)
+					{
+						result.LoadMetadata();
 						return result;
+					}
 				}
 
 				return new UnsupportedMedia(path, provider);
@@ -96,7 +99,10 @@ namespace WordsLive.Core
 				if (result != null)
 				{
 					foreach (var r in result)
+					{
+						r.LoadMetadata();
 						yield return r;
+					}
 
 					yield break;
 				}
@@ -197,7 +203,7 @@ namespace WordsLive.Core
 					if (root.Attribute("version").Value == "3.0" || root.Attribute("version").Value == "4.0")
 					{
 						foreach (Media m in from i in root.Element("order").Elements("item")
-											select i.Attribute("mediatype").Value == "powerpraise-song" ?
+											select (i.Attribute("mediatype").Value == "powerpraise-song" && !i.Element("file").Value.Contains('\\')) ?
 											LoadMediaMetadata(i.Element("file").Value, DataManager.Songs) :
 											LoadMediaMetadata(i.Element("file").Value, DataManager.LocalFiles)) // TODO: don't assume local files for everything else
 						{

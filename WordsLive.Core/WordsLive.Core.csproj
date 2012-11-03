@@ -90,6 +90,10 @@
     <Compile Include="Songs\Chords\Note.cs" />
     <Compile Include="Songs\Chords\NoteSymbol.cs" />
     <Compile Include="Songs\HtmlExport.cs" />
+    <Compile Include="Songs\IO\ISongReader.cs" />
+    <Compile Include="Songs\IO\ISongWriter.cs" />
+    <Compile Include="Songs\IO\PowerpraiseSongReader.cs" />
+    <Compile Include="Songs\IO\PowerpraiseSongWriter.cs" />
     <Compile Include="Songs\ISongElement.cs" />
     <Compile Include="Songs\Song.cs" />
     <Compile Include="Songs\SongBackground.cs" />
@@ -107,4 +111,5 @@
     <Compile Include="UnsupportedMedia.cs" />
     <Compile Include="WebSite.cs" />
   </ItemGroup>
+  <ItemGroup />
 </Project>
