@@ -10,7 +10,7 @@ namespace WordsLive.Slideshow.Impress
 
 		public FileInfo LocalFile { get; private set; }
 
-		public ImpressMedia(string file, MediaDataProvider provider, Type presentationType) : base(file, provider)
+		public ImpressMedia(string file, IMediaDataProvider provider, Type presentationType) : base(file, provider)
 		{
 			this.presentationType = presentationType;
 		}

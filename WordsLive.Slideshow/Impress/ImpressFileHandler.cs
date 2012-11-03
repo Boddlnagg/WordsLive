@@ -19,7 +19,7 @@ namespace WordsLive.Slideshow.Impress
 			get { return "OpenDocument Presentation"; }
 		}
 
-		public override Media TryHandle(string path, MediaDataProvider provider)
+		public override Media TryHandle(string path, IMediaDataProvider provider)
 		{
 			string ext = Path.GetExtension(path).ToLower();
 			// prefer powerpoint viewer for ppts if available

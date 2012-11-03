@@ -13,7 +13,7 @@ namespace WordsLive.Core
 		/// from the given file.
 		/// </summary>
 		/// <param name="file">The relative path to the resource.</param>
-		public Media(string file, MediaDataProvider provider)
+		public Media(string file, IMediaDataProvider provider)
 		{
 			File = file;
 			DataProvider = provider;
@@ -38,7 +38,7 @@ namespace WordsLive.Core
 		/// <summary>
 		/// Gets the data provider used for this media instance.
 		/// </summary>
-		public MediaDataProvider DataProvider { get; private set; }
+		public IMediaDataProvider DataProvider { get; private set; }
 
 		/// <summary>
 		/// Gets the title of this media object. The basic implementation just returns the file name.

@@ -57,7 +57,7 @@ namespace WordsLive.Editor
 			return null;
 		}
 
-		public void LoadOrImport(string filename, MediaDataProvider provider)
+		public void LoadOrImport(string filename, IMediaDataProvider provider)
 		{
 			if (filename == null)
 				throw new ArgumentNullException("filename");

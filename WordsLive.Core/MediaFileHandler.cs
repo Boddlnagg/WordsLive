@@ -28,7 +28,7 @@ namespace WordsLive.Core
 		/// <returns>
 		/// The loaded media object.
 		/// </returns>
-		public abstract Media TryHandle(string path, MediaDataProvider provider);
+		public abstract Media TryHandle(string path, IMediaDataProvider provider);
 
 		/// <summary>
 		/// Try to load multiple files at once. If this is not supported by the media type or some or all files are not supported,
@@ -37,7 +37,7 @@ namespace WordsLive.Core
 		/// <param name="paths">The paths to load.</param>
 		/// <param name="provider">The provider to use for loading.</param>
 		/// <returns>The loaded media objects or <c>null</c>.</returns>
-		public virtual IEnumerable<Media> TryHandleMultiple(IEnumerable<string> path, MediaDataProvider provider)
+		public virtual IEnumerable<Media> TryHandleMultiple(IEnumerable<string> path, IMediaDataProvider provider)
 		{
 			return null;
 		}

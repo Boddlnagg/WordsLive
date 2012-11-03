@@ -227,7 +227,7 @@ namespace WordsLive
 			instance.window.OpenPortfolio(file);
 		}
 
-		public static void AddToPortfolio(string file, MediaDataProvider provider)
+		public static void AddToPortfolio(string file, IMediaDataProvider provider)
 		{
 			instance.window.AddToPortfolio(file, provider);
 		}

@@ -13,7 +13,7 @@ namespace WordsLive
 	{
 		public Xps.XpsDocument Document { get; private set; }
 
-		public XpsDocument(string file, MediaDataProvider provider) : base(file, provider) { }
+		public XpsDocument(string file, IMediaDataProvider provider) : base(file, provider) { }
 
 		public override void Load()
 		{

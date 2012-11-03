@@ -431,7 +431,7 @@ namespace WordsLive
 		/// </summary>
 		/// <param name="file">The file to add.</param>
 		/// <param name="provider">The provider.</param>
-		internal void AddToPortfolio(string file, MediaDataProvider provider)
+		internal void AddToPortfolio(string file, IMediaDataProvider provider)
 		{
 			var media = MediaManager.LoadMediaMetadata(file, provider);
 			if (ActiveMedia != null)

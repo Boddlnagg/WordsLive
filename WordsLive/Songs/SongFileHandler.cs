@@ -18,7 +18,7 @@ namespace WordsLive.Songs
 			get { return "Powerpraise-Lieder"; }
 		}
 
-		public override Media TryHandle(string path, MediaDataProvider provider)
+		public override Media TryHandle(string path, IMediaDataProvider provider)
 		{
 			return new Song(path, provider, true);
 		}

@@ -16,7 +16,9 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 namespace WordsLive.Core.Data
@@ -28,7 +30,7 @@ namespace WordsLive.Core.Data
 	/// are available. There is no support for a directory structure for songs, so they are identified
 	/// using only their filename.
 	/// </summary>
-	public abstract class SongDataProvider : MediaDataProvider
+	public abstract class SongDataProvider : IMediaDataProvider
 	{
 		/// <summary>
 		/// Gets all available songs the provider can provide.
@@ -84,5 +86,11 @@ namespace WordsLive.Core.Data
 		{
 			return All().Count();
 		}
+
+		public abstract Stream Get(string path);
+
+		public abstract Uri GetUri(string path);
+
+		public abstract FileInfo GetLocal(string path);
 	}
 }

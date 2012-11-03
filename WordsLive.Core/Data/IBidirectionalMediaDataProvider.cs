@@ -17,38 +17,20 @@
  */
 
 using System;
-using System.IO;
 
 namespace WordsLive.Core.Data
 {
-	public class LocalFileDataProvider : IBidirectionalMediaDataProvider
+	/// <summary>
+	/// Bidirectional media data providers are data providers that can additionally write resources back to the storage.
+	/// </summary>
+	public interface IBidirectionalMediaDataProvider : IMediaDataProvider
 	{
-		public Stream Get(string path)
-		{
-			return File.OpenRead(path);
-		}
-
-		public Uri GetUri(string path)
-		{
-			if (!File.Exists(path))
-				throw new FileNotFoundException(path);
-
-			return new Uri(path);
-		}
-
-		public FileInfo GetLocal(string path)
-		{
-			var fi = new FileInfo(path);
-
-			if (!fi.Exists)
-				throw new FileNotFoundException(path);
-
-			return fi;
-		}
-
-		public FileTransaction Put(string path, bool allowOverwrite)
-		{
-			return new LocalFileTransaction(path, allowOverwrite);
-		}
+		/// <summary>
+		/// Opens a transaction to put a resource at the specified path.
+		/// </summary>
+		/// <param name="path">The path to the resource.</param>
+		/// <param name="allowOverwrite">If set to <c>false</c>, a <see cref="FileExistsException"/> is thrown if the file already exists.</param>
+		/// <returns>The file transaction.</returns>
+		FileTransaction Put(string path, bool allowOverwrite);
 	}
 }

@@ -20,7 +20,7 @@ namespace WordsLive.Images
 
 		public bool CanEdit { get; private set; }
 
-		public ImagesMedia(string file, MediaDataProvider provider) : base(file, provider) { }
+		public ImagesMedia(string file, IMediaDataProvider provider) : base(file, provider) { }
 
 		public override void Load()
 		{

@@ -53,7 +53,7 @@ namespace WordsLive.Core
 		/// <param name="file">The path, to be handled by the data provider.</param>
 		/// <param name="provider">The data provider to use for loading.</param>
 		/// <returns>A <see cref="Media"/> object.</returns>
-		public static Media LoadMediaMetadata(string path, MediaDataProvider provider)
+		public static Media LoadMediaMetadata(string path, IMediaDataProvider provider)
 		{
 			try
 			{
@@ -82,7 +82,7 @@ namespace WordsLive.Core
 		/// <param name="paths">The paths to the files to load.</param>
 		/// <param name="provider">The provider to use for loading.</param>
 		/// <returns>The loaded media objects, either one per file or less.</returns>
-		public static IEnumerable<Media> LoadMultipleMediaMetadata(IEnumerable<string> paths, MediaDataProvider provider)
+		public static IEnumerable<Media> LoadMultipleMediaMetadata(IEnumerable<string> paths, IMediaDataProvider provider)
 		{
 			var extensions = (from p in paths select Path.GetExtension(p.ToLower())).Distinct();
 

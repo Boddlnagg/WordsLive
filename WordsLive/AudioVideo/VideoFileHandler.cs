@@ -17,7 +17,7 @@ namespace WordsLive.AudioVideo
 			get { return "Video-Dateien"; } // TODO: localize
 		}
 
-		public override Media TryHandle(string path, MediaDataProvider provider)
+		public override Media TryHandle(string path, IMediaDataProvider provider)
 		{
 			return new VideoMedia(path, provider);
 		}

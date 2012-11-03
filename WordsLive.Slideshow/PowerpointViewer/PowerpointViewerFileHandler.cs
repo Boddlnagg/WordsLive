@@ -19,7 +19,7 @@ namespace WordsLive.Slideshow.PowerpointViewer
 			get { return "Powerpoint-Präsentationen"; }
 		}
 
-		public override Media TryHandle(string path, MediaDataProvider provider)
+		public override Media TryHandle(string path, IMediaDataProvider provider)
 		{
 			if (!PowerpointViewerLib.PowerpointViewerController.IsAvailable)
 				return null;

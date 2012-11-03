@@ -22,7 +22,7 @@ using System.IO;
 namespace WordsLive.Core.Data
 {
 	/// <summary>
-	/// Represents a file transaction initiated by the <see cref="MediaDataProvider.Put"/> method.
+	/// Represents a file transaction initiated by the <see cref="IMediaDataProvider.Put"/> method.
 	/// </summary>
 	public abstract class FileTransaction : IDisposable
 	{

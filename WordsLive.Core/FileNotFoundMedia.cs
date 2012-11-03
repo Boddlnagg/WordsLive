@@ -9,7 +9,7 @@ namespace WordsLive.Core
 {
 	public class FileNotFoundMedia : Media
 	{
-		public FileNotFoundMedia(string file, MediaDataProvider provider) : base(file, provider) { }
+		public FileNotFoundMedia(string file, IMediaDataProvider provider) : base(file, provider) { }
 
 		public override string Title
 		{

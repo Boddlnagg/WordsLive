@@ -65,12 +65,13 @@
     <Compile Include="Data\BackgroundDataProvider.cs" />
     <Compile Include="Data\BackgroundFile.cs" />
     <Compile Include="Data\BackgroundDirectory.cs" />
+    <Compile Include="Data\IBidirectionalMediaDataProvider.cs" />
     <Compile Include="Data\DataManager.cs" />
     <Compile Include="Data\FileExistsException.cs" />
     <Compile Include="Data\FileTransaction.cs" />
     <Compile Include="Data\LocalFileDataProvider.cs" />
     <Compile Include="Data\LocalFileTransaction.cs" />
-    <Compile Include="Data\MediaDataProvider.cs" />
+    <Compile Include="Data\IMediaDataProvider.cs" />
     <Compile Include="Data\LocalBackgroundDataProvider.cs" />
     <Compile Include="Data\LocalSongDataProvider.cs" />
     <Compile Include="Data\SongDataProvider.cs" />

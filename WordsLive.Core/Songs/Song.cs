@@ -354,7 +354,7 @@ namespace WordsLive.Core.Songs
 		/// </summary>
 		/// <param name="filename">The file to load.</param>
 		/// <param name="metadataOnly">If set to <c>true</c> load metadata (title and backgrounds) only.</param>
-		public Song(string filename, MediaDataProvider provider, bool metadataOnly = false) : base(filename, provider)
+		public Song(string filename, IMediaDataProvider provider, bool metadataOnly = false) : base(filename, provider)
 		{
 			if (UndoKey == null)
 				Init();

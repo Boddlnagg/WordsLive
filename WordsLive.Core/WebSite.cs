@@ -9,7 +9,7 @@ namespace WordsLive.Core
 {
 	public class WebSite : Media
 	{
-		public WebSite(string file, MediaDataProvider provider) : base(file, provider) { }
+		public WebSite(string file, IMediaDataProvider provider) : base(file, provider) { }
 
 		public string Url { get; private set; }
 

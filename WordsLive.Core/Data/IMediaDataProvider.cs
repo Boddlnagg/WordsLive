@@ -22,10 +22,10 @@ using System.IO;
 namespace WordsLive.Core.Data
 {
 	/// <summary>
-	/// Abstract base class for media data providers. Media data providers are responsible for
+	/// Interface for media data providers. Media data providers are responsible for
 	/// turning a media location path into a Stream to be read by the media implementation.
 	/// </summary>
-	public abstract class MediaDataProvider
+	public interface IMediaDataProvider
 	{
 		/// <summary>
 		/// Gets the resource at the specified path.
@@ -33,7 +33,7 @@ namespace WordsLive.Core.Data
 		/// <param name="path">The path.</param>
 		/// <returns>The resource as a stream.</returns>
 		/// <exception cref="FileNotFoundException">The resource was not found.</exception>
-		public abstract Stream Get(string path);
+		Stream Get(string path);
 
 		/// <summary>
 		/// Gets an absolute Uri of the resource.
@@ -41,7 +41,7 @@ namespace WordsLive.Core.Data
 		/// <param name="path">The path to the resource.</param>
 		/// <returns>A Uri pointing to the resource.</returns>
 		/// <exception cref="FileNotFoundException">The resource was not found.</exception>
-		public abstract Uri GetUri(string path);
+		Uri GetUri(string path);
 
 		/// <summary>
 		/// Gets the resource as a local file. If it actually is not a local file,
@@ -50,14 +50,6 @@ namespace WordsLive.Core.Data
 		/// <param name="path">The path to the resource.</param>
 		/// <returns>The resource as a local file.</returns>
 		/// <exception cref="FileNotFoundException">The resource was not found.</exception>
-		public abstract FileInfo GetLocal(string path);
-
-		/// <summary>
-		/// Opens a transaction to put a resource at the specified path.
-		/// </summary>
-		/// <param name="path">The path to the resource.</param>
-		/// <param name="allowOverwrite">If set to <c>false</c>, a <see cref="FileExistsException"/> is thrown if the file already exists.</param>
-		/// <returns>The file transaction.</returns>
-		public abstract FileTransaction Put(string path, bool allowOverwrite);
+		FileInfo GetLocal(string path);
 	}
 }

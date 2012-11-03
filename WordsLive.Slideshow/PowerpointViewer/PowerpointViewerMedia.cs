@@ -9,7 +9,7 @@ namespace WordsLive.Slideshow.PowerpointViewer
 	{
 		public FileInfo LocalFile { get; private set; }
 
-		public PowerpointViewerMedia(string file, MediaDataProvider provider) : base(file, provider) { }
+		public PowerpointViewerMedia(string file, IMediaDataProvider provider) : base(file, provider) { }
 
 		public override ISlideshowPresentation CreatePresentation()
 		{

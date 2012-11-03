@@ -24,7 +24,7 @@ using WordsLive.Core.Songs;
 
 namespace WordsLive.Core.Data
 {
-	public class LocalSongDataProvider: SongDataProvider
+	public class LocalSongDataProvider: SongDataProvider, IBidirectionalMediaDataProvider
 	{
 		private string directory;
 
@@ -119,7 +119,7 @@ namespace WordsLive.Core.Data
 		/// <returns>
 		/// The file transaction.
 		/// </returns>
-		public override FileTransaction Put(string path, bool allowOverwrite)
+		public FileTransaction Put(string path, bool allowOverwrite)
 		{
 			return new LocalFileTransaction(Path.Combine(directory, path), allowOverwrite);
 		}
