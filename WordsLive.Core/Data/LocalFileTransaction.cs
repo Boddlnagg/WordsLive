@@ -21,34 +21,32 @@ using System.IO;
 
 namespace WordsLive.Core.Data
 {
-	public class LocalFileDataProvider : MediaDataProvider
+	public class LocalFileTransaction : FileTransaction
 	{
-		public override Stream Get(string path)
+		private FileStream stream;
+
+		public override Stream Stream
 		{
-			return File.OpenRead(path);
+			get { return stream; }
 		}
 
-		public override Uri GetUri(string path)
+		public LocalFileTransaction(string path, bool allowOverwrite)
 		{
-			if (!File.Exists(path))
-				throw new FileNotFoundException(path);
-
-			return new Uri(path);
+			try
+			{
+				stream = new FileStream(path, allowOverwrite ? FileMode.Create : FileMode.CreateNew);
+			}
+			catch (IOException)
+			{
+				throw new FileExistsException(path);
+			}
 		}
 
-		public override FileInfo GetLocal(string path)
+		
+
+		protected override void DoFinish()
 		{
-			var fi = new FileInfo(path);
-
-			if (!fi.Exists)
-				throw new FileNotFoundException(path);
-
-			return fi;
-		}
-
-		public override FileTransaction Put(string path, bool allowOverwrite)
-		{
-			return new LocalFileTransaction(path, allowOverwrite);
+			stream.Close();
 		}
 	}
 }

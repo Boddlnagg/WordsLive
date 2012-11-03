@@ -17,38 +17,14 @@
  */
 
 using System;
-using System.IO;
 
 namespace WordsLive.Core.Data
 {
-	public class LocalFileDataProvider : MediaDataProvider
+	/// <summary>
+	/// Exception class used if a file should be created and does already exist.
+	/// </summary>
+	public class FileExistsException : ApplicationException
 	{
-		public override Stream Get(string path)
-		{
-			return File.OpenRead(path);
-		}
-
-		public override Uri GetUri(string path)
-		{
-			if (!File.Exists(path))
-				throw new FileNotFoundException(path);
-
-			return new Uri(path);
-		}
-
-		public override FileInfo GetLocal(string path)
-		{
-			var fi = new FileInfo(path);
-
-			if (!fi.Exists)
-				throw new FileNotFoundException(path);
-
-			return fi;
-		}
-
-		public override FileTransaction Put(string path, bool allowOverwrite)
-		{
-			return new LocalFileTransaction(path, allowOverwrite);
-		}
+		public FileExistsException(string message) : base(message) { }
 	}
 }

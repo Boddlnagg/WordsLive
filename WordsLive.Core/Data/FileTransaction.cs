@@ -21,34 +21,41 @@ using System.IO;
 
 namespace WordsLive.Core.Data
 {
-	public class LocalFileDataProvider : MediaDataProvider
+	/// <summary>
+	/// Represents a file transaction initiated by the <see cref="MediaDataProvider.Put"/> method.
+	/// </summary>
+	public abstract class FileTransaction : IDisposable
 	{
-		public override Stream Get(string path)
+		/// <summary>
+		/// Gets a value indicating whether the transaction has already been finished.
+		/// </summary>
+		public bool IsFinished { get; private set; }
+
+		/// <summary>
+		/// Gets the stream to write to.
+		/// </summary>
+		public abstract Stream Stream { get; }
+
+		/// <summary>
+		/// Finishes the transaction.
+		/// </summary>
+		public void Finish()
 		{
-			return File.OpenRead(path);
+			if (IsFinished)
+				throw new InvalidOperationException("Transaction already finished.");
+
+			DoFinish();
 		}
 
-		public override Uri GetUri(string path)
+		/// <summary>
+		/// Actual implementation called by the Finish method.
+		/// </summary>
+		protected abstract void DoFinish();
+
+		public void Dispose()
 		{
-			if (!File.Exists(path))
-				throw new FileNotFoundException(path);
-
-			return new Uri(path);
-		}
-
-		public override FileInfo GetLocal(string path)
-		{
-			var fi = new FileInfo(path);
-
-			if (!fi.Exists)
-				throw new FileNotFoundException(path);
-
-			return fi;
-		}
-
-		public override FileTransaction Put(string path, bool allowOverwrite)
-		{
-			return new LocalFileTransaction(path, allowOverwrite);
+			if (!IsFinished)
+				Finish();
 		}
 	}
 }

@@ -69,7 +69,7 @@ namespace WordsLive.Core.Data
 		/// <summary>
 		/// Gets the resource at the specified path.
 		/// </summary>
-		/// <param name="path">The path.</param>
+		/// <param name="path">The path to the resource.</param>
 		/// <returns>
 		/// The resource as a stream.
 		/// </returns>
@@ -96,7 +96,7 @@ namespace WordsLive.Core.Data
 		/// Gets the resource as a local file. If it actually is not a local file,
 		/// it is temporarily cached locally.
 		/// </summary>
-		/// <param name="path">The path.</param>
+		/// <param name="path">The path to the resource.</param>
 		/// <returns>
 		/// The resource as a local file.
 		/// </returns>
@@ -109,6 +109,19 @@ namespace WordsLive.Core.Data
 				throw new FileNotFoundException(path);
 
 			return fi;
+		}
+
+		/// <summary>
+		/// Opens a transaction to put a resource at the specified path.
+		/// </summary>
+		/// <param name="path">The path to the resource.</param>
+		/// <param name="allowOverwrite">If set to <c>false</c>, a <see cref="FileExistsException"/> is thrown if the file already exists.</param>
+		/// <returns>
+		/// The file transaction.
+		/// </returns>
+		public override FileTransaction Put(string path, bool allowOverwrite)
+		{
+			return new LocalFileTransaction(Path.Combine(directory, path), allowOverwrite);
 		}
 	}
 }

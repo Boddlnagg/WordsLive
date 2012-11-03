@@ -66,7 +66,10 @@
     <Compile Include="Data\BackgroundFile.cs" />
     <Compile Include="Data\BackgroundDirectory.cs" />
     <Compile Include="Data\DataManager.cs" />
+    <Compile Include="Data\FileExistsException.cs" />
+    <Compile Include="Data\FileTransaction.cs" />
     <Compile Include="Data\LocalFileDataProvider.cs" />
+    <Compile Include="Data\LocalFileTransaction.cs" />
     <Compile Include="Data\MediaDataProvider.cs" />
     <Compile Include="Data\LocalBackgroundDataProvider.cs" />
     <Compile Include="Data\LocalSongDataProvider.cs" />

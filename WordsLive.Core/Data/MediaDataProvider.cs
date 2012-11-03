@@ -38,7 +38,7 @@ namespace WordsLive.Core.Data
 		/// <summary>
 		/// Gets an absolute Uri of the resource.
 		/// </summary>
-		/// <param name="path">The path.</param>
+		/// <param name="path">The path to the resource.</param>
 		/// <returns>A Uri pointing to the resource.</returns>
 		/// <exception cref="FileNotFoundException">The resource was not found.</exception>
 		public abstract Uri GetUri(string path);
@@ -47,9 +47,17 @@ namespace WordsLive.Core.Data
 		/// Gets the resource as a local file. If it actually is not a local file,
 		/// it is temporarily cached locally. Don't write to this file!
 		/// </summary>
-		/// <param name="path">The path.</param>
+		/// <param name="path">The path to the resource.</param>
 		/// <returns>The resource as a local file.</returns>
 		/// <exception cref="FileNotFoundException">The resource was not found.</exception>
 		public abstract FileInfo GetLocal(string path);
+
+		/// <summary>
+		/// Opens a transaction to put a resource at the specified path.
+		/// </summary>
+		/// <param name="path">The path to the resource.</param>
+		/// <param name="allowOverwrite">If set to <c>false</c>, a <see cref="FileExistsException"/> is thrown if the file already exists.</param>
+		/// <returns>The file transaction.</returns>
+		public abstract FileTransaction Put(string path, bool allowOverwrite);
 	}
 }
