@@ -42,8 +42,19 @@
 						<HierarchicalDataTemplate DataType="{x:Type data:BackgroundDirectory}" ItemsSource="{Binding Directories}" >
 							<StackPanel Orientation="Horizontal" Margin="2">
 								<Image Source="/WordsLive;component/Artwork/Small_Folder.png" Width="16" Height="16"/>
-								<TextBlock Text="{Binding Name}"/>
-							</StackPanel>
+							<TextBlock>
+								<TextBlock.Style>
+									<Style TargetType="{x:Type TextBlock}">
+										<Setter Property="Text" Value="{Binding Name}"/>
+										<Style.Triggers>
+											<DataTrigger Binding="{Binding Path=IsRoot}" Value="True">
+												<Setter Property="Text" Value="Backgrounds" /> <!-- TODO: localize -->
+											</DataTrigger>
+										</Style.Triggers>
+									</Style>
+								</TextBlock.Style>
+							</TextBlock>
+						</StackPanel>
 						</HierarchicalDataTemplate>
 					</TreeView.Resources>
 					<TreeView.ItemContainerStyle>

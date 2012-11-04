@@ -80,19 +80,5 @@ namespace WordsLive.Core.Data
 
 			return GetFile("/" + background.FilePath.Replace('\\', '/'));
 		}
-
-		/// <summary>
-		/// Helper method to create the required nested <see cref="BackgroundDirectory"/> instances.
-		/// </summary>
-		/// <param name="path">The path (with leading and trailing '/').</param>
-		/// <returns>An instance of <see cref="BackgroundDirectory"/>.</returns>
-		protected BackgroundDirectory CreateDirectoryPointer(string path)
-		{
-			if (path == "/")
-				return Root;
-
-			int nextIndex = path.LastIndexOf('/', path.Length - 2) + 1;
-			return new BackgroundDirectory(this, CreateDirectoryPointer(path.Substring(0, nextIndex)), path.Substring(nextIndex, path.Length - nextIndex - 1));
-		}
 	}
 }

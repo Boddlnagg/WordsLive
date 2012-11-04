@@ -16,6 +16,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+using System;
 using System.Collections.Generic;
 
 namespace WordsLive.Core.Data
@@ -28,11 +29,25 @@ namespace WordsLive.Core.Data
 	{
 		private BackgroundDataProvider provider;
 
-		internal BackgroundDirectory(BackgroundDataProvider provider, BackgroundDirectory parent, string name)
+		/// <summary>
+		/// The path of the parent (with leading and trailing '/') or <c>null</c> if it's the root.
+		/// </summary>
+		private string parentPath;
+
+		internal BackgroundDirectory(BackgroundDataProvider provider, string path)
 		{
 			this.provider = provider;
-			this.Parent = parent;
-			this.Name = name;
+			int i = path.Substring(0, path.Length - 1).LastIndexOf('/');
+			if (i < 0)
+			{
+				this.parentPath = null;
+				this.Name = String.Empty;
+			}
+			else
+			{
+				this.parentPath = path.Substring(0, i + 1);
+				this.Name = path.Substring(i + 1, path.Length - (i + 2));
+			}
 		}
 
 		/// <summary>
@@ -41,9 +56,18 @@ namespace WordsLive.Core.Data
 		public string Name { get; private set; }
 
 		/// <summary>
-		/// Gets the parent director.
+		/// Gets the parent directory
 		/// </summary>
-		public BackgroundDirectory Parent { get; private set; }
+		public BackgroundDirectory Parent
+		{
+			get
+			{
+				if (parentPath == null)
+					return null;
+				else
+					return new BackgroundDirectory(this.provider, this.parentPath);
+			}
+		}
 		
 		/// <summary>
 		/// Gets a value indicating whether this is the root directory.
@@ -64,7 +88,7 @@ namespace WordsLive.Core.Data
 		{
 			get
 			{
-				return GetPath(this);
+				return parentPath + Name + "/";
 			}
 		}
 
@@ -88,14 +112,6 @@ namespace WordsLive.Core.Data
 			{
 				return provider.GetFiles(this);
 			}
-		}
-
-		private string GetPath(BackgroundDirectory dir)
-		{
-			if (dir.IsRoot)
-				return "/";
-
-			return GetPath(dir.Parent) + dir.Name + "/"; // TODO: get rid of recursion (store path and generate Parent object on demand)
 		}
 
 		public override bool Equals(object obj)

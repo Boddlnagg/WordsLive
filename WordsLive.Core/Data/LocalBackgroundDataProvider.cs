@@ -44,7 +44,7 @@ namespace WordsLive.Core.Data
 		{
 			get
 			{
-				return new BackgroundDirectory(this, null, Path.GetFileName(directory));
+				return new BackgroundDirectory(this, "/");
 			}
 		}
 
@@ -78,15 +78,14 @@ namespace WordsLive.Core.Data
 				throw new FileNotFoundException(path + " not found.");
 
 			string dir = path.Substring(0, path.LastIndexOf('/') + 1);
-			var pointer = CreateDirectoryPointer(dir);
 
 			if (AllowedImageExtensions != null && AllowedImageExtensions.Contains(file.Extension, StringComparer.OrdinalIgnoreCase))
 			{
-				return new BackgroundFile(this, pointer, file.Name, false);
+				return new BackgroundFile(this, new BackgroundDirectory(this, dir), file.Name, false);
 			}
 			else if (AllowedVideoExtensions != null && AllowedVideoExtensions.Contains(file.Extension, StringComparer.OrdinalIgnoreCase))
 			{
-				return new BackgroundFile(this, pointer, file.Name, true);
+				return new BackgroundFile(this, new BackgroundDirectory(this, dir), file.Name, true);
 			}
 			else
 			{
@@ -106,7 +105,7 @@ namespace WordsLive.Core.Data
 			if (dir == null)
 				throw new ArgumentNullException("dir");
 
-			DirectoryInfo info = new DirectoryInfo(GetPath(dir));
+			DirectoryInfo info = GetAbsoluteDirectory(dir);
 
 			if (!info.Exists)
 				throw new ArgumentException("Directory does not exist");
@@ -136,14 +135,14 @@ namespace WordsLive.Core.Data
 			if (parent == null)
 				throw new ArgumentNullException("parent");
 
-			DirectoryInfo info = new DirectoryInfo(GetPath(parent));
+			DirectoryInfo info = GetAbsoluteDirectory(parent);
 
 			if (!info.Exists)
 				throw new ArgumentException("Directory does not exist");
 
 			foreach (var dir in info.GetDirectories().Where(d => d.Name != "[Thumbnails]"))
 			{
-				yield return new BackgroundDirectory(this, parent, dir.Name);
+				yield return new BackgroundDirectory(this, parent.Path + dir.Name + "/");
 			}
 		}
 
@@ -161,16 +160,16 @@ namespace WordsLive.Core.Data
 		}
 
 		/// <summary>
-		/// Helper function to get path string for a given directory by recursivly walking up the directory structure.
+		/// Helper function to get the absolute path for a given directory.
 		/// </summary>
 		/// <param name="dir">The directory to get the path for.</param>
-		/// <returns>The path.</returns>
-		private string GetPath(BackgroundDirectory dir)
+		/// <returns>A DirectoryInfo for the absolute path.</returns>
+		private DirectoryInfo GetAbsoluteDirectory(BackgroundDirectory dir)
 		{
 			if (dir.IsRoot)
-				return directory;
+				return new DirectoryInfo(directory);
 
-			return Path.Combine(GetPath(dir.Parent), dir.Name);
+			return new DirectoryInfo(directory + dir.Path.Replace('/', Path.DirectorySeparatorChar));
 		}
 	}
 }
