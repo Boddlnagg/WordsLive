@@ -785,7 +785,7 @@ namespace WordsLive.Core.Songs
 		}
 
 		/// <summary>
-		/// Removes unreferenced backgrounds and updates the the slide accordingly.
+		/// Removes unreferenced backgrounds and updates the slides accordingly.
 		/// </summary>
 		public void CleanBackgrounds()
 		{
@@ -898,9 +898,9 @@ namespace WordsLive.Core.Songs
 		}
 
 		/// <summary>
-		/// Sets the part order using the part's names. Parts with these names must already exist in the parts list.
+		/// Sets the part order using part references.
 		/// </summary>
-		/// <param name="partNames">The names of the parts in the order they should appear.</param>
+		/// <param name="partNames">The part references to use in the order they should appear.</param>
 		public void SetOrder(IEnumerable<SongPartReference> partReferences)
 		{
 			Order.Clear();
