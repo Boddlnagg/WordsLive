@@ -65,6 +65,7 @@
     <Compile Include="Data\BackgroundDataProvider.cs" />
     <Compile Include="Data\BackgroundFile.cs" />
     <Compile Include="Data\BackgroundDirectory.cs" />
+    <Compile Include="Data\HttpBackgroundDataProvider.cs" />
     <Compile Include="Data\IBidirectionalMediaDataProvider.cs" />
     <Compile Include="Data\DataManager.cs" />
     <Compile Include="Data\FileExistsException.cs" />

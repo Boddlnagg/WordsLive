@@ -31,7 +31,13 @@ namespace WordsLive.Core.Data
 		/// <summary>
 		/// Gets the root directory.
 		/// </summary>
-		public abstract BackgroundDirectory Root { get; }
+		public virtual BackgroundDirectory Root
+		{
+			get
+			{
+				return new BackgroundDirectory(this, "/");
+			}
+		}
 
 		/// <summary>
 		/// Gets the file specified by a path. The path has to start with '/' and use

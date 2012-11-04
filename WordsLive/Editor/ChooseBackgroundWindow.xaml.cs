@@ -76,6 +76,7 @@ namespace WordsLive.Editor
 			{
 				try
 				{
+					// try GetFile in order to find out if file exists
 					var file = DataManager.Backgrounds.GetFile(background);
 					directoryView.Loaded += (sender, args) => SelectEntry(background.FilePath);
 				}

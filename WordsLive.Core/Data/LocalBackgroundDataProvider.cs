@@ -38,17 +38,6 @@ namespace WordsLive.Core.Data
 		public IEnumerable<string> AllowedVideoExtensions { get; set; }
 
 		/// <summary>
-		/// Gets the root directory.
-		/// </summary>
-		public override BackgroundDirectory Root
-		{
-			get
-			{
-				return new BackgroundDirectory(this, "/");
-			}
-		}
-
-		/// <summary>
 		/// Initializes a new instance of the <see cref="LocalBackgroundDataProvider"/> class.
 		/// </summary>
 		/// <param name="directory">The root directory.</param>
