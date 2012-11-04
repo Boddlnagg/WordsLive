@@ -18,27 +18,39 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Xml.Linq;
 
-namespace WordsLive.Core.Songs
+namespace WordsLive.Core.Songs.IO
 {
 	/// <summary>
-	/// Static class for HTML export of songs (unfinished, but working).
+	/// Writer for HTML export of songs (unfinished, but working).
 	/// TODO: add entry point for this in the UI
-	/// TODO: add generalized way for importing and exporting songs
 	/// </summary>
-	public static class HtmlExport
+	public class HtmlSongWriter : ISongWriter
 	{
-		private static List<string> printedParts;
+		private List<string> printedParts;
 
 		/// <summary>
-		/// Exports a song to a HTML file.
+		/// Gets or sets a value indicating whether to print chords in the output or not.
+		/// </summary>
+		public bool PrintChords { get; set; }
+
+		/// <summary>
+		/// Initializes a new instance of the <see cref="HtmlSongWriter"/> class.
+		/// </summary>
+		public HtmlSongWriter()
+		{
+			PrintChords = true; // print chords by default
+		}
+
+		/// <summary>
+		/// Exports a song to an HTML file.
 		/// </summary>
 		/// <param name="song">The song to export.</param>
-		/// <param name="file">The target HTML file.</param>
-		/// <param name="printChords">Whether to include chords in the output.</param>
-		public static void ExportSong(Song song, string file, bool printChords = true)
+		/// <param name="stream">The stream to write to.</param>
+		public void Write(Song song, Stream stream)
 		{
 			printedParts = new List<string>();
 
@@ -50,17 +62,17 @@ namespace WordsLive.Core.Songs
 						),
 					new XElement("body",
 						new XElement("h1", song.SongTitle),
-						from partRef in song.Order select ExportPart(partRef.Part, printChords),
+						from partRef in song.Order select ExportPart(partRef.Part, PrintChords),
 						new XElement("p",
 							new XAttribute("id", "copyright"),
 							song.Copyright)
 						)
 					)
 				);
-			doc.Save(file);
+			doc.Save(stream);
 		}
 
-		private static IEnumerable<XElement> ExportPart(SongPart part, bool printChords)
+		private IEnumerable<XElement> ExportPart(SongPart part, bool printChords)
 		{
 			if (!printedParts.Contains(part.Name))
 			{
@@ -76,7 +88,7 @@ namespace WordsLive.Core.Songs
 			}
 		}
 
-		private static IEnumerable<XNode> ParseLine(string line, bool showChords)
+		private IEnumerable<XNode> ParseLine(string line, bool showChords)
 		{
 			string rest;
 
