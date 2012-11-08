@@ -28,6 +28,18 @@ namespace WordsLive.Core.Data
 	{
 		private string rootAddress;
 		private NetworkCredential credential;
+		private DirectoryInfo tempDirectory;
+
+		private DirectoryInfo TempDirectory
+		{
+			get
+			{
+				if (tempDirectory == null)
+					tempDirectory = CreateTempDirectory();
+
+				return tempDirectory;
+			}
+		}
 
 		public HttpSongDataProvider(string rootAddress, NetworkCredential credential = null)
 		{
@@ -89,7 +101,20 @@ namespace WordsLive.Core.Data
 
 		public override FileInfo GetLocal(string path)
 		{
-			throw new NotImplementedException();
+			FileInfo fi = new FileInfo(Path.Combine(TempDirectory.FullName, path));
+
+			if (fi.Exists)
+				return fi;
+
+			using (var stream = Get(path))
+			{
+				using (FileStream fs = File.OpenWrite(fi.FullName))
+				{
+					stream.CopyTo(fs);
+				}
+			}
+
+			return fi;
 		}
 
 		public FileTransaction Put(string path, bool allowOverwrite)
@@ -120,6 +145,36 @@ namespace WordsLive.Core.Data
 				var result = client.DownloadString(rootAddress + path);
 				return JsonConvert.DeserializeObject<IEnumerable<SongData>>(result);
 			}
+		}
+
+		private DirectoryInfo CreateTempDirectory()
+		{
+			DirectoryInfo tmpdir;
+			do
+			{
+				tmpdir = new DirectoryInfo(Path.Combine(Path.GetTempPath(), Path.GetRandomFileName()));
+			} while (tmpdir.Exists);
+
+			tmpdir.Create();
+			return tmpdir;
+		}
+
+		~HttpSongDataProvider()
+		{
+			try
+			{
+				// clean up temp directory
+				if (tempDirectory != null)
+				{
+					foreach (var file in tempDirectory.GetFiles())
+					{
+						file.Delete();
+					}
+
+					tempDirectory.Delete();
+				}
+			}
+			catch { }
 		}
 	}
 }

@@ -812,6 +812,19 @@ namespace WordsLive
 
 				oldIndex = -1;
 			}
+			// Data comes from song list
+			else if (e.Data.GetData(SongDataObject.SongDataFormat) != null)
+			{
+				if (OrderListBox.HasItems)
+					index++;
+
+				if (isInFirstHalf)
+					index--;
+
+				SongData data = (SongData)e.Data.GetData(SongDataObject.SongDataFormat);
+				Media m = MediaManager.LoadMediaMetadata(data.Filename, DataManager.Songs);
+				orderList.Insert(index, m);
+			}
 			// Data comes from explorer
 			else if (e.Data.GetData(DataFormats.FileDrop) != null)
 			{
@@ -875,7 +888,7 @@ namespace WordsLive
 				this.CreateInsertionAdorner(container, false);
 			}
 
-			e.Effects = DragDropEffects.Move;
+			//e.Effects = DragDropEffects.Move;
 		}
 
 		private void OrderListBox_DragLeave(object sender, DragEventArgs e)

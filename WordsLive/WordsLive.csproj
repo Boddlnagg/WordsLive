@@ -127,6 +127,7 @@
     <Compile Include="ISettingsTab.cs" />
     <Compile Include="PluginSettingsDictionary.cs" />
     <Compile Include="Songs\MasterOverrideOptions.cs" />
+    <Compile Include="Songs\SongDataObject.cs" />
     <Compile Include="TestPresentation.cs" />
     <Compile Include="Utils\InsertionAdorner.cs" />
     <Compile Include="Utils\EnumToIndexConverter.cs" />

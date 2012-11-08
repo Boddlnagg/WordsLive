@@ -89,9 +89,8 @@ namespace WordsLive.Songs
 			SongData song = (SongData)songListView.ItemContainerGenerator.ItemFromContainer(dragItem);
 
 			// Initialize the drag & drop operation
-			// TODO: enable this again (at least for local files)
-			//DataObject dragData = new DataObject(DataFormats.FileDrop, new string[] { DataManager.Songs.GetFullPath(song) });
-			//DragDrop.DoDragDrop(dragItem, dragData, DragDropEffects.Copy);
+			IDataObject dragData = new SongDataObject(song);
+			DragDrop.DoDragDrop(dragItem, dragData, DragDropEffects.Copy);
 			dragItem = null;
 		}
 
