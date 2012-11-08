@@ -36,7 +36,7 @@ namespace WordsLive.Core.Songs.IO
 		/// <param name="stream">The stream.</param>
 		public void Write(Song song, Stream stream)
 		{
-			XDocument doc = new XDocument(new XDeclaration("1.0", "ISO-8859-1", "yes"));
+			XDocument doc = new XDocument(new XDeclaration("1.0", "UTF-8", "yes"));
 			XElement root = new XElement("ppl", new XAttribute("version", "3.0"),
 				new XElement("general",
 					new XElement("title", song.SongTitle),
@@ -124,8 +124,11 @@ namespace WordsLive.Core.Songs.IO
 			doc.Add(new XComment("This file was written using WordsLive"));
 			doc.Add(root);
 
-			StreamWriter writer = new StreamWriter(stream, System.Text.Encoding.GetEncoding("iso-8859-1"));
+			// Powerpraise saves all songs as ISO-8859-1, but it can read UTF-8 also
+			// (except for the € sign, which for some reason corrupts the file when saved in Powerpraise)
+			StreamWriter writer = new StreamWriter(stream, System.Text.Encoding.UTF8);
 			doc.Save(writer);
+			writer.Close();
 		}
 
 		/// <summary>
