@@ -51,6 +51,9 @@
     <Reference Include="MonitoredUndo, Version=1.0.0.1, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\3rdParty\MonitoredUndo.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.4.5.10\lib\portable-net40+sl4+wp7+win8\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -66,6 +69,8 @@
     <Compile Include="Data\BackgroundFile.cs" />
     <Compile Include="Data\BackgroundDirectory.cs" />
     <Compile Include="Data\HttpBackgroundDataProvider.cs" />
+    <Compile Include="Data\HttpFileTransaction.cs" />
+    <Compile Include="Data\HttpSongDataProvider.cs" />
     <Compile Include="Data\IBidirectionalMediaDataProvider.cs" />
     <Compile Include="Data\DataManager.cs" />
     <Compile Include="Data\FileExistsException.cs" />
@@ -112,5 +117,7 @@
     <Compile Include="UnsupportedMedia.cs" />
     <Compile Include="WebSite.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
 </Project>

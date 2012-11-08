@@ -20,6 +20,7 @@ using System;
 using System.IO;
 using System.Linq;
 using WordsLive.Core.Songs;
+using System.Text.RegularExpressions;
 
 namespace WordsLive.Core.Data
 {
@@ -29,6 +30,9 @@ namespace WordsLive.Core.Data
 	/// </summary>
 	public class SongData
 	{
+		private string searchText = null;
+		private string searchTitle = null;
+
 		/// <summary>
 		/// Gets or sets the song title.
 		/// </summary>
@@ -60,6 +64,32 @@ namespace WordsLive.Core.Data
 		public string Language { get; set; }
 
 		/// <summary>
+		/// Gets the search text (with whitespaces and commas removed)
+		/// </summary>
+		public string SearchText
+		{
+			get
+			{
+				if (searchText == null)
+					searchText = NormalizeSearchString(Text);
+				return searchText;
+			}
+		}
+
+		/// <summary>
+		/// Gets the search title (with whitespaces and commas removed)
+		/// </summary>
+		public string SearchTitle
+		{
+			get
+			{
+				if (searchTitle == null)
+					searchTitle = NormalizeSearchString(Title);
+				return searchTitle;
+			}
+		}
+
+		/// <summary>
 		/// Creates a new <see cref="SongData"/> instance from a <see cref="Song"/> by
 		/// extracting the relevant data.
 		/// </summary>
@@ -76,6 +106,11 @@ namespace WordsLive.Core.Data
 				Sources = String.Join("; ", song.Sources),
 				Language = song.Language
 			};
+		}
+
+		public static string NormalizeSearchString(string str)
+		{
+			return Regex.Replace(str, "([,!.:-]|\\s)+", " ");
 		}
 	}
 }

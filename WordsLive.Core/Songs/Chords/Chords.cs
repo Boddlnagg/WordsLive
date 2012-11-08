@@ -53,7 +53,6 @@ namespace WordsLive.Core.Songs.Chords
 
 			while ((i = rest.IndexOf('[')) != -1)
 			{
-				string before = rest.Substring(0, i);
 				int end = rest.IndexOf(']', i);
 				if (end < 0)
 					break;

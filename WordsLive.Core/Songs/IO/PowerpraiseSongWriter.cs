@@ -126,7 +126,6 @@ namespace WordsLive.Core.Songs.IO
 
 			StreamWriter writer = new StreamWriter(stream, System.Text.Encoding.GetEncoding("iso-8859-1"));
 			doc.Save(writer);
-			writer.Close();
 		}
 
 		/// <summary>

@@ -31,21 +31,26 @@ namespace WordsLive.Songs
 			{
 				try
 				{
+					var uri = DataManager.Backgrounds.GetFile(bg).Uri;
 					var img = new BitmapImage();
 					img.BeginInit();
-					img.UriSource = DataManager.Backgrounds.GetFile(bg).Uri;
+					img.UriSource = uri;
 					if (width > -1)
 						img.DecodePixelWidth = width;
 					img.EndInit();
 
-					// TODO: if this is enabled, loading from remote Uris doesn't work
-					//       if it is disabled, loading (locally) is delayed (presentation hangs)
-					//       -> find a better way, support caching
-					WriteableBitmap writable = new WriteableBitmap(img);
-					writable.Freeze();
-					return writable;
-
-					//return img;
+					// Without an additional frozen WritableBitmap loading locally is delayed (hangs)
+					// For remote URIs this doesn't work however, so we're not using it then
+					if (uri.IsFile)
+					{
+						WriteableBitmap writable = new WriteableBitmap(img);
+						writable.Freeze();
+						return writable;
+					}
+					else
+					{
+						return img;
+					}
 				}
 				catch
 				{

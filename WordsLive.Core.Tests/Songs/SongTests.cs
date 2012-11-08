@@ -371,5 +371,13 @@ namespace WordsLive.Core.Tests.Songs
 			Redo();
 			Assert.AreEqual(slide.Text, "Test[Am]Test2[C]");
 		}
+
+		[Test]
+		public void CreateSongData()
+		{
+			song.SongTitle = "Komma, Test\nNeue   Zeile";
+			var data = Data.SongData.Create(song);
+			Assert.AreEqual("Komma Test Neue Zeile", data.SearchTitle);
+		}
 	}
 }

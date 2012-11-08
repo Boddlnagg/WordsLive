@@ -669,4 +669,10 @@
   <data name="eMsgVideoBackgroundForElementTitle" xml:space="preserve">
     <value>Videohintergrund verwenden?</value>
   </data>
+  <data name="slMsgDeleteSong" xml:space="preserve">
+    <value>Wollen Sie das Lied "{0}" wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden.</value>
+  </data>
+  <data name="slMsgDeleteSongTitle" xml:space="preserve">
+    <value>Lied wirklich löschen?</value>
+  </data>
 </root>

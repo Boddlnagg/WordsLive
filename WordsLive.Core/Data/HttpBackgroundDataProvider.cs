@@ -26,15 +26,18 @@ namespace WordsLive.Core.Data
 {
 	public class HttpBackgroundDataProvider : BackgroundDataProvider
 	{
-		string rootAddress;
+		private string rootAddress;
+		private NetworkCredential credential;
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="HttpBackgroundDataProvider"/> class.
 		/// </summary>
 		/// <param name="rootAddress">The root address, e.g. http://example.com/backgrounds/). </param>
-		public HttpBackgroundDataProvider(string rootAddress)
+		/// <param name="credentials">The credentials, if needed.</param>
+		public HttpBackgroundDataProvider(string rootAddress, NetworkCredential credential = null)
 		{
 			this.rootAddress = rootAddress;
+			this.credential = credential;
 		}
 
 		public override BackgroundFile GetFile(string path)
@@ -60,6 +63,7 @@ namespace WordsLive.Core.Data
 
 		public override Uri GetFileUri(BackgroundFile file)
 		{
+			// this requires no authentication
 			return new Uri(rootAddress + file.Path.Substring(1));
 		}
 
@@ -71,9 +75,13 @@ namespace WordsLive.Core.Data
 		/// <returns></returns>
 		private IEnumerable<ListingEntry> GetListing(BackgroundDirectory directory)
 		{
-			var client = new WebClient();
-			var result = client.DownloadString(rootAddress + directory.Path.Substring(1) + "list");
-			return result.Split('\n').Where(p => p.Trim() != String.Empty).Select(p => new ListingEntry(p));
+			using (var client = new WebClient())
+			{
+				if (credential != null)
+					client.Credentials = credential;
+				var result = client.DownloadString(rootAddress + directory.Path.Substring(1) + "list");
+				return result.Split('\n').Where(p => p.Trim() != String.Empty).Select(p => new ListingEntry(p));
+			}
 		}
 
 		/// <summary>

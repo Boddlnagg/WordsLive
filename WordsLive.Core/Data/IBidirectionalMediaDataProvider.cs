@@ -32,5 +32,11 @@ namespace WordsLive.Core.Data
 		/// <param name="allowOverwrite">If set to <c>false</c>, a <see cref="FileExistsException"/> is thrown if the file already exists.</param>
 		/// <returns>The file transaction.</returns>
 		FileTransaction Put(string path, bool allowOverwrite);
+
+		/// <summary>
+		/// Deletes the specified resource.
+		/// </summary>
+		/// <param name="path">The path to the resource.</param>
+		void Delete(string path);
 	}
 }

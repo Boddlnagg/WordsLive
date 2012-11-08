@@ -4,76 +4,92 @@ using WordsLive.Utils;
 
 namespace WordsLive.Songs
 {
-    class SongFilter
-    {
-        public string Keyword { get; set; }
-        public bool SearchInText
-        {
-            get
-            {
-                return Properties.Settings.Default.SongListSearchInText;
-            }
-            set
-            {
-                Properties.Settings.Default.SongListSearchInText = value;
-            }
-        }
-        public string Source { get; set; }
-        public string Copyright { get; set; }
+	class SongFilter
+	{
+		private string keyword;
 
-        public SongFilter()
-        {
-            Reset();
-            //SearchInText = true;
-        }
+		public string Keyword
+		{
+			get
+			{
+				return keyword;
+			}
+			set
+			{
+				keyword = value;
+				NormalizedKeyword = SongData.NormalizeSearchString(keyword);
+			}
+		}
 
-        public bool Matches(SongData song)
-        {
-            if (IsEmpty)
-            {
-                return true;
-            }
+		public string NormalizedKeyword { get; private set; }
 
-            if (Source != "")
-            {
-                if (!song.Sources.ContainsIgnoreCase(Source))
-                {
-                    return false;
-                }
-            }
+		public bool SearchInText
+		{
+			get
+			{
+				return Properties.Settings.Default.SongListSearchInText;
+			}
+			set
+			{
+				Properties.Settings.Default.SongListSearchInText = value;
+			}
+		}
+		public string Source { get; set; }
 
-            if (Copyright != "")
-            {
-                if (!song.Copyright.ContainsIgnoreCase(Copyright))
-                {
-                    return false;
-                }
-            }
+		public string Copyright { get; set; }
 
-            if (Keyword != "")
-            {
-                if (!(song.Title.ContainsIgnoreCase(Keyword) || (SearchInText && song.Text.ContainsIgnoreCase(Keyword))))
-                {
-                    return false;
-                }
-            }
+		public SongFilter()
+		{
+			Reset();
+		}
 
-            return true;
-        }
+		public bool Matches(SongData song)
+		{
+			if (IsEmpty)
+			{
+				return true;
+			}
 
-        public bool IsEmpty
-        {
-            get
-            {
-                return Keyword == "" && Source == "" && Copyright == "";
-            }
-        }
+			if (Source != "")
+			{
+				if (!song.Sources.ContainsIgnoreCase(Source))
+				{
+					return false;
+				}
+			}
 
-        public void Reset()
-        {
-            Keyword = "";
-            Source = "";
-            Copyright = "";
-        }
-    }
+			if (Copyright != "")
+			{
+				if (!song.Copyright.ContainsIgnoreCase(Copyright))
+				{
+					return false;
+				}
+			}
+
+			if (Keyword != "")
+			{
+				if (!(song.SearchTitle.ContainsIgnoreCase(NormalizedKeyword) || (SearchInText && song.SearchText.ContainsIgnoreCase(NormalizedKeyword))))
+				{
+					return false;
+				}
+			}
+
+			return true;
+		}
+
+		public bool IsEmpty
+		{
+			get
+			{
+				return Keyword == "" && Source == "" && Copyright == "";
+			}
+		}
+
+		public void Reset()
+		{
+			Keyword = "";
+			Source = "";
+			Copyright = "";
+		}
+	}
 }

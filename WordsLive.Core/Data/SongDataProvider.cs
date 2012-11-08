@@ -45,7 +45,7 @@ namespace WordsLive.Core.Data
 		/// <returns>All songs whose title contains the query.</returns>
 		public virtual IEnumerable<SongData> WhereTitleContains(string query)
 		{
-			return All().Where(d => d.Title.ContainsIgnoreCase(query));
+			return All().Where(d => d.SearchTitle.ContainsIgnoreCase(query));
 		}
 
 		/// <summary>
@@ -55,7 +55,7 @@ namespace WordsLive.Core.Data
 		/// <returns>All songs whose text or title contains the query.</returns>
 		public virtual IEnumerable<SongData> WhereTextContains(string query)
 		{
-			return All().Where(d => d.Title.ContainsIgnoreCase(query) || d.Text.ContainsIgnoreCase(query));
+			return All().Where(d => d.SearchTitle.ContainsIgnoreCase(query) || d.SearchText.ContainsIgnoreCase(query));
 		}
 
 		/// <summary>

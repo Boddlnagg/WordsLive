@@ -1177,6 +1177,24 @@ namespace WordsLive.Resources {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Do you really want to delete the song &quot;{0}&quot;? This operation cannot be undone. ähnelt.
+        /// </summary>
+        public static string slMsgDeleteSong {
+            get {
+                return ResourceManager.GetString("slMsgDeleteSong", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Really delete song? ähnelt.
+        /// </summary>
+        public static string slMsgDeleteSongTitle {
+            get {
+                return ResourceManager.GetString("slMsgDeleteSongTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Search ähnelt.
         /// </summary>
         public static string slSearch {

@@ -57,5 +57,11 @@ namespace WordsLive.Core.Data
 		{
 			return new LocalFileTransaction(path, allowOverwrite);
 		}
+
+
+		public void Delete(string path)
+		{
+			File.Delete(path);
+		}
 	}
 }

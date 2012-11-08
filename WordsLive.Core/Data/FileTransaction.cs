@@ -32,7 +32,7 @@ namespace WordsLive.Core.Data
 		public bool IsFinished { get; private set; }
 
 		/// <summary>
-		/// Gets the stream to write to.
+		/// Gets the stream to write to. Don't close this stream!
 		/// </summary>
 		public abstract Stream Stream { get; }
 

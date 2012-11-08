@@ -47,6 +47,10 @@ namespace WordsLive.Core.Data
 				AllowedImageExtensions = new string[] { ".png", ".jpg", ".jpeg" },
 				AllowedVideoExtensions = new string[] { ".mp4", ".wmv", ".avi" }
 			};
+
+			System.Net.NetworkCredential credentials = new System.Net.NetworkCredential("WordsLive", "abc");
+			Songs = new HttpSongDataProvider("http://wordslive.media/songs/", credentials);
+			Backgrounds = new HttpBackgroundDataProvider("http://wordslive.media/backgrounds/", credentials);
 		}
 
 		/// <summary>

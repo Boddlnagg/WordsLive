@@ -111,18 +111,43 @@ namespace WordsLive.Songs
 
 		private void OnCanExecuteCommand(object sender, CanExecuteRoutedEventArgs e)
 		{
+			SongData data;
+			if (e.Parameter as SongData != null)
+				data = (SongData)e.Parameter;
+			else
+				data = (SongData)songListView.SelectedItem;
+
 			if (e.Command == CustomCommands.AddMedia)
 			{
-				e.CanExecute = songListView.SelectedItem != null;
+				e.CanExecute = data != null;
+			}
+			else if (e.Command == ApplicationCommands.Delete)
+			{
+				e.CanExecute = data != null && DataManager.Songs is IBidirectionalMediaDataProvider;
 			}
 		}
 
 		private void OnExecuteCommand(object sender, ExecutedRoutedEventArgs e)
 		{
+			SongData data;
+			if (e.Parameter as SongData != null)
+				data = (SongData)e.Parameter;
+			else
+				data = (SongData)songListView.SelectedItem;
+
 			if (e.Command == CustomCommands.AddMedia)
 			{
-				var song = (SongData)songListView.SelectedItem;
-				Controller.AddToPortfolio(song.Filename, DataManager.Songs);
+				Controller.AddToPortfolio(data.Filename, DataManager.Songs);
+			}
+			else if (e.Command == ApplicationCommands.Delete)
+			{ 
+				var provider = DataManager.Songs as IBidirectionalMediaDataProvider;
+				var result = MessageBox.Show(String.Format(WordsLive.Resources.Resource.slMsgDeleteSong, data.Title), WordsLive.Resources.Resource.slMsgDeleteSongTitle, MessageBoxButton.YesNoCancel, MessageBoxImage.Question);
+				if (result == MessageBoxResult.Yes)
+				{
+					provider.Delete(data.Filename);
+					list.Remove(data);
+				}
 			}
 			else if (e.Command == ApplicationCommands.Close)
 			{

@@ -20,6 +20,7 @@
 	<Window.CommandBindings>
 		<CommandBinding Command="{x:Static local:CustomCommands.AddMedia}" CanExecute="OnCanExecuteCommand"  Executed="OnExecuteCommand"/>
 		<CommandBinding Command="Close" Executed="OnExecuteCommand"/>
+		<CommandBinding Command="Delete" CanExecute="OnCanExecuteCommand"  Executed="OnExecuteCommand"/>
 	</Window.CommandBindings>
 	<Grid>
 		<Grid.RowDefinitions>
@@ -49,6 +50,9 @@
 					<Setter Property="TextWrapping" Value="NoWrap" />
 					<Setter Property="TextTrimming" Value="CharacterEllipsis" />
 				</Style>
+				<ContextMenu x:Key="contextMenu">
+					<MenuItem Command="Delete" CommandParameter="{Binding}"/>
+				</ContextMenu>
 			</ListView.Resources>
 			<ListView.View>
 				<GridView>
@@ -62,6 +66,7 @@
 				<Style TargetType="{x:Type ListViewItem}">
 					<EventSetter Event="PreviewMouseLeftButtonDown" Handler="ListViewItem_PreviewMouseLeftButtonDown"/>
 					<EventSetter Event="MouseDoubleClick" Handler="ListViewItem_MouseDoubleClick" />
+					<Setter Property="ContextMenu" Value="{StaticResource contextMenu}"/>
 				</Style>
 			</ListView.ItemContainerStyle>
 		</ListView>
