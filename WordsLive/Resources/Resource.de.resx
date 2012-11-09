@@ -225,8 +225,8 @@
   <data name="slTitle" xml:space="preserve">
     <value>Liederliste</value>
   </data>
-  <data name="sMsgDirectoryMissing" xml:space="preserve">
-    <value>Das Verzeichnis für Lieder oder Hintergründe existiert nicht. Bitte ein anderes Verzeichnis wählen oder das Verzeichnis erstellen.</value>
+  <data name="seMsgInitDataError" xml:space="preserve">
+    <value>Entweder das ausgewählte Verzeichnis für Lieder oder Hintergründe existiert nicht, oder die Verbindung zum eingestellten Datenserver ist fehlgeschlagen. Bitte aktualisieren Sie die Einstellungen.</value>
   </data>
   <data name="vFilterAllFiles" xml:space="preserve">
     <value>Alle Dateien</value>
@@ -348,8 +348,8 @@
   <data name="vToolbarUsePortfolioBackground" xml:space="preserve">
     <value>Einen Hintergrund für alle Lieder verwenden</value>
   </data>
-  <data name="seHeaderDirectories" xml:space="preserve">
-    <value>Verzeichnisse</value>
+  <data name="seHeaderDataSources" xml:space="preserve">
+    <value>Datenquellen</value>
   </data>
   <data name="seLabelBackgrounds" xml:space="preserve">
     <value>Hintergründe:</value>
@@ -674,5 +674,17 @@
   </data>
   <data name="slMsgDeleteSongTitle" xml:space="preserve">
     <value>Lied wirklich löschen?</value>
+  </data>
+  <data name="seLabelServerAddress" xml:space="preserve">
+    <value>Adresse:</value>
+  </data>
+  <data name="seRadioLocal" xml:space="preserve">
+    <value>Lokale Verzeichnisse</value>
+  </data>
+  <data name="seRadioServer" xml:space="preserve">
+    <value>Datenserver</value>
+  </data>
+  <data name="seLabelServerPassword" xml:space="preserve">
+    <value>Passwort:</value>
   </data>
 </root>

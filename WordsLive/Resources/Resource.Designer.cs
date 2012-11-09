@@ -907,11 +907,11 @@ namespace WordsLive.Resources {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Directories ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die Data sources ähnelt.
         /// </summary>
-        public static string seHeaderDirectories {
+        public static string seHeaderDataSources {
             get {
-                return ResourceManager.GetString("seHeaderDirectories", resourceCulture);
+                return ResourceManager.GetString("seHeaderDataSources", resourceCulture);
             }
         }
         
@@ -930,6 +930,24 @@ namespace WordsLive.Resources {
         public static string seLabelNewSongTemplate {
             get {
                 return ResourceManager.GetString("seLabelNewSongTemplate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Address: ähnelt.
+        /// </summary>
+        public static string seLabelServerAddress {
+            get {
+                return ResourceManager.GetString("seLabelServerAddress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Password: ähnelt.
+        /// </summary>
+        public static string seLabelServerPassword {
+            get {
+                return ResourceManager.GetString("seLabelServerPassword", resourceCulture);
             }
         }
         
@@ -966,6 +984,33 @@ namespace WordsLive.Resources {
         public static string seLabelTransitionSlides {
             get {
                 return ResourceManager.GetString("seLabelTransitionSlides", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Either the selected directory for songs or backgrounds does not exist, or the connection to the data server failed. Please update the data source settings. ähnelt.
+        /// </summary>
+        public static string seMsgInitDataError {
+            get {
+                return ResourceManager.GetString("seMsgInitDataError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Local directories ähnelt.
+        /// </summary>
+        public static string seRadioLocal {
+            get {
+                return ResourceManager.GetString("seRadioLocal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Data server ähnelt.
+        /// </summary>
+        public static string seRadioServer {
+            get {
+                return ResourceManager.GetString("seRadioServer", resourceCulture);
             }
         }
         
@@ -1236,15 +1281,6 @@ namespace WordsLive.Resources {
         public static string slTitle {
             get {
                 return ResourceManager.GetString("slTitle", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die The directory for songs or backgrounds does not exist. Please choose another directory or create it. ähnelt.
-        /// </summary>
-        public static string sMsgDirectoryMissing {
-            get {
-                return ResourceManager.GetString("sMsgDirectoryMissing", resourceCulture);
             }
         }
         

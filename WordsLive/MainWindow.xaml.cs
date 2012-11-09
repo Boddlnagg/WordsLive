@@ -543,7 +543,8 @@ namespace WordsLive
 		public void ShowSettingsWindow()
 		{
 			var win = new SettingsWindow();
-			win.Owner = this;
+			if (this.IsLoaded)
+				win.Owner = this;
 			MasterOverrideOptions oldOptions = MasterOverrideOptions.CreateFromSettings();
 			win.ShowDialog();
 

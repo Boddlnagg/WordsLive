@@ -16,6 +16,9 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+using System;
+using System.IO;
+
 namespace WordsLive.Core.Data
 {
 	public static class DataManager
@@ -29,16 +32,54 @@ namespace WordsLive.Core.Data
 		}
 
 		/// <summary>
-		/// Initializes the directories for songs and backgrounds.
+		/// Tries the initialize this data manager using a data server for songs and backgrounds.
+		/// </summary>
+		/// <param name="address">The address of the server.</param>
+		/// <param name="password">The password to use, <c>null</c> or an empty string if no authentication should be used.</param>
+		/// <returns><c>true</c> if the initialization succeeded, <c>false</c> otherwise.</returns>
+		public static bool TryInitUsingServer(string address, string password)
+		{
+			if (address.EndsWith("/"))
+				address.Substring(0, address.Length - 1);
+
+			if (String.IsNullOrWhiteSpace(address))
+				return false;
+
+			System.Net.NetworkCredential credentials = null;
+
+			if (!String.IsNullOrWhiteSpace(password))
+				credentials = new System.Net.NetworkCredential("WordsLive", password);
+
+			Songs = new HttpSongDataProvider(address + "/songs/", credentials);
+			Backgrounds = new HttpBackgroundDataProvider(address + "/backgrounds/", credentials);
+
+			try
+			{
+				Songs.Count(); // get song count for testing the connection and password
+			}
+			catch (System.Net.WebException)
+			{
+				return false;
+			}
+
+			return true;
+		}
+
+		/// <summary>
+		/// Tries to initialize this data manager using local directories for songs and backgrounds.
 		/// </summary>
 		/// <param name="songsDirectory">The directory for songs.</param>
 		/// <param name="backgroundsDirectory">The directory for backgrounds.</param>
-		public static void InitLocalDirectories(string songsDirectory, string backgroundsDirectory)
+		/// <returns><c>true</c> if the initialization succeeded, <c>false</c> otherwise.</returns>
+		public static bool TryInitUsingLocal(string songsDirectory, string backgroundsDirectory)
 		{
+			if (!Directory.Exists(songsDirectory) || !Directory.Exists(backgroundsDirectory))
+				return false;
+
 			if (songsDirectory.EndsWith("\\"))
 				songsDirectory = songsDirectory.Substring(0, songsDirectory.Length - 1);
 			Songs = new LocalSongDataProvider(songsDirectory);
-			
+
 			if (backgroundsDirectory.EndsWith("\\"))
 				backgroundsDirectory = backgroundsDirectory.Substring(0, backgroundsDirectory.Length - 1);
 			Backgrounds = new LocalBackgroundDataProvider(backgroundsDirectory)
@@ -48,9 +89,7 @@ namespace WordsLive.Core.Data
 				AllowedVideoExtensions = new string[] { ".mp4", ".wmv", ".avi" }
 			};
 
-			//System.Net.NetworkCredential credentials = new System.Net.NetworkCredential("WordsLive", "abc");
-			//Songs = new HttpSongDataProvider("http://boddl.nagg.de/wordslive/media/songs/", credentials);
-			//Backgrounds = new HttpBackgroundDataProvider("http://boddl.nagg.de/wordslive/media/backgrounds/", credentials);
+			return true;
 		}
 
 		/// <summary>

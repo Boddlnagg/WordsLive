@@ -51,7 +51,7 @@ namespace WordsLive
 			string startupDir = new FileInfo(Assembly.GetExecutingAssembly().Location).Directory.FullName;
 			LoadTypes(Assembly.LoadFrom(Path.Combine(startupDir, "WordsLive.Slideshow.dll"))); // TODO (Words): automatically load plugins
 
-			InitDataDirectories();
+			InitDataManager();
 
 			WordsLive.Utils.ImageLoader.Manager.Instance.LoadingImage = new System.Windows.Media.Imaging.BitmapImage(new Uri("/WordsLive;component/Artwork/LoadingAnimation.png", UriKind.Relative));
 		}
@@ -118,7 +118,7 @@ namespace WordsLive
 										 select type);
 		}
 
-		private void InitDataDirectories()
+		private void InitDataManager()
 		{
 			if (string.IsNullOrEmpty(Properties.Settings.Default.SongsDirectory))
 			{
@@ -130,14 +130,22 @@ namespace WordsLive
 				Properties.Settings.Default.BackgroundsDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), "Powerpraise-Dateien", "Backgrounds");
 			}
 
-			while (!Directory.Exists(Properties.Settings.Default.SongsDirectory) || !Directory.Exists(Properties.Settings.Default.BackgroundsDirectory))
+			while (!TryInitDataManager())
 			{
-				MessageBox.Show(Resource.sMsgDirectoryMissing);
+				// TODO: this message box is not shown correctly (the first time, when the window is not yet loaded)
+				MessageBox.Show(Resource.seMsgInitDataError);
 				window.ShowSettingsWindow();
 			}
-
-			DataManager.InitLocalDirectories(Properties.Settings.Default.SongsDirectory, Properties.Settings.Default.BackgroundsDirectory);
 		}
+
+		private bool TryInitDataManager()
+		{
+			if (Properties.Settings.Default.UseDataServer)
+				return DataManager.TryInitUsingServer(Properties.Settings.Default.DataServerAddress, Properties.Settings.Default.DataServerPassword);
+			else
+				return DataManager.TryInitUsingLocal(Properties.Settings.Default.SongsDirectory, Properties.Settings.Default.BackgroundsDirectory);
+		}
+
 		#endregion
 
 		#region Public (static) members

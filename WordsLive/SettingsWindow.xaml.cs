@@ -32,6 +32,8 @@ namespace WordsLive
 				this.TabControl.Items.Add(new TabItem { Header = tab.Header, Content = tab.Control });
 			}
 
+			this.passwordBox.Password = Properties.Settings.Default.DataServerPassword;
+
 			this.DataContext = this;
 		}
 
@@ -56,6 +58,42 @@ namespace WordsLive
 			set
 			{
 				Properties.Settings.Default.BackgroundsDirectory = value;
+			}
+		}
+
+		public bool UseDataServer
+		{
+			get
+			{
+				return Properties.Settings.Default.UseDataServer;
+			}
+			set
+			{
+				Properties.Settings.Default.UseDataServer = value;
+			}
+		}
+
+		public bool UseLocalDirectories
+		{
+			get
+			{
+				return !UseDataServer;
+			}
+			set
+			{
+				UseDataServer = !value;
+			}
+		}
+
+		public string DataServerAddress
+		{
+			get
+			{
+				return Properties.Settings.Default.DataServerAddress;
+			}
+			set
+			{
+				Properties.Settings.Default.DataServerAddress = value;
 			}
 		}
 
@@ -111,6 +149,7 @@ namespace WordsLive
 		{
 			if (this.IsValid())
 			{
+				Properties.Settings.Default.DataServerPassword = passwordBox.Password;
 				this.DialogResult = true;
 			}
 		}

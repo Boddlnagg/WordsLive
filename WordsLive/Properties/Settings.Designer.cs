@@ -552,5 +552,41 @@ namespace WordsLive.Properties {
                 this["TemplateMasterOverrideOutlineShadow"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool UseDataServer {
+            get {
+                return ((bool)(this["UseDataServer"]));
+            }
+            set {
+                this["UseDataServer"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string DataServerAddress {
+            get {
+                return ((string)(this["DataServerAddress"]));
+            }
+            set {
+                this["DataServerAddress"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string DataServerPassword {
+            get {
+                return ((string)(this["DataServerPassword"]));
+            }
+            set {
+                this["DataServerPassword"] = value;
+            }
+        }
     }
 }
