@@ -70,6 +70,18 @@ namespace WordsLive.Core.Data
 			}
 		}
 
+		/// <summary>
+		/// Gets the URI of a preview of this file.
+		/// If none is available, it will be the same as <see cref="Uri"/>.
+		/// </summary>
+		public Uri PreviewUri
+		{
+			get
+			{
+				return provider.GetPreviewUri(this);
+			}
+		}
+
 		public override bool Equals(object obj)
 		{
 			var other = obj as BackgroundFile;

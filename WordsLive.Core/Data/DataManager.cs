@@ -48,9 +48,9 @@ namespace WordsLive.Core.Data
 				AllowedVideoExtensions = new string[] { ".mp4", ".wmv", ".avi" }
 			};
 
-			System.Net.NetworkCredential credentials = new System.Net.NetworkCredential("WordsLive", "abc");
-			Songs = new HttpSongDataProvider("http://wordslive.media/songs/", credentials);
-			Backgrounds = new HttpBackgroundDataProvider("http://wordslive.media/backgrounds/", credentials);
+			//System.Net.NetworkCredential credentials = new System.Net.NetworkCredential("WordsLive", "abc");
+			//Songs = new HttpSongDataProvider("http://boddl.nagg.de/wordslive/media/songs/", credentials);
+			//Backgrounds = new HttpBackgroundDataProvider("http://boddl.nagg.de/wordslive/media/backgrounds/", credentials);
 		}
 
 		/// <summary>

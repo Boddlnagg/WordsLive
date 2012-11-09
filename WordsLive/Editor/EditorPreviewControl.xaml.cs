@@ -37,7 +37,7 @@ namespace WordsLive.Editor
 			controller = new SongDisplayController(Web);
 			controller.ShowChords = true;
 
-			controller.ImagesLoaded += (sender, args) => OnFinishedLoading();
+			//controller.ImagesLoaded += (sender, args) => OnFinishedLoading();
 
 			Web.DeferInput();
 
@@ -131,12 +131,7 @@ namespace WordsLive.Editor
 		{
 			// TODO: previews don't load correctly when more than one file is opened simultaneously
 			UpdateStyle();
-			try
-			{
-				controller.PreloadImages(from bg in song.Backgrounds where bg.Type == SongBackgroundType.Image select DataManager.Backgrounds.GetFile(bg).Uri);
-			}
-			catch (FileNotFoundException)
-			{ }
+			OnFinishedLoading();
 		}
 
 		private bool isFirstSelected;

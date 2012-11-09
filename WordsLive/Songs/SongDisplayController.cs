@@ -99,7 +99,14 @@ namespace WordsLive.Songs
 				}
 				if (bg.Type == SongBackgroundType.Image)
 				{
-					bgString = "background-color: black; background-image: url('" + DataManager.Backgrounds.GetFile(bg).Uri.AbsoluteUri+ "');";
+					try
+					{
+						bgString = "background-color: black; background-image: url('" + DataManager.Backgrounds.GetFile(bg).Uri.AbsoluteUri + "');";
+					}
+					catch (FileNotFoundException)
+					{
+						bgString = "background-color: black;";
+					}
 					bgString += "background-repeat: no-repeat; background-size: 100%";
 				}
 				else if (bg.Type == SongBackgroundType.Color)

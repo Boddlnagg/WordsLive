@@ -67,6 +67,12 @@ namespace WordsLive.Core.Data
 			return new Uri(rootAddress + file.Path.Substring(1));
 		}
 
+		public override Uri GetPreviewUri(BackgroundFile file)
+		{
+			// this requires no authentication
+			return new Uri(rootAddress + file.Path.Substring(1) + "/preview");
+		}
+
 		/// <summary>
 		/// Gets the listing of files and folders using HTTP.
 		/// An requested URL looks like http://host/backgrounds/directory/list.

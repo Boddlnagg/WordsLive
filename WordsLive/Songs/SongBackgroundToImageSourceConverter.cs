@@ -31,11 +31,16 @@ namespace WordsLive.Songs
 			{
 				try
 				{
-					var uri = DataManager.Backgrounds.GetFile(bg).Uri;
+					Uri uri;
+					if (width > -1 && width <= 300)
+						uri = DataManager.Backgrounds.GetFile(bg).PreviewUri;
+					else
+						uri = DataManager.Backgrounds.GetFile(bg).Uri;
+
 					var img = new BitmapImage();
 					img.BeginInit();
 					img.UriSource = uri;
-					if (width > -1)
+					if (width > 300)
 						img.DecodePixelWidth = width;
 					img.EndInit();
 

@@ -74,6 +74,14 @@ namespace WordsLive.Core.Data
 		public abstract Uri GetFileUri(BackgroundFile file);
 
 		/// <summary>
+		/// Gets the URI of the preview of a background file, if available.
+		/// If it's not available, this will return the same as GetFileUri().
+		/// </summary>
+		/// <param name="file">The file.</param>
+		/// <returns>The URI of a preview of the file.</returns>
+		public abstract Uri GetPreviewUri(BackgroundFile file);
+
+		/// <summary>
 		/// Gets the file specified by a <see cref="SongBackground"/> instance.
 		/// The background's IsImage property must be <c>true</c>.
 		/// </summary>

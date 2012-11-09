@@ -149,6 +149,19 @@ namespace WordsLive.Core.Data
 		}
 
 		/// <summary>
+		/// Gets the URI of the preview of a background file, if available.
+		/// If it's not available, this will return the same as GetFileUri().
+		/// </summary>
+		/// <param name="file">The file.</param>
+		/// <returns>
+		/// The URI of a preview of the file.
+		/// </returns>
+		public override Uri GetPreviewUri(BackgroundFile file)
+		{
+			return GetFileUri(file);
+		}
+
+		/// <summary>
 		/// Helper function to get the absolute path for a given directory.
 		/// </summary>
 		/// <param name="dir">The directory to get the path for.</param>
