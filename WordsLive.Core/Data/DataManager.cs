@@ -59,7 +59,11 @@ namespace WordsLive.Core.Data
 			}
 			catch (System.Net.WebException)
 			{
-				return false;
+				return false; // problem with the connection
+			}
+			catch (FormatException)
+			{
+				return false; // problem with the response (not a number)
 			}
 
 			return true;

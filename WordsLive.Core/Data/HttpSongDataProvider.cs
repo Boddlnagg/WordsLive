@@ -72,6 +72,18 @@ namespace WordsLive.Core.Data
 			return FetchSongData("filter/source/" + query);
 		}
 
+		public override int Count()
+		{
+			using (var client = new WebClient())
+			{
+				if (credential != null)
+					client.Credentials = credential;
+
+				var result = client.DownloadString(rootAddress + "count");
+				return int.Parse(result);
+			}
+		}
+
 		public override Stream Get(string path)
 		{
 			using (var client = new WebClient())
