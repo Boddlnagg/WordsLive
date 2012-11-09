@@ -28,6 +28,8 @@ Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "Installer", "Installer\Inst
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WordsLive.Core.Tests", "WordsLive.Core.Tests\WordsLive.Core.Tests.csproj", "{EC7B2E3F-F040-4CDA-83CE-F7768C52A77F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WordsLive.Server", "WordsLive.Server\WordsLive.Server.csproj", "{D1CBFA7D-BE14-4EE8-8696-81AB6401D195}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -132,6 +134,16 @@ Global
 		{EC7B2E3F-F040-4CDA-83CE-F7768C52A77F}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{EC7B2E3F-F040-4CDA-83CE-F7768C52A77F}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{EC7B2E3F-F040-4CDA-83CE-F7768C52A77F}.Release|x86.ActiveCfg = Release|Any CPU
+		{D1CBFA7D-BE14-4EE8-8696-81AB6401D195}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D1CBFA7D-BE14-4EE8-8696-81AB6401D195}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D1CBFA7D-BE14-4EE8-8696-81AB6401D195}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{D1CBFA7D-BE14-4EE8-8696-81AB6401D195}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{D1CBFA7D-BE14-4EE8-8696-81AB6401D195}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{D1CBFA7D-BE14-4EE8-8696-81AB6401D195}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D1CBFA7D-BE14-4EE8-8696-81AB6401D195}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D1CBFA7D-BE14-4EE8-8696-81AB6401D195}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{D1CBFA7D-BE14-4EE8-8696-81AB6401D195}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{D1CBFA7D-BE14-4EE8-8696-81AB6401D195}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

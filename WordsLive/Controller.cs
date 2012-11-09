@@ -1,20 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using WordsLive.MediaOrderList;
-using WordsLive.Core.Songs;
-using WordsLive.Core;
-using System.Windows;
-using WordsLive.Editor;
-using WordsLive.Songs;
-using System.Configuration;
 using System.IO;
+using System.Linq;
 using System.Reflection;
-using WordsLive.Resources;
-using Microsoft.Win32;
 using System.Threading;
+using System.Windows;
+using Microsoft.Win32;
+using WordsLive.Core;
 using WordsLive.Core.Data;
+using WordsLive.Core.Songs;
+using WordsLive.Editor;
+using WordsLive.MediaOrderList;
+using WordsLive.Resources;
+using WordsLive.Songs;
 
 namespace WordsLive
 {
