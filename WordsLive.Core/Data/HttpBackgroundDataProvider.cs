@@ -26,18 +26,21 @@ namespace WordsLive.Core.Data
 {
 	public class HttpBackgroundDataProvider : BackgroundDataProvider
 	{
-		private string rootAddress;
-		private NetworkCredential credential;
+		private WebClient client;
+		private string baseAddress;
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="HttpBackgroundDataProvider"/> class.
 		/// </summary>
-		/// <param name="rootAddress">The root address, e.g. http://example.com/backgrounds/). </param>
+		/// <param name="baseAddress">The root address, e.g. http://example.com/backgrounds/). </param>
 		/// <param name="credentials">The credentials, if needed.</param>
-		public HttpBackgroundDataProvider(string rootAddress, NetworkCredential credential = null)
+		public HttpBackgroundDataProvider(string baseAddress, NetworkCredential credential = null)
 		{
-			this.rootAddress = rootAddress;
-			this.credential = credential;
+			this.client = new WebClient();
+			this.baseAddress = baseAddress;
+			client.BaseAddress = baseAddress;
+			if (credential != null)
+				client.Credentials = credential;
 		}
 
 		public override BackgroundFile GetFile(string path)
@@ -64,13 +67,13 @@ namespace WordsLive.Core.Data
 		public override Uri GetFileUri(BackgroundFile file)
 		{
 			// this requires no authentication
-			return new Uri(rootAddress + file.Path.Substring(1));
+			return new Uri(baseAddress + file.Path.Substring(1));
 		}
 
 		public override Uri GetPreviewUri(BackgroundFile file)
 		{
 			// this requires no authentication
-			return new Uri(rootAddress + file.Path.Substring(1) + "/preview");
+			return new Uri(baseAddress + file.Path.Substring(1) + "/preview");
 		}
 
 		/// <summary>
@@ -81,13 +84,8 @@ namespace WordsLive.Core.Data
 		/// <returns></returns>
 		private IEnumerable<ListingEntry> GetListing(BackgroundDirectory directory)
 		{
-			using (var client = new WebClient())
-			{
-				if (credential != null)
-					client.Credentials = credential;
-				var result = client.DownloadString(rootAddress + directory.Path.Substring(1) + "list");
-				return result.Split('\n').Where(p => p.Trim() != String.Empty).Select(p => new ListingEntry(p));
-			}
+			var result = client.DownloadString(directory.Path.Substring(1) + "list");
+			return result.Split('\n').Where(p => p.Trim() != String.Empty).Select(p => new ListingEntry(p));
 		}
 
 		/// <summary>

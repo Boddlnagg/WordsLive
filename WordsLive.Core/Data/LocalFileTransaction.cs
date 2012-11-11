@@ -21,6 +21,9 @@ using System.IO;
 
 namespace WordsLive.Core.Data
 {
+	/// <summary>
+	/// Implements a file transaction using a local file.
+	/// </summary>
 	public class LocalFileTransaction : FileTransaction
 	{
 		private FileStream stream;
@@ -41,8 +44,6 @@ namespace WordsLive.Core.Data
 				throw new FileExistsException(path);
 			}
 		}
-
-		
 
 		protected override void DoFinish()
 		{

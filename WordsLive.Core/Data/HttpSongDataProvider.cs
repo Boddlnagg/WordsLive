@@ -26,9 +26,8 @@ namespace WordsLive.Core.Data
 {
 	public class HttpSongDataProvider : SongDataProvider, IBidirectionalMediaDataProvider
 	{
-		private string rootAddress;
-		private NetworkCredential credential;
 		private DirectoryInfo tempDirectory;
+		private WebClient client;
 
 		private DirectoryInfo TempDirectory
 		{
@@ -41,10 +40,12 @@ namespace WordsLive.Core.Data
 			}
 		}
 
-		public HttpSongDataProvider(string rootAddress, NetworkCredential credential = null)
+		public HttpSongDataProvider(string baseAddress, NetworkCredential credential = null)
 		{
-			this.rootAddress = rootAddress;
-			this.credential = credential;
+			this.client = new WebClient();
+			client.BaseAddress = baseAddress;
+			if (credential != null)
+				client.Credentials = credential;
 		}
 
 		public override IEnumerable<SongData> All()
@@ -74,35 +75,23 @@ namespace WordsLive.Core.Data
 
 		public override int Count()
 		{
-			using (var client = new WebClient())
-			{
-				if (credential != null)
-					client.Credentials = credential;
-
-				var result = client.DownloadString(rootAddress + "count");
-				return int.Parse(result);
-			}
+			var result = client.DownloadString("count");
+			return int.Parse(result);
 		}
 
 		public override Stream Get(string path)
 		{
-			using (var client = new WebClient())
+			try
 			{
-				if (credential != null)
-					client.Credentials = credential;
-
-				try
-				{
-					var result = client.DownloadData(rootAddress + path);
-					return new MemoryStream(result);
-				}
-				catch (WebException e)
-				{
-					if (((HttpWebResponse)e.Response).StatusCode == HttpStatusCode.NotFound) // 404
-						throw new FileNotFoundException();
-					else
-						throw;
-				}
+				var result = client.DownloadData(path);
+				return new MemoryStream(result);
+			}
+			catch (WebException e)
+			{
+				if (((HttpWebResponse)e.Response).StatusCode == HttpStatusCode.NotFound) // 404
+					throw new FileNotFoundException();
+				else
+					throw;
 			}
 		}
 
@@ -131,32 +120,20 @@ namespace WordsLive.Core.Data
 
 		public FileTransaction Put(string path, bool allowOverwrite)
 		{
-			return new HttpFileTransaction(new Uri(rootAddress + path), credential);
+			return new HttpFileTransaction(path, client);
 		}
 
 		public void Delete(string path)
 		{
-			using (var client = new WebClient())
-			{
-				if (credential != null)
-					client.Credentials = credential;
-
-				var result = client.UploadString(rootAddress + path, "DELETE", "");
-				if (result != "OK")
-					throw new WebException("Deleting failed.");
-			}
+			var result = client.UploadString(path, "DELETE", "");
+			if (result != "OK")
+				throw new WebException("Deleting failed.");
 		}
 
 		private IEnumerable<SongData> FetchSongData(string path)
 		{
-			using (var client = new WebClient())
-			{
-				if (credential != null)
-					client.Credentials = credential;
-
-				var result = client.DownloadString(rootAddress + path);
-				return JsonConvert.DeserializeObject<IEnumerable<SongData>>(result);
-			}
+			var result = client.DownloadString(path);
+			return JsonConvert.DeserializeObject<IEnumerable<SongData>>(result);
 		}
 
 		private DirectoryInfo CreateTempDirectory()

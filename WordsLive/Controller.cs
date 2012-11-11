@@ -51,8 +51,9 @@ namespace WordsLive
 			string startupDir = new FileInfo(Assembly.GetExecutingAssembly().Location).Directory.FullName;
 			LoadTypes(Assembly.LoadFrom(Path.Combine(startupDir, "WordsLive.Slideshow.dll"))); // TODO (Words): automatically load plugins
 
-			//var server = new Server.TestServer(80);
-			//server.Start();
+			// TODO: add setting whether to start server or not
+			var server = new Server.TestServer(80);
+			server.Start();
 
 			InitDataManager();
 

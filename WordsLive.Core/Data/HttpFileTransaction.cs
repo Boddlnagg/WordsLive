@@ -29,19 +29,19 @@ namespace WordsLive.Core.Data
 	public class HttpFileTransaction : FileTransaction
 	{
 		private MemoryStream stream;
-		private Uri uri;
-		private NetworkCredential credential;
+		private string relativeUri;
+		private WebClient client;
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="HttpFileTransaction"/> class.
 		/// </summary>
-		/// <param name="uri">The URI to upload to.</param>
-		/// <param name="credential">The credentials.</param>
-		public HttpFileTransaction(Uri uri, NetworkCredential credential = null)
+		/// <param name="relativeUri">The URI to upload to (relative to the base address set in the WebClient).</param>
+		/// <param name="client">The WebClient to use.</param>
+		public HttpFileTransaction(string relativeUri, WebClient client)
 		{
 			stream = new MemoryStream();
-			this.uri = uri;
-			this.credential = credential;
+			this.relativeUri = relativeUri;
+			this.client = client;
 		}
 		
 		public override Stream Stream
@@ -55,15 +55,9 @@ namespace WordsLive.Core.Data
 		protected override void DoFinish()
 		{
 			stream.Close();
-			using (var client = new WebClient())
-			{
-				if (credential != null)
-					client.Credentials = credential;
-
-				var result = Encoding.ASCII.GetString(client.UploadData(uri, "PUT", stream.ToArray()));
-				if (result != "OK")
-					throw new WebException("Uploading failed");
-			}
+			var result = Encoding.ASCII.GetString(client.UploadData(relativeUri, "PUT", stream.ToArray()));
+			if (result != "OK")
+				throw new WebException("Uploading failed");
 		}
 	}
 }

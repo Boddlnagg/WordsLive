@@ -129,7 +129,11 @@ window.addEventListener('load', init, false);
 			this.port = port;
 		}
 
-		public void EnableAuthentication(string username, string password)
+		/// <summary>
+		/// Enables authentication for the server using the username 'WordsLive' and the specified password.
+		/// </summary>
+		/// <param name="password">The password.</param>
+		public void EnableAuthentication(string password)
 		{
 			if (server != null)
 				throw new InvalidOperationException("Server already running.");
@@ -148,18 +152,24 @@ window.addEventListener('load', init, false);
 						return false; // all other requests to /backgrounds/ without /list(all)
 					},
 				"WordsLive",
-				(user) => (user == username ?
+				(user) => (user == "WordsLive" ?
 					new DigestAuthentication.UserPassword { Password = password } :
 					(DigestAuthentication.UserPassword?)null)
 			);
 		}
 
+		/// <summary>
+		/// Starts this server.
+		/// </summary>
 		public void Start()
 		{
 			var fac = new ServerFactory();
 			server = fac.Create(WebSockets.Enable(this.app, "/Echo", OnWebSocketConnection), this.port);
 		}
 
+		/// <summary>
+		/// Stops this server.
+		/// </summary>
 		public void Stop()
 		{
 			if (server == null)
