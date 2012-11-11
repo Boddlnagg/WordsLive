@@ -8,6 +8,7 @@ using System.Windows.Input;
 using WordsLive.Core.Data;
 using WordsLive.Core.Songs;
 using WordsLive.Core.Songs.IO;
+using WordsLive.Songs;
 
 namespace WordsLive.Editor
 {
@@ -262,8 +263,12 @@ namespace WordsLive.Editor
 
 		private void Tabs_Drop(object sender, DragEventArgs e)
 		{
-			// TODO: support drop from explorer (local file) and from songlist (song data provider)
-			if (e.Data.GetData(DataFormats.FileDrop) != null)
+			if (e.Data.GetData(SongDataObject.SongDataFormat) != null)
+			{
+				var song = (SongData)e.Data.GetData(SongDataObject.SongDataFormat);
+				LoadOrImport(song.Filename, DataManager.Songs);
+			}
+			else if (e.Data.GetData(DataFormats.FileDrop) != null)
 			{
 				string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
 				foreach (var file in files)
