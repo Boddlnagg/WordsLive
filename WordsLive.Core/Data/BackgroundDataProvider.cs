@@ -67,6 +67,16 @@ namespace WordsLive.Core.Data
 		public abstract IEnumerable<BackgroundDirectory> GetDirectories(BackgroundDirectory parent);
 
 		/// <summary>
+		/// Gets a instance of <see cref="BackgroundDirectory"/> from a path.
+		/// </summary>
+		/// <param name="path">The path.</param>
+		/// <returns>The directory.</returns>
+		public virtual BackgroundDirectory GetDirectory(string path)
+		{
+			return new BackgroundDirectory(this, path);
+		}
+
+		/// <summary>
 		/// Gets the URI of a background file.
 		/// </summary>
 		/// <param name="file">The file.</param>

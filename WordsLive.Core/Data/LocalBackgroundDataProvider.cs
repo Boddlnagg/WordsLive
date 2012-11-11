@@ -171,7 +171,7 @@ namespace WordsLive.Core.Data
 			if (dir.IsRoot)
 				return new DirectoryInfo(directory);
 
-			return new DirectoryInfo(directory + dir.Path.Replace('/', Path.DirectorySeparatorChar));
+			return new DirectoryInfo(directory + dir.Path.Replace('/', Path.DirectorySeparatorChar).Substring(1));
 		}
 	}
 }

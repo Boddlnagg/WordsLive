@@ -43,7 +43,7 @@ namespace WordsLive.Core.Data
 		public static bool TryInitUsingServer(string address, string password)
 		{
 			if (address.EndsWith("/"))
-				address.Substring(0, address.Length - 1);
+				address = address.Substring(0, address.Length - 1);
 
 			if (String.IsNullOrWhiteSpace(address))
 				return false;

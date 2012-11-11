@@ -19,10 +19,13 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Net;
 using System.Text;
 using Firefly.Http;
-using WordsLive.Server.Utils;
+using Newtonsoft.Json;
 using Owin;
+using WordsLive.Core.Data;
+using WordsLive.Server.Utils;
 
 namespace WordsLive.Server
 {
@@ -123,6 +126,29 @@ window.addEventListener('load', init, false);
 		private int port;
 		private IDisposable server;
 
+		public bool IsRunning
+		{
+			get
+			{
+				return server != null;
+			}
+		}
+
+		public int Port
+		{
+			get
+			{
+				return port;
+			}
+			set
+			{
+				if (IsRunning)
+					throw new InvalidOperationException("Server already running.");
+
+				port = value;
+			}
+		}
+
 		public TestServer(int port)
 		{
 			this.app = App;
@@ -135,7 +161,7 @@ window.addEventListener('load', init, false);
 		/// <param name="password">The password.</param>
 		public void EnableAuthentication(string password)
 		{
-			if (server != null)
+			if (!IsRunning)
 				throw new InvalidOperationException("Server already running.");
 
 			this.app = DigestAuthentication.Enable(
@@ -164,7 +190,7 @@ window.addEventListener('load', init, false);
 		public void Start()
 		{
 			var fac = new ServerFactory();
-			server = fac.Create(WebSockets.Enable(this.app, "/Echo", OnWebSocketConnection), this.port);
+			server = fac.Create(WebSockets.Enable(this.app, "/Echo", OnWebSocketConnection), this.Port);
 		}
 
 		/// <summary>
@@ -172,7 +198,7 @@ window.addEventListener('load', init, false);
 		/// </summary>
 		public void Stop()
 		{
-			if (server == null)
+			if (!IsRunning)
 				throw new InvalidOperationException("Not running.");
 
 			server.Dispose();
@@ -202,68 +228,192 @@ window.addEventListener('load', init, false);
 
 		private void App(IDictionary<string, object> env, ResultDelegate result, Action<Exception> fault)
 		{
-			string requestPath = (string)env["owin.RequestPath"];
+			string requestPath = Uri.UnescapeDataString((string)env["owin.RequestPath"]);
+			string requestMethod = (string)env["owin.RequestMethod"];
+
+			// TODO: use the providers set in DataManager instead
+			BackgroundDataProvider backgrounds = new LocalBackgroundDataProvider(@"C:\Users\Patrick\Documents\Powerpraise-Dateien\Backgrounds\")
+			{
+				AllowedImageExtensions = new string[] { ".png", ".jpg", ".jpeg" },
+				AllowedVideoExtensions = new string[] { ".mp4", ".wmv", ".avi" }
+			};
+
+			LocalSongDataProvider songs = new LocalSongDataProvider(@"C:\Users\Patrick\Documents\Powerpraise-Dateien\Songs\");
 
 			if (requestPath.StartsWith("/backgrounds/"))
 			{
-				var query = requestPath.Substring("/backgrounds/".Length);
-				if (query == "list")
+				if (requestMethod != "GET")
+					RespondMethodNotAllowed(result);
+
+				var query = requestPath.Substring("/backgrounds".Length);
+				
+				if (query.EndsWith("/list"))
+				{
+					string path = query.Substring(0, query.Length - "list".Length);
+					var dir = backgrounds.GetDirectory(path);
+
+					StringBuilder sb = new StringBuilder();
+					ListBackgroundEntries(dir, sb);
+
+					Respond(result, sb.ToString());
+				}
+				else if (query == "/listall")
 				{
 					StringBuilder sb = new StringBuilder();
-					var dir = new DirectoryInfo(backgroundDir);
-					foreach (var subdir in dir.GetDirectories())
-					{
-						sb.Append(subdir.Name);
-						sb.Append('\n');
-					}
-					foreach (var subdir in dir.GetFiles())
-					{
-						sb.Append(subdir.Name);
-						sb.Append('\n');
-					}
-
-					result(
-					"200 OK",
-					new Dictionary<string, IEnumerable<string>>(StringComparer.OrdinalIgnoreCase)
-				{
-					{"Content-Type", new[] {"text/plain"}}
-				},
-					(write, flush, end, cancel) =>
-					{
-						var bytes = Encoding.Default.GetBytes(sb.ToString());
-						write(new ArraySegment<byte>(bytes));
-						end(null);
-					});
+					ListBackgroundEntries(backgrounds.Root, sb, true);
+					Respond(result, sb.ToString());
 				}
 				else
 				{
-					result("404 Not Found",
-					new Dictionary<string, IEnumerable<string>>(StringComparer.OrdinalIgnoreCase)
-				{
-					{"Content-Type", new[] {"text/plain"}}
-				},
-					(write, flush, end, cancel) =>
+					bool preview = false;
+					if (query.EndsWith("/preview"))
 					{
-						var bytes = Encoding.Default.GetBytes("Not found.");
-						write(new ArraySegment<byte>(bytes));
-						end(null);
-					});
+						preview = true;
+						query = query.Substring(0, query.Length - "/preview".Length);
+					}
+
+					try
+					{
+						var file = backgrounds.GetFile(query);
+						using (WebClient client = new WebClient())
+						{
+							var bytes = client.DownloadData(preview ? file.PreviewUri : file.Uri);
+							// TODO: the Content-Type is always octet-stream if using local files. Is that a problem?
+							var contentType = client.ResponseHeaders["Content-Type"];
+							Respond(result, bytes, contentType: contentType);
+						}
+					}
+					catch (FileNotFoundException)
+					{
+						RespondNotFound(result);
+					}
+				}
+			}
+			else if (requestPath.StartsWith("/songs/"))
+			{
+				string query = requestPath.Substring("/songs/".Length);
+				if (query == "list")
+				{
+					if (requestMethod != "GET")
+						RespondMethodNotAllowed(result);
+
+					Respond(result, JsonConvert.SerializeObject(songs.All()));
+				}
+				else if (query == "count")
+				{
+					if (requestMethod != "GET")
+						RespondMethodNotAllowed(result);
+
+					Respond(result, songs.Count().ToString());
+				}
+				else
+				{
+					if (requestMethod == "GET")
+					{
+						try
+						{
+							using (var stream = songs.Get(query))
+							{
+								Respond(result, ReadStream(stream), contentType: "text/xml");
+							}
+						}
+						catch (FileNotFoundException)
+						{
+							RespondNotFound(result);
+						}
+					}
+					else if (requestMethod == "PUT")
+					{
+						throw new NotImplementedException();
+						// TODO
+					}
+					else if (requestMethod == "DELETE")
+					{
+						try
+						{
+							songs.Delete(query);
+							Respond(result, "OK");
+						}
+						catch (FileNotFoundException)
+						{
+							RespondNotFound(result);
+						}
+					}
 				}
 			}
 			else
 			{
-				result(
-					"200 OK",
-					new Dictionary<string, IEnumerable<string>>(StringComparer.OrdinalIgnoreCase)
+				Respond(result, HtmlContent.Replace("###", requestPath), contentType: "text/html");
+			}
+		}
+
+		private void Respond(ResultDelegate del, string response, string contentType = "text/plain", string code = "200 OK")
+		{
+			Respond(del, Encoding.Default.GetBytes(response), contentType, code);
+		}
+
+		private void Respond(ResultDelegate del, byte[] response, string contentType = "text/plain", string code = "200 OK")
+		{
+			del(
+				code,
+				new Dictionary<string, IEnumerable<string>>(StringComparer.OrdinalIgnoreCase)
 				{
-					{"Content-Type", new[] {"text/html"}}
+					{"Content-Type", new[] { contentType }}
 				},
-					(write, flush, end, cancel) =>
-					{
-						var bytes = Encoding.Default.GetBytes(HtmlContent.Replace("###", requestPath));
-						write(new ArraySegment<byte>(bytes));
-						end(null);
-					});
+				(write, flush, end, cancel) =>
+				{
+					write(new ArraySegment<byte>(response));
+					end(null);
+				}
+			);
+		}
+
+		private void RespondNotFound(ResultDelegate del)
+		{
+			Respond(del, "Not Found", code: "404 Not Found");
+		}
+
+		private void RespondMethodNotAllowed(ResultDelegate del)
+		{
+			Respond(del, "Request method not allowed.", code: "405 Method Not Allowed");
+		}
+
+		private byte[] ReadStream(Stream stream)
+		{
+			byte[] bytes;
+
+			if (stream is MemoryStream)
+			{
+				bytes = (stream as MemoryStream).ToArray();
+			}
+			else
+			{
+				using (MemoryStream ms = new MemoryStream())
+				{
+					stream.CopyTo(ms);
+					bytes = ms.ToArray();
+				}
+			}
+
+			return bytes;
+		}
+
+		private void ListBackgroundEntries(BackgroundDirectory parent, StringBuilder sb, bool recursive = false)
+		{
+			foreach (var subdir in parent.Directories)
+			{
+				sb.Append(subdir.Path);
+				sb.Append('\n');
+
+				if (recursive)
+					ListBackgroundEntries(subdir, sb);
+			}
+			foreach (var file in parent.Files)
+			{
+				sb.Append(file.Path);
+				if (file.IsVideo)
+					sb.Append(" [VIDEO]");
+				sb.Append('\n');
 			}
 		}
 	}
