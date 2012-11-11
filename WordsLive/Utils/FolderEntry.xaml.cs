@@ -12,41 +12,67 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using WinForms = System.Windows.Forms;
+using System.ComponentModel;
+using System.IO;
 
 namespace WordsLive.Utils
 {
-    public partial class FolderEntry : UserControl
-    {
-        public FolderEntry()
-        {
-            InitializeComponent();
-        }
+	public partial class FolderEntry : UserControl, IDataErrorInfo
+	{
+		public FolderEntry()
+		{
+			InitializeComponent();
+		}
 
-        public static DependencyProperty TextProperty = DependencyProperty.Register("Text", typeof(string), typeof(FolderEntry), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
-        public static DependencyProperty DescriptionProperty = DependencyProperty.Register("Description", typeof(string), typeof(FolderEntry), new PropertyMetadata(null));
-
-        public string Text { get { return GetValue(TextProperty) as string; } set { SetValue(TextProperty, value); } }
-
-        public string Description { get { return GetValue(DescriptionProperty) as string; } set { SetValue(DescriptionProperty, value); } }
+		public static DependencyProperty TextProperty = DependencyProperty.Register("Text", typeof(string), typeof(FolderEntry), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
+		public static DependencyProperty DescriptionProperty = DependencyProperty.Register("Description", typeof(string), typeof(FolderEntry), new PropertyMetadata(null));
+		public static DependencyProperty ValidateExistsProperty = DependencyProperty.Register("ValidateExists", typeof(bool), typeof(FolderEntry), new PropertyMetadata(false));
 
 
-        private void BrowseFolder(object sender, RoutedEventArgs e)
-        {
-            using (var dlg = new WinForms.FolderBrowserDialog())
-            {
-                dlg.Description = Description;
-                dlg.SelectedPath = Text;
-                dlg.ShowNewFolderButton = true;
-                var result = dlg.ShowDialog();
-                if (result == System.Windows.Forms.DialogResult.OK)
-                {
-                    Text = dlg.SelectedPath;
-                    BindingExpression be = GetBindingExpression(TextProperty);
-                    if (be != null)
-                        be.UpdateTarget();
-                }
-            }
-        }
+		public string Text { get { return GetValue(TextProperty) as string; } set { SetValue(TextProperty, value); } }
 
-    }
+		public string Description { get { return GetValue(DescriptionProperty) as string; } set { SetValue(DescriptionProperty, value); } }
+
+		public bool ValidateExists { get { return (bool)GetValue(ValidateExistsProperty); } set { SetValue(ValidateExistsProperty, value); } }
+
+
+		private void BrowseFolder(object sender, RoutedEventArgs e)
+		{
+			using (var dlg = new WinForms.FolderBrowserDialog())
+			{
+				dlg.Description = Description;
+				dlg.SelectedPath = Text;
+				dlg.ShowNewFolderButton = true;
+				var result = dlg.ShowDialog();
+				if (result == System.Windows.Forms.DialogResult.OK)
+				{
+					Text = dlg.SelectedPath;
+					BindingExpression be = GetBindingExpression(TextProperty);
+					if (be != null)
+						be.UpdateTarget();
+				}
+			}
+		}
+
+		public string this[string columnName]
+		{
+			get
+			{
+				switch (columnName)
+				{
+					// TODO: localize
+					case "Text":
+						if (ValidateExists && !Directory.Exists(Text))
+							return "Das Verzeichnis existiert nicht.";
+						break;
+				}
+				return null;
+			}
+		}
+
+		public string Error
+		{
+			get { return null; }
+		}
+	}
 }

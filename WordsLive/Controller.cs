@@ -55,7 +55,7 @@ namespace WordsLive
 			var server = new Server.TestServer(80);
 			server.Start();
 
-			InitDataManager();
+			InitSettings();
 
 			WordsLive.Utils.ImageLoader.Manager.Instance.LoadingImage = new System.Windows.Media.Imaging.BitmapImage(new Uri("/WordsLive;component/Artwork/LoadingAnimation.png", UriKind.Relative));
 		}
@@ -122,7 +122,7 @@ namespace WordsLive
 										 select type);
 		}
 
-		private void InitDataManager()
+		private void InitSettings()
 		{
 			if (string.IsNullOrEmpty(Properties.Settings.Default.SongsDirectory))
 			{
@@ -144,6 +144,16 @@ namespace WordsLive
 
 		private bool TryInitDataManager()
 		{
+			//init song template file
+			if (String.IsNullOrEmpty(Properties.Settings.Default.SongTemplateFile))
+				Properties.Settings.Default.SongTemplateFile = Path.Combine("Data", "Standard.ppl");
+
+			var fi = new FileInfo(Properties.Settings.Default.SongTemplateFile);
+			if (!fi.Exists)
+				return false;
+			else
+				DataManager.SongTemplate = fi;
+
 			if (Properties.Settings.Default.UseDataServer)
 				return DataManager.TryInitUsingServer(Properties.Settings.Default.DataServerAddress, Properties.Settings.Default.DataServerPassword);
 			else
@@ -288,19 +298,22 @@ namespace WordsLive
 		/// TODO: move to Core assembly
 		/// </summary>
 		/// <returns>The created song.</returns>
-		public static Song CreateSongFromTemplate()
-		{
-			// init song template file
-			var template = Properties.Settings.Default.SongTemplateFile;
+		//public static Song CreateSongFromTemplate()
+		//{
+		//    // init song template file
+		//    var template = Properties.Settings.Default.SongTemplateFile;
 
-			if (string.IsNullOrEmpty(template) || !File.Exists(template))
-			{
-				// fall back to standard template in data directory
-				template = Path.Combine("Data", "Standard.ppl");
-			}
+		//    if (string.IsNullOrEmpty(template) || !File.Exists(template))
+		//    {
+		//        // fall back to standard template in data directory
+		//        template = Path.Combine("Data", "Standard.ppl");
+		//    }
 
-			return new Song(template, DataManager.LocalFiles) { SongTitle = WordsLive.Resources.Resource.eNewSongTitle };
-		}
+		//    DataManager.SongTemplate = new FileInfo(template);
+		//    var song = Song.CreateFromTemplate();
+		//    song.SongTitle = WordsLive.Resources.Resource.eNewSongTitle;
+		//    return song;
+		//}
 
 		public static void FocusMainWindow()
 		{

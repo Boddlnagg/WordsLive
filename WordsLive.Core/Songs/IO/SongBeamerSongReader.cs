@@ -19,33 +19,28 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 
-namespace WordsLive.Core.Songs
+namespace WordsLive.Core.Songs.IO
 {
-	/// <summary>
-	/// Static class to import songs from the SongBeamer .sng format.
-	/// TODO: introduce generalized import/export infrastructure
-	/// </summary>
-	public static class SongBeamerImport
+	public class SongBeamerSongReader : ISongReader
 	{
 		/// <summary>
-		/// Imports a song from a SongBeamer *.sng file. This takes an initialized prototype song and overwrites any imported content.
+		/// Reads the song data from a stream.
 		/// </summary>
-		/// <param name="prototype">The prototype song.</param>
-		/// <param name="filename">The .sng file to import.</param>
-		public static void Import(Song prototype, string filename)
+		/// <param name="song">The song.</param>
+		/// <param name="stream">The stream.</param>
+		public void Read(Song song, Stream stream)
 		{
-			if (prototype == null)
-				throw new ArgumentNullException("prototype");
+			if (song == null)
+				throw new ArgumentNullException("song");
 
-			if (filename == null)
-				throw new ArgumentNullException("filename");
+			if (stream == null)
+				throw new ArgumentNullException("stream");
 
-			prototype.Order.Clear();
-			prototype.Parts.Clear();
+			song.Order.Clear();
+			song.Parts.Clear();
 
-			using (StreamReader reader = new StreamReader(filename, System.Text.Encoding.Default, true))
+			using (StreamReader reader = new StreamReader(stream, System.Text.Encoding.Default, true))
 			{
 				SongPart currentPart = null;
 				string currentText = null;
@@ -70,23 +65,23 @@ namespace WordsLive.Core.Songs
 						}
 						else if (line == "---")
 						{
-							PreProcessSongBeamerProperties(prototype, properties, out langcount); // langcount > 2 is not supported (text will be ignored)
-							currentPart = new SongPart(prototype, FindUnusedPartName(prototype));
+							PreProcessSongBeamerProperties(song, properties, out langcount); // langcount > 2 is not supported (text will be ignored)
+							currentPart = new SongPart(song, FindUnusedPartName(song));
 						}
 					}
 					else
 					{
 						if (line == "---")
 						{
-							currentPart.Slides.Add(new SongSlide(prototype) { Size = prototype.Formatting.MainText.Size, Text = currentText, Translation = currentTrans });
+							currentPart.Slides.Add(new SongSlide(song) { Size = song.Formatting.MainText.Size, Text = currentText, Translation = currentTrans });
 							currentText = null;
-							prototype.Parts.Add(currentPart);
-							currentPart = new SongPart(prototype, FindUnusedPartName(prototype));
+							song.Parts.Add(currentPart);
+							currentPart = new SongPart(song, FindUnusedPartName(song));
 							linenum = 0;
 						}
 						else if (line == "--" || line == "--A")
 						{
-							currentPart.Slides.Add(new SongSlide(prototype) { Size = prototype.Formatting.MainText.Size, Text = currentText, Translation = currentTrans });
+							currentPart.Slides.Add(new SongSlide(song) { Size = song.Formatting.MainText.Size, Text = currentText, Translation = currentTrans });
 							currentText = "";
 							linenum = 0;
 						}
@@ -129,10 +124,10 @@ namespace WordsLive.Core.Songs
 					}
 				}
 
-				currentPart.Slides.Add(new SongSlide(prototype) { Size = prototype.Formatting.MainText.Size, Text = currentText, Translation = currentTrans });
-				prototype.Parts.Add(currentPart);
+				currentPart.Slides.Add(new SongSlide(song) { Size = song.Formatting.MainText.Size, Text = currentText, Translation = currentTrans });
+				song.Parts.Add(currentPart);
 
-				PostProcessSongBeamerProperties(prototype, properties);
+				PostProcessSongBeamerProperties(song, properties);
 			}
 		}
 

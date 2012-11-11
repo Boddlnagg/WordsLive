@@ -41,6 +41,42 @@ namespace WordsLive.Core.Songs
 		private string copyright;
 		private SongFormatting formatting;
 
+		private bool isModified;
+
+		/// <summary>
+		/// Gets a value indicating whether this instance has been modified since the last time it was saved.
+		/// </summary>
+		public bool IsModified
+		{
+			get
+			{
+				return isModified;
+			}
+			private set
+			{
+				isModified = value;
+				OnPropertyChanged("IsModified");
+			}
+		}
+
+		private bool isImported;
+
+		public bool IsImported
+		{
+			get
+			{
+				return isImported;
+			}
+			private set
+			{
+				isImported = value;
+				OnPropertyChanged("IsImported");
+
+				if (value)
+					IsModified = true;
+			}
+		}
+
 		#region Undo/Redo
 
 		private UndoManager undoManager;
@@ -56,7 +92,7 @@ namespace WordsLive.Core.Songs
 					throw new InvalidOperationException("Undo is currently disabled.");
 
 				if (undoManager == null)
-					undoManager = new UndoManager(MonitoredUndo.UndoService.Current[UndoKey]);
+					undoManager = new UndoManager(MonitoredUndo.UndoService.Current[UndoKey], () => this.IsModified = true);
 				
 				return undoManager;
 			}
@@ -76,13 +112,16 @@ namespace WordsLive.Core.Songs
 			}
 			set
 			{
-				if (!value && isUndoEnabled)
+				if (value != isUndoEnabled)
 				{
-					// disable undo -> clear stack
-					UndoManager.Root.Clear();
-				}
+					if (!value)
+					{
+						// disable undo -> clear stack
+						UndoManager.Root.Clear();
+					}
 
-				isUndoEnabled = value;
+					isUndoEnabled = value;
+				}
 			}
 		}
 
@@ -351,7 +390,7 @@ namespace WordsLive.Core.Songs
 		/// Initializes a new instance of the <see cref="Song"/> class.
 		/// </summary>
 		/// <param name="filename">The file to load.</param>
-		/// <param name="metadataOnly">If set to <c>true</c> load metadata (title and backgrounds) only.</param>
+		/// <param name="provider">The data provider used for loading.</param>
 		public Song(string filename, IMediaDataProvider provider) : base(filename, provider)
 		{
 			UndoKey = new Undo.UndoKey();
@@ -365,9 +404,56 @@ namespace WordsLive.Core.Songs
 		/// Initializes a new instance of the <see cref="Song"/> class.
 		/// </summary>
 		/// <param name="filename">The file to load.</param>
-		public Song(string filename) : this(filename, new LocalFileDataProvider())
+		public Song(string filename) : this(filename, DataManager.LocalFiles)
 		{
 			Load();
+		}
+
+		/// <summary>
+		/// Initializes a new instance of the <see cref="Song"/> class.
+		/// </summary>
+		/// <param name="filename">The file to load.</param>
+		/// <param name="provider">The data provider used for loading.</param>
+		/// <param name="reader">The song reader to use for loading.</param>
+		public Song(string filename, IMediaDataProvider provider, ISongReader reader) : this(filename, provider)
+		{
+			// TODO: LoadTemplate() is not always necessary -> let the SongReader call that if it needs it
+			this.LoadTemplate();
+
+			using (Stream stream = this.DataProvider.Get(this.File))
+			{
+				reader.Read(this, stream);
+			}
+
+			if (!(reader is PowerpraiseSongReader))
+			{
+				IsImported = true;
+			}
+		}
+
+		/// <summary>
+		/// Creates an empty song.
+		/// </summary>
+		private Song() : this(null, null) { }
+
+		private void LoadTemplate()
+		{
+			using (Stream stream = DataManager.LocalFiles.Get(DataManager.SongTemplate.FullName))
+			{
+				var reader = new PowerpraiseSongReader();
+				reader.Read(this, stream);
+			}
+		}
+
+		/// <summary>
+		/// Creates a new song from a template.
+		/// </summary>
+		/// <returns></returns>
+		public static Song CreateFromTemplate()
+		{
+			Song song = new Song();
+			song.LoadTemplate();
+			return song;
 		}
 
 		/// <summary>
@@ -387,17 +473,17 @@ namespace WordsLive.Core.Songs
 		public void Save()
 		{
 			var provider = this.DataProvider as IBidirectionalMediaDataProvider;
-			if (this.File == null || provider == null)
-				throw new InvalidOperationException("Can't save to unknown source.");
+			if (this.File == null || provider == null || IsImported)
+				throw new InvalidOperationException("Can't save to unknown source or imported file.");
 
 			using (var ft = provider.Put(this.File, true))
 			{
 				var writer = new PowerpraiseSongWriter();
 				writer.Write(this, ft.Stream);
 			}
-			// TODO:
-			//IsModified = false;
-			//IsImported = false;
+
+			IsModified = false;
+			IsImported = false;
 		}
 
 		public void Save(string path, IBidirectionalMediaDataProvider provider)
@@ -417,9 +503,8 @@ namespace WordsLive.Core.Songs
 			OnPropertyChanged("File");
 			DataProvider = provider;
 
-			// TODO:
-			//IsModified = false;
-			//IsImported = false;
+			IsModified = false;
+			IsImported = false;
 		}
 
 		/// <summary>

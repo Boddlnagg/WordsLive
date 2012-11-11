@@ -7,6 +7,7 @@ using System.Windows;
 using System.Windows.Input;
 using WordsLive.Core.Data;
 using WordsLive.Core.Songs;
+using WordsLive.Core.Songs.IO;
 
 namespace WordsLive.Editor
 {
@@ -63,13 +64,12 @@ namespace WordsLive.Editor
 			{
 				var song = new Song(filename, provider);
 				song.Load();
-				Load(filename, song, false);
+				Load(song);
 			}
 			else if (ext == ".sng")
 			{
-				var song = Controller.CreateSongFromTemplate();
-				SongBeamerImport.Import(song, filename); // TODO: support providers, use SongBeamerSongReader
-				Load(filename, song, true);
+				var song = new Song(filename, provider, new SongBeamerSongReader());
+				Load(song);
 			}
 			else
 			{
@@ -78,12 +78,12 @@ namespace WordsLive.Editor
 			}
 		}
 
-		private void Load(string file, Song song, bool imported)
+		private void Load(Song song)
 		{
 			var opened = CheckSongOpened(song);
 			if (opened == null)
 			{
-				opened = new EditorDocument(file, song, imported, this);
+				opened = new EditorDocument(song, this);
 				openDocuments.Add(opened);
 			}
 
@@ -92,6 +92,7 @@ namespace WordsLive.Editor
 
 		private void OpenSong()
 		{
+			// TODO: localize
 			Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
 			dlg.DefaultExt = ".ppl";
 			dlg.Filter = "Powerpraise-Lied|*.ppl|SongBeamer-Lied|*.sng";
@@ -107,13 +108,13 @@ namespace WordsLive.Editor
 			if (doc == null)
 				throw new ArgumentNullException("doc");
 			
-			if (doc.File == null || doc.File.Extension.ToLower() != ".ppl")
+			if (doc.Song.File == null || doc.Song.IsImported)
 			{
 				SaveSongAs(doc);
 			}
 			else
 			{
-				doc.Save();
+				doc.Song.Save();
 			}
 		}
 
@@ -125,25 +126,27 @@ namespace WordsLive.Editor
 			Microsoft.Win32.SaveFileDialog dlg = new Microsoft.Win32.SaveFileDialog();
 			dlg.DefaultExt = ".ppl";
 			dlg.Filter = "Powerpraise-Lied|*.ppl";
-			if (doc.File == null)
+			if (doc.Song.File == null)
 			{
 				dlg.FileName = doc.Song.SongTitle;
 			}
 			else
 			{
-				dlg.FileName =  Path.GetFileNameWithoutExtension(doc.File.Name);
+				dlg.FileName =  Path.GetFileNameWithoutExtension(Path.GetFileName(doc.Song.File));
 			}
 
 			if (dlg.ShowDialog() == true)
 			{
-				doc.SaveAs(dlg.FileName);
+				// TODO: allow to save to SongDataProvider
+				doc.Song.Save(dlg.FileName, DataManager.LocalFiles);
 			}
 		}
 
 		private void NewSong()
 		{
-			// TODO: set song.File to null
-			Load(null, Controller.CreateSongFromTemplate(), false);
+			var song = Song.CreateFromTemplate();
+			song.SongTitle = WordsLive.Resources.Resource.eNewSongTitle;
+			Load(song);
 		}
 
 		private bool CloseSong(EditorDocument doc)
@@ -151,7 +154,7 @@ namespace WordsLive.Editor
 			if (doc == null)
 				throw new ArgumentNullException("doc");
 
-			if (doc.IsModified)
+			if (doc.Song.IsModified)
 			{
 				var res = MessageBox.Show(String.Format(WordsLive.Resources.Resource.eMsgSaveSongChanges, doc.Song.SongTitle), WordsLive.Resources.Resource.eMsgSaveSongChangesTitle, MessageBoxButton.YesNoCancel);
 				if (res == MessageBoxResult.Cancel)
@@ -308,7 +311,7 @@ namespace WordsLive.Editor
 
 			if (e.Command == ApplicationCommands.Save)
 			{
-				e.CanExecute = doc != null && doc.IsModified;
+				e.CanExecute = doc != null && doc.Song.IsModified;
 			}
 			else if (e.Command == ApplicationCommands.SaveAs)
 			{
@@ -321,7 +324,7 @@ namespace WordsLive.Editor
 			else if (e.Command == CustomCommands.ViewCurrent)
 			{
 				// deactivate this button if the current song is not yet saved to a file or it's not currently active
-				e.CanExecute = (doc != null && doc.File != null && Controller.ActiveMedia != null &&
+				e.CanExecute = (doc != null && doc.Song.File != null && Controller.ActiveMedia != null &&
 					Controller.ActiveMedia.File == doc.Song.File && Controller.ActiveMedia.DataProvider == doc.Song.DataProvider);
 			}
 			else if (e.Command == CustomCommands.EditChords)
@@ -330,7 +333,7 @@ namespace WordsLive.Editor
 			}
 			else if (e.Command == CustomCommands.AddMedia)
 			{
-				e.CanExecute = doc != null && !doc.IsImported && doc.File != null;
+				e.CanExecute = doc != null && !doc.Song.IsImported && doc.Song.File != null;
 			}
 		}
 

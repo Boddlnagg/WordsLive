@@ -8,7 +8,7 @@
     <DockPanel>
         <Button Padding="0" DockPanel.Dock="Right" Width="30" Click="BrowseFile" Margin="7,0,0,0">...</Button>
         <TextBox Height="Auto" HorizontalAlignment="Stretch" DockPanel.Dock="Right" 
-           Text="{Binding Text, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}" />
+           Text="{Binding Text, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, ValidatesOnDataErrors=True}" Style="{StaticResource textBoxInError}"/>
     </DockPanel>
 
 </UserControl>

@@ -164,7 +164,7 @@ namespace WordsLive
 
 		void ApplySongTemplateMaster(Song song, MasterOverrideOptions options)
 		{
-			SongFormatting master = Controller.CreateSongFromTemplate().Formatting;
+			SongFormatting master = Song.CreateFromTemplate().Formatting;
 			var changed = song.Formatting;
 
 			if (options.TextFormatting)
@@ -548,10 +548,14 @@ namespace WordsLive
 			MasterOverrideOptions oldOptions = MasterOverrideOptions.CreateFromSettings();
 			win.ShowDialog();
 
-			if (win.DialogResult.HasValue && win.DialogResult.Value &&
-				ActiveMedia is Song && !oldOptions.Equals(MasterOverrideOptions.CreateFromSettings()))
+			if (win.DialogResult.HasValue && win.DialogResult.Value)
 			{
-				ReloadActiveMedia();
+				if (ActiveMedia is Song && !oldOptions.Equals(MasterOverrideOptions.CreateFromSettings()))
+				{
+					ReloadActiveMedia();
+				}
+
+				DataManager.SongTemplate = new FileInfo(Properties.Settings.Default.SongTemplateFile);
 			}
 		}
 

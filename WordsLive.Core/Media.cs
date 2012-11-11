@@ -30,6 +30,7 @@ namespace WordsLive.Core
 
 		/// <summary>
 		/// Gets the filename (relative or absolute) associated with this media object.
+		/// <c>null</c> if this media object has not been created from a file or has not been saved yet.
 		/// </summary>
 		public string File { get; protected set; }
 

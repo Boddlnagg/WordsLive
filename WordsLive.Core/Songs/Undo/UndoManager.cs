@@ -25,6 +25,7 @@ namespace WordsLive.Core.Songs.Undo
 	public class UndoManager : INotifyPropertyChanged
 	{
 		private UndoRoot root;
+		private Action setModified;
 
 		/// <summary>
 		/// Gets the <see cref="UndoRoot"/> object used for undo/redo actions.
@@ -79,20 +80,24 @@ namespace WordsLive.Core.Songs.Undo
 		/// Initializes a new instance of the <see cref="UndoManager"/> class.
 		/// </summary>
 		/// <param name="root">The <see cref="UndoRoot"/> to use for undo/redo actions.</param>
-		public UndoManager(UndoRoot root)
+		/// <param name="setModified">An action called whenever a change is made.</param>
+		public UndoManager(UndoRoot root, Action setModified)
 		{
 			this.root = root;
+			this.setModified = setModified;
 			this.root.UndoStackChanged += UndoStackChanged;
 			this.root.RedoStackChanged += RedoStackChanged;
 		}
 
 		private void RedoStackChanged(object sender, EventArgs e)
 		{
+			setModified();
 			OnPropertyChanged("CanRedo");
 		}
 
 		private void UndoStackChanged(object sender, EventArgs e)
 		{
+			setModified();
 			OnPropertyChanged("CanUndo");
 		}
 
@@ -103,5 +108,32 @@ namespace WordsLive.Core.Songs.Undo
 			if (PropertyChanged != null)
 				PropertyChanged(this, new PropertyChangedEventArgs(name));
 		}
+
+		//private string GetChangesetText(ChangeSet set)
+		//{
+		//    if (set.Changes.Count() == 0)
+		//    {
+		//        return set.Description;
+		//    }
+		//    else
+		//    {
+		//        string name;
+		//        object target = set.Changes.First().Target;
+		//        if (target is SongNodeRoot)
+		//            name = "Lied";
+		//        else if (target is SongNodePart)
+		//            name = "Liedteil";
+		//        else if (target is SongNodeSlide)
+		//            name = "Folie";
+		//        else if (target is SongNodeSource)
+		//            name = "Quelle";
+		//        else if (target is SongNodeMetadata)
+		//            name = (target as SongNodeMetadata).Title;
+		//        else
+		//            throw new InvalidOperationException();
+
+		//        return set.Description + " in " + name;
+		//    }
+		//}
 	}
 }

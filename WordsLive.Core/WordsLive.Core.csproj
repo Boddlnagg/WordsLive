@@ -100,11 +100,11 @@
     <Compile Include="Songs\IO\ISongWriter.cs" />
     <Compile Include="Songs\IO\PowerpraiseSongReader.cs" />
     <Compile Include="Songs\IO\PowerpraiseSongWriter.cs" />
+    <Compile Include="Songs\IO\SongBeamerSongReader.cs" />
     <Compile Include="Songs\ISongElement.cs" />
     <Compile Include="Songs\Song.cs" />
     <Compile Include="Songs\SongBackground.cs" />
     <Compile Include="Songs\SongBackgroundType.cs" />
-    <Compile Include="Songs\SongBeamerImport.cs" />
     <Compile Include="Songs\SongFormatting.cs" />
     <Compile Include="Songs\SongPart.cs" />
     <Compile Include="Songs\SongPartReference.cs" />

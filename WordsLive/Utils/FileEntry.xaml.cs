@@ -11,10 +11,12 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.IO;
+using System.ComponentModel;
 
 namespace WordsLive.Utils
 {
-	public partial class FileEntry : UserControl
+	public partial class FileEntry : UserControl, IDataErrorInfo
 	{
 		public FileEntry()
 		{
@@ -23,11 +25,15 @@ namespace WordsLive.Utils
 
 		public static DependencyProperty TextProperty = DependencyProperty.Register("Text", typeof(string), typeof(FileEntry), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
 		public static DependencyProperty FilterProperty = DependencyProperty.Register("Filter", typeof(string), typeof(FileEntry), new PropertyMetadata(null));
+		public static DependencyProperty ValidateExistsProperty = DependencyProperty.Register("ValidateExists", typeof(bool), typeof(FileEntry), new PropertyMetadata(false));
+
 
 		public string Text { get { return GetValue(TextProperty) as string; } set { SetValue(TextProperty, value); } }
 
 		public string Filter { get { return GetValue(FilterProperty) as string; } set { SetValue(FilterProperty, value); } }
 
+		public bool ValidateExists { get { return (bool)GetValue(ValidateExistsProperty); } set { SetValue(ValidateExistsProperty, value); } }
+	
 
 		private void BrowseFile(object sender, RoutedEventArgs e)
 		{
@@ -44,5 +50,25 @@ namespace WordsLive.Utils
 			}
 		}
 
+		public string this[string columnName]
+		{
+			get
+			{
+				switch (columnName)
+				{
+					// TODO: localize
+					case "Text":
+						if (ValidateExists && !File.Exists(Text))
+							return "Die Datei existiert nicht.";
+						break;
+				}
+				return null;
+			}
+		}
+
+		public string Error
+		{
+			get { return null; }
+		}
 	}
 }

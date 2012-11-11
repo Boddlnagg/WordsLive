@@ -74,7 +74,7 @@
 						<ColumnDefinition Width="*"/>
 					</Grid.ColumnDefinitions>
 					<Label Content="{x:Static resx:Resource.seLabelNewSongTemplate}" HorizontalAlignment="Left" />
-					<utils:FileEntry Grid.Row="0" Grid.Column="1" Margin="0" Text="{Binding SongTemplateFile}" Filter="Powerpraise Lied|*.ppl" VerticalAlignment="Center"/>
+					<utils:FileEntry Grid.Row="0" Grid.Column="1" Margin="0" Text="{Binding SongTemplateFile}" Filter="Powerpraise Lied|*.ppl" ValidateExists="true"  VerticalAlignment="Center"/>
 					<!-- TODO: localize Filter (above) -->
 					<GroupBox Grid.Row="1" Grid.ColumnSpan="2">
 						<GroupBox.Header>
