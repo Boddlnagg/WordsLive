@@ -98,7 +98,8 @@ namespace WordsLive.Core.Songs.Undo
 
 			var ch = DefaultChangeFactory.GetChange(instance, propertyName, oldValue, newValue);
 			var x = ch.ChangeKey.GetType();
-			if (UndoService.Current[instance.Root.UndoKey].UndoStack.Count() > 0 &&
+			if (instance.Root.IsModified &&
+				UndoService.Current[instance.Root.UndoKey].UndoStack.Count() > 0 &&
 				UndoService.Current[instance.Root.UndoKey].UndoStack.First().Changes.Count() > 0 &&
 				UndoService.Current[instance.Root.UndoKey].UndoStack.First().Changes.First().Target == instance &&
 				UndoService.Current[instance.Root.UndoKey].UndoStack.First().Changes.Count() == 1 &&

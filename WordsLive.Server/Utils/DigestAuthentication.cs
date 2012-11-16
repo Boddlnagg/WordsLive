@@ -19,6 +19,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.RegularExpressions;
 using Owin;
 
 namespace WordsLive.Server.Utils
@@ -120,12 +121,24 @@ namespace WordsLive.Server.Utils
 			var data = new Dictionary<string, string>();
 			var neededParts = new HashSet<string> { "nonce", "nc", "cnonce", "qop", "username", "uri", "response" };
 
-			foreach (var param in header.Split(','))
+			var regex = new Regex("(\\w+)[:=] ?\"?([^\" ,]+)\"?");
+			foreach (Match match in regex.Matches(header, 0))
 			{
-				var res = param.Split(new[] { '=' }, 2);
-				var k = res[0].Trim();
-				data[k] = res[1].Trim('"', '\'');
-				neededParts.Remove(k);
+				var key = match.Groups[1].Value.Trim();
+				string value;
+				if (key == "uri")
+				{
+					// uri value might contain commas
+					int start = match.Groups[2].Index;
+					int end = header.IndexOf('"', start);
+					value = header.Substring(start, end - start);
+				}
+				else
+				{
+					value = match.Groups[2].Value.Trim('"', '\'');
+				}
+				data[key] = value;
+				neededParts.Remove(key);
 			}
 
 			if (neededParts.Count > 0)
