@@ -19,8 +19,9 @@
 using System;
 using System.IO;
 using System.Linq;
-using WordsLive.Core.Songs;
 using System.Text.RegularExpressions;
+using Newtonsoft.Json;
+using WordsLive.Core.Songs;
 
 namespace WordsLive.Core.Data
 {
@@ -66,6 +67,7 @@ namespace WordsLive.Core.Data
 		/// <summary>
 		/// Gets the search text (with whitespaces and commas removed)
 		/// </summary>
+		[JsonIgnore]
 		public string SearchText
 		{
 			get
@@ -79,6 +81,7 @@ namespace WordsLive.Core.Data
 		/// <summary>
 		/// Gets the search title (with whitespaces and commas removed)
 		/// </summary>
+		[JsonIgnore]
 		public string SearchTitle
 		{
 			get
