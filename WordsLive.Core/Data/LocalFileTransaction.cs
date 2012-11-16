@@ -33,16 +33,9 @@ namespace WordsLive.Core.Data
 			get { return stream; }
 		}
 
-		public LocalFileTransaction(string path, bool allowOverwrite)
+		public LocalFileTransaction(string path)
 		{
-			try
-			{
-				stream = new FileStream(path, allowOverwrite ? FileMode.Create : FileMode.CreateNew);
-			}
-			catch (IOException)
-			{
-				throw new FileExistsException(path);
-			}
+			stream = new FileStream(path, FileMode.Create);
 		}
 
 		protected override void DoFinish()

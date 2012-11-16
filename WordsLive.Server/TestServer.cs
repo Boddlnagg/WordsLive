@@ -19,6 +19,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Text;
 using Firefly.Http;
@@ -40,8 +41,6 @@ namespace WordsLive.Server
 
 	public class TestServer
 	{
-		static readonly string backgroundDir = @"C:\Users\Patrick\Documents\Powerpraise-Dateien\Backgrounds";
-
 		private string HtmlContent
 		{
 			get
@@ -161,7 +160,7 @@ window.addEventListener('load', init, false);
 		/// <param name="password">The password.</param>
 		public void EnableAuthentication(string password)
 		{
-			if (!IsRunning)
+			if (IsRunning)
 				throw new InvalidOperationException("Server already running.");
 
 			this.app = DigestAuthentication.Enable(
@@ -238,7 +237,7 @@ window.addEventListener('load', init, false);
 				AllowedVideoExtensions = new string[] { ".mp4", ".wmv", ".avi" }
 			};
 
-			LocalSongDataProvider songs = new LocalSongDataProvider(@"C:\Users\Patrick\Documents\Powerpraise-Dateien\Songs\");
+			SongDataProvider songs = new LocalSongDataProvider(@"C:\Users\Patrick\Documents\Powerpraise-Dateien\Songs\");
 
 			if (requestPath.StartsWith("/backgrounds/"))
 			{
@@ -324,19 +323,50 @@ window.addEventListener('load', init, false);
 					}
 					else if (requestMethod == "PUT")
 					{
-						throw new NotImplementedException();
-						// TODO
+						if (songs is IBidirectionalMediaDataProvider)
+						{
+							var contentLength = int.Parse(((IDictionary<string, IEnumerable<string>>)env["owin.RequestHeaders"])["Content-Length"].Single());
+							var requestBody = (BodyDelegate)env["owin.RequestBody"];
+
+							var responseBody = Extensions.BufferedRequestBody(requestBody, contentLength, (bytes) =>
+								{
+									using (var ft = (songs as IBidirectionalMediaDataProvider).Put(query))
+									{
+										ft.Stream.Write(bytes, 0, bytes.Length);
+									}
+								});
+
+							result(
+								"200 OK",
+								new Dictionary<string, IEnumerable<string>>(StringComparer.OrdinalIgnoreCase)
+							{
+								{"Content-Type", new[] {"text/plain"}},
+							},
+								responseBody
+							);
+						}
+						else
+						{
+							RespondMethodNotAllowed(result);
+						}
 					}
 					else if (requestMethod == "DELETE")
 					{
-						try
+						if (songs is IBidirectionalMediaDataProvider)
 						{
-							songs.Delete(query);
-							Respond(result, "OK");
+							try
+							{
+								(songs as IBidirectionalMediaDataProvider).Delete(query);
+								Respond(result, "OK");
+							}
+							catch (FileNotFoundException)
+							{
+								RespondNotFound(result);
+							}
 						}
-						catch (FileNotFoundException)
+						else
 						{
-							RespondNotFound(result);
+							RespondMethodNotAllowed(result);
 						}
 					}
 				}

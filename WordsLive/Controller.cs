@@ -53,6 +53,7 @@ namespace WordsLive
 
 			// TODO: add setting whether to start server or not
 			var server = new Server.TestServer(80);
+			server.EnableAuthentication("abc");
 			server.Start();
 
 			InitSettings();

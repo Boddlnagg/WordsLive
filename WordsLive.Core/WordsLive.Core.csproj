@@ -73,7 +73,6 @@
     <Compile Include="Data\HttpSongDataProvider.cs" />
     <Compile Include="Data\IBidirectionalMediaDataProvider.cs" />
     <Compile Include="Data\DataManager.cs" />
-    <Compile Include="Data\FileExistsException.cs" />
     <Compile Include="Data\FileTransaction.cs" />
     <Compile Include="Data\LocalFileDataProvider.cs" />
     <Compile Include="Data\LocalFileTransaction.cs" />

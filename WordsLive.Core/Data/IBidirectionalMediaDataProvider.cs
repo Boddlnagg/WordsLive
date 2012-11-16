@@ -29,9 +29,8 @@ namespace WordsLive.Core.Data
 		/// Opens a transaction to put a resource at the specified path.
 		/// </summary>
 		/// <param name="path">The path to the resource.</param>
-		/// <param name="allowOverwrite">If set to <c>false</c>, a <see cref="FileExistsException"/> is thrown if the file already exists.</param>
 		/// <returns>The file transaction.</returns>
-		FileTransaction Put(string path, bool allowOverwrite);
+		FileTransaction Put(string path);
 
 		/// <summary>
 		/// Deletes the specified resource.

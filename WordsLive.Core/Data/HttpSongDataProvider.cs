@@ -118,7 +118,7 @@ namespace WordsLive.Core.Data
 			return fi;
 		}
 
-		public FileTransaction Put(string path, bool allowOverwrite)
+		public FileTransaction Put(string path)
 		{
 			return new HttpFileTransaction(path, client);
 		}

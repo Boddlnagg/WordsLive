@@ -476,7 +476,7 @@ namespace WordsLive.Core.Songs
 			if (this.File == null || provider == null || IsImported)
 				throw new InvalidOperationException("Can't save to unknown source or imported file.");
 
-			using (var ft = provider.Put(this.File, true))
+			using (var ft = provider.Put(this.File))
 			{
 				var writer = new PowerpraiseSongWriter();
 				writer.Write(this, ft.Stream);
@@ -493,7 +493,7 @@ namespace WordsLive.Core.Songs
 			if (provider == null)
 				throw new ArgumentNullException("provider");
 
-			using (var ft = provider.Put(path, true))
+			using (var ft = provider.Put(path))
 			{
 				var writer = new PowerpraiseSongWriter();
 				writer.Write(this, ft.Stream);

@@ -98,7 +98,7 @@ namespace WordsLive.Server.Utils
 					requestBody.Invoke(
 						data =>
 						{
-							buffer = Concat(buffer, data);
+							buffer = buffer.Concat(data);
 							var header = 2;
 							if (buffer.Count < header)
 							{
@@ -173,27 +173,6 @@ namespace WordsLive.Server.Utils
 						},
 						cancel);
 				};
-		}
-
-		private static ArraySegment<byte> Concat(ArraySegment<byte> target, ArraySegment<byte> source)
-		{
-			if (target.Array.Length < target.Count + source.Count)
-			{
-				var grown = new byte[target.Count + source.Count];
-				Array.Copy(target.Array, target.Offset, grown, 0, target.Count);
-				Array.Copy(source.Array, source.Offset, grown, target.Count, source.Count);
-				return new ArraySegment<byte>(grown, 0, target.Count + source.Count);
-			}
-
-			if (target.Array.Length - target.Offset < target.Count + source.Count)
-			{
-				Array.Copy(target.Array, target.Offset, target.Array, 0, target.Count);
-				Array.Copy(source.Array, source.Offset, target.Array, target.Count, source.Count);
-				return new ArraySegment<byte>(target.Array, 0, target.Count + source.Count);
-			}
-
-			Array.Copy(source.Array, source.Offset, target.Array, target.Offset + target.Count, source.Count);
-			return new ArraySegment<byte>(target.Array, target.Offset, target.Count + source.Count);
 		}
 	}
 }
