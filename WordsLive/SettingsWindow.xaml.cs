@@ -33,7 +33,8 @@ namespace WordsLive
 				this.TabControl.Items.Add(new TabItem { Header = tab.Header, Content = tab.Control });
 			}
 
-			this.passwordBox.Password = Properties.Settings.Default.DataServerPassword;
+			this.embeddedServerPasswordBox.Password = Properties.Settings.Default.EmbeddedServerPassword;
+			this.dataServerPasswordBox.Password = Properties.Settings.Default.DataServerPassword;
 
 			this.DataContext = this;
 		}
@@ -146,11 +147,64 @@ namespace WordsLive
 			}
 		}
 
+		#region Remoting
+
+		public bool EmbeddedServerEnable
+		{
+			get
+			{
+				return Properties.Settings.Default.EmbeddedServerEnable;
+			}
+			set
+			{
+				Properties.Settings.Default.EmbeddedServerEnable = value;
+			}
+		}
+
+		public int EmbeddedServerPort
+		{
+			get
+			{
+				return Properties.Settings.Default.EmbeddedServerPort;
+			}
+			set
+			{
+				Properties.Settings.Default.EmbeddedServerPort = value;
+			}
+		}
+
+		public bool EmbeddedServerRedirectAll
+		{
+			get
+			{
+				return Properties.Settings.Default.EmbeddedServerRedirectAll;
+			}
+			set
+			{
+				Properties.Settings.Default.EmbeddedServerRedirectAll = value;
+			}
+		}
+
+		public bool EmbeddedServerEnableUI
+		{
+			get
+			{
+				return Properties.Settings.Default.EmbeddedServerEnableUI;
+			}
+			set
+			{
+				Properties.Settings.Default.EmbeddedServerEnableUI = value;
+			}
+		}
+
+		#endregion
+
 		private void Button_Click(object sender, RoutedEventArgs e)
 		{
 			if (this.IsValid())
 			{
-				Properties.Settings.Default.DataServerPassword = passwordBox.Password;
+				Properties.Settings.Default.DataServerPassword = dataServerPasswordBox.Password;
+				Properties.Settings.Default.EmbeddedServerPassword = embeddedServerPasswordBox.Password;
 				this.DialogResult = true;
 			}
 		}
@@ -178,6 +232,10 @@ namespace WordsLive
 					case "ImageTransition":
 						if (ImageTransition < 0)
 							return "Der Wert muss 0 oder größer sein.";
+						break;
+					case "EmbeddedServerPort":
+						if (EmbeddedServerPort != 80 && EmbeddedServerPort < 1024)
+							return "Die Portnummer muss entweder 80 oder mindestens 1024 sein.";
 						break;
 				}
 				return null;

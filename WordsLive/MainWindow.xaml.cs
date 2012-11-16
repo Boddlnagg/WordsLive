@@ -556,6 +556,8 @@ namespace WordsLive
 				}
 
 				DataManager.SongTemplate = new FileInfo(Properties.Settings.Default.SongTemplateFile);
+
+				Controller.UpdateServerSettings();
 			}
 		}
 

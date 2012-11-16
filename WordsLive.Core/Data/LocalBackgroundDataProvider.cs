@@ -61,7 +61,7 @@ namespace WordsLive.Core.Data
 		/// <exception cref="FileNotFoundException">The file was not found.</exception>
 		public override BackgroundFile GetFile(string path)
 		{
-			var file = new FileInfo(Path.Combine(directory, path.Substring(1).Replace('/', '\\')));
+			var file = new FileInfo(Path.Combine(directory, path.Substring(1).Replace('/', Path.DirectorySeparatorChar)));
 
 			if (!file.Exists)
 				throw new FileNotFoundException(path + " not found.");
@@ -171,7 +171,7 @@ namespace WordsLive.Core.Data
 			if (dir.IsRoot)
 				return new DirectoryInfo(directory);
 
-			return new DirectoryInfo(directory + dir.Path.Replace('/', Path.DirectorySeparatorChar).Substring(1));
+			return new DirectoryInfo(Path.Combine(directory, dir.Path.Substring(1).Replace('/', Path.DirectorySeparatorChar)));
 		}
 	}
 }

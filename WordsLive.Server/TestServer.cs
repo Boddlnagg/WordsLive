@@ -121,8 +121,8 @@ window.addEventListener('load', init, false);
 			}
 		}
 
-		private AppDelegate app;
 		private int port;
+		private string password;
 		private IDisposable server;
 
 		public bool IsRunning
@@ -148,23 +148,54 @@ window.addEventListener('load', init, false);
 			}
 		}
 
+		public string Password
+		{
+			get
+			{
+				return password;
+			}
+			set
+			{
+				if (IsRunning)
+					throw new InvalidOperationException("Server already running.");
+
+				password = value;
+			}
+		}
+
 		public TestServer(int port)
 		{
-			this.app = App;
 			this.port = port;
 		}
 
 		/// <summary>
-		/// Enables authentication for the server using the username 'WordsLive' and the specified password.
+		/// Creates a data provider that uses this server as a backend.
 		/// </summary>
-		/// <param name="password">The password.</param>
-		public void EnableAuthentication(string password)
+		/// <returns>The created provider.</returns>
+		public SongDataProvider CreateSongDataProvider()
 		{
-			if (IsRunning)
-				throw new InvalidOperationException("Server already running.");
+			NetworkCredential cred = null;
 
-			this.app = DigestAuthentication.Enable(
-				this.app,
+			if (!String.IsNullOrEmpty(Password))
+				cred = new NetworkCredential("WordsLive", Password);
+
+			return new HttpSongDataProvider("http://localhost:"+Port+"/songs/", cred);
+		}
+
+		public BackgroundDataProvider CreateBackgroundDataProvider()
+		{
+			NetworkCredential cred = null;
+
+			if (!String.IsNullOrEmpty(Password))
+				cred = new NetworkCredential("WordsLive", Password);
+
+			return new HttpBackgroundDataProvider("http://localhost:"+Port+"/backgrounds/", cred);
+		}
+
+		private static AppDelegate EnableAuthentication(AppDelegate app, string password)
+		{
+			return DigestAuthentication.Enable(
+				app,
 				(env) => 
 					{
 						var requestPath = (string)env["owin.RequestPath"];
@@ -189,7 +220,14 @@ window.addEventListener('load', init, false);
 		public void Start()
 		{
 			var fac = new ServerFactory();
-			server = fac.Create(WebSockets.Enable(this.app, "/Echo", OnWebSocketConnection), this.Port);
+			AppDelegate app = App;
+
+			if (!String.IsNullOrEmpty(Password))
+			{
+				app = EnableAuthentication(app, Password);
+			}
+
+			server = fac.Create(WebSockets.Enable(app, "/Echo", OnWebSocketConnection), this.Port);
 		}
 
 		/// <summary>
@@ -230,14 +268,8 @@ window.addEventListener('load', init, false);
 			string requestPath = Uri.UnescapeDataString((string)env["owin.RequestPath"]);
 			string requestMethod = (string)env["owin.RequestMethod"];
 
-			// TODO: use the providers set in DataManager instead
-			BackgroundDataProvider backgrounds = new LocalBackgroundDataProvider(@"C:\Users\Patrick\Documents\Powerpraise-Dateien\Backgrounds\")
-			{
-				AllowedImageExtensions = new string[] { ".png", ".jpg", ".jpeg" },
-				AllowedVideoExtensions = new string[] { ".mp4", ".wmv", ".avi" }
-			};
-
-			SongDataProvider songs = new LocalSongDataProvider(@"C:\Users\Patrick\Documents\Powerpraise-Dateien\Songs\");
+			var songs = DataManager.ActualSongDataProvider;
+			var backgrounds = DataManager.ActualBackgroundDataProvider;
 
 			if (requestPath.StartsWith("/backgrounds/"))
 			{

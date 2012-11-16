@@ -8,10 +8,10 @@ using System.Windows;
 using Microsoft.Win32;
 using WordsLive.Core;
 using WordsLive.Core.Data;
-using WordsLive.Core.Songs;
 using WordsLive.Editor;
 using WordsLive.MediaOrderList;
 using WordsLive.Resources;
+using WordsLive.Server;
 using WordsLive.Songs;
 
 namespace WordsLive
@@ -51,10 +51,8 @@ namespace WordsLive
 			string startupDir = new FileInfo(Assembly.GetExecutingAssembly().Location).Directory.FullName;
 			LoadTypes(Assembly.LoadFrom(Path.Combine(startupDir, "WordsLive.Slideshow.dll"))); // TODO (Words): automatically load plugins
 
-			// TODO: add setting whether to start server or not
-			var server = new Server.TestServer(80);
-			server.EnableAuthentication("abc");
-			server.Start();
+			Server = new TestServer(80);
+			UpdateServerSettings();
 
 			InitSettings();
 
@@ -161,9 +159,50 @@ namespace WordsLive
 				return DataManager.TryInitUsingLocal(Properties.Settings.Default.SongsDirectory, Properties.Settings.Default.BackgroundsDirectory);
 		}
 
+		internal static void UpdateServerSettings()
+		{
+			if (Properties.Settings.Default.EmbeddedServerEnable)
+			{
+				var port = Properties.Settings.Default.EmbeddedServerPort;
+				var pwd = Properties.Settings.Default.EmbeddedServerPassword;
+				var enableUI = Properties.Settings.Default.EmbeddedServerEnableUI;
+
+				var settingsChanged = Server.Port != port || Server.Password != pwd;
+
+				if (settingsChanged)
+				{
+					if (Server.IsRunning)
+					{
+						// TODO: show warning
+						Server.Stop();
+					}
+
+					Server.Port = port;
+					Server.Password = pwd;
+
+					Server.Start();
+				}
+
+				if (Properties.Settings.Default.EmbeddedServerRedirectAll)
+				{
+					DataManager.EnableRedirect(Controller.Server.CreateSongDataProvider(), Controller.Server.CreateBackgroundDataProvider());
+				}
+				else
+				{
+					DataManager.DisableRedirect();
+				}
+			}
+			else if (Server.IsRunning)
+			{
+				Server.Stop();
+			}
+		}
+
 		#endregion
 
 		#region Public (static) members
+		public static TestServer Server { get; private set; }
+
 		public static bool IsShuttingDown
 		{
 			get
@@ -292,29 +331,6 @@ namespace WordsLive
 			editor.Show();
 			return editor;
 		}
-
-		/// <summary>
-		/// Creates a new instance of <see cref="Song"/> from the template file (the SongTemplateFile application setting).
-		/// This is used for creating new (empty) songs and for importing songs.
-		/// TODO: move to Core assembly
-		/// </summary>
-		/// <returns>The created song.</returns>
-		//public static Song CreateSongFromTemplate()
-		//{
-		//    // init song template file
-		//    var template = Properties.Settings.Default.SongTemplateFile;
-
-		//    if (string.IsNullOrEmpty(template) || !File.Exists(template))
-		//    {
-		//        // fall back to standard template in data directory
-		//        template = Path.Combine("Data", "Standard.ppl");
-		//    }
-
-		//    DataManager.SongTemplate = new FileInfo(template);
-		//    var song = Song.CreateFromTemplate();
-		//    song.SongTitle = WordsLive.Resources.Resource.eNewSongTitle;
-		//    return song;
-		//}
 
 		public static void FocusMainWindow()
 		{

@@ -588,5 +588,65 @@ namespace WordsLive.Properties {
                 this["DataServerPassword"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool EmbeddedServerEnable {
+            get {
+                return ((bool)(this["EmbeddedServerEnable"]));
+            }
+            set {
+                this["EmbeddedServerEnable"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("80")]
+        public int EmbeddedServerPort {
+            get {
+                return ((int)(this["EmbeddedServerPort"]));
+            }
+            set {
+                this["EmbeddedServerPort"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string EmbeddedServerPassword {
+            get {
+                return ((string)(this["EmbeddedServerPassword"]));
+            }
+            set {
+                this["EmbeddedServerPassword"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool EmbeddedServerRedirectAll {
+            get {
+                return ((bool)(this["EmbeddedServerRedirectAll"]));
+            }
+            set {
+                this["EmbeddedServerRedirectAll"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool EmbeddedServerEnableUI {
+            get {
+                return ((bool)(this["EmbeddedServerEnableUI"]));
+            }
+            set {
+                this["EmbeddedServerEnableUI"] = value;
+            }
+        }
     }
 }
