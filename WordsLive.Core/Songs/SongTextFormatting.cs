@@ -18,6 +18,7 @@
 
 using System;
 using System.Drawing;
+using Newtonsoft.Json;
 
 namespace WordsLive.Core.Songs
 {
@@ -49,6 +50,7 @@ namespace WordsLive.Core.Songs
 		/// <summary>
 		/// Gets or sets the text color.
 		/// </summary>
+		[JsonConverter(typeof(JsonColorConverter))]
 		public Color Color { get; set; }
 
 		/// <summary>

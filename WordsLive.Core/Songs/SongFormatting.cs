@@ -18,6 +18,7 @@
 
 using System;
 using System.Drawing;
+using Newtonsoft.Json;
 
 namespace WordsLive.Core.Songs
 {
@@ -109,6 +110,7 @@ namespace WordsLive.Core.Songs
 		/// <summary>
 		/// Gets or sets the color for the outline if <see cref="IsOutlineEnabled"/> is <c>true</c>.
 		/// </summary>
+		[JsonConverter(typeof(JsonColorConverter))]
 		public Color OutlineColor { get; set; }
 
 		/// <summary>
@@ -119,6 +121,7 @@ namespace WordsLive.Core.Songs
 		/// <summary>
 		/// Gets or sets the color for the shadow if <see cref="IsShadowEnabled"/> is <c>true</c>.
 		/// </summary>
+		[JsonConverter(typeof(JsonColorConverter))]
 		public Color ShadowColor { get; set; }
 
 		/// <summary>

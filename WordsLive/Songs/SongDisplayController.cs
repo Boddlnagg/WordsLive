@@ -87,16 +87,14 @@ namespace WordsLive.Songs
 
 		public void ChangeBackground(SongBackground bg, int fadeTime)
 		{
+			if (bg == null)
+				throw new ArgumentNullException("bg");
+
 			if (bg != lastBackground)
 			{
 				lastBackground = bg;
 
 				string bgString = "";
-
-				if (bg == null)
-				{
-					bgString = "background-color: transparent;";
-				}
 				if (bg.Type == SongBackgroundType.Image)
 				{
 					try
@@ -124,6 +122,9 @@ namespace WordsLive.Songs
 
 		public void UpdateSlide(Song song, SongSlide slide, bool updateBackground = true)
 		{
+			//using(StreamWriter writer = new StreamWriter("output.html"))
+			//    writer.WriteLine(HtmlToString(GenerateSlideHtml(song, slide)));
+
 			control.ExecuteJavascript("updateSlide(" + PrepareJavascriptString(HtmlToString(GenerateSlideHtml(song, slide))) + ")");
 
 			if (updateBackground)
@@ -489,7 +490,10 @@ overflow: hidden;
   ("text-shadow: " + shadowColor + " "+strokeCopy+" "+strokeCopy+" "+strokeCopy) : "") + @";
 }";
 			//using (StreamWriter sw = new StreamWriter("output.css"))
-			//	sw.WriteLine(result);
+			//    sw.WriteLine(result);
+
+			//using (StreamWriter sw = new StreamWriter("output.json"))
+			//    sw.WriteLine(Newtonsoft.Json.JsonConvert.SerializeObject(formatting));
 
 			return result;
 		}
