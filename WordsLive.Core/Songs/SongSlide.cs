@@ -186,6 +186,9 @@ namespace WordsLive.Core.Songs
 		public SongSlide(Song root)
 		{
 			this.Root = root;
+			this.text = "";
+			this.TextWithoutChords = "";
+			this.translation = "";
 			this.size = Root.Formatting.MainText.Size;
 		}
 

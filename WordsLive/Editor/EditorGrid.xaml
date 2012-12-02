@@ -35,29 +35,35 @@
 				<Grid.ColumnDefinitions>
 					<ColumnDefinition Width="*"/>
 					<ColumnDefinition Width="5"/>
-					<ColumnDefinition Width="Auto">
-					</ColumnDefinition>
+					<ColumnDefinition Width="*"/>
+					<ColumnDefinition Width="Auto"/>
 				</Grid.ColumnDefinitions>
 				<!-- The name 'TextTextBox' is used to find the cursor position (for splitting) -->
 				<TextBox Name="TextTextBox" Grid.Column="0" AcceptsReturn="True" IsUndoEnabled="False"
 					 Language="{Binding Path=Root.Language, Converter={StaticResource languageToLanguageCodeConverter}, ConverterCulture=en-US}"
 					 Text="{Binding Path=Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
 					 SpellCheck.IsEnabled="{Binding ElementName=EnableSpellCheckCheckBox, Path=IsChecked, Mode=OneWay}"/>
-				<Expander Grid.Column="2" ExpandDirection="Left" IsExpanded="{Binding ElementName=StructureTree, Path=SelectedItem.Root.HasTranslation, Mode=OneTime}"
-					  Expanded="TranslationExpanderExpandedCollapsed" Collapsed="TranslationExpanderExpandedCollapsed" >
+				<TextBox Grid.Column="2" Name="TranslationTextBox" AcceptsReturn="True" IsUndoEnabled="False"
+					 Text="{Binding Path=Translation, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+					 Language="{Binding Path=Root.TranslationLanguage, Converter={StaticResource languageToLanguageCodeConverter}, ConverterCulture=en-US}"
+					 SpellCheck.IsEnabled="{Binding ElementName=EnableSpellCheckCheckBox, Path=IsChecked, Mode=OneWay}"/>
+				<Expander Name="TranslationExpander" Grid.Column="3" ExpandDirection="Left" IsExpanded="{Binding ElementName=StructureTree, Path=SelectedItem.Root.HasTranslation, Mode=OneTime}"
+					  Expanded="TranslationExpanderExpanded">
 					<Expander.Header>
-						<TextBlock Text="{x:Static resx:Resource.eGridTranslation}">
+						<TextBlock Text="{x:Static resx:Resource.eGridTranslation}" Margin="5,0">
 						<TextBlock.LayoutTransform>
 							<RotateTransform Angle="90"/>
 						</TextBlock.LayoutTransform>
 						</TextBlock>
 					</Expander.Header>
-					<TextBox Name="TranslationTextBox" AcceptsReturn="True" IsUndoEnabled="False"
-					 Text="{Binding Path=Translation, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-					 Language="{Binding Path=Root.TranslationLanguage, Converter={StaticResource languageToLanguageCodeConverter}, ConverterCulture=en-US}"
-					 SpellCheck.IsEnabled="{Binding ElementName=EnableSpellCheckCheckBox, Path=IsChecked, Mode=OneWay}"/>
 				</Expander>
 			</Grid>
+			<DataTemplate.Triggers>
+				<DataTrigger Binding="{Binding ElementName=TranslationExpander, Path=IsExpanded}" Value="False">
+					<Setter TargetName="TranslationTextBox" Property="Visibility" Value="Collapsed"/>
+					<Setter TargetName="TextTextBox" Property="Grid.ColumnSpan" Value="3"/>
+				</DataTrigger>
+			</DataTemplate.Triggers>
 		</DataTemplate>
 		<DataTemplate x:Key="editLanguageGridTemplate">
 			<Grid Margin="10">

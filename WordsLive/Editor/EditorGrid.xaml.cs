@@ -85,6 +85,7 @@ namespace WordsLive.Editor
 			if (res.DialogResult.HasValue && res.DialogResult.Value)
 			{
 				var newPart = song.AddPart(res.PartName);
+				// TODO: select first slide instead
 				this.StructureTree.SetSelectedItem(newPart);
 			}
 		}
@@ -509,22 +510,12 @@ namespace WordsLive.Editor
 			return win;
 		}
 
-		private void TranslationExpanderExpandedCollapsed(object sender, RoutedEventArgs e)
+		private void TranslationExpanderExpanded(object sender, RoutedEventArgs e)
 		{
-			// HACK
 			Expander exp = (Expander)sender;
 			Grid g = exp.FindVisualParent<Grid>();
-			if (exp.IsExpanded)
-			{
-				g.ColumnDefinitions[0].Width = new GridLength(1, GridUnitType.Star);
-				g.ColumnDefinitions[2].Width = new GridLength(1, GridUnitType.Star);
-			}
-			else
-			{
-				g.ColumnDefinitions[0].Width = new GridLength(1, GridUnitType.Star);
-				g.ColumnDefinitions[2].Width = GridLength.Auto;
-				((TextBox)g.Children[0]).Focus();
-			}
+			var t = (TextBox)g.FindName("TranslationTextBox");
+			// TODO: set (keyboard) focus to t
 		}
 
 		public event PropertyChangedEventHandler PropertyChanged;
