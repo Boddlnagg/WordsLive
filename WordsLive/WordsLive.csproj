@@ -197,9 +197,6 @@
     <SplashScreen Include="Artwork\Banner.png" />
     <Resource Include="Artwork\Small_ArrowLeft.png" />
     <Resource Include="Artwork\Small_ArrowRight.png" />
-    <Content Include="Data\jquery.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="Data\song.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

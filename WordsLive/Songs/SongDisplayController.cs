@@ -9,6 +9,7 @@ using System.Globalization;
 using WordsLive.Core;
 using Awesomium.Core;
 using WordsLive.Core.Data;
+using System.Reflection;
 
 namespace WordsLive.Songs
 {
@@ -36,6 +37,32 @@ namespace WordsLive.Songs
 
 			this.control.CreateObject("callback");
 			this.control.SetObjectCallback("callback", "imagesLoaded", (sender, args) => OnImagesLoaded());
+		}
+
+		public void Load()
+		{
+			// TODO: unpack resources only once at startup
+			var asm = Assembly.GetAssembly(typeof(Media)); // WordsLive.Core.dll
+			var names = asm.GetManifestResourceNames();
+
+			using (var stream = asm.GetManifestResourceStream("WordsLive.Core.Resources.jquery.js"))
+			{
+				using (var writer = File.OpenWrite(Path.Combine("Data", "jquery.js")))
+				{
+					stream.CopyTo(writer);
+				}
+			}
+
+			// TODO: use SongPresentation.js
+
+			using (var stream = asm.GetManifestResourceStream("WordsLive.Core.Resources.SongPresentation.js"))
+			{
+				using (var writer = File.OpenWrite(Path.Combine("Data", "SongPresentation.js")))
+				{
+					stream.CopyTo(writer);
+				}
+			}
+			this.control.LoadFile("song.html");
 		}
 
 		public bool ShowChords { get; set; }

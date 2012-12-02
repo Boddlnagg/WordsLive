@@ -88,6 +88,7 @@
     <Compile Include="MediaFileHandler.cs" />
     <Compile Include="MediaManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Resources\jquery.js" />
     <Compile Include="ShutdownAttribute.cs" />
     <Compile Include="Songs\Chords\Chords.cs" />
     <Compile Include="Songs\Chords\ChordSymbol.cs" />
@@ -119,5 +120,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\SongPresentation.js" />
   </ItemGroup>
 </Project>

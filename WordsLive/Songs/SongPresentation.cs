@@ -103,7 +103,7 @@ namespace WordsLive.Songs
 			    System.Windows.MessageBox.Show("JS error in line "+target.LineNumber+": "+target.Message);
 			};
 
-			this.Control.Web.LoadFile("song.html");
+			controller.Load();
 		}
 
 		void web_IsDirtyChanged(object sender, EventArgs e)
