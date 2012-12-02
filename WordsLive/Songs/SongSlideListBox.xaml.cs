@@ -175,7 +175,7 @@ namespace WordsLive.Songs
 			public int OrderPosition { get; set; } // this is needed so every slide will be unique
 		}
 
-		protected override void OnKeyUp(System.Windows.Input.KeyEventArgs e)
+		protected override void OnKeyDown(System.Windows.Input.KeyEventArgs e)
 		{
 			string part;
 			if (partAccessKeys.ContainsKey(e.Key.ToString()))
