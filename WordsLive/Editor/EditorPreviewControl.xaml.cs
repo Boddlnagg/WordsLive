@@ -46,7 +46,7 @@ namespace WordsLive.Editor
 				Web.LoadCompleted += (sender, args) => Load();
 			}
 
-			controller.Load();
+			controller.Load(null); // TODO
 
 			// this will never be called when using fixed size
 			//Web.SizeChanged += (sender, args) =>

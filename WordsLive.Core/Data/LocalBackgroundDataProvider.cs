@@ -64,7 +64,7 @@ namespace WordsLive.Core.Data
 			var file = new FileInfo(Path.Combine(directory, path.Substring(1).Replace('/', Path.DirectorySeparatorChar)));
 
 			if (!file.Exists)
-				throw new FileNotFoundException(path + " not found.");
+				throw new FileNotFoundException(path + " not found."); // TODO: get rid of this exception??
 
 			string dir = path.Substring(0, path.LastIndexOf('/') + 1);
 

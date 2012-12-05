@@ -18,6 +18,7 @@
 
 using System;
 using System.Drawing;
+using Newtonsoft.Json;
 
 namespace WordsLive.Core.Songs
 {
@@ -25,6 +26,7 @@ namespace WordsLive.Core.Songs
 	/// Represents a song background (either an image or a color).
 	/// This class is immutable.
 	/// </summary>
+	[JsonConverter(typeof(JsonSongBackgroundConverter))]
 	public class SongBackground
 	{
 		/// <summary>

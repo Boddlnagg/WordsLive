@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -69,7 +70,14 @@ namespace WordsLive.Songs
 				
 				videoBackground.Autoplay = true;
 				videoBackground.Loop = true;
-				videoBackground.Load(DataManager.Backgrounds.GetFile(song.VideoBackground).Uri);
+				try
+				{
+					videoBackground.Load(DataManager.Backgrounds.GetFile(song.VideoBackground).Uri);
+				}
+				catch (FileNotFoundException)
+				{
+					throw new NotImplementedException("Video background file not found: Doesn't know what to do.");
+				}
 
 				var brush = new System.Windows.Media.VisualBrush(videoBackground);
 				videoBackgroundClone = new System.Windows.Shapes.Rectangle();
@@ -82,11 +90,10 @@ namespace WordsLive.Songs
 
 			this.IsTransparent = true;
 
-			controller = new SongDisplayController(Control.Web);
+			controller = new SongDisplayController(Control.Web, SongDisplayController.FeatureLevel.None);
 
-			this.Control.Web.LoadCompleted += (sender, args) =>
+			controller.SongLoaded += (sender, args) =>
 			{
-				controller.UpdateCss(this.song, this.Area.WindowSize.Width);
 				OnFinishedLoading();
 			};
 
@@ -103,7 +110,7 @@ namespace WordsLive.Songs
 			    System.Windows.MessageBox.Show("JS error in line "+target.LineNumber+": "+target.Message);
 			};
 
-			controller.Load();
+			controller.Load(this.song);
 		}
 
 		void web_IsDirtyChanged(object sender, EventArgs e)
@@ -151,9 +158,7 @@ namespace WordsLive.Songs
 
 			var slide = FindSlideByIndex(index);
 
-			controller.UpdateSlide(song, slide, false);
-			controller.ShowSource(showSource);
-			controller.ShowCopyright(showCopyright);
+			controller.UpdateSlide(song, slide, showSource, showCopyright);
 
 			if (videoBackground == null) // only change backgrounds if we're not using a video background
 			{

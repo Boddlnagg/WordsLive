@@ -31,17 +31,10 @@ SongPresentation.TranslationPosition = {
 }
 
 // constructor
-function SongPresentation(id) {
+function SongPresentation(id, song) {
 	// create general styles when they don't yet exist
 	if ($('#song-style-general').length == 0)
 		SongPresentation.insertStyleGeneral();
-	
-	// TODO song/formatting
-	var song = {
-		"HasChords": true,
-		"HasTranslation": true,
-		"Formatting" : JSON.parse('{"MainText":{"Size":22,"Name":"Tahoma","Bold":true,"Italic":false,"Color":[255,255,255,255],"Outline":30,"Shadow":20},"TranslationText":{"Size":20,"Name":"Tahoma","Bold":false,"Italic":true,"Color":[255,255,255,255],"Outline":30,"Shadow":20},"SourceText":{"Size":16,"Name":"Tahoma","Bold":false,"Italic":false,"Color":[255,255,255,255],"Outline":30,"Shadow":20},"CopyrightText":{"Size":11,"Name":"Tahoma","Bold":false,"Italic":false,"Color":[255,255,255,255],"Outline":30,"Shadow":20},"TextLineSpacing":30,"TranslationLineSpacing":20,"CopyrightBorderBottom":30,"SourceBorderTop":20,"SourceBorderRight":40,"HorizontalOrientation":1,"VerticalOrientation":1,"BorderLeft":50,"BorderRight":60,"BorderTop":40,"BorderBottom":70,"IsOutlineEnabled":true,"OutlineColor":[0,0,0,255],"IsShadowEnabled":true,"ShadowColor":[0, 0, 0,255],"ShadowDirection":125,"TranslationPosition":0,"CopyrightDisplayPosition":2,"SourceDisplayPosition":1}')
-	};
 	
 	this.id = id;
 	this.song = song;
@@ -91,7 +84,8 @@ SongPresentation.prototype.setShowChords = function(value) {
 	if (value != this.showChords) {
 		this.showChords = value;
 		this.updateStyle();
-		this.showSlide(this.slide);
+        if (this.slide != null)
+		    this.showSlide(this.slide);
 	}
 }
 
@@ -140,74 +134,90 @@ SongPresentation.prototype.setCopyright = function(copyright) {
 }
 
 SongPresentation.prototype.showSlide = function (slide) {
-	this.slide = slide;
+    if (slide === undefined || slide === null)
+        throw "Argument null: slide";
 
-	var inner = $('<div>').css('font-size', (slide.Size * SongPresentation.FontFactor * this.getFactor()) + "pt");
+    this.slide = slide;
 
-	var lines = slide.Text.split('\n');
+    var inner = $('<div>').css('font-size', (slide.Size * SongPresentation.FontFactor * this.getFactor()) + "pt");
 
-	if (slide.Translation) {
-		var transLines = slide.Translation.split('\n');
-		var lineCount = lines.length >= transLines.length ? lines.length : transLines.length;
-		var i;
-		for (i = 0; i < lineCount; i++) {
-			var textLine;
-			var transLine;
+    var lines = slide.Text.split('\n');
 
-			if (i < lines.length)
-				textLine = lines[i];
-			else
-				textLine = '';
+    if (slide.Translation) {
+        var transLines = slide.Translation.split('\n');
+        var lineCount = lines.length >= transLines.length ? lines.length : transLines.length;
+        var i;
+        for (i = 0; i < lineCount; i++) {
+            var textLine;
+            var transLine;
 
-			if (i < transLines.length)
-				transLine = transLines[i];
-			else
-				transLine = '';
+            if (i < lines.length)
+                textLine = lines[i];
+            else
+                textLine = '';
 
-			inner.append($('<span>').append(this.parseLine(textLine, true)));
-			inner.append($('<span>').addClass('song-trans').append(this.parseLine(transLine, false)));
-		}
-	} else {
-		for (i = 0; i < lines.length; i++) {
-			inner.append($('<span>').append(this.parseLine(lines[i], true)));
-		}
-	}
+            if (i < transLines.length)
+                transLine = transLines[i];
+            else
+                transLine = '';
 
-	if (!this.transitionsEnabled || !this.isShown) {
-		this.container.find('.song-main > div > div').replaceWith(function () { return $('<div>').append(inner.clone()); });
-		this.container.find('.song-background').css(slide.Background);
+            inner.append($('<span>').append(this.parseLine(textLine, true)));
+            inner.append($('<span>').addClass('song-trans').append(this.parseLine(transLine, false)));
+        }
+    } else {
+        for (i = 0; i < lines.length; i++) {
+            inner.append($('<span>').append(this.parseLine(lines[i], true)));
+        }
+    }
 
-		if (slide.Source)
-			this.container.find('.song-source').show();
-		else
-			this.container.find('.song-source').hide();
-		if (slide.Copyright)
-			this.container.find('.song-copyright').show();
-		else
-			this.container.find('.song-copyright').hide();
-	} else {
-		var oldMain = this.container.find('.song-current.song-main');
-		oldMain.after($('<div>').hide().addClass('song-next').addClass('song-main').append(SongPresentation.createLayer()));
-		oldMain.after($('<div>').hide().addClass('song-next').addClass('song-background'));
+    var bgCss = null;
+    if (this.backgroundsEnabled && slide.Background != null) {
+        if (slide.Background.Color !== undefined) {
+            bgCss = { 'background-color': SongPresentation.makeCssColor(slide.Background.Color) };
+        } else if (slide.Background.Image !== undefined) {
+            bgCss = { 'background-color': 'black', 'background-image': 'url(\'' + slide.Background.Image + '\')' };
+        } else {
+            throw 'Video backgrounds are not yet supported.';
+        }
+    }
 
-		this.container.find('.song-next.song-main > div > div').replaceWith(function () { return $('<div>').append(inner.clone()); });
-		this.container.find('.song-next.song-background').css(slide.Background);
+    if (!this.transitionsEnabled || !this.isShown) {
+        this.container.find('.song-main > div > div').replaceWith(function () { return $('<div>').append(inner.clone()); });
+        if (bgCss !== null)
+            this.container.find('.song-background').css(bgCss);
 
-		var old = this.container.find('.song-current');
+        if (slide.Source)
+            this.container.find('.song-source').show();
+        else
+            this.container.find('.song-source').hide();
+        if (slide.Copyright)
+            this.container.find('.song-copyright').show();
+        else
+            this.container.find('.song-copyright').hide();
+    } else {
+        var oldMain = this.container.find('.song-current.song-main');
+        oldMain.after($('<div>').hide().addClass('song-next').addClass('song-main').append(SongPresentation.createLayer()));
+        oldMain.after($('<div>').hide().addClass('song-next').addClass('song-background'));
 
-		this.container.find('.song-next').fadeIn(SongPresentation.Transition, function () { old.remove(); $(this).removeClass('song-next').addClass('song-current'); });
+        this.container.find('.song-next.song-main > div > div').replaceWith(function () { return $('<div>').append(inner.clone()); });
+        if (bgCss !== null)
+            this.container.find('.song-next.song-background').css(bgCss);
 
-		if (slide.Source)
-			this.container.find('.song-source').fadeIn(SongPresentation.Transition);
-		else
-			this.container.find('.song-source').fadeOut(SongPresentation.Transition);
-		if (slide.Copyright)
-			this.container.find('.song-copyright').fadeIn(SongPresentation.Transition);
-		else
-			this.container.find('.song-copyright').fadeOut(SongPresentation.Transition);
-	}
+        var old = this.container.find('.song-current');
 
-	this.isShown = true;
+        this.container.find('.song-next').fadeIn(SongPresentation.Transition, function () { old.remove(); $(this).removeClass('song-next').addClass('song-current'); });
+
+        if (slide.Source)
+            this.container.find('.song-source').fadeIn(SongPresentation.Transition);
+        else
+            this.container.find('.song-source').fadeOut(SongPresentation.Transition);
+        if (slide.Copyright)
+            this.container.find('.song-copyright').fadeIn(SongPresentation.Transition);
+        else
+            this.container.find('.song-copyright').fadeOut(SongPresentation.Transition);
+    }
+
+    this.isShown = true;
 }
 
 // parses chords in a line of the song text
@@ -248,7 +258,11 @@ SongPresentation.prototype.parseLine = function(line, parseChords) {
 			
 			result[index++] = line.substring(start, pos); // append text to result
 			if (this.showChords) {
-				var chord = line.substring(pos + 1, pos + chordlen - 1);
+			    var chord = line.substring(pos + 1, pos + chordlen - 1);
+
+			    // abusing the <b> tag for chords for brevity
+			    // we need two nested tags, the outer one with position:relative,
+			    // the inner one with position:absolute (see css)
 				result[index++] = $('<b>').append($('<b>').append(chord));
 			}
 			start = pos + chordlen;
@@ -262,27 +276,27 @@ SongPresentation.prototype.parseLine = function(line, parseChords) {
 	return result;
 }
 
-SongPresentation.prototype.generateStyle = function() {
+SongPresentation.prototype.generateStyle = function () {
+	// TODO: use Powerpraise's song settings for stroke and shadow size?
 	var formatting = this.song.Formatting;
-	
-	var makeCssValue = function(value, unit) {
+
+	if (formatting.TranslationPosition == SongPresentation.TranslationPosition.Block)
+		throw "Translation block positioning is not yet supported."; // TODO
+
+	var makeCssValue = function (value, unit) {
 		return value + unit;
 	};
-	
-	var makeCssColor = function(value) {
-		return 'rgba('+value[0]+','+value[1]+','+value[2]+','+value[3]+')';
-	};
-	
+
 	var factor = this.getFactor();
 
-	var idselector = '#presentation_'+this.id;
-	
+	var idselector = '#presentation_' + this.id;
+
 	var chordsHeight = 0;
-	
+
 	if (this.song.HasChords && this.showChords)
 		chordsHeight = 0.5 * formatting.MainText.Size;
 
-	var getLineHeight = function(showChords, showTranslation) {
+	var getLineHeight = function (showChords, showTranslation) {
 		var value = formatting.MainText.Size;
 
 		if (showTranslation)
@@ -323,7 +337,7 @@ SongPresentation.prototype.generateStyle = function() {
 	var textWeight = formatting.MainText.Bold ? "font-weight: bold;" : '';
 	var textFontStyle = formatting.MainText.Italic ? "font-style: italic;" : '';
 
-	var textColor = "color: " + makeCssColor(formatting.MainText.Color) + ";";
+	var textColor = "color: " + SongPresentation.makeCssColor(formatting.MainText.Color) + ";";
 
 	var hAlign;
 
@@ -349,46 +363,46 @@ SongPresentation.prototype.generateStyle = function() {
 			vAlign = "vertical-align: bottom;"; break;
 	}
 
-	var outlineColor = formatting.IsOutlineEnabled ? makeCssColor(formatting.OutlineColor) : null;
-	var shadowColor = formatting.IsShadowEnabled ? makeCssColor(formatting.ShadowColor) : null;
+	var outlineColor = formatting.IsOutlineEnabled ? SongPresentation.makeCssColor(formatting.OutlineColor) : null;
+	var shadowColor = formatting.IsShadowEnabled ? SongPresentation.makeCssColor(formatting.ShadowColor) : null;
 
-	var createStrokeShadowRules = function(strokeSize, shadowSize) {
+	var createStrokeShadowRules = function (strokeSize, shadowSize) {
 		var result = '';
 		var shadowRules = [];
 		var i = 0;
-		
+
 		strokeSize *= 0.1;
 		shadowSize *= 0.1;
-		
+
 		if (SongPresentation.BrowserStroke && formatting.IsOutlineEnabled) {
 			strokeSizeValue = makeCssValue(strokeSize, 'px');
-			result = '-webkit-text-stroke: '+strokeSizeValue+' '+outlineColor+';\
-						  text-stroke: '+strokeSizeValue+' '+outlineColor+';';
+			result = '-webkit-text-stroke: ' + strokeSizeValue + ' ' + outlineColor + ';\
+						  text-stroke: ' + strokeSizeValue + ' ' + outlineColor + ';';
 		}
-		
+
 		if (formatting.IsShadowEnabled) {
 			shadowSizeValue = makeCssValue(shadowSize, 'px');
-			shadowRules[i++] = shadowColor+' '+shadowSizeValue+' '+shadowSizeValue+' '+shadowSizeValue;
+			shadowRules[i++] = shadowColor + ' ' + shadowSizeValue + ' ' + shadowSizeValue + ' ' + shadowSizeValue;
 		}
-		
+
 		if (formatting.IsShadowEnabled && formatting.IsOutlineEnabled && !SongPresentation.BrowserStroke) {
 			var modStrokeSizeValue = makeCssValue(strokeSize * 0.75, 'px');
-			
+
 			// simulate stroke with 8 shadows
-			shadowRules[i++] = ''+modStrokeSizeValue+' '+modStrokeSizeValue+' 0 '+outlineColor;
-			shadowRules[i++] = ''+modStrokeSizeValue+' 0px 0 '+outlineColor;
-			shadowRules[i++] = '-'+modStrokeSizeValue+' -'+modStrokeSizeValue+' 0 '+outlineColor;
-			shadowRules[i++] = '-'+modStrokeSizeValue+' 0px 0 '+outlineColor;
-			shadowRules[i++] = ''+modStrokeSizeValue+' -'+modStrokeSizeValue+' 0 '+outlineColor;
-			shadowRules[i++] = '0px -'+modStrokeSizeValue+' 0 '+outlineColor;
-			shadowRules[i++] = '-'+modStrokeSizeValue+' '+modStrokeSizeValue+' 0 '+outlineColor;
-			shadowRules[i++] = '0px '+modStrokeSizeValue+' 0 '+outlineColor;
+			shadowRules[i++] = '' + modStrokeSizeValue + ' ' + modStrokeSizeValue + ' 0 ' + outlineColor;
+			shadowRules[i++] = '' + modStrokeSizeValue + ' 0px 0 ' + outlineColor;
+			shadowRules[i++] = '-' + modStrokeSizeValue + ' -' + modStrokeSizeValue + ' 0 ' + outlineColor;
+			shadowRules[i++] = '-' + modStrokeSizeValue + ' 0px 0 ' + outlineColor;
+			shadowRules[i++] = '' + modStrokeSizeValue + ' -' + modStrokeSizeValue + ' 0 ' + outlineColor;
+			shadowRules[i++] = '0px -' + modStrokeSizeValue + ' 0 ' + outlineColor;
+			shadowRules[i++] = '-' + modStrokeSizeValue + ' ' + modStrokeSizeValue + ' 0 ' + outlineColor;
+			shadowRules[i++] = '0px ' + modStrokeSizeValue + ' 0 ' + outlineColor;
 		}
-		
+
 		if (shadowRules.length > 0) {
-			result += 'text-shadow: '+shadowRules.join(',')+';';
+			result += 'text-shadow: ' + shadowRules.join(',') + ';';
 		}
-		
+
 		return result;
 	}
 
@@ -403,22 +417,22 @@ SongPresentation.prototype.generateStyle = function() {
 		var transWeight = formatting.TranslationText.Bold ? "font-weight: bold;" : "font-weight: normal;";
 		var transFontStyle = formatting.TranslationText.Italic ? "font-style: italic;" : "font-style: normal;";
 
-		var transColor = "color: " + makeCssColor(formatting.TranslationText.Color) + ";";
+		var transColor = "color: " + SongPresentation.makeCssColor(formatting.TranslationText.Color) + ";";
 
 		cssTrans = '\
-		'+idselector+' .song-main span.song-trans {\
-			'+transFont+'\
-			'+transWeight+'\
-			'+transFontStyle+'\
-			'+transColor+'\
-			'+fsTrans+'\
-			'+lhTrans+'\
+		' + idselector + ' .song-main span.song-trans {\
+			' + transFont + '\
+			' + transWeight + '\
+			' + transFontStyle + '\
+			' + transColor + '\
+			' + fsTrans + '\
+			' + lhTrans + '\
 		}';
-		
+
 		var strokeShadowTrans = createStrokeShadowRules(strokeTrans, strokeTrans);
-		
+
 		if (strokeShadowTrans) {
-			cssTrans += idselector+' .song-back .song-trans {' + strokeShadowTrans + '}';
+			cssTrans += idselector + ' .song-back .song-trans {' + strokeShadowTrans + '}';
 		}
 	}
 
@@ -429,7 +443,7 @@ SongPresentation.prototype.generateStyle = function() {
 
 	var sourceFont = "font-family: " + formatting.SourceText.Name + ";";
 	var sourceWeight = formatting.SourceText.Bold ? "font-weight: bold;" : '';
-	var sourceColor = "color: " + makeCssColor(formatting.SourceText.Color) + ";";
+	var sourceColor = "color: " + SongPresentation.makeCssColor(formatting.SourceText.Color) + ";";
 
 	var fsCopy = "font-size: " + makeCssValue(formatting.CopyrightText.Size * SongPresentation.FontFactor * factor, "pt") + ";";
 	var strokeCopy = formatting.CopyrightText.Size * SongPresentation.FontFactor * factor;
@@ -438,69 +452,69 @@ SongPresentation.prototype.generateStyle = function() {
 
 	var copyrightFont = "font-family: " + formatting.CopyrightText.Name + ";";
 	var copyrightWeight = formatting.CopyrightText.Bold ? "font-weight: bold;" : '';
-	var copyrightColor = "color: " + makeCssColor(formatting.CopyrightText.Color) + ";";
+	var copyrightColor = "color: " + SongPresentation.makeCssColor(formatting.CopyrightText.Color) + ";";
 
-	var cssSpecific = cssTrans +'\
-	'+idselector+' .song-main span {'+lhText+'}\
+	var cssSpecific = cssTrans + '\
+	' + idselector + ' .song-main span {' + lhText + '}\
 	\
-	'+idselector+' .song-main > div > div > div {\
-		'+vAlign+'\
-		'+mgTextTop+'\
-		'+mgTextBottom+'\
-		'+mgTextRight+'\
-		'+mgTextLeft+'\
-		'+hAlign+'\
-		'+fsText+'\
-		'+textColor+'\
-		'+textFont+'\
-		'+textWeight+'\
-		'+textFontStyle+'\
+	' + idselector + ' .song-main > div > div > div {\
+		' + vAlign + '\
+		' + mgTextTop + '\
+		' + mgTextBottom + '\
+		' + mgTextRight + '\
+		' + mgTextLeft + '\
+		' + hAlign + '\
+		' + fsText + '\
+		' + textColor + '\
+		' + textFont + '\
+		' + textWeight + '\
+		' + textFontStyle + '\
 		display: table-cell;\
 		width: 100%;\
 		overflow: hidden;\
 	}\
 	\
-	'+idselector+' .song-copyright > div > div {\
-		'+fsCopy+'\
-		'+copyrightFont+'\
-		'+copyrightColor+'\
-		'+copyrightWeight+'\
-		'+copyrightWeight+'\
-		'+mgCopyBottom+'\
-		'+hAlign+'\
-		'+mgCopyRight+'\
-		'+mgCopyLeft+'\
+	' + idselector + ' .song-copyright > div > div {\
+		' + fsCopy + '\
+		' + copyrightFont + '\
+		' + copyrightColor + '\
+		' + copyrightWeight + '\
+		' + copyrightWeight + '\
+		' + mgCopyBottom + '\
+		' + hAlign + '\
+		' + mgCopyRight + '\
+		' + mgCopyLeft + '\
 		position:absolute;\
 		width: 100%;\
 	}\
 	\
-	'+idselector+' .song-source > div > div {\
-		'+mgSourceTop+'\
-		'+mgSourceRight+'\
-		'+fsSource+'\
-		'+sourceFont+'\
-		'+sourceWeight+'\
-		'+sourceColor+'\
+	' + idselector + ' .song-source > div > div {\
+		' + mgSourceTop + '\
+		' + mgSourceRight + '\
+		' + fsSource + '\
+		' + sourceFont + '\
+		' + sourceWeight + '\
+		' + sourceColor + '\
 		position: absolute;\
 	}';
 
 	var strokeShadowText = createStrokeShadowRules(strokeText, strokeText);
-		
+
 	if (strokeShadowText) {
-		cssSpecific += idselector+' .song-main .song-back > div {' + strokeShadowText + '}';
+		cssSpecific += idselector + ' .song-main .song-back > div {' + strokeShadowText + '}';
 	}
 
 	var strokeShadowSource = createStrokeShadowRules(strokeSource, strokeSource);
 
 	if (strokeShadowSource) {
-		cssSpecific += idselector+' .song-source .song-back > div {' + strokeShadowSource + '}';
+		cssSpecific += idselector + ' .song-source .song-back > div {' + strokeShadowSource + '}';
 	}
 
 	var strokeShadowCopyright = createStrokeShadowRules(strokeCopy, strokeCopy);
 
 	if (strokeShadowCopyright) {
-		cssSpecific += idselector+' .song-copyright .song-back > div {' + strokeShadowCopyright + '}';
-	} 
+		cssSpecific += idselector + ' .song-copyright .song-back > div {' + strokeShadowCopyright + '}';
+	}
 
 	return cssSpecific;
 }
@@ -520,6 +534,10 @@ SongPresentation.createContainer = function() {
 			$('<div>').addClass('song-source').append(SongPresentation.createLayer()),
 			$('<div>').addClass('song-copyright').append(SongPresentation.createLayer())];
 }
+
+SongPresentation.makeCssColor = function (value) {
+	return 'rgba(' + value[0] + ',' + value[1] + ',' + value[2] + ',' + value[3] + ')';
+};
 
 SongPresentation.insertStyleGeneral = function() {
 	var cssGeneral = '\

@@ -17,22 +17,51 @@
  */
 
 using System;
-using System.Drawing;
 using Newtonsoft.Json;
+using WordsLive.Core.Data;
+using System.Drawing;
+using System.IO;
 
 namespace WordsLive.Core.Songs
 {
-	public class JsonColorConverter : JsonConverter
+	public class JsonSongBackgroundConverter : JsonConverter
 	{
 		public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
 		{
-			var color = (Color)value;
-			writer.WriteStartArray();
-			writer.WriteValue(color.R);
-			writer.WriteValue(color.G);
-			writer.WriteValue(color.B);
-			writer.WriteValue(color.A);
-			writer.WriteEndArray();
+			var bg = (SongBackground)value;
+			writer.WriteStartObject();
+			if (bg.Type == SongBackgroundType.Color)
+			{
+				var conv = new JsonColorConverter();
+				writer.WritePropertyName("Color");
+				conv.WriteJson(writer, bg.Color, serializer);
+			}
+			else
+			{
+
+				try
+				{
+					var uri = DataManager.Backgrounds.GetFile(bg).Uri;
+					if (bg.Type == SongBackgroundType.Image)
+					{
+						writer.WritePropertyName("Image");
+						writer.WriteValue(uri);
+					}
+					else
+					{
+						writer.WritePropertyName("Video");
+						writer.WriteValue(uri);
+					}
+				}
+				catch (FileNotFoundException)
+				{
+					var conv = new JsonColorConverter();
+					writer.WritePropertyName("Color");
+					conv.WriteJson(writer, Color.Black, serializer);
+				}
+			}
+
+			writer.WriteEndObject();
 		}
 
 		public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
@@ -42,7 +71,7 @@ namespace WordsLive.Core.Songs
 
 		public override bool CanConvert(Type objectType)
 		{
-			return typeof(Color).IsAssignableFrom(objectType);
+			return typeof(SongBackground).IsAssignableFrom(objectType);
 		}
 	}
 }

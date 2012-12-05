@@ -103,6 +103,7 @@
     <Compile Include="Songs\IO\SongBeamerSongReader.cs" />
     <Compile Include="Songs\ISongElement.cs" />
     <Compile Include="Songs\JsonColorConverter.cs" />
+    <Compile Include="Songs\JsonSongBackgroundConverter.cs" />
     <Compile Include="Songs\Song.cs" />
     <Compile Include="Songs\SongBackground.cs" />
     <Compile Include="Songs\SongBackgroundType.cs" />
