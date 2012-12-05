@@ -55,7 +55,8 @@ namespace WordsLive.Songs
 			finishedLoading = false;
 			presentation = Controller.PresentationManager.CreatePresentation<SongPresentation>();
 			presentation.FinishedLoading += pres_OnFinishedLoading;
-			presentation.Load(this.song, ShowChords);
+			presentation.Load(this.song);
+			presentation.ShowChords = ShowChords;
 
 			if (!firstTime)
 			{
@@ -174,7 +175,7 @@ namespace WordsLive.Songs
 				if (value != showChords)
 				{
 					showChords = value;
-					Refresh(false);
+					presentation.ShowChords = value;
 				}
 			}
 		}

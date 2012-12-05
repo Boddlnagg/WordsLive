@@ -121,6 +121,10 @@ namespace WordsLive.Songs
 		protected void OnSongLoaded()
 		{
 			loaded = true;
+			if (!ShowChords) // defaults to true
+			{
+				control.ExecuteJavascript("presentation.setShowChords(false)");
+			}
 
 			if (SongLoaded != null)
 				SongLoaded(this, EventArgs.Empty);

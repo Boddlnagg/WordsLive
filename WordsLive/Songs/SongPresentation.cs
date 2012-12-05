@@ -41,7 +41,19 @@ namespace WordsLive.Songs
 			}
 		}
 
-		public void Load(Song song, bool showChords)
+		public bool ShowChords
+		{
+			get
+			{
+				return controller.ShowChords;
+			}
+			set
+			{
+				controller.ShowChords = value;
+			}
+		}
+
+		public void Load(Song song)
 		{
 			if (song == null)
 				throw new ArgumentNullException("song");
@@ -98,8 +110,6 @@ namespace WordsLive.Songs
 			};
 
 			Control.Web.IsDirtyChanged += new EventHandler(web_IsDirtyChanged);
-
-			controller.ShowChords = showChords;
 
 			this.Area.WindowSizeChanged += OnWindowSizeChanged;
 
@@ -181,6 +191,10 @@ namespace WordsLive.Songs
 				backImage.Source = frontImage.Source;
 				frontImage.Source = nextBackground;
 				nextBackground = null;
+			}
+			else
+			{
+				backImage.Source = frontImage.Source;
 			}
 
 			if (videoBackground != null || backImage.Source != null)
