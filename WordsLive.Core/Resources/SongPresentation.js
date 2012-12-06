@@ -49,9 +49,9 @@ function SongPresentation(id, song) {
 		.append(SongPresentation.createContainer());
 		
 	$('head').append($('<style>').attr('id', 'song-style-presentation_'+this.id).append(this.generateStyle()));
-		
-	this.setBackgroundsEnabled(false);
-	this.setTransitionsEnabled(false);
+
+	this.backgroundsEnabled = false;
+	this.transitionsEnabled = false;
 	this.setCopyright(song.Copyright);
 	this.setSource(song.Sources[0]);
 	
@@ -159,14 +159,14 @@ SongPresentation.prototype.gotoSlide = function (partIndex, slideIndex) {
 }
 
 SongPresentation.prototype.gotoBlankSlide = function (background) {
-    this.showSlide({
-        Text: "",
+	this.showSlide({
+		Text: "",
 		Translation: "",
 		Size: this.song.Formatting.MainText.Size,
 		Background: background,
 		Source: false,
 		Copyright: false
-    });
+	});
 }
 
 SongPresentation.prototype.showSlide = function (slide) {
@@ -565,10 +565,10 @@ SongPresentation.createLayer = function() {
 }
 
 SongPresentation.createContainer = function() {
-	return [$('<div>').addClass('song-current').addClass('song-background'),
+	return [$('<div>').hide().addClass('song-current').addClass('song-background'),
 			$('<div>').addClass('song-current').addClass('song-main').append(SongPresentation.createLayer()),
-			$('<div>').addClass('song-source').append(SongPresentation.createLayer()),
-			$('<div>').addClass('song-copyright').append(SongPresentation.createLayer())];
+			$('<div>').hide().addClass('song-source').append(SongPresentation.createLayer()),
+			$('<div>').hide().addClass('song-copyright').append(SongPresentation.createLayer())];
 }
 
 SongPresentation.makeCssColor = function (value) {
