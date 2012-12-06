@@ -98,14 +98,8 @@ namespace WordsLive.Songs
 				}
 			}
 
-			var songData = new {
-				HasChords = song.HasChords,
-				HasTranslation = song.HasTranslation,
-				Formatting = song.Formatting
-			};
-
 			this.control.SetObjectProperty("bridge", "preloadImages", new JSValue(backgrounds.ToArray()));
-			this.control.SetObjectProperty("bridge", "songString", new JSValue(JsonConvert.SerializeObject(songData)));
+			this.control.SetObjectProperty("bridge", "songString", new JSValue(JsonConvert.SerializeObject(song)));
 			this.control.SetObjectProperty("bridge", "showChords", new JSValue(ShowChords));
 			
 			this.control.LoadFile("song.html");
@@ -150,54 +144,19 @@ namespace WordsLive.Songs
 			// TODO
 		}
 
-		private class Slide
-		{
-			public string Text { get; set; }
-			public string Translation { get; set; }
-			public int Size { get; set; }
-			public object Background { get; set; }
-			public bool Copyright { get; set; }
-			public bool Source { get; set; }
-		}
-
 		public void UpdateSlide(Song song, SongSlide slide, bool updateBackground = true)
 		{
 			// TODO
 		}
 
-		public void UpdateSlide(Song song, SongSlide slide, bool showSource, bool showCopyright)
+		public void GotoSlide(SongPartReference part, int slide)
 		{
-			//using(StreamWriter writer = new StreamWriter("output.html"))
-			//    writer.WriteLine(HtmlToString(GenerateSlideHtml(song, slide)));
+			control.ExecuteJavascript("presentation.gotoSlide("+part.OrderIndex+", "+slide+")");
+		}
 
-			Slide s;
-			
-			if (slide != null)
-			{
-				s = new Slide
-				{
-					Text = slide.Text,
-					Translation = slide.Translation,
-					Size = slide.Size,
-					Background = slide.Background,
-					Source = showSource,
-					Copyright = showCopyright
-				};
-			}
-			else
-			{
-				s = new Slide
-				{
-					Text = "",
-					Translation = "",
-					Size = song.Formatting.MainText.Size,
-					Background = song.Backgrounds[song.FirstSlide != null ? song.FirstSlide.BackgroundIndex : 0],
-					Source = false,
-					Copyright = false
-				};
-			}
-
-			control.ExecuteJavascript("presentation.showSlide(" + JsonConvert.SerializeObject(s) + ")");
+		public void GotoBlankSlide(SongBackground background)
+		{
+			control.ExecuteJavascript("presentation.gotoBlankSlide("+JsonConvert.SerializeObject(background)+")");
 		}
 	}
 }

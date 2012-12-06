@@ -50,7 +50,7 @@ namespace WordsLive.Core.Songs
 		/// <summary>
 		/// Gets or sets the text color.
 		/// </summary>
-		[JsonConverter(typeof(JsonColorConverter))]
+		[JsonConverter(typeof(Json.JsonColorConverter))]
 		public Color Color { get; set; }
 
 		/// <summary>

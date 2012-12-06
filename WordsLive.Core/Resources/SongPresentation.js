@@ -52,6 +52,8 @@ function SongPresentation(id, song) {
 		
 	this.setBackgroundsEnabled(false);
 	this.setTransitionsEnabled(false);
+	this.setCopyright(song.Copyright);
+	this.setSource(song.Sources[0]);
 	
 	var ths = this;
 	
@@ -84,8 +86,8 @@ SongPresentation.prototype.setShowChords = function(value) {
 	if (value != this.showChords) {
 		this.showChords = value;
 		this.updateStyle();
-        if (this.slide != null)
-		    this.showSlide(this.slide);
+		if (this.slide != null)
+			this.showSlide(this.slide);
 	}
 }
 
@@ -133,91 +135,125 @@ SongPresentation.prototype.setCopyright = function(copyright) {
 	this.container.find('.song-copyright > div > div').replaceWith(function() { return div.clone(); });
 }
 
+SongPresentation.prototype.gotoSlide = function (partIndex, slideIndex) {
+
+	var part = this.song.Parts[this.song.Order[partIndex]];
+	var slide = part.Slides[slideIndex];
+
+	var showSource = ((this.song.Formatting.SourceDisplayPosition == SongPresentation.MetadataDisplayPosition.AllSlides ||
+		(partIndex == 0 && slideIndex == 0 && this.song.Formatting.SourceDisplayPosition == SongPresentation.MetadataDisplayPosition.FirstSlide) ||
+		(partIndex == this.song.Order.length - 1 && slideIndex == part.Slides.length - 1 && this.song.Formatting.SourceDisplayPosition == SongPresentation.MetadataDisplayPosition.LastSlide)));
+
+	var showCopyright = ((this.song.Formatting.CopyrightDisplayPosition == SongPresentation.MetadataDisplayPosition.AllSlides ||
+		(partIndex == 0 && slideIndex == 0 && this.song.Formatting.CopyrightDisplayPosition == SongPresentation.MetadataDisplayPosition.FirstSlide) ||
+		(partIndex == this.song.Order.length - 1 && slideIndex == part.Slides.length - 1 && this.song.Formatting.CopyrightDisplayPosition == SongPresentation.MetadataDisplayPosition.LastSlide)));
+
+	this.showSlide({
+		Text: slide.Text,
+		Translation: slide.Translation,
+		Size: slide.Size,
+		Background: this.song.Backgrounds[slide.BackgroundIndex],
+		Source: showSource,
+		Copyright: showCopyright
+	});
+}
+
+SongPresentation.prototype.gotoBlankSlide = function (background) {
+    this.showSlide({
+        Text: "",
+		Translation: "",
+		Size: this.song.Formatting.MainText.Size,
+		Background: background,
+		Source: false,
+		Copyright: false
+    });
+}
+
 SongPresentation.prototype.showSlide = function (slide) {
-    if (slide === undefined || slide === null)
-        throw "Argument null: slide";
+	if (slide === undefined || slide === null)
+		throw "Argument null: slide";
 
-    this.slide = slide;
+	this.slide = slide;
 
-    var inner = $('<div>').css('font-size', (slide.Size * SongPresentation.FontFactor * this.getFactor()) + "pt");
+	var inner = $('<div>').css('font-size', (slide.Size * SongPresentation.FontFactor * this.getFactor()) + "pt");
 
-    var lines = slide.Text.split('\n');
+	var lines = slide.Text.split('\n');
 
-    if (slide.Translation) {
-        var transLines = slide.Translation.split('\n');
-        var lineCount = lines.length >= transLines.length ? lines.length : transLines.length;
-        var i;
-        for (i = 0; i < lineCount; i++) {
-            var textLine;
-            var transLine;
+	if (slide.Translation) {
+		var transLines = slide.Translation.split('\n');
+		var lineCount = lines.length >= transLines.length ? lines.length : transLines.length;
+		var i;
+		for (i = 0; i < lineCount; i++) {
+			var textLine;
+			var transLine;
 
-            if (i < lines.length)
-                textLine = lines[i];
-            else
-                textLine = '';
+			if (i < lines.length)
+				textLine = lines[i];
+			else
+				textLine = '';
 
-            if (i < transLines.length)
-                transLine = transLines[i];
-            else
-                transLine = '';
+			if (i < transLines.length)
+				transLine = transLines[i];
+			else
+				transLine = '';
 
-            inner.append($('<span>').append(this.parseLine(textLine, true)));
-            inner.append($('<span>').addClass('song-trans').append(this.parseLine(transLine, false)));
-        }
-    } else {
-        for (i = 0; i < lines.length; i++) {
-            inner.append($('<span>').append(this.parseLine(lines[i], true)));
-        }
-    }
+			inner.append($('<span>').append(this.parseLine(textLine, true)));
+			inner.append($('<span>').addClass('song-trans').append(this.parseLine(transLine, false)));
+		}
+	} else {
+		for (i = 0; i < lines.length; i++) {
+			inner.append($('<span>').append(this.parseLine(lines[i], true)));
+		}
+	}
 
-    var bgCss = null;
-    if (this.backgroundsEnabled && slide.Background != null) {
-        if (slide.Background.Color !== undefined) {
-            bgCss = { 'background-color': SongPresentation.makeCssColor(slide.Background.Color) };
-        } else if (slide.Background.Image !== undefined) {
-            bgCss = { 'background-color': 'black', 'background-image': 'url(\'' + slide.Background.Image + '\')' };
-        } else {
-            throw 'Video backgrounds are not yet supported.';
-        }
-    }
+	var bgCss = null;
+	if (this.backgroundsEnabled && slide.Background != null) {
+		if (slide.Background.Color !== undefined) {
+			bgCss = { 'background-color': SongPresentation.makeCssColor(slide.Background.Color) };
+		} else if (slide.Background.Image !== undefined) {
+			bgCss = { 'background-color': 'black', 'background-image': 'url(\'' + slide.Background.Image + '\')' };
+		} else {
+			throw 'Video backgrounds are not yet supported.';
+		}
+	}
 
-    if (!this.transitionsEnabled || !this.isShown) {
-        this.container.find('.song-main > div > div').replaceWith(function () { return $('<div>').append(inner.clone()); });
-        if (bgCss !== null)
-            this.container.find('.song-background').css(bgCss);
+	if (!this.transitionsEnabled || !this.isShown) {
+		this.container.find('.song-main > div > div').replaceWith(function () { return $('<div>').append(inner.clone()); });
+		if (bgCss !== null)
+			this.container.find('.song-background').css(bgCss);
 
-        if (slide.Source)
-            this.container.find('.song-source').show();
-        else
-            this.container.find('.song-source').hide();
-        if (slide.Copyright)
-            this.container.find('.song-copyright').show();
-        else
-            this.container.find('.song-copyright').hide();
-    } else {
-        var oldMain = this.container.find('.song-current.song-main');
-        oldMain.after($('<div>').hide().addClass('song-next').addClass('song-main').append(SongPresentation.createLayer()));
-        oldMain.after($('<div>').hide().addClass('song-next').addClass('song-background'));
+		if (slide.Source)
+			this.container.find('.song-source').show();
+		else
+			this.container.find('.song-source').hide();
+		if (slide.Copyright)
+			this.container.find('.song-copyright').show();
+		else
+			this.container.find('.song-copyright').hide();
+	} else {
+		var oldMain = this.container.find('.song-current.song-main');
+		oldMain.after($('<div>').hide().addClass('song-next').addClass('song-main').append(SongPresentation.createLayer()));
+		oldMain.after($('<div>').hide().addClass('song-next').addClass('song-background'));
 
-        this.container.find('.song-next.song-main > div > div').replaceWith(function () { return $('<div>').append(inner.clone()); });
-        if (bgCss !== null)
-            this.container.find('.song-next.song-background').css(bgCss);
+		this.container.find('.song-next.song-main > div > div').replaceWith(function () { return $('<div>').append(inner.clone()); });
+		if (bgCss !== null)
+			this.container.find('.song-next.song-background').css(bgCss);
 
-        var old = this.container.find('.song-current');
+		var old = this.container.find('.song-current');
 
-        this.container.find('.song-next').fadeIn(SongPresentation.Transition, function () { old.remove(); $(this).removeClass('song-next').addClass('song-current'); });
+		this.container.find('.song-next').fadeIn(SongPresentation.Transition, function () { old.remove(); $(this).removeClass('song-next').addClass('song-current'); });
 
-        if (slide.Source)
-            this.container.find('.song-source').fadeIn(SongPresentation.Transition);
-        else
-            this.container.find('.song-source').fadeOut(SongPresentation.Transition);
-        if (slide.Copyright)
-            this.container.find('.song-copyright').fadeIn(SongPresentation.Transition);
-        else
-            this.container.find('.song-copyright').fadeOut(SongPresentation.Transition);
-    }
+		if (slide.Source)
+			this.container.find('.song-source').fadeIn(SongPresentation.Transition);
+		else
+			this.container.find('.song-source').fadeOut(SongPresentation.Transition);
+		if (slide.Copyright)
+			this.container.find('.song-copyright').fadeIn(SongPresentation.Transition);
+		else
+			this.container.find('.song-copyright').fadeOut(SongPresentation.Transition);
+	}
 
-    this.isShown = true;
+	this.isShown = true;
 }
 
 // parses chords in a line of the song text
@@ -258,11 +294,11 @@ SongPresentation.prototype.parseLine = function(line, parseChords) {
 			
 			result[index++] = line.substring(start, pos); // append text to result
 			if (this.showChords) {
-			    var chord = line.substring(pos + 1, pos + chordlen - 1);
+				var chord = line.substring(pos + 1, pos + chordlen - 1);
 
-			    // abusing the <b> tag for chords for brevity
-			    // we need two nested tags, the outer one with position:relative,
-			    // the inner one with position:absolute (see css)
+				// abusing the <b> tag for chords for brevity
+				// we need two nested tags, the outer one with position:relative,
+				// the inner one with position:absolute (see css)
 				result[index++] = $('<b>').append($('<b>').append(chord));
 			}
 			start = pos + chordlen;

@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using Newtonsoft.Json;
 using WordsLive.Core.Data;
 
 namespace WordsLive.Core
@@ -37,6 +38,7 @@ namespace WordsLive.Core
 		/// <summary>
 		/// Gets the data provider used for this media instance.
 		/// </summary>
+		[JsonIgnore]
 		public IMediaDataProvider DataProvider { get; protected set; }
 
 		/// <summary>

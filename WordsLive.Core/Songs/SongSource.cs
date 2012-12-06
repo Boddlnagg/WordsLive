@@ -17,12 +17,14 @@
  */
 
 using System.ComponentModel;
+using Newtonsoft.Json;
 
 namespace WordsLive.Core.Songs
 {
 	/// <summary>
 	/// Represents the source information of a song.
 	/// </summary>
+	[JsonConverter(typeof(Json.JsonSongSourceConverter))]
 	public class SongSource : ISongElement, INotifyPropertyChanged
 	{
 		private string songbook;
@@ -147,6 +149,7 @@ namespace WordsLive.Core.Songs
 				PropertyChanged(this, new PropertyChangedEventArgs(name));
 		}
 
+		[JsonIgnore]
 		public Song Root { get; private set; }
 
 		#endregion

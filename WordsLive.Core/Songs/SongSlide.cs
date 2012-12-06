@@ -19,6 +19,7 @@
 using System;
 using System.ComponentModel;
 using System.Linq;
+using Newtonsoft.Json;
 
 namespace WordsLive.Core.Songs
 {
@@ -63,6 +64,7 @@ namespace WordsLive.Core.Songs
 		/// <summary>
 		/// Gets the text on this slide, but with chords removed.
 		/// </summary>
+		[JsonIgnore]
 		public string TextWithoutChords { get; private set; }
 
 		/// <summary>
@@ -108,6 +110,7 @@ namespace WordsLive.Core.Songs
 		/// <summary>
 		/// Gets the background that is assigned to this slide.
 		/// </summary>
+		[JsonIgnore]
 		public SongBackground Background
 		{
 			get
@@ -144,6 +147,7 @@ namespace WordsLive.Core.Songs
 		/// <summary>
 		/// Gets a value indicating whether this slide has a translation
 		/// </summary>
+		[JsonIgnore]
 		public bool HasTranslation
 		{
 			get
@@ -163,6 +167,7 @@ namespace WordsLive.Core.Songs
 		/// <summary>
 		/// Gets a value indicating whether this slide has chords.
 		/// </summary>
+		[JsonIgnore]
 		public bool HasChords
 		{
 			get
@@ -240,6 +245,7 @@ namespace WordsLive.Core.Songs
 				PropertyChanged(this, new PropertyChangedEventArgs(name));
 		}
 
+		[JsonIgnore]
 		public Song Root { get; private set; }
 
 		#endregion

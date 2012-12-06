@@ -20,7 +20,7 @@ using System;
 using System.Drawing;
 using Newtonsoft.Json;
 
-namespace WordsLive.Core.Songs
+namespace WordsLive.Core.Songs.Json
 {
 	public class JsonColorConverter : JsonConverter
 	{

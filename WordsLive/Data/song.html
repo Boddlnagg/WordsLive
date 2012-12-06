@@ -13,23 +13,23 @@ String.prototype.replaceAll = function (replace, with_this) {
 var presentation;
 
 $(function () {
-    SongPresentation.BrowserStroke = true; // use WebKit text-stroke support
-    presentation = new SongPresentation(0, JSON.parse(bridge.songString));
-    $('body').prepend(presentation.getContainer());
-    presentation.getContainer().show();
+	SongPresentation.BrowserStroke = true; // use WebKit text-stroke support
+	presentation = new SongPresentation(0, JSON.parse(bridge.songString));
+	$('body').prepend(presentation.getContainer());
+	presentation.getContainer().show();
 
-    if (bridge.enableBackgrounds)
-        presentation.setBackgroundsEnabled(true);
-    if (bridge.enableTransitions)
-        presentation.setTransitionsEnabled(true); // TODO: set SongPresentation.Transition if used
+	if (bridge.enableBackgrounds)
+		presentation.setBackgroundsEnabled(true);
+	if (bridge.enableTransitions)
+		presentation.setTransitionsEnabled(true); // TODO: set SongPresentation.Transition if used
 
-    presentation.setShowChords(bridge.showChords);
+	presentation.setShowChords(bridge.showChords);
 
-    $.each(bridge.preloadImages, function (i) {
-        var img = new Image();
-        img.src = bridge.preloadImages[i];
-    });
-    bridge.callbackLoaded();
+	$.each(bridge.preloadImages, function (i) {
+		var img = new Image();
+		img.src = bridge.preloadImages[i];
+	});
+	bridge.callbackLoaded();
 });
 	</script>
 	<style id="style">

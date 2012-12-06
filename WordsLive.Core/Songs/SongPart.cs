@@ -21,6 +21,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using Newtonsoft.Json;
 
 namespace WordsLive.Core.Songs
 {
@@ -65,6 +66,7 @@ namespace WordsLive.Core.Songs
 		/// Gets the text of all slides in this part.
 		/// Changes to this property are not notified.
 		/// </summary>
+		[JsonIgnore]
 		public string Text
 		{
 			get
@@ -77,6 +79,7 @@ namespace WordsLive.Core.Songs
 		/// Gets the text of all slides in this part, but with chords removed.
 		/// Changes to this property are not notified.
 		/// </summary>
+		[JsonIgnore]
 		public string TextWithoutChords
 		{
 			get
@@ -89,6 +92,7 @@ namespace WordsLive.Core.Songs
 		/// Gets a value indicating whether any slide in this part has a translation.
 		/// Changes to this property are not notified.
 		/// </summary>
+		[JsonIgnore]
 		public bool HasTranslation
 		{
 			get
@@ -307,6 +311,7 @@ namespace WordsLive.Core.Songs
 				PropertyChanged(this, new PropertyChangedEventArgs(name));
 		}
 
+		[JsonIgnore]
 		public Song Root { get; private set; }
 
 		#endregion

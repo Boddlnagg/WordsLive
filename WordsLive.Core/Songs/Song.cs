@@ -22,6 +22,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using Newtonsoft.Json;
 using WordsLive.Core.Data;
 using WordsLive.Core.Songs.IO;
 using WordsLive.Core.Songs.Undo;
@@ -46,6 +47,7 @@ namespace WordsLive.Core.Songs
 		/// <summary>
 		/// Gets a value indicating whether this instance has been modified since the last time it was saved.
 		/// </summary>
+		[JsonIgnore]
 		public bool IsModified
 		{
 			get
@@ -61,6 +63,7 @@ namespace WordsLive.Core.Songs
 
 		private bool isImported;
 
+		[JsonIgnore]
 		public bool IsImported
 		{
 			get
@@ -84,6 +87,7 @@ namespace WordsLive.Core.Songs
 
 		internal UndoKey UndoKey { get; private set; }
 
+		[JsonIgnore]
 		public UndoManager UndoManager
 		{
 			get
@@ -104,6 +108,7 @@ namespace WordsLive.Core.Songs
 		/// When it has been <c>true</c> and is set to <c>false</c>, the undo/redo stack
 		/// is cleared and cannot be restored again.
 		/// </summary>
+		[JsonIgnore]
 		public bool IsUndoEnabled
 		{
 			get
@@ -304,6 +309,7 @@ namespace WordsLive.Core.Songs
 		/// Gets the text of all parts at once.
 		/// Changes to this property are not notified.
 		/// </summary>
+		[JsonIgnore]
 		public string Text
 		{
 			get
@@ -316,6 +322,7 @@ namespace WordsLive.Core.Songs
 		/// Gets the text of all parts but with chords symbols removed.
 		/// Changes to this property are not notified.
 		/// </summary>
+		[JsonIgnore]
 		public string TextWithoutChords
 		{
 			get
@@ -328,6 +335,7 @@ namespace WordsLive.Core.Songs
 		/// Gets the first slide of this song or <c>null</c> if the song has no slides.
 		/// Changes to this property are not notified.
 		/// </summary>
+		[JsonIgnore]
 		public SongSlide FirstSlide
 		{
 			get
@@ -342,6 +350,7 @@ namespace WordsLive.Core.Songs
 		/// Gets the last slide of this song or <c>null</c> if the song has no slides.
 		/// Changes to this property are not notified.
 		/// </summary>
+		[JsonIgnore]
 		public SongSlide LastSlide
 		{
 			get
@@ -1005,6 +1014,7 @@ namespace WordsLive.Core.Songs
 				PropertyChanged(this, new PropertyChangedEventArgs(name));
 		}
 
+		[JsonIgnore]
 		public Song Root
 		{
 			get

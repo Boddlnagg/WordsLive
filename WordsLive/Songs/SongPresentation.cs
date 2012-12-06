@@ -146,39 +146,24 @@ namespace WordsLive.Songs
 
 		private void GotoSlide(int index, bool update = false)
 		{
-			int maxSlideIndex = (from partRef in song.Order select partRef.Part.Slides.Count).Sum();
+			var tuple = FindSlideByIndex(index);
 
-			bool showSource = ((song.Formatting.SourceDisplayPosition == MetadataDisplayPosition.AllSlides ||
-				(index == 1 && song.Formatting.SourceDisplayPosition == MetadataDisplayPosition.FirstSlide) ||
-				(index == maxSlideIndex && song.Formatting.SourceDisplayPosition == MetadataDisplayPosition.LastSlide)));
+			SongBackground bg;
 
-			bool showCopyright = ((song.Formatting.CopyrightDisplayPosition == MetadataDisplayPosition.AllSlides ||
-				(index == 1 && song.Formatting.CopyrightDisplayPosition == MetadataDisplayPosition.FirstSlide) ||
-				(index == maxSlideIndex && song.Formatting.CopyrightDisplayPosition == MetadataDisplayPosition.LastSlide)));
+			if (tuple != null)
+				bg = song.Backgrounds[tuple.Item1.BackgroundIndex];
+			else if (index == 0) // first (blank) slide
+				bg = song.Backgrounds[song.FirstSlide != null ? song.FirstSlide.BackgroundIndex : 0];
+			else // last (blank) slide
+				bg = song.Backgrounds[song.LastSlide != null ? song.LastSlide.BackgroundIndex : 0];
 
-			if (showSource)
-			{
-				controller.SetSource(this.song.Sources[0]);
-			}
-
-			if (showCopyright)
-			{
-				controller.SetCopyright(this.song.Copyright);
-			}
-
-			var slide = FindSlideByIndex(index);
-
-			controller.UpdateSlide(song, slide, showSource, showCopyright);
+			if (tuple != null)
+				controller.GotoSlide(tuple.Item2, tuple.Item3);
+			else
+				controller.GotoBlankSlide(bg);
 
 			if (videoBackground == null) // only change backgrounds if we're not using a video background
 			{
-				SongBackground bg;
-
-				if (slide != null)
-					bg = song.Backgrounds[slide.BackgroundIndex];
-				else
-					bg = song.Backgrounds[song.FirstSlide != null ? song.FirstSlide.BackgroundIndex : 0];
-
 				nextBackground = SongBackgroundToImageSourceConverter.CreateBackgroundSource(bg);
 			}
 		}
@@ -204,18 +189,24 @@ namespace WordsLive.Songs
 			}
 		}
 
-		private SongSlide FindSlideByIndex(int index)
+		private Tuple<SongSlide, SongPartReference, int> FindSlideByIndex(int index)
 		{
 			int i = 1;
+			SongPartReference pref = null;
+			SongSlide slide = null;
 			foreach (var partRef in song.Order)
 			{
+				pref = partRef;
 				SongPart part = partRef.Part;
-				foreach (var slide in part.Slides)
+				int iInPart = 0;
+				foreach (var s in part.Slides)
 				{
 					if (i++ == index)
 					{
-						return slide;
+						slide = s;
+						return new Tuple<SongSlide, SongPartReference, int>(slide, pref, iInPart);
 					}
+					iInPart++;
 				}
 			}
 

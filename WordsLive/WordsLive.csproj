@@ -470,9 +470,6 @@
   <ItemGroup>
     <Resource Include="Artwork\EditCurrent.png" />
     <Resource Include="Artwork\ViewCurrent.png" />
-    <Content Include="Data\script.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

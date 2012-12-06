@@ -18,12 +18,14 @@
 
 using System;
 using System.ComponentModel;
+using Newtonsoft.Json;
 
 namespace WordsLive.Core.Songs
 {
 	/// <summary>
 	/// Represents a reference to a song part.
 	/// </summary>
+	[JsonConverter(typeof(Json.JsonSongPartReferenceConverter))]
 	public class SongPartReference
 	{
 		private Song root;
@@ -37,6 +39,28 @@ namespace WordsLive.Core.Songs
 			get
 			{
 				return part;
+			}
+		}
+
+		/// <summary>
+		/// Gets the index of this part reference in the song's list of parts.
+		/// </summary>
+		public int PartIndex
+		{
+			get
+			{
+				return root.Parts.IndexOf(part);
+			}
+		}
+
+		/// <summary>
+		/// Gets the index of this part reference in the songs's order.
+		/// </summary>
+		public int OrderIndex
+		{
+			get
+			{
+				return root.Order.IndexOf(this);
 			}
 		}
 
