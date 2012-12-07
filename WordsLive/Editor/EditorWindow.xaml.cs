@@ -104,42 +104,42 @@ namespace WordsLive.Editor
 			}
 		}
 
-		private void SaveSong(EditorDocument doc)
+		private void SaveSong(Song song)
 		{
-			if (doc == null)
-				throw new ArgumentNullException("doc");
+			if (song == null)
+				throw new ArgumentNullException("song");
 			
-			if (doc.Song.File == null || doc.Song.IsImported)
+			if (song.File == null || song.IsImported)
 			{
-				SaveSongAs(doc);
+				SaveSongAs(song);
 			}
 			else
 			{
-				doc.Song.Save();
+				song.Save();
 			}
 		}
 
-		private void SaveSongAs(EditorDocument doc)
+		private void SaveSongAs(Song song)
 		{
-			if (doc == null)
-				throw new ArgumentNullException("doc");
+			if (song == null)
+				throw new ArgumentNullException("song");
 
 			Microsoft.Win32.SaveFileDialog dlg = new Microsoft.Win32.SaveFileDialog();
 			dlg.DefaultExt = ".ppl";
 			dlg.Filter = "Powerpraise-Lied|*.ppl";
-			if (doc.Song.File == null)
+			if (song.File == null)
 			{
-				dlg.FileName = doc.Song.SongTitle;
+				dlg.FileName = song.SongTitle;
 			}
 			else
 			{
-				dlg.FileName =  Path.GetFileNameWithoutExtension(Path.GetFileName(doc.Song.File));
+				dlg.FileName =  Path.GetFileNameWithoutExtension(Path.GetFileName(song.File));
 			}
 
 			if (dlg.ShowDialog() == true)
 			{
 				// TODO: allow to save to SongDataProvider
-				doc.Song.Save(dlg.FileName, DataManager.LocalFiles);
+				song.Save(dlg.FileName, DataManager.LocalFiles);
 			}
 		}
 
@@ -165,7 +165,7 @@ namespace WordsLive.Editor
 
 				if (res == MessageBoxResult.Yes)
 				{
-					SaveSong(doc);
+					SaveSong(doc.Song);
 				}
 			}
 
@@ -176,6 +176,7 @@ namespace WordsLive.Editor
 			return true;
 		}
 
+		// TODO: move method to EditorGrid
 		private void ChooseBackground(EditorDocument doc)
 		{
 			SongBackground bg = null;
@@ -361,11 +362,11 @@ namespace WordsLive.Editor
 			}
 			else if (e.Command == ApplicationCommands.Save)
 			{
-				SaveSong(doc);
+				SaveSong(doc.Song);
 			}
 			else if (e.Command == ApplicationCommands.SaveAs)
 			{
-				SaveSongAs(doc);
+				SaveSongAs(doc.Song);
 			}
 			else if (e.Command == ApplicationCommands.Close)
 			{
@@ -373,7 +374,7 @@ namespace WordsLive.Editor
 			}
 			else if (e.Command == CustomCommands.ViewCurrent)
 			{
-				SaveSong(doc);
+				SaveSong(doc.Song);
 				Controller.ReloadActiveMedia();
 				Controller.FocusMainWindow();
 			}

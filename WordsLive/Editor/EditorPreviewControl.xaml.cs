@@ -35,7 +35,8 @@ namespace WordsLive.Editor
 				(args.NewValue as Song).Sources[0].PropertyChanged += control.SongSource_PropertyChanged;
 			}
 
-			control.Load();
+			if (args.NewValue != null)
+				control.Load();
 		}
 
 		void controller_SongLoaded(object sender, EventArgs e)

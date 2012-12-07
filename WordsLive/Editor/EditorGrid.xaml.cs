@@ -531,6 +531,8 @@ namespace WordsLive.Editor
 
 		internal void Cleanup()
 		{
+			var tnp = (Nodes.TreeNodeProvider)FindResource("treeNodeProvider");
+			tnp.Song = null;
 			PreviewControl.Cleanup();
 		}
 

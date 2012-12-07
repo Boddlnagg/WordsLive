@@ -175,8 +175,10 @@
 						<Setter Property="ContextMenu">
 							<Setter.Value>
 								<ContextMenu>
-									<MenuItem Header="Speichern" Command="Save" CommandParameter="{Binding}"/>
-									<MenuItem Header="Schließen" Command="Close" CommandParameter="{Binding}" />
+									<!-- TODO: localize -->
+                                    <!-- Binding Mode=OneTime is important here to prevent a memory leak -->
+									<MenuItem Header="Speichern" Command="Save" CommandParameter="{Binding Mode=OneTime}"/>
+									<MenuItem Header="Schließen" Command="Close" CommandParameter="{Binding Mode=OneTime}" />
 								</ContextMenu>
 							</Setter.Value>
 						</Setter>
