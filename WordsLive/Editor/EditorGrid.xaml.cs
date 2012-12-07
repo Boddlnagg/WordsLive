@@ -60,7 +60,6 @@ namespace WordsLive.Editor
 			this.StructureTree.IsEnabled = false;
 
 			this.PreviewControl.FinishedLoading += (sender, args) => InitSelection();
-			this.PreviewControl.Song = song;
 		}
 
 		private void InitSelection()
@@ -422,7 +421,11 @@ namespace WordsLive.Editor
 			var tree = (TreeView)sender;
 
 			if (!orderSelected)
+			{
 				OrderListBox.SelectedItem = null;
+				PreviewControl.IsFirstSelected = false;
+				PreviewControl.IsLastSelected = false;
+			}
 
 			if (tree.SelectedItem is SongPart)
 				PreviewControl.Element = ((SongPart)tree.SelectedItem).Slides[0];

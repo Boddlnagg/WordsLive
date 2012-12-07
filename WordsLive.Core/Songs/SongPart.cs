@@ -89,19 +89,6 @@ namespace WordsLive.Core.Songs
 		}
 
 		/// <summary>
-		/// Gets a value indicating whether any slide in this part has a translation.
-		/// Changes to this property are not notified.
-		/// </summary>
-		[JsonIgnore]
-		public bool HasTranslation
-		{
-			get
-			{
-				return Slides.Where(s => s.HasTranslation).Any();
-			}
-		}
-
-		/// <summary>
 		/// Initializes a new instance of the <see cref="SongPart"/> class.
 		/// </summary>
 		/// <param name="root">The song this part belongs to.</param>

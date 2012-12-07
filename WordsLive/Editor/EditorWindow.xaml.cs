@@ -401,7 +401,6 @@ namespace WordsLive.Editor
 				var win = new EditChordsWindow(doc.Song);
 				win.Owner = this;
 				win.ShowDialog();
-				doc.Grid.PreviewControl.UpdateStyle();	
 			}
 			else if (e.Command == CustomCommands.AddMedia)
 			{

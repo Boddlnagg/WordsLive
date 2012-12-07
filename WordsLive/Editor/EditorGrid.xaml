@@ -263,7 +263,8 @@
 				Grid.Row="0"
 				Grid.Column="2"
 				Margin="0,26,0,0"
-				x:Name="PreviewControl" />
+				x:Name="PreviewControl"
+				Song="{Binding Source={StaticResource treeNodeProvider}, Path=Song}"/>
 	<DockPanel
 		Grid.Row="2"
 		Grid.Column="2"

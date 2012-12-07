@@ -361,27 +361,59 @@ namespace WordsLive.Core.Songs
 			}
 		}
 
+		private bool hasTranslation = false;
+
 		/// <summary>
 		/// Gets a value indicating whether any slide in this song has a translation.
-		/// Changes to this property are not notified.
 		/// </summary>
 		public bool HasTranslation
 		{
 			get
 			{
-				return this.Parts.Any((part) => part.HasTranslation);
+				return hasTranslation;
 			}
 		}
 
+		internal void UpdateHasTranslation(bool slideHasTranslation)
+		{
+			var lastHasTranslation = hasTranslation;
+
+			if (slideHasTranslation)
+				hasTranslation = true;
+			else
+				hasTranslation = Parts.Any(part => part.Slides.Any(slide => slide.HasTranslation));
+
+			if (hasTranslation != lastHasTranslation)
+			{
+				OnPropertyChanged("HasTranslation");
+			}
+		}
+
+		private bool hasChords = false;
+
 		/// <summary>
-		/// Gets a valule indicating whether any slide in this song has chords.
-		/// Changes to this property are not notified.
+		/// Gets a value indicating whether any slide in this song has chords.
 		/// </summary>
 		public bool HasChords
 		{
 			get
 			{
-				return Chords.Chords.GetChords(Text).Any();
+				return hasChords;
+			}
+		}
+
+		internal void UpdateHasChords(bool slideHasChords)
+		{ 
+			var lastHasChords = hasChords;
+
+			if (slideHasChords)
+				hasChords = true;
+			else
+				hasChords = Chords.Chords.GetChords(Text).Any();
+
+			if (hasChords != lastHasChords)
+			{
+				OnPropertyChanged("HasChords");
 			}
 		}
 

@@ -160,6 +160,7 @@ namespace WordsLive.Core.Songs
 				{
 					hasTranslation = value;
 					OnPropertyChanged("HasTranslation");
+					Root.UpdateHasTranslation(value);
 				}
 			}
 		}
@@ -180,6 +181,7 @@ namespace WordsLive.Core.Songs
 				{
 					hasChords = value;
 					OnPropertyChanged("HasChords");
+					Root.UpdateHasChords(value);
 				}
 			}
 		}

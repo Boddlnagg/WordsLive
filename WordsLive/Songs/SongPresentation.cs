@@ -111,8 +111,6 @@ namespace WordsLive.Songs
 
 			Control.Web.IsDirtyChanged += new EventHandler(web_IsDirtyChanged);
 
-			this.Area.WindowSizeChanged += OnWindowSizeChanged;
-
 			currentSlideIndex = -1;
 
 			this.Control.Web.JSConsoleMessageAdded += (obj, target) =>
@@ -128,12 +126,6 @@ namespace WordsLive.Songs
 			Control.RenderWebView();
 			if (!Control.Web.IsDirty)
 				UpdateSlide();
-		}
-
-		private void OnWindowSizeChanged(object sender, EventArgs args)
-		{	 
-			controller.UpdateCss(this.song, this.Area.WindowSize.Width);
-			GotoSlide(currentSlideIndex, true);
 		}
 
 		public event EventHandler FinishedLoading;
@@ -219,8 +211,6 @@ namespace WordsLive.Songs
 			base.Close();
 			if (videoBackground != null)
 				videoBackground.Destroy();
-
-			this.Area.WindowSizeChanged -= OnWindowSizeChanged; // is this needed?
 		}
 	}
 }

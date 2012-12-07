@@ -1,19 +1,49 @@
-﻿using System.Windows.Controls;
-using System.Linq;
+﻿using System;
+using System.ComponentModel;
+using System.Windows;
+using System.Windows.Controls;
 using Awesomium.Windows.Controls;
 using WordsLive.Core.Songs;
-using WordsLive.Presentation.Wpf;
 using WordsLive.Songs;
-using System;
-using System.IO;
-using WordsLive.Core;
-using System.Windows;
-using WordsLive.Core.Data;
 
 namespace WordsLive.Editor
 {
 	public partial class EditorPreviewControl : UserControl
 	{
+		public static readonly DependencyProperty SongProperty = 
+			DependencyProperty.Register("Song", typeof(Song), typeof(EditorPreviewControl), new PropertyMetadata(OnSongChanged));
+
+		public Song Song
+		{
+			get { return (Song)GetValue(SongProperty); }
+			set { SetValue(SongProperty, value); }
+		}
+
+		public static void OnSongChanged(DependencyObject sender, DependencyPropertyChangedEventArgs args)
+		{
+			var control = (EditorPreviewControl)sender;
+
+			if (args.OldValue != null)
+			{
+				(args.OldValue as Song).PropertyChanged -= control.Song_PropertyChanged;
+				(args.OldValue as Song).Sources[0].PropertyChanged -= control.SongSource_PropertyChanged;
+			}
+
+			if (args.NewValue != null)
+			{
+				(args.NewValue as Song).PropertyChanged += control.Song_PropertyChanged;
+				(args.NewValue as Song).Sources[0].PropertyChanged += control.SongSource_PropertyChanged;
+			}
+
+			control.Load();
+		}
+
+		void controller_SongLoaded(object sender, EventArgs e)
+		{
+			controller.GotoSlide(Song.Order[0], 0);
+			OnFinishedLoading();
+		}
+
 		SongDisplayController controller;
 
 		public event EventHandler FinishedLoading;
@@ -31,28 +61,13 @@ namespace WordsLive.Editor
 		private void Init()
 		{
 			AwesomiumManager.Register(Web);
-
 			Web.Crashed += OnWebViewCrashed;
-
-			controller = new SongDisplayController(Web);
-			controller.ShowChords = true;
-
-			//controller.ImagesLoaded += (sender, args) => OnFinishedLoading();
-
 			Web.DeferInput();
 
 			if (Song != null) // if this is not the first Init(), probably a song has already be loaded and must be reloaded
 			{
-				Web.LoadCompleted += (sender, args) => Load();
+				Load();
 			}
-
-			controller.Load(null); // TODO
-
-			// this will never be called when using fixed size
-			//Web.SizeChanged += (sender, args) =>
-			//{
-			//    controller.UpdateCss(song, (int)Web.ActualWidth);
-			//};
 		}
 
 		void OnWebViewCrashed(object sender, EventArgs e)
@@ -75,42 +90,29 @@ namespace WordsLive.Editor
 				FinishedLoading(this, EventArgs.Empty);
 		}
 
-		private Song song;
-
-		public Song Song
+		void Song_PropertyChanged(object sender, PropertyChangedEventArgs e)
 		{
-			get
+			if (e.PropertyName == "Formatting" || e.PropertyName == "HasChords" || e.PropertyName == "HasTranslation")
 			{
-				return song;
+				controller.UpdateFormatting(Song.Formatting, Song.HasTranslation, Song.HasChords);
+				Update(); // TODO: needed? (maybe for font size changes)
 			}
-			set
-			{
-				if (this.song != null)
-					this.song.PropertyChanged -= Song_PropertyChanged;
 
-				this.song = value;
-
-				if (this.song != null)
-					this.song.PropertyChanged += Song_PropertyChanged;
-
-				if (!Web.IsDomReady)
-				{
-					Web.LoadCompleted += (sender, args) => Load();
-				}
-				else
-				{
-					Load();
-				}
-			}
+			if (e.PropertyName == "Copyright")
+				controller.SetCopyright(Song.Copyright);
 		}
 
-		void Song_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+		void SongSource_PropertyChanged(object sender, PropertyChangedEventArgs e)
 		{
-			if (e.PropertyName == "Formatting")
-			{
-				UpdateStyle();
-				Update();
-			}
+			// TODO: this is currently assuming that Song.Sources[0] does never change
+			if (e.PropertyName == "Songbook" || e.PropertyName == "Number")
+				controller.SetSource(Song.Sources[0]);
+		}
+
+		void SongSlide_PropertyChanged(object sender, PropertyChangedEventArgs e)
+		{
+			if (e.PropertyName == "Text" || e.PropertyName == "Translation" || e.PropertyName == "Background" || e.PropertyName == "Size")
+				controller.ShowSlide((SongSlide)element);
 		}
 
 		public bool ShowChords
@@ -122,16 +124,15 @@ namespace WordsLive.Editor
 			set
 			{
 				controller.ShowChords = value;
-				UpdateStyle();
-				Update();
 			}
 		}
 
 		private void Load()
 		{
-			// TODO: previews don't load correctly when more than one file is opened simultaneously
-			UpdateStyle();
-			OnFinishedLoading();
+			controller = new SongDisplayController(Web, SongDisplayController.FeatureLevel.Backgrounds);
+			controller.ShowChords = true;
+			controller.SongLoaded +=controller_SongLoaded;
+			controller.Load(Song);
 		}
 
 		private bool isFirstSelected;
@@ -173,18 +174,13 @@ namespace WordsLive.Editor
 			if (!(element is SongSlide))
 				return;
 
-			bool showSource = ((song.Formatting.SourceDisplayPosition == MetadataDisplayPosition.AllSlides ||
-				(song.Formatting.SourceDisplayPosition == MetadataDisplayPosition.FirstSlide && IsFirstSelected) ||
-				(song.Formatting.SourceDisplayPosition == MetadataDisplayPosition.LastSlide && IsLastSelected)));
+			controller.ShowSource = ((Song.Formatting.SourceDisplayPosition == MetadataDisplayPosition.AllSlides ||
+				(Song.Formatting.SourceDisplayPosition == MetadataDisplayPosition.FirstSlide && IsFirstSelected) ||
+				(Song.Formatting.SourceDisplayPosition == MetadataDisplayPosition.LastSlide && IsLastSelected)));
 
-			bool showCopyright = ((song.Formatting.CopyrightDisplayPosition == MetadataDisplayPosition.AllSlides ||
-				(song.Formatting.CopyrightDisplayPosition == MetadataDisplayPosition.FirstSlide && IsFirstSelected) ||
-				(song.Formatting.CopyrightDisplayPosition == MetadataDisplayPosition.LastSlide && IsLastSelected)));
-
-			controller.SetCopyright(song.Copyright);
-			controller.ShowCopyright(showCopyright);
-			controller.SetSource(song.Sources[0]);
-			controller.ShowSource(showSource);
+			controller.ShowCopyright = ((Song.Formatting.CopyrightDisplayPosition == MetadataDisplayPosition.AllSlides ||
+				(Song.Formatting.CopyrightDisplayPosition == MetadataDisplayPosition.FirstSlide && IsFirstSelected) ||
+				(Song.Formatting.CopyrightDisplayPosition == MetadataDisplayPosition.LastSlide && IsLastSelected)));
 		}
 
 		private ISongElement element;
@@ -197,14 +193,14 @@ namespace WordsLive.Editor
 			}
 			set
 			{
+				if (element is SongSlide)
+				{
+					(element as SongSlide).PropertyChanged -= SongSlide_PropertyChanged;
+				}
+
 				element = value;
 				Update();
 			}
-		}
-
-		public void UpdateStyle()
-		{
-			controller.UpdateCss(song, (int)Web.ActualWidth);
 		}
 
 		public void Update()
@@ -214,81 +210,50 @@ namespace WordsLive.Editor
 
 			if (element is SongSlide)
 			{
-				controller.UpdateSlide(song, (element as SongSlide));
-				// TODO: remove event handler when element changes
-				(element as SongSlide).PropertyChanged += (sender, args) =>
-				{
-					if (element != sender)
-						return;
-
-					if (args.PropertyName == "Text" || args.PropertyName == "Translation" ||args.PropertyName == "Background" || args.PropertyName == "Size")
-						controller.UpdateSlide(song, (element as SongSlide));
-
-					if (args.PropertyName == "HasTranslation" || args.PropertyName == "HasChords")
-					{
-						UpdateStyle();
-					}
-
-				};
-
+				controller.ShowSlide(element as SongSlide);
+				(element as SongSlide).PropertyChanged += SongSlide_PropertyChanged;
 				UpdateSourceCopyright();
 			}
 			else if (element is Nodes.CopyrightNode)
 			{
-				switch (song.Formatting.CopyrightDisplayPosition)
+				switch (Song.Formatting.CopyrightDisplayPosition)
 				{
 					case MetadataDisplayPosition.AllSlides:
 					case MetadataDisplayPosition.FirstSlide:
-						controller.UpdateSlide(song, song.FirstSlide);
+						controller.ShowSlide(Song.FirstSlide);
 						break;
 					case MetadataDisplayPosition.LastSlide:
-						controller.UpdateSlide(song, song.LastSlide);
+						controller.ShowSlide(Song.LastSlide);
 						break;
 					case MetadataDisplayPosition.None:
-						controller.UpdateSlide(song, new SongSlide(song));
+						controller.ShowSlide(new SongSlide(Song));
 						break;
 				}
 
-				controller.SetCopyright(song.Copyright);
-				controller.ShowCopyright(true);
-				controller.ShowSource(false);
-
-				// TODO: remove event handler when element changes
-				element.Root.PropertyChanged += (sender, args) =>
-				{
-					if (element.Root != sender)
-						return;
-
-					if (args.PropertyName == "Copyright")
-						controller.SetCopyright(song.Copyright);
-					
-					// TODO: UpdateStyle() on song.Formatting change
-				};
+				controller.ShowCopyright = true;
+				controller.ShowSource = false;
 			}
 			else if (element is Nodes.SourceNode)
 			{
-				controller.UpdateSlide(song, song.FirstSlide);
-				controller.SetSource(song.Sources[0]);
-				controller.ShowSource(true);
-				controller.ShowCopyright(false);
-
-				// TODO: remove event handler when element changes
-				song.Sources[0].PropertyChanged += (sender, args) =>
+				switch (Song.Formatting.SourceDisplayPosition)
 				{
-					if (song.Sources[0] != sender)
-						return;
-
-					if (args.PropertyName == "Songbook" || args.PropertyName == "Number")
-						controller.SetSource(song.Sources[0]);
-
-					// TODO: UpdateStyle() on song.Formatting change
-				};
+					case MetadataDisplayPosition.AllSlides:
+					case MetadataDisplayPosition.FirstSlide:
+						controller.ShowSlide(Song.FirstSlide);
+						break;
+					case MetadataDisplayPosition.LastSlide:
+						controller.ShowSlide(Song.LastSlide);
+						break;
+					case MetadataDisplayPosition.None:
+						controller.ShowSlide(new SongSlide(Song));
+						break;
+				}
+				controller.ShowSource = true;
+				controller.ShowCopyright = false;
 			}
 			else
 			{
-				controller.UpdateSlide(song, null);
-				controller.ShowCopyright(false);
-				controller.ShowSource(false);
+				controller.GotoBlankSlide(Song.FirstSlide.Background);
 			}
 		}
 

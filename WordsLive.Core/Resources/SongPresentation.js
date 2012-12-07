@@ -91,8 +91,10 @@ SongPresentation.prototype.setShowChords = function(value) {
 	}
 }
 
-SongPresentation.prototype.updateFormatting = function(formatting) {
+SongPresentation.prototype.updateFormatting = function (formatting, hasTranslation, hasChords) {
 	this.song.Formatting = formatting;
+	this.song.HasTranslation = hasTranslation;
+	this.song.HasChords = hasChords;
 	this.updateStyle();
 }
 
@@ -133,6 +135,20 @@ SongPresentation.prototype.setCopyright = function(copyright) {
 	
 	var div = $('<div>').append(spans);
 	this.container.find('.song-copyright > div > div').replaceWith(function() { return div.clone(); });
+}
+
+SongPresentation.prototype.showSource = function (show) {
+	if (show)
+		this.container.find('.song-source').show();
+	else
+		this.container.find('.song-source').hide();
+}
+
+SongPresentation.prototype.showCopyright = function (show) {
+	if (show)
+		this.container.find('.song-copyright').show();
+	else
+		this.container.find('.song-copyright').hide();
 }
 
 SongPresentation.prototype.gotoSlide = function (partIndex, slideIndex) {

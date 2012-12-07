@@ -84,6 +84,9 @@ namespace WordsLive.Songs
 
 		public void Load(Song song)
 		{
+			if (song == null)
+				throw new ArgumentNullException("song");
+
 			var backgrounds = new List<JSValue>(song.Backgrounds.Count);
 
 			foreach (var bg in song.Backgrounds.Where(bg => bg.Type == SongBackgroundType.Image))
@@ -105,9 +108,9 @@ namespace WordsLive.Songs
 			this.control.LoadFile("song.html");
 		}
 
-		public void UpdateCss(Song song, int width)
+		public void UpdateFormatting(SongFormatting formatting, bool hasTranslation, bool hasChords)
 		{
-			// TODO: remove?
+			this.control.ExecuteJavascript("presentation.updateFormatting(" + JsonConvert.SerializeObject(formatting) + ", " + JsonConvert.SerializeObject(hasTranslation) + ", " + JsonConvert.SerializeObject(hasChords) + ")");
 		}
 
 		public event EventHandler SongLoaded;
@@ -129,9 +132,20 @@ namespace WordsLive.Songs
 			control.ExecuteJavascript("presentation.setSource(" + JsonConvert.SerializeObject(source.ToString()) + ")");
 		}
 
-		public void ShowSource(bool show)
+		private bool showSource;
+		private bool showCopyright;
+
+		public bool ShowSource
 		{
-			// TODO
+			get
+			{
+				return showSource;
+			}
+			set
+			{
+				showSource = value;
+				control.ExecuteJavascript("presentation.showSource(" + JsonConvert.SerializeObject(showSource) + ")");
+			}
 		}
 
 		public void SetCopyright(string copyright)
@@ -139,14 +153,32 @@ namespace WordsLive.Songs
 			control.ExecuteJavascript("presentation.setCopyright(" + JsonConvert.SerializeObject(copyright) + ")");
 		}
 
-		public void ShowCopyright(bool show)
+		public bool ShowCopyright
 		{
-			// TODO
+			get
+			{
+				return showCopyright;
+			}
+			set
+			{
+				showCopyright = value;
+				control.ExecuteJavascript("presentation.showCopyright(" + JsonConvert.SerializeObject(showCopyright) + ")");
+			}
 		}
 
-		public void UpdateSlide(Song song, SongSlide slide, bool updateBackground = true)
+		public void ShowSlide(SongSlide slide)
 		{
-			// TODO
+			var s = new
+			{
+				Text = slide.Text,
+				Translation = slide.Translation,
+				Size = slide.Size,
+				Background = slide.Background,
+				Source = showSource,
+				Copyright = showCopyright
+			};
+
+			control.ExecuteJavascript("presentation.showSlide(" + JsonConvert.SerializeObject(s) + ")");
 		}
 
 		public void GotoSlide(SongPartReference part, int slide)
