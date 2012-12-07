@@ -16,7 +16,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-using System.Collections.ObjectModel;
+using System;
 using System.Linq;
 using NUnit.Framework;
 using WordsLive.Core.Songs;
@@ -378,6 +378,15 @@ namespace WordsLive.Core.Tests.Songs
 			song.SongTitle = "Komma, Test\nNeue   Zeile";
 			var data = Data.SongData.Create(song);
 			Assert.AreEqual("Komma Test Neue Zeile", data.SearchTitle);
+		}
+
+		[Test]
+		public void GCCollect()
+		{
+			WeakReference weak = new WeakReference(song);
+			song = null;
+			GC.Collect();
+			Assert.IsFalse(weak.IsAlive);
 		}
 	}
 }

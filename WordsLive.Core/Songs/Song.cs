@@ -96,7 +96,13 @@ namespace WordsLive.Core.Songs
 					throw new InvalidOperationException("Undo is currently disabled.");
 
 				if (undoManager == null)
-					undoManager = new UndoManager(MonitoredUndo.UndoService.Current[UndoKey], () => this.IsModified = true);
+				{
+					WeakReference weak = new WeakReference(this);
+					undoManager = new UndoManager(MonitoredUndo.UndoService.Current[UndoKey], () => {
+						if (weak.IsAlive)
+							(weak.Target as Song).IsModified = true;
+					});
+				}
 				
 				return undoManager;
 			}

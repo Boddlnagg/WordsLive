@@ -48,7 +48,7 @@
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
   <ItemGroup>
-    <Reference Include="MonitoredUndo, Version=1.0.0.1, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="MonitoredUndo, Version=1.0.0.2, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\3rdParty\MonitoredUndo.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">

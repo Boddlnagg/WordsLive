@@ -32,7 +32,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="MonitoredUndo, Version=1.0.0.1, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="MonitoredUndo, Version=1.0.0.2, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\3rdParty\MonitoredUndo.dll</HintPath>
     </Reference>
     <Reference Include="nunit.framework">
