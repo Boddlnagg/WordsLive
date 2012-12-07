@@ -54,7 +54,10 @@ namespace WordsLive.Core.Songs
 					Undo.ChangeFactory.OnChangingTryMerge(this, "Text", text, value);
 					text = value;
 					HasChords = Chords.Chords.GetChords(text).Any();
-					TextWithoutChords = Chords.Chords.RemoveAll(text);
+					if (HasChords)
+						TextWithoutChords = Chords.Chords.RemoveAll(text);
+					else
+						TextWithoutChords = Text;
 					OnPropertyChanged("Text");
 					OnPropertyChanged("TextWithoutChords");
 				}

@@ -126,6 +126,12 @@ namespace WordsLive.Core.Songs
 					}
 
 					isUndoEnabled = value;
+
+					if (isUndoEnabled)
+					{
+						// create UndoManager if it doesn't exist
+						var tmp = UndoManager.Root;
+					}
 				}
 			}
 		}
