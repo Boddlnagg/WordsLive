@@ -116,7 +116,6 @@
     <Compile Include="Songs\SongSource.cs" />
     <Compile Include="Songs\SongTextFormatting.cs" />
     <Compile Include="Songs\Undo\ChangeFactory.cs" />
-    <Compile Include="Songs\Undo\UndoKey.cs" />
     <Compile Include="Songs\Undo\UndoManager.cs" />
     <Compile Include="UnsupportedMedia.cs" />
     <Compile Include="WebSite.cs" />

@@ -383,6 +383,7 @@ namespace WordsLive.Core.Tests.Songs
 		[Test]
 		public void GCCollect()
 		{
+			song.SongTitle = "Test";
 			WeakReference weak = new WeakReference(song);
 			song = null;
 			GC.Collect();

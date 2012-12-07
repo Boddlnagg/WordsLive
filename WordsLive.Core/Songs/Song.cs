@@ -85,8 +85,6 @@ namespace WordsLive.Core.Songs
 		private UndoManager undoManager;
 		private bool isUndoEnabled = false;
 
-		internal UndoKey UndoKey { get; private set; }
-
 		[JsonIgnore]
 		public UndoManager UndoManager
 		{
@@ -97,11 +95,7 @@ namespace WordsLive.Core.Songs
 
 				if (undoManager == null)
 				{
-					WeakReference weak = new WeakReference(this);
-					undoManager = new UndoManager(MonitoredUndo.UndoService.Current[UndoKey], () => {
-						if (weak.IsAlive)
-							(weak.Target as Song).IsModified = true;
-					});
+					undoManager = new UndoManager(new MonitoredUndo.UndoRoot(this), () => this.IsModified = true);
 				}
 				
 				return undoManager;
@@ -446,7 +440,6 @@ namespace WordsLive.Core.Songs
 		/// <param name="provider">The data provider used for loading.</param>
 		public Song(string filename, IMediaDataProvider provider) : base(filename, provider)
 		{
-			UndoKey = new Undo.UndoKey();
 			Parts = new ObservableCollection<SongPart>();
 			Sources = new ObservableCollection<SongSource>();
 			Order = new ObservableCollection<SongPartReference>();

@@ -17,9 +17,7 @@
  */
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using MonitoredUndo;
 
 namespace WordsLive.Core.Songs.Undo
@@ -71,7 +69,7 @@ namespace WordsLive.Core.Songs.Undo
 				return;
 
 			Change change = GetChange(instance, propertyName, oldValue, newValue);
-			UndoService.Current[instance.Root.UndoKey].AddChange(change, descriptionOfChange);
+			instance.Root.UndoManager.Root.AddChange(change, descriptionOfChange);
 		}
 
 		public static void OnChanging(ISongElement instance, Action undoAction, Action redoAction, string description)
@@ -80,7 +78,7 @@ namespace WordsLive.Core.Songs.Undo
 				return;
 
 			var ch = new DelegateChange(instance, undoAction, redoAction, new ChangeKey<object, string>(instance, description));
-			UndoService.Current[instance.Root.UndoKey].AddChange(ch, description);
+			instance.Root.UndoManager.Root.AddChange(ch, description);
 		}
 
 		/// <summary>
@@ -99,24 +97,24 @@ namespace WordsLive.Core.Songs.Undo
 			var ch = DefaultChangeFactory.GetChange(instance, propertyName, oldValue, newValue);
 			var x = ch.ChangeKey.GetType();
 			if (instance.Root.IsModified &&
-				UndoService.Current[instance.Root.UndoKey].UndoStack.Count() > 0 &&
-				UndoService.Current[instance.Root.UndoKey].UndoStack.First().Changes.Count() > 0 &&
-				UndoService.Current[instance.Root.UndoKey].UndoStack.First().Changes.First().Target == instance &&
-				UndoService.Current[instance.Root.UndoKey].UndoStack.First().Changes.Count() == 1 &&
-				((ChangeKey<object, string>)UndoService.Current[instance.Root.UndoKey].UndoStack.First().Changes.First().ChangeKey).Item2 == propertyName)
+				instance.Root.UndoManager.Root.UndoStack.Count() > 0 &&
+				instance.Root.UndoManager.Root.UndoStack.First().Changes.Count() > 0 &&
+				instance.Root.UndoManager.Root.UndoStack.First().Changes.First().Target == instance &&
+				instance.Root.UndoManager.Root.UndoStack.First().Changes.Count() == 1 &&
+				((ChangeKey<object, string>)instance.Root.UndoManager.Root.UndoStack.First().Changes.First().ChangeKey).Item2 == propertyName)
 			{
-				UndoService.Current[instance.Root.UndoKey].UndoStack.First().Changes.First().MergeWith(ch);
+				instance.Root.UndoManager.Root.UndoStack.First().Changes.First().MergeWith(ch);
 			}
 			else
 			{
-				UndoService.Current[instance.Root.UndoKey].AddChange(ch, propertyName);
+				instance.Root.UndoManager.Root.AddChange(ch, propertyName);
 			}
 		}
 
 		public static IDisposable Batch(ISongElement instance, string description)
 		{
 			if (instance.Root.IsUndoEnabled)
-				return new UndoBatch(instance.Root.UndoKey, description, false);
+				return new UndoBatch(instance.Root.UndoManager.Root, description, false);
 			else
 				return new UndoBatchDummy();
 		}
