@@ -252,6 +252,9 @@ SongPresentation.prototype.showSlide = function (slide) {
 		var old = this.container.find('.song-current');
 
 		this.container.find('.song-next').fadeIn(SongPresentation.Transition, function () { old.remove(); $(this).removeClass('song-next').addClass('song-current'); });
+		if (this.song.VideoBackground !== null) {
+		    this.container.find('.song-current.song-main').fadeOut(SongPresentation.Transition);
+		}
 
 		if (slide.Source)
 			this.container.find('.song-source').fadeIn(SongPresentation.Transition);
