@@ -5,84 +5,105 @@ SongPresentation.MarginFactor = 1.3;
 SongPresentation.LineFactor = 1.28;
 SongPresentation.BrowserStroke = false;
 
+SongPresentation.FeatureLevel = {
+	None: 0,
+	Backgrounds: 1,
+	Transitions: 2
+}
+
 // enums
-SongPresentation.HorizontalTextOrientation = { 
-	Left : 0,
-	Center : 1,
-	Right : 2
+SongPresentation.HorizontalTextOrientation = {
+	Left: 0,
+	Center: 1,
+	Right: 2
 }
 
 SongPresentation.VerticalTextOrientation = {
-	Top : 0,
-	Center : 1,
-	Bottom : 2
+	Top: 0,
+	Center: 1,
+	Bottom: 2
 }
 
 SongPresentation.MetadataDisplayPosition = {
-	None : 0,
-	FirstSlide : 1,
-	LastSlide : 2,
-	AllSlides : 3
+	None: 0,
+	FirstSlide: 1,
+	LastSlide: 2,
+	AllSlides: 3
 }
 
-SongPresentation.TranslationPosition = { 
-	Inline : 0,
-	Block : 1
+SongPresentation.TranslationPosition = {
+	Inline: 0,
+	Block: 1
 }
 
 // constructor
-function SongPresentation(id, song) {
+function SongPresentation(id, song, featureLevel) {
 	// create general styles when they don't yet exist
 	if ($('#song-style-general').length == 0)
 		SongPresentation.insertStyleGeneral();
-	
+
 	this.id = id;
 	this.song = song;
-	this.slide = null; 
+	this.slide = null;
 	this.isShown = false;
 	this.showChords = true;
 	this.container = $('<div>')
 		.addClass("presentation")
 		.addClass("song")
-		.attr('id', 'presentation_'+this.id)
+		.attr('id', 'presentation_' + this.id)
 		.hide()
 		.append(SongPresentation.createContainer());
-		
-	$('head').append($('<style>').attr('id', 'song-style-presentation_'+this.id).append(this.generateStyle()));
+
+	$('head').append($('<style>').attr('id', 'song-style-presentation_' + this.id).append(this.generateStyle()));
 
 	this.backgroundsEnabled = false;
 	this.transitionsEnabled = false;
+
+	if (featureLevel >= SongPresentation.FeatureLevel.Backgrounds) {
+		this.backgroundsEnabled = true;
+
+		if (this.song.VideoBackground !== null) {
+			this.container.prepend($('<video src="' + this.song.VideoBackground.Video + '" style="width: 100%; background-color: black;" autoplay="autoplay" muted="muted" loop="loop" >').addClass('song-background'));
+		}
+
+		this.container.find('.song-background').show();
+
+		if (featureLevel >= SongPresentation.FeatureLevel.Transitions) {
+			this.transitionsEnabled = true;
+		}
+	}
+
 	this.setCopyright(song.Copyright);
 	this.setSource(song.Sources[0]);
-	
+
 	var ths = this;
-	
-	$(window).bind('resize.presentation_'+this.id, function() {
+
+	$(window).bind('resize.presentation_' + this.id, function () {
 		ths.container.find('.song-main > div > div > div').css('font-size', (ths.slide.Size * SongPresentation.FontFactor * ths.getFactor()) + "pt");
 		ths.updateStyle();
 	});
 }
 
-SongPresentation.prototype.updateStyle = function() {
-	$('head style#song-style-presentation_'+this.id).html(this.generateStyle());
+SongPresentation.prototype.updateStyle = function () {
+	$('head style#song-style-presentation_' + this.id).html(this.generateStyle());
 }
 
-SongPresentation.prototype.destroy = function() {
+SongPresentation.prototype.destroy = function () {
 	// unbind resize event
-	$(window).unbind('resize.presentation_'+this.id);
+	$(window).unbind('resize.presentation_' + this.id);
 	// remove presentation-specific style
-	$('head style#song-style-presentation_'+this.id).remove();
+	$('head style#song-style-presentation_' + this.id).remove();
 }
 
-SongPresentation.prototype.getContainer = function() {
+SongPresentation.prototype.getContainer = function () {
 	return this.container;
 }
 
-SongPresentation.prototype.getFactor = function() {
+SongPresentation.prototype.getFactor = function () {
 	return window.innerWidth / 1024;
 }
 
-SongPresentation.prototype.setShowChords = function(value) {
+SongPresentation.prototype.setShowChords = function (value) {
 	if (value != this.showChords) {
 		this.showChords = value;
 		this.updateStyle();
@@ -98,43 +119,17 @@ SongPresentation.prototype.updateFormatting = function (formatting, hasTranslati
 	this.updateStyle();
 }
 
-SongPresentation.prototype.setTransitionsEnabled = function(enable) {
-	if (enable === undefined)
-		throw "Missing argument.";
-			
-	if (!this.backgroundsEnabled && enable)
-		throw "Can't enable transitions when backgrounds are disabled.";
-			
-	this.transitionsEnabled = enable;
+SongPresentation.prototype.setSource = function (source) {
+	this.container.find('.song-source > div > div').replaceWith(function () { return $('<div>').append(source.replaceAll(' ', '\u00A0')); });
 }
 
-SongPresentation.prototype.setBackgroundsEnabled = function(enable) {
-	if (enable === undefined)
-		throw "Missing argument.";
-		
-	if (this.transitionsEnabled && !enable)
-		throw "Can't disable backgrounds transitions are enabled.";
-		
-	this.backgroundsEnabled = enable;
-	
-	if (enable) {
-		this.container.find('.song-background').show();
-	} else {
-		this.container.find('.song-background').hide();
-	}
-}
-
-SongPresentation.prototype.setSource = function(source) { 
-	this.container.find('.song-source > div > div').replaceWith(function() { return $('<div>').append(source.replaceAll(' ', '\u00A0')); });
-}
-
-SongPresentation.prototype.setCopyright = function(copyright) {
-	var spans = $.map(copyright.split('\n'), function(line, i) {
+SongPresentation.prototype.setCopyright = function (copyright) {
+	var spans = $.map(copyright.split('\n'), function (line, i) {
 		return $('<span>').append(line.replaceAll(' ', '\u00A0'));
 	});
-	
+
 	var div = $('<div>').append(spans);
-	this.container.find('.song-copyright > div > div').replaceWith(function() { return div.clone(); });
+	this.container.find('.song-copyright > div > div').replaceWith(function () { return div.clone(); });
 }
 
 SongPresentation.prototype.showSource = function (show) {
@@ -229,7 +224,7 @@ SongPresentation.prototype.showSlide = function (slide) {
 		} else if (slide.Background.Image !== undefined) {
 			bgCss = { 'background-color': 'black', 'background-image': 'url(\'' + slide.Background.Image + '\')' };
 		} else {
-			throw 'Video backgrounds are not yet supported.';
+			// if it's a video, do nothing
 		}
 	}
 
@@ -249,11 +244,10 @@ SongPresentation.prototype.showSlide = function (slide) {
 	} else {
 		var oldMain = this.container.find('.song-current.song-main');
 		oldMain.after($('<div>').hide().addClass('song-next').addClass('song-main').append(SongPresentation.createLayer()));
-		oldMain.after($('<div>').hide().addClass('song-next').addClass('song-background'));
 
 		this.container.find('.song-next.song-main > div > div').replaceWith(function () { return $('<div>').append(inner.clone()); });
 		if (bgCss !== null)
-			this.container.find('.song-next.song-background').css(bgCss);
+			oldMain.after($('<div>').hide().addClass('song-next').addClass('song-background').css(bgCss));
 
 		var old = this.container.find('.song-current');
 
@@ -273,7 +267,7 @@ SongPresentation.prototype.showSlide = function (slide) {
 }
 
 // parses chords in a line of the song text
-SongPresentation.prototype.parseLine = function(line, parseChords) {
+SongPresentation.prototype.parseLine = function (line, parseChords) {
 	var result = new Array();
 	var index = 0; // current index in result array
 
@@ -282,32 +276,30 @@ SongPresentation.prototype.parseLine = function(line, parseChords) {
 	} else {
 		return '';
 	}
-	
+
 	var start = 0;
-	
+
 	if (parseChords) {
 		var rest = line;
 		var pos = 0;
-		
-		while ((i = rest.indexOf('[')) !== -1)
-		{			
+
+		while ((i = rest.indexOf('[')) !== -1) {
 			end = rest.indexOf(']', i);
 			if (end === -1)
 				break;
 
 			next = rest.indexOf('[', i + 1);
-			if (next !== -1 && next < end)
-			{
+			if (next !== -1 && next < end) {
 				rest = rest.substring(i + 1);
 				pos += i + 1;
 				continue;
 			}
-			
+
 			found = true;
 
 			pos += i; // absolute position of '[Chord]'
 			chordlen = end - (i + 1) + 2; // length of '[Chord]'
-			
+
 			result[index++] = line.substring(start, pos); // append text to result
 			if (this.showChords) {
 				var chord = line.substring(pos + 1, pos + chordlen - 1);
@@ -323,7 +315,7 @@ SongPresentation.prototype.parseLine = function(line, parseChords) {
 			pos += -i + end + 1;
 		}
 	}
-													  
+
 	result[index++] = line.substring(start);
 	return result;
 }
@@ -572,7 +564,7 @@ SongPresentation.prototype.generateStyle = function () {
 }
 
 // static functions
-SongPresentation.createLayer = function() {
+SongPresentation.createLayer = function () {
 	// create two layers when text-stroke is used
 	if (SongPresentation.BrowserStroke)
 		return [$('<div>').addClass('song-back').append('<div>'), $('<div>').addClass('song-front').append('<div>')];
@@ -580,7 +572,7 @@ SongPresentation.createLayer = function() {
 		return [$('<div>').addClass('song-back').append('<div>')];
 }
 
-SongPresentation.createContainer = function() {
+SongPresentation.createContainer = function () {
 	return [$('<div>').hide().addClass('song-current').addClass('song-background'),
 			$('<div>').addClass('song-current').addClass('song-main').append(SongPresentation.createLayer()),
 			$('<div>').hide().addClass('song-source').append(SongPresentation.createLayer()),
@@ -591,7 +583,7 @@ SongPresentation.makeCssColor = function (value) {
 	return 'rgba(' + value[0] + ',' + value[1] + ',' + value[2] + ',' + value[3] + ')';
 };
 
-SongPresentation.insertStyleGeneral = function() {
+SongPresentation.insertStyleGeneral = function () {
 	var cssGeneral = '\
 	.song span {                      	\
 		display: block;               	\

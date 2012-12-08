@@ -172,7 +172,7 @@ namespace WordsLive.Editor
 
 		private void UpdateSourceCopyright()
 		{
-			if (!(element is SongSlide))
+			if (!(element is SongSlide) || Song == null)
 				return;
 
 			controller.ShowSource = ((Song.Formatting.SourceDisplayPosition == MetadataDisplayPosition.AllSlides ||

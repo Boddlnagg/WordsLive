@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Xml.Linq;
 using Awesomium.Core;
 using Newtonsoft.Json;
 using WordsLive.Core;
@@ -70,16 +67,7 @@ namespace WordsLive.Songs
 
 			this.control.CreateObject("bridge");
 			this.control.SetObjectCallback("bridge", "callbackLoaded", (sender, args) => OnSongLoaded());
-
-			if (features == FeatureLevel.Backgrounds || features == FeatureLevel.Transitions)
-			{
-				this.control.SetObjectProperty("bridge", "enableBackgrounds", new JSValue(true));
-
-				if (features == FeatureLevel.Transitions)
-				{
-					this.control.SetObjectProperty("bridge", "enableTransitions", new JSValue(true));
-				}
-			}
+			this.control.SetObjectProperty("bridge", "featureLevel", new JSValue(JsonConvert.SerializeObject(features)));
 		}
 
 		public void Load(Song song)

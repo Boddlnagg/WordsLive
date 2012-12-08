@@ -18,7 +18,6 @@
 
 using System;
 using System.IO;
-using WordsLive.Core.Songs;
 
 namespace WordsLive.Core.Data
 {
@@ -152,7 +151,7 @@ namespace WordsLive.Core.Data
 			{
 				// TODO: add more?
 				AllowedImageExtensions = new string[] { ".png", ".jpg", ".jpeg" },
-				AllowedVideoExtensions = new string[] { ".mp4", ".wmv", ".avi" }
+				AllowedVideoExtensions = new string[] { ".mp4", ".wmv", ".avi", ".ogv" }
 			};
 
 			ActualSongDataProvider = songs;

@@ -14,14 +14,9 @@ var presentation;
 
 $(function () {
 	SongPresentation.BrowserStroke = true; // use WebKit text-stroke support
-	presentation = new SongPresentation(0, JSON.parse(bridge.songString));
+	presentation = new SongPresentation(0, JSON.parse(bridge.songString), bridge.featureLevel); // TODO: set SongPresentation.Transition if used
 	$('body').prepend(presentation.getContainer());
 	presentation.getContainer().show();
-
-	if (bridge.enableBackgrounds)
-		presentation.setBackgroundsEnabled(true);
-	if (bridge.enableTransitions)
-		presentation.setTransitionsEnabled(true); // TODO: set SongPresentation.Transition if used
 
 	presentation.setShowChords(bridge.showChords);
 

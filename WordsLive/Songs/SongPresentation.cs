@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -169,7 +168,7 @@ namespace WordsLive.Songs
 				frontImage.Source = nextBackground;
 				nextBackground = null;
 			}
-			else
+			else if (videoBackground == null)
 			{
 				backImage.Source = frontImage.Source;
 			}
