@@ -24,12 +24,24 @@ namespace WordsLive.Core.Data
 	public static class DataManager
 	{
 		private static FileInfo songTemplate;
+		private static TemporaryDirectory tempDirectory;
 
 		public static SongDataProvider ActualSongDataProvider { get; private set; }
 		public static BackgroundDataProvider ActualBackgroundDataProvider { get; private set; }
 
 		private static SongDataProvider redirectSongDataProvider;
 		private static BackgroundDataProvider redirectBackgroundDataProvider;
+
+		public static DirectoryInfo TempDirectory
+		{
+			get
+			{
+				if (tempDirectory == null)
+					tempDirectory = new TemporaryDirectory();
+
+				return tempDirectory.Directory;
+			}
+		}
 
 		/// <summary>
 		/// Gets the data provider for songs.
@@ -176,6 +188,48 @@ namespace WordsLive.Core.Data
 		{
 			redirectSongDataProvider = null;
 			redirectBackgroundDataProvider = null;
+		}
+
+		public class TemporaryDirectory
+		{
+			public DirectoryInfo Directory { get; set; }
+
+			public TemporaryDirectory()
+			{
+				DirectoryInfo tmpdir;
+				do
+				{
+					tmpdir = new DirectoryInfo(Path.Combine(Path.GetTempPath(), "WordsLive_" + Path.GetRandomFileName()));
+				} while (tmpdir.Exists);
+
+				tmpdir.Create();
+				Directory = tmpdir;
+			}
+
+			private void DeleteDirectoryRecursive(DirectoryInfo directory)
+			{
+				try
+				{
+					foreach (var file in directory.GetFiles())
+					{
+						file.Delete();
+					}
+
+					foreach (var dir in directory.GetDirectories())
+					{
+						DeleteDirectoryRecursive(dir);
+					}
+
+					directory.Delete();
+				}
+
+				catch { }
+			}
+
+			~TemporaryDirectory()
+			{
+				DeleteDirectoryRecursive(Directory);
+			}
 		}
 	}
 }

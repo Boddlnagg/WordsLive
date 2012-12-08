@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
-using Awesomium.Core;
-using Awesomium.Windows.Controls;
-using System;
-using WordsLive.Core;
 using System.IO;
+using System.Reflection;
+using Awesomium.Core;
+using WordsLive.Core;
+using WordsLive.Core.Data;
 
 namespace WordsLive
 {
@@ -11,12 +11,23 @@ namespace WordsLive
 	{
 		private static List<IWebView> controls = new List<IWebView>();
 		private static bool initialized = false;
+		private static DirectoryInfo dataDirectory;
+
+		public static DirectoryInfo DataDirectory
+		{
+			get
+			{
+				return dataDirectory;
+			}
+		}
 
 		public static void Init()
 		{
 			// We may be a new window in the same process.
 			if (!initialized && !WebCore.IsRunning)
 			{
+				InitData();
+
 				// Setup WebCore with plugins enabled.            
 				WebCoreConfig config = new WebCoreConfig
 				{
@@ -40,7 +51,7 @@ namespace WordsLive
 					ChildProcessPath = System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "WordsLive.Awesomium.exe"),
 				};
 
-				WebCore.Started += (sender, args) => WebCore.BaseDirectory = Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "Data");
+				WebCore.Started += (sender, args) => WebCore.BaseDirectory = dataDirectory.FullName;
 
 				// Caution! Do not start the WebCore in window's constructor.
 				// This may be a startup window and a synchronization context
@@ -79,6 +90,18 @@ namespace WordsLive
 
 			if (WebCore.IsRunning && !WebCore.IsShuttingDown)
 				WebCore.Shutdown();
+		}
+
+		private static void InitData()
+		{
+			dataDirectory = DataManager.TempDirectory.CreateSubdirectory("AwesomiumData");
+
+			var core = Assembly.GetAssembly(typeof(Media)); // WordsLive.Core.dll
+
+			core.ExtractResource("jquery.js", dataDirectory);
+			core.ExtractResource("SongPresentation.js", dataDirectory);
+
+			Assembly.GetExecutingAssembly().ExtractResource("song.html", dataDirectory);
 		}
 	}
 }

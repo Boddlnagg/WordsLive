@@ -26,19 +26,7 @@ namespace WordsLive.Core.Data
 {
 	public class HttpSongDataProvider : SongDataProvider, IBidirectionalMediaDataProvider
 	{
-		private DirectoryInfo tempDirectory;
 		private WebClient client;
-
-		private DirectoryInfo TempDirectory
-		{
-			get
-			{
-				if (tempDirectory == null)
-					tempDirectory = CreateTempDirectory();
-
-				return tempDirectory;
-			}
-		}
 
 		public HttpSongDataProvider(string baseAddress, NetworkCredential credential = null)
 		{
@@ -102,7 +90,11 @@ namespace WordsLive.Core.Data
 
 		public override FileInfo GetLocal(string path)
 		{
-			FileInfo fi = new FileInfo(Path.Combine(TempDirectory.FullName, path));
+			DirectoryInfo dir = new DirectoryInfo(Path.Combine(DataManager.TempDirectory.FullName, "SongsLocal"));
+			if (!dir.Exists)
+				dir.Create();
+
+			FileInfo fi = new FileInfo(Path.Combine(dir.FullName, path));
 
 			if (fi.Exists)
 				return fi;
@@ -134,36 +126,6 @@ namespace WordsLive.Core.Data
 		{
 			var result = client.DownloadString(path);
 			return JsonConvert.DeserializeObject<IEnumerable<SongData>>(result);
-		}
-
-		private DirectoryInfo CreateTempDirectory()
-		{
-			DirectoryInfo tmpdir;
-			do
-			{
-				tmpdir = new DirectoryInfo(Path.Combine(Path.GetTempPath(), Path.GetRandomFileName()));
-			} while (tmpdir.Exists);
-
-			tmpdir.Create();
-			return tmpdir;
-		}
-
-		~HttpSongDataProvider()
-		{
-			try
-			{
-				// clean up temp directory
-				if (tempDirectory != null)
-				{
-					foreach (var file in tempDirectory.GetFiles())
-					{
-						file.Delete();
-					}
-
-					tempDirectory.Delete();
-				}
-			}
-			catch { }
 		}
 	}
 }

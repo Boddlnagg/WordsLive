@@ -2,10 +2,8 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using Awesomium.Core;
 using Newtonsoft.Json;
-using WordsLive.Core;
 using WordsLive.Core.Data;
 using WordsLive.Core.Songs;
 
@@ -44,27 +42,6 @@ namespace WordsLive.Songs
 		public SongDisplayController(IWebViewJavaScript control, FeatureLevel features = FeatureLevel.None)
 		{
 			this.control = control;
-
-			// TODO: unpack resources only once at startup
-			var asm = Assembly.GetAssembly(typeof(Media)); // WordsLive.Core.dll
-			var names = asm.GetManifestResourceNames();
-
-			using (var stream = asm.GetManifestResourceStream("WordsLive.Core.Resources.jquery.js"))
-			{
-				using (var writer = new FileStream(Path.Combine("Data", "jquery.js"), FileMode.Create))
-				{
-					stream.CopyTo(writer);
-				}
-			}
-
-			using (var stream = asm.GetManifestResourceStream("WordsLive.Core.Resources.SongPresentation.js"))
-			{
-				using (var writer = new FileStream(Path.Combine("Data", "SongPresentation.js"), FileMode.Create))
-				{
-					stream.CopyTo(writer);
-				}
-			}
-
 			this.control.CreateObject("bridge");
 			this.control.SetObjectCallback("bridge", "callbackLoaded", (sender, args) => OnSongLoaded());
 			this.control.SetObjectProperty("bridge", "featureLevel", new JSValue(JsonConvert.SerializeObject(features)));

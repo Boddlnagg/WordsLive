@@ -17,6 +17,8 @@
  */
 
 using System;
+using System.IO;
+using System.Reflection;
 
 namespace WordsLive.Core
 {
@@ -36,6 +38,28 @@ namespace WordsLive.Core
 		public static bool ContainsIgnoreCase(this string str, string value)
 		{
 			return str.IndexOf(value, StringComparison.OrdinalIgnoreCase) >= 0;
+		}
+
+		public static Stream GetResourceStream(this Assembly assembly, string name)
+		{
+			if (name == null)
+				throw new ArgumentNullException("name");
+
+			if (name.Contains("\\"))
+				throw new ArgumentException("name may not contain backslashes. Use the slash character to seperate paths.");
+
+			return assembly.GetManifestResourceStream(Path.GetFileNameWithoutExtension(assembly.ManifestModule.Name) + ".Resources." + name.Replace('/', '.'));
+		}
+
+		public static void ExtractResource(this Assembly assembly, string name, DirectoryInfo target)
+		{
+			using (var stream = assembly.GetResourceStream(name))
+			{
+				using (var writer = new FileStream(Path.Combine(target.FullName, name), FileMode.Create))
+				{
+					stream.CopyTo(writer);
+				}
+			}
 		}
 	}
 }
