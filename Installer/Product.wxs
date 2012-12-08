@@ -89,6 +89,9 @@
 			<Component Id="CoreDllComponent">
 				<File Source="$(var.WordsLive.TargetDir)WordsLive.Core.dll" Name="WordsLive.Core.dll" KeyPath="yes" />
 			</Component>
+			<Component Id="ServerDllComponent">
+				<File Source="$(var.WordsLive.TargetDir)WordsLive.Server.dll" Name="WordsLive.Server.dll" KeyPath="yes" />
+			</Component>
 			<Component Id="PresentationDllComponent">
 				<File Source="$(var.WordsLive.TargetDir)WordsLive.Presentation.dll" Name="WordsLive.Presentation.dll" KeyPath="yes" />
 			</Component>
@@ -111,6 +114,15 @@
 			</Component>
 			<Component Id="WpfToolkitComponent">
 				<File Source="$(var.WordsLive.TargetDir)WPFToolkit.Extended.dll" Name="WPFToolkit.Extended.dll" KeyPath="yes" />
+			</Component>
+			<Component Id="NewtonsoftJsonComponent">
+				<File Source="$(var.WordsLive.TargetDir)Newtonsoft.Json.dll" Name="Newtonsoft.Json.dll" KeyPath="yes" />
+			</Component>
+			<Component Id="FireflyComponent">
+				<File Source="$(var.WordsLive.TargetDir)Firefly.dll" Name="Firefly.dll" KeyPath="yes" />
+			</Component>
+			<Component Id="OwinComponent">
+				<File Source="$(var.WordsLive.TargetDir)Owin.dll" Name="Owin.dll" KeyPath="yes" />
 			</Component>
 		</ComponentGroup>
 		<ComponentGroup Id="VlcDotNetAssemblies" Directory="APPLICATIONFOLDER">
@@ -155,15 +167,6 @@
 		<ComponentGroup Id="DataComponents" Directory="DataFolder">
 			<Component Id="SongTemplateComponent">
 				<File Source="$(var.WordsLive.TargetDir)Data\Standard.ppl" Name="Standard.ppl" KeyPath="yes" />
-			</Component>
-			<Component Id="SongHtmlComponent">
-				<File Source="$(var.WordsLive.TargetDir)Data\song.html" Name="song.html" KeyPath="yes" />
-			</Component>
-			<Component Id="ScriptComponent">
-				<File Source="$(var.WordsLive.TargetDir)Data\script.js" Name="script.js" KeyPath="yes" />
-			</Component>
-			<Component Id="JQueryComponent">
-				<File Source="$(var.WordsLive.TargetDir)Data\jquery.js" Name="jquery.js" KeyPath="yes" />
 			</Component>
 		</ComponentGroup>
 		<ComponentGroup Id="I18n">
