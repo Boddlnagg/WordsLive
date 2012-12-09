@@ -613,7 +613,10 @@ namespace WordsLive.Editor
 			else if (e.Command == CustomCommands.Split)
 			{
 				// get text cursor position
-				var tb = LogicalTreeHelper.FindLogicalNode(EditBorder.Child, "TextTextBox") as TextBox;
+				var content = (ContentControl)EditBorder.Child;
+				var tpl = (content.ContentTemplateSelector as EditControlTemplateSelector).EditTextWithTranslationTemplate;
+				var tb = tpl.FindName("TextTextBox", content.FindVisualChild<ContentPresenter>()) as TextBox;
+
 				var newSlide = song.FindPartWithSlide(node as SongSlide).SplitSlide(node as SongSlide, tb.SelectionStart);
 			}
 			else if (e.Command == EditingCommands.IncreaseFontSize)
@@ -759,7 +762,9 @@ namespace WordsLive.Editor
 				if (node is SongSlide)
 				{
 					// get selection length
-					var tb = LogicalTreeHelper.FindLogicalNode(EditBorder.Child, "TextTextBox") as TextBox;
+					var content = (ContentControl)EditBorder.Child;
+					var tpl = (content.ContentTemplateSelector as EditControlTemplateSelector).EditTextWithTranslationTemplate;
+					var tb = tpl.FindName("TextTextBox", content.FindVisualChild<ContentPresenter>()) as TextBox;
 					if (tb != null)
 						e.CanExecute = (tb.SelectionLength == 0);
 				}
