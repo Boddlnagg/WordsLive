@@ -41,7 +41,6 @@ namespace WordsLive.Editor
 
 		void controller_SongLoaded(object sender, EventArgs e)
 		{
-			controller.GotoSlide(Song.Order[0], 0);
 			OnFinishedLoading();
 		}
 
@@ -254,7 +253,7 @@ namespace WordsLive.Editor
 			}
 			else
 			{
-				controller.GotoBlankSlide(Song.FirstSlide.Background);
+				controller.GotoBlankSlide(Song.FirstSlide != null ? Song.FirstSlide.Background : Song.Backgrounds[0]);
 			}
 		}
 
