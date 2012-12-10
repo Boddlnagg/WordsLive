@@ -61,18 +61,30 @@ namespace WordsLive.Editor
 
 			string ext = Path.GetExtension(filename).ToLower();
 
-			if (ext == ".ppl")
-			{
-				var song = new Song(filename, provider);
-				song.Load();
-				Load(song);
+			try
+			{ 
+				if (ext == ".ppl")
+				{
+					var song = new Song(filename, provider);
+					song.Load();
+					Load(song);
+				}
+				else if (ext == ".sng")
+				{
+					var song = new Song(filename, provider, new SongBeamerSongReader());
+					Load(song);
+				}
+				else if (ext == "") // OpenSong songs have no file extension
+				{
+					var song = new Song(filename, provider, new OpenSongSongReader());
+					Load(song);
+				}
+				else
+				{
+					throw new NotSupportedException("Song format is not supported.");
+				}
 			}
-			else if (ext == ".sng")
-			{
-				var song = new Song(filename, provider, new SongBeamerSongReader());
-				Load(song);
-			}
-			else
+			catch
 			{
 				Controller.ShowEditorWindow();
 				MessageBox.Show(String.Format(WordsLive.Resources.Resource.eMsgCouldNotOpenSong, filename), WordsLive.Resources.Resource.dialogError, MessageBoxButton.OK, MessageBoxImage.Error);

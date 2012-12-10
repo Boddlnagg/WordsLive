@@ -98,6 +98,7 @@
     <Compile Include="Songs\IO\HtmlSongWriter.cs" />
     <Compile Include="Songs\IO\ISongReader.cs" />
     <Compile Include="Songs\IO\ISongWriter.cs" />
+    <Compile Include="Songs\IO\OpenSongSongReader.cs" />
     <Compile Include="Songs\IO\PowerpraiseSongReader.cs" />
     <Compile Include="Songs\IO\PowerpraiseSongWriter.cs" />
     <Compile Include="Songs\IO\SongBeamerSongReader.cs" />
