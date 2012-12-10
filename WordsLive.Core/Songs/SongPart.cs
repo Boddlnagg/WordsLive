@@ -234,9 +234,13 @@ namespace WordsLive.Core.Songs
 				var textBefore = slide.Text.Substring(0, splitIndex);
 				if (textBefore.EndsWith("\r\n"))
 					textBefore = textBefore.Substring(0, textBefore.Length - 2);
+				else if (textBefore.EndsWith("\n"))
+					textBefore = textBefore.Substring(0, textBefore.Length - 1);
 				var textAfter = slide.Text.Substring(splitIndex);
 				if (textAfter.StartsWith("\r\n"))
 					textAfter = textAfter.Substring(2);
+				else if (textAfter.StartsWith("\n"))
+					textAfter = textAfter.Substring(1);
 				newSlide = DuplicateSlide(slide);
 				slide.Text = textBefore;
 				newSlide.Text = textAfter;
