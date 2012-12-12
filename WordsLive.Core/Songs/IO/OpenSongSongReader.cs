@@ -80,8 +80,6 @@ namespace WordsLive.Core.Songs.IO
 				}
 				else // not the start of a new part
 				{
-					
-
 					if (line.Trim() == String.Empty || line[0] == ';' || line.StartsWith("---"))
 					{
 						// ignore empty line, comments, '---' breaks (whatever they mean)
@@ -151,7 +149,7 @@ namespace WordsLive.Core.Songs.IO
 			{
 				var val = root.Elements("presentation").Single().Value.Trim();
 				var split = wordRegex.Matches(val).Cast<Match>();
-				song.SetOrder(split.Select(m => GetPartName(m.Value)));
+				song.SetOrder(split.Select(m => GetPartName(m.Value)), ignoreMissing: true);
 			}
 			else
 			{

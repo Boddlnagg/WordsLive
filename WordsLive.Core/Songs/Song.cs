@@ -1019,12 +1019,22 @@ namespace WordsLive.Core.Songs
 		/// Sets the part order using the part's names. Parts with these names must already exist in the parts list.
 		/// </summary>
 		/// <param name="partNames">The names of the parts in the order they should appear.</param>
-		public void SetOrder(IEnumerable<string> partNames)
+		/// <param name="ignoreMissing">If this is not set to true, an exception will be thrown when a part name does not exist;
+		/// otherwise, missing parts will be ignored.</param>
+		public void SetOrder(IEnumerable<string> partNames, bool ignoreMissing = false)
 		{
 			Order.Clear();
 			foreach (var n in partNames)
 			{
-				Order.Add(new SongPartReference(this, n));
+				try
+				{
+					Order.Add(new SongPartReference(this, n));
+				}
+				catch (ArgumentNullException)
+				{
+					if (!ignoreMissing)
+						throw;
+				}
 			}
 		}
 
