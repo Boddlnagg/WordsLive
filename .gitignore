@@ -7,3 +7,6 @@ bin/*
 
 # VS user files
 *.suo
+
+# NuGet Packages
+packages/*

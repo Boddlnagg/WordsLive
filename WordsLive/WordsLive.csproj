@@ -28,6 +28,8 @@
     <UpgradeBackupLocation />
     <Utf8Output>true</Utf8Output>
     <TargetFrameworkProfile />
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -490,4 +492,5 @@
   <Target Name="AfterBuild">
     <Move SourceFiles="$(TargetDir)AwesomiumProcess" DestinationFiles="$(TargetDir)WordsLive.Awesomium.exe" />
   </Target>
+  <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
 </Project>
