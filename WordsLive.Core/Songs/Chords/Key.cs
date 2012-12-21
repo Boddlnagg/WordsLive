@@ -37,7 +37,7 @@ namespace WordsLive.Core.Songs.Chords
 			if (Note == null)
 				throw new ArgumentException("Invalid key name " + name);
 
-			if (rest.StartsWith("m") && !rest.StartsWith("maj"))
+			if ((rest.StartsWith("m") && !rest.StartsWith("maj")) || rest.ToLower().Contains("moll"))
 				IsMinor = true;
 		}
 
