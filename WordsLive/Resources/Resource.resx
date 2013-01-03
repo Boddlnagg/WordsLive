@@ -687,8 +687,8 @@
   <data name="seLabelServerPassword" xml:space="preserve">
     <value>Password:</value>
   </data>
-  <data name="sfFileExists" xml:space="preserve">
-    <value>File with that name already exists.</value>
+  <data name="sfMsgOverwriteExistingFile" xml:space="preserve">
+    <value>A file with that name already exists. Do you want to overwrite it?</value>
   </data>
   <data name="sfFilename" xml:space="preserve">
     <value>Filename:</value>
@@ -701,5 +701,8 @@
   </data>
   <data name="slOpenInEditor" xml:space="preserve">
     <value>Open in editor</value>
+  </data>
+  <data name="sfMsgOverwriteExistingFileTitle" xml:space="preserve">
+    <value>Overwrite existing file?</value>
   </data>
 </root>

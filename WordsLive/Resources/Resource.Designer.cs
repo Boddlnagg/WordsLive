@@ -1132,15 +1132,6 @@ namespace WordsLive.Resources {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die File with that name already exists. ähnelt.
-        /// </summary>
-        public static string sfFileExists {
-            get {
-                return ResourceManager.GetString("sfFileExists", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Filename: ähnelt.
         /// </summary>
         public static string sfFilename {
@@ -1155,6 +1146,24 @@ namespace WordsLive.Resources {
         public static string sfInvalidFilename {
             get {
                 return ResourceManager.GetString("sfInvalidFilename", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die A file with that name already exists. Do you want to overwrite it? ähnelt.
+        /// </summary>
+        public static string sfMsgOverwriteExistingFile {
+            get {
+                return ResourceManager.GetString("sfMsgOverwriteExistingFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Overwrite existing file? ähnelt.
+        /// </summary>
+        public static string sfMsgOverwriteExistingFileTitle {
+            get {
+                return ResourceManager.GetString("sfMsgOverwriteExistingFileTitle", resourceCulture);
             }
         }
         

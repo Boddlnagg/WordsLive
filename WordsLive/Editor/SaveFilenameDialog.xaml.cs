@@ -69,8 +69,9 @@ namespace WordsLive.Editor
 
 			if (!notFound)
 			{
-				MessageBox.Show(WordsLive.Resources.Resource.sfFileExists);
-				return;
+				var overwrite = MessageBox.Show(this, WordsLive.Resources.Resource.sfMsgOverwriteExistingFile, WordsLive.Resources.Resource.sfMsgOverwriteExistingFileTitle, MessageBoxButton.YesNoCancel);
+				if (overwrite != MessageBoxResult.Yes)
+					return;
 			}
 
 			this.DialogResult = true;
