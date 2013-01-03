@@ -24,7 +24,7 @@ using Newtonsoft.Json;
 
 namespace WordsLive.Core.Data
 {
-	public class HttpSongDataProvider : SongDataProvider, IBidirectionalMediaDataProvider
+	public class HttpSongDataProvider : SongDataProvider
 	{
 		private WebClient client;
 
@@ -110,12 +110,12 @@ namespace WordsLive.Core.Data
 			return fi;
 		}
 
-		public FileTransaction Put(string path)
+		public override FileTransaction Put(string path)
 		{
 			return new HttpFileTransaction(path, client);
 		}
 
-		public void Delete(string path)
+		public override void Delete(string path)
 		{
 			var result = client.UploadString(path, "DELETE", "");
 			if (result != "OK")

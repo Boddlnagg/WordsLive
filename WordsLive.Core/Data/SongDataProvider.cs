@@ -30,7 +30,7 @@ namespace WordsLive.Core.Data
 	/// are available. There is no support for a directory structure for songs, so they are identified
 	/// using only their filename.
 	/// </summary>
-	public abstract class SongDataProvider : IMediaDataProvider
+	public abstract class SongDataProvider : IBidirectionalMediaDataProvider
 	{
 		/// <summary>
 		/// Gets all available songs the provider can provide.
@@ -92,5 +92,9 @@ namespace WordsLive.Core.Data
 		public abstract Uri GetUri(string path);
 
 		public abstract FileInfo GetLocal(string path);
+
+		public abstract FileTransaction Put(string path);
+
+		public abstract void Delete(string path);
 	}
 }

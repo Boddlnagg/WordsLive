@@ -121,6 +121,9 @@
     <Compile Include="Editor\Nodes\MetadataNode.cs" />
     <Compile Include="Editor\Nodes\SourceNode.cs" />
     <Compile Include="Editor\Nodes\TreeNodeProvider.cs" />
+    <Compile Include="Editor\SaveFilenameDialog.xaml.cs">
+      <DependentUpon>SaveFilenameDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Images\FinishAction.cs" />
     <Compile Include="Images\ImageInfo.cs" />
     <Compile Include="Images\ImagesControlPanel.xaml.cs">
@@ -142,6 +145,10 @@
     </Compile>
     <Compile Include="XpsDocumentFileHandler.cs" />
     <Compile Include="XpsPresentation.cs" />
+    <Page Include="Editor\SaveFilenameDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Images\ImagesControlPanel.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

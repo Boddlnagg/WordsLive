@@ -136,7 +136,16 @@ namespace WordsLive.Editor
 			if (song == null)
 				throw new ArgumentNullException("song");
 
-			Microsoft.Win32.SaveFileDialog dlg = new Microsoft.Win32.SaveFileDialog();
+			SaveFilenameDialog dlg = new SaveFilenameDialog(song.SongTitle);
+			dlg.Owner = this;
+
+			if (dlg.ShowDialog() == true)
+			{
+				song.Save(dlg.FileName, DataManager.Songs);
+			}
+
+			// TODO: create export menu entry to do this
+			/*Microsoft.Win32.SaveFileDialog dlg = new Microsoft.Win32.SaveFileDialog();
 			dlg.DefaultExt = ".ppl";
 			dlg.Filter = "Powerpraise-Lied|*.ppl";
 			if (song.File == null)
@@ -150,9 +159,8 @@ namespace WordsLive.Editor
 
 			if (dlg.ShowDialog() == true)
 			{
-				// TODO: allow to save to SongDataProvider
 				song.Save(dlg.FileName, DataManager.LocalFiles);
-			}
+			}*/
 		}
 
 		private void NewSong()

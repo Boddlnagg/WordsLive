@@ -1132,6 +1132,42 @@ namespace WordsLive.Resources {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die File with that name already exists. ähnelt.
+        /// </summary>
+        public static string sfFileExists {
+            get {
+                return ResourceManager.GetString("sfFileExists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Filename: ähnelt.
+        /// </summary>
+        public static string sfFilename {
+            get {
+                return ResourceManager.GetString("sfFilename", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Invalid filename ähnelt.
+        /// </summary>
+        public static string sfInvalidFilename {
+            get {
+                return ResourceManager.GetString("sfInvalidFilename", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Save song ähnelt.
+        /// </summary>
+        public static string sfTitle {
+            get {
+                return ResourceManager.GetString("sfTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Add song ähnelt.
         /// </summary>
         public static string slAddSong {

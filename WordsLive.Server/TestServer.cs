@@ -355,50 +355,36 @@ window.addEventListener('load', init, false);
 					}
 					else if (requestMethod == "PUT")
 					{
-						if (songs is IBidirectionalMediaDataProvider)
-						{
-							var contentLength = int.Parse(((IDictionary<string, IEnumerable<string>>)env["owin.RequestHeaders"])["Content-Length"].Single());
-							var requestBody = (BodyDelegate)env["owin.RequestBody"];
+						var contentLength = int.Parse(((IDictionary<string, IEnumerable<string>>)env["owin.RequestHeaders"])["Content-Length"].Single());
+						var requestBody = (BodyDelegate)env["owin.RequestBody"];
 
-							var responseBody = Extensions.BufferedRequestBody(requestBody, contentLength, (bytes) =>
-								{
-									using (var ft = (songs as IBidirectionalMediaDataProvider).Put(query))
-									{
-										ft.Stream.Write(bytes, 0, bytes.Length);
-									}
-								});
-
-							result(
-								"200 OK",
-								new Dictionary<string, IEnumerable<string>>(StringComparer.OrdinalIgnoreCase)
+						var responseBody = Extensions.BufferedRequestBody(requestBody, contentLength, (bytes) =>
 							{
-								{"Content-Type", new[] {"text/plain"}},
-							},
-								responseBody
-							);
-						}
-						else
+								using (var ft = songs.Put(query))
+								{
+									ft.Stream.Write(bytes, 0, bytes.Length);
+								}
+							});
+
+						result(
+							"200 OK",
+							new Dictionary<string, IEnumerable<string>>(StringComparer.OrdinalIgnoreCase)
 						{
-							RespondMethodNotAllowed(result);
-						}
+							{"Content-Type", new[] {"text/plain"}},
+						},
+							responseBody
+						);
 					}
 					else if (requestMethod == "DELETE")
 					{
-						if (songs is IBidirectionalMediaDataProvider)
+						try
 						{
-							try
-							{
-								(songs as IBidirectionalMediaDataProvider).Delete(query);
-								Respond(result, "OK");
-							}
-							catch (FileNotFoundException)
-							{
-								RespondNotFound(result);
-							}
+							songs.Delete(query);
+							Respond(result, "OK");
 						}
-						else
+						catch (FileNotFoundException)
 						{
-							RespondMethodNotAllowed(result);
+							RespondNotFound(result);
 						}
 					}
 				}

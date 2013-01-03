@@ -687,4 +687,16 @@
   <data name="seLabelServerPassword" xml:space="preserve">
     <value>Password:</value>
   </data>
+  <data name="sfFileExists" xml:space="preserve">
+    <value>File with that name already exists.</value>
+  </data>
+  <data name="sfFilename" xml:space="preserve">
+    <value>Filename:</value>
+  </data>
+  <data name="sfInvalidFilename" xml:space="preserve">
+    <value>Invalid filename</value>
+  </data>
+  <data name="sfTitle" xml:space="preserve">
+    <value>Save song</value>
+  </data>
 </root>
