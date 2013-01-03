@@ -141,7 +141,7 @@ namespace WordsLive.Editor
 
 			if (dlg.ShowDialog() == true)
 			{
-				song.Save(dlg.FileName, DataManager.Songs);
+				song.Save(dlg.Filename, DataManager.Songs);
 			}
 
 			// TODO: create export menu entry to do this

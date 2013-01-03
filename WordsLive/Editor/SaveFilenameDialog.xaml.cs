@@ -8,34 +8,34 @@ namespace WordsLive.Editor
 {
 	public partial class SaveFilenameDialog : Window, IDataErrorInfo, INotifyPropertyChanged
 	{
-		string fileName;
+		string filename;
 
 		public SaveFilenameDialog(string name)
 		{
 			InitializeComponent();
 
 			this.DataContext = this;
-			this.FileNameWithoutExtension = name;
+			this.FilenameWithoutExtension = name;
 		}
 
-		public string FileNameWithoutExtension
+		public string FilenameWithoutExtension
 		{
 			get
 			{
-				return fileName;
+				return filename;
 			}
 			set
 			{
-				fileName = value;
-				OnPropertyChanged("FileName");
+				filename = value;
+				OnPropertyChanged("Filename");
 			}
 		}
 
-		public string FileName
+		public string Filename
 		{
 			get
 			{
-				return fileName + ".ppl";
+				return filename + ".ppl";
 			}
 		}
 
@@ -59,7 +59,7 @@ namespace WordsLive.Editor
 			bool notFound = false;
 			try
 			{
-				var stream = DataManager.Songs.Get(FileName);
+				var stream = DataManager.Songs.Get(Filename);
 				stream.Close();
 			}
 			catch (FileNotFoundException)
@@ -87,8 +87,8 @@ namespace WordsLive.Editor
 			{
 				switch (name)
 				{
-					case "FileNameWithoutExtension":
-						if (string.IsNullOrEmpty(this.fileName) || this.fileName.IndexOfAny(Path.GetInvalidFileNameChars()) != -1)
+					case "FilenameWithoutExtension":
+						if (string.IsNullOrEmpty(this.filename) || this.filename.IndexOfAny(Path.GetInvalidFileNameChars()) != -1)
 							return WordsLive.Resources.Resource.sfInvalidFilename;
 
 						break;

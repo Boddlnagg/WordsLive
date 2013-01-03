@@ -12,9 +12,9 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
-            <TextBox x:Name="fileNameTextBox" Height="Auto" Grid.Column="0" Style="{StaticResource textBoxInError}">
+            <TextBox x:Name="filenameTextBox" Height="Auto" Grid.Column="0" Style="{StaticResource textBoxInError}">
                 <TextBox.Text>
-                    <Binding Path="FileNameWithoutExtension" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+                    <Binding Path="FilenameWithoutExtension" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
                         <Binding.ValidationRules>
                             <DataErrorValidationRule/>
                         </Binding.ValidationRules>
