@@ -1276,6 +1276,15 @@ namespace WordsLive.Resources {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Open in editor ähnelt.
+        /// </summary>
+        public static string slOpenInEditor {
+            get {
+                return ResourceManager.GetString("slOpenInEditor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Search ähnelt.
         /// </summary>
         public static string slSearch {

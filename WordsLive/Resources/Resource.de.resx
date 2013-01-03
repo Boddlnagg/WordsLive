@@ -699,4 +699,7 @@
   <data name="sfTitle" xml:space="preserve">
     <value>Lied speichern</value>
   </data>
+  <data name="slOpenInEditor" xml:space="preserve">
+    <value>Im Editor öffnen</value>
+  </data>
 </root>

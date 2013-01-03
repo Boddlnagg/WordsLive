@@ -1,15 +1,12 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
-using WordsLive.Core;
-using WordsLive.Core.Songs;
-using WordsLive.Resources;
 using WordsLive.Core.Data;
+using WordsLive.Resources;
 
 namespace WordsLive.Songs
 {
@@ -116,7 +113,7 @@ namespace WordsLive.Songs
 			else
 				data = (SongData)songListView.SelectedItem;
 
-			if (e.Command == CustomCommands.AddMedia)
+			if (e.Command == CustomCommands.AddMedia || e.Command == CustomCommands.OpenInEditor)
 			{
 				e.CanExecute = data != null;
 			}
@@ -138,8 +135,13 @@ namespace WordsLive.Songs
 			{
 				Controller.AddToPortfolio(data.Filename, DataManager.Songs);
 			}
+			else if (e.Command == CustomCommands.OpenInEditor)
+			{
+				var editor = Controller.ShowEditorWindow();
+				editor.LoadOrImport(data.Filename, DataManager.Songs);
+			}
 			else if (e.Command == ApplicationCommands.Delete)
-			{ 
+			{
 				var provider = DataManager.Songs;
 				var result = MessageBox.Show(String.Format(WordsLive.Resources.Resource.slMsgDeleteSong, data.Title), WordsLive.Resources.Resource.slMsgDeleteSongTitle, MessageBoxButton.YesNoCancel, MessageBoxImage.Question);
 				if (result == MessageBoxResult.Yes)

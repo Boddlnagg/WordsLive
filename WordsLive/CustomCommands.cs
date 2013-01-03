@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Windows.Input;
 
 namespace WordsLive
@@ -28,6 +25,13 @@ namespace WordsLive
 		}
 
 		public static RoutedCommand EditActive
+		{
+			get;
+			private set;
+		}
+
+		// TODO: move to editor class
+		public static RoutedCommand OpenInEditor
 		{
 			get;
 			private set;
@@ -173,6 +177,7 @@ namespace WordsLive
 			ShowSonglist = new RoutedCommand("ShowSonglist", t, new InputGestureCollection { new KeyGesture(Key.F, ModifierKeys.Control) });
 			SwitchWindow = new RoutedCommand("SwitchWindow", t, new InputGestureCollection { new KeyGesture(Key.W, ModifierKeys.Control) });
 			EditActive = new RoutedCommand("EditActive", t);
+			OpenInEditor = new RoutedCommand("OpenInEditor", t);
 			Activate = new RoutedCommand("Activate", t);
 			ShowSettings = new RoutedCommand("ShowSettings", t);
 			ViewCurrent = new RoutedCommand("ViewCurrent", t);
