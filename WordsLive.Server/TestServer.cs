@@ -345,6 +345,7 @@ window.addEventListener('load', init, false);
 						{
 							using (var stream = songs.Get(query))
 							{
+								// TODO: send Last-Modified header
 								Respond(result, ReadStream(stream), contentType: "text/xml");
 							}
 						}

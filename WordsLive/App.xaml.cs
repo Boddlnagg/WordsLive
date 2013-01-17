@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Linq;
-using System.Windows;
-using System.Threading;
-using System.Globalization;
+﻿using System.Windows;
 
 namespace WordsLive
 {
@@ -18,7 +12,6 @@ namespace WordsLive
 	 *   (see http://manual.openlp.org/creating_service.html#using-the-media-timer, but with better UI)
 	 * - Maintain correct window z-order using SetWindowPos, especially for ImpressPresentation
 	 *   (see http://msdn.microsoft.com/en-us/library/windows/desktop/ms633545%28v=vs.85%29.aspx)
-	 * - Add "Edit" entry in context menu for songs
 	 * - Put WordsLive.Slideshow (+Bridge) under GPLv3 and add COPYING.txt and README.txt
 	 *   (with note that PowerpointViewerLib and WordsLive.Slideshow are under GPL) to distribution/installer
 	 * - Refactor drag & drop (introduce helper class)

@@ -180,6 +180,8 @@ namespace WordsLive
 					Server.Port = port;
 					Server.Password = pwd;
 
+					// TODO: catch exceptions and show meaningful error
+					//		 (esp. when port is already used -> show configuration window)
 					Server.Start();
 				}
 

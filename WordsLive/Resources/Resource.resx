@@ -699,7 +699,7 @@
   <data name="sfTitle" xml:space="preserve">
     <value>Save song</value>
   </data>
-  <data name="slOpenInEditor" xml:space="preserve">
+  <data name="eCommandOpenInEditor" xml:space="preserve">
     <value>Open in editor</value>
   </data>
   <data name="sfMsgOverwriteExistingFileTitle" xml:space="preserve">

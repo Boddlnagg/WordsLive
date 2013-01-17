@@ -9,6 +9,7 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using WordsLive.Core;
+using WordsLive.Core.Data;
 using WordsLive.Core.Songs;
 using WordsLive.Editor;
 using WordsLive.MediaOrderList;
@@ -16,7 +17,6 @@ using WordsLive.Presentation;
 using WordsLive.Resources;
 using WordsLive.Songs;
 using WordsLive.Utils;
-using WordsLive.Core.Data;
 
 namespace WordsLive
 {
@@ -712,6 +712,15 @@ namespace WordsLive
 					orderList.Reload(item);
 				}
 			}
+			else if (e.Command == CustomCommands.OpenInEditor)
+			{
+				var ed = Controller.ShowEditorWindow();
+				foreach (var item in selected)
+				{
+					var song = item.Data as Song;
+					ed.LoadOrImport(song.File, song.DataProvider);
+				}
+			}
 		}
 
 		private void OrderListBox_OnCanExecuteCommand(object sender, CanExecuteRoutedEventArgs e)
@@ -720,6 +729,10 @@ namespace WordsLive
 			{
 				// can only activate a single item
 				e.CanExecute = OrderListBox.SelectedItem != null && OrderListBox.SelectedItems.Count == 1;
+			}
+			else if (e.Command == CustomCommands.OpenInEditor)
+			{
+				e.CanExecute = OrderListBox.SelectedItem != null && OrderListBox.SelectedItems.Cast<MediaOrderItem>().All(item => item.Data is Song);
 			}
 			else
 			{

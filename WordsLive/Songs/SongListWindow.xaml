@@ -52,7 +52,7 @@
 					<Setter Property="TextTrimming" Value="CharacterEllipsis" />
 				</Style>
 				<ContextMenu x:Key="contextMenu">
-					<MenuItem Header="{x:Static resx:Resource.slOpenInEditor}" Command="{x:Static local:CustomCommands.OpenInEditor}" CommandParameter="{Binding}"/>
+					<MenuItem Header="{x:Static resx:Resource.eCommandOpenInEditor}" Command="{x:Static local:CustomCommands.OpenInEditor}" CommandParameter="{Binding}"/>
 					<MenuItem Command="Delete" CommandParameter="{Binding}"/>
 				</ContextMenu>
 			</ListView.Resources>
