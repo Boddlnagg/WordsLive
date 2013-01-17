@@ -557,7 +557,7 @@ namespace WordsLive.Core.Songs
 		/// Load the song in order to have access to the title and background.
 		/// </summary>
 		/// <param name="filename">The file to load.</param>
-		internal override void LoadMetadata()
+		protected override void LoadMetadata()
 		{
 			base.LoadMetadata();
 			Load();

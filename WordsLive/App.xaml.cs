@@ -15,6 +15,7 @@ namespace WordsLive
 	 * - Put WordsLive.Slideshow (+Bridge) under GPLv3 and add COPYING.txt and README.txt
 	 *   (with note that PowerpointViewerLib and WordsLive.Slideshow are under GPL) to distribution/installer
 	 * - Refactor drag & drop (introduce helper class)
+	 * - Use MessageBox from WpfToolkit.Extended?
 	 */
 
 	public partial class App : Application

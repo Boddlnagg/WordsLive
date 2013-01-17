@@ -1,8 +1,9 @@
-﻿using System.IO;
-using Ionic.Zip;
-using System.Windows.Media.Imaging;
-using System;
+﻿using System;
 using System.ComponentModel;
+using System.IO;
+using System.Windows.Media.Imaging;
+using Ionic.Zip;
+using WordsLive.Core.Data;
 
 namespace WordsLive.Images
 {
@@ -83,14 +84,10 @@ namespace WordsLive.Images
 			}
 		}
 
-		public ImageInfo(FileInfo file)
+		public ImageInfo(string file, IMediaDataProvider provider)
 		{
-			this.File = file;
-		}
-
-		public ImageInfo(string filename)
-		{
-			this.File = new FileInfo(filename);
+			// TODO: support providers
+			this.File = new FileInfo(file);
 		}
 
 		public ImageInfo(ZipEntry entry)

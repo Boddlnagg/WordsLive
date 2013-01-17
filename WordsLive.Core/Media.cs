@@ -21,12 +21,19 @@ namespace WordsLive.Core
 		}
 
 		/// <summary>
-		/// Loads just the metadata of this media object. This is called again to
-		/// reload in <see cref="MediaManager.ReloadMediaMetadata"/>
+		/// Loads just the metadata of this media object.
 		/// </summary>
-		internal virtual void LoadMetadata()
+		protected virtual void LoadMetadata()
 		{
 			// do nothing
+		}
+
+		/// <summary>
+		/// Internal interface to LoadMetadata(). This is called in  <see cref="MediaManager.ReloadMediaMetadata"/>.
+		/// </summary>
+		internal void LoadMetadataHelper()
+		{
+			LoadMetadata();
 		}
 
 		/// <summary>

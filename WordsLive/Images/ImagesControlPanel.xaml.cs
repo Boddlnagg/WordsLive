@@ -303,13 +303,7 @@ namespace WordsLive.Images
 					}
 
 					string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
-					foreach (string file in files)
-					{
-						if (media.IsValidImageFile(file))
-						{
-							media.Images.Insert(i++, new ImageInfo(file));
-						}
-					}
+					media.InsertImages(files, i);
 				}
 			}
 		}

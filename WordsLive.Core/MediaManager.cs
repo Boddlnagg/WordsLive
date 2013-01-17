@@ -65,7 +65,7 @@ namespace WordsLive.Core
 					result = h.TryHandle(path, provider);
 					if (result != null)
 					{
-						result.LoadMetadata();
+						result.LoadMetadataHelper();
 						return result;
 					}
 				}
@@ -100,7 +100,7 @@ namespace WordsLive.Core
 				{
 					foreach (var r in result)
 					{
-						r.LoadMetadata();
+						r.LoadMetadataHelper();
 						yield return r;
 					}
 
@@ -130,7 +130,7 @@ namespace WordsLive.Core
 				}
 				else
 				{
-					media.LoadMetadata();
+					media.LoadMetadataHelper();
 					return media;
 				}
 			}
