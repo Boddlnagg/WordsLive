@@ -3,7 +3,7 @@
 		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 		xmlns:local="clr-namespace:WordsLive.Editor"
 		xmlns:songs="clr-namespace:WordsLive.Core.Songs;assembly=WordsLive.Core"
-		xmlns:ext="http://schemas.microsoft.com/winfx/2006/xaml/presentation/toolkit/extended"
+		xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
 		Title="Lied formatieren" Height="500" Width="352" MinHeight="500" MinWidth="350"
 		Icon="/WordsLive;component/Artwork/Formatting.png">
 	<Grid>
@@ -129,9 +129,9 @@
 								<ColumnDefinition Width="*"/>
 							</Grid.ColumnDefinitions>
 							<CheckBox x:Name="OutlineCheckbox" Grid.Row="0" VerticalAlignment="Center" IsChecked="{Binding IsOutlineEnabled}">Umrandung</CheckBox>
-							<ext:ColorPicker SelectedColor="{Binding OutlineColor}" IsEnabled="{Binding ElementName=OutlineCheckbox, Path=IsChecked}" Grid.Row="0" Grid.Column="1" Width="50" Margin="6,0,0,3" HorizontalAlignment="Left"/>
+							<xctk:ColorPicker SelectedColor="{Binding OutlineColor}" IsEnabled="{Binding ElementName=OutlineCheckbox, Path=IsChecked}" Grid.Row="0" Grid.Column="1" Width="50" Margin="6,0,0,3" HorizontalAlignment="Left"/>
 							<CheckBox x:Name="ShadowCheckbox" Grid.Row="1" VerticalAlignment="Center" IsChecked="{Binding IsShadowEnabled}">Schatten</CheckBox>
-							<ext:ColorPicker SelectedColor="{Binding ShadowColor}" IsEnabled="{Binding ElementName=ShadowCheckbox, Path=IsChecked}" Grid.Row="1" Grid.Column="1" Width="50" Margin="6,0,0,3"  HorizontalAlignment="Left"/>
+							<xctk:ColorPicker SelectedColor="{Binding ShadowColor}" IsEnabled="{Binding ElementName=ShadowCheckbox, Path=IsChecked}" Grid.Row="1" Grid.Column="1" Width="50" Margin="6,0,0,3"  HorizontalAlignment="Left"/>
 							<Label Grid.Row="1" Grid.Column="2">Richtung:</Label>
 							<TextBox IsEnabled="{Binding ElementName=ShadowCheckbox, Path=IsChecked}" Grid.Row="1" Grid.Column="3" Text="{Binding ShadowDirection}"></TextBox>
 							<local:ChooseFontControl Grid.ColumnSpan="4" Grid.Row="2" Font="{Binding MainText}"/>

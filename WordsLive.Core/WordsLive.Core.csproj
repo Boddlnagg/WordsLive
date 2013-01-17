@@ -51,7 +51,8 @@
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
   <ItemGroup>
     <Reference Include="MonitoredUndo, Version=1.0.0.2, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\3rdParty\MonitoredUndo.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\MUF.1.1\lib\net40\MonitoredUndo.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.4.5.11\lib\net40\Newtonsoft.Json.dll</HintPath>
@@ -124,6 +125,7 @@
     <Compile Include="WebSite.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Monitored Undo Documentation.docx" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
