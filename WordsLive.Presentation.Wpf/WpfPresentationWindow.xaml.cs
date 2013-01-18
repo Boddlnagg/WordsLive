@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Windows;
-using System.Windows.Media.Animation;
 using System.Windows.Interop;
-using System.Windows.Controls;
+using System.Windows.Media.Animation;
 using WordsLive.Core;
 
 namespace WordsLive.Presentation.Wpf
@@ -148,22 +147,23 @@ namespace WordsLive.Presentation.Wpf
 
 		private static bool? hidden = null;
 
+		private void InitWindow()
+		{
+			// the window has not been shown before, so show it
+			Show();
+			// when we have shown it, we can obtain a window handle to disable aero peek for this window
+			IntPtr windowHandle = new WindowInteropHelper(this).Handle;
+			AeroPeekHelper.RemoveFromAeroPeek(windowHandle);
+		}
+
 		internal static void ShowWindow()
 		{
 			if (hidden == null)
 			{
-				// the window has not been shown before, so show it
-				Instance.Show();
-				// when we have shown it, we can obtain a window handle to disable aero peek for this window
-				IntPtr windowHandle = new WindowInteropHelper(Instance).Handle;
-				AeroPeekHelper.RemoveFromAeroPeek(windowHandle);
+				Instance.InitWindow();
 			}
 
 			Instance.ContentContainer.Opacity = 1;
-
-			//Instance.Left = Instance.area.WindowLocation.X;
-			//Instance.Top = Instance.area.WindowLocation.Y;
-
 			hidden = false;
 		}
 
@@ -172,10 +172,27 @@ namespace WordsLive.Presentation.Wpf
 			if (hidden == false)
 			{
 				Instance.ContentContainer.Opacity = 0;
-				//Instance.Left = -32000;
-				//Instance.Top = -32000;
 				hidden = true;
 			}
+		}
+
+		public static void ShowNotification(string text, VerticalAlignment align)
+		{
+			if (hidden == null)
+			{
+				Instance.ContentContainer.Opacity = 0;
+				Instance.InitWindow();
+			}
+
+			// TODO: add fade in/out animation
+			Instance.NotificationText.Text = text;
+			Instance.NotificationContainer.Opacity = 1;
+			Instance.NotificationContainer.VerticalAlignment = align;
+		}
+
+		public static void HideNotification()
+		{
+			Instance.NotificationContainer.Opacity = 0;
 		}
 	}
 }

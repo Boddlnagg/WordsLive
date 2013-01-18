@@ -10,6 +10,7 @@ using WordsLive.Core;
 using WordsLive.Core.Data;
 using WordsLive.Editor;
 using WordsLive.MediaOrderList;
+using WordsLive.Presentation.Wpf;
 using WordsLive.Resources;
 using WordsLive.Server;
 using WordsLive.Songs;
@@ -348,6 +349,16 @@ namespace WordsLive
 		public static void TryActivateNext()
 		{
 			instance.window.TryActivateNext();
+		}
+
+		public static void ShowNotification(string text, VerticalAlignment align = VerticalAlignment.Top)
+		{
+			WpfPresentationWindow.ShowNotification(text, align);
+		}
+
+		public static void HideNotification()
+		{
+			WpfPresentationWindow.HideNotification();
 		}
 
 		public static PluginSettingsDictionary PluginSettings

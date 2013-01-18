@@ -1,7 +1,7 @@
 ﻿<Window x:Class="WordsLive.Presentation.Wpf.WpfPresentationWindow"
 		xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-		Title="WpfPresentationWindow" Height="100" Width="100"
+		Title="WpfPresentationWindow" Height="300" Width="300"
 		ResizeMode="NoResize" WindowStyle="None" Focusable="False" ShowInTaskbar="False"
 		Background="Transparent" AllowsTransparency="True" Topmost="True">
 		<!--AllowsTransparency="True" Background="Transparent"-->
@@ -31,10 +31,18 @@
 			<Border x:Name="PreviousContainer"/>
 			<Border x:Name="MainContainer"/>
 		</Grid>
-		<!--
-		TODO: ability to set Child (using transition) and Alignment
-		<Border x:Name="AlertContainer" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-		-->
+		<!-- hidden because it's behind the grid below -->
+		<Grid x:Name="LayoutReference">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="*"/>
+				<ColumnDefinition Width="*"/>
+			</Grid.ColumnDefinitions>
+			<!-- We need the border, because the column doesn't have an ActualWidth -->
+			<Border x:Name="ReferenceBorder" />
+		</Grid>
+		<Border Opacity="0" x:Name="NotificationContainer" HorizontalAlignment="Center" VerticalAlignment="Center"
+				BorderThickness="1" BorderBrush="Silver" Margin="10" MinWidth="{Binding ElementName=ReferenceBorder,Path=ActualWidth}">
+			<TextBlock x:Name="NotificationText" Padding="10,5" TextWrapping="Wrap" TextAlignment="Center" Background="#C5000000" FontSize="15pt" Foreground="Gray" Text="Test"/></Border>
 	</Grid>
 </Window>
   
