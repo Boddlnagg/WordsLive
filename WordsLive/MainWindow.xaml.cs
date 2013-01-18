@@ -538,6 +538,10 @@ namespace WordsLive
 				Controller.PresentationManager.CurrentPresentation = Controller.PresentationManager.CreatePresentation<TestPresentation>();
 				Controller.PresentationManager.Status = PresentationStatus.Show;
 			}
+			else if (e.Command == CustomCommands.ShowNotification)
+			{
+				throw new NotImplementedException("This feature has not yet been implemented (TODO).");
+			}
 		}
 
 		public void ShowSettingsWindow()

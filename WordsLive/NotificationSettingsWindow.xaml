@@ -1,0 +1,18 @@
+﻿<Window x:Class="WordsLive.NotificationSettingsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:resx="clr-namespace:WordsLive.Resources"
+        Title="NotificationSettingsWindow" Height="300" Width="300">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <TextBox></TextBox>
+        <DockPanel Grid.Row="1">
+            <Button DockPanel.Dock="Right" Content="{x:Static resx:Resource.dialogClose}" IsCancel="True" IsDefault="True" Width="75" Margin="3"/>
+            <Button DockPanel.Dock="Left" Content="Show/Update" Margin="3" Width="75"/>
+            <Button DockPanel.Dock="Left" Content="Hide" Margin="3" Width="75" />
+        </DockPanel>
+    </Grid>
+</Window>

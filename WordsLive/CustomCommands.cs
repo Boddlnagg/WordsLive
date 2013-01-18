@@ -157,6 +157,12 @@ namespace WordsLive
 			private set;
 		}
 
+		public static RoutedCommand ShowNotification
+		{
+			get;
+			private set;
+		}
+
 		public static RoutedCommand RotateLeft
 		{
 			get;
@@ -198,6 +204,7 @@ namespace WordsLive
 			Blackscreen = new RoutedCommand("Blackscreen", t, new InputGestureCollection { new KeyGesture(Key.F7) });
 			ShowPresentation = new RoutedCommand("ShowPresentation", t, new InputGestureCollection { new KeyGesture(Key.F8) });
 			ShowTestImage = new RoutedCommand("ShowTestImage", t);
+			ShowNotification = new RoutedCommand("ShowNotification", t);
 			RotateLeft = new RoutedCommand("RotateLeft", t);
 			RotateRight = new RoutedCommand("RotateRight", t);
 		}
