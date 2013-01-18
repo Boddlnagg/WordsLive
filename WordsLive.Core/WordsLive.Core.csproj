@@ -125,7 +125,6 @@
     <Compile Include="WebSite.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Monitored Undo Documentation.docx" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
