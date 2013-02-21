@@ -42,6 +42,8 @@ namespace WordsLive.AudioVideo
 				}
 			};
 
+			bool doLoop = false;
+
 			vlc.EndReached += (sender, args) =>
 			{
 				if (!loop)
@@ -49,6 +51,19 @@ namespace WordsLive.AudioVideo
 					Stop();
 					OnPlaybackEnded();
 				}
+				else
+				{
+					doLoop = true;
+				}
+			};
+
+			vlc.Playing += (sender, args) =>
+			{
+				if (loop && doLoop)
+				{
+					OnSeekStart();
+				}
+				doLoop = false;
 			};
 
 			vlc.Media = media;
@@ -126,6 +141,14 @@ namespace WordsLive.AudioVideo
 				PlaybackEnded();
 		}
 
+		public override event Action SeekStart;
+
+		protected void OnSeekStart()
+		{
+			if (SeekStart != null)
+				SeekStart();
+		}
+
 		public override void Play()
 		{
 			if (media.State == Vlc.DotNet.Core.Interops.Signatures.LibVlc.Media.States.Paused)
@@ -144,9 +167,12 @@ namespace WordsLive.AudioVideo
 
 		public override void Stop()
 		{
-			// don't really stop, but pause and go back to beginning
-			vlc.Pause();
-			vlc.Position = 0;
+			if (!vlc.IsPaused)
+			{
+				// don't really stop, but pause and go back to beginning
+				vlc.Pause();
+			}
+			OnSeekStart();
 			rect.Visibility = System.Windows.Visibility.Visible;
 		}
 

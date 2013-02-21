@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using WordsLive.Presentation.Wpf;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
-using System.ComponentModel;
 
 namespace WordsLive.AudioVideo
 {
@@ -117,6 +113,10 @@ namespace WordsLive.AudioVideo
 			presentation.MediaControl.MediaLoaded += () =>
 			{
 				timelineSlider.Maximum = presentation.MediaControl.Duration.TotalMilliseconds;
+				timelineSlider.IsSelectionRangeEnabled = true;
+				timelineSlider.SelectionStart = media.OffsetStart.TotalMilliseconds;
+				timelineSlider.SelectionEnd = presentation.MediaControl.Duration.TotalMilliseconds - media.OffsetEnd.TotalMilliseconds;
+				timelineSlider.Value = media.OffsetStart.TotalMilliseconds;
 				volumeSlider.Value = presentation.MediaControl.Volume;
 				totalTimeLabel.Content = FormatTimeSpan(presentation.MediaControl.Duration);
 				loaded = true;
@@ -125,6 +125,12 @@ namespace WordsLive.AudioVideo
 			presentation.MediaControl.PlaybackEnded += () =>
 			{
 				PlayState = PlayState.Stopped;
+			};
+
+			presentation.MediaControl.SeekStart += () =>
+			{
+				timelineSlider.Value = timelineSlider.SelectionStart;
+				presentation.MediaControl.Position = (int)timelineSlider.Value;
 			};
 
 			DispatcherTimer timer = new DispatcherTimer();
@@ -136,6 +142,22 @@ namespace WordsLive.AudioVideo
 					disableSeek = true;
 					timelineSlider.Value = presentation.MediaControl.Position;
 					disableSeek = false;
+
+					// if there is an end-offset, stop before end of playback
+					if (media.OffsetEnd.TotalMilliseconds > 0 && timelineSlider.Value >= timelineSlider.SelectionEnd)
+					{
+						presentation.MediaControl.Stop();
+						if (IsLooping)
+						{
+							// this sometimes doesn't work with VLC (starts from beginning instead of start-offset)
+							presentation.MediaControl.Play();
+						}
+						else
+						{
+							PlayState = AudioVideo.PlayState.Stopped;
+						}
+					}
+					
 					currentTimeLabel.Content = FormatTimeSpan(new TimeSpan(0, 0, 0, 0, presentation.MediaControl.Position));
 				}
 			};

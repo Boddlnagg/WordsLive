@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using WordsLive.Core;
 using WordsLive.Core.Data;
 
@@ -18,6 +15,13 @@ namespace WordsLive.AudioVideo
 		public override void Load()
 		{
 			MediaUri = this.DataProvider.GetUri(this.File);
+			// TODO: load offsets from somewhere & add UI to configure it
+			OffsetStart = new TimeSpan(0, 0, 0);
+			OffsetEnd = new TimeSpan(0, 0, 0);
 		}
+
+		public TimeSpan OffsetStart { get; set; }
+
+		public TimeSpan OffsetEnd { get; set; }
 	}
 }

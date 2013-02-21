@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Windows.Controls;
 
 namespace WordsLive.AudioVideo
@@ -21,5 +18,6 @@ namespace WordsLive.AudioVideo
 
 		public abstract event Action MediaLoaded;
 		public abstract event Action PlaybackEnded;
+		public abstract event Action SeekStart;
 	}
 }

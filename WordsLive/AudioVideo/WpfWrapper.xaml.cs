@@ -58,6 +58,14 @@ namespace WordsLive.AudioVideo
 				PlaybackEnded();
 		}
 
+		public override event Action SeekStart;
+
+		protected void OnSeekStart()
+		{
+			if (SeekStart != null)
+				SeekStart();
+		}
+
 		public override void Load(Uri uri)
 		{
 			mediaElement.MediaOpened += (sender, args) =>
@@ -80,6 +88,7 @@ namespace WordsLive.AudioVideo
 				else
 				{
 					mediaElement.Stop();
+					OnSeekStart();
 					mediaElement.Play();
 				}
 			};
@@ -104,6 +113,7 @@ namespace WordsLive.AudioVideo
 		public override void Stop()
 		{
 			mediaElement.Stop();
+			OnSeekStart();
 			rect.Visibility = System.Windows.Visibility.Visible;
 		}
 
