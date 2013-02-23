@@ -2,17 +2,63 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:resx="clr-namespace:WordsLive.Resources"
-        Title="NotificationSettingsWindow" Height="300" Width="300">
+        Title="{x:Static resx:Resource.nTitle}" Height="220" Width="400" MinHeight="220" MinWidth="300"
+        WindowStyle="ToolWindow" WindowStartupLocation="CenterOwner">
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <TextBox></TextBox>
-        <DockPanel Grid.Row="1">
-            <Button DockPanel.Dock="Right" Content="{x:Static resx:Resource.dialogClose}" IsCancel="True" IsDefault="True" Width="75" Margin="3"/>
-            <Button DockPanel.Dock="Left" Content="Show/Update" Margin="3" Width="75"/>
-            <Button DockPanel.Dock="Left" Content="Hide" Margin="3" Width="75" />
-        </DockPanel>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+        <TextBox Text="{Binding Text, UpdateSourceTrigger=PropertyChanged}" Grid.RowSpan="3" Margin="3"/>
+        <Button DockPanel.Dock="Right" Grid.Row="3" Grid.Column="1" Content="{x:Static resx:Resource.dialogClose}" IsDefault="True" Height="22" Margin="3" Click="Close_Click"/>
+        <GroupBox Grid.Column="1" Header="{x:Static resx:Resource.nLabelAlignment}" Margin="3,3,3,10">
+            <StackPanel Orientation="Vertical">
+                <RadioButton IsChecked="{Binding Alignment, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static VerticalAlignment.Top}}" Content="{x:Static resx:Resource.nAlignmentTop}"/>
+                <RadioButton IsChecked="{Binding Alignment, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static VerticalAlignment.Center}}" Content="{x:Static resx:Resource.nAlignmentCenter}"/>
+                <RadioButton IsChecked="{Binding Alignment, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static VerticalAlignment.Bottom}}" Content="{x:Static resx:Resource.nAlignmentBottom}"/>
+            </StackPanel>
+        </GroupBox>
+        <Button Grid.Column="1" Grid.Row="1" Margin="3" Height="22" VerticalAlignment="Top" Click="Show_Click">
+            <Button.Style>
+                <Style TargetType="Button">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding TextAvailable}" Value="False">
+                            <Setter Property="IsEnabled" Value="False"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Button.Style>
+            <TextBlock>
+                <TextBlock.Style>
+                    <Style TargetType="TextBlock">
+                        <Style.Setters>
+                            <Setter Property="Text" Value="{x:Static resx:Resource.nButtonShow}"/>
+                        </Style.Setters>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsShown}" Value="True">
+                                <Setter Property="Text" Value="{x:Static resx:Resource.nButtonUpdate}"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBlock.Style>
+            </TextBlock>
+        </Button>
+        <Button Grid.Column="1" Grid.Row="2" Content="{x:Static resx:Resource.nButtonHide}" Margin="3" Height="22" VerticalAlignment="Top" Click="Hide_Click">
+            <Button.Style>
+                <Style TargetType="Button">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsShown}" Value="False">
+                            <Setter Property="IsEnabled" Value="False"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Button.Style>
+        </Button>
     </Grid>
 </Window>

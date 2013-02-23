@@ -705,4 +705,31 @@
   <data name="sfMsgOverwriteExistingFileTitle" xml:space="preserve">
     <value>Vorhandene Datei überschreiben?</value>
   </data>
+  <data name="nAlignmentBottom" xml:space="preserve">
+    <value>Unten</value>
+  </data>
+  <data name="nAlignmentCenter" xml:space="preserve">
+    <value>Mitte</value>
+  </data>
+  <data name="nAlignmentTop" xml:space="preserve">
+    <value>Oben</value>
+  </data>
+  <data name="nButtonHide" xml:space="preserve">
+    <value>Ausblenden</value>
+  </data>
+  <data name="nButtonShow" xml:space="preserve">
+    <value>Anzeigen</value>
+  </data>
+  <data name="nButtonUpdate" xml:space="preserve">
+    <value>Aktualisieren</value>
+  </data>
+  <data name="nLabelAlignment" xml:space="preserve">
+    <value>Ausrichtung</value>
+  </data>
+  <data name="nTitle" xml:space="preserve">
+    <value>Benachrichtigung anzeigen</value>
+  </data>
+  <data name="vMenuShowNotification" xml:space="preserve">
+    <value>Benachrichtigung anzeigen ...</value>
+  </data>
 </root>

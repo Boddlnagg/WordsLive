@@ -135,6 +135,7 @@
     <Compile Include="Images\ImagesMedia.cs" />
     <Compile Include="Images\ImagesPresentation.cs" />
     <Compile Include="ISettingsTab.cs" />
+    <Compile Include="NotificationController.cs" />
     <Compile Include="NotificationSettingsWindow.xaml.cs">
       <DependentUpon>NotificationSettingsWindow.xaml</DependentUpon>
     </Compile>

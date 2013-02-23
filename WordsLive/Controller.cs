@@ -10,7 +10,6 @@ using WordsLive.Core;
 using WordsLive.Core.Data;
 using WordsLive.Editor;
 using WordsLive.MediaOrderList;
-using WordsLive.Presentation.Wpf;
 using WordsLive.Resources;
 using WordsLive.Server;
 using WordsLive.Songs;
@@ -317,6 +316,18 @@ namespace WordsLive
 			}
 		}
 
+		/// <summary>
+		/// Shows a window and sets the main window as it's owner.
+		/// </summary>
+		/// <param name="window">The window to show.</param>
+		public static void ShowWindow(Window window)
+		{
+			instance.openedWindows.Add(window);
+			window.Closed += delegate { instance.openedWindows.Remove(window); };
+			window.Owner = instance.window;
+			window.Show();
+		}
+
 		public static EditorWindow ShowEditorWindow()
 		{
 			foreach (Window win in instance.openedWindows)
@@ -349,16 +360,6 @@ namespace WordsLive
 		public static void TryActivateNext()
 		{
 			instance.window.TryActivateNext();
-		}
-
-		public static void ShowNotification(string text, VerticalAlignment align = VerticalAlignment.Top)
-		{
-			WpfPresentationWindow.ShowNotification(text, align);
-		}
-
-		public static void HideNotification()
-		{
-			WpfPresentationWindow.HideNotification();
 		}
 
 		public static PluginSettingsDictionary PluginSettings

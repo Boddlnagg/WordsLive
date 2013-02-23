@@ -709,6 +709,78 @@ namespace WordsLive.Resources {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Bottom ähnelt.
+        /// </summary>
+        public static string nAlignmentBottom {
+            get {
+                return ResourceManager.GetString("nAlignmentBottom", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Center ähnelt.
+        /// </summary>
+        public static string nAlignmentCenter {
+            get {
+                return ResourceManager.GetString("nAlignmentCenter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Top ähnelt.
+        /// </summary>
+        public static string nAlignmentTop {
+            get {
+                return ResourceManager.GetString("nAlignmentTop", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Hide ähnelt.
+        /// </summary>
+        public static string nButtonHide {
+            get {
+                return ResourceManager.GetString("nButtonHide", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Show ähnelt.
+        /// </summary>
+        public static string nButtonShow {
+            get {
+                return ResourceManager.GetString("nButtonShow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Update ähnelt.
+        /// </summary>
+        public static string nButtonUpdate {
+            get {
+                return ResourceManager.GetString("nButtonUpdate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Alignment ähnelt.
+        /// </summary>
+        public static string nLabelAlignment {
+            get {
+                return ResourceManager.GetString("nLabelAlignment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Show notification ähnelt.
+        /// </summary>
+        public static string nTitle {
+            get {
+                return ResourceManager.GetString("nTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Add ähnelt.
         /// </summary>
         public static string paAdd {
@@ -1587,6 +1659,15 @@ namespace WordsLive.Resources {
         public static string vMenuShowEditorWindow {
             get {
                 return ResourceManager.GetString("vMenuShowEditorWindow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Show notification ... ähnelt.
+        /// </summary>
+        public static string vMenuShowNotification {
+            get {
+                return ResourceManager.GetString("vMenuShowNotification", resourceCulture);
             }
         }
         

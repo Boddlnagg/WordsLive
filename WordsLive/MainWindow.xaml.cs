@@ -540,7 +540,7 @@ namespace WordsLive
 			}
 			else if (e.Command == CustomCommands.ShowNotification)
 			{
-				throw new NotImplementedException("This feature has not yet been implemented (TODO).");
+				NotificationController.Instance.ShowSettingsWindow();
 			}
 		}
 

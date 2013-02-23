@@ -103,7 +103,7 @@
 					</MenuItem.Icon>
 				</MenuItem>
 				<MenuItem Header="{x:Static resx:Resource.vMenuShowTestImage}" Command="{x:Static local:CustomCommands.ShowTestImage}"/>
-				<!--<MenuItem Header="Show notification ..." Command="{x:Static local:CustomCommands.ShowNotification}"/>-->
+				<MenuItem Header="{x:Static resx:Resource.vMenuShowNotification}" Command="{x:Static local:CustomCommands.ShowNotification}"/>
 			</MenuItem>
 			<MenuItem Header="{x:Static resx:Resource.veMenuWindow}">
 				<MenuItem Header="{x:Static resx:Resource.veMenuShowSonglist}" Command="{x:Static local:CustomCommands.ShowSonglist}">
