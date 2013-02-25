@@ -162,5 +162,17 @@
     <Setting Name="EmbeddedServerEnableUI" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
+    <Setting Name="PresentationAreaSettingsWindowLeft" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="PresentationAreaSettingsWindowTop" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="PresentationAreaSettingsWindowWidth" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">375</Value>
+    </Setting>
+    <Setting Name="PresentationAreaSettingsWindowHeight" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">375</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

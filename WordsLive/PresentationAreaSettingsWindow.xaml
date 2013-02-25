@@ -4,7 +4,10 @@
 		xmlns:local="clr-namespace:WordsLive"
 		xmlns:resx="clr-namespace:WordsLive.Resources"
 		Title="{x:Static resx:Resource.paTitle}"
-		Height="375" Width="409"
+		Height = "{Binding Source={StaticResource settings}, Path=Default.PresentationAreaSettingsWindowHeight, Mode=TwoWay}"
+	    Width = "{Binding Source={StaticResource settings}, Path=Default.PresentationAreaSettingsWindowWidth, Mode=TwoWay}"
+	    Top="{Binding Source={StaticResource settings}, Path=Default.PresentationAreaSettingsWindowTop, Mode=TwoWay}"
+	    Left="{Binding Source={StaticResource settings}, Path=Default.PresentationAreaSettingsWindowLeft, Mode=TwoWay}"
 		MinHeight="375" MinWidth="375"
 		Name="win"
 		Icon="/WordsLive;component/Artwork/PresentationArea.png">
