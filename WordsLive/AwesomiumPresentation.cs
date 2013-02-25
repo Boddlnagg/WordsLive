@@ -1,13 +1,8 @@
-﻿using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
+﻿using System;
+using System.Windows;
 using Awesomium.Core;
-using Awesomium.Windows.Controls;
-using System;
-using WordsLive.Presentation.Wpf;
 using WordsLive.Presentation;
+using WordsLive.Presentation.Wpf;
 
 namespace WordsLive
 {

@@ -125,7 +125,7 @@ namespace WordsLive
 		{
 			if (string.IsNullOrEmpty(Properties.Settings.Default.SongsDirectory))
 			{
-				Properties.Settings.Default.SongsDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), "Powerpraise-Dateien", "Songs");
+				Properties.Settings.Default.SongsDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), "Powerpraise-Dateien", "Songs"); // TODO: localize?!
 			}
 
 			if (string.IsNullOrEmpty(Properties.Settings.Default.BackgroundsDirectory))
@@ -136,6 +136,7 @@ namespace WordsLive
 			while (!TryInitDataManager())
 			{
 				// TODO: this message box is not shown correctly (the first time, when the window is not yet loaded)
+				// TODO: show more detailed information about what's wrong (use Exceptions?)
 				MessageBox.Show(Resource.seMsgInitDataError);
 				window.ShowSettingsWindow();
 			}
@@ -168,6 +169,8 @@ namespace WordsLive
 				var enableUI = Properties.Settings.Default.EmbeddedServerEnableUI;
 
 				var settingsChanged = Server.Port != port || Server.Password != pwd;
+
+				// TODO: do we need a restart for change of password?
 
 				if (settingsChanged)
 				{
