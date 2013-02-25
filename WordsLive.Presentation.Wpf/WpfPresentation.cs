@@ -1,6 +1,4 @@
 ﻿using System;
-using WordsLive.Presentation;
-using System.Windows.Controls;
 using System.Windows;
 
 namespace WordsLive.Presentation.Wpf
@@ -75,11 +73,7 @@ namespace WordsLive.Presentation.Wpf
 		{
 			if (area != null)
 			{
-				area.WindowSizeChanged -= (sender, args) =>
-				{
-					this.control.Width = area.WindowSize.Width;
-					this.control.Height = area.WindowSize.Height;
-				};
+				area.WindowSizeChanged -= area_WindowSizeChanged;
 			}
 		}
 
@@ -102,11 +96,13 @@ namespace WordsLive.Presentation.Wpf
 			this.control.Width = area.WindowSize.Width;
 			this.control.Height = area.WindowSize.Height;
 
-			area.WindowSizeChanged += (sender, args) =>
-			{
-				this.control.Width = area.WindowSize.Width;
-				this.control.Height = area.WindowSize.Height;
-			};
+			area.WindowSizeChanged += area_WindowSizeChanged;
+		}
+
+		void area_WindowSizeChanged(object sender, EventArgs e)
+		{
+			this.control.Width = area.WindowSize.Width;
+			this.control.Height = area.WindowSize.Height;
 		}
 	}
 }

@@ -17,8 +17,8 @@
  */
 
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.ComponentModel;
-using System.Windows;
 using WordsLive.Core.Songs;
 
 namespace WordsLive.Editor.Nodes
@@ -44,19 +44,24 @@ namespace WordsLive.Editor.Nodes
 			{
 				if (song != null)
 				{
-					song.Parts.CollectionChanged -= (s, args) => OnPropertyChanged("Nodes");
+					song.Parts.CollectionChanged -= songParts_CollectionChanged;
 				}
 
 				song = value;
 
 				if (song != null)
 				{
-					song.Parts.CollectionChanged += (s, args) => OnPropertyChanged("Nodes");
+					song.Parts.CollectionChanged += songParts_CollectionChanged; 
 				}
 				
 				OnPropertyChanged("Song");
 				OnPropertyChanged("Root");
 			}
+		}
+
+		void songParts_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+		{
+			OnPropertyChanged("Nodes");
 		}
 
 		/// <summary>

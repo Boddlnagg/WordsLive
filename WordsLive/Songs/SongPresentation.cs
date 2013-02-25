@@ -206,7 +206,6 @@ namespace WordsLive.Songs
 
 		public override void Close()
 		{
-			// TODO: seems to have memory leak -> do some memory profiling on this
 			base.Close();
 			if (videoBackground != null)
 				videoBackground.Destroy();

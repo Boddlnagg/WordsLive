@@ -1,11 +1,9 @@
 ﻿using System;
+using System.Collections.Specialized;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using WordsLive.Utils;
-using System.ComponentModel;
-using System.Collections.Specialized;
-using System.Collections;
 
 namespace WordsLive.Utils.ActivatableListBox
 {
@@ -22,6 +20,19 @@ namespace WordsLive.Utils.ActivatableListBox
 			obj.SetValue(IsActivatableProperty, value);
 		}
 
+		private static readonly DependencyProperty ChangedHandlerProperty =
+			DependencyProperty.RegisterAttached("ChangedHandler", typeof(ListChangedHandler), typeof(Activator), new UIPropertyMetadata(null));
+
+		private static ListChangedHandler GetChangedHandler(ListBox obj)
+		{
+			return (ListChangedHandler)obj.GetValue(ChangedHandlerProperty);
+		}
+
+		private static void SetChangedHandler(ListBox obj, ListChangedHandler value)
+		{
+			obj.SetValue(ChangedHandlerProperty, value);
+		}
+
 		public static readonly DependencyProperty IsActivatableProperty =
 			DependencyProperty.RegisterAttached("IsActivatable", typeof(bool), typeof(Activator), new UIPropertyMetadata(false, OnIsActivatableChanged));
 
@@ -35,12 +46,65 @@ namespace WordsLive.Utils.ActivatableListBox
 				sender.MouseDoubleClick += ListBox_MouseDoubleClick;
 				sender.ItemContainerGenerator.StatusChanged += ListBox_ContainerGeneratorStatusChanged;
 				sender.DataContextChanged += ListBox_DataContextChanged;
+				SetChangedHandler(sender, new ListChangedHandler(sender)); // TODO: this reference to sender might cause memory-leak when ListBox is not used anymore
 			}
 			else
 			{
 				sender.MouseDoubleClick -= ListBox_MouseDoubleClick;
 				sender.ItemContainerGenerator.StatusChanged -= ListBox_ContainerGeneratorStatusChanged;
 				sender.DataContextChanged -= ListBox_DataContextChanged;
+				SetChangedHandler(sender, null);
+			}
+		}
+
+		private class ListChangedHandler
+		{
+			private ListBox listBox;
+
+			public ListChangedHandler(ListBox listBox)
+			{
+				this.listBox = listBox;
+			}
+
+			public void ActivatableListBox_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+			{
+				// TODO: This is untested (binding to an ObservableCollection<T>)
+				if (e.Action == NotifyCollectionChangedAction.Remove)
+				{
+					var list = sender as INotifyCollectionChanged;
+					if (e.OldItems.Contains(GetActiveItem(listBox)))
+						SetActiveItem(listBox, null);
+				}
+				else if (e.Action == NotifyCollectionChangedAction.Reset)
+				{
+					if (!listBox.Items.Contains(GetActiveItem(listBox)))
+						SetActiveItem(listBox, null);
+				}
+
+				UpdateActivatedIndex(listBox, listBox.GetActiveItem());
+			}
+
+			public void ActivatableListBox_ListChanged(object sender, ListChangedEventArgs e)
+			{
+				if (e.ListChangedType == ListChangedType.ItemDeleted)
+				{
+					var list = sender as IBindingList;
+					if (e.NewIndex == listBox.GetActiveIndex()) // removing active item
+					{
+						SetActiveItem(listBox, null);
+					}
+				}
+				else if (e.ListChangedType == ListChangedType.Reset)
+				{
+					if (!listBox.Items.Contains(GetActiveItem(listBox)))
+						SetActiveItem(listBox, null);
+				}
+				else if (e.ListChangedType == ListChangedType.ItemChanged)
+				{
+					UpdateActivatedItem(listBox, GetActiveItem(listBox));
+				}
+
+				UpdateActivatedIndex(listBox, listBox.GetActiveItem());
 			}
 		}
 
@@ -49,66 +113,27 @@ namespace WordsLive.Utils.ActivatableListBox
 		{
 			var listBox = sender as ListBox;
 
+			var handler = GetChangedHandler(listBox);
+
 			// remove old list-changed handler
 			if (e.OldValue is IBindingList)
 			{
-				(e.OldValue as IBindingList).ListChanged -= (s, args) => ActivatableListBox_ListChanged(listBox, s, args);
+				(e.OldValue as IBindingList).ListChanged -= handler.ActivatableListBox_ListChanged;
 			}
 			else if (e.OldValue is INotifyCollectionChanged)
 			{
-				(e.OldValue as INotifyCollectionChanged).CollectionChanged -= (s, args) => ActivatableListBox_CollectionChanged(listBox, s, args);
+				(e.OldValue as INotifyCollectionChanged).CollectionChanged -= handler.ActivatableListBox_CollectionChanged;
 			}
 
 			// add new list-changed handler
 			if (e.NewValue is IBindingList)
 			{
-				(e.NewValue as IBindingList).ListChanged += (s, args) => ActivatableListBox_ListChanged(listBox, s, args);
+				(e.NewValue as IBindingList).ListChanged += handler.ActivatableListBox_ListChanged;
 			}
 			else if (e.NewValue is INotifyCollectionChanged)
 			{
-				(e.NewValue as INotifyCollectionChanged).CollectionChanged += (s, args) => ActivatableListBox_CollectionChanged(listBox, s, args);
+				(e.NewValue as INotifyCollectionChanged).CollectionChanged += handler.ActivatableListBox_CollectionChanged;
 			}
-		}
-
-		private static void ActivatableListBox_CollectionChanged(ListBox listBox, object sender, NotifyCollectionChangedEventArgs e)
-		{
-			// TODO: This is untested (binding to an ObservableCollection<T>)
-			if (e.Action == NotifyCollectionChangedAction.Remove)
-			{
-				var list = sender as INotifyCollectionChanged;
-				if (e.OldItems.Contains(GetActiveItem(listBox)))
-					SetActiveItem(listBox, null);
-			}
-			else if (e.Action == NotifyCollectionChangedAction.Reset)
-			{
-				if (!listBox.Items.Contains(GetActiveItem(listBox)))
-					SetActiveItem(listBox, null);
-			}
-
-			UpdateActivatedIndex(listBox, listBox.GetActiveItem());
-		}
-
-		private static void ActivatableListBox_ListChanged(ListBox listBox, object sender, ListChangedEventArgs e)
-		{
-			if (e.ListChangedType == ListChangedType.ItemDeleted)
-			{
-				var list = sender as IBindingList;
-				if (e.NewIndex == listBox.GetActiveIndex()) // removing active item
-				{
-					SetActiveItem(listBox, null);
-				}
-			}
-			else if (e.ListChangedType == ListChangedType.Reset)
-			{
-				if (!listBox.Items.Contains(GetActiveItem(listBox)))
-					SetActiveItem(listBox, null);
-			}
-			else if (e.ListChangedType == ListChangedType.ItemChanged)
-			{
-				UpdateActivatedItem(listBox, GetActiveItem(listBox));
-			}
-
-			UpdateActivatedIndex(listBox, listBox.GetActiveItem());
 		}
 
 		private static void ListBox_ContainerGeneratorStatusChanged(object sender, EventArgs e)
