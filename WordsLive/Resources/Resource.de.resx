@@ -253,7 +253,7 @@
     <value>_Datei</value>
   </data>
   <data name="vMenuHidePresentation" xml:space="preserve">
-    <value>Präsentation ausblenden</value>
+    <value>Präsentation ausblenden (Desktop anzeigen)</value>
   </data>
   <data name="vMenuMedia" xml:space="preserve">
     <value>_Medien</value>
@@ -280,7 +280,7 @@
     <value>Einstellungen</value>
   </data>
   <data name="vMenuShowChords" xml:space="preserve">
-    <value>Liedakkorde anzeigen</value>
+    <value>Liedakkorde bei der Präsentation anzeigen</value>
   </data>
   <data name="vMenuShowPresentation" xml:space="preserve">
     <value>Präsentation anzeigen</value>
@@ -315,38 +315,8 @@
   <data name="vTitleUnnamedPortfolio" xml:space="preserve">
     <value>Unbenanntes Portfolio</value>
   </data>
-  <data name="vToolbarBlackscreen" xml:space="preserve">
-    <value>Anzeige schwarz schalten</value>
-  </data>
   <data name="vToolbarEditActiveSong" xml:space="preserve">
     <value>Aktives Lied im Editor bearbeiten</value>
-  </data>
-  <data name="vToolbarHidePresentation" xml:space="preserve">
-    <value>Präsentation ausblenden (Desktop anzeigen)</value>
-  </data>
-  <data name="vToolbarNewPortfolio" xml:space="preserve">
-    <value>Neues Portfolio</value>
-  </data>
-  <data name="vToolbarOpenPortfolio" xml:space="preserve">
-    <value>Portfolio öffnen</value>
-  </data>
-  <data name="vToolbarSavePortfolio" xml:space="preserve">
-    <value>Portfolio speichern</value>
-  </data>
-  <data name="vToolbarShowChords" xml:space="preserve">
-    <value>Liedakkorde bei der Präsentation anzeigen</value>
-  </data>
-  <data name="vToolbarShowEditorWindow" xml:space="preserve">
-    <value>Editorfenster anzeigen</value>
-  </data>
-  <data name="vToolbarShowPresentation" xml:space="preserve">
-    <value>Präsentation anzeigen</value>
-  </data>
-  <data name="vToolbarShowSonglist" xml:space="preserve">
-    <value>Liederliste anzeigen</value>
-  </data>
-  <data name="vToolbarUsePortfolioBackground" xml:space="preserve">
-    <value>Einen Hintergrund für alle Lieder verwenden</value>
   </data>
   <data name="seHeaderDataSources" xml:space="preserve">
     <value>Datenquellen</value>
@@ -507,29 +477,11 @@
   <data name="eToolbarIncreaseFontSize" xml:space="preserve">
     <value>Schriftgröße erhöhen</value>
   </data>
-  <data name="eToolbarNewSong" xml:space="preserve">
-    <value>Neues Lied</value>
-  </data>
-  <data name="eToolbarOpenSong" xml:space="preserve">
-    <value>Lied öffnen</value>
-  </data>
-  <data name="eToolbarRedo" xml:space="preserve">
-    <value>Wiederholen</value>
-  </data>
   <data name="eToolbarSaveAndReload" xml:space="preserve">
     <value>Lied speichern und aktive Präsentation neu laden</value>
   </data>
-  <data name="eToolbarSaveSong" xml:space="preserve">
-    <value>Lied speichern</value>
-  </data>
   <data name="eToolbarShowChords" xml:space="preserve">
     <value>Liedakkorde anzeigen</value>
-  </data>
-  <data name="eToolbarShowPresenter" xml:space="preserve">
-    <value>Präsentationsfenster anzeigen</value>
-  </data>
-  <data name="eToolbarUndo" xml:space="preserve">
-    <value>Rückgängig</value>
   </data>
   <data name="rpMsgNameAlreadyExists" xml:space="preserve">
     <value>Ein Liedteil mit diesem Namen existiert bereits.</value>

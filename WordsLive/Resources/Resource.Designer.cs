@@ -646,33 +646,6 @@ namespace WordsLive.Resources {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die New song ähnelt.
-        /// </summary>
-        public static string eToolbarNewSong {
-            get {
-                return ResourceManager.GetString("eToolbarNewSong", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Open song ähnelt.
-        /// </summary>
-        public static string eToolbarOpenSong {
-            get {
-                return ResourceManager.GetString("eToolbarOpenSong", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Redo ähnelt.
-        /// </summary>
-        public static string eToolbarRedo {
-            get {
-                return ResourceManager.GetString("eToolbarRedo", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Save song and reload active presentation ähnelt.
         /// </summary>
         public static string eToolbarSaveAndReload {
@@ -682,38 +655,11 @@ namespace WordsLive.Resources {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Save song ähnelt.
-        /// </summary>
-        public static string eToolbarSaveSong {
-            get {
-                return ResourceManager.GetString("eToolbarSaveSong", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Show chords ähnelt.
         /// </summary>
         public static string eToolbarShowChords {
             get {
                 return ResourceManager.GetString("eToolbarShowChords", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Show presenter window ähnelt.
-        /// </summary>
-        public static string eToolbarShowPresenter {
-            get {
-                return ResourceManager.GetString("eToolbarShowPresenter", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Undo ähnelt.
-        /// </summary>
-        public static string eToolbarUndo {
-            get {
-                return ResourceManager.GetString("eToolbarUndo", resourceCulture);
             }
         }
         
@@ -1573,7 +1519,7 @@ namespace WordsLive.Resources {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Hide presentation ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die Hide presentation (show desktop) ähnelt.
         /// </summary>
         public static string vMenuHidePresentation {
             get {
@@ -1654,7 +1600,7 @@ namespace WordsLive.Resources {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Show chords ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die Show chords in presentation ähnelt.
         /// </summary>
         public static string vMenuShowChords {
             get {
@@ -1816,101 +1762,11 @@ namespace WordsLive.Resources {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Blackscreen ähnelt.
-        /// </summary>
-        public static string vToolbarBlackscreen {
-            get {
-                return ResourceManager.GetString("vToolbarBlackscreen", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Open active song in editor ähnelt.
         /// </summary>
         public static string vToolbarEditActiveSong {
             get {
                 return ResourceManager.GetString("vToolbarEditActiveSong", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Hide presentation (show desktop) ähnelt.
-        /// </summary>
-        public static string vToolbarHidePresentation {
-            get {
-                return ResourceManager.GetString("vToolbarHidePresentation", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die New portfolio ähnelt.
-        /// </summary>
-        public static string vToolbarNewPortfolio {
-            get {
-                return ResourceManager.GetString("vToolbarNewPortfolio", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Open portfolio ähnelt.
-        /// </summary>
-        public static string vToolbarOpenPortfolio {
-            get {
-                return ResourceManager.GetString("vToolbarOpenPortfolio", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Save portfolio ähnelt.
-        /// </summary>
-        public static string vToolbarSavePortfolio {
-            get {
-                return ResourceManager.GetString("vToolbarSavePortfolio", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Show chords in presentation ähnelt.
-        /// </summary>
-        public static string vToolbarShowChords {
-            get {
-                return ResourceManager.GetString("vToolbarShowChords", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Open editor window ähnelt.
-        /// </summary>
-        public static string vToolbarShowEditorWindow {
-            get {
-                return ResourceManager.GetString("vToolbarShowEditorWindow", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Show presentation ähnelt.
-        /// </summary>
-        public static string vToolbarShowPresentation {
-            get {
-                return ResourceManager.GetString("vToolbarShowPresentation", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Open songlist ähnelt.
-        /// </summary>
-        public static string vToolbarShowSonglist {
-            get {
-                return ResourceManager.GetString("vToolbarShowSonglist", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Use single background for all songs ähnelt.
-        /// </summary>
-        public static string vToolbarUsePortfolioBackground {
-            get {
-                return ResourceManager.GetString("vToolbarUsePortfolioBackground", resourceCulture);
             }
         }
     }

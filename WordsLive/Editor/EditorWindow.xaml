@@ -101,52 +101,52 @@
 			</MenuItem>
 		</Menu>
 		<ToolBar Grid.Row="1" ToolBarTray.IsLocked="True">
-			<Button Command="{x:Static local:CustomCommands.SwitchWindow}" ToolTip="{x:Static resx:Resource.eToolbarShowPresenter}">
+			<Button Command="{x:Static local:CustomCommands.SwitchWindow}" ToolTip="{Binding Converter={StaticResource RemoveAccessKeyConverter}, ConverterParameter={x:Static resx:Resource.eMenuShowPresenter}}">
 				<Image
 					Width="32"
 					Height="32"
 					Source="/WordsLive;component/Artwork/Viewer.png" />
 			</Button>
-			<Button Command="{x:Static local:CustomCommands.ViewCurrent}" Style="{StaticResource markDisabledButton}" ToolTip="{x:Static resx:Resource.eToolbarSaveAndReload}">
+			<Button Command="{x:Static local:CustomCommands.ViewCurrent}" Style="{StaticResource markDisabledButton}" ToolTip="{Binding Converter={StaticResource RemoveAccessKeyConverter}, ConverterParameter={x:Static resx:Resource.eToolbarSaveAndReload}}">
 				<Image
 					Width="32"
 					Height="32"
 					Source="/WordsLive;component/Artwork/ViewCurrent.png" />
 			</Button>
 			<Separator/>
-			<Button Command="New" ToolTip="{x:Static resx:Resource.eToolbarNewSong}">
+			<Button Command="New" ToolTip="{Binding Converter={StaticResource RemoveAccessKeyConverter}, ConverterParameter={x:Static resx:Resource.eMenuNewSong}}">
 				<Image
 					Width="32"
 					Height="32"
 					Source="/WordsLive;component/Artwork/New.png" />
 			</Button>
-			<Button Command="Open" ToolTip="{x:Static resx:Resource.eToolbarOpenSong}">
+			<Button Command="Open" ToolTip="{Binding Converter={StaticResource RemoveAccessKeyConverter}, ConverterParameter={x:Static resx:Resource.eMenuOpenSong}}">
 				<Image
 					Width="32"
 					Height="32"
 					Source="/WordsLive;component/Artwork/Open.png" />
 			</Button>
-			<Button Command="Save" Style="{StaticResource markDisabledButton}" ToolTip="{x:Static resx:Resource.eToolbarSaveSong}" >
+			<Button Command="Save" Style="{StaticResource markDisabledButton}" ToolTip="{Binding Converter={StaticResource RemoveAccessKeyConverter}, ConverterParameter={x:Static resx:Resource.eMenuSaveSong}}" >
 				<Image
 					Width="32"
 					Height="32"
 					Source="/WordsLive;component/Artwork/Save.png" />
 			</Button>
 			<Separator/>
-			<Button Command="Undo" CommandTarget="{Binding ElementName=Tabs, Path=SelectedItem.Grid}" Style="{StaticResource markDisabledButton}" ToolTip="{x:Static resx:Resource.eToolbarUndo}" >
+			<Button Command="Undo" CommandTarget="{Binding ElementName=Tabs, Path=SelectedItem.Grid}" Style="{StaticResource markDisabledButton}" ToolTip="{Binding Converter={StaticResource RemoveAccessKeyConverter}, ConverterParameter={x:Static resx:Resource.eMenuUndo}}" >
 				<Image
 					Width="32"
 					Height="32"
 					Source="/WordsLive;component/Artwork/Undo.png"/>
 			</Button>
-			<Button Command="Redo" CommandTarget="{Binding ElementName=Tabs, Path=SelectedItem.Grid}" Style="{StaticResource markDisabledButton}" ToolTip="{x:Static resx:Resource.eToolbarRedo}" >
+			<Button Command="Redo" CommandTarget="{Binding ElementName=Tabs, Path=SelectedItem.Grid}" Style="{StaticResource markDisabledButton}" ToolTip="{Binding Converter={StaticResource RemoveAccessKeyConverter}, ConverterParameter={x:Static resx:Resource.eMenuRedo}}" >
 				<Image
 					Width="32"
 					Height="32"
 					Source="/WordsLive;component/Artwork/Redo.png" />
 			</Button>
 			<Separator/>
-			<Button Command="{x:Static local:CustomCommands.ChooseBackground}" Style="{StaticResource markDisabledButton}" ToolTip="{x:Static resx:Resource.eToolbarChangeBackground}">
+			<Button Command="{x:Static local:CustomCommands.ChooseBackground}" Style="{StaticResource markDisabledButton}" ToolTip="{Binding Converter={StaticResource RemoveAccessKeyConverter}, ConverterParameter={x:Static resx:Resource.eToolbarChangeBackground}}">
 				<Image
 					Width="32"
 					Height="32"

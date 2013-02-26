@@ -253,7 +253,7 @@
     <value>_File</value>
   </data>
   <data name="vMenuHidePresentation" xml:space="preserve">
-    <value>Hide presentation</value>
+    <value>Hide presentation (show desktop)</value>
   </data>
   <data name="vMenuMedia" xml:space="preserve">
     <value>_Media</value>
@@ -280,7 +280,7 @@
     <value>Settings</value>
   </data>
   <data name="vMenuShowChords" xml:space="preserve">
-    <value>Show chords</value>
+    <value>Show chords in presentation</value>
   </data>
   <data name="vMenuShowPresentation" xml:space="preserve">
     <value>Show presentation</value>
@@ -315,38 +315,8 @@
   <data name="vTitleUnnamedPortfolio" xml:space="preserve">
     <value>New portfolio</value>
   </data>
-  <data name="vToolbarBlackscreen" xml:space="preserve">
-    <value>Blackscreen</value>
-  </data>
   <data name="vToolbarEditActiveSong" xml:space="preserve">
     <value>Open active song in editor</value>
-  </data>
-  <data name="vToolbarHidePresentation" xml:space="preserve">
-    <value>Hide presentation (show desktop)</value>
-  </data>
-  <data name="vToolbarNewPortfolio" xml:space="preserve">
-    <value>New portfolio</value>
-  </data>
-  <data name="vToolbarOpenPortfolio" xml:space="preserve">
-    <value>Open portfolio</value>
-  </data>
-  <data name="vToolbarSavePortfolio" xml:space="preserve">
-    <value>Save portfolio</value>
-  </data>
-  <data name="vToolbarShowChords" xml:space="preserve">
-    <value>Show chords in presentation</value>
-  </data>
-  <data name="vToolbarShowEditorWindow" xml:space="preserve">
-    <value>Open editor window</value>
-  </data>
-  <data name="vToolbarShowPresentation" xml:space="preserve">
-    <value>Show presentation</value>
-  </data>
-  <data name="vToolbarShowSonglist" xml:space="preserve">
-    <value>Open songlist</value>
-  </data>
-  <data name="vToolbarUsePortfolioBackground" xml:space="preserve">
-    <value>Use single background for all songs</value>
   </data>
   <data name="seHeaderDataSources" xml:space="preserve">
     <value>Data sources</value>
@@ -507,29 +477,11 @@
   <data name="eToolbarIncreaseFontSize" xml:space="preserve">
     <value>Increase font size</value>
   </data>
-  <data name="eToolbarNewSong" xml:space="preserve">
-    <value>New song</value>
-  </data>
-  <data name="eToolbarOpenSong" xml:space="preserve">
-    <value>Open song</value>
-  </data>
-  <data name="eToolbarRedo" xml:space="preserve">
-    <value>Redo</value>
-  </data>
   <data name="eToolbarSaveAndReload" xml:space="preserve">
     <value>Save song and reload active presentation</value>
   </data>
-  <data name="eToolbarSaveSong" xml:space="preserve">
-    <value>Save song</value>
-  </data>
   <data name="eToolbarShowChords" xml:space="preserve">
     <value>Show chords</value>
-  </data>
-  <data name="eToolbarShowPresenter" xml:space="preserve">
-    <value>Show presenter window</value>
-  </data>
-  <data name="eToolbarUndo" xml:space="preserve">
-    <value>Undo</value>
   </data>
   <data name="rpMsgNameAlreadyExists" xml:space="preserve">
     <value>A part with this name already exists.</value>

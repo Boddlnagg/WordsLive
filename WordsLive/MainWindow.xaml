@@ -103,7 +103,7 @@
 					</MenuItem.Icon>
 				</MenuItem>
 				<MenuItem Header="{x:Static resx:Resource.vMenuShowTestImage}" Command="{x:Static local:CustomCommands.ShowTestImage}"/>
-                <MenuItem Header="{Binding Converter={StaticResource AppendEllipsisConverter}, ConverterParameter={x:Static resx:Resource.vMenuShowNotification}}" Command="{x:Static local:CustomCommands.ShowNotification}"/>
+				<MenuItem Header="{Binding Converter={StaticResource AppendEllipsisConverter}, ConverterParameter={x:Static resx:Resource.vMenuShowNotification}}" Command="{x:Static local:CustomCommands.ShowNotification}"/>
 			</MenuItem>
 			<MenuItem Header="{x:Static resx:Resource.veMenuWindow}">
 				<MenuItem Header="{x:Static resx:Resource.veMenuShowSonglist}" Command="{x:Static local:CustomCommands.ShowSonglist}">
@@ -122,46 +122,46 @@
 			</MenuItem>-->
 		</Menu>
 		<ToolBar Grid.Row="1" Margin="0" VerticalAlignment="Top" ToolBarTray.IsLocked="True">
-			<Button Command="{x:Static local:CustomCommands.SwitchWindow}" ToolTip="{x:Static resx:Resource.vToolbarShowEditorWindow}">
+			<Button Command="{x:Static local:CustomCommands.SwitchWindow}" ToolTip="{Binding Converter={StaticResource RemoveAccessKeyConverter}, ConverterParameter={x:Static resx:Resource.vMenuShowEditorWindow}}">
 				<Image Width="32" Height="32" Source="/WordsLive;component/Artwork/Editor.png" />
 			</Button>
 			<Button Command="{x:Static local:CustomCommands.EditActive}" Style="{StaticResource markDisabledButton}" ToolTip="{x:Static resx:Resource.vToolbarEditActiveSong}">
 				<Image Width="32" Height="32" Source="/WordsLive;component/Artwork/EditCurrent.png" />
 			</Button>
 			<Separator/>
-			<Button Command="New" ToolTip="{x:Static resx:Resource.vToolbarNewPortfolio}">
+			<Button Command="New" ToolTip="{Binding Converter={StaticResource RemoveAccessKeyConverter}, ConverterParameter={x:Static resx:Resource.vMenuNewPortfolio}}">
 				<Image Width="32" Height="32" Source="/WordsLive;component/Artwork/New.png" />
 			</Button>
-			<Button Command="Open" ToolTip="{x:Static resx:Resource.vToolbarOpenPortfolio}">
+			<Button Command="Open" ToolTip="{Binding Converter={StaticResource RemoveAccessKeyConverter}, ConverterParameter={x:Static resx:Resource.vMenuOpenPortfolio}}">
 				<Image Width="32" Height="32" Source="/WordsLive;component/Artwork/Open.png" />
 			</Button>
-			<Button Command="Save" Style="{StaticResource markDisabledButton}" ToolTip="{x:Static resx:Resource.vToolbarSavePortfolio}">
+			<Button Command="Save" Style="{StaticResource markDisabledButton}" ToolTip="{Binding Converter={StaticResource RemoveAccessKeyConverter}, ConverterParameter={x:Static resx:Resource.vMenuSavePortfolio}}">
 				<Image Width="32" Height="32" Source="/WordsLive;component/Artwork/Save.png" />
 			</Button>
 			<Separator/>
-			<RadioButton HorizontalAlignment="Left" Margin="0" VerticalAlignment="Stretch" GroupName="PresentationStatus" ToolTip="{x:Static resx:Resource.vToolbarHidePresentation}"
+			<RadioButton HorizontalAlignment="Left" Margin="0" VerticalAlignment="Stretch" GroupName="PresentationStatus" ToolTip="{Binding Converter={StaticResource RemoveAccessKeyConverter}, ConverterParameter={x:Static resx:Resource.vMenuHidePresentation}}"
 						 IsChecked="{Binding Source={x:Static local:Controller.PresentationManager}, Path=Status, Mode=OneWay, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static local:PresentationStatus.Hide}}"
 						 Command="{x:Static local:CustomCommands.HidePresentation}">
 				<Image Width="32" Height="32" HorizontalAlignment="Left" VerticalAlignment="Top" Source="/WordsLive;component/Artwork/HidePresentation.png" />
 			</RadioButton>
-			<RadioButton HorizontalAlignment="Left" Margin="0" VerticalAlignment="Stretch" GroupName="PresentationStatus" ToolTip="{x:Static resx:Resource.vToolbarBlackscreen}"
+			<RadioButton HorizontalAlignment="Left" Margin="0" VerticalAlignment="Stretch" GroupName="PresentationStatus" ToolTip="{Binding Converter={StaticResource RemoveAccessKeyConverter}, ConverterParameter={x:Static resx:Resource.vMenuBlackscreen}}"
 						 IsChecked="{Binding Source={x:Static local:Controller.PresentationManager}, Path=Status, Mode=OneWay, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static local:PresentationStatus.Blackscreen}}"
 						 Command="{x:Static local:CustomCommands.Blackscreen}">
 				<Image Width="32" Height="32" HorizontalAlignment="Left" VerticalAlignment="Top" Source="/WordsLive;component/Artwork/Blackscreen.png"/>
 			</RadioButton>
-			<RadioButton HorizontalAlignment="Left" Margin="0" VerticalAlignment="Stretch" Style="{StaticResource markDisabledRadioButton}" GroupName="PresentationStatus" ToolTip="{x:Static resx:Resource.vToolbarShowPresentation}"
+			<RadioButton HorizontalAlignment="Left" Margin="0" VerticalAlignment="Stretch" Style="{StaticResource markDisabledRadioButton}" GroupName="PresentationStatus" ToolTip="{Binding Converter={StaticResource RemoveAccessKeyConverter}, ConverterParameter={x:Static resx:Resource.vMenuShowPresentation}}"
 						 IsChecked="{Binding Source={x:Static local:Controller.PresentationManager}, Path=Status, Mode=OneWay, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static local:PresentationStatus.Show}}"
 						 Command="{x:Static local:CustomCommands.ShowPresentation}">
 				<Image Width="32" Height="32" HorizontalAlignment="Left" VerticalAlignment="Top" Source="/WordsLive;component/Artwork/ShowPresentation.png"/>
 			</RadioButton>
 			<Separator/>
-			<Button Command="{x:Static local:CustomCommands.ShowSonglist}" ToolTip="{x:Static resx:Resource.vToolbarShowSonglist}">
+			<Button Command="{x:Static local:CustomCommands.ShowSonglist}" ToolTip="{Binding Converter={StaticResource RemoveAccessKeyConverter}, ConverterParameter={x:Static resx:Resource.vMenuShowSonglist}}">
 				<Image Width="32" Height="32" Source="/WordsLive;component/Artwork/Songlist.png" />
 			</Button>
-			<CheckBox ToolTip="{x:Static resx:Resource.vToolbarUsePortfolioBackground}" IsChecked="{Binding UsePortfolioBackground}">
+			<CheckBox ToolTip="{Binding Converter={StaticResource RemoveAccessKeyConverter}, ConverterParameter={x:Static resx:Resource.vMenuUsePortfolioBackground}}" IsChecked="{Binding UsePortfolioBackground}">
 				<Image Width="32" Height="32" Source="/WordsLive;component/Artwork/ChooseBackground.png" />
 			</CheckBox>
-			<CheckBox ToolTip="{x:Static resx:Resource.vToolbarShowChords}" IsChecked="{Binding SongPresentationShowChords}">
+			<CheckBox ToolTip="{Binding Converter={StaticResource RemoveAccessKeyConverter}, ConverterParameter={x:Static resx:Resource.vMenuShowChords}}" IsChecked="{Binding SongPresentationShowChords}">
 				<Image Width="32" Height="32" Source="/WordsLive;component/Artwork/ShowChords.png" />
 			</CheckBox>
 		</ToolBar>
