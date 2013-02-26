@@ -7,7 +7,6 @@ namespace WordsLive
 	 * - PDF support via pdf.js?
 	 * - Include reveal.js?
 	 * - Shortcuts in the menu are shown as "Ctrl" instead of "Strg" in German language
-	 * - Add alerts to Presentation.Wpf to be able to display messages over any WPF presentation
 	 * X Improve audio/video support (look at DMediaPlayer) and support start/stop times
 	 *   (see http://manual.openlp.org/creating_service.html#using-the-media-timer, but with better UI)
 	 * - Maintain correct window z-order using SetWindowPos, especially for ImpressPresentation

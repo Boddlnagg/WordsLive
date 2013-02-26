@@ -538,7 +538,7 @@
     <value>Translation:</value>
   </data>
   <data name="rpNameTemplates" xml:space="preserve">
-    <value>Chorus;Verse #;Part #;Pre-Chorus;Bridge;Instrumental;Tag</value>
+    <value>Chorus;Verse #;Part #;Pre-Chorus;Bridge;Instrumental;Tag;Ending</value>
   </data>
   <data name="vMenuShowTestImage" xml:space="preserve">
     <value>Show test image</value>

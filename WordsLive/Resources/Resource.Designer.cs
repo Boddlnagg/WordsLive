@@ -889,7 +889,7 @@ namespace WordsLive.Resources {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Chorus;Verse #;Part #;Pre-Chorus;Bridge;Instrumental;Tag ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die Chorus;Verse #;Part #;Pre-Chorus;Bridge;Instrumental;Tag;Ending ähnelt.
         /// </summary>
         public static string rpNameTemplates {
             get {
