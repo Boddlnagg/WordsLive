@@ -26,7 +26,6 @@ namespace WordsLive.Core.Songs.IO
 {
 	/// <summary>
 	/// Writer for HTML export of songs (unfinished, but working).
-	/// TODO: add entry point for this in the UI
 	/// </summary>
 	public class HtmlSongWriter : ISongWriter
 	{
@@ -65,7 +64,7 @@ namespace WordsLive.Core.Songs.IO
 						from partRef in song.Order select ExportPart(partRef.Part, PrintChords),
 						new XElement("p",
 							new XAttribute("id", "copyright"),
-							song.Copyright)
+							NewlineToBr(song.Copyright))
 						)
 					)
 				);
@@ -85,6 +84,21 @@ namespace WordsLive.Core.Songs.IO
 			else
 			{
 				yield return new XElement("h2", "("+part.Name+")");
+			}
+		}
+
+		private static IEnumerable<XNode> NewlineToBr(string text)
+		{
+			var lines = text.Split('\n');
+			bool isFirst = true;
+			foreach (var line in lines)
+			{
+				if (isFirst)
+					isFirst = false;
+				else
+					yield return new XElement("br");
+
+				yield return new XText(line);
 			}
 		}
 
@@ -144,6 +158,10 @@ namespace WordsLive.Core.Songs.IO
 			font-style: italic;
 			font-size: 70%;
 			font-weight: normal;
+		}
+
+		#copyright {
+			font-size: 50%;
 		}
   
 		/* Chords */

@@ -143,11 +143,16 @@ namespace WordsLive.Editor
 			{
 				song.Save(dlg.Filename, DataManager.Songs);
 			}
+		}
 
-			// TODO: create export menu entry to do this
-			/*Microsoft.Win32.SaveFileDialog dlg = new Microsoft.Win32.SaveFileDialog();
-			dlg.DefaultExt = ".ppl";
-			dlg.Filter = "Powerpraise-Lied|*.ppl";
+		private void ExportSong(Song song)
+		{
+			// TODO: localize
+			Microsoft.Win32.SaveFileDialog dlg = new Microsoft.Win32.SaveFileDialog();
+			string[] exts = { ".ppl", ".html" };
+			dlg.DefaultExt = exts[0];
+			dlg.Filter = "Powerpraise-Lied|*.ppl|HTML-Dokument|*.html"; // must be same order as exts
+			dlg.Title = WordsLive.Resources.Resource.eMenuExportSong;
 			if (song.File == null)
 			{
 				dlg.FileName = song.SongTitle;
@@ -159,8 +164,30 @@ namespace WordsLive.Editor
 
 			if (dlg.ShowDialog() == true)
 			{
-				song.Save(dlg.FileName, DataManager.LocalFiles);
-			}*/
+				string path = dlg.FileName;
+				string ext = Path.GetExtension(path).ToLower();
+
+				if (!exts.Contains(ext))
+				{
+					ext = exts[dlg.FilterIndex - 1];
+					path = path + ext;
+				}
+
+				if (ext == ".html")
+				{
+					song.Export(path, DataManager.LocalFiles, new HtmlSongWriter());
+				}
+				else if (ext == ".ppl")
+				{
+					song.Export(path, DataManager.LocalFiles, new PowerpraiseSongWriter());
+				}
+				else
+				{
+					// TODO: add more formats
+					throw new InvalidOperationException("Invalid extension " + ext + ". This should not happen.");
+				}
+				
+			}
 		}
 
 		private void NewSong()
@@ -343,6 +370,10 @@ namespace WordsLive.Editor
 			{
 				e.CanExecute = doc != null;
 			}
+			else if (e.Command == CustomCommands.Export)
+			{
+				e.CanExecute = doc != null;
+			}
 			else if (e.Command == ApplicationCommands.Close || e.Command == CustomCommands.ChooseBackground || e.Command == CustomCommands.SongSettings)
 			{
 				e.CanExecute = doc != null;
@@ -387,6 +418,10 @@ namespace WordsLive.Editor
 			else if (e.Command == ApplicationCommands.SaveAs)
 			{
 				SaveSongAs(doc.Song);
+			}
+			else if (e.Command == CustomCommands.Export)
+			{
+				ExportSong(doc.Song);
 			}
 			else if (e.Command == ApplicationCommands.Close)
 			{

@@ -61,7 +61,7 @@ namespace WordsLive
 		private void OnWebviewCrashed(object sender, EventArgs e)
 		{
 			var result = MessageBox.Show("Der Anzeigeprozess WordsLive.Awesomium.exe wurde beendet oder ist abgestürzt. WordsLive wird versuchen, die aktuelle Präsentation neu zu laden um die Anzeige wiederherzustellen.", // TODO: localize
-				"Fehler", MessageBoxButton.OKCancel);			
+				"Fehler", MessageBoxButton.OKCancel);
 
 			if (result == MessageBoxResult.OK)
 				Controller.ReloadActiveMedia();

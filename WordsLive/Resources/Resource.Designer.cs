@@ -394,6 +394,15 @@ namespace WordsLive.Resources {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Export song ... ähnelt.
+        /// </summary>
+        public static string eMenuExportSong {
+            get {
+                return ResourceManager.GetString("eMenuExportSong", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die _File ähnelt.
         /// </summary>
         public static string eMenuFile {

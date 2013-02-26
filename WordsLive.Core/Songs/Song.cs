@@ -534,23 +534,33 @@ namespace WordsLive.Core.Songs
 
 		public void Save(string path, IBidirectionalMediaDataProvider provider)
 		{
-			if (String.IsNullOrWhiteSpace(path))
-				throw new ArgumentException("path");
-			if (provider == null)
-				throw new ArgumentNullException("provider");
-
-			using (var ft = provider.Put(path))
-			{
-				var writer = new PowerpraiseSongWriter();
-				writer.Write(this, ft.Stream);
-			}
-
+			Write(path, provider, new PowerpraiseSongWriter());
 			File = path;
 			OnPropertyChanged("File");
 			DataProvider = provider;
 
 			IsModified = false;
 			IsImported = false;
+		}
+
+		public void Export(string path, IBidirectionalMediaDataProvider provider, ISongWriter writer)
+		{
+			Write(path, provider, writer);
+		}
+
+		private void Write(string path, IBidirectionalMediaDataProvider provider, ISongWriter writer)
+		{
+			if (String.IsNullOrWhiteSpace(path))
+				throw new ArgumentException("path");
+			if (provider == null)
+				throw new ArgumentNullException("provider");
+			if (writer == null)
+				throw new ArgumentNullException("writer");
+
+			using (var ft = provider.Put(path))
+			{
+				writer.Write(this, ft.Stream);
+			}
 		}
 
 		/// <summary>

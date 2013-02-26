@@ -37,6 +37,12 @@ namespace WordsLive
 			private set;
 		}
 
+		public static RoutedCommand Export
+		{
+			get;
+			private set;
+		}
+
 		public static RoutedCommand Activate
 		{
 			get;
@@ -184,6 +190,7 @@ namespace WordsLive
 			SwitchWindow = new RoutedCommand("SwitchWindow", t, new InputGestureCollection { new KeyGesture(Key.W, ModifierKeys.Control) });
 			EditActive = new RoutedCommand("EditActive", t);
 			OpenInEditor = new RoutedCommand("OpenInEditor", t);
+			Export = new RoutedCommand("Export", t);
 			Activate = new RoutedCommand("Activate", t);
 			ShowSettings = new RoutedCommand("ShowSettings", t);
 			ViewCurrent = new RoutedCommand("ViewCurrent", t);

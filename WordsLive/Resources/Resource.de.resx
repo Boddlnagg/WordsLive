@@ -732,4 +732,7 @@
   <data name="vMenuShowNotification" xml:space="preserve">
     <value>Benachrichtigung anzeigen ...</value>
   </data>
+  <data name="eMenuExportSong" xml:space="preserve">
+    <value>Lied exportieren ...</value>
+  </data>
 </root>

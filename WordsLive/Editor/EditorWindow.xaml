@@ -19,6 +19,7 @@
 		<CommandBinding Command="Save" Executed="OnExecuteCommand" CanExecute="OnCommandCanExecute"/>
 		<CommandBinding Command="SaveAs" Executed="OnExecuteCommand" CanExecute="OnCommandCanExecute"/>
 		<CommandBinding Command="Close" Executed="OnExecuteCommand" CanExecute="OnCommandCanExecute"/>
+		<CommandBinding Command="{x:Static local:CustomCommands.Export}" Executed="OnExecuteCommand" CanExecute="OnCommandCanExecute"/>
 		<CommandBinding Command="{x:Static local:CustomCommands.SwitchWindow}" Executed="OnExecuteCommand"/>
 		<CommandBinding Command="{x:Static local:CustomCommands.ViewCurrent}" Executed="OnExecuteCommand" CanExecute="OnCommandCanExecute"/>
 		<CommandBinding Command="{x:Static local:CustomCommands.ChooseBackground}" Executed="OnExecuteCommand" CanExecute="OnCommandCanExecute"/>
@@ -59,6 +60,8 @@
 				</MenuItem>
 				<MenuItem
 					Header="{x:Static resx:Resource.eMenuSaveSongAs}" Command="SaveAs"/>
+				<MenuItem
+					Header="{x:Static resx:Resource.eMenuExportSong}" Command="{x:Static local:CustomCommands.Export}"/>
 				<Separator/>
 				<MenuItem
 					Header="{x:Static resx:Resource.eMenuAddToPortfolio}" Command="{x:Static local:CustomCommands.AddMedia}"/>
@@ -176,7 +179,7 @@
 							<Setter.Value>
 								<ContextMenu>
 									<!-- TODO: localize -->
-                                    <!-- Binding Mode=OneTime is important here to prevent a memory leak -->
+									<!-- Binding Mode=OneTime is important here to prevent a memory leak -->
 									<MenuItem Header="Speichern" Command="Save" CommandParameter="{Binding Mode=OneTime}"/>
 									<MenuItem Header="Schließen" Command="Close" CommandParameter="{Binding Mode=OneTime}" />
 								</ContextMenu>
