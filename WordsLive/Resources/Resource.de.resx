@@ -274,7 +274,7 @@
     <value>Portfolio _speichern</value>
   </data>
   <data name="vMenuSavePortfolioAs" xml:space="preserve">
-    <value>Portfolio speichern _unter ...</value>
+    <value>Portfolio speichern _unter</value>
   </data>
   <data name="vMenuSettings" xml:space="preserve">
     <value>Einstellungen</value>
@@ -445,13 +445,13 @@
     <value>_Bearbeiten</value>
   </data>
   <data name="eMenuEditChords" xml:space="preserve">
-    <value>Akkorde bearbeiten ...</value>
+    <value>Akkorde bearbeiten</value>
   </data>
   <data name="eMenuFile" xml:space="preserve">
     <value>_Datei</value>
   </data>
   <data name="eMenuFormatSong" xml:space="preserve">
-    <value>Lied formatieren ...</value>
+    <value>Lied formatieren</value>
   </data>
   <data name="eMenuNewSong" xml:space="preserve">
     <value>Neues Lied</value>
@@ -466,7 +466,7 @@
     <value>Lied speichern</value>
   </data>
   <data name="eMenuSaveSongAs" xml:space="preserve">
-    <value>Lied speichern unter ...</value>
+    <value>Lied speichern unter</value>
   </data>
   <data name="eMenuSplitTextAtCursor" xml:space="preserve">
     <value>Text an Cursorposition auf zwei Folien aufteilen</value>
@@ -730,9 +730,9 @@
     <value>Benachrichtigung anzeigen</value>
   </data>
   <data name="vMenuShowNotification" xml:space="preserve">
-    <value>Benachrichtigung anzeigen ...</value>
+    <value>Benachrichtigung anzeigen</value>
   </data>
   <data name="eMenuExportSong" xml:space="preserve">
-    <value>Lied exportieren ...</value>
+    <value>Lied exportieren</value>
   </data>
 </root>

@@ -11,6 +11,8 @@
 		<utils:EnumToBooleanConverter x:Key="EnumToBooleanConverter" />
 		<utils:EnumToIndexConverter x:Key="EnumToIndexConverter" />
 		<utils:StringSplitConverter x:Key="StringSplitConverter" />
+		<utils:AppendEllipsisConverter x:Key="AppendEllipsisConverter" />
+		<utils:RemoveAccessKeyConverter x:Key="RemoveAccessKeyConverter" />
 		<songs:SongBackgroundToImageSourceConverter x:Key="BackgroundConverter" />
 		<properties:Settings x:Key="settings" />
 		<LinearGradientBrush x:Key="HeaderGradientBrush" EndPoint="0.5,1" StartPoint="0.5,0">

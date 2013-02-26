@@ -50,7 +50,7 @@
 						<Image Width="24" Source="/WordsLive;component/Artwork/New.png" />
 					</MenuItem.Icon>
 				</MenuItem>
-				<MenuItem Header="{x:Static resx:Resource.vMenuOpenPortfolio}" Command="Open">
+				<MenuItem Header="{Binding Converter={StaticResource AppendEllipsisConverter}, ConverterParameter={x:Static resx:Resource.vMenuOpenPortfolio}}" Command="Open">
 					<MenuItem.Icon>
 						<Image Width="24" Source="/WordsLive;component/Artwork/Open.png" />
 					</MenuItem.Icon>
@@ -60,9 +60,9 @@
 						<Image Width="24" Source="/WordsLive;component/Artwork/Save.png" />
 					</MenuItem.Icon>
 				</MenuItem>
-				<MenuItem Header="{x:Static resx:Resource.vMenuSavePortfolioAs}" Command="SaveAs"/>
+				<MenuItem Header="{Binding Converter={StaticResource AppendEllipsisConverter}, ConverterParameter={x:Static resx:Resource.vMenuSavePortfolioAs}}" Command="SaveAs"/>
 				<Separator/>
-				<MenuItem Header="{x:Static resx:Resource.vMenuSettings}" Command="{x:Static local:CustomCommands.ShowSettings}">
+				<MenuItem Header="{Binding Converter={StaticResource AppendEllipsisConverter}, ConverterParameter={x:Static resx:Resource.vMenuSettings}}" Command="{x:Static local:CustomCommands.ShowSettings}">
 					<MenuItem.Icon>
 						<Image Width="24" Source="/WordsLive;component/Artwork/Settings.png" />
 					</MenuItem.Icon>
@@ -71,7 +71,7 @@
 				<MenuItem Header="{x:Static resx:Resource.vMenuExit}" Command="{x:Static local:CustomCommands.Exit}"/>
 			</MenuItem>
 			<MenuItem Header="{x:Static resx:Resource.vMenuMedia}">
-				<MenuItem Header="{x:Static resx:Resource.vMenuAddMedia}" Command="{x:Static local:CustomCommands.AddMedia}"/>
+				<MenuItem Header="{Binding Converter={StaticResource AppendEllipsisConverter}, ConverterParameter={x:Static resx:Resource.vMenuAddMedia}}" Command="{x:Static local:CustomCommands.AddMedia}"/>
 				<MenuItem Header="{x:Static resx:Resource.vMenuShowSonglist}" Command="{x:Static local:CustomCommands.ShowSonglist}">
 					<MenuItem.Icon>
 						<Image Width="24" Source="/WordsLive;component/Artwork/Songlist.png" />
@@ -87,7 +87,7 @@
 				<MenuItem Header="{x:Static resx:Resource.vMenuBlackscreen}" Command="{x:Static local:CustomCommands.Blackscreen}" IsChecked="{Binding Source={x:Static local:Controller.PresentationManager}, Path=Status, Mode=OneWay, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static local:PresentationStatus.Blackscreen}}"/>
 				<MenuItem Header="{x:Static resx:Resource.vMenuShowPresentation}" Command="{x:Static local:CustomCommands.ShowPresentation}" IsChecked="{Binding Source={x:Static local:Controller.PresentationManager}, Path=Status, Mode=OneWay, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static local:PresentationStatus.Show}}"/>
 				<Separator/>
-				<MenuItem IsCheckable="True" IsChecked="{Binding UsePortfolioBackground}" Header="{x:Static resx:Resource.vMenuUsePortfolioBackground}">
+				<MenuItem IsCheckable="True" IsChecked="{Binding UsePortfolioBackground}" Header="{Binding Converter={StaticResource AppendEllipsisConverter}, ConverterParameter={x:Static resx:Resource.vMenuUsePortfolioBackground}}">
 					<MenuItem.Icon>
 						<Image Width="24" Source="/WordsLive;component/Artwork/ChooseBackground.png" />
 					</MenuItem.Icon>
@@ -97,13 +97,13 @@
 						<Image Width="24" Source="/WordsLive;component/Artwork/ShowChords.png" />
 					</MenuItem.Icon>
 				</MenuItem>
-				<MenuItem Header="{x:Static resx:Resource.vMenuChoosePresentationArea}" Command="{x:Static local:CustomCommands.ChoosePresentationArea}">
+				<MenuItem Header="{Binding Converter={StaticResource AppendEllipsisConverter}, ConverterParameter={x:Static resx:Resource.vMenuChoosePresentationArea}}" Command="{x:Static local:CustomCommands.ChoosePresentationArea}">
 					<MenuItem.Icon>
 						<Image Width="24" Source="/WordsLive;component/Artwork/PresentationArea.png" />
 					</MenuItem.Icon>
 				</MenuItem>
 				<MenuItem Header="{x:Static resx:Resource.vMenuShowTestImage}" Command="{x:Static local:CustomCommands.ShowTestImage}"/>
-				<MenuItem Header="{x:Static resx:Resource.vMenuShowNotification}" Command="{x:Static local:CustomCommands.ShowNotification}"/>
+                <MenuItem Header="{Binding Converter={StaticResource AppendEllipsisConverter}, ConverterParameter={x:Static resx:Resource.vMenuShowNotification}}" Command="{x:Static local:CustomCommands.ShowNotification}"/>
 			</MenuItem>
 			<MenuItem Header="{x:Static resx:Resource.veMenuWindow}">
 				<MenuItem Header="{x:Static resx:Resource.veMenuShowSonglist}" Command="{x:Static local:CustomCommands.ShowSonglist}">
@@ -118,7 +118,7 @@
 				</MenuItem>
 			</MenuItem>
 			<!-- TODO <MenuItem Header="Hilfe">
-				<MenuItem Header="Über WordsLive ..."/>
+				<MenuItem Header="Über WordsLive"/>
 			</MenuItem>-->
 		</Menu>
 		<ToolBar Grid.Row="1" Margin="0" VerticalAlignment="Top" ToolBarTray.IsLocked="True">

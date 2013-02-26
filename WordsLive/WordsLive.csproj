@@ -145,6 +145,8 @@
     <Compile Include="TestPresentation.cs" />
     <Compile Include="Utils\InsertionAdorner.cs" />
     <Compile Include="Utils\EnumToIndexConverter.cs" />
+    <Compile Include="Utils\AppendEllipsisConverter.cs" />
+    <Compile Include="Utils\RemoveAccessKeyConverter.cs" />
     <Compile Include="XpsDocument.cs" />
     <Compile Include="XpsDocumentControlPanel.xaml.cs">
       <DependentUpon>XpsDocumentControlPanel.xaml</DependentUpon>

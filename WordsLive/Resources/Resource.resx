@@ -274,7 +274,7 @@
     <value>_Save portfolio</value>
   </data>
   <data name="vMenuSavePortfolioAs" xml:space="preserve">
-    <value>Save portfolio _as ...</value>
+    <value>Save portfolio _as</value>
   </data>
   <data name="vMenuSettings" xml:space="preserve">
     <value>Settings</value>
@@ -445,13 +445,13 @@
     <value>_Edit</value>
   </data>
   <data name="eMenuEditChords" xml:space="preserve">
-    <value>Edit chords ...</value>
+    <value>Edit chords</value>
   </data>
   <data name="eMenuFile" xml:space="preserve">
     <value>_File</value>
   </data>
   <data name="eMenuFormatSong" xml:space="preserve">
-    <value>Format song ...</value>
+    <value>Format song</value>
   </data>
   <data name="eMenuNewSong" xml:space="preserve">
     <value>New song</value>
@@ -466,7 +466,7 @@
     <value>Save song</value>
   </data>
   <data name="eMenuSaveSongAs" xml:space="preserve">
-    <value>Save song as ...</value>
+    <value>Save song as</value>
   </data>
   <data name="eMenuSplitTextAtCursor" xml:space="preserve">
     <value>Split text at cursor position</value>
@@ -730,9 +730,9 @@
     <value>Show notification</value>
   </data>
   <data name="vMenuShowNotification" xml:space="preserve">
-    <value>Show notification ...</value>
+    <value>Show notification</value>
   </data>
   <data name="eMenuExportSong" xml:space="preserve">
-    <value>Export song ...</value>
+    <value>Export song</value>
   </data>
 </root>

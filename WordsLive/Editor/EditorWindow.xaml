@@ -47,7 +47,7 @@
 						<Image Width="24" Source="/WordsLive;component/Artwork/New.png" />
 					</MenuItem.Icon>
 				</MenuItem>
-				<MenuItem Header="{x:Static resx:Resource.eMenuOpenSong}" Command="Open">
+				<MenuItem Command="Open" Header="{Binding Converter={StaticResource AppendEllipsisConverter}, ConverterParameter={x:Static resx:Resource.eMenuOpenSong}}">
 					<MenuItem.Icon>
 						<Image Width="24" Source="/WordsLive;component/Artwork/Open.png" />
 					</MenuItem.Icon>
@@ -59,9 +59,9 @@
 					</MenuItem.Icon>
 				</MenuItem>
 				<MenuItem
-					Header="{x:Static resx:Resource.eMenuSaveSongAs}" Command="SaveAs"/>
+					Header="{Binding Converter={StaticResource AppendEllipsisConverter}, ConverterParameter={x:Static resx:Resource.eMenuSaveSongAs}}" Command="SaveAs"/>
 				<MenuItem
-					Header="{x:Static resx:Resource.eMenuExportSong}" Command="{x:Static local:CustomCommands.Export}"/>
+					Header="{Binding Converter={StaticResource AppendEllipsisConverter}, ConverterParameter={x:Static resx:Resource.eMenuExportSong}}" Command="{x:Static local:CustomCommands.Export}"/>
 				<Separator/>
 				<MenuItem
 					Header="{x:Static resx:Resource.eMenuAddToPortfolio}" Command="{x:Static local:CustomCommands.AddMedia}"/>
@@ -80,8 +80,8 @@
 					</MenuItem.Icon>
 				</MenuItem>
 				<MenuItem Header="{x:Static resx:Resource.eMenuSplitTextAtCursor}" Command="{x:Static local:CustomCommands.Split}"/>
-				<MenuItem Header="{x:Static resx:Resource.eMenuEditChords}" Command="{x:Static local:CustomCommands.EditChords}"/>
-				<MenuItem Header="{x:Static resx:Resource.eMenuFormatSong}" Command="{x:Static local:CustomCommands.SongSettings}">
+				<MenuItem Header="{Binding Converter={StaticResource AppendEllipsisConverter}, ConverterParameter={x:Static resx:Resource.eMenuEditChords}}" Command="{x:Static local:CustomCommands.EditChords}"/>
+				<MenuItem Header="{Binding Converter={StaticResource AppendEllipsisConverter}, ConverterParameter={x:Static resx:Resource.eMenuFormatSong}}" Command="{x:Static local:CustomCommands.SongSettings}">
 					<MenuItem.Icon>
 						<Image Width="24" Source="/WordsLive;component/Artwork/Formatting.png" />
 					</MenuItem.Icon>

@@ -385,7 +385,7 @@ namespace WordsLive.Resources {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Edit chords ... ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die Edit chords ähnelt.
         /// </summary>
         public static string eMenuEditChords {
             get {
@@ -394,7 +394,7 @@ namespace WordsLive.Resources {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Export song ... ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die Export song ähnelt.
         /// </summary>
         public static string eMenuExportSong {
             get {
@@ -412,7 +412,7 @@ namespace WordsLive.Resources {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Format song ... ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die Format song ähnelt.
         /// </summary>
         public static string eMenuFormatSong {
             get {
@@ -457,7 +457,7 @@ namespace WordsLive.Resources {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Save song as ... ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die Save song as ähnelt.
         /// </summary>
         public static string eMenuSaveSongAs {
             get {
@@ -1636,7 +1636,7 @@ namespace WordsLive.Resources {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Save portfolio _as ... ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die Save portfolio _as ähnelt.
         /// </summary>
         public static string vMenuSavePortfolioAs {
             get {
@@ -1672,7 +1672,7 @@ namespace WordsLive.Resources {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Show notification ... ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die Show notification ähnelt.
         /// </summary>
         public static string vMenuShowNotification {
             get {
