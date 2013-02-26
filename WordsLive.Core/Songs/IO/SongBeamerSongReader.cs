@@ -89,9 +89,10 @@ namespace WordsLive.Core.Songs.IO
 						{
 							if (currentText == null) // at the beginning of a new part
 							{
-								if (IsSongBeamerPartName(line))
+								string name;
+								if (IsSongBeamerPartName(line, out name))
 								{
-									currentPart.Name = line;
+									currentPart.Name = name;
 									currentText = "";
 									linenum = 0;
 								}
@@ -154,11 +155,22 @@ namespace WordsLive.Core.Songs.IO
 		/// <returns>
 		///   <c>true</c> if the specified value is a SongBeamer part name; otherwise, <c>false</c>.
 		/// </returns>
-		private static bool IsSongBeamerPartName(string value)
+		private static bool IsSongBeamerPartName(string value, out string name)
 		{
+			name = null;
+
+			if (value.StartsWith("$$M="))
+			{
+				name = value.Substring(4);
+				return true;
+			}
+
 			string[] parts = value.Split(' ');
 			if (parts.Length > 2)
+			{
+				name = null;
 				return false;
+			}
 
 			switch (parts[0].ToLower())
 			{
@@ -183,6 +195,7 @@ namespace WordsLive.Core.Songs.IO
 				case "ending":
 				case "teil":
 				case "part":
+					name = value;
 					return true;
 				default:
 					return false;
@@ -271,7 +284,7 @@ namespace WordsLive.Core.Songs.IO
 		{
 			if (properties.ContainsKey("verseorder"))
 			{
-				song.SetOrder(properties["verseorder"].Split(','));
+				song.SetOrder(properties["verseorder"].Split(','), ignoreMissing: true);
 			}
 			else
 			{
