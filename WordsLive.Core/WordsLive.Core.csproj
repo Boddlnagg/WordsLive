@@ -98,6 +98,7 @@
     <Compile Include="Songs\Chords\Key.cs" />
     <Compile Include="Songs\Chords\Note.cs" />
     <Compile Include="Songs\Chords\NoteSymbol.cs" />
+    <Compile Include="Songs\IO\ChordProSongReader.cs" />
     <Compile Include="Songs\IO\HtmlSongWriter.cs" />
     <Compile Include="Songs\IO\ISongReader.cs" />
     <Compile Include="Songs\IO\ISongWriter.cs" />

@@ -74,6 +74,11 @@ namespace WordsLive.Editor
 					var song = new Song(filename, provider, new SongBeamerSongReader());
 					Load(song);
 				}
+				else if (ext == ".chopro" || ext == ".cho" || ext == ".pro")
+				{
+					var song = new Song(filename, provider, new ChordProSongReader());
+					Load(song);
+				}
 				else if (ext == "") // OpenSong songs have no file extension
 				{
 					var song = new Song(filename, provider, new OpenSongSongReader());
@@ -108,7 +113,7 @@ namespace WordsLive.Editor
 			// TODO: localize
 			Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
 			dlg.DefaultExt = ".ppl";
-			dlg.Filter = "Powerpraise-Lied|*.ppl|SongBeamer-Lied|*.sng";
+			dlg.Filter = "Powerpraise-Lied|*.ppl|SongBeamer-Lied|*.sng|ChordPro-Datei|*.chopro;*.cho;*.pro";
 
 			if (dlg.ShowDialog() == true)
 			{
