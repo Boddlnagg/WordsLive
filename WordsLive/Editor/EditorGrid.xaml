@@ -181,41 +181,38 @@
 			<HierarchicalDataTemplate DataType="{x:Type songs:Song}" ItemsSource="{Binding Source={StaticResource treeNodeProvider}, Path=Nodes}">
 				<StackPanel Orientation="Horizontal">
 					<Image Width="16" Height="16" Margin="0, 1, 2, 1" Source="/WordsLive;component/Artwork/Small_Song.png" />
-					<TextBlock Text="{Binding SongTitle}">
-						<TextBlock.ContextMenu>
-							<ContextMenu>
-								<MenuItem Header="{x:Static resx:Resource.eGridContextRenameSong}" Command="{x:Static my:CustomCommands.Rename}" CommandParameter="{Binding}"/>
-								<MenuItem Header="{x:Static resx:Resource.eGridContextAddPart}" Command="{x:Static my:CustomCommands.Insert}" CommandParameter="{Binding}"/>
-							</ContextMenu>
-						</TextBlock.ContextMenu>
-					</TextBlock>
+					<TextBlock Text="{Binding SongTitle}" />
+					<StackPanel.ContextMenu>
+						<ContextMenu>
+							<MenuItem Header="{x:Static resx:Resource.eGridContextRenameSong}" Command="{x:Static my:CustomCommands.Rename}" CommandParameter="{Binding}"/>
+							<MenuItem Header="{x:Static resx:Resource.eGridContextAddPart}" Command="{x:Static my:CustomCommands.Insert}" CommandParameter="{Binding}"/>
+						</ContextMenu>
+					</StackPanel.ContextMenu>
 				</StackPanel>
 			</HierarchicalDataTemplate>
 			<HierarchicalDataTemplate DataType="{x:Type songs:SongPart}" ItemsSource="{Binding Slides}">
 				<StackPanel Orientation="Horizontal">
 					<Image Width="16" Height="16" Margin="0, 1, 2, 1" Source="/WordsLive;component/Artwork/Small_Folder.png" />
-					<TextBlock Text="{Binding Name}">
-						<TextBlock.ContextMenu>
-							<ContextMenu>
-								<MenuItem Header="{x:Static resx:Resource.eGridContextRename}" Command="{x:Static my:CustomCommands.Rename}" CommandParameter="{Binding}"/>
-								<MenuItem Header="{x:Static resx:Resource.eGridContextRemovePart}" Command="Delete" CommandParameter="{Binding}"/>
-								<MenuItem Header="{x:Static resx:Resource.eGridContextAddSlide}" Command="{x:Static my:CustomCommands.Insert}" CommandParameter="{Binding}"/>
-							</ContextMenu>
-						</TextBlock.ContextMenu>
-					</TextBlock>
+					<TextBlock Text="{Binding Name}" />
+					<StackPanel.ContextMenu>
+						<ContextMenu>
+							<MenuItem Header="{x:Static resx:Resource.eGridContextRename}" Command="{x:Static my:CustomCommands.Rename}" CommandParameter="{Binding}"/>
+							<MenuItem Header="{x:Static resx:Resource.eGridContextRemovePart}" Command="Delete" CommandParameter="{Binding}"/>
+							<MenuItem Header="{x:Static resx:Resource.eGridContextAddSlide}" Command="{x:Static my:CustomCommands.Insert}" CommandParameter="{Binding}"/>
+						</ContextMenu>
+					</StackPanel.ContextMenu>
 				</StackPanel>
 			</HierarchicalDataTemplate>
 			<HierarchicalDataTemplate DataType="{x:Type songs:SongSlide}">
 				<StackPanel Orientation="Horizontal">
 					<Image Width="16" Height="16" Margin="0, 1, 2, 1" Source="/WordsLive;component/Artwork/Small_Slide.png" />
-					<TextBlock Text="{x:Static resx:Resource.eGridSlideTitle}">
-						<TextBlock.ContextMenu>
-							<ContextMenu>
-								<MenuItem Header="{x:Static resx:Resource.eGridContextRemoveSlide}" Command="Delete" CommandParameter="{Binding}"/>
-								<MenuItem Header="{x:Static resx:Resource.eGridContextDuplicateSlide}" Command="{x:Static my:CustomCommands.Duplicate}" CommandParameter="{Binding}"/>
-							</ContextMenu>
-						</TextBlock.ContextMenu>
-					</TextBlock>
+					<TextBlock Text="{x:Static resx:Resource.eGridSlideTitle}" />
+					<StackPanel.ContextMenu>
+						<ContextMenu>
+							<MenuItem Header="{x:Static resx:Resource.eGridContextRemoveSlide}" Command="Delete" CommandParameter="{Binding}"/>
+							<MenuItem Header="{x:Static resx:Resource.eGridContextDuplicateSlide}" Command="{x:Static my:CustomCommands.Duplicate}" CommandParameter="{Binding}"/>
+						</ContextMenu>
+					</StackPanel.ContextMenu>
 				</StackPanel>
 			</HierarchicalDataTemplate>
 			<HierarchicalDataTemplate DataType="{x:Type nodes:SourceNode}">
