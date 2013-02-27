@@ -126,6 +126,9 @@
   <data name="animationsPl" xml:space="preserve">
     <value>{0} Animationsschritte</value>
   </data>
+  <data name="errorMsgClosedExternally" xml:space="preserve">
+    <value>Die Präsentation wurde unerwartet geschlossen. WordsLive hat die Anzeige schwarz geschaltet und wird versuchen, die Präsentation neu zu laden.</value>
+  </data>
   <data name="next" xml:space="preserve">
     <value>Weiter</value>
   </data>

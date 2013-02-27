@@ -1,8 +1,8 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using WordsLive.Core.Songs;
+using WordsLive.Resources;
 using WordsLive.Utils;
 
 namespace WordsLive.Editor
@@ -96,12 +96,12 @@ namespace WordsLive.Editor
 				{ 
 					case "PartName":
 						if (string.IsNullOrEmpty(this.partName))
-							return WordsLive.Resources.Resource.rpMsgNameMustNotBeEmpty;
+							return Resource.rpMsgNameMustNotBeEmpty;
 
 						foreach (var part in this.song.Parts)
 						{
 							if (this.partName == part.Name && !(part == this.part && this.part != null))
-								return WordsLive.Resources.Resource.rpMsgNameAlreadyExists;
+								return Resource.rpMsgNameAlreadyExists;
 						}
 						break;
 				}

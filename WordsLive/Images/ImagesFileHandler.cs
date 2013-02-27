@@ -5,6 +5,7 @@ using System.Linq;
 using System.Windows;
 using WordsLive.Core;
 using WordsLive.Core.Data;
+using WordsLive.Resources;
 
 namespace WordsLive.Images
 {
@@ -32,8 +33,8 @@ namespace WordsLive.Images
 			if (paths.All(p => ImagesMedia.ImageExtensions.Contains(Path.GetExtension(p).ToLower())))
 			{
 				Controller.FocusMainWindow();
-				// TODO: localize
-				var res = MessageBox.Show("Sie haben mehrere Bilddateien ausgewählt. Wollen Sie diese als Diashow hinzufügen? Bei „Ja“ müssen Sie als nächstes auswählen, wohin die Diashow gespeichert werden soll. Bei „Nein“ werden die Bilder einzeln hinzugefügt.", "Slideshow erstellen?", MessageBoxButton.YesNoCancel);
+
+				var res = MessageBox.Show(Resource.imgMsgMultipleCreateSlideshow, Resource.imgMsgMultipleCreateSlideshowTitle, MessageBoxButton.YesNoCancel);
 				if (res == MessageBoxResult.Yes)
 				{
 					// TODO: support other providers (don't use SaveFileDialog then)
@@ -43,7 +44,7 @@ namespace WordsLive.Images
 
 					Microsoft.Win32.SaveFileDialog dlg = new Microsoft.Win32.SaveFileDialog();
 					dlg.DefaultExt = ".show";
-					dlg.Filter = "Diashow|*.show";
+					dlg.Filter = "Diashow|*.show"; // TODO: localize
 
 					if (dlg.ShowDialog() == true)
 					{

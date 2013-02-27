@@ -8,6 +8,7 @@ using System.Windows.Input;
 using WordsLive.Core.Data;
 using WordsLive.Core.Songs;
 using WordsLive.Core.Songs.IO;
+using WordsLive.Resources;
 using WordsLive.Songs;
 
 namespace WordsLive.Editor
@@ -92,7 +93,7 @@ namespace WordsLive.Editor
 			catch
 			{
 				Controller.ShowEditorWindow();
-				MessageBox.Show(String.Format(WordsLive.Resources.Resource.eMsgCouldNotOpenSong, filename), WordsLive.Resources.Resource.dialogError, MessageBoxButton.OK, MessageBoxImage.Error);
+				MessageBox.Show(String.Format(Resource.eMsgCouldNotOpenSong, filename), Resource.dialogError, MessageBoxButton.OK, MessageBoxImage.Error);
 			}
 		}
 
@@ -157,7 +158,7 @@ namespace WordsLive.Editor
 			string[] exts = { ".ppl", ".html" };
 			dlg.DefaultExt = exts[0];
 			dlg.Filter = "Powerpraise-Lied|*.ppl|HTML-Dokument|*.html"; // must be same order as exts
-			dlg.Title = WordsLive.Resources.Resource.eMenuExportSong;
+			dlg.Title = Resource.eMenuExportSong;
 			if (song.File == null)
 			{
 				dlg.FileName = song.SongTitle;
@@ -198,7 +199,7 @@ namespace WordsLive.Editor
 		private void NewSong()
 		{
 			var song = Song.CreateFromTemplate();
-			song.SongTitle = WordsLive.Resources.Resource.eNewSongTitle;
+			song.SongTitle = Resource.eNewSongTitle;
 			Load(song);
 		}
 
@@ -209,7 +210,7 @@ namespace WordsLive.Editor
 
 			if (doc.Song.IsModified)
 			{
-				var res = MessageBox.Show(String.Format(WordsLive.Resources.Resource.eMsgSaveSongChanges, doc.Song.SongTitle), WordsLive.Resources.Resource.eMsgSaveSongChangesTitle, MessageBoxButton.YesNoCancel);
+				var res = MessageBox.Show(String.Format(Resource.eMsgSaveSongChanges, doc.Song.SongTitle), Resource.eMsgSaveSongChangesTitle, MessageBoxButton.YesNoCancel);
 				if (res == MessageBoxResult.Cancel)
 				{
 					return false;
@@ -243,7 +244,7 @@ namespace WordsLive.Editor
 				bg = element.Root.FirstSlide != null ? element.Root.FirstSlide.Background : element.Root.Backgrounds[0];
 			else
 			{
-				MessageBox.Show(WordsLive.Resources.Resource.eMsgSelectElement);
+				MessageBox.Show(Resource.eMsgSelectElement);
 				return;
 			}
 
@@ -272,13 +273,13 @@ namespace WordsLive.Editor
 					{
 						if (win.ChosenBackground.Type == SongBackgroundType.Video)
 						{
-							var res = MessageBox.Show(WordsLive.Resources.Resource.eMsgVideoBackgroundForElement, WordsLive.Resources.Resource.eMsgVideoBackgroundForElementTitle, MessageBoxButton.YesNo);
+							var res = MessageBox.Show(Resource.eMsgVideoBackgroundForElement, Resource.eMsgVideoBackgroundForElementTitle, MessageBoxButton.YesNo);
 							if (res == MessageBoxResult.Yes)
 								part.Root.SetBackground(win.ChosenBackground);
 						}
 						else if (part.Root.VideoBackground != null)
 						{
-							var res = MessageBox.Show(WordsLive.Resources.Resource.eMsgReplaceVideoBackground, WordsLive.Resources.Resource.eMsgReplaceVideoBackgroundTitle, MessageBoxButton.YesNo);
+							var res = MessageBox.Show(Resource.eMsgReplaceVideoBackground, Resource.eMsgReplaceVideoBackgroundTitle, MessageBoxButton.YesNo);
 							if (res == MessageBoxResult.Yes)
 								part.Root.SetBackground(win.ChosenBackground);
 						}
@@ -295,13 +296,13 @@ namespace WordsLive.Editor
 					{
 						if (win.ChosenBackground.Type == SongBackgroundType.Video)
 						{
-							var res = MessageBox.Show(WordsLive.Resources.Resource.eMsgVideoBackgroundForElement, WordsLive.Resources.Resource.eMsgVideoBackgroundForElementTitle, MessageBoxButton.YesNo);
+							var res = MessageBox.Show(Resource.eMsgVideoBackgroundForElement, Resource.eMsgVideoBackgroundForElementTitle, MessageBoxButton.YesNo);
 							if (res == MessageBoxResult.Yes)
 								slide.Root.SetBackground(win.ChosenBackground);
 						}
 						else if (slide.Root.VideoBackground != null)
 						{
-							var res = MessageBox.Show(WordsLive.Resources.Resource.eMsgReplaceVideoBackground, WordsLive.Resources.Resource.eMsgReplaceVideoBackgroundTitle, MessageBoxButton.YesNo);
+							var res = MessageBox.Show(Resource.eMsgReplaceVideoBackground, Resource.eMsgReplaceVideoBackgroundTitle, MessageBoxButton.YesNo);
 							if (res == MessageBoxResult.Yes)
 								slide.Root.SetBackground(win.ChosenBackground);
 						}

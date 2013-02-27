@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using WordsLive.Slideshow.Resources;
 
 namespace WordsLive.Slideshow
 {
@@ -35,7 +36,7 @@ namespace WordsLive.Slideshow
 		{
 			get
 			{
-				return WordsLive.Slideshow.Resources.Resource.seHeader;
+				return Resource.seHeader;
 			}
 		}
 	}

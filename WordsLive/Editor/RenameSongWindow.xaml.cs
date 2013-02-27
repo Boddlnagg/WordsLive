@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.Windows;
+using WordsLive.Resources;
 using WordsLive.Utils;
 
 namespace WordsLive.Editor
@@ -57,7 +58,7 @@ namespace WordsLive.Editor
                 {
                     case "SongName":
                         if (string.IsNullOrEmpty(this.songName))
-                            return WordsLive.Resources.Resource.rsMsgNameMustNotBeEmpty;
+                            return Resource.rsMsgNameMustNotBeEmpty;
                         break;
                 }
                 return null;

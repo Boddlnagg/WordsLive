@@ -687,4 +687,28 @@
   <data name="eMenuExportSong" xml:space="preserve">
     <value>Lied exportieren</value>
   </data>
+  <data name="imgMsgMultipleCreateSlideshow" xml:space="preserve">
+    <value>Sie haben mehrere Bilddateien ausgewählt. Wollen Sie diese als Diashow hinzufügen? Bei „Ja“ müssen Sie als nächstes auswählen, wohin die Diashow gespeichert werden soll. Bei „Nein“ werden die Bilder einzeln hinzugefügt.</value>
+  </data>
+  <data name="imgMsgMultipleCreateSlideshowTitle" xml:space="preserve">
+    <value>Slideshow erstellen?</value>
+  </data>
+  <data name="seErrorFileDoesNotExist" xml:space="preserve">
+    <value>Die Datei existiert nicht.</value>
+  </data>
+  <data name="seErrorFolderDoesNotExist" xml:space="preserve">
+    <value>Das Verzeichnis existiert nicht.</value>
+  </data>
+  <data name="seErrorNegativeValue" xml:space="preserve">
+    <value>Der Wert muss 0 oder größer sein.</value>
+  </data>
+  <data name="seErrorWrongPortNumber" xml:space="preserve">
+    <value>Die Portnummer muss entweder 80 oder mindestens 1024 sein.</value>
+  </data>
+  <data name="vAwesomiumProcessCrashed" xml:space="preserve">
+    <value>Der Anzeigeprozess WordsLive.Awesomium.exe wurde beendet oder ist abgestürzt. WordsLive wird versuchen, die aktuelle Präsentation neu zu laden um die Anzeige wiederherzustellen.</value>
+  </data>
+  <data name="vAwesomiumProcessCrashedTitle" xml:space="preserve">
+    <value>Anzeigeprozess wurde beendet</value>
+  </data>
 </root>

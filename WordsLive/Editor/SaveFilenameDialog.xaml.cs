@@ -2,6 +2,7 @@
 using System.IO;
 using System.Windows;
 using WordsLive.Core.Data;
+using WordsLive.Resources;
 using WordsLive.Utils;
 
 namespace WordsLive.Editor
@@ -69,7 +70,7 @@ namespace WordsLive.Editor
 
 			if (!notFound)
 			{
-				var overwrite = MessageBox.Show(this, WordsLive.Resources.Resource.sfMsgOverwriteExistingFile, WordsLive.Resources.Resource.sfMsgOverwriteExistingFileTitle, MessageBoxButton.YesNoCancel);
+				var overwrite = MessageBox.Show(this, Resource.sfMsgOverwriteExistingFile, Resource.sfMsgOverwriteExistingFileTitle, MessageBoxButton.YesNoCancel);
 				if (overwrite != MessageBoxResult.Yes)
 					return;
 			}
@@ -90,7 +91,7 @@ namespace WordsLive.Editor
 				{
 					case "FilenameWithoutExtension":
 						if (string.IsNullOrEmpty(this.filename) || this.filename.IndexOfAny(Path.GetInvalidFileNameChars()) != -1)
-							return WordsLive.Resources.Resource.sfInvalidFilename;
+							return Resource.sfInvalidFilename;
 
 						break;
 				}

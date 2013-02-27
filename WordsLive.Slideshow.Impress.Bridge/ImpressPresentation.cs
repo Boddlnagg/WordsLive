@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Threading;
 using System.Windows.Media.Imaging;
 using unoidl.com.sun.star.awt;
 using unoidl.com.sun.star.beans;
@@ -11,8 +13,7 @@ using unoidl.com.sun.star.drawing;
 using unoidl.com.sun.star.frame;
 using unoidl.com.sun.star.lang;
 using unoidl.com.sun.star.presentation;
-using System.Threading;
-using System.Drawing;
+using WordsLive.Slideshow.Resources;
 
 namespace WordsLive.Slideshow.Impress.Bridge
 {			
@@ -261,7 +262,7 @@ namespace WordsLive.Slideshow.Impress.Bridge
 				{
 					var decoder = new PngBitmapDecoder(reader.BaseStream, BitmapCreateOptions.PreservePixelFormat, BitmapCacheOption.OnLoad);
 					decoder.Frames[0].Freeze();
-					thumbnails.Add(new SlideThumbnail { Image = decoder.Frames[0], Title = name + " ("+ String.Format(Resources.Resource.slideN, i+1)+")"});
+					thumbnails.Add(new SlideThumbnail { Image = decoder.Frames[0], Title = name + " ("+ String.Format(Resource.slideN, i+1)+")"});
 				}
 			}
 			File.Delete(file);

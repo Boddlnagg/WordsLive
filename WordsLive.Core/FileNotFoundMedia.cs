@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.IO;
 using WordsLive.Core.Data;
 
 namespace WordsLive.Core
@@ -15,7 +11,7 @@ namespace WordsLive.Core
 		{
 			get
 			{
-				return base.Title + " (Datei nicht gefunden)"; // TODO: localize
+				return base.Title + " (Datei nicht gefunden)"; // TODO: localize (-> move labeling to UI)
 			}
 		}
 

@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
+using System.Threading;
 using System.Windows.Media.Imaging;
 using PowerpointViewerLib;
 using WordsLive.Presentation;
-using System.Threading;
-using System.Windows.Media;
-using System.IO;
+using WordsLive.Slideshow.Resources;
 
 namespace WordsLive.Slideshow.PowerpointViewer
 {
@@ -29,10 +29,10 @@ namespace WordsLive.Slideshow.PowerpointViewer
 						thumbnails.Add(new SlideThumbnail
 						{
 							Image = SlideshowPreviewProvider.ConvertBitmap(bmp),
-							Title = String.Format(Resources.Resource.slideN, i) + " (" +
-								(animations == 0 ? Resources.Resource.animations0 :
-								(animations == 1 ? Resources.Resource.animations1 :
-								String.Format(Resources.Resource.animationsPl, animations))) + ")"
+							Title = String.Format(Resource.slideN, i) + " (" +
+								(animations == 0 ? Resource.animations0 :
+								(animations == 1 ? Resource.animations1 :
+								String.Format(Resource.animationsPl, animations))) + ")"
 						});
 						i++;
 					}

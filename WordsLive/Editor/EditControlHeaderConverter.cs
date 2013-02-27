@@ -19,6 +19,7 @@
 using System;
 using System.Windows.Data;
 using WordsLive.Core.Songs;
+using WordsLive.Resources;
 
 namespace WordsLive.Editor
 {
@@ -34,23 +35,23 @@ namespace WordsLive.Editor
 
 			if (element is SongSlide)
 			{
-				return WordsLive.Resources.Resource.eGridTextHeader;
+				return Resource.eGridTextHeader;
 			}
 			else if (element is Nodes.LanguageNode)
 			{
-				return WordsLive.Resources.Resource.eMetadataLanguageTitle;
+				return Resource.eMetadataLanguageTitle;
 			}
 			else if (element is Nodes.SourceNode)
 			{
-				return WordsLive.Resources.Resource.eMetadataSourceTitle;
+				return Resource.eMetadataSourceTitle;
 			}
 			else if (element is Nodes.CopyrightNode)
 			{
-				return WordsLive.Resources.Resource.eMetadataCopyrightTitle;
+				return Resource.eMetadataCopyrightTitle;
 			}
 			else if (element is Nodes.CategoryNode)
 			{
-				return WordsLive.Resources.Resource.eMetadataCategoryTitle;
+				return Resource.eMetadataCategoryTitle;
 			}
 			else
 			{

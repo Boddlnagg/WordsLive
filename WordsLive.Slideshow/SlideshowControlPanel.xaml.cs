@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Windows.Controls;
 using System.Windows.Input;
+using WordsLive.Slideshow.Resources;
 
 namespace WordsLive.Slideshow
 {
@@ -60,7 +61,7 @@ namespace WordsLive.Slideshow
 				{
 					Controller.PresentationManager.CurrentPresentation = null;
 					Controller.FocusMainWindow();
-					System.Windows.MessageBox.Show("Die Präsentation wurde unerwartet geschlossen. WordsLive hat die Anzeige schwarz geschaltet und wird versuchen, die Präsentation neu zu laden."); // TODO: localize
+					System.Windows.MessageBox.Show(Resource.errorMsgClosedExternally);
 					Controller.ReloadActiveMedia();
 				}));
 			};

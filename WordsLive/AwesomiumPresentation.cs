@@ -3,6 +3,7 @@ using System.Windows;
 using Awesomium.Core;
 using WordsLive.Presentation;
 using WordsLive.Presentation.Wpf;
+using WordsLive.Resources;
 
 namespace WordsLive
 {
@@ -60,8 +61,7 @@ namespace WordsLive
 
 		private void OnWebviewCrashed(object sender, EventArgs e)
 		{
-			var result = MessageBox.Show("Der Anzeigeprozess WordsLive.Awesomium.exe wurde beendet oder ist abgestürzt. WordsLive wird versuchen, die aktuelle Präsentation neu zu laden um die Anzeige wiederherzustellen.", // TODO: localize
-				"Fehler", MessageBoxButton.OKCancel);
+			var result = MessageBox.Show(Resource.vAwesomiumProcessCrashed, Resource.vAwesomiumProcessCrashedTitle, MessageBoxButton.OKCancel);
 
 			if (result == MessageBoxResult.OK)
 				Controller.ReloadActiveMedia();

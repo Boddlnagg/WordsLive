@@ -5,6 +5,7 @@ using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Input;
 using WordsLive.Core.Songs;
+using WordsLive.Resources;
 using WordsLive.Utils;
 
 namespace WordsLive.Editor
@@ -349,8 +350,7 @@ namespace WordsLive.Editor
 
 					if (song.FindPartWithSlide(dragNode).Slides.Count <= 1)
 					{
-						MessageBox.Show(WordsLive.Resources.Resource.eMsgMoveLastSlideInPart,
-							WordsLive.Resources.Resource.dialogError, MessageBoxButton.OK, MessageBoxImage.Error);
+						MessageBox.Show(Resource.eMsgMoveLastSlideInPart, Resource.dialogError, MessageBoxButton.OK, MessageBoxImage.Error);
 						return;
 					}
 

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.IO;
 using System.Windows;
 using System.Windows.Controls;
+using WordsLive.Resources;
 using WordsLive.Utils;
 
 namespace WordsLive
@@ -220,22 +220,21 @@ namespace WordsLive
 			{
 				switch (columnName)
 				{
-					// TODO: localize
 					case "PresentationTransition":
 						if (PresentationTransition < 0)
-							return "Der Wert muss 0 oder größer sein.";
+							return Resource.seErrorNegativeValue;
 						break;
 					case "SongSlideTransition":
 						if (SongSlideTransition < 0)
-							return "Der Wert muss 0 oder größer sein.";
+							return Resource.seErrorNegativeValue;
 						break;
 					case "ImageTransition":
 						if (ImageTransition < 0)
-							return "Der Wert muss 0 oder größer sein.";
+							return Resource.seErrorNegativeValue;
 						break;
 					case "EmbeddedServerPort":
 						if (EmbeddedServerPort != 80 && EmbeddedServerPort < 1024)
-							return "Die Portnummer muss entweder 80 oder mindestens 1024 sein.";
+							return Resource.seErrorWrongPortNumber;
 						break;
 				}
 				return null;

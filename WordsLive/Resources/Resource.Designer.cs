@@ -664,6 +664,24 @@ namespace WordsLive.Resources {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die You&apos;ve selected multiple image files. Do you want to add them as a single slideshow? When selecting &quot;Yes&quot; you will be prompted for a location to save the slideshow. Selecting &quot;No&quot; means the images will be added one by one. ähnelt.
+        /// </summary>
+        public static string imgMsgMultipleCreateSlideshow {
+            get {
+                return ResourceManager.GetString("imgMsgMultipleCreateSlideshow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Create slideshow? ähnelt.
+        /// </summary>
+        public static string imgMsgMultipleCreateSlideshowTitle {
+            get {
+                return ResourceManager.GetString("imgMsgMultipleCreateSlideshowTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Bottom ähnelt.
         /// </summary>
         public static string nAlignmentBottom {
@@ -939,6 +957,42 @@ namespace WordsLive.Resources {
         public static string rsTitle {
             get {
                 return ResourceManager.GetString("rsTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die The file doesn&apos;t exist. ähnelt.
+        /// </summary>
+        public static string seErrorFileDoesNotExist {
+            get {
+                return ResourceManager.GetString("seErrorFileDoesNotExist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die The folder doesn&apos;t exist. ähnelt.
+        /// </summary>
+        public static string seErrorFolderDoesNotExist {
+            get {
+                return ResourceManager.GetString("seErrorFolderDoesNotExist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die The value must be at least 0. ähnelt.
+        /// </summary>
+        public static string seErrorNegativeValue {
+            get {
+                return ResourceManager.GetString("seErrorNegativeValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die The port number must either be 80 or at least 1024. ähnelt.
+        /// </summary>
+        public static string seErrorWrongPortNumber {
+            get {
+                return ResourceManager.GetString("seErrorWrongPortNumber", resourceCulture);
             }
         }
         
@@ -1362,6 +1416,24 @@ namespace WordsLive.Resources {
         public static string slTitle {
             get {
                 return ResourceManager.GetString("slTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die The display process WordsLive.Awesomium.exe was closed or crashed. WordsLive will try to reload the current presentation in order to restore it. ähnelt.
+        /// </summary>
+        public static string vAwesomiumProcessCrashed {
+            get {
+                return ResourceManager.GetString("vAwesomiumProcessCrashed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Display process crashed ähnelt.
+        /// </summary>
+        public static string vAwesomiumProcessCrashedTitle {
+            get {
+                return ResourceManager.GetString("vAwesomiumProcessCrashedTitle", resourceCulture);
             }
         }
         

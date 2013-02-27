@@ -1,19 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.ComponentModel;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using WordsLive.Resources;
 using WinForms = System.Windows.Forms;
-using System.ComponentModel;
-using System.IO;
 
 namespace WordsLive.Utils
 {
@@ -60,10 +51,9 @@ namespace WordsLive.Utils
 			{
 				switch (columnName)
 				{
-					// TODO: localize
 					case "Text":
 						if (ValidateExists && !Directory.Exists(Text))
-							return "Das Verzeichnis existiert nicht.";
+							return Resource.seErrorFolderDoesNotExist;
 						break;
 				}
 				return null;
