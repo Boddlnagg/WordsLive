@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using Ionic.Zip;
 using WordsLive.Core;
 using WordsLive.Core.Data;
 
@@ -11,7 +12,7 @@ namespace WordsLive.Images
 	public class ImagesMedia : Media
 	{
 		public static readonly string[] ImageExtensions = new string[] { ".jpg", ".jpeg", ".png" }; // TODO: add more
-		public static readonly string[] SlideshowExtensions = new string[] { ".show", /*".zip"*/ }; // TODO: enable zip
+		public static readonly string[] SlideshowExtensions = new string[] { ".show", ".zip" };
 
 		public ObservableCollection<ImageInfo> Images { get; private set; }
 
@@ -36,15 +37,15 @@ namespace WordsLive.Images
 				CanSave = true;
 				CanEdit = true;
 			}
-			//else if (ext == ".zip")
-			//{
-			//	Images = new ObservableCollection<ImageInfo>(LoadFromZip());
-			//	CanSave = false;
-			//	CanEdit = false;
-			//}
+			else if (ext == ".zip")
+			{
+				Images = new ObservableCollection<ImageInfo>(LoadFromZip());
+				CanSave = false;
+				CanEdit = false;
+			}
 			else
 			{
-				Images = new ObservableCollection<ImageInfo> { new ImageInfo(File, DataProvider) };
+				Images = new ObservableCollection<ImageInfo> { new ImageInfo(new Uri(File)) }; // TODO: different providers?
 				CanSave = false;
 				CanEdit = true;
 			}
@@ -71,37 +72,47 @@ namespace WordsLive.Images
 
 				while ((line = reader.ReadLine()) != null)
 				{
-					// TODO: ignore non-existing file -> show error image instead in Control Panel
-					if (!System.IO.File.Exists(line))
+					ImageInfo next = null;
+					try
+					{
+						next = new ImageInfo(new Uri(line));
+					}
+					catch (UriFormatException)
+					{
 						continue;
+					}
 
-					yield return new ImageInfo(line, DataProvider);
+					yield return next;
 				}
 
 				reader.Close();
 			}
 		}
 
-		//private IEnumerable<ImageInfo> LoadFromZip()
-		//{
-		//	// TODO: use ZipFile.Read(stream)
-		//	using (var zip = new ZipFile(this.File))
-		//	{
-		//		foreach (var entry in zip.Entries)
-		//		{
-		//			yield return new ImageInfo(entry);
-		//		}
-		//	}
-		//}
+		private IEnumerable<ImageInfo> LoadFromZip()
+		{
+			Stream stream = DataProvider.Get(File);
+			using (var zip = ZipFile.Read(stream))
+			{
+				foreach (var entry in zip.Entries)
+				{
+					yield return new ImageInfo(entry);
+				}
+			}
+
+			// important: don't close stream directly, so ImageLoader can load the images
+			// TODO: close & dispose the stream when it isn't needed anymore
+		}
 
 		public void InsertImages(IEnumerable<string> paths, int index)
 		{
 			int i = index;
-			foreach (string path in paths)
+			foreach (var path in paths)
 			{
-				if (IsValidImageFile(path))
+				var uri = new Uri(path);
+				if (IsValidImageUri(uri))
 				{
-					Images.Insert(i++, new ImageInfo(path, DataProvider));
+					Images.Insert(i++, new ImageInfo(uri));
 				}
 			}
 		}
@@ -116,17 +127,19 @@ namespace WordsLive.Images
 				var writer = new StreamWriter(trans.Stream);
 				foreach (var img in Images)
 				{
-					writer.WriteLine(img.File.FullName); // TODO: relative path?
+					if (img.Uri.IsFile)
+						writer.WriteLine(img.Uri.LocalPath); // TODO: support relative paths?
+					else
+						writer.WriteLine(img.Uri.AbsoluteUri);
 				}
 				writer.Close();
 			}
 		}
 
-		public bool IsValidImageFile(string filename)
+		public bool IsValidImageUri(Uri uri)
 		{
-			// TODO: support DataProvider (can't use FileInfo)
-			FileInfo file = new FileInfo(filename);
-			return file.Exists && ImageExtensions.Contains(file.Extension.ToLower());
+			var ext = uri.Segments.Last().Split('.').Last();
+			return ImageExtensions.Contains(ext);
 		}
 	}
 }

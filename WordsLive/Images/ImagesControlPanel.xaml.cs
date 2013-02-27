@@ -235,7 +235,7 @@ namespace WordsLive.Images
 
 				if (e.Data.GetData(typeof(ImageInfo)) != null)
 					e.Effects = DragDropEffects.Move;
-				else if (((string[])e.Data.GetData(DataFormats.FileDrop)).Where((f) => media.IsValidImageFile(f)).Any())
+				else if (((string[])e.Data.GetData(DataFormats.FileDrop)).Where((f) => media.IsValidImageUri(new Uri(f))).Any())
 					e.Effects = DragDropEffects.Copy;
 				else
 					e.Effects = DragDropEffects.None;
@@ -383,7 +383,7 @@ namespace WordsLive.Images
 			}
 			else if (e.Command == CustomCommands.RotateLeft || e.Command == CustomCommands.RotateRight)
 			{
-				e.CanExecute = media.CanEdit && img.IsJpeg && (img != slideListView.SelectedItem || !pres.IsLoadingImage);
+				e.CanExecute = media.CanEdit && img.IsLocalJpeg && (img != slideListView.SelectedItem || !pres.IsLoadingImage);
 			}
 			else if (e.Command == ApplicationCommands.Save)
 			{

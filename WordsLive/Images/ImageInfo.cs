@@ -1,45 +1,37 @@
 ﻿using System;
 using System.ComponentModel;
 using System.IO;
+using System.Linq;
 using System.Windows.Media.Imaging;
 using Ionic.Zip;
-using WordsLive.Core.Data;
+using WordsLive.Utils.ImageLoader;
 
 namespace WordsLive.Images
 {
 	public class ImageInfo : INotifyPropertyChanged
 	{
-		private FileInfo file;
+		private object source;
+		private SourceType sourceType;
 
-		public FileInfo File
+		public Uri Uri
 		{
 			get
 			{
-				return file;
-			}
-			private set
-			{
-				file = value;
-				OnPropertyChanged("File");
-				OnPropertyChanged("Source");
-				OnPropertyChanged("Title");
+				if (sourceType == SourceType.ZipFile)
+					throw new InvalidOperationException("Loaded from a zip file.");
+
+				return (Uri)source;
 			}
 		}
-
-		private ZipEntry zipEntry;
 
 		public ZipEntry ZipEntry
 		{
 			get
 			{
-				return zipEntry;
-			}
-			private set
-			{
-				zipEntry = value;
-				OnPropertyChanged("ZipEntry");
-				OnPropertyChanged("Source");
-				OnPropertyChanged("Title");
+				if (sourceType != SourceType.ZipFile)
+					throw new InvalidOperationException("Not loaded from a zip file.");
+
+				return (ZipEntry)source;
 			}
 		}
 
@@ -47,10 +39,13 @@ namespace WordsLive.Images
 		{
 			get
 			{
-				if (File != null)
-					return File;
-				else
-					return ZipEntry;
+				return source;
+			}
+			private set
+			{
+				source = value;
+				OnPropertyChanged("Source");
+				OnPropertyChanged("Title");
 			}
 		}
 
@@ -58,61 +53,73 @@ namespace WordsLive.Images
 		{
 			get
 			{
-				if (File != null)
-					return File.Name;
-				else
-					return ZipEntry.FileName;
+				switch (sourceType)
+				{
+					case SourceType.LocalDisk:
+					case SourceType.ExternalResource:
+						return Uri.Segments.Last();
+					case SourceType.ZipFile:
+						return ZipEntry.FileName;
+					default:
+						return null;
+				}
 			}
 		}
 
-		public bool IsJpeg
+		public bool IsLocalJpeg
 		{
 			get
 			{
-				return this.File != null && (this.File.Extension.ToLower() == ".jpg" || this.File.Extension.ToLower() == ".jpeg");
+				if (SourceType != SourceType.LocalDisk)
+					return false;
+
+				var ext = new FileInfo(Uri.LocalPath).Extension.ToLower();
+				return ext == ".jpg" || ext == ".jpeg";
 			}
 		}
 
-		public Utils.ImageLoader.SourceType SourceType
+		public SourceType SourceType
 		{
 			get
 			{
-				if (File != null)
-					return Utils.ImageLoader.SourceType.LocalDisk;
-				else
-					return Utils.ImageLoader.SourceType.ZipFile;
+				return sourceType;
 			}
 		}
 
-		public ImageInfo(string file, IMediaDataProvider provider)
+		public ImageInfo(Uri uri)
 		{
-			// TODO: support providers
-			this.File = new FileInfo(file);
+			if (uri.IsFile)
+				this.sourceType = SourceType.LocalDisk;
+			else
+				this.sourceType = SourceType.ExternalResource;
+
+			this.source = uri;
 		}
 
 		public ImageInfo(ZipEntry entry)
 		{
-			this.ZipEntry = entry;
+			this.sourceType = SourceType.ZipFile;
+			this.source = entry;
 		}
 
 		public void RotateLeft()
 		{
 			UpdateRotationMetadata(true);
-			this.File = new FileInfo(this.File.FullName);
+			Source = new Uri(Uri, ""); // needed so ImageLoader reloads the source
 		}
 
 		public void RotateRight()
 		{
 			UpdateRotationMetadata(false);
-			this.File = new FileInfo(this.File.FullName);
+			Source = new Uri(Uri, ""); // needed so ImageLoader reloads the source
 		}
 
 		private void UpdateRotationMetadata(bool rotateLeft)
 		{
-			if (!IsJpeg)
-				throw new InvalidOperationException("Can only rotate images loaded from jpeg files.");
+			if (!IsLocalJpeg)
+				throw new InvalidOperationException("Can only rotate images loaded from local jpeg files.");
 
-			using (Stream imageStream = new FileStream(this.File.FullName, FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite))
+			using (Stream imageStream = new FileStream(Uri.LocalPath, FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite))
 			{
 				BitmapFrame bitmapFrame = BitmapFrame.Create(imageStream);
 				var metadataWriter = bitmapFrame.CreateInPlaceBitmapMetadataWriter();
