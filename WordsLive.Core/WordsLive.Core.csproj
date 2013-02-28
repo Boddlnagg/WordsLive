@@ -91,6 +91,7 @@
     <Compile Include="MediaEventArgs.cs" />
     <Compile Include="MediaFileHandler.cs" />
     <Compile Include="MediaManager.cs" />
+    <Compile Include="MediaTypeHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Resources\jquery.js" />
     <Compile Include="ShutdownAttribute.cs" />

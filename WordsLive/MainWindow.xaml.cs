@@ -314,8 +314,8 @@ namespace WordsLive
 		private void ShowAddMediaDialog()
 		{
 			var typeFilters = new List<string>();
-			typeFilters.Add(Resource.vFilterSupportedMediaTypes + "|" + String.Join(";", (from h in MediaManager.FileHandlers from ext in h.Extensions select "*" + ext).Distinct()));
-			typeFilters.AddRange(from h in MediaManager.FileHandlers select h.Description + "|" + String.Join(";", h.Extensions.Select(s => "*" + s)));
+			typeFilters.Add(Resource.vFilterSupportedMediaTypes + "|" + String.Join(";", (from h in MediaManager.Handlers from ext in h.Extensions select "*" + ext).Distinct()));
+			typeFilters.AddRange(from h in MediaManager.Handlers select h.Description + "|" + String.Join(";", h.Extensions.Select(s => "*" + s)));
 			typeFilters.Add(Resource.vFilterAllFiles+"|*");
 
 			Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
@@ -326,7 +326,7 @@ namespace WordsLive
 			{
 				if (dlg.FileNames.Count() > 1)
 				{
-					foreach (var m in MediaManager.LoadMultipleMediaMetadata(dlg.FileNames, DataManager.LocalFiles))
+					foreach (var m in MediaManager.LoadMultipleMediaMetadata(dlg.FileNames.Select(f => new Uri(f))))
 						orderList.Add(m);
 				}
 				else
@@ -883,7 +883,7 @@ namespace WordsLive
 				}
 				else
 				{
-					foreach (var m in MediaManager.LoadMultipleMediaMetadata(files, DataManager.LocalFiles))
+					foreach (var m in MediaManager.LoadMultipleMediaMetadata(files.Select(f => new Uri(f))))
 					{
 						orderList.Insert(index++, m);
 					}
