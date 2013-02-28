@@ -17,10 +17,8 @@
  */
 
 using System;
-using System.IO;
 using System.Windows.Data;
-using WordsLive.Core;
-using WordsLive.Core.Data;
+using WordsLive.Core.Songs.Storage;
 using WordsLive.Utils.ImageLoader;
 
 namespace WordsLive.Editor

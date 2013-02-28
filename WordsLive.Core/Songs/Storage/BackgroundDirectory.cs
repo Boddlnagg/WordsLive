@@ -19,7 +19,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace WordsLive.Core.Data
+namespace WordsLive.Core.Songs.Storage
 {
 	/// <summary>
 	/// Represents a directory that contains backgrounds. An instance of this class can only be obtained
@@ -27,16 +27,16 @@ namespace WordsLive.Core.Data
 	/// </summary>
 	public class BackgroundDirectory
 	{
-		private BackgroundDataProvider provider;
+		private BackgroundStorage storage;
 
 		/// <summary>
 		/// The path of the parent (with leading and trailing '/') or <c>null</c> if it's the root.
 		/// </summary>
 		private string parentPath;
 
-		internal BackgroundDirectory(BackgroundDataProvider provider, string path)
+		internal BackgroundDirectory(BackgroundStorage storage, string path)
 		{
-			this.provider = provider;
+			this.storage = storage;
 			int i = path.Substring(0, path.Length - 1).LastIndexOf('/');
 			if (i < 0)
 			{
@@ -65,7 +65,7 @@ namespace WordsLive.Core.Data
 				if (parentPath == null)
 					return null;
 				else
-					return new BackgroundDirectory(this.provider, this.parentPath);
+					return new BackgroundDirectory(this.storage, this.parentPath);
 			}
 		}
 		
@@ -99,7 +99,7 @@ namespace WordsLive.Core.Data
 		{
 			get
 			{
-				return provider.GetDirectories(this);
+				return storage.GetDirectories(this);
 			}
 		}
 
@@ -110,7 +110,7 @@ namespace WordsLive.Core.Data
 		{
 			get
 			{
-				return provider.GetFiles(this);
+				return storage.GetFiles(this);
 			}
 		}
 
@@ -121,12 +121,12 @@ namespace WordsLive.Core.Data
 			if (other == null)
 				return false;
 			else
-				return other.Path == this.Path && other.provider == this.provider;
+				return other.Path == this.Path && other.storage == this.storage;
 		}
 
 		public override int GetHashCode()
 		{
-			return Path.GetHashCode() ^ provider.GetHashCode();
+			return Path.GetHashCode() ^ storage.GetHashCode();
 		}
 	}
 }

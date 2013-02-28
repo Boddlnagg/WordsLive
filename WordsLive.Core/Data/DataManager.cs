@@ -18,6 +18,7 @@
 
 using System;
 using System.IO;
+using WordsLive.Core.Songs.Storage;
 
 namespace WordsLive.Core.Data
 {
@@ -26,11 +27,12 @@ namespace WordsLive.Core.Data
 		private static FileInfo songTemplate;
 		private static TemporaryDirectory tempDirectory;
 
+		// TODO: move into Storage namespace
 		public static SongDataProvider ActualSongDataProvider { get; private set; }
-		public static BackgroundDataProvider ActualBackgroundDataProvider { get; private set; }
+		public static BackgroundStorage ActualBackgroundStorage { get; private set; }
 
 		private static SongDataProvider redirectSongDataProvider;
-		private static BackgroundDataProvider redirectBackgroundDataProvider;
+		private static BackgroundStorage redirectBackgroundStorage;
 
 		public static DirectoryInfo TempDirectory
 		{
@@ -58,16 +60,16 @@ namespace WordsLive.Core.Data
 		}
 
 		/// <summary>
-		/// Gets the data provider for backgrounds.
+		/// Gets the storage for backgrounds.
 		/// </summary>
-		public static BackgroundDataProvider Backgrounds
+		public static BackgroundStorage Backgrounds
 		{
 			get
 			{
-				if (redirectBackgroundDataProvider != null)
-					return redirectBackgroundDataProvider;
+				if (redirectBackgroundStorage != null)
+					return redirectBackgroundStorage;
 				else
-					return ActualBackgroundDataProvider;
+					return ActualBackgroundStorage;
 			}
 		}
 
@@ -122,7 +124,7 @@ namespace WordsLive.Core.Data
 				credentials = new System.Net.NetworkCredential("WordsLive", password);
 
 			var songs = new HttpSongDataProvider(address + "/songs/", credentials);
-			var backgrounds = new HttpBackgroundDataProvider(address + "/backgrounds/", credentials);
+			var backgrounds = new HttpBackgroundStorage(address + "/backgrounds/", credentials);
 
 			try
 			{
@@ -138,7 +140,7 @@ namespace WordsLive.Core.Data
 			}
 
 			ActualSongDataProvider = songs;
-			ActualBackgroundDataProvider = backgrounds;
+			ActualBackgroundStorage = backgrounds;
 			return true;
 		}
 
@@ -159,7 +161,7 @@ namespace WordsLive.Core.Data
 
 			if (backgroundsDirectory.EndsWith("\\"))
 				backgroundsDirectory = backgroundsDirectory.Substring(0, backgroundsDirectory.Length - 1);
-			var backgrounds = new LocalBackgroundDataProvider(backgroundsDirectory)
+			var backgrounds = new LocalBackgroundStorage(backgroundsDirectory)
 			{
 				// TODO: add more?
 				AllowedImageExtensions = new string[] { ".png", ".jpg", ".jpeg" },
@@ -167,7 +169,7 @@ namespace WordsLive.Core.Data
 			};
 
 			ActualSongDataProvider = songs;
-			ActualBackgroundDataProvider = backgrounds;
+			ActualBackgroundStorage = backgrounds;
 			return true;
 		}
 
@@ -175,10 +177,10 @@ namespace WordsLive.Core.Data
 		/// Enables redirecting of all request over local server using the given password.
 		/// </summary>
 		/// <param name="password">The password.</param>
-		public static void EnableRedirect(SongDataProvider songs, BackgroundDataProvider backgrounds)
+		public static void EnableRedirect(SongDataProvider songs, BackgroundStorage backgrounds)
 		{
 			redirectSongDataProvider = songs;
-			redirectBackgroundDataProvider = backgrounds;
+			redirectBackgroundStorage = backgrounds;
 		}
 
 		/// <summary>
@@ -187,7 +189,7 @@ namespace WordsLive.Core.Data
 		public static void DisableRedirect()
 		{
 			redirectSongDataProvider = null;
-			redirectBackgroundDataProvider = null;
+			redirectBackgroundStorage = null;
 		}
 
 		public class TemporaryDirectory

@@ -5,7 +5,7 @@
 		xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
 		xmlns:resx="clr-namespace:WordsLive.Resources"
 		xmlns:imageloader="clr-namespace:WordsLive.Utils.ImageLoader"
-		xmlns:data="clr-namespace:WordsLive.Core.Data;assembly=WordsLive.Core"
+		xmlns:storage="clr-namespace:WordsLive.Core.Songs.Storage;assembly=WordsLive.Core"
 		Title="{x:Static resx:Resource.cbTitle}"
 		MinWidth="600" MinHeight="350"
 		Height = "{Binding Source={StaticResource settings}, Path=Default.ChooseBackgroundWindowHeight, Mode=TwoWay}"
@@ -39,7 +39,7 @@
 					VerticalAlignment="Stretch"/>
 				<TreeView Grid.Column="0" Name="directoryView" ItemsSource="{Binding}" SelectedItemChanged="directoryView_SelectedItemChanged">
 					<TreeView.Resources>
-						<HierarchicalDataTemplate DataType="{x:Type data:BackgroundDirectory}" ItemsSource="{Binding Directories}" >
+						<HierarchicalDataTemplate DataType="{x:Type storage:BackgroundDirectory}" ItemsSource="{Binding Directories}" >
 							<StackPanel Orientation="Horizontal" Margin="2">
 								<Image Source="/WordsLive;component/Artwork/Small_Folder.png" Width="16" Height="16"/>
 							<TextBlock>

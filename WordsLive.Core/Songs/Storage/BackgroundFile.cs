@@ -18,11 +18,11 @@
 
 using System;
 
-namespace WordsLive.Core.Data
+namespace WordsLive.Core.Songs.Storage
 {
 	public class BackgroundFile
 	{
-		private BackgroundDataProvider provider;
+		private BackgroundStorage storage;
 
 		/// <summary>
 		/// Gets the name of this file.
@@ -39,9 +39,9 @@ namespace WordsLive.Core.Data
 		/// </summary>
 		public BackgroundDirectory Parent { get; private set; }
 
-		internal BackgroundFile(BackgroundDataProvider provider, BackgroundDirectory parent, string name, bool isVideo)
+		internal BackgroundFile(BackgroundStorage storage, BackgroundDirectory parent, string name, bool isVideo)
 		{
-			this.provider = provider;
+			this.storage = storage;
 			this.Name = name;
 			this.Parent = parent;
 			this.IsVideo = isVideo;
@@ -66,7 +66,7 @@ namespace WordsLive.Core.Data
 		{
 			get
 			{
-				return provider.GetFileUri(this);
+				return storage.GetFileUri(this);
 			}
 		}
 
@@ -78,7 +78,7 @@ namespace WordsLive.Core.Data
 		{
 			get
 			{
-				return provider.GetPreviewUri(this);
+				return storage.GetPreviewUri(this);
 			}
 		}
 
@@ -89,12 +89,12 @@ namespace WordsLive.Core.Data
 			if (other == null)
 				return false;
 			else
-				return other.Path == this.Path && other.provider == this.provider;
+				return other.Path == this.Path && other.storage == this.storage;
 		}
 
 		public override int GetHashCode()
 		{
-			return Path.GetHashCode() ^ provider.GetHashCode();
+			return Path.GetHashCode() ^ storage.GetHashCode();
 		}
 	}
 }

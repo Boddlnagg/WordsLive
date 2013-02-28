@@ -190,7 +190,7 @@ namespace WordsLive
 
 				if (Properties.Settings.Default.EmbeddedServerRedirectAll)
 				{
-					DataManager.EnableRedirect(Controller.Server.CreateSongDataProvider(), Controller.Server.CreateBackgroundDataProvider());
+					DataManager.EnableRedirect(Controller.Server.CreateSongDataProvider(), Controller.Server.CreateBackgroundStorage());
 				}
 				else
 				{

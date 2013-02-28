@@ -19,14 +19,14 @@
 using System;
 using System.Collections.Generic;
 
-namespace WordsLive.Core.Data
+namespace WordsLive.Core.Songs.Storage
 {
 	/// <summary>
-	/// Abstract base class for background data providers. Background data providers
-	/// are responsible for providing a list (rather tree) the available backgrounds
+	/// Abstract base class for background storage. Background storages
+	/// are responsible for providing a list (rather tree) of the available backgrounds
 	/// (images and videos) and for retrieving a single background.
 	/// </summary>
-	public abstract class BackgroundDataProvider
+	public abstract class BackgroundStorage
 	{
 		/// <summary>
 		/// Gets the root directory.
