@@ -21,12 +21,11 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Newtonsoft.Json;
-using WordsLive.Core.Songs;
 
-namespace WordsLive.Core.Data
+namespace WordsLive.Core.Songs.Storage
 {
 	/// <summary>
-	/// Container class for the data of a song that is relevant for the song data providers.
+	/// Container class for the data of a song that is relevant for the song data storages.
 	/// Represents the song in a compact format.
 	/// </summary>
 	public class SongData

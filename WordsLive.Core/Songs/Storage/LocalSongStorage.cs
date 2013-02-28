@@ -19,12 +19,11 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using WordsLive.Core.Songs;
+using WordsLive.Core.Songs.IO;
 
-namespace WordsLive.Core.Data
+namespace WordsLive.Core.Songs.Storage
 {
-	public class LocalSongDataProvider: SongDataProvider
+	public class LocalSongStorage: SongStorage
 	{
 		private string directory;
 
@@ -32,7 +31,7 @@ namespace WordsLive.Core.Data
 		/// Initializes a new instance of the <see cref="LocalSongDataProvider"/> class.
 		/// </summary>
 		/// <param name="directory">The songs directory.</param>
-		public LocalSongDataProvider(string directory)
+		public LocalSongStorage(string directory)
 		{
 			if (directory == null)
 				throw new ArgumentNullException("directory");
@@ -76,62 +75,42 @@ namespace WordsLive.Core.Data
 		/// The resource as a stream.
 		/// </returns>
 		/// <exception cref="FileNotFoundException">The resource was not found.</exception>
-		public override Stream Get(string path)
+		public override Stream Get(string name)
 		{
-			if (path.Contains('\\') || path.Contains('/'))
+			if (name.Contains("\\") || name.Contains("/"))
 				throw new ArgumentException("Song filename must not contain a full path.");
 
-			string fullPath = Path.Combine(directory, path);
+			string fullPath = Path.Combine(directory, name);
 
 			if (!File.Exists(fullPath))
-				throw new FileNotFoundException(path);
+				throw new FileNotFoundException(name);
 
 			return File.OpenRead(fullPath);
 		}
 
-		public override Uri GetUri(string path)
-		{
-			return new Uri(Path.Combine(directory, path));
-		}
-
-		/// <summary>
-		/// Gets the resource as a local file. If it actually is not a local file,
-		/// it is temporarily cached locally.
-		/// </summary>
-		/// <param name="path">The path to the resource.</param>
-		/// <returns>
-		/// The resource as a local file.
-		/// </returns>
-		/// <exception cref="FileNotFoundException">The resource was not found.</exception>
-		public override FileInfo GetLocal(string path)
-		{
-			var fi = new FileInfo(Path.Combine(directory, path));
-
-			if (!fi.Exists)
-				throw new FileNotFoundException(path);
-
-			return fi;
-		}
-
-		/// <summary>
-		/// Opens a transaction to put a resource at the specified path.
-		/// </summary>
-		/// <param name="path">The path to the resource.</param>
-		/// <returns>
-		/// The file transaction.
-		/// </returns>
 		public override FileTransaction Put(string path)
 		{
 			return new LocalFileTransaction(Path.Combine(directory, path));
 		}
 
-		/// <summary>
-		/// Deletes the specified resource.
-		/// </summary>
-		/// <param name="path">The path to the resource.</param>
-		public override void Delete(string path)
+		public override void Delete(string name)
 		{
-			File.Delete(Path.Combine(directory, path));
+			File.Delete(Path.Combine(directory, name));
+		}
+
+		public override FileInfo GetLocal(string name)
+		{
+			var fi = new FileInfo(Path.Combine(directory, name));
+
+			if (!fi.Exists)
+				throw new FileNotFoundException(name);
+
+			return fi;
+		}
+
+		public override bool Exists(string name)
+		{
+			return File.Exists(Path.Combine(directory, name));
 		}
 	}
 }

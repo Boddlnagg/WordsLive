@@ -11,6 +11,7 @@ using System.Windows.Media;
 using WordsLive.Core;
 using WordsLive.Core.Data;
 using WordsLive.Core.Songs;
+using WordsLive.Core.Songs.Storage;
 using WordsLive.Editor;
 using WordsLive.MediaOrderList;
 using WordsLive.Presentation;

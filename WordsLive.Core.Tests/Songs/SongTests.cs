@@ -376,7 +376,7 @@ namespace WordsLive.Core.Tests.Songs
 		public void CreateSongData()
 		{
 			song.SongTitle = "Komma, Test\nNeue   Zeile";
-			var data = Data.SongData.Create(song);
+			var data = Core.Songs.Storage.SongData.Create(song);
 			Assert.AreEqual("Komma Test Neue Zeile", data.SearchTitle);
 		}
 

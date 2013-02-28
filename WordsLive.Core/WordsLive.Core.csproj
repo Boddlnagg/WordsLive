@@ -68,23 +68,23 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Songs\Storage\SongUriResolver.cs" />
     <Compile Include="Songs\Storage\BackgroundStorage.cs" />
     <Compile Include="Songs\Storage\BackgroundFile.cs" />
     <Compile Include="Songs\Storage\BackgroundDirectory.cs" />
     <Compile Include="Songs\Storage\HttpBackgroundStorage.cs" />
-    <Compile Include="Data\HttpFileTransaction.cs" />
-    <Compile Include="Data\HttpSongDataProvider.cs" />
+    <Compile Include="Songs\Storage\HttpFileTransaction.cs" />
     <Compile Include="Data\IBidirectionalMediaDataProvider.cs" />
     <Compile Include="Data\DataManager.cs" />
-    <Compile Include="Data\FileTransaction.cs" />
+    <Compile Include="Songs\Storage\FileTransaction.cs" />
     <Compile Include="Data\HttpDataProvider.cs" />
     <Compile Include="Data\LocalFileDataProvider.cs" />
-    <Compile Include="Data\LocalFileTransaction.cs" />
+    <Compile Include="Songs\Storage\LocalFileTransaction.cs" />
     <Compile Include="Data\IMediaDataProvider.cs" />
+    <Compile Include="Songs\Storage\HttpSongStorage.cs" />
     <Compile Include="Songs\Storage\LocalBackgroundStorage.cs" />
-    <Compile Include="Data\LocalSongDataProvider.cs" />
-    <Compile Include="Data\SongDataProvider.cs" />
-    <Compile Include="Data\SongData.cs" />
+    <Compile Include="Songs\Storage\LocalSongStorage.cs" />
+    <Compile Include="Songs\Storage\SongData.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="FileNotFoundMedia.cs" />
     <Compile Include="Media.cs" />
@@ -122,6 +122,7 @@
     <Compile Include="Songs\SongSlide.cs" />
     <Compile Include="Songs\SongSource.cs" />
     <Compile Include="Songs\SongTextFormatting.cs" />
+    <Compile Include="Songs\Storage\SongStorage.cs" />
     <Compile Include="Songs\Undo\ChangeFactory.cs" />
     <Compile Include="Songs\Undo\UndoManager.cs" />
     <Compile Include="UnsupportedMedia.cs" />

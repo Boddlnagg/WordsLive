@@ -25,6 +25,7 @@ using System.Linq;
 using Newtonsoft.Json;
 using WordsLive.Core.Data;
 using WordsLive.Core.Songs.IO;
+using WordsLive.Core.Songs.Storage;
 using WordsLive.Core.Songs.Undo;
 
 namespace WordsLive.Core.Songs
@@ -464,7 +465,7 @@ namespace WordsLive.Core.Songs
 			// TODO: LoadTemplate() is not always necessary -> let the SongReader call that if it needs it
 			this.LoadTemplate();
 
-			using (Stream stream = this.DataProvider.Get(this.File))
+			using (Stream stream = SongUriResolver.Get(uri))
 			{
 				reader.Read(this, stream);
 			}
@@ -507,7 +508,7 @@ namespace WordsLive.Core.Songs
 		/// </summary>
 		public override void Load()
 		{
-			using (Stream stream = this.DataProvider.Get(this.File))
+			using (Stream stream = SongUriResolver.Get(this.Uri))
 			{
 				var reader = new PowerpraiseSongReader();
 				reader.Read(this, stream);
@@ -516,11 +517,10 @@ namespace WordsLive.Core.Songs
 
 		public void Save()
 		{
-			var provider = this.DataProvider as IBidirectionalMediaDataProvider;
-			if (this.File == null || provider == null || IsImported)
+			if (this.Uri == null || IsImported)
 				throw new InvalidOperationException("Can't save to unknown source or imported file.");
 
-			using (var ft = provider.Put(this.File))
+			using (var ft = SongUriResolver.Put(this.Uri))
 			{
 				var writer = new PowerpraiseSongWriter();
 				writer.Write(this, ft.Stream);

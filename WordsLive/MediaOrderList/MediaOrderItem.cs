@@ -1,9 +1,8 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Linq;
 using System.Windows.Media;
 using WordsLive.Core;
-using WordsLive.Utils.ActivatableListBox;
-using System.IO;
 
 namespace WordsLive.MediaOrderList
 {
@@ -47,7 +46,7 @@ namespace WordsLive.MediaOrderList
 		{
 			get
 			{
-				return Data.File;
+				return Data.Uri.Segments.Last();
 			}
 		}
 

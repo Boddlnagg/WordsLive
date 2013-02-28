@@ -19,7 +19,7 @@
 using System;
 using System.IO;
 
-namespace WordsLive.Core.Data
+namespace WordsLive.Core.Songs.Storage
 {
 	/// <summary>
 	/// Represents a file transaction initiated by the <see cref="IMediaDataProvider.Put"/> method.

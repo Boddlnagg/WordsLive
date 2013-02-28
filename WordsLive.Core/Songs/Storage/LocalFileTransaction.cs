@@ -19,7 +19,7 @@
 using System;
 using System.IO;
 
-namespace WordsLive.Core.Data
+namespace WordsLive.Core.Songs.Storage
 {
 	/// <summary>
 	/// Implements a file transaction using a local file.

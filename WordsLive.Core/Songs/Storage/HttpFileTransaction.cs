@@ -16,12 +16,11 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-using System;
 using System.IO;
 using System.Net;
 using System.Text;
 
-namespace WordsLive.Core.Data
+namespace WordsLive.Core.Songs.Storage
 {
 	/// <summary>
 	/// Represents a file transaction that uploads data using an HTTP PUT request.

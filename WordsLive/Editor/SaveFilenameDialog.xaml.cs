@@ -57,18 +57,7 @@ namespace WordsLive.Editor
 		{
 			if (!this.IsValid()) return;
 
-			bool notFound = false;
-			try
-			{
-				var stream = DataManager.Songs.Get(Filename);
-				stream.Close();
-			}
-			catch (FileNotFoundException)
-			{
-				notFound = true;
-			}
-
-			if (!notFound)
+			if (DataManager.Songs.Exists(Filename))
 			{
 				var overwrite = MessageBox.Show(this, Resource.sfMsgOverwriteExistingFile, Resource.sfMsgOverwriteExistingFileTitle, MessageBoxButton.YesNoCancel);
 				if (overwrite != MessageBoxResult.Yes)

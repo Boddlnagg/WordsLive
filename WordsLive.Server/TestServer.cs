@@ -170,17 +170,17 @@ window.addEventListener('load', init, false);
 		}
 
 		/// <summary>
-		/// Creates a data provider that uses this server as a backend.
+		/// Creates a song storage that uses this server as a backend.
 		/// </summary>
-		/// <returns>The created provider.</returns>
-		public SongDataProvider CreateSongDataProvider()
+		/// <returns>The created storage.</returns>
+		public SongStorage CreateSongStorage()
 		{
 			NetworkCredential cred = null;
 
 			if (!String.IsNullOrEmpty(Password))
 				cred = new NetworkCredential("WordsLive", Password);
 
-			return new HttpSongDataProvider("http://localhost:"+Port+"/songs/", cred);
+			return new HttpSongStorage("http://localhost:"+Port+"/songs/", cred);
 		}
 
 		public BackgroundStorage CreateBackgroundStorage()
@@ -269,7 +269,7 @@ window.addEventListener('load', init, false);
 			string requestPath = Uri.UnescapeDataString((string)env["owin.RequestPath"]);
 			string requestMethod = (string)env["owin.RequestMethod"];
 
-			var songs = DataManager.ActualSongDataProvider;
+			var songs = DataManager.ActualSongStorage;
 			var backgrounds = DataManager.ActualBackgroundStorage;
 
 			if (requestPath.StartsWith("/backgrounds/"))

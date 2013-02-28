@@ -9,6 +9,7 @@ using WordsLive.Core;
 using WordsLive.Core.Data;
 using WordsLive.Core.Songs;
 using WordsLive.Core.Songs.IO;
+using WordsLive.Core.Songs.Storage;
 using WordsLive.Resources;
 using WordsLive.Songs;
 
@@ -148,7 +149,8 @@ namespace WordsLive.Editor
 
 			if (dlg.ShowDialog() == true)
 			{
-				song.Save(dlg.Filename, DataManager.Songs);
+				throw new NotImplementedException(); // TODO!!
+				//song.Save(dlg.Filename, DataManager.Songs);
 			}
 		}
 
