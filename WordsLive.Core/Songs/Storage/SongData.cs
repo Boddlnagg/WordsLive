@@ -114,7 +114,7 @@ namespace WordsLive.Core.Songs.Storage
 			return new SongData
 			{
 				Title = song.SongTitle,
-				Filename = Path.GetFileName(song.Uri.Segments.Last()),
+				Filename = Path.GetFileName(Uri.UnescapeDataString(song.Uri.Segments.Last())),
 				Text = song.TextWithoutChords,
 				Copyright = String.Join(" ", song.Copyright.Split('\n').Select(line => line.Trim())),
 				Sources = String.Join("; ", song.Sources),

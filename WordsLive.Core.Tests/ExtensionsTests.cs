@@ -36,6 +36,7 @@ namespace WordsLive.Core.Tests
 		[TestCase("C:\\Foo\\Bar\\Test.")]
 		[TestCase("C:\\Foo\\Bar\\")]
 		[TestCase("C:\\Foo\\Bar\\Test.xml.zip")]
+		[TestCase("C:\\Foo Bar\\Test.xml.zip")]
 		public void UriGetExtensionMatchesPath(string path)
 		{
 			Assert.AreEqual(Path.GetExtension(path), new Uri(path).GetExtension());
@@ -44,7 +45,7 @@ namespace WordsLive.Core.Tests
 		[Test]
 		[TestCase("C:\\Foo\\Bar\\Test.xml")]
 		[TestCase("C:\\Foo\\Bar\\Test.")]
-		[TestCase("C:\\Foo\\Bar\\")]
+		[TestCase("C:\\Foo Bar\\")]
 		[TestCase("C:\\Foo\\Bar\\Test.xml.zip")]
 		public void FormatLocalMatchesFileInfo(string path)
 		{

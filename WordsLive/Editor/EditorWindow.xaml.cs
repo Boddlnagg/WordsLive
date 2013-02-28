@@ -6,7 +6,6 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using WordsLive.Core;
-using WordsLive.Core.Data;
 using WordsLive.Core.Songs;
 using WordsLive.Core.Songs.IO;
 using WordsLive.Core.Songs.Storage;
@@ -51,7 +50,7 @@ namespace WordsLive.Editor
 		{
 			foreach (var doc in openDocuments)
 			{
-				if (doc.Song.File != null && doc.Song.File == song.File && doc.Song.DataProvider == song.DataProvider)
+				if (doc.Song.Uri != null && doc.Song.Uri == song.Uri)
 					return doc;
 			}
 			return null;
@@ -129,7 +128,7 @@ namespace WordsLive.Editor
 			if (song == null)
 				throw new ArgumentNullException("song");
 			
-			if (song.File == null || song.IsImported)
+			if (song.Uri == null || song.IsImported)
 			{
 				SaveSongAs(song);
 			}
@@ -149,8 +148,7 @@ namespace WordsLive.Editor
 
 			if (dlg.ShowDialog() == true)
 			{
-				throw new NotImplementedException(); // TODO!!
-				//song.Save(dlg.Filename, DataManager.Songs);
+				song.Save(new Uri("song:///" + dlg.Filename));
 			}
 		}
 
@@ -162,13 +160,13 @@ namespace WordsLive.Editor
 			dlg.DefaultExt = exts[0];
 			dlg.Filter = "Powerpraise-Lied|*.ppl|HTML-Dokument|*.html"; // must be same order as exts
 			dlg.Title = Resource.eMenuExportSong;
-			if (song.File == null)
+			if (song.Uri == null)
 			{
 				dlg.FileName = song.SongTitle;
 			}
 			else
 			{
-				dlg.FileName =  Path.GetFileNameWithoutExtension(Path.GetFileName(song.File));
+				dlg.FileName =  Path.GetFileNameWithoutExtension(Uri.UnescapeDataString(song.Uri.Segments.Last()));
 			}
 
 			if (dlg.ShowDialog() == true)
@@ -184,11 +182,11 @@ namespace WordsLive.Editor
 
 				if (ext == ".html")
 				{
-					song.Export(path, DataManager.LocalFiles, new HtmlSongWriter());
+					song.Export(new Uri(path), new HtmlSongWriter());
 				}
 				else if (ext == ".ppl")
 				{
-					song.Export(path, DataManager.LocalFiles, new PowerpraiseSongWriter());
+					song.Export(new Uri(path), new PowerpraiseSongWriter());
 				}
 				else
 				{
@@ -390,8 +388,8 @@ namespace WordsLive.Editor
 			else if (e.Command == CustomCommands.ViewCurrent)
 			{
 				// deactivate this button if the current song is not yet saved to a file or it's not currently active
-				e.CanExecute = (doc != null && doc.Song.File != null && Controller.ActiveMedia != null &&
-					Controller.ActiveMedia.File == doc.Song.File && Controller.ActiveMedia.DataProvider == doc.Song.DataProvider);
+				e.CanExecute = (doc != null && doc.Song.Uri != null && Controller.ActiveMedia != null &&
+					Controller.ActiveMedia.Uri == doc.Song.Uri);
 			}
 			else if (e.Command == CustomCommands.EditChords)
 			{
@@ -399,7 +397,7 @@ namespace WordsLive.Editor
 			}
 			else if (e.Command == CustomCommands.AddMedia)
 			{
-				e.CanExecute = doc != null && !doc.Song.IsImported && doc.Song.File != null;
+				e.CanExecute = doc != null && !doc.Song.IsImported && doc.Song.Uri != null;
 			}
 		}
 

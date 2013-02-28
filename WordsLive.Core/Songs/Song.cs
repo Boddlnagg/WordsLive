@@ -35,6 +35,8 @@ namespace WordsLive.Core.Songs
 	/// </summary>
 	public class Song : Media, INotifyPropertyChanged, ISongElement
 	{
+		private SongUriResolver uriResolver;
+
 		private string songTitle;
 		private string category;
 		private string language;
@@ -438,8 +440,19 @@ namespace WordsLive.Core.Songs
 		/// Initializes a new instance of the <see cref="Song"/> class.
 		/// </summary>
 		/// <param name="uri">The URI to load.</param>
-		public Song(Uri uri) : base(uri)
+		public Song(Uri uri) : this(uri, SongUriResolver.Default)
 		{
+			Parts = new ObservableCollection<SongPart>();
+			Sources = new ObservableCollection<SongSource>();
+			Order = new ObservableCollection<SongPartReference>();
+			Backgrounds = new ObservableCollection<SongBackground>();
+		}
+
+		// TODO: simplify constructors
+
+		public Song(Uri uri, SongUriResolver resolver) : base(uri)
+		{
+			uriResolver = resolver;
 			Parts = new ObservableCollection<SongPart>();
 			Sources = new ObservableCollection<SongSource>();
 			Order = new ObservableCollection<SongPartReference>();
@@ -450,7 +463,7 @@ namespace WordsLive.Core.Songs
 		/// Initializes a new instance of the <see cref="Song"/> class.
 		/// </summary>
 		/// <param name="filename">The file to load.</param>
-		public Song(string filename) : this(new Uri(filename))
+		public Song(string filename) : this(new Uri(filename), SongUriResolver.Default)
 		{
 			Load();
 		}
@@ -465,7 +478,7 @@ namespace WordsLive.Core.Songs
 			// TODO: LoadTemplate() is not always necessary -> let the SongReader call that if it needs it
 			this.LoadTemplate();
 
-			using (Stream stream = SongUriResolver.Get(uri))
+			using (Stream stream = SongUriResolver.Default.Get(uri))
 			{
 				reader.Read(this, stream);
 			}
@@ -479,11 +492,11 @@ namespace WordsLive.Core.Songs
 		/// <summary>
 		/// Creates an empty song.
 		/// </summary>
-		private Song() : this(null, null) { }
+		private Song() : this((Uri)null) { }
 
 		private void LoadTemplate()
 		{
-			using (Stream stream = DataManager.LocalFiles.Get(DataManager.SongTemplate.FullName))
+			using (Stream stream = SongUriResolver.Default.Get(new Uri(DataManager.SongTemplate.FullName)))
 			{
 				var reader = new PowerpraiseSongReader();
 				reader.Read(this, stream);
@@ -508,7 +521,7 @@ namespace WordsLive.Core.Songs
 		/// </summary>
 		public override void Load()
 		{
-			using (Stream stream = SongUriResolver.Get(this.Uri))
+			using (Stream stream = uriResolver.Get(this.Uri))
 			{
 				var reader = new PowerpraiseSongReader();
 				reader.Read(this, stream);
@@ -520,7 +533,7 @@ namespace WordsLive.Core.Songs
 			if (this.Uri == null || IsImported)
 				throw new InvalidOperationException("Can't save to unknown source or imported file.");
 
-			using (var ft = SongUriResolver.Put(this.Uri))
+			using (var ft = uriResolver.Put(this.Uri))
 			{
 				var writer = new PowerpraiseSongWriter();
 				writer.Write(this, ft.Stream);
@@ -530,33 +543,29 @@ namespace WordsLive.Core.Songs
 			IsImported = false;
 		}
 
-		public void Save(string path, IBidirectionalMediaDataProvider provider)
+		public void Save(Uri uri)
 		{
-			throw new NotImplementedException(); // TODO!!
-			Write(path, provider, new PowerpraiseSongWriter());
-			//File = path;
-			//OnPropertyChanged("File");
-			//DataProvider = provider;
+			Write(uri, new PowerpraiseSongWriter());
+			Uri = uri;
+			OnPropertyChanged("Uri");
 
 			IsModified = false;
 			IsImported = false;
 		}
 
-		public void Export(string path, IBidirectionalMediaDataProvider provider, ISongWriter writer)
+		public void Export(Uri uri, ISongWriter writer)
 		{
-			Write(path, provider, writer);
+			Write(uri, writer);
 		}
 
-		private void Write(string path, IBidirectionalMediaDataProvider provider, ISongWriter writer)
+		private void Write(Uri uri, ISongWriter writer)
 		{
-			if (String.IsNullOrWhiteSpace(path))
-				throw new ArgumentException("path");
-			if (provider == null)
-				throw new ArgumentNullException("provider");
+			if (uri == null)
+				throw new ArgumentException("uri");
 			if (writer == null)
 				throw new ArgumentNullException("writer");
 
-			using (var ft = provider.Put(path))
+			using (var ft = SongUriResolver.Default.Put(uri))
 			{
 				writer.Write(this, ft.Stream);
 			}

@@ -22,8 +22,30 @@ using WordsLive.Core.Data;
 
 namespace WordsLive.Core.Songs.Storage
 {
-	public static class SongUriResolver
+	public class SongUriResolver
 	{
+		public SongStorage ForceStorage { get; private set; }
+
+		public SongUriResolver() : this (null) { }
+
+		public SongUriResolver(SongStorage forceStorage)
+		{
+			ForceStorage = forceStorage;
+		}
+
+		private static SongUriResolver defaultInstance;
+
+		public static SongUriResolver Default
+		{
+			get
+			{
+				if (defaultInstance == null)
+					defaultInstance = new SongUriResolver();
+
+				return defaultInstance;
+			}
+		}
+
 		//public static Song Load(Uri uri)
 		//{
 			
@@ -34,15 +56,16 @@ namespace WordsLive.Core.Songs.Storage
 			
 		//}
 
-		public static Stream Get(Uri uri)
+		public Stream Get(Uri uri)
 		{
 			if (uri.Scheme == "song")
 			{
-				return DataManager.Songs.Get(GetFilename(uri));
+				return (ForceStorage ?? DataManager.Songs).Get(GetFilename(uri));
+				
 			}
 			else if (uri.IsFile)
 			{
-				return File.OpenRead(uri.AbsolutePath);
+				return File.OpenRead(uri.LocalPath);
 			}
 			else
 			{
@@ -50,15 +73,15 @@ namespace WordsLive.Core.Songs.Storage
 			}
 		}
 
-		public static FileTransaction Put(Uri uri)
+		public FileTransaction Put(Uri uri)
 		{
 			if (uri.Scheme == "song")
 			{
-				return DataManager.Songs.Put(GetFilename(uri));
+				return (ForceStorage ?? DataManager.Songs).Put(GetFilename(uri));
 			}
 			else if (uri.IsFile)
 			{
-				return new LocalFileTransaction(uri.AbsolutePath);
+				return new LocalFileTransaction(uri.LocalPath);
 			}
 			else
 			{

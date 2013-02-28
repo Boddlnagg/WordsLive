@@ -65,7 +65,7 @@ namespace WordsLive.Core
 
 		public static string GetExtension(this Uri uri)
 		{
-			var s = uri.Segments.Last().Split('.');
+			var s = Uri.UnescapeDataString(uri.Segments.Last()).Split('.');
 			if (s.Length == 1)
 				return String.Empty;
 			else
