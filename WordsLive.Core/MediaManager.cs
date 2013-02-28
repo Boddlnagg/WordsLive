@@ -135,8 +135,7 @@ namespace WordsLive.Core
 			{
 				if (media is FileNotFoundMedia)
 				{
-					throw new NotImplementedException(); // TODO!!
-					//return LoadMediaMetadata(media.File, media.DataProvider);
+					return LoadMediaMetadata(media.Uri);
 				}
 				else
 				{

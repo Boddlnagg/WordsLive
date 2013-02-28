@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using WordsLive.Core;
 using System.ComponentModel;
 using System.Linq;
+using WordsLive.Core;
 
 namespace WordsLive.MediaOrderList
 {
@@ -174,9 +174,8 @@ namespace WordsLive.MediaOrderList
 				}
 				else
 				{
-					throw new NotImplementedException(); // TODO!!
-					//var newData = MediaManager.LoadMediaMetadata(item.Data.File, item.Data.DataProvider);
-					//ReplaceActive(newData);
+					var newData = MediaManager.LoadMediaMetadata(item.Data.Uri);
+					ReplaceActive(newData);
 				}
 			}
 			else
