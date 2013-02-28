@@ -1,11 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using WordsLive.Core;
 using WordsLive.Core.Data;
 
 namespace WordsLive.AudioVideo
 {
-	public class AudioFileHandler : MediaFileHandler
+	public class AudioHandler : MediaTypeHandler
 	{
 		public override IEnumerable<string> Extensions
 		{
@@ -17,9 +18,14 @@ namespace WordsLive.AudioVideo
 			get { return "Audio-Dateien"; } // TODO: localize
 		}
 
-		public override Media TryHandle(string path, IMediaDataProvider provider)
+		public override int Test(Uri uri)
 		{
-			return new AudioMedia(path, provider);
+			return CheckExtension(uri) ? 100 : -1;
+		}
+
+		public override Media Handle(Uri uri)
+		{
+			return new AudioMedia(uri);
 		}
 	}
 }
