@@ -174,8 +174,9 @@ namespace WordsLive.MediaOrderList
 				}
 				else
 				{
-					var newData = MediaManager.LoadMediaMetadata(item.Data.File, item.Data.DataProvider);
-					ReplaceActive(newData);
+					throw new NotImplementedException(); // TODO!!
+					//var newData = MediaManager.LoadMediaMetadata(item.Data.File, item.Data.DataProvider);
+					//ReplaceActive(newData);
 				}
 			}
 			else

@@ -93,6 +93,18 @@ namespace WordsLive.Core.Data
 		}
 
 		/// <summary>
+		///  Gets the URI (using the song:// scheme) of this song.
+		/// </summary>
+		[JsonIgnore]
+		public Uri Uri
+		{
+			get
+			{
+				return new Uri("song:///" + Filename);
+			}
+		}
+
+		/// <summary>
 		/// Creates a new <see cref="SongData"/> instance from a <see cref="Song"/> by
 		/// extracting the relevant data.
 		/// </summary>

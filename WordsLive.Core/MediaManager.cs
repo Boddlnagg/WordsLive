@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.IO;
-using WordsLive.Core.Songs;
+using System.Linq;
 using System.Xml.Linq;
 using WordsLive.Core.Data;
+using WordsLive.Core.Songs;
 
 namespace WordsLive.Core
 {
@@ -45,24 +44,26 @@ namespace WordsLive.Core
 		}
 
 		/// <summary>
-		/// Creates a media object from a file (using the specified data provider).
-		/// If the file doesn't exist, a <see cref="FileNotFoundMedia"/> is returned.
+		/// Creates a media object from a URI.
+		/// If the URI does not reference an HTTP resource, a <see cref="FileNotFoundMedia"/> is returned if
+		/// the resource does not exist.
 		/// If no appropiate file handler is found, a <see cref="UnsupportedMedia"/> is returned.
 		/// Otherwise the correct <see cref="Media"/> type is returned.
 		/// </summary>
-		/// <param name="file">The path, to be handled by the data provider.</param>
-		/// <param name="provider">The data provider to use for loading.</param>
+		/// <param name="uri">The URI to load from. This can either be local (file://), remote (http://)
+		/// or a reference to the song database (song://).</param>
 		/// <returns>A <see cref="Media"/> object.</returns>
-		public static Media LoadMediaMetadata(string path, IMediaDataProvider provider)
+		public static Media LoadMediaMetadata(Uri uri)
 		{
 			try
 			{
-				string ext = Path.GetExtension(path).ToLower();
-				var handlers = from h in fileHandlers where h.Extensions.Contains(ext) select h;
+				//string ext = Path.GetExtension(path).ToLower();
+				//var handlers = from h in fileHandlers where h.Extensions.Contains(ext) select h;
 				Media result;
-				foreach (var h in handlers)
+				foreach (var h in fileHandlers)
 				{
-					result = h.TryHandle(path, provider);
+					result = null;
+					//result = h.TryHandle(uri);
 					if (result != null)
 					{
 						result.LoadMetadataHelper();
@@ -70,11 +71,11 @@ namespace WordsLive.Core
 					}
 				}
 
-				return new UnsupportedMedia(path, provider);
+				return new UnsupportedMedia(uri.AbsolutePath, null); // TODO
 			}
 			catch (FileNotFoundException)
 			{
-				return new FileNotFoundMedia(path, provider);
+				return new FileNotFoundMedia(uri.AbsolutePath, null); // TODO
 			}
 		}
 
@@ -111,7 +112,8 @@ namespace WordsLive.Core
 			// if not all of them are supported by a single handler load them seperately
 			foreach (var path in paths)
 			{
-				yield return LoadMediaMetadata(path, provider);
+				throw new NotImplementedException(); // TODO!!
+				//yield return LoadMediaMetadata(path, provider);
 			}
 		}
 
@@ -126,7 +128,8 @@ namespace WordsLive.Core
 			{
 				if (media is FileNotFoundMedia)
 				{
-					return LoadMediaMetadata(media.File, media.DataProvider);
+					throw new NotImplementedException(); // TODO!!
+					//return LoadMediaMetadata(media.File, media.DataProvider);
 				}
 				else
 				{
@@ -204,8 +207,8 @@ namespace WordsLive.Core
 					{
 						foreach (Media m in from i in root.Element("order").Elements("item")
 											select (i.Attribute("mediatype").Value == "powerpraise-song" && !i.Element("file").Value.Contains('\\')) ?
-											LoadMediaMetadata(i.Element("file").Value, DataManager.Songs) :
-											LoadMediaMetadata(i.Element("file").Value, DataManager.LocalFiles)) // TODO: don't assume local files for everything else
+											LoadMediaMetadata(new Uri("song:///" + i.Element("file").Value)) :
+											LoadMediaMetadata(new Uri(i.Element("file").Value)))
 						{
 							yield return m;
 						}
@@ -215,7 +218,7 @@ namespace WordsLive.Core
 					else if (root.Attribute("version").Value == "2.2")
 					{
 						foreach (Media m in from i in root.Elements("item")
-													select MediaManager.LoadMediaMetadata(i.Element("file").Value, DataManager.Songs))
+													select MediaManager.LoadMediaMetadata(new Uri("song:///" + i.Element("file").Value)))
 						{
 							yield return m;
 						}
@@ -282,7 +285,7 @@ namespace WordsLive.Core
 			doc.Add(new XComment("This file was written using WordsLive"));
 			doc.Add(root);
 
-			StreamWriter writer = new StreamWriter(fileName, false, System.Text.Encoding.GetEncoding("iso-8859-1"));
+			StreamWriter writer = new StreamWriter(fileName, false, System.Text.Encoding.GetEncoding("iso-8859-1")); // TODO: use utf-8?
 			doc.Save(writer);
 			writer.Close();
 		}
