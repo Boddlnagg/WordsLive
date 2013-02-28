@@ -436,9 +436,8 @@ namespace WordsLive.Core.Songs
 		/// <summary>
 		/// Initializes a new instance of the <see cref="Song"/> class.
 		/// </summary>
-		/// <param name="filename">The file to load.</param>
-		/// <param name="provider">The data provider used for loading.</param>
-		public Song(string filename, IMediaDataProvider provider) : base(filename, provider)
+		/// <param name="uri">The URI to load.</param>
+		public Song(Uri uri) : base(uri)
 		{
 			Parts = new ObservableCollection<SongPart>();
 			Sources = new ObservableCollection<SongSource>();
@@ -450,7 +449,7 @@ namespace WordsLive.Core.Songs
 		/// Initializes a new instance of the <see cref="Song"/> class.
 		/// </summary>
 		/// <param name="filename">The file to load.</param>
-		public Song(string filename) : this(filename, DataManager.LocalFiles)
+		public Song(string filename) : this(new Uri(filename))
 		{
 			Load();
 		}
@@ -458,10 +457,9 @@ namespace WordsLive.Core.Songs
 		/// <summary>
 		/// Initializes a new instance of the <see cref="Song"/> class.
 		/// </summary>
-		/// <param name="filename">The file to load.</param>
-		/// <param name="provider">The data provider used for loading.</param>
+		/// <param name="uri">The URI to load.</param>
 		/// <param name="reader">The song reader to use for loading.</param>
-		public Song(string filename, IMediaDataProvider provider, ISongReader reader) : this(filename, provider)
+		public Song(Uri uri, ISongReader reader) : this(uri)
 		{
 			// TODO: LoadTemplate() is not always necessary -> let the SongReader call that if it needs it
 			this.LoadTemplate();
@@ -534,10 +532,11 @@ namespace WordsLive.Core.Songs
 
 		public void Save(string path, IBidirectionalMediaDataProvider provider)
 		{
+			throw new NotImplementedException(); // TODO!!
 			Write(path, provider, new PowerpraiseSongWriter());
-			File = path;
-			OnPropertyChanged("File");
-			DataProvider = provider;
+			//File = path;
+			//OnPropertyChanged("File");
+			//DataProvider = provider;
 
 			IsModified = false;
 			IsImported = false;

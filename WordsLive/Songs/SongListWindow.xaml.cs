@@ -138,7 +138,7 @@ namespace WordsLive.Songs
 			else if (e.Command == CustomCommands.OpenInEditor)
 			{
 				var editor = Controller.ShowEditorWindow();
-				editor.LoadOrImport(data.Filename, DataManager.Songs);
+				editor.LoadOrImport(data.Uri);
 			}
 			else if (e.Command == ApplicationCommands.Delete)
 			{

@@ -297,7 +297,7 @@
     <Compile Include="Editor\RenameSongWindow.xaml.cs">
       <DependentUpon>RenameSongWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Songs\SongFileHandler.cs" />
+    <Compile Include="Songs\SongHandler.cs" />
     <Compile Include="Utils\StringSplitConverter.cs" />
     <Compile Include="WebSiteFileHandler.cs" />
     <Compile Include="UnhandledExceptionWindow.xaml.cs">

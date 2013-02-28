@@ -6,7 +6,7 @@ namespace WordsLive.AudioVideo
 {
 	public abstract class AudioVideoMedia : Media
 	{
-		public AudioVideoMedia(string path, IMediaDataProvider provider) : base(path, provider) { }
+		public AudioVideoMedia(string path, IMediaDataProvider provider) : base(null) { } // TODO!!
 
 		public abstract bool HasVideo { get; }
 

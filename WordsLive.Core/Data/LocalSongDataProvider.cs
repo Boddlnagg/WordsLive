@@ -57,7 +57,7 @@ namespace WordsLive.Core.Data
 
 				try
 				{
-					var song = new Song(Path.GetFileName(file), this);
+					var song = new Song(new Uri("song:///" + Path.GetFileName(file)));
 					song.Load();
 					data = SongData.Create(song);
 				}

@@ -20,7 +20,7 @@ namespace WordsLive.Images
 
 		public bool CanEdit { get; private set; }
 
-		public ImagesMedia(string file, IMediaDataProvider provider) : base(file, provider) { }
+		public ImagesMedia(string file, IMediaDataProvider provider) : base(null) { } // TODO!!
 
 		protected override void LoadMetadata()
 		{
@@ -138,7 +138,7 @@ namespace WordsLive.Images
 
 		public bool IsValidImageUri(Uri uri)
 		{
-			var ext = uri.Segments.Last().Split('.').Last();
+			var ext = uri.GetExtension();
 			return ImageExtensions.Contains(ext);
 		}
 	}

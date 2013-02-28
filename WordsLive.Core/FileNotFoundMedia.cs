@@ -1,11 +1,10 @@
 ﻿using System;
-using WordsLive.Core.Data;
 
 namespace WordsLive.Core
 {
 	public class FileNotFoundMedia : Media
 	{
-		public FileNotFoundMedia(string file, IMediaDataProvider provider) : base(file, provider) { }
+		public FileNotFoundMedia(Uri uri) : base(uri) { }
 
 		public override string Title
 		{

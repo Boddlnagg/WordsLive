@@ -71,7 +71,7 @@ namespace WordsLive.Core
 
 				if (maxPriority < 0)
 				{
-					return new UnsupportedMedia(uri.AbsolutePath, null); // TODO
+					return new UnsupportedMedia(uri);
 				}
 				else
 				{
@@ -80,7 +80,7 @@ namespace WordsLive.Core
 			}
 			catch (FileNotFoundException)
 			{
-				return new FileNotFoundMedia(uri.AbsolutePath, null); // TODO
+				return new FileNotFoundMedia(uri);
 			}
 		}
 
@@ -139,7 +139,7 @@ namespace WordsLive.Core
 			}
 			catch (FileNotFoundException)
 			{
-				return new FileNotFoundMedia(media.File, media.DataProvider);
+				return new FileNotFoundMedia(media.Uri);
 			}
 		}
 

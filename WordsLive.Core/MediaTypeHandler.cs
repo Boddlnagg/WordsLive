@@ -65,7 +65,7 @@ namespace WordsLive.Core
 		/// <returns><c>true</c> if the extension is supported, <c>false</c>otherwise.</returns>
 		protected bool CheckExtension(Uri uri)
 		{
-			return Extensions.Contains(uri.Segments.Last().Split('.').Last());
+			return Extensions.Contains(uri.GetExtension());
 		}
 	}
 }

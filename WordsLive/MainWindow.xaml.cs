@@ -262,7 +262,7 @@ namespace WordsLive
 				}
 				catch (FileNotFoundException)
 				{
-					var newData = new FileNotFoundMedia(media.File, media.DataProvider);
+					var newData = new FileNotFoundMedia(media.Uri);
 					orderList.ReplaceActive(newData);
 				}
 			}
@@ -508,7 +508,7 @@ namespace WordsLive
 				if (song != null)
 				{
 					EditorWindow win = Controller.ShowEditorWindow();
-					win.LoadOrImport(song.File, song.DataProvider);
+					win.LoadOrImport(song.Uri);
 				}
 			}
 			else if (e.Command == CustomCommands.ShowSettings)
@@ -725,7 +725,7 @@ namespace WordsLive
 				foreach (var item in selected)
 				{
 					var song = item.Data as Song;
-					ed.LoadOrImport(song.File, song.DataProvider);
+					ed.LoadOrImport(song.Uri);
 				}
 			}
 		}

@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
+using WordsLive.Core;
 using WordsLive.Core.Data;
 using WordsLive.Core.Songs;
 using WordsLive.Core.Songs.IO;
@@ -55,34 +56,34 @@ namespace WordsLive.Editor
 			return null;
 		}
 
-		public void LoadOrImport(string filename, IMediaDataProvider provider)
+		public void LoadOrImport(Uri uri)
 		{
-			if (filename == null)
-				throw new ArgumentNullException("filename");
+			if (uri == null)
+				throw new ArgumentNullException("uri");
 
-			string ext = Path.GetExtension(filename).ToLower();
+			string ext = uri.GetExtension();
 
 			try
 			{ 
 				if (ext == ".ppl")
 				{
-					var song = new Song(filename, provider);
+					var song = new Song(uri);
 					song.Load();
 					Load(song);
 				}
 				else if (ext == ".sng")
 				{
-					var song = new Song(filename, provider, new SongBeamerSongReader());
+					var song = new Song(uri, new SongBeamerSongReader());
 					Load(song);
 				}
 				else if (ext == ".chopro" || ext == ".cho" || ext == ".pro")
 				{
-					var song = new Song(filename, provider, new ChordProSongReader());
+					var song = new Song(uri, new ChordProSongReader());
 					Load(song);
 				}
 				else if (ext == "") // OpenSong songs have no file extension
 				{
-					var song = new Song(filename, provider, new OpenSongSongReader());
+					var song = new Song(uri, new OpenSongSongReader());
 					Load(song);
 				}
 				else
@@ -93,7 +94,7 @@ namespace WordsLive.Editor
 			catch
 			{
 				Controller.ShowEditorWindow();
-				MessageBox.Show(String.Format(Resource.eMsgCouldNotOpenSong, filename), Resource.dialogError, MessageBoxButton.OK, MessageBoxImage.Error);
+				MessageBox.Show(String.Format(Resource.eMsgCouldNotOpenSong, uri.FormatLocal()), Resource.dialogError, MessageBoxButton.OK, MessageBoxImage.Error);
 			}
 		}
 
@@ -118,7 +119,7 @@ namespace WordsLive.Editor
 
 			if (dlg.ShowDialog() == true)
 			{
-				LoadOrImport(dlg.FileName, DataManager.LocalFiles);
+				LoadOrImport(new Uri(dlg.FileName));
 			}
 		}
 
@@ -320,14 +321,14 @@ namespace WordsLive.Editor
 			if (e.Data.GetData(SongDataObject.SongDataFormat) != null)
 			{
 				var song = (SongData)e.Data.GetData(SongDataObject.SongDataFormat);
-				LoadOrImport(song.Filename, DataManager.Songs);
+				LoadOrImport(song.Uri);
 			}
 			else if (e.Data.GetData(DataFormats.FileDrop) != null)
 			{
 				string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
 				foreach (var file in files)
 				{
-					LoadOrImport(file, DataManager.LocalFiles);
+					LoadOrImport(new Uri(file));
 				}
 			}
 		}

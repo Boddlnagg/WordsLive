@@ -5,7 +5,7 @@ namespace WordsLive.Slideshow
 {
 	public abstract class SlideshowMedia : Media
 	{
-		public SlideshowMedia(string file, IMediaDataProvider provider) : base(file, provider) { }
+		public SlideshowMedia(string file, IMediaDataProvider provider) : base(null) { } // TODO!!
 
 		public abstract ISlideshowPresentation CreatePresentation();
 	}

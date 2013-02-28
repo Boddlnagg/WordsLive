@@ -5,7 +5,7 @@ namespace WordsLive.Core
 {
 	public class UnsupportedMedia : Media
 	{
-		public UnsupportedMedia(string file, IMediaDataProvider provider) : base(file, provider) { }
+		public UnsupportedMedia(Uri uri) : base(uri) { }
 
 		public override string Title
 		{

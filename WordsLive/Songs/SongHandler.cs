@@ -3,10 +3,11 @@ using WordsLive.Core;
 using WordsLive.Core.Songs;
 using System.IO;
 using WordsLive.Core.Data;
+using System;
 
 namespace WordsLive.Songs
 {
-	public class SongFileHandler : MediaFileHandler
+	public class SongHandler : MediaTypeHandler
 	{
 		public override IEnumerable<string> Extensions
 		{
@@ -15,12 +16,17 @@ namespace WordsLive.Songs
 
 		public override string Description
 		{
-			get { return "Powerpraise-Lieder"; }
+			get { return "Powerpraise-Lieder"; } // TODO: localize
 		}
 
-		public override Media TryHandle(string path, IMediaDataProvider provider)
+		public override int Test(Uri uri)
 		{
-			return new Song(path, provider);
+			return CheckExtension(uri) ? 100 : -1;
+		}
+
+		public override Media Handle(Uri uri)
+		{
+			return new Song(uri);
 		}
 	}
 }
