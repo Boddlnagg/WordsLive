@@ -235,7 +235,7 @@ namespace WordsLive.Images
 
 				if (e.Data.GetData(typeof(ImageInfo)) != null)
 					e.Effects = DragDropEffects.Move;
-				else if (((string[])e.Data.GetData(DataFormats.FileDrop)).Where((f) => media.IsValidImageUri(new Uri(f))).Any())
+				else if (((string[])e.Data.GetData(DataFormats.FileDrop)).Where((f) => ImagesMedia.IsValidImageUri(new Uri(f))).Any())
 					e.Effects = DragDropEffects.Copy;
 				else
 					e.Effects = DragDropEffects.None;
@@ -303,7 +303,7 @@ namespace WordsLive.Images
 					}
 
 					string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
-					media.InsertImages(files, i);
+					media.InsertImages(files.Select(f => new Uri(f)), i);
 				}
 			}
 		}

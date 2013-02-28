@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using System.IO;
+﻿using System;
+using System.Collections.Generic;
 using WordsLive.Core.Data;
 
 namespace WordsLive.Core
@@ -8,6 +8,7 @@ namespace WordsLive.Core
 	/// Abstract base class for media file handlers. Subclass this to implement a new media file type.
 	/// Subclasses found in extension assemblies are automatically registered as handlers.
 	/// </summary>
+	[Obsolete]
 	public abstract class MediaFileHandler
 	{
 		/// <summary>

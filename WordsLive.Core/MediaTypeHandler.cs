@@ -7,7 +7,7 @@ namespace WordsLive.Core
 	public abstract class MediaTypeHandler
 	{
 		/// <summary>
-		/// The allowed file extensions for this media file type (with leading '.').
+		/// The allowed file extensions for this media file type (lower case, with leading '.').
 		/// </summary>
 		public abstract IEnumerable<string> Extensions { get; }
 
@@ -65,7 +65,7 @@ namespace WordsLive.Core
 		/// <returns><c>true</c> if the extension is supported, <c>false</c>otherwise.</returns>
 		protected bool CheckExtension(Uri uri)
 		{
-			return Extensions.Contains(uri.GetExtension());
+			return Extensions.Contains(uri.GetExtension().ToLower());
 		}
 	}
 }

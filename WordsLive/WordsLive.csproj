@@ -131,7 +131,7 @@
     <Compile Include="Images\ImagesControlPanel.xaml.cs">
       <DependentUpon>ImagesControlPanel.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Images\ImagesFileHandler.cs" />
+    <Compile Include="Images\ImagesHandler.cs" />
     <Compile Include="Images\ImagesMedia.cs" />
     <Compile Include="Images\ImagesPresentation.cs" />
     <Compile Include="ISettingsTab.cs" />
