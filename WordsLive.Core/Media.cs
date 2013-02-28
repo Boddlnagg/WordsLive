@@ -50,7 +50,7 @@ namespace WordsLive.Core
 		{
 			get
 			{
-				throw new NotSupportedException(); // TODO!!
+				return null; // TODO!!
 			}
 		}
 
@@ -58,7 +58,7 @@ namespace WordsLive.Core
 		{
 			get
 			{
-				throw new NotSupportedException(); // TODO!!
+				return null; // TODO!!
 			}
 		}
 

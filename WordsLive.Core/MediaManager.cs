@@ -75,7 +75,9 @@ namespace WordsLive.Core
 				}
 				else
 				{
-					return maxPriorityHandler.Handle(uri);
+					var result = maxPriorityHandler.Handle(uri);
+					result.LoadMetadataHelper();
+					return result;
 				}
 			}
 			catch (FileNotFoundException)
@@ -109,11 +111,16 @@ namespace WordsLive.Core
 			{
 				// not all of them are supported by a single handler => load them separately
 				return uris.Select(u => LoadMediaMetadata(u));
-				// TODO: need to call LoadMetadataHelper for each loaded media?
+				
 			}
 			else
 			{
-				return maxPriorityHandler.HandleMultiple(uris);
+				var result = maxPriorityHandler.HandleMultiple(uris);
+				foreach (var m in result)
+				{
+					m.LoadMetadataHelper();
+				}
+				return result;
 			}
 		}
 
