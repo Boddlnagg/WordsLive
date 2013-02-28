@@ -18,6 +18,7 @@
 
 using System;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 
 namespace WordsLive.Core
@@ -60,6 +61,23 @@ namespace WordsLive.Core
 					stream.CopyTo(writer);
 				}
 			}
+		}
+
+		public static string GetExtension(this Uri uri)
+		{
+			var s = uri.Segments.Last().Split('.');
+			if (s.Length == 1)
+				return String.Empty;
+			else
+				return "." + s.Last();
+		}
+
+		public static string FormatLocal(this Uri uri)
+		{
+			if (uri.IsFile)
+				return uri.LocalPath;
+			else
+				return uri.AbsoluteUri;
 		}
 	}
 }
