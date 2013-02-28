@@ -103,8 +103,7 @@ namespace WordsLive.Songs
 				return;
 
 			var song = (SongData)songListView.ItemContainerGenerator.ItemFromContainer(sender as ListViewItem);
-			throw new NotImplementedException(); // TODO!!
-			//Controller.AddToPortfolio(song.Filename, DataManager.Songs);
+			Controller.AddToPortfolio(song.Uri);
 		}
 
 		private void OnCanExecuteCommand(object sender, CanExecuteRoutedEventArgs e)
@@ -135,8 +134,7 @@ namespace WordsLive.Songs
 
 			if (e.Command == CustomCommands.AddMedia)
 			{
-				throw new NotImplementedException(); // TODO!!
-				//Controller.AddToPortfolio(data.Filename, DataManager.Songs);
+				Controller.AddToPortfolio(data.Uri);
 			}
 			else if (e.Command == CustomCommands.OpenInEditor)
 			{

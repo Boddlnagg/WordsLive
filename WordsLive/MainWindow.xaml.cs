@@ -432,21 +432,19 @@ namespace WordsLive
 		/// If an item is active, the new item is added after that one, otherwise it is appended
 		/// to the end of the portfolio.
 		/// </summary>
-		/// <param name="file">The file to add.</param>
-		/// <param name="provider">The provider.</param>
-		internal void AddToPortfolio(string file, IMediaDataProvider provider)
+		/// <param name="uri">The URI to add.</param>
+		internal void AddToPortfolio(Uri uri)
 		{
-			throw new NotImplementedException(); // TODO!!
-			//var media = MediaManager.LoadMediaMetadata(file, provider);
-			//if (ActiveMedia != null)
-			//{
-			//	int index = orderList.IndexOf(orderList.ActiveItem);
-			//	orderList.Insert(index + 1, media);
-			//}
-			//else
-			//{
-			//	orderList.Add(media);
-			//}
+			var media = MediaManager.LoadMediaMetadata(uri);
+			if (ActiveMedia != null)
+			{
+				int index = orderList.IndexOf(orderList.ActiveItem);
+				orderList.Insert(index + 1, media);
+			}
+			else
+			{
+				orderList.Add(media);
+			}
 		}
 
 		private void OnCommandCanExecute(object sender, CanExecuteRoutedEventArgs e)

@@ -469,7 +469,7 @@ namespace WordsLive.Editor
 			}
 			else if (e.Command == CustomCommands.AddMedia)
 			{
-				Controller.AddToPortfolio(doc.Song.File, doc.Song.DataProvider);
+				Controller.AddToPortfolio(doc.Song.Uri);
 			}
 			else if (e.Command == CustomCommands.ShowSonglist)
 			{
