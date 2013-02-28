@@ -891,8 +891,8 @@ namespace WordsLive
 			else if (e.Data.GetData(typeof(String)) != null)
 			{
 				string data = (string)e.Data.GetData(typeof(String));
-				throw new NotImplementedException("Loading " + data); // TODO
-
+				Media m = MediaManager.LoadMediaMetadata(new Uri(data));
+				orderList.Insert(index, m);
 			}
 		}
 
