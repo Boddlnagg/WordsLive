@@ -46,7 +46,14 @@ namespace WordsLive.MediaOrderList
 		{
 			get
 			{
-				return Uri.UnescapeDataString(Data.Uri.Segments.Last());
+				if (Data.Uri.IsFile)
+				{
+					return Uri.UnescapeDataString(Data.Uri.Segments.Last());
+				}
+				else
+				{
+					return Data.Uri.AbsoluteUri;
+				}
 			}
 		}
 

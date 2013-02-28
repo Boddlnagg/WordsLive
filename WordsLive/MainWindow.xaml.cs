@@ -891,8 +891,17 @@ namespace WordsLive
 			else if (e.Data.GetData(typeof(String)) != null)
 			{
 				string data = (string)e.Data.GetData(typeof(String));
-				Media m = MediaManager.LoadMediaMetadata(new Uri(data));
-				orderList.Insert(index, m);
+				Uri u = null;
+				if (!Uri.TryCreate(data, UriKind.Absolute, out u))
+				{
+					Uri.TryCreate("http://" + data, UriKind.Absolute, out u);
+				}
+
+				if (u != null)
+				{
+					Media m = MediaManager.LoadMediaMetadata(u);
+					orderList.Insert(index, m);
+				}
 			}
 		}
 

@@ -70,7 +70,14 @@ namespace WordsLive.Core
 		{
 			get
 			{
-				return Uri == null ? null : Uri.UnescapeDataString(Uri.Segments.Last());
+				if (Uri == null)
+				{
+					return null;
+				}
+				else
+				{
+					return Uri.UnescapeDataString(Uri.Segments.Last());
+				}
 			}
 		}
 
