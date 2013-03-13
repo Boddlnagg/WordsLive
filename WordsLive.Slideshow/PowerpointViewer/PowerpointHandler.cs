@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using System.IO;
+﻿using System;
+using System.Collections.Generic;
 using WordsLive.Core;
 using WordsLive.Core.Data;
 
@@ -7,7 +7,7 @@ namespace WordsLive.Slideshow.PowerpointViewer
 {
 	// TODO: This currently only works with PowerpointViewer 2007 (older versions untested), not with 2010
 	// and Visual C++ 2010 Redistributable must be installed for pptviewlib.dll to work
-	public class PowerpointFileHandler : MediaFileHandler
+	public class PowerpointHandler : MediaTypeHandler
 	{
 		public override IEnumerable<string> Extensions
 		{
@@ -19,12 +19,17 @@ namespace WordsLive.Slideshow.PowerpointViewer
 			get { return "Powerpoint-Präsentationen"; }
 		}
 
-		public override Media TryHandle(string path, IMediaDataProvider provider)
+		public override int Test(Uri uri)
 		{
 			if (!PowerpointViewerLib.PowerpointViewerController.IsAvailable)
-				return null;
+				return -1;
+			else
+				return CheckExtension(uri) ? 100 : -1;
+		}
 
-			return new PowerpointViewerMedia(path, provider);
+		public override Media Handle(Uri uri)
+		{
+			return new PowerpointViewerMedia(uri);
 		}
 	}
 }

@@ -47,10 +47,10 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Impress\ImpressFileHandler.cs" />
+    <Compile Include="Impress\ImpressHandler.cs" />
     <Compile Include="Impress\ImpressMedia.cs" />
     <Compile Include="ISlideshowPresentation.cs" />
-    <Compile Include="PowerpointViewer\PowerpointViewerFileHandler.cs" />
+    <Compile Include="PowerpointViewer\PowerpointHandler.cs" />
     <Compile Include="Resources\Resource.de.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
