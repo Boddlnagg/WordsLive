@@ -1,5 +1,4 @@
-﻿using System;
-using System.Windows.Media;
+﻿using System.Windows.Media;
 
 using WordsLive.Core;
 
@@ -34,11 +33,11 @@ namespace WordsLive.MediaOrderList
 		{
 			ImageSource icon;
 
-			if (!String.IsNullOrEmpty(this.Data.File))
+			if (this.Data.Uri != null && this.Data.Uri.IsFile)
 			{
 				try
 				{
-					using (System.Drawing.Icon sysicon = System.Drawing.Icon.ExtractAssociatedIcon(this.Data.File))
+					using (System.Drawing.Icon sysicon = System.Drawing.Icon.ExtractAssociatedIcon(this.Data.Uri.LocalPath))
 					{
 						icon = System.Windows.Interop.Imaging.CreateBitmapSourceFromHIcon(
 									sysicon.Handle,
