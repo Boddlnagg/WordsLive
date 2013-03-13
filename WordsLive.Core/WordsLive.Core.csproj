@@ -89,7 +89,6 @@
     <Compile Include="FileNotFoundMedia.cs" />
     <Compile Include="Media.cs" />
     <Compile Include="MediaEventArgs.cs" />
-    <Compile Include="MediaFileHandler.cs" />
     <Compile Include="MediaManager.cs" />
     <Compile Include="MediaTypeHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

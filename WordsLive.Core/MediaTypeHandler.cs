@@ -4,6 +4,10 @@ using System.Linq;
 
 namespace WordsLive.Core
 {
+	/// <summary>
+	/// Abstract base class for media type handlers. Subclass this to implement a new media type.
+	/// Subclasses found in extension assemblies are automatically registered as handlers.
+	/// </summary>
 	public abstract class MediaTypeHandler
 	{
 		/// <summary>
