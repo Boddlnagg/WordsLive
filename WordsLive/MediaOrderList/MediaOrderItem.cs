@@ -1,9 +1,8 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Linq;
 using System.Windows.Media;
 using WordsLive.Core;
-using WordsLive.Utils.ActivatableListBox;
-using System.IO;
 
 namespace WordsLive.MediaOrderList
 {
@@ -47,7 +46,18 @@ namespace WordsLive.MediaOrderList
 		{
 			get
 			{
-				return Data.File;
+				if (Data.Uri.IsFile)
+				{
+					return Uri.UnescapeDataString(Data.Uri.Segments.Last());
+				}
+				else if (Data.Uri.Scheme == "song")
+				{
+					return Uri.UnescapeDataString(Data.Uri.AbsolutePath).Substring(1);
+				}
+				else
+				{
+					return Uri.UnescapeDataString(Data.Uri.AbsoluteUri);
+				}
 			}
 		}
 

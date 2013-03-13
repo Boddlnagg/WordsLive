@@ -1,6 +1,4 @@
 ﻿using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using WordsLive.Core.Data;
 using WordsLive.Core.Songs;
 using WordsLive.MediaOrderList;
 

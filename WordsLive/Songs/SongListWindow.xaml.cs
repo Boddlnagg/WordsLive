@@ -6,6 +6,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
 using WordsLive.Core.Data;
+using WordsLive.Core.Songs.Storage;
 using WordsLive.Resources;
 
 namespace WordsLive.Songs
@@ -102,7 +103,7 @@ namespace WordsLive.Songs
 				return;
 
 			var song = (SongData)songListView.ItemContainerGenerator.ItemFromContainer(sender as ListViewItem);
-			Controller.AddToPortfolio(song.Filename, DataManager.Songs);
+			Controller.AddToPortfolio(song.Uri);
 		}
 
 		private void OnCanExecuteCommand(object sender, CanExecuteRoutedEventArgs e)
@@ -133,12 +134,12 @@ namespace WordsLive.Songs
 
 			if (e.Command == CustomCommands.AddMedia)
 			{
-				Controller.AddToPortfolio(data.Filename, DataManager.Songs);
+				Controller.AddToPortfolio(data.Uri);
 			}
 			else if (e.Command == CustomCommands.OpenInEditor)
 			{
 				var editor = Controller.ShowEditorWindow();
-				editor.LoadOrImport(data.Filename, DataManager.Songs);
+				editor.LoadOrImport(data.Uri);
 			}
 			else if (e.Command == ApplicationCommands.Delete)
 			{

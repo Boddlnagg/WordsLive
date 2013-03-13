@@ -1,15 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.IO;
-using WordsLive.Core.Data;
 
 namespace WordsLive.Core
 {
 	public class WebSite : Media
 	{
-		public WebSite(string file, IMediaDataProvider provider) : base(file, provider) { }
+		public WebSite(Uri uri) : base(uri) { }
 
 		public string Url { get; private set; }
 
@@ -24,19 +20,26 @@ namespace WordsLive.Core
 
 		public override void Load()
 		{
-			using (StreamReader reader = new StreamReader(this.File))
+			if (this.Uri.IsFile)
 			{
-				while (!reader.EndOfStream && reader.ReadLine() != "[InternetShortcut]") { }
-
-				while (!reader.EndOfStream)
+				using (StreamReader reader = new StreamReader(this.Uri.LocalPath))
 				{
-					string line = reader.ReadLine();
-					if (line.StartsWith("URL="))
+					while (!reader.EndOfStream && reader.ReadLine() != "[InternetShortcut]") { }
+
+					while (!reader.EndOfStream)
 					{
-						Url = line.Substring(4);
-						return;
+						string line = reader.ReadLine();
+						if (line.StartsWith("URL="))
+						{
+							Url = line.Substring(4);
+							return;
+						}
 					}
 				}
+			}
+			else
+			{
+				throw new NotImplementedException("Loading remote websites not yet implemented.");
 			}
 		}
 	}

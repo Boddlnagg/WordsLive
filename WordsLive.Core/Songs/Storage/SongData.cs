@@ -21,12 +21,11 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Newtonsoft.Json;
-using WordsLive.Core.Songs;
 
-namespace WordsLive.Core.Data
+namespace WordsLive.Core.Songs.Storage
 {
 	/// <summary>
-	/// Container class for the data of a song that is relevant for the song data providers.
+	/// Container class for the data of a song that is relevant for the song data storages.
 	/// Represents the song in a compact format.
 	/// </summary>
 	public class SongData
@@ -93,6 +92,18 @@ namespace WordsLive.Core.Data
 		}
 
 		/// <summary>
+		///  Gets the URI (using the song:// scheme) of this song.
+		/// </summary>
+		[JsonIgnore]
+		public Uri Uri
+		{
+			get
+			{
+				return new Uri("song:///" + Filename);
+			}
+		}
+
+		/// <summary>
 		/// Creates a new <see cref="SongData"/> instance from a <see cref="Song"/> by
 		/// extracting the relevant data.
 		/// </summary>
@@ -103,7 +114,7 @@ namespace WordsLive.Core.Data
 			return new SongData
 			{
 				Title = song.SongTitle,
-				Filename = Path.GetFileName(song.File),
+				Filename = Path.GetFileName(Uri.UnescapeDataString(song.Uri.Segments.Last())),
 				Text = song.TextWithoutChords,
 				Copyright = String.Join(" ", song.Copyright.Split('\n').Select(line => line.Trim())),
 				Sources = String.Join("; ", song.Sources),

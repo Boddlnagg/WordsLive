@@ -1,11 +1,12 @@
-﻿using WordsLive.Core;
+﻿using System;
+using WordsLive.Core;
 using WordsLive.Core.Data;
 
 namespace WordsLive.Slideshow
 {
 	public abstract class SlideshowMedia : Media
 	{
-		public SlideshowMedia(string file, IMediaDataProvider provider) : base(file, provider) { }
+		public SlideshowMedia(Uri uri) : base(uri) { }
 
 		public abstract ISlideshowPresentation CreatePresentation();
 	}

@@ -21,14 +21,16 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using Newtonsoft.Json;
+using WordsLive.Core.Data;
+using WordsLive.Core.Songs.IO;
 
-namespace WordsLive.Core.Data
+namespace WordsLive.Core.Songs.Storage
 {
-	public class HttpSongDataProvider : SongDataProvider
+	public class HttpSongStorage : SongStorage
 	{
 		private WebClient client;
 
-		public HttpSongDataProvider(string baseAddress, NetworkCredential credential = null)
+		public HttpSongStorage(string baseAddress, NetworkCredential credential = null)
 		{
 			this.client = new WebClient();
 			client.BaseAddress = baseAddress;
@@ -83,23 +85,30 @@ namespace WordsLive.Core.Data
 			}
 		}
 
-		public override Uri GetUri(string path)
+		public override FileTransaction Put(string path)
 		{
-			throw new NotSupportedException();
+			return new HttpFileTransaction(path, client);
 		}
 
-		public override FileInfo GetLocal(string path)
+		public override void Delete(string name)
+		{
+			var result = client.UploadString(name, "DELETE", "");
+			if (result != "OK")
+				throw new WebException("Deleting failed.");
+		}
+
+		public override FileInfo GetLocal(string name)
 		{
 			DirectoryInfo dir = new DirectoryInfo(Path.Combine(DataManager.TempDirectory.FullName, "SongsLocal"));
 			if (!dir.Exists)
 				dir.Create();
 
-			FileInfo fi = new FileInfo(Path.Combine(dir.FullName, path));
+			FileInfo fi = new FileInfo(Path.Combine(dir.FullName, name));
 
 			if (fi.Exists)
 				return fi;
 
-			using (var stream = Get(path))
+			using (var stream = Get(name))
 			{
 				using (FileStream fs = File.OpenWrite(fi.FullName))
 				{
@@ -110,16 +119,18 @@ namespace WordsLive.Core.Data
 			return fi;
 		}
 
-		public override FileTransaction Put(string path)
+		public override bool Exists(string name)
 		{
-			return new HttpFileTransaction(path, client);
-		}
-
-		public override void Delete(string path)
-		{
-			var result = client.UploadString(path, "DELETE", "");
-			if (result != "OK")
-				throw new WebException("Deleting failed.");
+			try
+			{
+				var stream = Get(name);
+				stream.Close();
+				return true;
+			}
+			catch (FileNotFoundException)
+			{
+				return false;
+			}
 		}
 
 		private IEnumerable<SongData> FetchSongData(string path)

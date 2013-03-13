@@ -25,6 +25,7 @@ using System.Linq;
 using Newtonsoft.Json;
 using WordsLive.Core.Data;
 using WordsLive.Core.Songs.IO;
+using WordsLive.Core.Songs.Storage;
 using WordsLive.Core.Songs.Undo;
 
 namespace WordsLive.Core.Songs
@@ -34,6 +35,8 @@ namespace WordsLive.Core.Songs
 	/// </summary>
 	public class Song : Media, INotifyPropertyChanged, ISongElement
 	{
+		private SongUriResolver uriResolver;
+
 		private string songTitle;
 		private string category;
 		private string language;
@@ -436,10 +439,20 @@ namespace WordsLive.Core.Songs
 		/// <summary>
 		/// Initializes a new instance of the <see cref="Song"/> class.
 		/// </summary>
-		/// <param name="filename">The file to load.</param>
-		/// <param name="provider">The data provider used for loading.</param>
-		public Song(string filename, IMediaDataProvider provider) : base(filename, provider)
+		/// <param name="uri">The URI to load.</param>
+		public Song(Uri uri) : this(uri, SongUriResolver.Default)
 		{
+			Parts = new ObservableCollection<SongPart>();
+			Sources = new ObservableCollection<SongSource>();
+			Order = new ObservableCollection<SongPartReference>();
+			Backgrounds = new ObservableCollection<SongBackground>();
+		}
+
+		// TODO: simplify constructors
+
+		public Song(Uri uri, SongUriResolver resolver) : base(uri)
+		{
+			uriResolver = resolver;
 			Parts = new ObservableCollection<SongPart>();
 			Sources = new ObservableCollection<SongSource>();
 			Order = new ObservableCollection<SongPartReference>();
@@ -450,7 +463,7 @@ namespace WordsLive.Core.Songs
 		/// Initializes a new instance of the <see cref="Song"/> class.
 		/// </summary>
 		/// <param name="filename">The file to load.</param>
-		public Song(string filename) : this(filename, DataManager.LocalFiles)
+		public Song(string filename) : this(new Uri(filename), SongUriResolver.Default)
 		{
 			Load();
 		}
@@ -458,15 +471,14 @@ namespace WordsLive.Core.Songs
 		/// <summary>
 		/// Initializes a new instance of the <see cref="Song"/> class.
 		/// </summary>
-		/// <param name="filename">The file to load.</param>
-		/// <param name="provider">The data provider used for loading.</param>
+		/// <param name="uri">The URI to load.</param>
 		/// <param name="reader">The song reader to use for loading.</param>
-		public Song(string filename, IMediaDataProvider provider, ISongReader reader) : this(filename, provider)
+		public Song(Uri uri, ISongReader reader) : this(uri)
 		{
 			// TODO: LoadTemplate() is not always necessary -> let the SongReader call that if it needs it
 			this.LoadTemplate();
 
-			using (Stream stream = this.DataProvider.Get(this.File))
+			using (Stream stream = SongUriResolver.Default.Get(uri))
 			{
 				reader.Read(this, stream);
 			}
@@ -480,11 +492,11 @@ namespace WordsLive.Core.Songs
 		/// <summary>
 		/// Creates an empty song.
 		/// </summary>
-		private Song() : this(null, null) { }
+		private Song() : this((Uri)null) { }
 
 		private void LoadTemplate()
 		{
-			using (Stream stream = DataManager.LocalFiles.Get(DataManager.SongTemplate.FullName))
+			using (Stream stream = SongUriResolver.Default.Get(new Uri(DataManager.SongTemplate.FullName)))
 			{
 				var reader = new PowerpraiseSongReader();
 				reader.Read(this, stream);
@@ -509,7 +521,7 @@ namespace WordsLive.Core.Songs
 		/// </summary>
 		public override void Load()
 		{
-			using (Stream stream = this.DataProvider.Get(this.File))
+			using (Stream stream = uriResolver.Get(this.Uri))
 			{
 				var reader = new PowerpraiseSongReader();
 				reader.Read(this, stream);
@@ -518,11 +530,10 @@ namespace WordsLive.Core.Songs
 
 		public void Save()
 		{
-			var provider = this.DataProvider as IBidirectionalMediaDataProvider;
-			if (this.File == null || provider == null || IsImported)
+			if (this.Uri == null || IsImported)
 				throw new InvalidOperationException("Can't save to unknown source or imported file.");
 
-			using (var ft = provider.Put(this.File))
+			using (var ft = uriResolver.Put(this.Uri))
 			{
 				var writer = new PowerpraiseSongWriter();
 				writer.Write(this, ft.Stream);
@@ -532,32 +543,29 @@ namespace WordsLive.Core.Songs
 			IsImported = false;
 		}
 
-		public void Save(string path, IBidirectionalMediaDataProvider provider)
+		public void Save(Uri uri)
 		{
-			Write(path, provider, new PowerpraiseSongWriter());
-			File = path;
-			OnPropertyChanged("File");
-			DataProvider = provider;
+			Write(uri, new PowerpraiseSongWriter());
+			Uri = uri;
+			OnPropertyChanged("Uri");
 
 			IsModified = false;
 			IsImported = false;
 		}
 
-		public void Export(string path, IBidirectionalMediaDataProvider provider, ISongWriter writer)
+		public void Export(Uri uri, ISongWriter writer)
 		{
-			Write(path, provider, writer);
+			Write(uri, writer);
 		}
 
-		private void Write(string path, IBidirectionalMediaDataProvider provider, ISongWriter writer)
+		private void Write(Uri uri, ISongWriter writer)
 		{
-			if (String.IsNullOrWhiteSpace(path))
-				throw new ArgumentException("path");
-			if (provider == null)
-				throw new ArgumentNullException("provider");
+			if (uri == null)
+				throw new ArgumentException("uri");
 			if (writer == null)
 				throw new ArgumentNullException("writer");
 
-			using (var ft = provider.Put(path))
+			using (var ft = SongUriResolver.Default.Put(uri))
 			{
 				writer.Write(this, ft.Stream);
 			}

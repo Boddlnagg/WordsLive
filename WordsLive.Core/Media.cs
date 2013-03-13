@@ -1,6 +1,5 @@
-﻿using System.IO;
-using Newtonsoft.Json;
-using WordsLive.Core.Data;
+﻿using System;
+using System.Linq;
 
 namespace WordsLive.Core
 {
@@ -10,14 +9,19 @@ namespace WordsLive.Core
 	public abstract class Media
 	{
 		/// <summary>
-		/// Initializes a new instance of the <see cref="Media"/> class by loading the metadata
-		/// from the given file.
+		/// Gets the URI associated with this media object.
+		/// <c>null</c> if this media object has not been loaded from a URI and has not been saved yet.
 		/// </summary>
-		/// <param name="file">The relative path to the resource.</param>
-		public Media(string file, IMediaDataProvider provider)
+		public Uri Uri { get; protected set; }
+
+		/// <summary>
+		/// Initializes a new instance of the <see cref="Media"/> class by loading the metadata
+		/// from the given URI.
+		/// </summary>
+		/// <param name="uri">The URI pointing to the media resource.</param>
+		public Media(Uri uri)
 		{
-			File = file;
-			DataProvider = provider;
+			Uri = uri;
 		}
 
 		/// <summary>
@@ -37,18 +41,6 @@ namespace WordsLive.Core
 		}
 
 		/// <summary>
-		/// Gets the filename (relative or absolute) associated with this media object.
-		/// <c>null</c> if this media object has not been created from a file or has not been saved yet.
-		/// </summary>
-		public string File { get; protected set; }
-
-		/// <summary>
-		/// Gets the data provider used for this media instance.
-		/// </summary>
-		[JsonIgnore]
-		public IMediaDataProvider DataProvider { get; protected set; }
-
-		/// <summary>
 		/// Gets the title of this media object. The basic implementation just returns the file name.
 		/// If you want to set a custom title, override this method.
 		/// </summary>
@@ -56,7 +48,14 @@ namespace WordsLive.Core
 		{
 			get
 			{
-				return string.IsNullOrEmpty(File) ? null : Path.GetFileName(File);
+				if (Uri == null)
+				{
+					return null;
+				}
+				else
+				{
+					return Uri.UnescapeDataString(Uri.Segments.Last());
+				}
 			}
 		}
 

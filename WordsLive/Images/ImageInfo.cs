@@ -57,7 +57,7 @@ namespace WordsLive.Images
 				{
 					case SourceType.LocalDisk:
 					case SourceType.ExternalResource:
-						return Uri.Segments.Last();
+						return Uri.UnescapeDataString(Uri.Segments.Last());
 					case SourceType.ZipFile:
 						return ZipEntry.FileName;
 					default:

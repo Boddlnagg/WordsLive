@@ -22,19 +22,19 @@ using System.IO;
 using System.Linq;
 using System.Net;
 
-namespace WordsLive.Core.Data
+namespace WordsLive.Core.Songs.Storage
 {
-	public class HttpBackgroundDataProvider : BackgroundDataProvider
+	public class HttpBackgroundStorage : BackgroundStorage
 	{
 		private WebClient client;
 		private string baseAddress;
 
 		/// <summary>
-		/// Initializes a new instance of the <see cref="HttpBackgroundDataProvider"/> class.
+		/// Initializes a new instance of the <see cref="HttpBackgroundStorage"/> class.
 		/// </summary>
 		/// <param name="baseAddress">The root address, e.g. http://example.com/backgrounds/). </param>
 		/// <param name="credentials">The credentials, if needed.</param>
-		public HttpBackgroundDataProvider(string baseAddress, NetworkCredential credential = null)
+		public HttpBackgroundStorage(string baseAddress, NetworkCredential credential = null)
 		{
 			this.client = new WebClient();
 			this.baseAddress = baseAddress;

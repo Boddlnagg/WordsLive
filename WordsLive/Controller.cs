@@ -190,7 +190,7 @@ namespace WordsLive
 
 				if (Properties.Settings.Default.EmbeddedServerRedirectAll)
 				{
-					DataManager.EnableRedirect(Controller.Server.CreateSongDataProvider(), Controller.Server.CreateBackgroundDataProvider());
+					DataManager.EnableRedirect(Controller.Server.CreateSongStorage(), Controller.Server.CreateBackgroundStorage());
 				}
 				else
 				{
@@ -292,9 +292,9 @@ namespace WordsLive
 			instance.window.OpenPortfolio(file);
 		}
 
-		public static void AddToPortfolio(string file, IMediaDataProvider provider)
+		public static void AddToPortfolio(Uri uri)
 		{
-			instance.window.AddToPortfolio(file, provider);
+			instance.window.AddToPortfolio(uri);
 		}
 
 		public static void ShowSongList()

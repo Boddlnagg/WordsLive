@@ -11,7 +11,7 @@ namespace WordsLive.AudioVideo
 {
 	public class VideoMedia : AudioVideoMedia
 	{
-		public VideoMedia(string path, IMediaDataProvider provider) : base(path, provider) { }
+		public VideoMedia(Uri uri) : base(uri) { }
 
 		public override bool HasVideo
 		{

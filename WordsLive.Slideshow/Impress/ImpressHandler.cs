@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Reflection;
 using WordsLive.Core;
-using WordsLive.Core.Data;
 
 namespace WordsLive.Slideshow.Impress
 {
-	public class ImpressFileHandler : MediaFileHandler
+	public class ImpressHandler : MediaTypeHandler
 	{
 		public override IEnumerable<string> Extensions
 		{
@@ -17,19 +15,6 @@ namespace WordsLive.Slideshow.Impress
 		public override string Description
 		{
 			get { return "OpenDocument Presentation"; }
-		}
-
-		public override Media TryHandle(string path, IMediaDataProvider provider)
-		{
-			string ext = Path.GetExtension(path).ToLower();
-			// prefer powerpoint viewer for ppts if available
-			if ((ext == ".ppt" || ext == ".pptx") && PowerpointViewerLib.PowerpointViewerController.IsAvailable)
-				return null;
-
-			if (!IsAvailable)
-				return null;
-
-			return new ImpressMedia(path, provider, PresentationType);
 		}
 
 		private bool? isAvailable = null;
@@ -60,6 +45,27 @@ namespace WordsLive.Slideshow.Impress
 			{
 				isAvailable = false;
 			}
+		}
+
+		public override int Test(Uri uri)
+		{
+			if (!IsAvailable)
+				return -1;
+
+			if (!CheckExtension(uri))
+				return -1;
+
+			string ext = uri.GetExtension();
+			
+			if ((ext == ".ppt" || ext == ".pptx"))
+				return 50; // prefer powerpoint viewer for ppts if available
+
+			return 100;
+		}
+
+		public override Media Handle(Uri uri)
+		{
+			return new ImpressMedia(uri, PresentationType);
 		}
 	}
 }

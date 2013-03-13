@@ -169,7 +169,7 @@ namespace WordsLive.AudioVideo
 				PlayState = PlayState.Playing;
 			}
 			
-			presentation.MediaControl.Load(media.MediaUri);
+			presentation.MediaControl.Load(media.Uri);
 		}
 
 		public bool IsUpdatable

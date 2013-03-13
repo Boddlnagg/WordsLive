@@ -44,12 +44,8 @@ namespace WordsLive.Slideshow.PowerpointViewer
 		PowerpointViewerDocument doc;
 		private bool showOnLoaded = false;
 		private bool isShown = false;
-		private FileInfo file;
-		
-		public void Init(FileInfo file)
-		{
-			this.file = file;
-		}
+
+		public FileInfo File { get; set; }
 
 		public override void Load()
 		{
@@ -58,9 +54,12 @@ namespace WordsLive.Slideshow.PowerpointViewer
 
 		private void PerformLoad(object o)
 		{
+			if (File == null)
+				throw new InvalidOperationException("file has not been set");
+
 			try
 			{
-				doc = PowerpointViewerController.Open(this.file.FullName, new Rectangle(Area.WindowLocation.X, Area.WindowLocation.Y, Area.WindowSize.Width, Area.WindowSize.Height), openHidden: true, thumbnailWidth: 200);
+				doc = PowerpointViewerController.Open(this.File.FullName, new Rectangle(Area.WindowLocation.X, Area.WindowLocation.Y, Area.WindowSize.Width, Area.WindowSize.Height), openHidden: true, thumbnailWidth: 200);
 				doc.Error += (sender, args) =>
 				{
 					if (!doc.HasLoaded)

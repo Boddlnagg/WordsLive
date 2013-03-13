@@ -21,9 +21,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace WordsLive.Core.Data
+namespace WordsLive.Core.Songs.Storage
 {
-	public class LocalBackgroundDataProvider : BackgroundDataProvider
+	public class LocalBackgroundStorage : BackgroundStorage
 	{
 		private string directory;
 
@@ -38,10 +38,10 @@ namespace WordsLive.Core.Data
 		public IEnumerable<string> AllowedVideoExtensions { get; set; }
 
 		/// <summary>
-		/// Initializes a new instance of the <see cref="LocalBackgroundDataProvider"/> class.
+		/// Initializes a new instance of the <see cref="LocalBackgroundStorage"/> class.
 		/// </summary>
 		/// <param name="directory">The root directory.</param>
-		public LocalBackgroundDataProvider(string directory)
+		public LocalBackgroundStorage(string directory)
 		{
 			if (directory == null)
 				throw new ArgumentNullException("directory");

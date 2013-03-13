@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.IO;
-using WordsLive.Core.Songs;
+using System.Linq;
 using System.Xml.Linq;
-using WordsLive.Core.Data;
 
 namespace WordsLive.Core
 {
@@ -14,7 +11,7 @@ namespace WordsLive.Core
 	/// </summary>
 	public static class MediaManager
 	{
-		private static List<MediaFileHandler> fileHandlers = new List<MediaFileHandler>();
+		private static List<MediaTypeHandler> handlers = new List<MediaTypeHandler>();
 
 		/// <summary>
 		/// Registers file handlers from the given types. Any non-abstract subclass of <see cref="MediaFileHandler"/>
@@ -25,93 +22,104 @@ namespace WordsLive.Core
 		{
 			foreach (var type in types)
 			{
-				if (type.IsClass && !type.IsAbstract && typeof(MediaFileHandler).IsAssignableFrom(type))
+				if (type.IsClass && !type.IsAbstract && typeof(MediaTypeHandler).IsAssignableFrom(type))
 				{
-					MediaFileHandler handler = (MediaFileHandler)Activator.CreateInstance(type);
-					fileHandlers.Add(handler);
+					MediaTypeHandler handler = (MediaTypeHandler)Activator.CreateInstance(type);
+					handlers.Add(handler);
 				}
 			}
 		}
 
 		/// <summary>
-		/// Gets the registered media file handlers.
+		/// Gets the registered media type handlers.
 		/// </summary>
-		public static IEnumerable<MediaFileHandler> FileHandlers
+		public static IEnumerable<MediaTypeHandler> Handlers
 		{
 			get
 			{
-				return fileHandlers;
+				return handlers;
 			}
 		}
 
 		/// <summary>
-		/// Creates a media object from a file (using the specified data provider).
-		/// If the file doesn't exist, a <see cref="FileNotFoundMedia"/> is returned.
+		/// Creates a media object from a URI.
+		/// If the URI does not reference an HTTP resource, a <see cref="FileNotFoundMedia"/> is returned if
+		/// the resource does not exist.
 		/// If no appropiate file handler is found, a <see cref="UnsupportedMedia"/> is returned.
 		/// Otherwise the correct <see cref="Media"/> type is returned.
 		/// </summary>
-		/// <param name="file">The path, to be handled by the data provider.</param>
-		/// <param name="provider">The data provider to use for loading.</param>
+		/// <param name="uri">The URI to load from. This can either be local (file://), remote (http://)
+		/// or a reference to the song database (song://).</param>
 		/// <returns>A <see cref="Media"/> object.</returns>
-		public static Media LoadMediaMetadata(string path, IMediaDataProvider provider)
+		public static Media LoadMediaMetadata(Uri uri)
 		{
 			try
 			{
-				string ext = Path.GetExtension(path).ToLower();
-				var handlers = from h in fileHandlers where h.Extensions.Contains(ext) select h;
-				Media result;
-				foreach (var h in handlers)
+				MediaTypeHandler maxPriorityHandler = handlers.First();
+				int maxPriority = maxPriorityHandler.Test(uri);
+
+				foreach (var h in handlers.Skip(1))
 				{
-					result = h.TryHandle(path, provider);
-					if (result != null)
+					int priority = h.Test(uri);
+					if (priority > maxPriority)
 					{
-						result.LoadMetadataHelper();
-						return result;
+						maxPriorityHandler = h;
+						maxPriority = priority;
 					}
 				}
 
-				return new UnsupportedMedia(path, provider);
+				if (maxPriority < 0)
+				{
+					return new UnsupportedMedia(uri);
+				}
+				else
+				{
+					var result = maxPriorityHandler.Handle(uri);
+					result.LoadMetadataHelper();
+					return result;
+				}
 			}
 			catch (FileNotFoundException)
 			{
-				return new FileNotFoundMedia(path, provider);
+				return new FileNotFoundMedia(uri);
 			}
 		}
 
 		/// <summary>
-		/// Loads multiple files at once, trying to call a single handler's <see cref="MediaFileHandler.TryHandleMultiple"/> method
+		/// Tries to loads multiple files at once using the a single handler's <see cref="MediaTypeHandler.HandleMultiple"/> method
 		/// in order to load them into a single media object if supported. This assumes that the files exist.
 		/// </summary>
-		/// <param name="paths">The paths to the files to load.</param>
-		/// <param name="provider">The provider to use for loading.</param>
+		/// <param name="uris">The URIs to load.</param>
 		/// <returns>The loaded media objects, either one per file or less.</returns>
-		public static IEnumerable<Media> LoadMultipleMediaMetadata(IEnumerable<string> paths, IMediaDataProvider provider)
+		public static IEnumerable<Media> LoadMultipleMediaMetadata(IEnumerable<Uri> uris)
 		{
-			var extensions = (from p in paths select Path.GetExtension(p.ToLower())).Distinct();
+			MediaTypeHandler maxPriorityHandler = handlers.First();
+			int maxPriority = maxPriorityHandler.TestMultiple(uris);
 
-			// select handlers that can handle all selected file types
-			var handlers = from h in fileHandlers where !extensions.Except(h.Extensions).Any() select h;
-
-			IEnumerable<Media> result;
-			foreach (var h in handlers)
+			foreach (var h in handlers.Skip(1))
 			{
-				result = h.TryHandleMultiple(paths, provider);
-				if (result != null)
+				int priority = h.TestMultiple(uris);
+				if (priority > maxPriority)
 				{
-					foreach (var r in result)
-					{
-						r.LoadMetadataHelper();
-						yield return r;
-					}
-
-					yield break;
+					maxPriorityHandler = h;
+					maxPriority = priority;
 				}
 			}
 
-			// if not all of them are supported by a single handler load them seperately
-			foreach (var path in paths)
+			if (maxPriority < 0)
 			{
-				yield return LoadMediaMetadata(path, provider);
+				// not all of them are supported by a single handler => load them separately
+				return uris.Select(u => LoadMediaMetadata(u));
+				
+			}
+			else
+			{
+				var result = maxPriorityHandler.HandleMultiple(uris);
+				foreach (var m in result)
+				{
+					m.LoadMetadataHelper();
+				}
+				return result;
 			}
 		}
 
@@ -126,7 +134,7 @@ namespace WordsLive.Core
 			{
 				if (media is FileNotFoundMedia)
 				{
-					return LoadMediaMetadata(media.File, media.DataProvider);
+					return LoadMediaMetadata(media.Uri);
 				}
 				else
 				{
@@ -136,7 +144,7 @@ namespace WordsLive.Core
 			}
 			catch (FileNotFoundException)
 			{
-				return new FileNotFoundMedia(media.File, media.DataProvider);
+				return new FileNotFoundMedia(media.Uri);
 			}
 		}
 
@@ -204,8 +212,8 @@ namespace WordsLive.Core
 					{
 						foreach (Media m in from i in root.Element("order").Elements("item")
 											select (i.Attribute("mediatype").Value == "powerpraise-song" && !i.Element("file").Value.Contains('\\')) ?
-											LoadMediaMetadata(i.Element("file").Value, DataManager.Songs) :
-											LoadMediaMetadata(i.Element("file").Value, DataManager.LocalFiles)) // TODO: don't assume local files for everything else
+											LoadMediaMetadata(new Uri("song:///" + i.Element("file").Value)) :
+											LoadMediaMetadata(new Uri(i.Element("file").Value)))
 						{
 							yield return m;
 						}
@@ -215,7 +223,7 @@ namespace WordsLive.Core
 					else if (root.Attribute("version").Value == "2.2")
 					{
 						foreach (Media m in from i in root.Elements("item")
-													select MediaManager.LoadMediaMetadata(i.Element("file").Value, DataManager.Songs))
+													select MediaManager.LoadMediaMetadata(new Uri("song:///" + i.Element("file").Value)))
 						{
 							yield return m;
 						}
@@ -246,9 +254,8 @@ namespace WordsLive.Core
 					from m in enumerable
 					select new XElement(
 						"item",
-						new XAttribute("mediatype", m is Song ? "powerpraise-song" : "file"),
-						//new XElement("file", m is Song ? m.File.Replace(SongsDirectory + Path.DirectorySeparatorChar, "") : m.File)
-						new XElement("file", m.File)
+						new XAttribute("mediatype", m.Uri.Scheme == "song" ? "powerpraise-song" : "file"),
+						new XElement("file", GetMediaPathFromUri(m.Uri))
 					)
 				),
 				new XElement("settings",
@@ -282,9 +289,21 @@ namespace WordsLive.Core
 			doc.Add(new XComment("This file was written using WordsLive"));
 			doc.Add(root);
 
-			StreamWriter writer = new StreamWriter(fileName, false, System.Text.Encoding.GetEncoding("iso-8859-1"));
+			StreamWriter writer = new StreamWriter(fileName, false, System.Text.Encoding.GetEncoding("iso-8859-1")); // TODO: use utf-8?
 			doc.Save(writer);
 			writer.Close();
+		}
+
+		private static string GetMediaPathFromUri(Uri uri)
+		{
+			if (uri.Scheme == "song")
+				return Uri.UnescapeDataString(uri.AbsolutePath).Substring(1);
+
+			if (uri.IsFile)
+				return uri.LocalPath;
+
+			throw new NotImplementedException("Saving remote URIs not implemented yet.");
+
 		}
 	}
 }

@@ -6,15 +6,12 @@ namespace WordsLive.AudioVideo
 {
 	public abstract class AudioVideoMedia : Media
 	{
-		public AudioVideoMedia(string path, IMediaDataProvider provider) : base(path, provider) { }
+		public AudioVideoMedia(Uri uri) : base(uri) { }
 
 		public abstract bool HasVideo { get; }
 
-		public Uri MediaUri { get; set; }
-
 		public override void Load()
 		{
-			MediaUri = this.DataProvider.GetUri(this.File);
 			// TODO: load offsets from somewhere & add UI to configure it
 			OffsetStart = new TimeSpan(0, 0, 0);
 			OffsetEnd = new TimeSpan(0, 0, 0);

@@ -131,7 +131,7 @@
     <Compile Include="Images\ImagesControlPanel.xaml.cs">
       <DependentUpon>ImagesControlPanel.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Images\ImagesFileHandler.cs" />
+    <Compile Include="Images\ImagesHandler.cs" />
     <Compile Include="Images\ImagesMedia.cs" />
     <Compile Include="Images\ImagesPresentation.cs" />
     <Compile Include="ISettingsTab.cs" />
@@ -222,7 +222,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="AudioVideo\AudioFileHandler.cs" />
+    <Compile Include="AudioVideo\AudioHandler.cs" />
     <Compile Include="AudioVideo\AudioMedia.cs" />
     <Compile Include="AudioVideo\AudioVideoControlPanel.xaml.cs">
       <DependentUpon>AudioVideoControlPanel.xaml</DependentUpon>
@@ -231,7 +231,7 @@
     <Compile Include="AudioVideo\BaseMediaControl.cs" />
     <Compile Include="AudioVideo\IAudioVideoPresentation.cs" />
     <Compile Include="AudioVideo\PlayState.cs" />
-    <Compile Include="AudioVideo\VideoFileHandler.cs" />
+    <Compile Include="AudioVideo\VideoHandler.cs" />
     <Compile Include="AudioVideo\VideoMedia.cs" />
     <Compile Include="AudioVideo\VlcController.cs" />
     <Compile Include="AudioVideo\VlcWrapper.xaml.cs">
@@ -297,7 +297,7 @@
     <Compile Include="Editor\RenameSongWindow.xaml.cs">
       <DependentUpon>RenameSongWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Songs\SongFileHandler.cs" />
+    <Compile Include="Songs\SongHandler.cs" />
     <Compile Include="Utils\StringSplitConverter.cs" />
     <Compile Include="WebSiteFileHandler.cs" />
     <Compile Include="UnhandledExceptionWindow.xaml.cs">

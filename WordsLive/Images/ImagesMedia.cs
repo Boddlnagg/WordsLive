@@ -5,7 +5,6 @@ using System.IO;
 using System.Linq;
 using Ionic.Zip;
 using WordsLive.Core;
-using WordsLive.Core.Data;
 
 namespace WordsLive.Images
 {
@@ -20,7 +19,7 @@ namespace WordsLive.Images
 
 		public bool CanEdit { get; private set; }
 
-		public ImagesMedia(string file, IMediaDataProvider provider) : base(file, provider) { }
+		public ImagesMedia(Uri uri) : base(uri) { }
 
 		protected override void LoadMetadata()
 		{
@@ -30,7 +29,7 @@ namespace WordsLive.Images
 
 		public override void Load()
 		{
-			string ext = Path.GetExtension(File).ToLower();
+			string ext = Uri.GetExtension().ToLower();
 			if (ext == ".show")
 			{
 				Images = new ObservableCollection<ImageInfo>(LoadFromTxt());
@@ -45,19 +44,19 @@ namespace WordsLive.Images
 			}
 			else
 			{
-				Images = new ObservableCollection<ImageInfo> { new ImageInfo(new Uri(File)) }; // TODO: different providers?
+				Images = new ObservableCollection<ImageInfo> { new ImageInfo(Uri) };
 				CanSave = false;
 				CanEdit = true;
 			}
 
-			if (!(DataProvider is IBidirectionalMediaDataProvider))
+			if (!Uri.IsFile)
 				CanSave = false;
 		}
 
-		internal void CreateSlideshow(IEnumerable<string> files)
+		internal void CreateSlideshow(IEnumerable<Uri> uris)
 		{
 			Images = new ObservableCollection<ImageInfo>();
-			InsertImages(files, 0);
+			InsertImages(uris, 0);
 			CanSave = true;
 			CanEdit = true;
 			Save();
@@ -65,9 +64,11 @@ namespace WordsLive.Images
 
 		private IEnumerable<ImageInfo> LoadFromTxt()
 		{
-			using (var stream = DataProvider.Get(File))
+			if (!Uri.IsFile)
+				throw new NotImplementedException("Loading slideshows from a remote source is not implemented.");
+
+			using (var reader = new StreamReader(Uri.LocalPath))
 			{
-				var reader = new StreamReader(stream);
 				string line;
 
 				while ((line = reader.ReadLine()) != null)
@@ -84,14 +85,15 @@ namespace WordsLive.Images
 
 					yield return next;
 				}
-
-				reader.Close();
 			}
 		}
 
 		private IEnumerable<ImageInfo> LoadFromZip()
 		{
-			Stream stream = DataProvider.Get(File);
+			if (!Uri.IsFile)
+				throw new NotImplementedException("Loading slideshows from a remote source is not implemented.");
+
+			Stream stream = System.IO.File.OpenRead(Uri.LocalPath);
 			using (var zip = ZipFile.Read(stream))
 			{
 				foreach (var entry in zip.Entries)
@@ -104,12 +106,11 @@ namespace WordsLive.Images
 			// TODO: close & dispose the stream when it isn't needed anymore
 		}
 
-		public void InsertImages(IEnumerable<string> paths, int index)
+		public void InsertImages(IEnumerable<Uri> uris, int index)
 		{
 			int i = index;
-			foreach (var path in paths)
+			foreach (var uri in uris)
 			{
-				var uri = new Uri(path);
 				if (IsValidImageUri(uri))
 				{
 					Images.Insert(i++, new ImageInfo(uri));
@@ -119,12 +120,11 @@ namespace WordsLive.Images
 
 		public void Save()
 		{
-			if (!CanSave)
+			if (!CanSave || !Uri.IsFile)
 				throw new InvalidOperationException("Cannot save this ImagesMedia.");
 
-			using (var trans = (DataProvider as IBidirectionalMediaDataProvider).Put(File))
+			using (var writer = new StreamWriter(Uri.LocalPath))
 			{
-				var writer = new StreamWriter(trans.Stream);
 				foreach (var img in Images)
 				{
 					if (img.Uri.IsFile)
@@ -132,13 +132,12 @@ namespace WordsLive.Images
 					else
 						writer.WriteLine(img.Uri.AbsoluteUri);
 				}
-				writer.Close();
 			}
 		}
 
-		public bool IsValidImageUri(Uri uri)
+		public static bool IsValidImageUri(Uri uri)
 		{
-			var ext = uri.Segments.Last().Split('.').Last();
+			var ext = uri.GetExtension().ToLower();
 			return ImageExtensions.Contains(ext);
 		}
 	}

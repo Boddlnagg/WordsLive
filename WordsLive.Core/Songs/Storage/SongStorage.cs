@@ -20,18 +20,20 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using WordsLive.Core.Songs.IO;
 
-namespace WordsLive.Core.Data
+namespace WordsLive.Core.Songs.Storage
 {
 	/// <summary>
-	/// Abstract base class for song data providers. Song data providers are responsible for providing
+	/// Abstract base class for song storages. Song storages are responsible for providing
 	/// a list of all songs or a list filtered by certain criteria. Generic methods for filtering are
 	/// implemented in this base class, but should be overridden if more specialized filtering methods
-	/// are available. There is no support for a directory structure for songs, so they are identified
-	/// using only their filename.
+	/// are available.
 	/// </summary>
-	public abstract class SongDataProvider : IBidirectionalMediaDataProvider
+	public abstract class SongStorage
 	{
+		// TODO: make API asynchronous
+
 		/// <summary>
 		/// Gets all available songs the provider can provide.
 		/// </summary>
@@ -87,14 +89,24 @@ namespace WordsLive.Core.Data
 			return All().Count();
 		}
 
-		public abstract Stream Get(string path);
+		public abstract Stream Get(string name);
 
-		public abstract Uri GetUri(string path);
+		public abstract FileTransaction Put(string name);
 
-		public abstract FileInfo GetLocal(string path);
+		public abstract void Delete(string name);
 
-		public abstract FileTransaction Put(string path);
+		public abstract FileInfo GetLocal(string name);
 
-		public abstract void Delete(string path);
+		public abstract bool Exists(string name);
+
+		//public Song Read(string name, ISongReader reader)
+		//{
+		//	throw new NotImplementedException();
+		//}
+
+		//public void Write(Song song, string name, ISongWriter writer)
+		//{
+		//	throw new NotImplementedException();
+		//}
 	}
 }

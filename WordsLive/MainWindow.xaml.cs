@@ -11,6 +11,7 @@ using System.Windows.Media;
 using WordsLive.Core;
 using WordsLive.Core.Data;
 using WordsLive.Core.Songs;
+using WordsLive.Core.Songs.Storage;
 using WordsLive.Editor;
 using WordsLive.MediaOrderList;
 using WordsLive.Presentation;
@@ -98,11 +99,11 @@ namespace WordsLive
 			this.orderList.ListChanged += (sender, args) => { portfolioChanged = true; };
 			this.orderList.NotifyTryOpenFileNotFoundMedia += (sender, args) =>
 			{
-				MessageBox.Show("Die Datei " + args.Media.File + " existiert nicht.");
+				MessageBox.Show("Die Datei " + args.Media.Uri + " existiert nicht.");
 			};
 			this.orderList.NotifyTryOpenUnsupportedMedia += (sender, args) =>
 			{
-				MessageBox.Show("Die Datei " + args.Media.File + " kann nicht angezeigt werden, da das Format nicht unterstützt wird.");
+				MessageBox.Show("Die Datei " + args.Media.Uri + " kann nicht angezeigt werden, da das Format nicht unterstützt wird.");
 			};
 
 			Controller.Initialize();
@@ -262,7 +263,7 @@ namespace WordsLive
 				}
 				catch (FileNotFoundException)
 				{
-					var newData = new FileNotFoundMedia(media.File, media.DataProvider);
+					var newData = new FileNotFoundMedia(media.Uri);
 					orderList.ReplaceActive(newData);
 				}
 			}
@@ -314,8 +315,8 @@ namespace WordsLive
 		private void ShowAddMediaDialog()
 		{
 			var typeFilters = new List<string>();
-			typeFilters.Add(Resource.vFilterSupportedMediaTypes + "|" + String.Join(";", (from h in MediaManager.FileHandlers from ext in h.Extensions select "*" + ext).Distinct()));
-			typeFilters.AddRange(from h in MediaManager.FileHandlers select h.Description + "|" + String.Join(";", h.Extensions.Select(s => "*" + s)));
+			typeFilters.Add(Resource.vFilterSupportedMediaTypes + "|" + String.Join(";", (from h in MediaManager.Handlers from ext in h.Extensions select "*" + ext).Distinct()));
+			typeFilters.AddRange(from h in MediaManager.Handlers select h.Description + "|" + String.Join(";", h.Extensions.Select(s => "*" + s)));
 			typeFilters.Add(Resource.vFilterAllFiles+"|*");
 
 			Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
@@ -326,11 +327,13 @@ namespace WordsLive
 			{
 				if (dlg.FileNames.Count() > 1)
 				{
-					foreach (var m in MediaManager.LoadMultipleMediaMetadata(dlg.FileNames, DataManager.LocalFiles))
+					foreach (var m in MediaManager.LoadMultipleMediaMetadata(dlg.FileNames.Select(f => new Uri(f))))
 						orderList.Add(m);
 				}
 				else
-					orderList.Add(MediaManager.LoadMediaMetadata(dlg.FileName, DataManager.LocalFiles));
+				{
+					orderList.Add(MediaManager.LoadMediaMetadata(new Uri(dlg.FileName)));
+				}
 
 				portfolioChanged = true;
 			}
@@ -429,11 +432,10 @@ namespace WordsLive
 		/// If an item is active, the new item is added after that one, otherwise it is appended
 		/// to the end of the portfolio.
 		/// </summary>
-		/// <param name="file">The file to add.</param>
-		/// <param name="provider">The provider.</param>
-		internal void AddToPortfolio(string file, IMediaDataProvider provider)
+		/// <param name="uri">The URI to add.</param>
+		internal void AddToPortfolio(Uri uri)
 		{
-			var media = MediaManager.LoadMediaMetadata(file, provider);
+			var media = MediaManager.LoadMediaMetadata(uri);
 			if (ActiveMedia != null)
 			{
 				int index = orderList.IndexOf(orderList.ActiveItem);
@@ -505,7 +507,7 @@ namespace WordsLive
 				if (song != null)
 				{
 					EditorWindow win = Controller.ShowEditorWindow();
-					win.LoadOrImport(song.File, song.DataProvider);
+					win.LoadOrImport(song.Uri);
 				}
 			}
 			else if (e.Command == CustomCommands.ShowSettings)
@@ -722,7 +724,7 @@ namespace WordsLive
 				foreach (var item in selected)
 				{
 					var song = item.Data as Song;
-					ed.LoadOrImport(song.File, song.DataProvider);
+					ed.LoadOrImport(song.Uri);
 				}
 			}
 		}
@@ -846,7 +848,7 @@ namespace WordsLive
 					index--;
 
 				SongData data = (SongData)e.Data.GetData(SongDataObject.SongDataFormat);
-				Media m = MediaManager.LoadMediaMetadata(data.Filename, DataManager.Songs);
+				Media m = MediaManager.LoadMediaMetadata(data.Uri);
 				orderList.Insert(index, m);
 			}
 			// Data comes from explorer
@@ -874,16 +876,31 @@ namespace WordsLive
 					}
 					else
 					{
-						Media m = MediaManager.LoadMediaMetadata(files[0], DataManager.LocalFiles);
+						Media m = MediaManager.LoadMediaMetadata(new Uri(files[0]));
 						orderList.Insert(index, m);
 					}
 				}
 				else
 				{
-					foreach (var m in MediaManager.LoadMultipleMediaMetadata(files, DataManager.LocalFiles))
+					foreach (var m in MediaManager.LoadMultipleMediaMetadata(files.Select(f => new Uri(f))))
 					{
 						orderList.Insert(index++, m);
 					}
+				}
+			}
+			else if (e.Data.GetData(typeof(String)) != null)
+			{
+				string data = (string)e.Data.GetData(typeof(String));
+				Uri u = null;
+				if (!Uri.TryCreate(data, UriKind.Absolute, out u))
+				{
+					Uri.TryCreate("http://" + data, UriKind.Absolute, out u);
+				}
+
+				if (u != null)
+				{
+					Media m = MediaManager.LoadMediaMetadata(u);
+					orderList.Insert(index, m);
 				}
 			}
 		}

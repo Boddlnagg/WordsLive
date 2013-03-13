@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using WordsLive.Core.Data;
 
 namespace WordsLive.Slideshow.Impress
 {
@@ -8,9 +7,7 @@ namespace WordsLive.Slideshow.Impress
 	{
 		Type presentationType;
 
-		public FileInfo LocalFile { get; private set; }
-
-		public ImpressMedia(string file, IMediaDataProvider provider, Type presentationType) : base(file, provider)
+		public ImpressMedia(Uri uri, Type presentationType) : base(uri)
 		{
 			this.presentationType = presentationType;
 		}
@@ -18,14 +15,17 @@ namespace WordsLive.Slideshow.Impress
 		public override ISlideshowPresentation CreatePresentation()
 		{
 			var pres = (ISlideshowPresentation)Controller.PresentationManager.CreatePresentation(presentationType);
-			presentationType.GetMethod("Init", new Type[] { typeof(FileInfo) }).Invoke(pres, new object[] { this.LocalFile });
+			presentationType.GetMethod("Init", new Type[] { typeof(FileInfo) }).Invoke(pres, new object[] { new FileInfo(Uri.LocalPath) });
 			return pres;
 		}
 
 		public override void Load()
 		{
-			// get the local file (this will temporarily download the file if needed)
-			LocalFile = this.DataProvider.GetLocal(this.File);
+			if (!Uri.IsFile)
+			{
+				// TODO: temporarily download file
+				throw new NotImplementedException("Loading presentations from remote URIs is not yet implemented.");
+			}			
 		}
 	}
 }
