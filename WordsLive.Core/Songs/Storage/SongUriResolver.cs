@@ -65,7 +65,14 @@ namespace WordsLive.Core.Songs.Storage
 			}
 			else if (uri.IsFile)
 			{
-				return File.OpenRead(uri.LocalPath);
+				try
+				{
+					return File.OpenRead(uri.LocalPath);
+				}
+				catch (DirectoryNotFoundException)
+				{
+					throw new FileNotFoundException(uri.LocalPath);
+				}
 			}
 			else
 			{

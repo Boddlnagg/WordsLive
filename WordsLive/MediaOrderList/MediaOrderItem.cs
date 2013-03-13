@@ -50,9 +50,13 @@ namespace WordsLive.MediaOrderList
 				{
 					return Uri.UnescapeDataString(Data.Uri.Segments.Last());
 				}
+				else if (Data.Uri.Scheme == "song")
+				{
+					return Uri.UnescapeDataString(Data.Uri.AbsolutePath).Substring(1);
+				}
 				else
 				{
-					return Data.Uri.AbsoluteUri;
+					return Uri.UnescapeDataString(Data.Uri.AbsoluteUri);
 				}
 			}
 		}

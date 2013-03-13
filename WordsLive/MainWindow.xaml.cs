@@ -99,11 +99,11 @@ namespace WordsLive
 			this.orderList.ListChanged += (sender, args) => { portfolioChanged = true; };
 			this.orderList.NotifyTryOpenFileNotFoundMedia += (sender, args) =>
 			{
-				MessageBox.Show("Die Datei " + args.Media.File + " existiert nicht.");
+				MessageBox.Show("Die Datei " + args.Media.Uri + " existiert nicht.");
 			};
 			this.orderList.NotifyTryOpenUnsupportedMedia += (sender, args) =>
 			{
-				MessageBox.Show("Die Datei " + args.Media.File + " kann nicht angezeigt werden, da das Format nicht unterstützt wird.");
+				MessageBox.Show("Die Datei " + args.Media.Uri + " kann nicht angezeigt werden, da das Format nicht unterstützt wird.");
 			};
 
 			Controller.Initialize();

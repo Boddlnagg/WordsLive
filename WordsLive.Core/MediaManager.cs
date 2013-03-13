@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Xml.Linq;
-using WordsLive.Core.Songs;
 
 namespace WordsLive.Core
 {
@@ -255,9 +254,8 @@ namespace WordsLive.Core
 					from m in enumerable
 					select new XElement(
 						"item",
-						new XAttribute("mediatype", m is Song ? "powerpraise-song" : "file"),
-						//new XElement("file", m is Song ? m.File.Replace(SongsDirectory + Path.DirectorySeparatorChar, "") : m.File)
-						new XElement("file", m.File)
+						new XAttribute("mediatype", m.Uri.Scheme == "song" ? "powerpraise-song" : "file"),
+						new XElement("file", GetMediaPathFromUri(m.Uri))
 					)
 				),
 				new XElement("settings",
@@ -294,6 +292,18 @@ namespace WordsLive.Core
 			StreamWriter writer = new StreamWriter(fileName, false, System.Text.Encoding.GetEncoding("iso-8859-1")); // TODO: use utf-8?
 			doc.Save(writer);
 			writer.Close();
+		}
+
+		private static string GetMediaPathFromUri(Uri uri)
+		{
+			if (uri.Scheme == "song")
+				return Uri.UnescapeDataString(uri.AbsolutePath).Substring(1);
+
+			if (uri.IsFile)
+				return uri.LocalPath;
+
+			throw new NotImplementedException("Saving remote URIs not implemented yet.");
+
 		}
 	}
 }

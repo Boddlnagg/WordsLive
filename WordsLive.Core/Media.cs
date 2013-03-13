@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Linq;
-using Newtonsoft.Json;
-using WordsLive.Core.Data;
 
 namespace WordsLive.Core
 {
@@ -40,26 +38,6 @@ namespace WordsLive.Core
 		internal void LoadMetadataHelper()
 		{
 			LoadMetadata();
-		}
-
-		/// <summary>
-		/// Gets the data provider used for this media instance.
-		/// </summary>
-		[JsonIgnore]
-		public IMediaDataProvider DataProvider
-		{
-			get
-			{
-				return null; // TODO!!
-			}
-		}
-
-		public string File
-		{
-			get
-			{
-				return null; // TODO!!
-			}
 		}
 
 		/// <summary>
