@@ -1,6 +1,6 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using WordsLive.Core;
-using WordsLive.Core.Data;
 using Xps = System.Windows.Xps.Packaging;
 
 namespace WordsLive
@@ -9,11 +9,14 @@ namespace WordsLive
 	{
 		public Xps.XpsDocument Document { get; private set; }
 
-		public XpsDocument(string file, IMediaDataProvider provider) : base(null) { } // TODO!
+		public XpsDocument(Uri uri) : base(uri) { }
 
 		public override void Load()
 		{
-			Document = new Xps.XpsDocument(this.File, FileAccess.Read);
+			if (!this.Uri.IsFile)
+				throw new NotImplementedException("Loading XPS document from remote URI not implemented yet.");
+
+			Document = new Xps.XpsDocument(this.Uri.LocalPath, FileAccess.Read);
 		}
 	}
 }
