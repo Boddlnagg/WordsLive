@@ -16,13 +16,10 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using Newtonsoft.Json;
-using WordsLive.Core.Data;
-using WordsLive.Core.Songs.IO;
 
 namespace WordsLive.Core.Songs.Storage
 {

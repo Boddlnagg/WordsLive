@@ -7,7 +7,6 @@ using System.Threading;
 using System.Windows;
 using Microsoft.Win32;
 using WordsLive.Core;
-using WordsLive.Core.Data;
 using WordsLive.Editor;
 using WordsLive.MediaOrderList;
 using WordsLive.Resources;

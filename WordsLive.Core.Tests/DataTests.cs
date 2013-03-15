@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using NUnit.Framework;
-using WordsLive.Core.Data;
 
 namespace WordsLive.Core.Tests
 {

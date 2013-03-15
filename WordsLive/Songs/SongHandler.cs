@@ -1,9 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using WordsLive.Core;
 using WordsLive.Core.Songs;
-using System.IO;
-using WordsLive.Core.Data;
-using System;
 
 namespace WordsLive.Songs
 {

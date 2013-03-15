@@ -2,7 +2,7 @@
 using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using WordsLive.Core.Data;
+using WordsLive.Core;
 using WordsLive.Core.Songs;
 
 namespace WordsLive.Songs

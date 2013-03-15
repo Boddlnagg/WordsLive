@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using WordsLive.Core;
-using WordsLive.Core.Data;
 
 namespace WordsLive.AudioVideo
 {

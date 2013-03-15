@@ -9,7 +9,6 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using WordsLive.Core;
-using WordsLive.Core.Data;
 using WordsLive.Core.Songs;
 using WordsLive.Core.Songs.Storage;
 using WordsLive.Editor;

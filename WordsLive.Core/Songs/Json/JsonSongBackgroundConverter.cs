@@ -17,10 +17,9 @@
  */
 
 using System;
-using Newtonsoft.Json;
-using WordsLive.Core.Data;
 using System.Drawing;
 using System.IO;
+using Newtonsoft.Json;
 
 namespace WordsLive.Core.Songs.Json
 {

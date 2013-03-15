@@ -5,7 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
-using WordsLive.Core.Data;
+using WordsLive.Core;
 using WordsLive.Core.Songs.Storage;
 using WordsLive.Resources;
 
@@ -120,7 +120,7 @@ namespace WordsLive.Songs
 			}
 			else if (e.Command == ApplicationCommands.Delete)
 			{
-				e.CanExecute = data != null && DataManager.Songs is IBidirectionalMediaDataProvider;
+				e.CanExecute = data != null;
 			}
 		}
 

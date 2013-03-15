@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Windows;
-using WordsLive.Core.Data;
+using WordsLive.Core;
 using WordsLive.Core.Songs.Storage;
 
 namespace WordsLive.Songs

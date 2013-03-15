@@ -1,5 +1,4 @@
 ﻿using System;
-using WordsLive.Core.Data;
 
 namespace WordsLive.Core
 {

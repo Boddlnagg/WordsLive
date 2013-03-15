@@ -3,7 +3,6 @@ using System.IO;
 using System.Reflection;
 using Awesomium.Core;
 using WordsLive.Core;
-using WordsLive.Core.Data;
 
 namespace WordsLive
 {

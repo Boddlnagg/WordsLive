@@ -18,7 +18,6 @@
 
 using System.Linq;
 using NUnit.Framework;
-using WordsLive.Core.Data;
 using WordsLive.Core.Songs;
 
 namespace WordsLive.Core.Tests.Songs

@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.IO;
 using System.Windows;
-using WordsLive.Core.Data;
+using WordsLive.Core;
 using WordsLive.Resources;
 using WordsLive.Utils;
 

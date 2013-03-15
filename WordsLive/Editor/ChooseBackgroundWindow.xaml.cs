@@ -5,7 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using WordsLive.Core.Data;
+using WordsLive.Core;
 using WordsLive.Core.Songs;
 using WordsLive.Core.Songs.Storage;
 using WordsLive.Utils;

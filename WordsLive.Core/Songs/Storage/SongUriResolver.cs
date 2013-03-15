@@ -18,7 +18,6 @@
 
 using System;
 using System.IO;
-using WordsLive.Core.Data;
 
 namespace WordsLive.Core.Songs.Storage
 {

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using WordsLive.Core;
-using WordsLive.Core.Data;
 
 namespace WordsLive.Slideshow.PowerpointViewer
 {

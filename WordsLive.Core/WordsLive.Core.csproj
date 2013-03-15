@@ -74,13 +74,9 @@
     <Compile Include="Songs\Storage\BackgroundDirectory.cs" />
     <Compile Include="Songs\Storage\HttpBackgroundStorage.cs" />
     <Compile Include="Songs\Storage\HttpFileTransaction.cs" />
-    <Compile Include="Data\IBidirectionalMediaDataProvider.cs" />
-    <Compile Include="Data\DataManager.cs" />
+    <Compile Include="DataManager.cs" />
     <Compile Include="Songs\Storage\FileTransaction.cs" />
-    <Compile Include="Data\HttpDataProvider.cs" />
-    <Compile Include="Data\LocalFileDataProvider.cs" />
     <Compile Include="Songs\Storage\LocalFileTransaction.cs" />
-    <Compile Include="Data\IMediaDataProvider.cs" />
     <Compile Include="Songs\Storage\HttpSongStorage.cs" />
     <Compile Include="Songs\Storage\LocalBackgroundStorage.cs" />
     <Compile Include="Songs\Storage\LocalSongStorage.cs" />

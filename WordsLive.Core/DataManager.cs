@@ -20,7 +20,7 @@ using System;
 using System.IO;
 using WordsLive.Core.Songs.Storage;
 
-namespace WordsLive.Core.Data
+namespace WordsLive.Core
 {
 	public static class DataManager
 	{
@@ -74,11 +74,6 @@ namespace WordsLive.Core.Data
 		}
 
 		/// <summary>
-		/// Gets the data provider for local files.
-		/// </summary>
-		public static LocalFileDataProvider LocalFiles { get; private set; }
-
-		/// <summary>
 		/// Gets or sets the file used as template for songs.
 		/// </summary>
 		public static FileInfo SongTemplate
@@ -94,14 +89,6 @@ namespace WordsLive.Core.Data
 
 				songTemplate = value;
 			}
-		}
-
-		/// <summary>
-		/// Initializes the <see cref="DataManager"/> class.
-		/// </summary>
-		static DataManager()
-		{
-			LocalFiles = new LocalFileDataProvider();
 		}
 
 		/// <summary>

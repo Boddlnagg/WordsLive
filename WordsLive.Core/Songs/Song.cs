@@ -23,7 +23,6 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using Newtonsoft.Json;
-using WordsLive.Core.Data;
 using WordsLive.Core.Songs.IO;
 using WordsLive.Core.Songs.Storage;
 using WordsLive.Core.Songs.Undo;

@@ -2,8 +2,6 @@
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
-using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
 
@@ -194,13 +192,6 @@ namespace WordsLive.Utils
 				return clickedPoint.Y < container.ActualHeight / 2;
 			}
 			return clickedPoint.X < container.ActualWidth / 2;
-		}
-
-
-
-		public static bool ContainsIgnoreCase(this string str, string value)
-		{
-			return str.IndexOf(value, StringComparison.OrdinalIgnoreCase) >= 0;
 		}
 		
 		public static void CreateRecursive(this DirectoryInfo dirInfo)

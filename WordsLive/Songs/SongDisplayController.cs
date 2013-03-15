@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using Awesomium.Core;
 using Newtonsoft.Json;
-using WordsLive.Core.Data;
+using WordsLive.Core;
 using WordsLive.Core.Songs;
 
 namespace WordsLive.Songs

@@ -6,7 +6,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using WordsLive.AudioVideo;
-using WordsLive.Core.Data;
+using WordsLive.Core;
 using WordsLive.Core.Songs;
 
 namespace WordsLive.Songs

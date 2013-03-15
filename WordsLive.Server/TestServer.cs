@@ -25,7 +25,7 @@ using System.Text;
 using Firefly.Http;
 using Newtonsoft.Json;
 using Owin;
-using WordsLive.Core.Data;
+using WordsLive.Core;
 using WordsLive.Core.Songs.Storage;
 using WordsLive.Server.Utils;
 
@@ -360,7 +360,7 @@ window.addEventListener('load', init, false);
 						var contentLength = int.Parse(((IDictionary<string, IEnumerable<string>>)env["owin.RequestHeaders"])["Content-Length"].Single());
 						var requestBody = (BodyDelegate)env["owin.RequestBody"];
 
-						var responseBody = Extensions.BufferedRequestBody(requestBody, contentLength, (bytes) =>
+						var responseBody = Server.Utils.Extensions.BufferedRequestBody(requestBody, contentLength, (bytes) =>
 							{
 								using (var ft = songs.Put(query))
 								{
