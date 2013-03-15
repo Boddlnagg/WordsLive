@@ -24,6 +24,7 @@ namespace WordsLive.AudioVideo
 			if (uri.Scheme == Uri.UriSchemeHttp)
 			{
 				// TODO: accept only when VLC is enabled
+				// TODO: v must not be first parameter; allow youtu.be?
 				if ((uri.Host == "www.youtube.com" || uri.Host == "youtube.com") && uri.AbsolutePath == "/watch" && uri.Query.StartsWith("?v="))
 				{
 					return 100;

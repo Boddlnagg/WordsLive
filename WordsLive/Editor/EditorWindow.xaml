@@ -172,7 +172,11 @@
 			<TabControl x:Name="Tabs" ItemsSource="{Binding}">
 				<TabControl.ItemContainerStyle>
 					<Style TargetType="TabItem">
-						<Setter Property="Header" Value="{Binding Song.Title}"/>
+						<Setter Property="Header">
+							<Setter.Value>
+								<TextBlock Text="{Binding Song.Title}"/>
+							</Setter.Value>
+						</Setter>
 						<Setter Property="Content" Value="{Binding Grid}"/>
 						<Setter Property="ToolTip" Value="{Binding Song.File}"/>
 						<Setter Property="ContextMenu">
