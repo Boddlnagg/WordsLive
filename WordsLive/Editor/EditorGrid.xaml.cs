@@ -698,7 +698,7 @@ namespace WordsLive.Editor
 					if (res.DialogResult.HasValue && res.DialogResult.Value)
 					{
 						// apply change
-						song.SongTitle = res.SongName;
+						song.Title = res.SongName;
 						// TODO (Editor): ask whether to rename file?
 					}
 				}

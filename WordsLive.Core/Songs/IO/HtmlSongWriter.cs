@@ -56,11 +56,11 @@ namespace WordsLive.Core.Songs.IO
 			var doc = new XDocument(
 				new XElement("html",
 					new XElement("head",
-						new XElement("title", song.SongTitle),
+						new XElement("title", song.Title),
 						new XElement("style", style)
 						),
 					new XElement("body",
-						new XElement("h1", song.SongTitle),
+						new XElement("h1", song.Title),
 						from partRef in song.Order select ExportPart(partRef.Part, PrintChords),
 						new XElement("p",
 							new XAttribute("id", "copyright"),

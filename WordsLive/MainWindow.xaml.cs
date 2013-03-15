@@ -142,9 +142,9 @@ namespace WordsLive
 
 		void MediaManager_MediaLoaded(object sender, MediaEventArgs args)
 		{
-			if (args.Media is Song)
+			if (args.Media is SongMedia)
 			{
-				Song song = args.Media as Song;
+				Song song = (args.Media as SongMedia).Song;
 
 				if (UsePortfolioBackground == true)
 				{	
@@ -454,7 +454,7 @@ namespace WordsLive
 			}
 			else if (e.Command == CustomCommands.EditActive)
 			{
-				e.CanExecute = OrderListBox != null && (ActiveMedia as Song != null);
+				e.CanExecute = OrderListBox != null && (ActiveMedia as SongMedia != null);
 			}
 			else if (e.Command == ApplicationCommands.Save || e.Command == ApplicationCommands.SaveAs)
 			{
@@ -502,7 +502,7 @@ namespace WordsLive
 			}
 			else if (e.Command == CustomCommands.EditActive)
 			{
-				var song = ActiveMedia as Song;
+				var song = ActiveMedia as SongMedia;
 				if (song != null)
 				{
 					EditorWindow win = Controller.ShowEditorWindow();
@@ -555,7 +555,7 @@ namespace WordsLive
 
 			if (win.DialogResult.HasValue && win.DialogResult.Value)
 			{
-				if (ActiveMedia is Song && !oldOptions.Equals(MasterOverrideOptions.CreateFromSettings()))
+				if (ActiveMedia is SongMedia && !oldOptions.Equals(MasterOverrideOptions.CreateFromSettings()))
 				{
 					ReloadActiveMedia();
 				}
@@ -626,7 +626,7 @@ namespace WordsLive
 						if (win.DialogResult == true)
 						{
 							portfolioBackground = win.ChosenBackground;
-							if (ActiveMedia is Song)
+							if (ActiveMedia is SongMedia)
 							{
 								ReloadActiveMedia();
 							}
@@ -640,7 +640,7 @@ namespace WordsLive
 					else
 					{
 						// disable portfolio background
-						if (ActiveMedia is Song)
+						if (ActiveMedia is SongMedia)
 						{
 							ReloadActiveMedia();
 						}
@@ -722,7 +722,7 @@ namespace WordsLive
 				var ed = Controller.ShowEditorWindow();
 				foreach (var item in selected)
 				{
-					var song = item.Data as Song;
+					var song = item.Data as SongMedia;
 					ed.LoadOrImport(song.Uri);
 				}
 			}
@@ -737,7 +737,7 @@ namespace WordsLive
 			}
 			else if (e.Command == CustomCommands.OpenInEditor)
 			{
-				e.CanExecute = OrderListBox.SelectedItem != null && OrderListBox.SelectedItems.Cast<MediaOrderItem>().All(item => item.Data is Song);
+				e.CanExecute = OrderListBox.SelectedItem != null && OrderListBox.SelectedItems.Cast<MediaOrderItem>().All(item => item.Data is SongMedia);
 			}
 			else
 			{

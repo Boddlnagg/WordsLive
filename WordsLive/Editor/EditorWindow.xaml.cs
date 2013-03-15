@@ -64,32 +64,31 @@ namespace WordsLive.Editor
 			string ext = uri.GetExtension();
 
 			try
-			{ 
+			{
+				Song song;
+
 				if (ext == ".ppl")
 				{
-					var song = new Song(uri);
-					song.Load();
-					Load(song);
+					song = new Song(uri, new PowerpraiseSongReader());
 				}
 				else if (ext == ".sng")
 				{
-					var song = new Song(uri, new SongBeamerSongReader());
-					Load(song);
+					song = new Song(uri, new SongBeamerSongReader());
 				}
 				else if (ext == ".chopro" || ext == ".cho" || ext == ".pro")
 				{
-					var song = new Song(uri, new ChordProSongReader());
-					Load(song);
+					song = new Song(uri, new ChordProSongReader());
 				}
 				else if (ext == "") // OpenSong songs have no file extension
 				{
-					var song = new Song(uri, new OpenSongSongReader());
-					Load(song);
+					song = new Song(uri, new OpenSongSongReader());
 				}
 				else
 				{
 					throw new NotSupportedException("Song format is not supported.");
 				}
+
+				Load(song);
 			}
 			catch
 			{
@@ -143,7 +142,7 @@ namespace WordsLive.Editor
 			if (song == null)
 				throw new ArgumentNullException("song");
 
-			SaveFilenameDialog dlg = new SaveFilenameDialog(song.SongTitle);
+			SaveFilenameDialog dlg = new SaveFilenameDialog(song.Title);
 			dlg.Owner = this;
 
 			if (dlg.ShowDialog() == true)
@@ -162,7 +161,7 @@ namespace WordsLive.Editor
 			dlg.Title = Resource.eMenuExportSong;
 			if (song.Uri == null)
 			{
-				dlg.FileName = song.SongTitle;
+				dlg.FileName = song.Title;
 			}
 			else
 			{
@@ -200,7 +199,7 @@ namespace WordsLive.Editor
 		private void NewSong()
 		{
 			var song = Song.CreateFromTemplate();
-			song.SongTitle = Resource.eNewSongTitle;
+			song.Title = Resource.eNewSongTitle;
 			Load(song);
 		}
 
@@ -211,7 +210,7 @@ namespace WordsLive.Editor
 
 			if (doc.Song.IsModified)
 			{
-				var res = MessageBox.Show(String.Format(Resource.eMsgSaveSongChanges, doc.Song.SongTitle), Resource.eMsgSaveSongChangesTitle, MessageBoxButton.YesNoCancel);
+				var res = MessageBox.Show(String.Format(Resource.eMsgSaveSongChanges, doc.Song.Title), Resource.eMsgSaveSongChangesTitle, MessageBoxButton.YesNoCancel);
 				if (res == MessageBoxResult.Cancel)
 				{
 					return false;

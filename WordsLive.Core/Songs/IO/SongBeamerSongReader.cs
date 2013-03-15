@@ -244,7 +244,7 @@ namespace WordsLive.Core.Songs.IO
 				*/
 
 			if (properties.ContainsKey("title")) // song title 	#Title=Nearer My God To Thee
-				song.SongTitle = properties["title"];
+				song.Title = properties["title"];
 
 			if (properties.ContainsKey("(c)")) // copyright information 	#(c)=1999 Hillsong Music, Australia / Kingsway’s Thankyou Music
 				song.Copyright = properties["(c)"];

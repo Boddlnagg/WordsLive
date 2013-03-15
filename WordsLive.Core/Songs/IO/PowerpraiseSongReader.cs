@@ -39,7 +39,7 @@ namespace WordsLive.Core.Songs.IO
 		{
 			XDocument doc = XDocument.Load(stream);
 			XElement root = doc.Element("ppl");
-			song.SongTitle = root.Element("general").Element("title").Value;
+			song.Title = root.Element("general").Element("title").Value;
 
 			var formatting = root.Element("formatting");
 

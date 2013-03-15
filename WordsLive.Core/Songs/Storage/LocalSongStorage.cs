@@ -19,7 +19,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using WordsLive.Core.Songs.IO;
 
 namespace WordsLive.Core.Songs.Storage
 {
@@ -57,7 +56,6 @@ namespace WordsLive.Core.Songs.Storage
 				try
 				{
 					var song = new Song(new Uri("song:///" + Path.GetFileName(file)), new SongUriResolver(this));
-					song.Load();
 					data = SongData.Create(song);
 				}
 				catch { }

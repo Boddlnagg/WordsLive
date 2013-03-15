@@ -51,7 +51,7 @@ namespace WordsLive.Core.Songs.IO
 						var tag = trimmed.Substring(1, trimmed.Length - 2);
 						if (tag.StartsWith("title:") || tag.StartsWith("t:"))
 						{
-							song.SongTitle = tag.Substring(tag.IndexOf(':') + 1);
+							song.Title = tag.Substring(tag.IndexOf(':') + 1);
 							nextPartName = null;
 							continue;
 						}

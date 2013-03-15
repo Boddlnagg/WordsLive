@@ -32,11 +32,12 @@ namespace WordsLive.Core.Songs
 	/// <summary>
 	/// Represents a song media object.
 	/// </summary>
-	public class Song : Media, INotifyPropertyChanged, ISongElement
+	public class Song : INotifyPropertyChanged, ISongElement
 	{
 		private SongUriResolver uriResolver;
+		public Uri Uri { get; private set; }
 
-		private string songTitle;
+		private string title;
 		private string category;
 		private string language;
 		private string translationLanguage;
@@ -143,22 +144,21 @@ namespace WordsLive.Core.Songs
 		/// <summary>
 		/// Gets or sets the song title.
 		/// </summary>
-		public string SongTitle
+		public string Title
 		{
 			get
 			{
-				return songTitle;
+				return title;
 			}
 			set
 			{
 				if (String.IsNullOrWhiteSpace(value))
 					throw new ArgumentException("value");
 
-				if (value != songTitle)
+				if (value != title)
 				{
-					Undo.ChangeFactory.OnChanging(this, "SongTitle", songTitle, value);
-					songTitle = value;
-					OnPropertyChanged("SongTitle");
+					Undo.ChangeFactory.OnChanging(this, "Title", title, value);
+					title = value;
 					OnPropertyChanged("Title");
 				}
 			}
@@ -435,11 +435,7 @@ namespace WordsLive.Core.Songs
 			return (from p in this.Parts where p.Name == name select p).SingleOrDefault();
 		}
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="Song"/> class.
-		/// </summary>
-		/// <param name="uri">The URI to load.</param>
-		public Song(Uri uri) : this(uri, SongUriResolver.Default)
+		private Song()
 		{
 			Parts = new ObservableCollection<SongPart>();
 			Sources = new ObservableCollection<SongSource>();
@@ -447,37 +443,20 @@ namespace WordsLive.Core.Songs
 			Backgrounds = new ObservableCollection<SongBackground>();
 		}
 
-		// TODO: simplify constructors
+		public Song(string path) : this(new Uri(new FileInfo(path).FullName)) { }
 
-		public Song(Uri uri, SongUriResolver resolver) : base(uri)
+		public Song(Uri uri) : this(uri, SongUriResolver.Default, new PowerpraiseSongReader()) { }
+
+		public Song(Uri uri, SongUriResolver resolver) : this(uri, resolver, new PowerpraiseSongReader()) { }
+
+		public Song(Uri uri, ISongReader reader) : this(uri, SongUriResolver.Default, reader) { }
+
+		public Song(Uri uri, SongUriResolver resolver, ISongReader reader) : this()
 		{
-			uriResolver = resolver;
-			Parts = new ObservableCollection<SongPart>();
-			Sources = new ObservableCollection<SongSource>();
-			Order = new ObservableCollection<SongPartReference>();
-			Backgrounds = new ObservableCollection<SongBackground>();
-		}
+			this.Uri = uri;
+			this.uriResolver = resolver;
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="Song"/> class.
-		/// </summary>
-		/// <param name="filename">The file to load.</param>
-		public Song(string filename) : this(new Uri(filename), SongUriResolver.Default)
-		{
-			Load();
-		}
-
-		/// <summary>
-		/// Initializes a new instance of the <see cref="Song"/> class.
-		/// </summary>
-		/// <param name="uri">The URI to load.</param>
-		/// <param name="reader">The song reader to use for loading.</param>
-		public Song(Uri uri, ISongReader reader) : this(uri)
-		{
-			// TODO: LoadTemplate() is not always necessary -> let the SongReader call that if it needs it
-			this.LoadTemplate();
-
-			using (Stream stream = SongUriResolver.Default.Get(uri))
+			using (Stream stream = uriResolver.Get(uri))
 			{
 				reader.Read(this, stream);
 			}
@@ -487,11 +466,6 @@ namespace WordsLive.Core.Songs
 				IsImported = true;
 			}
 		}
-
-		/// <summary>
-		/// Creates an empty song.
-		/// </summary>
-		private Song() : this((Uri)null) { }
 
 		private void LoadTemplate()
 		{
@@ -513,20 +487,6 @@ namespace WordsLive.Core.Songs
 			return song;
 		}
 
-		/// <summary>
-		/// Loads the media object from the file specified in the <see cref="File"/> field into memory.
-		/// This is always called before the control panel and/or presentation is shown.
-		/// Use <see cref="MediaManager.LoadMedia"/> to call this safely.
-		/// </summary>
-		public override void Load()
-		{
-			using (Stream stream = uriResolver.Get(this.Uri))
-			{
-				var reader = new PowerpraiseSongReader();
-				reader.Read(this, stream);
-			}
-		}
-
 		public void Save()
 		{
 			if (this.Uri == null || IsImported)
@@ -545,7 +505,7 @@ namespace WordsLive.Core.Songs
 		public void Save(Uri uri)
 		{
 			Write(uri, new PowerpraiseSongWriter());
-			Uri = uri;
+			this.Uri = uri;
 			OnPropertyChanged("Uri");
 
 			IsModified = false;
@@ -568,16 +528,6 @@ namespace WordsLive.Core.Songs
 			{
 				writer.Write(this, ft.Stream);
 			}
-		}
-
-		/// <summary>
-		/// Load the song in order to have access to the title and background.
-		/// </summary>
-		/// <param name="filename">The file to load.</param>
-		protected override void LoadMetadata()
-		{
-			base.LoadMetadata();
-			Load();
 		}
 
 		/// <summary>
@@ -1086,18 +1036,6 @@ namespace WordsLive.Core.Songs
 				return this;
 			}
 		}
-
-		/// <summary>
-		/// Gets the title of this media object.
-		/// </summary>
-		public override string Title
-		{
-			get
-			{
-				return SongTitle;
-			}
-		}
-
 		#endregion
 	}
 }

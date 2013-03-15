@@ -5,7 +5,7 @@ using WordsLive.Core.Songs;
 
 namespace WordsLive.Songs
 {
-	[TargetMedia(typeof(Song))]
+	[TargetMedia(typeof(SongMedia))]
 	public partial class SongControlPanel : UserControl, IMediaControlPanel
 	{
 		private class SongSlideSelection
@@ -15,7 +15,7 @@ namespace WordsLive.Songs
 			public int SlideIndex { get; set; }
 		}
 
-		private Song song;
+		private SongMedia song;
 		private bool finishedLoading;
 		private SongPresentation presentation;
 		private SongPresentation oldPresentation;
@@ -29,7 +29,7 @@ namespace WordsLive.Songs
 
 		public void Init(Media media)
 		{
-			Song s = (media as Song);
+			SongMedia s = (media as SongMedia);
 
 			if (s == null)
 				throw new ArgumentException("media must be not null and a Song");
@@ -55,7 +55,7 @@ namespace WordsLive.Songs
 			finishedLoading = false;
 			presentation = Controller.PresentationManager.CreatePresentation<SongPresentation>();
 			presentation.FinishedLoading += pres_OnFinishedLoading;
-			presentation.Load(this.song);
+			presentation.Load(this.song.Song);
 			presentation.ShowChords = ShowChords;
 
 			if (!firstTime)
@@ -67,7 +67,7 @@ namespace WordsLive.Songs
 				}
 			}
 
-			this.SlideListBox.Song = this.song;
+			this.SlideListBox.Song = this.song.Song;
 
 			if (!firstTime && recoverSelection != null)
 			{
@@ -104,7 +104,7 @@ namespace WordsLive.Songs
 			int index = -1;
 			SongPart part = null;
 
-			foreach (var partRef in song.Order)
+			foreach (var partRef in song.Song.Order)
 			{
 				if (partRef.Part.Name == selection.PartName)
 				{
@@ -201,7 +201,7 @@ namespace WordsLive.Songs
 
 		private void DoSwapTextAndTranslation()
 		{
-			foreach (var part in song.Parts)
+			foreach (var part in song.Song.Parts)
 			{
 				foreach (var slide in part.Slides)
 				{
@@ -216,7 +216,7 @@ namespace WordsLive.Songs
 		{
 			if (e.Command == CustomCommands.SwapTextAndTranslation)
 			{
-				e.CanExecute = this.song.HasTranslation; // swapping text and translation is only possible if the song has a translation
+				e.CanExecute = this.song.Song.HasTranslation; // swapping text and translation is only possible if the song has a translation
 			}
 		}
 

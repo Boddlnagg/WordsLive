@@ -49,7 +49,7 @@ namespace WordsLive.Core.Songs.IO
 
 			var root = doc.Root;
 
-			song.SongTitle = root.Elements("title").Single().Value;
+			song.Title = root.Elements("title").Single().Value;
 			song.Copyright = root.Elements("author").Any() ? root.Elements("author").Single().Value : "";
 			if (root.Elements("copyright").Any())
 				song.Copyright += "\n© " + root.Elements("copyright").Single().Value;

@@ -32,7 +32,6 @@ namespace WordsLive.Core.Tests.Songs
 			Assert.AreEqual(0, UndoStackSize);
 			Assert.AreEqual(0, RedoStackSize);
 
-			Assert.AreEqual("SimpleTitle", song.SongTitle);
 			Assert.AreEqual("SimpleTitle", song.Title);
 			Assert.AreEqual("SimpleCategory", song.Category);
 			Assert.AreEqual("SimpleCopyright", song.Copyright);
@@ -375,7 +374,7 @@ namespace WordsLive.Core.Tests.Songs
 		[Test]
 		public void CreateSongData()
 		{
-			song.SongTitle = "Komma, Test\nNeue   Zeile";
+			song.Title = "Komma, Test\nNeue   Zeile";
 			var data = Core.Songs.Storage.SongData.Create(song);
 			Assert.AreEqual("Komma Test Neue Zeile", data.SearchTitle);
 		}
@@ -383,7 +382,7 @@ namespace WordsLive.Core.Tests.Songs
 		[Test]
 		public void GCCollect()
 		{
-			song.SongTitle = "Test";
+			song.Title = "Test";
 			WeakReference weak = new WeakReference(song);
 			song = null;
 			GC.Collect();

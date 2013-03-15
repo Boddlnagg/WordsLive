@@ -39,7 +39,7 @@ namespace WordsLive.Core.Songs.IO
 			XDocument doc = new XDocument(new XDeclaration("1.0", "UTF-8", "yes"));
 			XElement root = new XElement("ppl", new XAttribute("version", "3.0"),
 				new XElement("general",
-					new XElement("title", song.SongTitle),
+					new XElement("title", song.Title),
 					new XElement("category", song.Category),
 					new XElement("language", song.Language),
 					String.IsNullOrEmpty(song.Comment) ? null : new XElement("comment", song.Comment)),

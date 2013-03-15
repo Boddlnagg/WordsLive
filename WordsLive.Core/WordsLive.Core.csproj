@@ -68,6 +68,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Songs\SongMedia.cs" />
     <Compile Include="Songs\Storage\SongUriResolver.cs" />
     <Compile Include="Songs\Storage\BackgroundStorage.cs" />
     <Compile Include="Songs\Storage\BackgroundFile.cs" />

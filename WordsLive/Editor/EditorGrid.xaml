@@ -181,7 +181,7 @@
 			<HierarchicalDataTemplate DataType="{x:Type songs:Song}" ItemsSource="{Binding Source={StaticResource treeNodeProvider}, Path=Nodes}">
 				<StackPanel Orientation="Horizontal">
 					<Image Width="16" Height="16" Margin="0, 1, 2, 1" Source="/WordsLive;component/Artwork/Small_Song.png" />
-					<TextBlock Text="{Binding SongTitle}" />
+					<TextBlock Text="{Binding Title}" />
 					<StackPanel.ContextMenu>
 						<ContextMenu>
 							<MenuItem Header="{x:Static resx:Resource.eGridContextRenameSong}" Command="{x:Static my:CustomCommands.Rename}" CommandParameter="{Binding}"/>

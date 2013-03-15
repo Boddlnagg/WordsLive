@@ -4,18 +4,18 @@ using WordsLive.MediaOrderList;
 
 namespace WordsLive.Songs
 {
-	[TargetMedia(typeof(Song))]
+	[TargetMedia(typeof(SongMedia))]
 	public class SongIconProvider : IconProvider
 	{
-		public SongIconProvider(Song data) : base(data)
+		public SongIconProvider(SongMedia data) : base(data)
 		{ }
 
 		protected override ImageSource CreateIcon()
 		{ 
-			// TODO: use provider's method to get an icon?
+			// TODO: use SongStorage's method to get an icon?
 
-			Song s = (Song)this.Data; // this only contains title and backgrounds
-			return SongBackgroundToImageSourceConverter.CreateBackgroundSource(s.Backgrounds[0], 22);
+			SongMedia s = (SongMedia)this.Data;
+			return SongBackgroundToImageSourceConverter.CreateBackgroundSource(s.Song.Backgrounds[0], 22);
 		}
 	}
 }

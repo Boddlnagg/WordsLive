@@ -24,7 +24,7 @@ namespace WordsLive.Songs
 
 		public override Media Handle(Uri uri)
 		{
-			return new Song(uri);
+			return new SongMedia(uri);
 		}
 	}
 }
