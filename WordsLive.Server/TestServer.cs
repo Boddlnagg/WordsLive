@@ -19,6 +19,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -329,7 +330,7 @@ window.addEventListener('load', init, false);
 					if (requestMethod != "GET")
 						RespondMethodNotAllowed(result);
 
-					Respond(result, JsonConvert.SerializeObject(songs.All()));
+					RespondGzip(result, JsonConvert.SerializeObject(songs.All()));
 				}
 				else if (query == "count")
 				{
@@ -402,14 +403,32 @@ window.addEventListener('load', init, false);
 			Respond(del, Encoding.Default.GetBytes(response), contentType, code);
 		}
 
-		private void Respond(ResultDelegate del, byte[] response, string contentType = "text/plain", string code = "200 OK")
+		private void RespondGzip(ResultDelegate del, string response, string contentType = "text/plain", string code = "200 OK")
 		{
+			var inStream = new MemoryStream(Encoding.Default.GetBytes(response));
+			var outStream = new MemoryStream();
+			using (GZipStream tinyStream = new GZipStream(outStream, CompressionMode.Compress))
+			{
+				inStream.CopyTo(tinyStream);
+			}
+			Respond(del, outStream.ToArray(), contentType, code, "gzip");
+			outStream.Close();
+			inStream.Close();
+		}
+
+		private void Respond(ResultDelegate del, byte[] response, string contentType = "text/plain", string code = "200 OK", string contentEncoding = null)
+		{
+			var headers = new Dictionary<string, IEnumerable<string>>(StringComparer.OrdinalIgnoreCase);
+
+			if (contentType != null)
+				headers.Add("Content-Type", new[] { contentType });
+
+			if (contentEncoding != null)
+				headers.Add("Content-Encoding", new[] { contentEncoding });
+
 			del(
 				code,
-				new Dictionary<string, IEnumerable<string>>(StringComparer.OrdinalIgnoreCase)
-				{
-					{"Content-Type", new[] { contentType }}
-				},
+				headers,
 				(write, flush, end, cancel) =>
 				{
 					write(new ArraySegment<byte>(response));

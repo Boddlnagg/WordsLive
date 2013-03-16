@@ -16,6 +16,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
@@ -27,9 +28,19 @@ namespace WordsLive.Core.Songs.Storage
 	{
 		private WebClient client;
 
+		class GZipWebClient : WebClient
+		{
+			protected override WebRequest GetWebRequest(Uri address)
+			{
+				HttpWebRequest request = (HttpWebRequest)base.GetWebRequest(address);
+				request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
+				return request;
+			}
+		}
+
 		public HttpSongStorage(string baseAddress, NetworkCredential credential = null)
 		{
-			this.client = new WebClient();
+			this.client = new GZipWebClient();
 			client.BaseAddress = baseAddress;
 			if (credential != null)
 				client.Credentials = credential;
