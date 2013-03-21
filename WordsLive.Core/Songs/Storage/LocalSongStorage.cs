@@ -48,6 +48,7 @@ namespace WordsLive.Core.Songs.Storage
 		/// </returns>
 		public override IEnumerable<SongData> All()
 		{
+			// TODO: implement caching
 			SongData data;
 			foreach (string file in Directory.GetFiles(directory))
 			{

@@ -84,8 +84,15 @@ namespace WordsLive.Core.Songs.Storage
 		/// <returns></returns>
 		private IEnumerable<ListingEntry> GetListing(BackgroundDirectory directory)
 		{
-			var result = client.DownloadString(directory.Path.Substring(1) + "list");
-			return result.Split('\n').Where(p => p.Trim() != String.Empty).Select(p => new ListingEntry(p));
+			try
+			{
+				var result = client.DownloadString(directory.Path.Substring(1) + "list");
+				return result.Split('\n').Where(p => p.Trim() != String.Empty).Select(p => new ListingEntry(p)).ToArray();
+			}
+			catch (WebException)
+			{
+				throw new FileNotFoundException();
+			}
 		}
 
 		/// <summary>

@@ -181,7 +181,7 @@ window.addEventListener('load', init, false);
 			if (!String.IsNullOrEmpty(Password))
 				cred = new NetworkCredential("WordsLive", Password);
 
-			return new HttpSongStorage("http://localhost:"+Port+"/songs/", cred);
+			return new HttpSongStorage("http://localhost:" + Port + "/songs/", cred); // alternative: ipv4.fiddler
 		}
 
 		public BackgroundStorage CreateBackgroundStorage()
@@ -191,7 +191,7 @@ window.addEventListener('load', init, false);
 			if (!String.IsNullOrEmpty(Password))
 				cred = new NetworkCredential("WordsLive", Password);
 
-			return new HttpBackgroundStorage("http://localhost:"+Port+"/backgrounds/", cred);
+			return new HttpBackgroundStorage("http://localhost:" + Port + "/backgrounds/", cred); // alternative: ipv4.fiddler
 		}
 
 		private static AppDelegate EnableAuthentication(AppDelegate app, string password)
@@ -257,7 +257,7 @@ window.addEventListener('load', init, false);
 						case 1:
 							var prev = Console.ForegroundColor;
 							Console.ForegroundColor = ConsoleColor.Blue;
-							Console.WriteLine(Encoding.Default.GetString(data.Array, data.Offset, data.Count));
+							Console.WriteLine(Encoding.Default.GetString(data.Array, data.Offset, data.Count)); // UTF8?
 							Console.ForegroundColor = prev;
 							break;
 					}
@@ -285,10 +285,17 @@ window.addEventListener('load', init, false);
 					string path = query.Substring(0, query.Length - "list".Length);
 					var dir = backgrounds.GetDirectory(path);
 
-					StringBuilder sb = new StringBuilder();
-					ListBackgroundEntries(dir, sb);
+					try
+					{
+						StringBuilder sb = new StringBuilder();
+						ListBackgroundEntries(dir, sb);
 
-					Respond(result, sb.ToString());
+						Respond(result, sb.ToString());
+					}
+					catch (FileNotFoundException)
+					{
+						RespondNotFound(result);
+					}
 				}
 				else if (query == "/listall")
 				{
@@ -339,6 +346,40 @@ window.addEventListener('load', init, false);
 
 					Respond(result, songs.Count().ToString());
 				}
+				else if (query.StartsWith("filter/"))
+				{
+					if (requestMethod != "GET")
+						RespondMethodNotAllowed(result);
+
+					query = query.Substring("filter/".Length);
+					var i = query.IndexOf('/');
+					if (i < 0)
+						RespondNotFound(result);
+
+					var filter = query.Substring(0, i);
+					var filterQuery = SongData.NormalizeSearchString(query.Substring(i + 1));
+
+					if (filter == "text")
+					{
+						RespondGzip(result, JsonConvert.SerializeObject(songs.WhereTextContains(filterQuery)));
+					}
+					else if (filter == "title")
+					{
+						RespondGzip(result, JsonConvert.SerializeObject(songs.WhereTitleContains(filterQuery)));
+					}
+					else if (filter == "source")
+					{
+						RespondGzip(result, JsonConvert.SerializeObject(songs.WhereSourceContains(filterQuery)));
+					}
+					else if (filter == "copyright")
+					{
+						RespondGzip(result, JsonConvert.SerializeObject(songs.WhereCopyrightContains(filterQuery)));
+					}
+					else
+					{
+						RespondNotFound(result); // unsupported filter method
+					}
+				}
 				else
 				{
 					if (requestMethod == "GET")
@@ -352,6 +393,10 @@ window.addEventListener('load', init, false);
 							}
 						}
 						catch (FileNotFoundException)
+						{
+							RespondNotFound(result);
+						}
+						catch (ArgumentException)
 						{
 							RespondNotFound(result);
 						}
@@ -400,18 +445,18 @@ window.addEventListener('load', init, false);
 
 		private void Respond(ResultDelegate del, string response, string contentType = "text/plain", string code = "200 OK")
 		{
-			Respond(del, Encoding.Default.GetBytes(response), contentType, code);
+			Respond(del, Encoding.UTF8.GetBytes(response), contentType + "; charset=utf-8", code);
 		}
 
 		private void RespondGzip(ResultDelegate del, string response, string contentType = "text/plain", string code = "200 OK")
 		{
-			var inStream = new MemoryStream(Encoding.Default.GetBytes(response));
+			var inStream = new MemoryStream(Encoding.UTF8.GetBytes(response));
 			var outStream = new MemoryStream();
 			using (GZipStream tinyStream = new GZipStream(outStream, CompressionMode.Compress))
 			{
 				inStream.CopyTo(tinyStream);
 			}
-			Respond(del, outStream.ToArray(), contentType, code, "gzip");
+			Respond(del, outStream.ToArray(), contentType + "; charset=utf-8", code, "gzip");
 			outStream.Close();
 			inStream.Close();
 		}

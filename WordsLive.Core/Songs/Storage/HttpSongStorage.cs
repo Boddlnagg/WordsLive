@@ -143,6 +143,7 @@ namespace WordsLive.Core.Songs.Storage
 
 		private IEnumerable<SongData> FetchSongData(string path)
 		{
+			client.Encoding = System.Text.Encoding.UTF8;
 			var result = client.DownloadString(path);
 			return JsonConvert.DeserializeObject<IEnumerable<SongData>>(result);
 		}

@@ -23,7 +23,7 @@ namespace WordsLive.Core.Songs.Storage
 {
 	/// <summary>
 	/// Represents a directory that contains backgrounds. An instance of this class can only be obtained
-	/// using an instance of <see cref="BackgroundDataProvider"/>.
+	/// using an instance of <see cref="BackgroundStorage"/>.
 	/// </summary>
 	public class BackgroundDirectory
 	{

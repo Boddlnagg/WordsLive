@@ -124,7 +124,8 @@ namespace WordsLive.Core.Songs.Storage
 
 		public static string NormalizeSearchString(string str)
 		{
-			return Regex.Replace(str, "([,!.:-]|\\s)+", " ");
+			str = Regex.Replace(str, "(['‚‘’„“”›‹»«])+", "");
+			return Regex.Replace(str, "(['’,!.:-]|\\s)+", " ");
 		}
 	}
 }
