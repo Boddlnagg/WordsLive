@@ -178,7 +178,7 @@
 							</Setter.Value>
 						</Setter>
 						<Setter Property="Content" Value="{Binding Grid}"/>
-						<Setter Property="ToolTip" Value="{Binding Song.File}"/>
+						<Setter Property="ToolTip" Value="{Binding Song.Uri}"/>
 						<Setter Property="ContextMenu">
 							<Setter.Value>
 								<ContextMenu>
