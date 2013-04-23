@@ -83,6 +83,9 @@ namespace WordsLive.Editor
 			}
 			set
 			{
+				if (!value)
+					LongChordNames = false;
+
 				germanNotation = value;
 				Chords.GermanNotation = germanNotation;
 				OnNotifyPropertyChanged("GermanNotation");
@@ -106,6 +109,8 @@ namespace WordsLive.Editor
 		private void ButtonTranspose_Click(object sender, RoutedEventArgs e)
 		{
 			Chords.Transpose(song, originalKey, TransposeAmount);
+			OriginalKey = TargetKey;
+			TransposeAmount = TransposeAmount;
 		}
 
 		public string Error

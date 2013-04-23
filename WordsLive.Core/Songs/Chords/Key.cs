@@ -87,8 +87,9 @@ namespace WordsLive.Core.Songs.Chords
 				// Eb	3	b
 				// E	4	#
 				// F	5	b
-				//     +1  (#)
-				// Gb	6	b
+				//(F#   6   #)
+				//     OR
+				//(Gb	6	b)
 				// G	7	#
 				// Ab	8	b
 				// A	9	#
@@ -97,7 +98,9 @@ namespace WordsLive.Core.Songs.Chords
 
 				int k = Note.NormalizeSemitones(Note.SemitonesFromC + (IsMinor ? 3 : 0));
 
-				if (k > 5)
+				bool wasFlat = Note.WasFlat.HasValue && Note.WasFlat.Value;
+
+				if ((wasFlat && k > 5) || (!wasFlat && k > 6))
 					k++;
 
 				return (k % 2) == 1;

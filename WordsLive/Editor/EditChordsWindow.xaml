@@ -32,7 +32,7 @@
 		<GroupBox Grid.Row="1" Header="Sonstiges">
 			<StackPanel Orientation="Vertical">
 				<CheckBox Margin="5" IsChecked="{Binding GermanNotation}">Deutsche Akkordsymbole verwenden (H statt B)</CheckBox>
-				<CheckBox Margin="5" IsChecked="{Binding LongChordNames}">Akkordnamen ausschreiben (z.B. Cis statt C#)</CheckBox>
+				<CheckBox Margin="5" IsChecked="{Binding LongChordNames}" IsEnabled="{Binding GermanNotation}">Akkordnamen ausschreiben (z.B. Cis statt C#)</CheckBox>
 				<Button HorizontalAlignment="Right" Height="23" Margin="5" Padding="5,0" Click="ButtonRemoveChords_Click">Alle Akkorde entfernen</Button>
 			</StackPanel>
 		</GroupBox>

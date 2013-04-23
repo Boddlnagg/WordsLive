@@ -16,6 +16,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+using System;
 namespace WordsLive.Core.Songs.Chords
 {
 	/// <summary>
@@ -37,6 +38,11 @@ namespace WordsLive.Core.Songs.Chords
 		/// Gets the number of semitones from tha note 'C' that defines this note.
 		/// </summary>
 		public int SemitonesFromC { get; private set; }
+
+		/// <summary>
+		/// Gets a value indicating whether the original note name was a flat note
+		/// </summary>
+		public bool? WasFlat { get; private set; }
 
 		/// <summary>
 		/// Transposes this instance to another key.
@@ -68,6 +74,10 @@ namespace WordsLive.Core.Songs.Chords
 		/// </returns>
 		public string ToString(Key key)
 		{
+			// TODO: use optional argument instead of static flags for format
+			if (Chords.LongChordNames && !Chords.GermanNotation)
+				throw new InvalidOperationException("Can only use long chord names when german notation is enabled.");
+
 			bool isFlat = key.IsFlat;
 			bool longNames = Chords.LongChordNames;
 
@@ -132,6 +142,7 @@ namespace WordsLive.Core.Songs.Chords
 			char? next = str.Length > 1 ? str[1] : (char?)null;
 
 			int? semitones = null;
+			bool wasFlat = false;
 			int i = 0;
 
 			while (!semitones.HasValue && i < str.Length)
@@ -153,7 +164,7 @@ namespace WordsLive.Core.Songs.Chords
 					case 'H':
 						semitones = 11; break;
 					case 'B':
-						semitones = (Chords.GermanNotation && next != 'b' && next != '♭') ? 12 : 11; break;
+						semitones = (Chords.GermanNotation && next != 'b' && next != '♭') ? 10 : 11; break;
 				}
 
 				i++;
@@ -179,6 +190,7 @@ namespace WordsLive.Core.Songs.Chords
 				}
 				else if (str[i] == 'b' || str[i] == '♭')
 				{
+					wasFlat = true;
 					semitones--;
 					i++;
 				}
@@ -203,7 +215,7 @@ namespace WordsLive.Core.Songs.Chords
 				}
 			}
 
-			Note n = new Note(semitones.Value);
+			Note n = new Note(semitones.Value) { WasFlat = wasFlat };
 
 			rest = str.Substring(i);
 
