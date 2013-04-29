@@ -169,14 +169,9 @@
 			</CheckBox>
 		</ToolBar>
 		<Grid Grid.Row="2" Grid.Column="0" AllowDrop="True" Drop="Tabs_Drop" DragEnter="Tabs_DragEnterOrOver" DragOver="Tabs_DragEnterOrOver" Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}">
-			<TabControl x:Name="Tabs" ItemsSource="{Binding}">
+			<TabControl x:Name="Tabs" ItemsSource="{Binding}" DisplayMemberPath="Song.Title">
 				<TabControl.ItemContainerStyle>
 					<Style TargetType="TabItem">
-						<Setter Property="Header">
-							<Setter.Value>
-								<TextBlock Text="{Binding Song.Title}"/>
-							</Setter.Value>
-						</Setter>
 						<Setter Property="Content" Value="{Binding Grid}"/>
 						<Setter Property="ToolTip" Value="{Binding Song.Uri}"/>
 						<Setter Property="ContextMenu">
