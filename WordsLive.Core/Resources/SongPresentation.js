@@ -191,6 +191,7 @@ SongPresentation.prototype.showSlide = function (slide) {
 	var lines = slide.Text.split('\n');
 
 	if (slide.Translation) {
+		inner.addClass('song-translated');
 		var transLines = slide.Translation.split('\n');
 		var lineCount = lines.length >= transLines.length ? lines.length : transLines.length;
 		var i;
@@ -253,7 +254,7 @@ SongPresentation.prototype.showSlide = function (slide) {
 
 		this.container.find('.song-next').fadeIn(SongPresentation.Transition, function () { old.remove(); $(this).removeClass('song-next').addClass('song-current'); });
 		if (this.song.VideoBackground !== null) {
-		    this.container.find('.song-current.song-main').fadeOut(SongPresentation.Transition);
+			this.container.find('.song-current.song-main').fadeOut(SongPresentation.Transition);
 		}
 
 		if (slide.Source)
@@ -356,7 +357,8 @@ SongPresentation.prototype.generateStyle = function () {
 
 	var fsText = "font-size: " + makeCssValue(formatting.MainText.Size * SongPresentation.FontFactor * factor, "pt") + ";";
 	var strokeText = formatting.MainText.Size * SongPresentation.FontFactor * factor;
-	var lhText = getLineHeight(this.song.HasChords && this.showChords, this.song.HasTranslation);
+	var lhTextWithoutTrans = getLineHeight(this.song.HasChords && this.showChords, false);
+	var lhTextWithTrans = getLineHeight(this.song.HasChords && this.showChords, true);
 
 	var mgTextBottom = "padding-bottom: " + makeCssValue(formatting.BorderBottom * SongPresentation.MarginFactor * factor, "px") + ";";
 	var mgTextTop = "padding-top: " + makeCssValue(formatting.BorderTop * SongPresentation.MarginFactor * factor, "px") + ";";
@@ -502,7 +504,8 @@ SongPresentation.prototype.generateStyle = function () {
 	var copyrightColor = "color: " + SongPresentation.makeCssColor(formatting.CopyrightText.Color) + ";";
 
 	var cssSpecific = cssTrans + '\
-	' + idselector + ' .song-main span {' + lhText + '}\
+	' + idselector + ' .song-main span {' + lhTextWithoutTrans + '}\
+	' + idselector + ' .song-main .song-translated span:not(.song-trans) {' + lhTextWithTrans + '}\
 	\
 	' + idselector + ' .song-main > div > div > div {\
 		' + vAlign + '\
