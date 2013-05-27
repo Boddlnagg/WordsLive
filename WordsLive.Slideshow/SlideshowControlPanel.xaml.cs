@@ -101,13 +101,11 @@ namespace WordsLive.Slideshow
 			if (e.Key == Key.Right || e.Key == Key.Down || e.Key == Key.PageDown)
 			{
 				pres.NextStep();
-				(pres.Preview as SlideshowPreviewProvider).Update();
 				e.Handled = true;
 			}
 			else if (e.Key == Key.Left || e.Key == Key.Up || e.Key == Key.PageUp)
 			{
 				pres.PreviousStep();
-				(pres.Preview as SlideshowPreviewProvider).Update();
 				e.Handled = true;
 			}
 		}
@@ -149,12 +147,10 @@ namespace WordsLive.Slideshow
 			if (e.Command == NavigationCommands.PreviousPage)
 			{
 				pres.PreviousStep();
-				(pres.Preview as SlideshowPreviewProvider).Update();
 			}
 			else if (e.Command == NavigationCommands.NextPage)
 			{
 				pres.NextStep();
-				(pres.Preview as SlideshowPreviewProvider).Update();
 			}
 		}
 

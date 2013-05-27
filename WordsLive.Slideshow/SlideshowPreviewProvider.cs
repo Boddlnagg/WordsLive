@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
-using WordsLive.Presentation.Wpf;
-using System.Windows.Threading;
 using System.Windows.Media.Imaging;
+using System.Windows.Threading;
+using WordsLive.Presentation.Wpf;
 
 namespace WordsLive.Slideshow
 {
+	// TODO: remove this and use LiveWindowPreviewProvider only (also remove Settings.EnableLivePreview)
 	public class SlideshowPreviewProvider : WpfPreviewProvider
 	{
 		[System.Runtime.InteropServices.DllImport("gdi32.dll")]

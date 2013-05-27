@@ -57,7 +57,8 @@
       <DependentUpon>BlackscreenControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="IWpfPresentation.cs" />
-    <Compile Include="ThumbnailElement.cs" />
+    <Compile Include="LiveWindowPreviewProvider.cs" />
+    <Compile Include="WindowThumbnail.cs" />
     <Compile Include="WpfPreviewProvider.cs" />
     <Compile Include="CloningWpfPreviewProvider.cs" />
     <Page Include="BlackscreenControl.xaml">

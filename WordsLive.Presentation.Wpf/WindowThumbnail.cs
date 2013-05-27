@@ -1,14 +1,17 @@
 ﻿using System;
 using System.Windows;
-using System.Windows.Media;
 using System.Windows.Interop;
+using System.Windows.Media;
 
 namespace WordsLive.Presentation.Wpf
 {
-	public class Thumbnail : FrameworkElement
+	public class WindowThumbnail : FrameworkElement
 	{
-		public Thumbnail()
+		public WindowThumbnail()
 		{
+			if (!Interop.IsDwmEnabled)
+				throw new NotSupportedException("Creating a window thumbnail is not supported when DWM is not enabled.");
+
 			this.LayoutUpdated += new EventHandler(Thumbnail_LayoutUpdated);
 			this.Unloaded += new RoutedEventHandler(Thumbnail_Unloaded);
 		}
@@ -16,40 +19,40 @@ namespace WordsLive.Presentation.Wpf
 		public static DependencyProperty SourceProperty;
 		public static DependencyProperty ClientAreaOnlyProperty;
 
-		static Thumbnail()
+		static WindowThumbnail()
 		{
 			SourceProperty = DependencyProperty.Register(
 				"Source",
 				typeof(IntPtr),
-				typeof(Thumbnail),
+				typeof(WindowThumbnail),
 				new FrameworkPropertyMetadata(
 					IntPtr.Zero,
 					FrameworkPropertyMetadataOptions.AffectsMeasure,
 					delegate(DependencyObject obj, DependencyPropertyChangedEventArgs args)
 					{
-						((Thumbnail)obj).InitialiseThumbnail((IntPtr)args.NewValue);
+						((WindowThumbnail)obj).InitialiseThumbnail((IntPtr)args.NewValue);
 					}));
 
 			ClientAreaOnlyProperty = DependencyProperty.Register(
 				"ClientAreaOnly",
 				typeof(bool),
-				typeof(Thumbnail),
+				typeof(WindowThumbnail),
 				new FrameworkPropertyMetadata(
 					false,
 					FrameworkPropertyMetadataOptions.AffectsMeasure,
 					delegate(DependencyObject obj, DependencyPropertyChangedEventArgs args)
 					{
-						((Thumbnail)obj).UpdateThumbnail();
+						((WindowThumbnail)obj).UpdateThumbnail();
 					}));
 
 			OpacityProperty.OverrideMetadata(
-				typeof(Thumbnail),
+				typeof(WindowThumbnail),
 				new FrameworkPropertyMetadata(
 					1.0,
 					FrameworkPropertyMetadataOptions.Inherits,
 					delegate(DependencyObject obj, DependencyPropertyChangedEventArgs args)
 					{
-						((Thumbnail)obj).UpdateThumbnail();
+						((WindowThumbnail)obj).UpdateThumbnail();
 					}));
 		}
 
@@ -135,7 +138,7 @@ namespace WordsLive.Presentation.Wpf
 
 			if (IntPtr.Zero != thumb)
 			{
-				if (!target.RootVisual.IsAncestorOf(this))
+				if (target.RootVisual == null || !target.RootVisual.IsAncestorOf(this))
 				{
 					//we are no longer in the visual tree
 					ReleaseThumbnail();
@@ -143,16 +146,24 @@ namespace WordsLive.Presentation.Wpf
 				}
 
 				GeneralTransform transform = TransformToAncestor(target.RootVisual);
-				Point a = transform.Transform(new Point(0, 0));
-				Point b = transform.Transform(new Point(this.ActualWidth, this.ActualHeight));
 
-				Interop.ThumbnailProperties props = new Interop.ThumbnailProperties();
-				props.Visible = true;
-				props.Destination = new Interop.Rect(
-					(int)Math.Ceiling(a.X), (int)Math.Ceiling(a.Y),
-					(int)Math.Ceiling(b.X), (int)Math.Ceiling(b.Y));
-				props.Flags = Interop.ThumbnailFlags.Visible | Interop.ThumbnailFlags.RectDetination;
-				Interop.DwmUpdateThumbnailProperties(thumb, ref props);
+				Point a = transform.Transform(new Point(0, 0));
+				if (double.IsNaN(a.X))
+				{
+					this.InvalidateArrange();
+				}
+				else
+				{
+					Point b = transform.Transform(new Point(this.ActualWidth, this.ActualHeight));
+
+					Interop.ThumbnailProperties props = new Interop.ThumbnailProperties();
+					props.Visible = true;
+					props.Destination = new Interop.Rect(
+						(int)Math.Ceiling(a.X), (int)Math.Ceiling(a.Y),
+						(int)Math.Ceiling(b.X), (int)Math.Ceiling(b.Y));
+					props.Flags = Interop.ThumbnailFlags.Visible | Interop.ThumbnailFlags.RectDestination;
+					Interop.DwmUpdateThumbnailProperties(thumb, ref props);
+				}
 			}
 		}
 

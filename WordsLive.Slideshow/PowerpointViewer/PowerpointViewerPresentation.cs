@@ -6,6 +6,7 @@ using System.Threading;
 using System.Windows.Media.Imaging;
 using PowerpointViewerLib;
 using WordsLive.Presentation;
+using WordsLive.Presentation.Wpf;
 using WordsLive.Slideshow.Resources;
 
 namespace WordsLive.Slideshow.PowerpointViewer
@@ -104,6 +105,7 @@ namespace WordsLive.Slideshow.PowerpointViewer
 				{
 					base.OnSlideIndexChanged();
 				};
+
 				LoadPreviewProvider();
 			}
 			catch (PowerpointViewerController.PowerpointViewerOpenException)
@@ -113,6 +115,14 @@ namespace WordsLive.Slideshow.PowerpointViewer
 					OnLoaded(false);
 				}));
 			}
+		}
+
+		protected override void LoadPreviewProvider()
+		{
+			Controller.Dispatcher.Invoke((Action)delegate
+			{
+				preview = new LiveWindowPreviewProvider(doc.WindowHandle);
+			});
 		}
 
 		public override void Show()

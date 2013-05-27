@@ -3,6 +3,7 @@ using System.Runtime.InteropServices;
 
 namespace WordsLive.Presentation.Wpf
 {
+	// Mostly taken from http://www.11011.net/archives/000653.html
 	public static class Interop
 	{
 		public struct Point
@@ -42,7 +43,7 @@ namespace WordsLive.Presentation.Wpf
 		[Flags]
 		public enum ThumbnailFlags : int
 		{
-			RectDetination = 1,
+			RectDestination = 1,
 			RectSource = 2,
 			Opacity = 4,
 			Visible = 8,
@@ -88,21 +89,30 @@ namespace WordsLive.Presentation.Wpf
 
 		[DllImport("dwmapi.dll")]
 		internal static extern int DwmQueryThumbnailSourceSize(IntPtr HThumbnail, out Size size);
-		
+
+		public static bool IsDwmEnabled
+		{
+			get
+			{
+				if (Environment.OSVersion.Version.Major >= 6)
+				{
+					bool enabled;
+					DwmIsCompositionEnabled(out enabled);
+					return enabled;
+				}
+
+				return false;
+			}
+		}
 
 		public static void RemoveFromAeroPeek(IntPtr Hwnd)
 		{
-			if (Environment.OSVersion.Version.Major >= 6)
+			if (IsDwmEnabled)
 			{
-				bool enabled;
-				DwmIsCompositionEnabled(out enabled);
-				if (enabled)
-				{
-					var status = Marshal.AllocHGlobal(sizeof(int));
-					Marshal.WriteInt32(status, 1); // true
-					DwmSetWindowAttribute(Hwnd, DwmWindowAttribute.ExcludedFromPeek, status, sizeof(int));
-					Marshal.FreeHGlobal(status);
-				}
+				var status = Marshal.AllocHGlobal(sizeof(int));
+				Marshal.WriteInt32(status, 1); // true
+				DwmSetWindowAttribute(Hwnd, DwmWindowAttribute.ExcludedFromPeek, status, sizeof(int));
+				Marshal.FreeHGlobal(status);
 			}
 		}
 	}

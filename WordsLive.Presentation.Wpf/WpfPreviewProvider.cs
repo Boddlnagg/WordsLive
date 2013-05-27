@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows.Shapes;
-using System.Windows;
-using WinForms = System.Windows.Forms;
+﻿using System.Windows;
 using System.Windows.Forms.Integration;
+using WinForms = System.Windows.Forms;
 
 namespace WordsLive.Presentation.Wpf
 {
