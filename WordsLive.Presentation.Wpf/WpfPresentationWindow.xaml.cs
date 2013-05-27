@@ -153,7 +153,7 @@ namespace WordsLive.Presentation.Wpf
 			Show();
 			// when we have shown it, we can obtain a window handle to disable aero peek for this window
 			IntPtr windowHandle = new WindowInteropHelper(this).Handle;
-			AeroPeekHelper.RemoveFromAeroPeek(windowHandle);
+			Interop.RemoveFromAeroPeek(windowHandle);
 		}
 
 		internal static void ShowWindow()

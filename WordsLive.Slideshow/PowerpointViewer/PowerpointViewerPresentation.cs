@@ -78,7 +78,7 @@ namespace WordsLive.Slideshow.PowerpointViewer
 					{
 						if (!isClosing)
 						{
-							WordsLive.Presentation.Wpf.AeroPeekHelper.RemoveFromAeroPeek(doc.WindowHandle);
+							WordsLive.Presentation.Wpf.Interop.RemoveFromAeroPeek(doc.WindowHandle);
 							if (showOnLoaded)
 							{
 								doc.Move(Area.WindowLocation.X, Area.WindowLocation.Y);

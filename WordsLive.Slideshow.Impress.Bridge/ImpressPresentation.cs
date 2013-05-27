@@ -78,7 +78,20 @@ namespace WordsLive.Slideshow.Impress.Bridge
 		private static extern bool PrintWindow(IntPtr hwnd, IntPtr hdcBlt, uint nFlags);
 
 		[DllImport("user32.dll")]
-		private static extern int GetWindowRect(IntPtr hwnd, out System.Drawing.Rectangle rc);
+		private static extern int GetWindowRect(IntPtr hwnd, out Rect rc);
+
+		public struct Rect
+		{
+			public Rect(int x, int y, int x1, int y1)
+			{
+				this.Left = x;
+				this.Top = y;
+				this.Right = x1;
+				this.Bottom = y1;
+			}
+
+			public int Left, Top, Right, Bottom;
+		}
 		#endregion
 
 		XPresentation2 presentation;
@@ -219,7 +232,7 @@ namespace WordsLive.Slideshow.Impress.Bridge
 			// Resizing the window works, but a dropshadow remains and moving doesn't, so we'll ignore Area.WindowLocation
 			MoveWindow(presentationHandle, 0, 0, Area.WindowSize.Width, Area.WindowSize.Height, true);
 
-			WordsLive.Presentation.Wpf.AeroPeekHelper.RemoveFromAeroPeek(presentationHandle);
+			WordsLive.Presentation.Wpf.Interop.RemoveFromAeroPeek(presentationHandle);
 
 			ShowWindow(presenterConsoleHandle, 0); // hide presenter console
 
@@ -374,7 +387,7 @@ namespace WordsLive.Slideshow.Impress.Bridge
 
 		private Bitmap Capture(int thumbnailWidth)
 		{
-			System.Drawing.Rectangle rc;
+			Rect rc;
 			GetWindowRect(presentationHandle, out rc);
 
 			Bitmap bm = new Bitmap(Area.WindowSize.Width, Area.WindowSize.Height);
