@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
-using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
 using PowerpointViewerLib;
 using WordsLive.Presentation;
@@ -50,10 +50,13 @@ namespace WordsLive.Slideshow.PowerpointViewer
 
 		public override void Load()
 		{
-			ThreadPool.QueueUserWorkItem(new WaitCallback(PerformLoad));
+			// TODO: improve error handling
+			Task.Factory.StartNew(PerformLoad).ContinueWith(t =>
+				Controller.Dispatcher.Invoke(new Action(() => { base.OnLoaded(false); throw t.Exception.InnerException; })),
+				TaskContinuationOptions.OnlyOnFaulted);
 		}
 
-		private void PerformLoad(object o)
+		private void PerformLoad()
 		{
 			if (File == null)
 				throw new InvalidOperationException("file has not been set");

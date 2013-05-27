@@ -25,7 +25,12 @@ namespace WordsLive.Slideshow.Impress
 			{
 				// TODO: temporarily download file
 				throw new NotImplementedException("Loading presentations from remote URIs is not yet implemented.");
-			}			
+			}
+
+			if (!File.Exists(Uri.LocalPath))
+			{
+				throw new FileNotFoundException();
+			}
 		}
 	}
 }

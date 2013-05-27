@@ -4,7 +4,7 @@ using System.Drawing;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
-using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
 using unoidl.com.sun.star.awt;
 using unoidl.com.sun.star.beans;
@@ -115,21 +115,18 @@ namespace WordsLive.Slideshow.Impress.Bridge
 
 		public override void Load()
 		{
-			try
-			{
-				Area.WindowSizeChanged += Area_WindowSizeChanged;
+			// TODO: improve error handling (return Task instead?)
 
-				ThreadPool.QueueUserWorkItem(new WaitCallback(PerformLoad));
+			Area.WindowSizeChanged += Area_WindowSizeChanged;
 
-				Controller.FocusMainWindow();
-			}
-			catch
-			{
-				base.OnLoaded(false);
-			}
+			Task.Factory.StartNew(PerformLoad).ContinueWith(t =>
+				Controller.Dispatcher.Invoke(new Action(() => { base.OnLoaded(false); throw t.Exception.InnerException; })),
+				TaskContinuationOptions.OnlyOnFaulted); ;
+
+			Controller.FocusMainWindow();
 		}
 
-		void PerformLoad(object o)
+		void PerformLoad()
 		{
 			// Start LibreOffice and load file
 			unoidl.com.sun.star.uno.XComponentContext localContext = uno.util.Bootstrap.bootstrap();
