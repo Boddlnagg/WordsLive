@@ -601,15 +601,6 @@ namespace WordsLive.Resources {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Please select either the song, a part or a slide. ähnelt.
-        /// </summary>
-        public static string eMsgSelectElement {
-            get {
-                return ResourceManager.GetString("eMsgSelectElement", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die The selected background is a video background, but video backgrounds can only be used for the whole song. Shall this background be used for the whole song instead? ähnelt.
         /// </summary>
         public static string eMsgVideoBackgroundForElement {

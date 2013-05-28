@@ -22,7 +22,6 @@
 		<CommandBinding Command="{x:Static local:CustomCommands.Export}" Executed="OnExecuteCommand" CanExecute="OnCommandCanExecute"/>
 		<CommandBinding Command="{x:Static local:CustomCommands.SwitchWindow}" Executed="OnExecuteCommand"/>
 		<CommandBinding Command="{x:Static local:CustomCommands.ViewCurrent}" Executed="OnExecuteCommand" CanExecute="OnCommandCanExecute"/>
-		<CommandBinding Command="{x:Static local:CustomCommands.ChooseBackground}" Executed="OnExecuteCommand" CanExecute="OnCommandCanExecute"/>
 		<CommandBinding Command="{x:Static local:CustomCommands.SongSettings}" Executed="OnExecuteCommand" CanExecute="OnCommandCanExecute"/>
 		<CommandBinding Command="{x:Static local:CustomCommands.EditChords}" Executed="OnExecuteCommand" CanExecute="OnCommandCanExecute"/>
 		<CommandBinding Command="{x:Static local:CustomCommands.AddMedia}" Executed="OnExecuteCommand" CanExecute="OnCommandCanExecute"/>

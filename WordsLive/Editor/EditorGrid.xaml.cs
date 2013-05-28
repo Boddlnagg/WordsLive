@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
@@ -513,6 +514,86 @@ namespace WordsLive.Editor
 			return win;
 		}
 
+		private void ChooseBackground(ISongElement element)
+		{
+			SongBackground bg = null;
+
+			if (element is SongSlide)
+				bg = (element as SongSlide).Background;
+			else if (element is SongPart)
+				bg = (element as SongPart).Slides[0].Background;
+			else if (element is Song)
+				bg = element.Root.FirstSlide != null ? element.Root.FirstSlide.Background : element.Root.Backgrounds[0];
+			else
+				throw new ArgumentException("element must be either Song, SongPart or SongSlide.");
+
+			var win = new ChooseBackgroundWindow(bg);
+			win.Owner = this.FindVisualParent<Window>();
+			win.ShowDialog();
+			if (win.DialogResult.HasValue && win.DialogResult.Value)
+			{
+				if (element is Song)
+				{
+					var song = element as Song;
+
+					song.SetBackground(win.ChosenBackground);
+
+					// this needs to be called manually, because the preview can not listen to background changes
+					// when the root node is selected
+					this.PreviewControl.Update();
+				}
+				else if (element is SongPart)
+				{
+					var part = element as SongPart;
+
+					// only set background if it is different
+					var bgs = part.Slides.Select(s => s.Background).Distinct();
+					if (bgs.Count() != 1 || !bgs.First().Equals(win.ChosenBackground))
+					{
+						if (win.ChosenBackground.Type == SongBackgroundType.Video)
+						{
+							var res = MessageBox.Show(Resource.eMsgVideoBackgroundForElement, Resource.eMsgVideoBackgroundForElementTitle, MessageBoxButton.YesNo);
+							if (res == MessageBoxResult.Yes)
+								part.Root.SetBackground(win.ChosenBackground);
+						}
+						else if (part.Root.VideoBackground != null)
+						{
+							var res = MessageBox.Show(Resource.eMsgReplaceVideoBackground, Resource.eMsgReplaceVideoBackgroundTitle, MessageBoxButton.YesNo);
+							if (res == MessageBoxResult.Yes)
+								part.Root.SetBackground(win.ChosenBackground);
+						}
+						else
+						{
+							part.SetBackground(win.ChosenBackground);
+						}
+					}
+				}
+				else if (element is SongSlide)
+				{
+					var slide = element as SongSlide;
+					if (!slide.Background.Equals(win.ChosenBackground))
+					{
+						if (win.ChosenBackground.Type == SongBackgroundType.Video)
+						{
+							var res = MessageBox.Show(Resource.eMsgVideoBackgroundForElement, Resource.eMsgVideoBackgroundForElementTitle, MessageBoxButton.YesNo);
+							if (res == MessageBoxResult.Yes)
+								slide.Root.SetBackground(win.ChosenBackground);
+						}
+						else if (slide.Root.VideoBackground != null)
+						{
+							var res = MessageBox.Show(Resource.eMsgReplaceVideoBackground, Resource.eMsgReplaceVideoBackgroundTitle, MessageBoxButton.YesNo);
+							if (res == MessageBoxResult.Yes)
+								slide.Root.SetBackground(win.ChosenBackground);
+						}
+						else
+						{
+							slide.SetBackground(win.ChosenBackground);
+						}
+					}
+				}
+			}
+		}
+
 		private void TranslationExpanderExpanded(object sender, RoutedEventArgs e)
 		{
 			Expander exp = (Expander)sender;
@@ -659,6 +740,10 @@ namespace WordsLive.Editor
 					song.Formatting = formatting;
 				}
 			}
+			else if (e.Command == CustomCommands.ChooseBackground)
+			{
+				ChooseBackground(node);
+			}
 
 			e.Handled = true;
 		}
@@ -768,6 +853,10 @@ namespace WordsLive.Editor
 					if (tb != null)
 						e.CanExecute = (tb.SelectionLength == 0);
 				}
+			}
+			else if (e.Command == CustomCommands.ChooseBackground)
+			{
+				e.CanExecute = node is Song || node is SongPart || node is SongSlide;
 			}
 
 			e.Handled = true;

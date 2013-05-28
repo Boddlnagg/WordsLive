@@ -462,9 +462,6 @@
   <data name="eMsgSaveSongChangesTitle" xml:space="preserve">
     <value>Änderungen speichern?</value>
   </data>
-  <data name="eMsgSelectElement" xml:space="preserve">
-    <value>Bitte wählen Sie entweder das Lied, einen Liedteil oder eine Folie aus.</value>
-  </data>
   <data name="eNewSongTitle" xml:space="preserve">
     <value>Neues Lied</value>
   </data>

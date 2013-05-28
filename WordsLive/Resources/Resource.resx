@@ -462,9 +462,6 @@
   <data name="eMsgSaveSongChangesTitle" xml:space="preserve">
     <value>Save changes?</value>
   </data>
-  <data name="eMsgSelectElement" xml:space="preserve">
-    <value>Please select either the song, a part or a slide.</value>
-  </data>
   <data name="eNewSongTitle" xml:space="preserve">
     <value>Untitled song</value>
   </data>
