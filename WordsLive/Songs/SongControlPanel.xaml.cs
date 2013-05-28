@@ -55,7 +55,7 @@ namespace WordsLive.Songs
 			finishedLoading = false;
 			presentation = Controller.PresentationManager.CreatePresentation<SongPresentation>();
 			presentation.FinishedLoading += pres_OnFinishedLoading;
-			presentation.Load(this.song.Song);
+			presentation.Load(this.song.Song, !firstTime);
 			presentation.ShowChords = ShowChords;
 
 			if (!firstTime)

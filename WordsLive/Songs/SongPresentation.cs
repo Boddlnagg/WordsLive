@@ -52,7 +52,9 @@ namespace WordsLive.Songs
 			}
 		}
 
-		public void Load(Song song)
+		private bool disableNextSlideTransition = false;
+
+		public void Load(Song song, bool update = false)
 		{
 			if (song == null)
 				throw new ArgumentNullException("song");
@@ -60,6 +62,9 @@ namespace WordsLive.Songs
 			this.song = song;
 
 			base.Load(false, true);
+
+			if (update)
+				disableNextSlideTransition = true;
 
 			DoubleAnimation ani = new DoubleAnimation { From = 0.0, To = 1.0 };
 			storyboard = new Storyboard();
@@ -135,7 +140,7 @@ namespace WordsLive.Songs
 				FinishedLoading(this, EventArgs.Empty);
 		}
 
-		private void GotoSlide(int index, bool update = false)
+		private void GotoSlide(int index)
 		{
 			var tuple = FindSlideByIndex(index);
 
@@ -175,8 +180,9 @@ namespace WordsLive.Songs
 
 			if (videoBackground != null || backImage.Source != null)
 			{
-				storyboard.Children[0].Duration = new TimeSpan(0, 0, 0, 0, Properties.Settings.Default.SongSlideTransition);
+				storyboard.Children[0].Duration = new TimeSpan(0, 0, 0, 0, disableNextSlideTransition ? 0 : Properties.Settings.Default.SongSlideTransition);
 				storyboard.Begin(this.Control.BackgroundGrid);
+				disableNextSlideTransition = false;
 			}
 		}
 
