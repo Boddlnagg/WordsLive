@@ -5,8 +5,9 @@ using System.Text.RegularExpressions;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
-using System.Windows.Media;
+using System.Windows.Input;
 using WordsLive.Core.Songs;
+using WordsLive.Utils;
 
 namespace WordsLive.Songs
 {
@@ -177,6 +178,20 @@ namespace WordsLive.Songs
 
 		protected override void OnKeyDown(System.Windows.Input.KeyEventArgs e)
 		{
+			if (e.Key == System.Windows.Input.Key.Enter || e.Key == System.Windows.Input.Key.Return)
+			{
+				if (Keyboard.FocusedElement is ListBoxItem)
+				{
+					var item = Keyboard.FocusedElement as ListBoxItem;
+					if (item.FindVisualParent<SongSlideListBox>() == this)
+					{
+						SelectedItem = item.Content;
+						e.Handled = true;
+						return;
+					}
+				}
+			}
+
 			string part;
 			if (partAccessKeys.ContainsKey(e.Key.ToString()))
 				part = partAccessKeys[e.Key.ToString()];

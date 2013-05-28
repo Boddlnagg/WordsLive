@@ -7,7 +7,8 @@
 	xmlns:my="clr-namespace:WordsLive"
 	mc:Ignorable="d"
 	x:Class="WordsLive.Songs.SongControlPanel"
-	d:DesignWidth="200" d:DesignHeight="200">
+	d:DesignWidth="200" d:DesignHeight="200"
+	Focusable="True">
 	<UserControl.CommandBindings>
 		<CommandBinding Command="{x:Static my:CustomCommands.SwapTextAndTranslation}" CanExecute="OnCanExecuteCommand"/>
 	</UserControl.CommandBindings>

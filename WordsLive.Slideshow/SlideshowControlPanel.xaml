@@ -5,9 +5,10 @@
 			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 			 xmlns:resx="clr-namespace:WordsLive.Slideshow.Resources"
 			 mc:Ignorable="d" 
-			 d:DesignHeight="300" d:DesignWidth="300" DataContext="{Binding}">
+			 d:DesignHeight="300" d:DesignWidth="300"
+			 DataContext="{Binding}" Loaded="Control_Loaded">
 	<DockPanel>
-		<ToolBar DockPanel.Dock="Top" ToolBarTray.IsLocked="True">
+		<ToolBar DockPanel.Dock="Top" ToolBarTray.IsLocked="True" Focusable="False">
 			<Button Command="PreviousPage" CommandTarget="{Binding ElementName=slideListView}" Style="{StaticResource markDisabledButton}">
 				<StackPanel Orientation="Horizontal">
 					<Image Width="16" Height="16" Source="/WordsLive;component/Artwork/Small_ArrowLeft.png" />

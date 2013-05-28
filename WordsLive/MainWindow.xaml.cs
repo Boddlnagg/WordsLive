@@ -67,7 +67,10 @@ namespace WordsLive
 
 				currentPanel = value;
 				if (currentPanel != null)
+				{
 					ControlPanel.Child = currentPanel.Control;
+					ControlPanel.Child.Focus();
+				}
 				else
 					ControlPanel.Child = null;
 

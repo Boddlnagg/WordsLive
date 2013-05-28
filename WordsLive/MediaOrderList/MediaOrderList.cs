@@ -169,7 +169,6 @@ namespace WordsLive.MediaOrderList
 					{
 						MediaManager.LoadMedia(item.Data);
 						Controller.CurrentPanel.Init(item.Data);
-						// TODO: set (keyboard) focus to ControlPanel.Control (via event CurrentPanelChanged in MainWindow)
 					}
 				}
 				else

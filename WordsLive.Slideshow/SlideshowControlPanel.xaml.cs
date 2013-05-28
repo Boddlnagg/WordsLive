@@ -161,5 +161,10 @@ namespace WordsLive.Slideshow
 				e.CanExecute = LoadState == ControlPanelLoadState.Loaded;
 			}
 		}
+
+		private void Control_Loaded(object sender, System.Windows.RoutedEventArgs e)
+		{
+			Keyboard.Focus(slideListView);
+		}
 	}
 }
