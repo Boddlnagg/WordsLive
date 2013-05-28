@@ -1,16 +1,11 @@
-﻿using System;
-using WinForms = System.Windows.Forms;
-using System.Windows.Controls;
+﻿using System.Windows;
 using System.Windows.Shapes;
-using System.Windows.Forms.Integration;
-using System.Windows;
 
 namespace WordsLive.Presentation.Wpf
 {
 	public class CloningWpfPreviewProvider<T> : WpfPreviewProvider where T : FrameworkElement, new()
 	{
 		private Rectangle previewRectangle;
-		
 		
 		public CloningWpfPreviewProvider(T control)
 		{

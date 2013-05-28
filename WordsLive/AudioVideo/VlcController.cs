@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Vlc.DotNet.Core;
-using WordsLive.Core;
 using System.IO;
 using System.Reflection;
+using Vlc.DotNet.Core;
+using WordsLive.Core;
 
 namespace WordsLive.AudioVideo
 {

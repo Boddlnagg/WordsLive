@@ -17,7 +17,7 @@
 			<CheckBox Margin="5" VerticalAlignment="Center" IsChecked="{Binding AutoPlay}">Autoplay</CheckBox>
 		</StackPanel>
 		<DockPanel IsEnabled="False" x:Name="controlPanel" Grid.Row="1" Height="80" HorizontalAlignment="Stretch">
-			<Slider DockPanel.Dock="Bottom" Name="timelineSlider" Margin="5" ValueChanged="SeekToMediaPosition" />
+			<Slider DockPanel.Dock="Bottom" Name="timelineSlider" Margin="5" ValueChanged="SeekToMediaPosition" IsMoveToPointEnabled="True"/>
 			<Button Click="OnMouseDownPlayPauseMedia" Width="32" Height="32"  Margin="5">
 				<Button.Style>
 					<Style TargetType="Button" BasedOn="{StaticResource ResourceKey=markDisabledButton}">

@@ -9,7 +9,9 @@
 			 d:DesignHeight="300" d:DesignWidth="300"
 			 Background="Black">
 	<Grid>
-		<MediaElement x:Name="mediaElement"/>
-		<Rectangle x:Name="rect" Fill="Black"/>
+        <Viewbox Stretch="Uniform">
+            <Rectangle x:Name="video"/>
+        </Viewbox>
+        <Rectangle x:Name="rect" Fill="Black"/>
 	</Grid>
 </av:BaseMediaControl>

@@ -1,29 +1,39 @@
 ﻿using System;
-using System.Windows.Controls;
+using System.Windows;
+using System.Windows.Media;
 
 namespace WordsLive.AudioVideo
 {
 	public partial class WpfWrapper : BaseMediaControl
 	{
+		MediaPlayer player;
+
 		public WpfWrapper()
 		{
 			InitializeComponent();
+			player = new MediaPlayer();
+			var vd = new VideoDrawing();
+			vd.Player = player;
+			vd.Rect = new Rect(0, 0, 1, 1);
+			var db = new DrawingBrush();
+			db.Drawing = vd;
+			video.Fill = db;
 		}
 
 		public override TimeSpan Duration
 		{
-			get { return mediaElement.NaturalDuration.TimeSpan; }
+			get { return player.NaturalDuration.TimeSpan; }
 		}
 
 		public override int Position
 		{
 			get
 			{
-				return (int)mediaElement.Position.TotalMilliseconds;
+				return (int)player.Position.TotalMilliseconds;
 			}
 			set
 			{
-				mediaElement.Position = new TimeSpan(0, 0, 0, 0, value);
+				player.Position = new TimeSpan(0, 0, 0, 0, value);
 			}
 		}
 
@@ -31,11 +41,11 @@ namespace WordsLive.AudioVideo
 		{
 			get
 			{
-				return (int)(mediaElement.Volume * 100);
+				return (int)(player.Volume * 100);
 			}
 			set
 			{
-				mediaElement.Volume = value / 100.0;
+				player.Volume = value / 100.0;
 			}
 		}
 
@@ -68,17 +78,23 @@ namespace WordsLive.AudioVideo
 
 		public override void Load(Uri uri)
 		{
-			mediaElement.MediaOpened += (sender, args) =>
+			player.MediaOpened += (sender, args) =>
 			{
+				// set correct size
+				video.Width = player.NaturalVideoWidth;
+				video.Height = player.NaturalVideoHeight;
+
+				player.Volume = 1;
+
 				if (!Autoplay)
-					mediaElement.Pause();
+					player.Pause();
 				else
 					rect.Visibility = System.Windows.Visibility.Hidden;
 
 				OnMediaLoaded();
 			};
 
-			mediaElement.MediaEnded += (sender, args) =>
+			player.MediaEnded += (sender, args) =>
 			{
 				if (!Loop)
 				{
@@ -87,32 +103,30 @@ namespace WordsLive.AudioVideo
 				}
 				else
 				{
-					mediaElement.Stop();
+					player.Stop();
 					OnSeekStart();
-					mediaElement.Play();
+					player.Play();
 				}
 			};
 
-			mediaElement.LoadedBehavior = MediaState.Manual;
-			mediaElement.Source = uri;
-			mediaElement.Volume = 1;
-			mediaElement.Play();
+			player.Open(uri);
+			player.Play();
 		}
 
 		public override void Play()
 		{
-			mediaElement.Play();
+			player.Play();
 			rect.Visibility = System.Windows.Visibility.Hidden;
 		}
 
 		public override void Pause()
 		{
-			mediaElement.Pause();
+			player.Pause();
 		}
 
 		public override void Stop()
 		{
-			mediaElement.Stop();
+			player.Stop();
 			OnSeekStart();
 			rect.Visibility = System.Windows.Visibility.Visible;
 		}

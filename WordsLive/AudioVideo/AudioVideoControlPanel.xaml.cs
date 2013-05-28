@@ -134,7 +134,7 @@ namespace WordsLive.AudioVideo
 			};
 
 			DispatcherTimer timer = new DispatcherTimer();
-			timer.Interval = new TimeSpan(0, 0, 0, 0, 200);
+			timer.Interval = new TimeSpan(0, 0, 0, 0, 100);
 			timer.Tick += (sender, args) =>
 			{
 				if (loaded)
@@ -149,7 +149,7 @@ namespace WordsLive.AudioVideo
 						presentation.MediaControl.Stop();
 						if (IsLooping)
 						{
-							// this sometimes doesn't work with VLC (starts from beginning instead of start-offset)
+							// TODO: this sometimes doesn't work with VLC (starts from beginning instead of start-offset)
 							presentation.MediaControl.Play();
 						}
 						else
@@ -248,9 +248,9 @@ namespace WordsLive.AudioVideo
 		public void Close()
 		{
 			// We're setting the presentation to be the current presentation as soon as we create it,
-			// so actually there's no need to do anything here ... check anyway
+			// so actually there's no need to do the check here ... check anyway
 			if (presentation != null && Controller.PresentationManager.CurrentPresentation == presentation)
-				presentation.Close();
+				presentation.Close(); // TODO: really close (stop) the presentation when we're closing the control panel?
 		}
 	}
 }
