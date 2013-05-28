@@ -711,4 +711,16 @@
   <data name="vAwesomiumProcessCrashedTitle" xml:space="preserve">
     <value>Display process crashed</value>
   </data>
+  <data name="dialogAbort" xml:space="preserve">
+    <value>Abort</value>
+  </data>
+  <data name="dialogIgnore" xml:space="preserve">
+    <value>Ignore</value>
+  </data>
+  <data name="xUnhandledException" xml:space="preserve">
+    <value>An unhandled exception occured while running WordsLive. This should not happen. You can try to ignore the exception and continue to work with WordsLive, though this might lead to instabilities.</value>
+  </data>
+  <data name="xUnhandledExceptionTitle" xml:space="preserve">
+    <value>Unhandled Exception</value>
+  </data>
 </root>

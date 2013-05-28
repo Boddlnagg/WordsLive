@@ -8,7 +8,7 @@ namespace WordsLive.AudioVideo
 	{
 		public override IEnumerable<string> Extensions
 		{
-			get { return new string[] { ".wmv", ".mp4", ".avi", ".mov" }; }
+			get { return new string[] { ".wmv", ".mp4", ".avi", ".mov", ".ogv" }; }
 		}
 
 		public override string Description

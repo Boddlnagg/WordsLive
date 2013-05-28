@@ -88,6 +88,15 @@ namespace WordsLive.Resources {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Abort ähnelt.
+        /// </summary>
+        public static string dialogAbort {
+            get {
+                return ResourceManager.GetString("dialogAbort", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Cancel ähnelt.
         /// </summary>
         public static string dialogCancel {
@@ -111,6 +120,15 @@ namespace WordsLive.Resources {
         public static string dialogError {
             get {
                 return ResourceManager.GetString("dialogError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Ignore ähnelt.
+        /// </summary>
+        public static string dialogIgnore {
+            get {
+                return ResourceManager.GetString("dialogIgnore", resourceCulture);
             }
         }
         
@@ -1839,6 +1857,24 @@ namespace WordsLive.Resources {
         public static string vToolbarEditActiveSong {
             get {
                 return ResourceManager.GetString("vToolbarEditActiveSong", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die An unhandled exception occured while running WordsLive. This should not happen. You can try to ignore the exception and continue to work with WordsLive, though this might lead to instabilities. ähnelt.
+        /// </summary>
+        public static string xUnhandledException {
+            get {
+                return ResourceManager.GetString("xUnhandledException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Unhandled Exception ähnelt.
+        /// </summary>
+        public static string xUnhandledExceptionTitle {
+            get {
+                return ResourceManager.GetString("xUnhandledExceptionTitle", resourceCulture);
             }
         }
     }

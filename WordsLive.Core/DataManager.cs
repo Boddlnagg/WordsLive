@@ -152,7 +152,7 @@ namespace WordsLive.Core
 			{
 				// TODO: add more?
 				AllowedImageExtensions = new string[] { ".png", ".jpg", ".jpeg" },
-				AllowedVideoExtensions = new string[] { ".mp4", ".wmv", ".avi", ".ogv" }
+				AllowedVideoExtensions = new string[] { ".mp4", ".wmv", ".avi", ".mov", ".ogv" }
 			};
 
 			ActualSongStorage = songs;

@@ -711,4 +711,16 @@
   <data name="vAwesomiumProcessCrashedTitle" xml:space="preserve">
     <value>Anzeigeprozess wurde beendet</value>
   </data>
+  <data name="dialogAbort" xml:space="preserve">
+    <value>Beenden</value>
+  </data>
+  <data name="dialogIgnore" xml:space="preserve">
+    <value>Ignorieren</value>
+  </data>
+  <data name="xUnhandledException" xml:space="preserve">
+    <value>Eine unbehandelte Ausnahme ist aufgetreten. Das sollte nicht vorkommen. Sie können versuchen, die Ausnahme zu ignorieren und weiterzuarbeiten, dies könnte jedoch zu weiteren Instabilitäten führen.</value>
+  </data>
+  <data name="xUnhandledExceptionTitle" xml:space="preserve">
+    <value>Unbehandelte Ausnahme</value>
+  </data>
 </root>
