@@ -93,7 +93,7 @@ namespace WordsLive.Core
 					if (parts.Length == 2)
 					{
 						string key = parts[0].Trim(new char[] { '?', ' ' });
-						string val = parts[1].Trim();
+						string val = Uri.UnescapeDataString(parts[1].Trim());
 
 						queryParameters.Add(key, val);
 					}

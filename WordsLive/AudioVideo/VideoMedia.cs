@@ -22,6 +22,11 @@ namespace WordsLive.AudioVideo
 					return "YouTube-Video (" + vid + ")";
 				}
 
+				if (this.Uri.Scheme == "dshow")
+				{
+					return "DirectShow-Video";
+				}
+
 				return base.Title;
 			}
 		}

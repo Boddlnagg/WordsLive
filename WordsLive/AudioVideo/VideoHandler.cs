@@ -21,8 +21,11 @@ namespace WordsLive.AudioVideo
 			if (CheckExtension(uri))
 				return 100;
 
-			// TODO: accept YouTube only when VLC is enabled
+			// TODO: accept the following only when VLC is enabled
 			if (VideoMedia.IsYouTubeUri(uri))
+				return 100;
+
+			if (uri.Scheme == "dshow")
 				return 100;
 
 			return -1;

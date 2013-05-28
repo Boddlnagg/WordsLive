@@ -1,5 +1,6 @@
 ﻿using System;
 using Vlc.DotNet.Core.Medias;
+using WordsLive.Core;
 
 namespace WordsLive.AudioVideo
 {
@@ -53,6 +54,14 @@ namespace WordsLive.AudioVideo
 		public override void Load(Uri uri)
 		{
 			media = new LocationMedia(uri.AbsoluteUri);
+			if (uri.Scheme == "dshow")
+			{
+				var nvc = uri.ParseQueryString();
+				foreach (var key in nvc.AllKeys)
+				{
+					media.AddOption(key + "=" + nvc[key]);
+				}
+			}
 
 			media.StateChanged += OnMediaStateChange;
 
@@ -191,6 +200,7 @@ namespace WordsLive.AudioVideo
 			if (!vlc.IsPaused)
 			{
 				// don't really stop, but pause and go back to beginning
+				// TODO: this does not work for livestreams (like WebCam)
 				vlc.Pause();
 			}
 			OnSeekStart();
