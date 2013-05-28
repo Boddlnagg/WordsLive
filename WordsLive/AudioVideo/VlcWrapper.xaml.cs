@@ -7,7 +7,7 @@ namespace WordsLive.AudioVideo
 	{
 		bool initialized = false;
 		bool loop = false;
-		MediaBase media;
+		LocationMedia media;
 		float durationMilliseconds;
 
 		static VlcWrapper()
@@ -20,27 +20,41 @@ namespace WordsLive.AudioVideo
 			InitializeComponent();
 		}
 
+		private void OnMediaStateChange(MediaBase sender, Vlc.DotNet.Core.VlcEventArgs<Vlc.DotNet.Core.Interops.Signatures.LibVlc.Media.States> e)
+		{
+			if (e.Data == Vlc.DotNet.Core.Interops.Signatures.LibVlc.Media.States.Playing)
+			{
+				if (!initialized && media.Duration.TotalMilliseconds > 0)
+				{
+					if (!Autoplay)
+						vlc.Pause();
+					else
+						rect.Visibility = System.Windows.Visibility.Hidden;
+
+					durationMilliseconds = (float)media.Duration.TotalMilliseconds;
+					initialized = true;
+					OnMediaLoaded();
+				}
+			}
+			else if (e.Data == Vlc.DotNet.Core.Interops.Signatures.LibVlc.Media.States.Ended)
+			{
+				var subItems = media.SubItems;
+				if (subItems.Count > 0)
+				{
+					media.StateChanged -= OnMediaStateChange;
+					subItems[0].StateChanged += OnMediaStateChange;
+					media = subItems[0];
+					vlc.Media = subItems[0];
+					vlc.Play();
+				}
+			}
+		}
+
 		public override void Load(Uri uri)
 		{
-			media = new PathMedia(uri.AbsoluteUri);
+			media = new LocationMedia(uri.AbsoluteUri);
 
-			media.StateChanged += (sender, args) =>
-			{
-				if (media.State == Vlc.DotNet.Core.Interops.Signatures.LibVlc.Media.States.Playing)
-				{
-					if (!initialized)
-					{
-						if (!Autoplay)
-							vlc.Pause();
-						else
-							rect.Visibility = System.Windows.Visibility.Hidden;
-
-						durationMilliseconds = (float)media.Duration.TotalMilliseconds;
-						initialized = true;
-						OnMediaLoaded();
-					}
-				}
-			};
+			media.StateChanged += OnMediaStateChange;
 
 			bool doLoop = false;
 
@@ -66,12 +80,12 @@ namespace WordsLive.AudioVideo
 				doLoop = false;
 			};
 
-			media.MediaSubItemAdded += (sender, args) =>
+			/*media.MediaSubItemAdded += (sender, args) =>
 			{
 				// TODO: support streaming (need to listen to more events etc)
 				vlc.Media = args.Data;
 				vlc.Play();
-			};
+			};*/
 
 			vlc.Media = media;
 		}

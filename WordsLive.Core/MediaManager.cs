@@ -303,7 +303,6 @@ namespace WordsLive.Core
 				return uri.LocalPath;
 
 			throw new NotImplementedException("Saving remote URIs not implemented yet.");
-
 		}
 	}
 }
