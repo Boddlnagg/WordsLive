@@ -425,5 +425,10 @@ namespace WordsLive.Images
 			slideListView.Focus();
 			e.Handled = true;
 		}
+
+		private void Control_Loaded(object sender, RoutedEventArgs e)
+		{
+			Keyboard.Focus(slideListView);
+		}
 	}
 }
