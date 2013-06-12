@@ -70,11 +70,47 @@ namespace WordsLive.Resources {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Reset offset: ähnelt.
+        /// </summary>
+        public static string avLabelResetOffset {
+            get {
+                return ResourceManager.GetString("avLabelResetOffset", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Use current position as: ähnelt.
+        /// </summary>
+        public static string avLabelSetOffset {
+            get {
+                return ResourceManager.GetString("avLabelSetOffset", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Volume: ähnelt.
         /// </summary>
         public static string avLabelVolume {
             get {
                 return ResourceManager.GetString("avLabelVolume", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die End ähnelt.
+        /// </summary>
+        public static string avOffsetEnd {
+            get {
+                return ResourceManager.GetString("avOffsetEnd", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Start ähnelt.
+        /// </summary>
+        public static string avOffsetStart {
+            get {
+                return ResourceManager.GetString("avOffsetStart", resourceCulture);
             }
         }
         

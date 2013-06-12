@@ -11,7 +11,7 @@ namespace WordsLive.AudioVideo
 
 		public override void Load()
 		{
-			// TODO: load offsets from somewhere & add UI to configure it
+			// TODO: load offsets from somewhere and store them
 			OffsetStart = new TimeSpan(0, 0, 0);
 			OffsetEnd = new TimeSpan(0, 0, 0);
 		}

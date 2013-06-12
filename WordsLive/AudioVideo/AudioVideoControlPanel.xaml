@@ -11,6 +11,8 @@
 	<Grid>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="Auto"/>
 			<RowDefinition Height="*"/>
 		</Grid.RowDefinitions>
 		<DockPanel IsEnabled="{Binding Path=LoadState, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static my:ControlPanelLoadState.Loaded}}" Grid.Row="0" Height="80" HorizontalAlignment="Stretch">
@@ -47,7 +49,17 @@
 			<Label DockPanel.Dock="Right" VerticalAlignment="Center" Padding="0">/</Label>
 			<Label DockPanel.Dock="Right" Name="currentTimeLabel" VerticalAlignment="Center" Margin="5,5,0,5" HorizontalAlignment="Right">--:--</Label>
 		</DockPanel>
-		<!--<Viewbox Margin="6" Grid.Row="1">
+		<StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right">
+			<Label Margin="3" Content="{x:Static resx:Resource.avLabelSetOffset}"/>
+			<Button Margin="3" Tag="Start" Click="OnMouseDownSetOffset" Content="{x:Static resx:Resource.avOffsetStart}"/>
+			<Button Margin="3" Tag="End" Click="OnMouseDownSetOffset" Content="{x:Static resx:Resource.avOffsetEnd}"/>
+		</StackPanel>
+		<StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right">
+			<Label Margin="3" Content="{x:Static resx:Resource.avLabelResetOffset}"/>
+			<Button Margin="3" Tag="Start" Click="OnMouseDownResetOffset" Content="{x:Static resx:Resource.avOffsetStart}"/>
+			<Button Margin="3" Tag="End" Click="OnMouseDownResetOffset" Content="{x:Static resx:Resource.avOffsetEnd}"/>
+		</StackPanel>
+		<!--<Viewbox Margin="6" Grid.Row="3">
 			<Rectangle x:Name="preview"/>
 		</Viewbox>-->
 	</Grid>

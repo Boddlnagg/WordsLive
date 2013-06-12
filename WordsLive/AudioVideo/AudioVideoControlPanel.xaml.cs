@@ -120,6 +120,14 @@ namespace WordsLive.AudioVideo
 			return String.Format("{0:00}:{1:00}", (int)span.TotalMinutes, span.Seconds);
 		}
 
+		private void SetOffsets(TimeSpan start, TimeSpan end)
+		{
+			media.OffsetStart = start;
+			media.OffsetEnd = end;
+			timelineSlider.SelectionStart = media.OffsetStart.TotalMilliseconds;
+			timelineSlider.SelectionEnd = presentation.MediaControl.Duration.TotalMilliseconds - media.OffsetEnd.TotalMilliseconds;
+		}
+
 		private void Load<T>(AudioVideoPresentation<T> pres) where T : BaseMediaControl,  new()
 		{
 			presentation = pres;
@@ -127,8 +135,7 @@ namespace WordsLive.AudioVideo
 			{
 				timelineSlider.Maximum = presentation.MediaControl.Duration.TotalMilliseconds;
 				timelineSlider.IsSelectionRangeEnabled = true;
-				timelineSlider.SelectionStart = media.OffsetStart.TotalMilliseconds;
-				timelineSlider.SelectionEnd = presentation.MediaControl.Duration.TotalMilliseconds - media.OffsetEnd.TotalMilliseconds;
+				SetOffsets(media.OffsetStart, media.OffsetEnd);
 				timelineSlider.Value = media.OffsetStart.TotalMilliseconds;
 				volumeSlider.Value = presentation.MediaControl.Volume;
 				totalTimeLabel.Content = FormatTimeSpan(presentation.MediaControl.Duration);
@@ -165,7 +172,7 @@ namespace WordsLive.AudioVideo
 					disableSeek = false;
 
 					// if there is an end-offset, stop before end of playback
-					if (media.OffsetEnd.TotalMilliseconds > 0 && timelineSlider.Value >= timelineSlider.SelectionEnd)
+					if (PlayState == AudioVideo.PlayState.Playing && media.OffsetEnd.TotalMilliseconds > 0 && timelineSlider.Value >= timelineSlider.SelectionEnd)
 					{
 						presentation.MediaControl.Stop();
 						if (IsLooping)
@@ -238,6 +245,32 @@ namespace WordsLive.AudioVideo
 		{
 			if (presentation != null && Controller.PresentationManager.CurrentPresentation == presentation)
 				presentation.Close(); // TODO: really close (stop) the presentation when we're closing the control panel?
+		}
+
+		private void OnMouseDownSetOffset(object sender, RoutedEventArgs e)
+		{
+			switch ((sender as Button).Tag as string)
+			{
+				case "Start":
+					SetOffsets(new TimeSpan(0, 0, 0, 0, (int)timelineSlider.Value), media.OffsetEnd);
+					break;
+				case "End":
+					SetOffsets(media.OffsetStart, new TimeSpan(0, 0, 0, 0, (int)(timelineSlider.Maximum - timelineSlider.Value)));
+					break;
+			}
+		}
+
+		private void OnMouseDownResetOffset(object sender, RoutedEventArgs e)
+		{
+			switch ((sender as Button).Tag as string)
+			{
+				case "Start":
+					SetOffsets(new TimeSpan(0), media.OffsetEnd);
+					break;
+				case "End":
+					SetOffsets(media.OffsetStart, new TimeSpan(0));
+					break;
+			}
 		}
 	}
 }

@@ -735,4 +735,16 @@
   <data name="avTooltipStop" xml:space="preserve">
     <value>Stop</value>
   </data>
+  <data name="avLabelResetOffset" xml:space="preserve">
+    <value>Position zurücksetzen:</value>
+  </data>
+  <data name="avLabelSetOffset" xml:space="preserve">
+    <value>Aktuelle Position festlegen als:</value>
+  </data>
+  <data name="avOffsetEnd" xml:space="preserve">
+    <value>Endposition</value>
+  </data>
+  <data name="avOffsetStart" xml:space="preserve">
+    <value>Startposition</value>
+  </data>
 </root>
