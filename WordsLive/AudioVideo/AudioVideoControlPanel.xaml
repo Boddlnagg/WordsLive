@@ -5,6 +5,7 @@
 			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
 			 xmlns:local="clr-namespace:WordsLive.AudioVideo"
 			 xmlns:my="clr-namespace:WordsLive"
+			 xmlns:resx="clr-namespace:WordsLive.Resources"
 			 mc:Ignorable="d" 
 			 d:DesignHeight="200" d:DesignWidth="450">
 	<Grid>
@@ -13,9 +14,10 @@
 		</Grid.RowDefinitions>
 		<DockPanel IsEnabled="{Binding Path=LoadState, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static my:ControlPanelLoadState.Loaded}}" Grid.Row="1" Height="80" HorizontalAlignment="Stretch">
 			<Slider DockPanel.Dock="Bottom" Name="timelineSlider" Margin="5" ValueChanged="SeekToMediaPosition" IsMoveToPointEnabled="True"/>
-			<Button Click="OnMouseDownPlayPauseMedia" Width="32" Height="32"  Margin="5">
+            <Button Click="OnMouseDownPlayPauseMedia" Width="32" Height="32"  Margin="5">
 				<Button.Style>
 					<Style TargetType="Button" BasedOn="{StaticResource ResourceKey=markDisabledButton}">
+                        <Setter Property="ToolTip" Value="{x:Static resx:Resource.avTooltipPlay}" />
 						<Setter Property="Content">
 							<Setter.Value>
 								<Image Width="16" Source="/WordsLive;component/Artwork/Play.png"/>
@@ -23,6 +25,7 @@
 						</Setter>
 						<Style.Triggers>
 							<DataTrigger Binding="{Binding Path=PlayState, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static local:PlayState.Playing}}" Value="True">
+                                <Setter Property="ToolTip" Value="{x:Static resx:Resource.avTooltipPause}" />
 								<Setter Property="Content">
 									<Setter.Value>
 										<Image Width="16" Source="/WordsLive;component/Artwork/Pause.png"/>
@@ -33,12 +36,12 @@
 					</Style>
 				</Button.Style>
 			</Button>
-			<Button Click="OnMouseDownStopMedia" Height="32" Width="32"  Margin="5" Style="{StaticResource ResourceKey=markDisabledButton}">
+            <Button Click="OnMouseDownStopMedia" Height="32" Width="32"  Margin="5" Style="{StaticResource ResourceKey=markDisabledButton}" ToolTip="{x:Static resx:Resource.avTooltipStop}">
 				<Image Width="16" Source="/WordsLive;component/Artwork/Stop.png"/>
 			</Button>
-			<CheckBox VerticalAlignment="Center" Margin="5" IsChecked="{Binding IsLooping}">Loop</CheckBox>
-			<Label VerticalAlignment="Center" Margin="5">Volume:</Label>
-			<Slider Name="volumeSlider" VerticalAlignment="Center" ValueChanged="ChangeMediaVolume" Minimum="0" Maximum="100" Value="100" Width="70"/>
+			<CheckBox VerticalAlignment="Center" Margin="5" IsChecked="{Binding IsLooping}" Content="{x:Static resx:Resource.avCheckboxLoop}"/>
+            <Label VerticalAlignment="Center" Margin="5" Content="{x:Static resx:Resource.avLabelVolume}"/>
+            <Slider Name="volumeSlider" VerticalAlignment="Center" ValueChanged="ChangeMediaVolume" Minimum="0" Maximum="100" Value="100" Width="70"/>
 			<Label DockPanel.Dock="Right" Name="totalTimeLabel" VerticalAlignment="Center" Margin="0,5,5,5">--:--</Label>
 			<Label DockPanel.Dock="Right" VerticalAlignment="Center" Padding="0">/</Label>
 			<Label DockPanel.Dock="Right" Name="currentTimeLabel" VerticalAlignment="Center" Margin="5,5,0,5" HorizontalAlignment="Right">--:--</Label>

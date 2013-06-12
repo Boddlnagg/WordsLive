@@ -720,4 +720,19 @@
   <data name="xUnhandledExceptionTitle" xml:space="preserve">
     <value>Unbehandelte Ausnahme</value>
   </data>
+  <data name="avCheckboxLoop" xml:space="preserve">
+    <value>Wiederholen</value>
+  </data>
+  <data name="avLabelVolume" xml:space="preserve">
+    <value>Lautstärke:</value>
+  </data>
+  <data name="avTooltipPause" xml:space="preserve">
+    <value>Pause</value>
+  </data>
+  <data name="avTooltipPlay" xml:space="preserve">
+    <value>Abspielen</value>
+  </data>
+  <data name="avTooltipStop" xml:space="preserve">
+    <value>Stop</value>
+  </data>
 </root>
