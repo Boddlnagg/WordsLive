@@ -67,6 +67,11 @@ namespace WordsLive.AudioVideo
 
 			bool doLoop = false;
 
+			vlc.EncounteredError += (sender, args) =>
+			{
+				OnMediaFailed();
+			};
+
 			vlc.EndReached += (sender, args) =>
 			{
 				if (!loop)

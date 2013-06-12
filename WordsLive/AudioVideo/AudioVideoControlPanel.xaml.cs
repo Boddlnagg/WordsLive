@@ -21,7 +21,6 @@ namespace WordsLive.AudioVideo
 		private IAudioVideoPresentation presentation;
 		private PlayState playState = PlayState.Stopped;
 		private bool disableSeek = false;
-		private bool autoPlay = false;
 		private ControlPanelLoadState loadState = ControlPanelLoadState.Loading;
 
 		public AudioVideoControlPanel()
@@ -66,19 +65,6 @@ namespace WordsLive.AudioVideo
 			}
 		}
 
-		public bool AutoPlay
-		{
-			get
-			{
-				return autoPlay;
-			}
-			set
-			{
-				autoPlay = value;
-				OnPropertyChanged("AutoPlay");
-			}
-		}
-
 		public Control Control
 		{
 			get { return this; }
@@ -108,6 +94,17 @@ namespace WordsLive.AudioVideo
 
 			if (this.media == null)
 				throw new ArgumentException("media must not be null and of type VideoMedia");
+
+			if (Properties.Settings.Default.UseVlc && VlcController.IsAvailable)
+			{
+				var vlc = Controller.PresentationManager.CreatePresentation<AudioVideoPresentation<VlcWrapper>>();
+				Load(vlc);
+			}
+			else
+			{
+				var wpf = Controller.PresentationManager.CreatePresentation<AudioVideoPresentation<WpfWrapper>>();
+				Load(wpf);
+			}
 		}
 
 		private static string FormatTimeSpan(TimeSpan span)
@@ -127,6 +124,8 @@ namespace WordsLive.AudioVideo
 				timelineSlider.Value = media.OffsetStart.TotalMilliseconds;
 				volumeSlider.Value = presentation.MediaControl.Volume;
 				totalTimeLabel.Content = FormatTimeSpan(presentation.MediaControl.Duration);
+				// TODO: Show presentation only when started (-> no preview would be available)?
+				Controller.PresentationManager.CurrentPresentation = presentation;
 				LoadState = ControlPanelLoadState.Loaded;
 			};
 
@@ -175,12 +174,6 @@ namespace WordsLive.AudioVideo
 				}
 			};
 			timer.Start();
-			Controller.PresentationManager.CurrentPresentation = presentation;
-			if (AutoPlay)
-			{
-				presentation.MediaControl.Autoplay = true;
-				PlayState = PlayState.Playing;
-			}
 			
 			presentation.MediaControl.Load(media.Uri);
 		}
@@ -232,26 +225,8 @@ namespace WordsLive.AudioVideo
 			}
 		}
 
-		private void LoadButton_Click(object sender, RoutedEventArgs e)
-		{
-			if (Properties.Settings.Default.UseVlc && VlcController.IsAvailable)
-			{
-				var vlc = Controller.PresentationManager.CreatePresentation<AudioVideoPresentation<VlcWrapper>>();
-				Load(vlc);
-			}
-			else
-			{
-				var wpf = Controller.PresentationManager.CreatePresentation<AudioVideoPresentation<WpfWrapper>>();
-				Load(wpf);
-			}
-
-			loadPanel.IsEnabled = false;
-		}
-
 		public void Close()
 		{
-			// We're setting the presentation to be the current presentation as soon as we create it,
-			// so actually there's no need to do the check here ... check anyway
 			if (presentation != null && Controller.PresentationManager.CurrentPresentation == presentation)
 				presentation.Close(); // TODO: really close (stop) the presentation when we're closing the control panel?
 		}
