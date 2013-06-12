@@ -28,6 +28,14 @@ namespace WordsLive.AudioVideo
 			InitializeComponent();
 
 			this.DataContext = this;
+
+			//Controller.PresentationManager.Area.WindowSizeChanged += (sender, args) =>
+			//{
+			//	this.preview.Width = Controller.PresentationManager.Area.WindowSize.Width;
+			//	this.preview.Height = Controller.PresentationManager.Area.WindowSize.Height;
+			//};
+			//this.preview.Width = Controller.PresentationManager.Area.WindowSize.Width;
+			//this.preview.Height = Controller.PresentationManager.Area.WindowSize.Height;
 		}
 
 		public PlayState PlayState
@@ -126,6 +134,7 @@ namespace WordsLive.AudioVideo
 				totalTimeLabel.Content = FormatTimeSpan(presentation.MediaControl.Duration);
 				// TODO: Show presentation only when started (-> no preview would be available)?
 				Controller.PresentationManager.CurrentPresentation = presentation;
+				//preview.Fill = new System.Windows.Media.VisualBrush(presentation.MediaControl);
 				LoadState = ControlPanelLoadState.Loaded;
 			};
 

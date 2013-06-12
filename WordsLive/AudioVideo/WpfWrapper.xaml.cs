@@ -146,7 +146,7 @@ namespace WordsLive.AudioVideo
 
 		public override void Destroy()
 		{
-			Stop();
+			player.Stop();
 		}
 	}
 }

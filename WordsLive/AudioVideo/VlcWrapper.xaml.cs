@@ -94,13 +94,6 @@ namespace WordsLive.AudioVideo
 				doLoop = false;
 			};
 
-			/*media.MediaSubItemAdded += (sender, args) =>
-			{
-				// TODO: support streaming (need to listen to more events etc)
-				vlc.Media = args.Data;
-				vlc.Play();
-			};*/
-
 			vlc.Media = media;
 		}
 
