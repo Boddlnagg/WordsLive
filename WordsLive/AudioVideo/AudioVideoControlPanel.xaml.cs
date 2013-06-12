@@ -11,7 +11,7 @@ namespace WordsLive.AudioVideo
 	{
 		public event PropertyChangedEventHandler PropertyChanged;
 
-		protected void OnNotifyPropertyChanged(string name)
+		protected void OnPropertyChanged(string name)
 		{
 			if (PropertyChanged != null)
 				PropertyChanged(this, new PropertyChangedEventArgs(name));
@@ -20,9 +20,9 @@ namespace WordsLive.AudioVideo
 		private AudioVideoMedia media;
 		private IAudioVideoPresentation presentation;
 		private PlayState playState = PlayState.Stopped;
-		private bool loaded = false;
 		private bool disableSeek = false;
 		private bool autoPlay = false;
+		private ControlPanelLoadState loadState = ControlPanelLoadState.Loading;
 
 		public AudioVideoControlPanel()
 		{
@@ -42,7 +42,7 @@ namespace WordsLive.AudioVideo
 				if (playState != value)
 				{
 					playState = value;
-					OnNotifyPropertyChanged("PlayState");
+					OnPropertyChanged("PlayState");
 				}
 			}
 		}
@@ -61,7 +61,7 @@ namespace WordsLive.AudioVideo
 				if (presentation != null)
 				{
 					presentation.MediaControl.Loop = value;
-					OnNotifyPropertyChanged("IsLooping");
+					OnPropertyChanged("IsLooping");
 				}
 			}
 		}
@@ -75,7 +75,7 @@ namespace WordsLive.AudioVideo
 			set
 			{
 				autoPlay = value;
-				OnNotifyPropertyChanged("AutoPlay");
+				OnPropertyChanged("AutoPlay");
 			}
 		}
 
@@ -89,17 +89,25 @@ namespace WordsLive.AudioVideo
 			get { return media; }
 		}
 
+		public ControlPanelLoadState LoadState
+		{
+			get
+			{
+				return loadState;
+			}
+			set
+			{
+				loadState = value;
+				OnPropertyChanged("LoadState");
+			}
+		}
+
 		public void Init(Core.Media media)
 		{
 			this.media = media as AudioVideoMedia;
 
 			if (this.media == null)
 				throw new ArgumentException("media must not be null and of type VideoMedia");
-		}
-
-		public ControlPanelLoadState LoadState
-		{
-			get { return ControlPanelLoadState.Loaded; }
 		}
 
 		private static string FormatTimeSpan(TimeSpan span)
@@ -119,7 +127,12 @@ namespace WordsLive.AudioVideo
 				timelineSlider.Value = media.OffsetStart.TotalMilliseconds;
 				volumeSlider.Value = presentation.MediaControl.Volume;
 				totalTimeLabel.Content = FormatTimeSpan(presentation.MediaControl.Duration);
-				loaded = true;
+				LoadState = ControlPanelLoadState.Loaded;
+			};
+
+			presentation.MediaControl.MediaFailed += () =>
+			{
+				LoadState = ControlPanelLoadState.Failed;
 			};
 
 			presentation.MediaControl.PlaybackEnded += () =>
@@ -137,7 +150,7 @@ namespace WordsLive.AudioVideo
 			timer.Interval = new TimeSpan(0, 0, 0, 0, 100);
 			timer.Tick += (sender, args) =>
 			{
-				if (loaded)
+				if (LoadState == ControlPanelLoadState.Loaded)
 				{
 					disableSeek = true;
 					timelineSlider.Value = presentation.MediaControl.Position;
@@ -221,28 +234,18 @@ namespace WordsLive.AudioVideo
 
 		private void LoadButton_Click(object sender, RoutedEventArgs e)
 		{
-			switch((string)((sender as Button).Tag))
+			if (Properties.Settings.Default.UseVlc && VlcController.IsAvailable)
 			{
-				case "WPF":
-					var wpf = Controller.PresentationManager.CreatePresentation<AudioVideoPresentation<WpfWrapper>>();
-					Load(wpf);
-					break;
-				case "VLC":
-					if (VlcController.IsAvailable)
-					{
-						var vlc = Controller.PresentationManager.CreatePresentation<AudioVideoPresentation<VlcWrapper>>();
-						Load(vlc);
-					}
-					else
-					{
-						MessageBox.Show("VLC is not available on this system. Using WPF instead.");
-						goto case "WPF";
-					}
-					break;
+				var vlc = Controller.PresentationManager.CreatePresentation<AudioVideoPresentation<VlcWrapper>>();
+				Load(vlc);
+			}
+			else
+			{
+				var wpf = Controller.PresentationManager.CreatePresentation<AudioVideoPresentation<WpfWrapper>>();
+				Load(wpf);
 			}
 
 			loadPanel.IsEnabled = false;
-			controlPanel.IsEnabled = true;
 		}
 
 		public void Close()

@@ -60,6 +60,14 @@ namespace WordsLive.AudioVideo
 				MediaLoaded();
 		}
 
+		public override event Action MediaFailed;
+
+		protected void OnMediaFailed()
+		{
+			if (MediaFailed != null)
+				MediaFailed();
+		}
+
 		public override event Action PlaybackEnded;
 
 		protected void OnPlaybackEnded()
@@ -78,6 +86,11 @@ namespace WordsLive.AudioVideo
 
 		public override void Load(Uri uri)
 		{
+			player.MediaFailed += (sender, args) =>
+			{
+				OnMediaFailed();
+			};
+
 			player.MediaOpened += (sender, args) =>
 			{
 				// set correct size

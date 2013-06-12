@@ -17,6 +17,7 @@ namespace WordsLive.AudioVideo
 		public abstract void Destroy();
 
 		public abstract event Action MediaLoaded;
+		public abstract event Action MediaFailed;
 		public abstract event Action PlaybackEnded;
 		public abstract event Action SeekStart;
 	}

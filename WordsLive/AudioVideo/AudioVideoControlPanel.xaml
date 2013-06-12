@@ -4,6 +4,7 @@
 			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
 			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
 			 xmlns:local="clr-namespace:WordsLive.AudioVideo"
+			 xmlns:my="clr-namespace:WordsLive"
 			 mc:Ignorable="d" 
 			 d:DesignHeight="200" d:DesignWidth="450">
 	<Grid>
@@ -12,11 +13,10 @@
 			<RowDefinition Height="Auto"/>
 		</Grid.RowDefinitions>
 		<StackPanel x:Name="loadPanel" Orientation="Horizontal">
-			<Button Tag="WPF" Margin="5" Click="LoadButton_Click">Lade mit WPF</Button>
-			<Button Tag="VLC" Margin="5" Click="LoadButton_Click">Lade mit VLC</Button>
+			<Button Margin="5" Click="LoadButton_Click">Laden</Button>
 			<CheckBox Margin="5" VerticalAlignment="Center" IsChecked="{Binding AutoPlay}">Autoplay</CheckBox>
 		</StackPanel>
-		<DockPanel IsEnabled="False" x:Name="controlPanel" Grid.Row="1" Height="80" HorizontalAlignment="Stretch">
+		<DockPanel IsEnabled="{Binding Path=LoadState, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static my:ControlPanelLoadState.Loaded}}" Grid.Row="1" Height="80" HorizontalAlignment="Stretch">
 			<Slider DockPanel.Dock="Bottom" Name="timelineSlider" Margin="5" ValueChanged="SeekToMediaPosition" IsMoveToPointEnabled="True"/>
 			<Button Click="OnMouseDownPlayPauseMedia" Width="32" Height="32"  Margin="5">
 				<Button.Style>

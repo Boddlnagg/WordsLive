@@ -8,7 +8,8 @@ namespace WordsLive.AudioVideo
 	{
 		public override IEnumerable<string> Extensions
 		{
-			get { return new string[] { ".mp3", ".wav" }; }
+			get { return new string[] { ".mp3", ".wav", ".ogg" }; }
+			// TODO: ogg only supported by VLC -> allow more formats if VLC is enabled
 		}
 
 		public override string Description

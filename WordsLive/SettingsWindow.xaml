@@ -142,6 +142,10 @@
 					</Grid>
 				</GroupBox>
 			</TabItem>
+			<TabItem Header="External Tools">
+				<!-- TODO: localize -->
+				<CheckBox Content="Use VLC for audio and video playback (if available)" IsChecked="{Binding UseVlc}" IsEnabled="{Binding IsVlcAvailable}"/>
+			</TabItem>
 		</TabControl>
 		<Button Grid.Row="2" Content="{x:Static resx:Resource.dialogClose}" Margin="0,0,6,6" Height="23" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="90" Click="Button_Click" />
 	</Grid>

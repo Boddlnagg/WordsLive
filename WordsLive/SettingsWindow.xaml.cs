@@ -197,6 +197,26 @@ namespace WordsLive
 			}
 		}
 
+		public bool UseVlc
+		{
+			get
+			{
+				return Properties.Settings.Default.UseVlc;
+			}
+			set
+			{
+				Properties.Settings.Default.UseVlc = value;
+			}
+		}
+
+		public bool IsVlcAvailable
+		{
+			get
+			{
+				return AudioVideo.VlcController.IsAvailable;
+			}
+		}
+
 		#endregion
 
 		private void Button_Click(object sender, RoutedEventArgs e)
