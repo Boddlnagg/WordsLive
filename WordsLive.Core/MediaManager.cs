@@ -132,7 +132,7 @@ namespace WordsLive.Core
 		{
 			try
 			{
-				if (media is FileNotFoundMedia)
+				if (media is FileNotFoundMedia || media is UnsupportedMedia)
 				{
 					return LoadMediaMetadata(media.Uri);
 				}

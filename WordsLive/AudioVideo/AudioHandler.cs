@@ -1,15 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using WordsLive.Core;
 
 namespace WordsLive.AudioVideo
 {
 	public class AudioHandler : MediaTypeHandler
 	{
+		private string[] vlcExtensions = new string[] { ".ogg", ".flac", ".ogg", ".oga", ".mka", ".opus" };
+		private string[] extensions = new string[] { ".mp3", ".wav", ".aac", ".wma" };
+
 		public override IEnumerable<string> Extensions
 		{
-			get { return new string[] { ".mp3", ".wav", ".ogg" }; }
-			// TODO: ogg only supported by VLC -> allow more formats if VLC is enabled
+			get
+			{
+				if (Properties.Settings.Default.UseVlc && VlcController.IsAvailable)
+				{
+					return extensions.Concat(vlcExtensions);
+				}
+				else
+				{
+					return extensions;
+				}
+			}
 		}
 
 		public override string Description
