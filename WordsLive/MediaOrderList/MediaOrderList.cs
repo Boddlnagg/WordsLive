@@ -173,7 +173,7 @@ namespace WordsLive.MediaOrderList
 				}
 				else
 				{
-					var newData = MediaManager.LoadMediaMetadata(item.Data.Uri);
+					var newData = MediaManager.LoadMediaMetadata(item.Data.Uri, item.Data.Options);
 					ReplaceActive(newData);
 				}
 			}

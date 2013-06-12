@@ -31,9 +31,9 @@ namespace WordsLive.AudioVideo
 			return -1;
 		}
 
-		public override Media Handle(Uri uri)
+		public override Media Handle(Uri uri, Dictionary<string, string> options)
 		{
-			return new VideoMedia(uri);
+			return new VideoMedia(uri, options);
 		}
 	}
 }

@@ -34,8 +34,9 @@ namespace WordsLive.Core
 		/// Handles the URI.
 		/// </summary>
 		/// <param name="uri">The URI to handle.</param>
+		/// <param name="options">Dictionary containing additional options (may be null).</param>
 		/// <returns>The loaded media object.</returns>
-		public abstract Media Handle(Uri uri);
+		public abstract Media Handle(Uri uri, Dictionary<string, string> options);
 
 		/// <summary>
 		/// Tests, whether the given URIs can be loaded at once.

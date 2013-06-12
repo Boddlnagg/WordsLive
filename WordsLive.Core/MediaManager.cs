@@ -51,7 +51,7 @@ namespace WordsLive.Core
 		/// <param name="uri">The URI to load from. This can either be local (file://), remote (http://)
 		/// or a reference to the song database (song://).</param>
 		/// <returns>A <see cref="Media"/> object.</returns>
-		public static Media LoadMediaMetadata(Uri uri)
+		public static Media LoadMediaMetadata(Uri uri, Dictionary<string, string> options)
 		{
 			try
 			{
@@ -74,7 +74,7 @@ namespace WordsLive.Core
 				}
 				else
 				{
-					var result = maxPriorityHandler.Handle(uri);
+					var result = maxPriorityHandler.Handle(uri, options);
 					result.LoadMetadataHelper();
 					return result;
 				}
@@ -109,7 +109,7 @@ namespace WordsLive.Core
 			if (maxPriority < 0)
 			{
 				// not all of them are supported by a single handler => load them separately
-				return uris.Select(u => LoadMediaMetadata(u));
+				return uris.Select(u => LoadMediaMetadata(u, null));
 				
 			}
 			else
@@ -134,7 +134,7 @@ namespace WordsLive.Core
 			{
 				if (media is FileNotFoundMedia || media is UnsupportedMedia)
 				{
-					return LoadMediaMetadata(media.Uri);
+					return LoadMediaMetadata(media.Uri, media.Options);
 				}
 				else
 				{
@@ -212,8 +212,8 @@ namespace WordsLive.Core
 					{
 						foreach (Media m in from i in root.Element("order").Elements("item")
 											select (i.Attribute("mediatype").Value == "powerpraise-song" && !i.Element("file").Value.Contains('\\')) ?
-											LoadMediaMetadata(new Uri("song:///" + i.Element("file").Value)) :
-											LoadMediaMetadata(new Uri(i.Element("file").Value)))
+											LoadMediaMetadata(new Uri("song:///" + i.Element("file").Value), LoadOptions(i)) :
+											LoadMediaMetadata(new Uri(i.Element("file").Value), LoadOptions(i)))
 						{
 							yield return m;
 						}
@@ -223,7 +223,7 @@ namespace WordsLive.Core
 					else if (root.Attribute("version").Value == "2.2")
 					{
 						foreach (Media m in from i in root.Elements("item")
-													select MediaManager.LoadMediaMetadata(new Uri("song:///" + i.Element("file").Value)))
+													select MediaManager.LoadMediaMetadata(new Uri("song:///" + i.Element("file").Value), null))
 						{
 							yield return m;
 						}
@@ -236,6 +236,16 @@ namespace WordsLive.Core
 					}
 				}
 			}
+		}
+
+		private static Dictionary<string, string> LoadOptions(XElement element)
+		{
+			var result = new Dictionary<string, string>();
+			foreach (var opt in element.Elements("option"))
+			{
+				result[opt.Attribute("key").Value] = opt.Value;
+			}
+			return result;
 		}
 
 		/// <summary>
@@ -255,7 +265,9 @@ namespace WordsLive.Core
 					select new XElement(
 						"item",
 						new XAttribute("mediatype", m.Uri.Scheme == "song" ? "powerpraise-song" : "file"),
-						new XElement("file", GetMediaPathFromUri(m.Uri))
+						new XElement("file", GetMediaPathFromUri(m.Uri)),
+						m.Options == null ? null : from opt in m.Options
+							select new XElement("option", new XAttribute("key", opt.Key), opt.Value)
 					)
 				),
 				new XElement("settings",

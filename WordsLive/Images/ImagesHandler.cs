@@ -24,7 +24,7 @@ namespace WordsLive.Images
 			return CheckExtension(uri)  ? 100 : -1;
 		}
 
-		public override Media Handle(Uri uri)
+		public override Media Handle(Uri uri, Dictionary<string, string> options)
 		{
 			return new ImagesMedia(uri);
 		}
@@ -58,7 +58,7 @@ namespace WordsLive.Images
 			}
 			else if (res == MessageBoxResult.No)
 			{
-				return uris.Select(u => Handle(u)); // add them one by one
+				return uris.Select(u => Handle(u, null)); // add them one by one
 			}
 			else // cancelled -> add nothing
 			{

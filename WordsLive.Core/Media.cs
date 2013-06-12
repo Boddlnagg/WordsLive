@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace WordsLive.Core
@@ -14,14 +15,40 @@ namespace WordsLive.Core
 		/// </summary>
 		public Uri Uri { get; protected set; }
 
+
+		private Dictionary<string, string> options;
 		/// <summary>
-		/// Initializes a new instance of the <see cref="Media"/> class by loading the metadata
-		/// from the given URI.
+		/// Gets a dictionary (key-value-store) with additional options.
+		/// </summary>
+		public Dictionary<string, string> Options
+		{
+			get
+			{
+				if (options == null)
+					options = new Dictionary<string, string>();
+
+				return options;
+			}
+		}
+
+		/// <summary>
+		/// Initializes a new instance of the <see cref="Media"/> class.
 		/// </summary>
 		/// <param name="uri">The URI pointing to the media resource.</param>
 		public Media(Uri uri)
 		{
 			Uri = uri;
+		}
+
+		/// <summary>
+		/// Initializes a new instance of the <see cref="Media"/> class.
+		/// </summary>
+		/// <param name="uri">The URI pointing to the media resource.</param>7
+		/// <param name="options">Additional options.</param>
+		public Media(Uri uri, Dictionary<string, string> options)
+		{
+			Uri = uri;
+			this.options = options;
 		}
 
 		/// <summary>

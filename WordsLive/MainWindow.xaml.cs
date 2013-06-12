@@ -334,7 +334,7 @@ namespace WordsLive
 				}
 				else
 				{
-					orderList.Add(MediaManager.LoadMediaMetadata(new Uri(dlg.FileName)));
+					orderList.Add(MediaManager.LoadMediaMetadata(new Uri(dlg.FileName), null));
 				}
 
 				portfolioChanged = true;
@@ -437,7 +437,7 @@ namespace WordsLive
 		/// <param name="uri">The URI to add.</param>
 		internal void AddToPortfolio(Uri uri)
 		{
-			var media = MediaManager.LoadMediaMetadata(uri);
+			var media = MediaManager.LoadMediaMetadata(uri, null);
 			if (ActiveMedia != null)
 			{
 				int index = orderList.IndexOf(orderList.ActiveItem);
@@ -850,7 +850,7 @@ namespace WordsLive
 					index--;
 
 				SongData data = (SongData)e.Data.GetData(SongDataObject.SongDataFormat);
-				Media m = MediaManager.LoadMediaMetadata(data.Uri);
+				Media m = MediaManager.LoadMediaMetadata(data.Uri, null);
 				orderList.Insert(index, m);
 			}
 			// Data comes from explorer
@@ -878,7 +878,7 @@ namespace WordsLive
 					}
 					else
 					{
-						Media m = MediaManager.LoadMediaMetadata(new Uri(files[0]));
+						Media m = MediaManager.LoadMediaMetadata(new Uri(files[0]), null);
 						orderList.Insert(index, m);
 					}
 				}
@@ -901,7 +901,7 @@ namespace WordsLive
 
 				if (u != null)
 				{
-					Media m = MediaManager.LoadMediaMetadata(u);
+					Media m = MediaManager.LoadMediaMetadata(u, null);
 					orderList.Insert(index, m);
 				}
 			}

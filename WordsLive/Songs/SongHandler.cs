@@ -22,7 +22,7 @@ namespace WordsLive.Songs
 			return CheckExtension(uri) ? 100 : -1;
 		}
 
-		public override Media Handle(Uri uri)
+		public override Media Handle(Uri uri, Dictionary<string, string> options)
 		{
 			return new SongMedia(uri);
 		}
