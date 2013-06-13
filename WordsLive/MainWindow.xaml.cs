@@ -343,7 +343,7 @@ namespace WordsLive
 
 		private void NewPortfolio()
 		{
-			if (portfolioChanged)
+			if (portfolioChanged && orderList.Count > 0)
 			{
 				var res = MessageBox.Show(Resource.vMsgSavePortfolioChanges, Resource.vMsgSavePortfolioChangesTitle, MessageBoxButton.YesNoCancel);
 				if (res == MessageBoxResult.Cancel)
@@ -358,7 +358,7 @@ namespace WordsLive
 
 		public void OpenPortfolio(string file = null)
 		{
-			if (portfolioChanged)
+			if (portfolioChanged && orderList.Count > 0)
 			{
 				var res = MessageBox.Show(Resource.vMsgSavePortfolioChanges, Resource.vMsgSavePortfolioChangesTitle, MessageBoxButton.YesNoCancel);
 				if (res == MessageBoxResult.Cancel)

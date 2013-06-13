@@ -197,7 +197,7 @@ namespace WordsLive.Songs
 				part = partAccessKeys[e.Key.ToString()];
 			else if (partAccessKeys.ContainsKey(e.Key.ToString().Replace("NumPad", "")))
 				part = partAccessKeys[e.Key.ToString().Replace("NumPad", "")];
-			else if (e.Key.ToString().Length > 1 && partAccessKeys.ContainsKey(e.Key.ToString().Substring(1)))
+			else if (e.Key.ToString().Length == 2 && e.Key.ToString()[0] == 'D' && partAccessKeys.ContainsKey(e.Key.ToString().Substring(1)))
 				part = partAccessKeys[e.Key.ToString().Substring(1)];
 			else
 				return;
