@@ -226,6 +226,16 @@ namespace WordsLive.Core.Songs
 			}
 		}
 
+		public void SwapTextAndTranslation()
+		{
+			using (Undo.ChangeFactory.Batch(this, "SwapTextAndTranslation"))
+			{
+				var tmp = this.Translation;
+				this.Translation = this.Text;
+				this.Text = tmp;
+			}
+		}
+
 		/// <summary>
 		/// Copies this slide.
 		/// </summary>

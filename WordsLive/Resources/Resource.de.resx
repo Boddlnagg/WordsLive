@@ -747,4 +747,7 @@
   <data name="avOffsetStart" xml:space="preserve">
     <value>Startposition</value>
   </data>
+  <data name="eGridContextSwapTextAndTranslation" xml:space="preserve">
+    <value>Liedtext und Übersetzung tauschen</value>
+  </data>
 </root>

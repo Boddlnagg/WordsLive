@@ -203,12 +203,7 @@ namespace WordsLive.Songs
 		{
 			foreach (var part in song.Song.Parts)
 			{
-				foreach (var slide in part.Slides)
-				{
-					var tmp = slide.Translation;
-					slide.Translation = slide.Text;
-					slide.Text = tmp;
-				}
+				part.SwapTextAndTranslation();
 			}
 		}
 

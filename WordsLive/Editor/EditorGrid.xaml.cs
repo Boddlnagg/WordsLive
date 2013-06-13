@@ -824,6 +824,17 @@ namespace WordsLive.Editor
 				var newSlide = song.FindPartWithSlide(node as SongSlide).DuplicateSlide(node as SongSlide);
 				this.StructureTree.SetSelectedItem(newSlide);
 			}
+			else if (e.Command == CustomCommands.SwapTextAndTranslation)
+			{
+				if (node is SongSlide)
+				{
+					(node as SongSlide).SwapTextAndTranslation();
+				}
+				else if (node is SongPart)
+				{
+					(node as SongPart).SwapTextAndTranslation();
+				}
+			}
 		}
 
 		private void GridCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
@@ -890,6 +901,17 @@ namespace WordsLive.Editor
 				{
 					// don't delete when there's only one slide left
 					e.CanExecute = song.FindPartWithSlide(node as SongSlide).Slides.Count > 1;
+				}
+			}
+			else if (e.Command == CustomCommands.SwapTextAndTranslation)
+			{
+				if (node is SongPart)
+				{
+					e.CanExecute = (node as SongPart).Slides.Any(s => s.HasTranslation);
+				}
+				else if (node is SongSlide)
+				{
+					e.CanExecute = (node as SongSlide).HasTranslation;
 				}
 			}
 		}

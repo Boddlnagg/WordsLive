@@ -282,6 +282,17 @@ namespace WordsLive.Core.Songs
 			}
 		}
 
+		public void SwapTextAndTranslation()
+		{
+			using (Undo.ChangeFactory.Batch(this, "SwapTextAndTranslation"))
+			{
+				foreach (var s in Slides)
+				{
+					s.SwapTextAndTranslation();
+				}
+			}
+		}
+
 		/// <summary>
 		/// Creates a copy of this <see cref="SongPart"/>.
 		/// </summary>

@@ -304,6 +304,15 @@ namespace WordsLive.Resources {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Swap text and translation ähnelt.
+        /// </summary>
+        public static string eGridContextSwapTextAndTranslation {
+            get {
+                return ResourceManager.GetString("eGridContextSwapTextAndTranslation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die English;German;Spanish ähnelt.
         /// </summary>
         public static string eGridLanguages {

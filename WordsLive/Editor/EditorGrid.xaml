@@ -177,6 +177,8 @@
 			<CommandBinding Command="Delete" CanExecute="StructureTreeCommand_CanExecute" Executed="StructureTreeCommand_Executed" />
 			<CommandBinding Command="{x:Static my:CustomCommands.Insert}" Executed="StructureTreeCommand_Executed"/>
 			<CommandBinding Command="{x:Static my:CustomCommands.AddPart}" Executed="StructureTreeCommand_Executed"/>
+			<CommandBinding Command="{x:Static my:CustomCommands.SwapTextAndTranslation}" CanExecute="StructureTreeCommand_CanExecute" Executed="StructureTreeCommand_Executed"/>
+
 		</TreeView.CommandBindings>
 		<TreeView.Resources>
 			<HierarchicalDataTemplate DataType="{x:Type songs:Song}" ItemsSource="{Binding Source={StaticResource treeNodeProvider}, Path=Nodes}">
@@ -200,6 +202,7 @@
 							<MenuItem Header="{x:Static resx:Resource.eGridContextRename}" Command="{x:Static my:CustomCommands.Rename}" CommandParameter="{Binding}"/>
 							<MenuItem Header="{x:Static resx:Resource.eGridContextRemovePart}" Command="Delete" CommandParameter="{Binding}"/>
 							<MenuItem Header="{x:Static resx:Resource.eGridContextAddSlide}" Command="{x:Static my:CustomCommands.Insert}" CommandParameter="{Binding}"/>
+							<MenuItem Header="{x:Static resx:Resource.eGridContextSwapTextAndTranslation}" Command="{x:Static my:CustomCommands.SwapTextAndTranslation}" CommandParameter="{Binding}"/>
 						</ContextMenu>
 					</StackPanel.ContextMenu>
 				</StackPanel>
@@ -212,6 +215,7 @@
 						<ContextMenu>
 							<MenuItem Header="{x:Static resx:Resource.eGridContextRemoveSlide}" Command="Delete" CommandParameter="{Binding}"/>
 							<MenuItem Header="{x:Static resx:Resource.eGridContextDuplicateSlide}" Command="{x:Static my:CustomCommands.Duplicate}" CommandParameter="{Binding}"/>
+							<MenuItem Header="{x:Static resx:Resource.eGridContextSwapTextAndTranslation}" Command="{x:Static my:CustomCommands.SwapTextAndTranslation}" CommandParameter="{Binding}"/>
 						</ContextMenu>
 					</StackPanel.ContextMenu>
 				</StackPanel>
