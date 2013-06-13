@@ -184,15 +184,16 @@ namespace WordsLive.Presentation.Wpf
 				Instance.InitWindow();
 			}
 
-			// TODO: add fade in/out animation
 			Instance.NotificationText.Text = text;
-			Instance.NotificationContainer.Opacity = 1;
 			Instance.NotificationContainer.VerticalAlignment = align;
+			Storyboard sbd = (Storyboard)Instance.FindResource("NotificationFadeIn");
+			sbd.Begin(Instance);
 		}
 
 		public static void HideNotification()
 		{
-			Instance.NotificationContainer.Opacity = 0;
+			Storyboard sbd = (Storyboard)Instance.FindResource("NotificationFadeOut");
+			sbd.Begin(Instance);
 		}
 	}
 }

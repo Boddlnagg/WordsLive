@@ -15,7 +15,7 @@
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
-        <TextBox Text="{Binding Text, UpdateSourceTrigger=PropertyChanged}" Grid.RowSpan="3" Margin="3"/>
+        <TextBox Text="{Binding Text, UpdateSourceTrigger=PropertyChanged}" Grid.RowSpan="3" Margin="3" AcceptsReturn="True" TextWrapping="Wrap"/>
         <Button DockPanel.Dock="Right" Grid.Row="3" Grid.Column="1" Content="{x:Static resx:Resource.dialogClose}" IsDefault="True" Height="22" Margin="3" Click="Close_Click"/>
         <GroupBox Grid.Column="1" Header="{x:Static resx:Resource.nLabelAlignment}" Margin="3,3,3,10">
             <StackPanel Orientation="Vertical">

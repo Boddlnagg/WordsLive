@@ -25,6 +25,18 @@
 				<LinearDoubleKeyFrame Value="0.0" KeyTime="100%"/>
 			</DoubleAnimationUsingKeyFrames>
 		</Storyboard>
+		<Storyboard x:Key="NotificationFadeIn">
+			<DoubleAnimation
+				Storyboard.TargetName="NotificationContainer" 
+				Storyboard.TargetProperty="Opacity"
+				To="1.0" Duration="0:0:0.2"/>
+		</Storyboard>
+		<Storyboard x:Key="NotificationFadeOut">
+			<DoubleAnimation
+				Storyboard.TargetName="NotificationContainer"
+				Storyboard.TargetProperty="Opacity"
+				To="0.0" Duration="0:0:0.2"/>
+		</Storyboard>
 	</Window.Resources>
 	<Grid>
 		<Grid x:Name="ContentContainer">
@@ -41,8 +53,8 @@
 			<Border x:Name="ReferenceBorder" />
 		</Grid>
 		<Border Opacity="0" x:Name="NotificationContainer" HorizontalAlignment="Center" VerticalAlignment="Center"
-				BorderThickness="1" BorderBrush="Silver" Margin="10" MinWidth="{Binding ElementName=ReferenceBorder,Path=ActualWidth}">
-			<TextBlock x:Name="NotificationText" Padding="10,5" TextWrapping="Wrap" TextAlignment="Center" Background="#C5000000" FontSize="15pt" Foreground="Gray" Text="Test"/></Border>
+				BorderThickness="0" BorderBrush="Silver" Margin="10" CornerRadius="10" Background="#C5FF0000" MinWidth="{Binding ElementName=ReferenceBorder,Path=ActualWidth}">
+			<TextBlock x:Name="NotificationText" Padding="10,5" TextWrapping="Wrap" TextAlignment="Center" FontSize="15pt" Foreground="White" Text="Test"/></Border>
 	</Grid>
 </Window>
   
