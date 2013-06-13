@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Threading;
 
 namespace WordsLive.AudioVideo
@@ -211,11 +212,6 @@ namespace WordsLive.AudioVideo
 				presentation.MediaControl.Volume = (int)volumeSlider.Value;
 		}
 
-		private void OnMouseDownPauseMedia(object sender, RoutedEventArgs e)
-		{
-			presentation.MediaControl.Pause();
-		}
-
 		private void OnMouseDownStopMedia(object sender, RoutedEventArgs e)
 		{
 			Stop();
@@ -229,16 +225,7 @@ namespace WordsLive.AudioVideo
 
 		private void OnMouseDownPlayPauseMedia(object sender, RoutedEventArgs e)
 		{
-			if (PlayState == PlayState.Stopped || PlayState == PlayState.Paused)
-			{
-				presentation.MediaControl.Play();
-				PlayState = PlayState.Playing;
-			}
-			else
-			{
-				presentation.MediaControl.Pause();
-				PlayState = PlayState.Paused;
-			}
+			TogglePlayPause();
 		}
 
 		public void Close()
@@ -271,6 +258,37 @@ namespace WordsLive.AudioVideo
 					SetOffsets(media.OffsetStart, new TimeSpan(0));
 					break;
 			}
+		}
+
+		private void TogglePlayPause()
+		{
+			if (PlayState == PlayState.Stopped || PlayState == PlayState.Paused)
+			{
+				presentation.MediaControl.Play();
+				PlayState = PlayState.Playing;
+			}
+			else
+			{
+				presentation.MediaControl.Pause();
+				PlayState = PlayState.Paused;
+			}
+		}
+
+		protected override void OnPreviewKeyDown(KeyEventArgs e)
+		{
+			if (e.Key == Key.Space)
+			{
+				TogglePlayPause();
+			}
+
+			e.Handled = true;
+
+			base.OnPreviewKeyDown(e);
+		}
+
+		private void Control_Loaded(object sender, RoutedEventArgs e)
+		{
+			Keyboard.Focus(playPauseButton);
 		}
 	}
 }

@@ -7,7 +7,8 @@
 			 xmlns:my="clr-namespace:WordsLive"
 			 xmlns:resx="clr-namespace:WordsLive.Resources"
 			 mc:Ignorable="d" 
-			 d:DesignHeight="200" d:DesignWidth="450">
+			 d:DesignHeight="200" d:DesignWidth="450"
+             Loaded="Control_Loaded">
 	<Grid>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="Auto"/>
@@ -17,7 +18,7 @@
 		</Grid.RowDefinitions>
 		<DockPanel IsEnabled="{Binding Path=LoadState, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static my:ControlPanelLoadState.Loaded}}" Grid.Row="0" Height="80" HorizontalAlignment="Stretch">
 			<Slider DockPanel.Dock="Bottom" Name="timelineSlider" Margin="5" ValueChanged="SeekToMediaPosition" IsMoveToPointEnabled="True"/>
-			<Button Click="OnMouseDownPlayPauseMedia" Width="32" Height="32"  Margin="5">
+			<Button Click="OnMouseDownPlayPauseMedia" Width="32" Height="32"  Margin="5" x:Name="playPauseButton">
 				<Button.Style>
 					<Style TargetType="Button" BasedOn="{StaticResource ResourceKey=markDisabledButton}">
 						<Setter Property="ToolTip" Value="{x:Static resx:Resource.avTooltipPlay}" />
@@ -44,7 +45,7 @@
 			</Button>
 			<CheckBox VerticalAlignment="Center" Margin="5" IsChecked="{Binding IsLooping}" Content="{x:Static resx:Resource.avCheckboxLoop}"/>
 			<Label VerticalAlignment="Center" Margin="5" Content="{x:Static resx:Resource.avLabelVolume}"/>
-			<Slider Name="volumeSlider" VerticalAlignment="Center" ValueChanged="ChangeMediaVolume" Minimum="0" Maximum="100" Value="100" Width="70"/>
+			<Slider Name="volumeSlider" VerticalAlignment="Center" ValueChanged="ChangeMediaVolume" SmallChange="1" LargeChange="4" Minimum="0" Maximum="100" Value="100" Width="70"/>
 			<Label DockPanel.Dock="Right" Name="totalTimeLabel" VerticalAlignment="Center" Margin="0,5,5,5">--:--</Label>
 			<Label DockPanel.Dock="Right" VerticalAlignment="Center" Padding="0">/</Label>
 			<Label DockPanel.Dock="Right" Name="currentTimeLabel" VerticalAlignment="Center" Margin="5,5,0,5" HorizontalAlignment="Right">--:--</Label>
