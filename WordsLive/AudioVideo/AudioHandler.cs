@@ -7,8 +7,8 @@ namespace WordsLive.AudioVideo
 {
 	public class AudioHandler : MediaTypeHandler
 	{
-		private string[] vlcExtensions = new string[] { ".ogg", ".flac", ".ogg", ".oga", ".mka", ".opus" };
-		private string[] extensions = new string[] { ".mp3", ".wav", ".aac", ".wma" };
+		private string[] vlcExtensions = new string[] { ".ogg", ".flac", ".oga", ".mka", ".opus" };
+		private string[] extensions = new string[] { ".mp3", ".wav", ".aac", ".wma", ".m4a" };
 
 		public override IEnumerable<string> Extensions
 		{
