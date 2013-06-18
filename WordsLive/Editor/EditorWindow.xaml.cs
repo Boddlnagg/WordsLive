@@ -63,10 +63,10 @@ namespace WordsLive.Editor
 
 			string ext = uri.GetExtension();
 
+			Song song = null;
+
 			try
 			{
-				Song song;
-
 				if (ext == ".ppl")
 				{
 					song = new Song(uri, new PowerpraiseSongReader());
@@ -87,13 +87,16 @@ namespace WordsLive.Editor
 				{
 					throw new NotSupportedException("Song format is not supported.");
 				}
-
-				Load(song);
 			}
 			catch
 			{
 				Controller.ShowEditorWindow();
 				MessageBox.Show(String.Format(Resource.eMsgCouldNotOpenSong, uri.FormatLocal()), Resource.dialogError, MessageBoxButton.OK, MessageBoxImage.Error);
+			}
+
+			if (song != null)
+			{
+				Load(song);
 			}
 		}
 

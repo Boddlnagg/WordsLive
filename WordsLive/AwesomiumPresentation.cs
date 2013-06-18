@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows;
 using Awesomium.Core;
+using Awesomium.Windows.Controls;
 using WordsLive.Presentation;
 using WordsLive.Presentation.Wpf;
 using WordsLive.Resources;
@@ -18,12 +19,12 @@ namespace WordsLive
 			else
 				this.Control.Load(true, this.Area);
 
-			this.Control.Web.OpenExternalLink += OnOpenExternalLink;
+			this.Control.Web.ShowCreatedWebView += OnShowCreatedWebView;
 			this.Control.Web.Crashed += OnWebviewCrashed;
 
 			// we only need to disable input, when manual updates are disabled
 			if (!enableInput && !manualUpdate)
-				this.Control.Web.DeferInput(); // TODO: is this the only possible solution to disable input?
+				(this.Control.Web as WebControl).ProcessInput = ViewInput.None;
 
 			win = new Window();
 			win.Width = this.Area.WindowSize.Width;
@@ -50,13 +51,14 @@ namespace WordsLive
 			base.Show(transitionDuration, callback, previous);
 		}
 
-		private void OnOpenExternalLink(object sender, OpenExternalLinkEventArgs e)
+		void OnShowCreatedWebView(object sender, ShowCreatedWebViewEventArgs e)
 		{
+			throw new NotImplementedException();
 			// no support for multiple browser instances/tabs/windows, so open external links in the same window
-			if (e.Url.Length > 0)
-			{
-				this.Control.Web.LoadURL(e.Url);
-			}
+			//if (e.Url.Length > 0)
+			//{
+			//	this.Control.Web.LoadURL(e.Url);
+			//}
 		}
 
 		private void OnWebviewCrashed(object sender, EventArgs e)
@@ -86,7 +88,6 @@ namespace WordsLive
 			}
 			set
 			{
-				this.Control.Web.FlushAlpha = !value;
 				this.Control.Web.IsTransparent = value;
 			}
 		}

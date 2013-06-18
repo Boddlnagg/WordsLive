@@ -62,7 +62,7 @@ namespace WordsLive.Editor
 		{
 			AwesomiumManager.Register(Web);
 			Web.Crashed += OnWebViewCrashed;
-			Web.DeferInput();
+			Web.ProcessInput = Awesomium.Core.ViewInput.None;
 
 			if (Song != null) // if this is not the first Init(), probably a song has already be loaded and must be reloaded
 			{

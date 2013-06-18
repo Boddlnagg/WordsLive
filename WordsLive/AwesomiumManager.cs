@@ -1,7 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using Awesomium.Core;
+using Awesomium.Core.Data;
 using WordsLive.Core;
 
 namespace WordsLive
@@ -28,13 +31,13 @@ namespace WordsLive
 				InitData();
 
 				// Setup WebCore with plugins enabled.            
-				WebCoreConfig config = new WebCoreConfig
+				WebConfig config = new WebConfig
 				{
 					// !THERE CAN ONLY BE A SINGLE WebCore RUNNING PER PROCESS!
 					// We have ensured that our application is single instance,
 					// with the use of the WPFSingleInstance utility.
 					// We can now safely enable cache and cookies.
-					SaveCacheAndCookies = true,
+					//SaveCacheAndCookies = true,
 					// In case our application is installed in ProgramFiles,
 					// we wouldn't want the WebCore to attempt to create folders
 					// and files in there. We do not have the required privileges.
@@ -42,15 +45,16 @@ namespace WordsLive
 					// have its own cache and cookies. So, there's no better place
 					// than the Application User Data Path.
 					/*UserDataPath = My.Application.UserAppDataPath,*/
-					EnablePlugins = false, // TODO: make this configurable in case someone wants to use flash ...
+					
+					//EnablePlugins = false, // TODO: make this configurable in case someone wants to use flash ...
 					/*HomeURL = Settings.Default.HomeURL,*/
 					/*LogPath = My.Application.UserAppDataPath,*/
 					LogLevel = LogLevel.Verbose,
-					AcceptLanguageOverride = "de-DE", // TODO: set this to the correct system language (needed for bibleserver)
+					//AcceptLanguageOverride = "de-DE", // TODO: set this to the correct system language (needed for bibleserver)
 					ChildProcessPath = System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "WordsLive.Awesomium.exe"),
 				};
 
-				WebCore.Started += (sender, args) => WebCore.BaseDirectory = dataDirectory.FullName;
+				//WebCore.Started += (sender, args) => WebCore.BaseDirectory = dataDirectory.FullName;
 
 				// Caution! Do not start the WebCore in window's constructor.
 				// This may be a startup window and a synchronization context
@@ -71,12 +75,14 @@ namespace WordsLive
 		public static void Register(IWebView web)
 		{
 			controls.Add(web);
+			// TODO: doesn't work, because WebSession is null at this point
+			web.WebSession.AddDataSource("WordsLive", new MyDataSource());
 		}
 
 		public static void Close(IWebView web)
 		{
 			controls.Remove(web);
-			web.Close();
+			web.Dispose();
 		}
 
 		[Shutdown]
@@ -84,7 +90,7 @@ namespace WordsLive
 		{
 			foreach (var c in controls)
 			{
-				c.Close();
+				c.Dispose();
 			}
 
 			if (WebCore.IsRunning && !WebCore.IsShuttingDown)
@@ -101,6 +107,30 @@ namespace WordsLive
 			core.ExtractResource("SongPresentation.js", dataDirectory);
 
 			Assembly.GetExecutingAssembly().ExtractResource("song.html", dataDirectory);
+		}
+
+		public class MyDataSource : DataSource
+		{
+			protected override void OnRequest(DataSourceRequest request)
+			{
+				FileInfo fi = new FileInfo(Path.Combine(dataDirectory.FullName, request.Path));
+				if (fi.Exists)
+				{
+					using (var fs = new FileStream(fi.FullName, FileMode.Open, FileAccess.Read))
+					{
+						byte[] buffer = new byte[fs.Length];
+						fs.Read(buffer, 0, (int)fs.Length);
+						GCHandle pinnedBuffer = GCHandle.Alloc(buffer, GCHandleType.Pinned);
+						IntPtr pointer = pinnedBuffer.AddrOfPinnedObject();
+						SendResponse(request, new DataSourceResponse
+						{
+							Buffer = pointer,
+ 							Size = (uint)fs.Length
+						});
+						pinnedBuffer.Free();
+					}
+				}
+			}
 		}
 	}
 }

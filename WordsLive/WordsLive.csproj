@@ -61,10 +61,10 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Awesomium.Core, Version=1.6.6.0, Culture=neutral, PublicKeyToken=e1a0d7c8071a5214, processorArchitecture=x86">
+    <Reference Include="Awesomium.Core, Version=1.7.1.0, Culture=neutral, PublicKeyToken=e1a0d7c8071a5214, processorArchitecture=x86">
       <Private>True</Private>
     </Reference>
-    <Reference Include="Awesomium.Windows.Controls, Version=1.6.6.0, Culture=neutral, PublicKeyToken=7a34e179b8b61c39, processorArchitecture=x86">
+    <Reference Include="Awesomium.Windows.Controls, Version=1.7.1.0, Culture=neutral, PublicKeyToken=7a34e179b8b61c39, processorArchitecture=x86">
       <Private>True</Private>
     </Reference>
     <Reference Include="Ionic.Zip, Version=1.9.1.8, Culture=neutral, PublicKeyToken=edbe51ad942a3f5c, processorArchitecture=MSIL">
@@ -508,8 +508,8 @@
 		 Other similar extension points exist, see Microsoft.Common.targets.
 	<Target Name="BeforeBuild">
 	</Target>-->
-  <Target Name="AfterBuild">
+  <!--<Target Name="AfterBuild">
     <Move SourceFiles="$(TargetDir)AwesomiumProcess" DestinationFiles="$(TargetDir)WordsLive.Awesomium.exe" />
-  </Target>
+  </Target>-->
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
 </Project>

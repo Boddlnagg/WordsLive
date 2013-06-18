@@ -1,9 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using WordsLive.Core;
-using WordsLive.Presentation.Wpf;
-using System.Collections.Generic;
 
 namespace WordsLive
 {
@@ -85,7 +84,7 @@ namespace WordsLive
 
 			presentation = Controller.PresentationManager.CreatePresentation<AwesomiumPresentation>();
 			presentation.Load(true);
-			presentation.Control.Web.DomReady += (sender, args) =>
+			presentation.Control.Web.DocumentReady += (sender, args) =>
 			{
 				if (isBible)
 				{
@@ -121,9 +120,10 @@ namespace WordsLive
 				}
 			};
 
-			presentation.Control.Web.BeginLoading += (s, args) =>
+			presentation.Control.Web.LoadingFrame += (s, args) =>
 			{
-				this.urlTextBox.Text = args.Url;
+				// TODO
+				this.urlTextBox.Text = args.Url.ToString();
 			};
 		}
 
@@ -134,7 +134,7 @@ namespace WordsLive
 			if (!url.Contains("://"))
 				url = "http://" + url;
 
-			presentation.Control.Web.LoadURL(url);
+			presentation.Control.Web.LoadURL(new Uri(url));
 			Controller.PresentationManager.CurrentPresentation = presentation;
 		}
 
@@ -164,7 +164,7 @@ namespace WordsLive
 			else
 				url = "http://m.bibleserver.com/text/" + bibleTextBox.Text;
 
-			presentation.Control.Web.LoadURL(url);
+			presentation.Control.Web.LoadURL(new Uri(url));
 			
 			Controller.PresentationManager.CurrentPresentation = presentation;
 		}

@@ -21,9 +21,10 @@ namespace WordsLive.Songs
 			Transitions
 		}
 
-		private IWebViewJavaScript control;
+		private IWebView control;
 		private bool loaded = false;
 		private bool showChords = true;
+		private JSObject bridge;
 
 		public bool ShowChords
 		{
@@ -39,12 +40,12 @@ namespace WordsLive.Songs
 			}
 		}
 
-		public SongDisplayController(IWebViewJavaScript control, FeatureLevel features = FeatureLevel.None)
+		public SongDisplayController(IWebView control, FeatureLevel features = FeatureLevel.None)
 		{
 			this.control = control;
-			this.control.CreateObject("bridge");
-			this.control.SetObjectCallback("bridge", "callbackLoaded", (sender, args) => OnSongLoaded());
-			this.control.SetObjectProperty("bridge", "featureLevel", new JSValue(JsonConvert.SerializeObject(features)));
+			bridge = this.control.CreateGlobalJavascriptObject("bridge");
+			bridge.Bind("callbackLoaded", false, (sender, args) => OnSongLoaded());
+			bridge["featureLevel"] = new JSValue(JsonConvert.SerializeObject(features));
 		}
 
 		public void Load(Song song)
@@ -66,11 +67,11 @@ namespace WordsLive.Songs
 				}
 			}
 
-			this.control.SetObjectProperty("bridge", "preloadImages", new JSValue(backgrounds.ToArray()));
-			this.control.SetObjectProperty("bridge", "songString", new JSValue(JsonConvert.SerializeObject(song)));
-			this.control.SetObjectProperty("bridge", "showChords", new JSValue(ShowChords));
+			bridge["preloadImages"] = new JSValue(backgrounds.ToArray());
+			bridge["songString"] = new JSValue(JsonConvert.SerializeObject(song));
+			bridge["showChords"] = new JSValue(ShowChords);
 			
-			this.control.LoadFile("song.html");
+			this.control.Source = new Uri("song.html");
 		}
 
 		public void UpdateFormatting(SongFormatting formatting, bool hasTranslation, bool hasChords)

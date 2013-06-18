@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
+using Awesomium.Windows.Controls;
 using WordsLive.AudioVideo;
 using WordsLive.Core;
 using WordsLive.Core.Songs;
@@ -113,11 +114,11 @@ namespace WordsLive.Songs
 				OnFinishedLoading();
 			};
 
-			Control.Web.IsDirtyChanged += new EventHandler(web_IsDirtyChanged);
+			(Control.Web.Surface as ImageSurface).Updated += web_Updated;
 
 			currentSlideIndex = -1;
 
-			this.Control.Web.JSConsoleMessageAdded += (obj, target) =>
+			this.Control.Web.ConsoleMessage += (obj, target) =>
 			{
 			    System.Windows.MessageBox.Show("JS error in line "+target.LineNumber+": "+target.Message);
 			};
@@ -125,12 +126,17 @@ namespace WordsLive.Songs
 			controller.Load(this.song);
 		}
 
-		void web_IsDirtyChanged(object sender, EventArgs e)
+		void web_Updated(object sender, Awesomium.Core.SurfaceUpdatedEventArgs e)
 		{
-			Control.RenderWebView();
-			if (!Control.Web.IsDirty)
-				UpdateSlide();
+			UpdateSlide();
 		}
+
+		//void web_IsDirtyChanged(object sender, EventArgs e)
+		//{
+		//	Control.RenderWebView();
+		//	if (!Control.Web.IsDirty)
+		//		UpdateSlide();
+		//}
 
 		public event EventHandler FinishedLoading;
 

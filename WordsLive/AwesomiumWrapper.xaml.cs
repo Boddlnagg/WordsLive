@@ -1,12 +1,11 @@
-﻿using System.Windows.Controls;
-using System.Windows.Media.Imaging;
-using System.Windows.Media;
-using Awesomium.Core;
+﻿using System;
 using System.Windows;
-using WordsLive.Presentation;
-using System.Windows.Media.Animation;
-using System;
+using System.Windows.Controls;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using Awesomium.Core;
 using Awesomium.Windows.Controls;
+using WordsLive.Presentation;
 
 namespace WordsLive
 {
@@ -22,7 +21,7 @@ namespace WordsLive
 		private Image frontImage;
 		private Image backImage;
 
-		public IWebViewJavaScript Web
+		public IWebView Web
 		{
 			get
 			{
@@ -58,6 +57,7 @@ namespace WordsLive
 				int h = area.WindowSize.Height;
 				webView = WebCore.CreateWebView(w, h);
 				AwesomiumManager.Register(webView);
+				webView.Surface = new ImageSurface(null);
 				wb1 = new WriteableBitmap(w, h, 96, 96, PixelFormats.Pbgra32, null);
 				wb2 = new WriteableBitmap(w, h, 96, 96, PixelFormats.Pbgra32, null);
 				rect = new Int32Rect(0, 0, w, h);
@@ -78,22 +78,12 @@ namespace WordsLive
 			rect = new Int32Rect(0, 0, w, h);
 		}
 
-		public void RenderWebView()
-		{
-			if (webView == null)
-				throw new InvalidOperationException("Manual updating is disabled for this presentation.");
-
-			var buf = webView.Render();
-			if (swapBitmaps)
-				wb1.WritePixels(rect, buf.Buffer, (int)(buf.Rowspan * buf.Height), buf.Rowspan, 0, 0);
-			else
-				wb2.WritePixels(rect, buf.Buffer, (int)(buf.Rowspan * buf.Height), buf.Rowspan, 0, 0);
-		}
-
 		public void UpdateForeground()
 		{
 			if (webView == null)
 				throw new InvalidOperationException("Manual updating is disabled for this presentation.");
+
+			var surf = webView.Surface as ImageSurface;
 
 			if (frontImage == null)
 			{
@@ -104,8 +94,8 @@ namespace WordsLive
 			}
 
 			backImage.Source = frontImage.Source;
-			frontImage.Source = swapBitmaps ? wb1 : wb2;
-			swapBitmaps = !swapBitmaps;
+			frontImage.Source = surf.Image.Clone();
+			//swapBitmaps = !swapBitmaps;
 		}
 
 		public void Close()
