@@ -1,0 +1,79 @@
+<!doctype html>
+<html>
+
+<head>
+  <!-- In production, only one script (pdf.js) is necessary -->
+  <!-- In production, change the content of PDFJS.workerSrc below -->
+  <!--<script type="text/javascript" src="../../src/network.js"></script>
+  <script type="text/javascript" src="../../src/chunked_stream.js"></script>
+  <script type="text/javascript" src="../../src/pdf_manager.js"></script>
+  <script type="text/javascript" src="../../src/core.js"></script>
+  <script type="text/javascript" src="../../src/util.js"></script>
+  <script type="text/javascript" src="../../src/api.js"></script>
+  <script type="text/javascript" src="../../src/canvas.js"></script>
+  <script type="text/javascript" src="../../src/obj.js"></script>
+  <script type="text/javascript" src="../../src/annotation.js"></script>
+  <script type="text/javascript" src="../../src/function.js"></script>
+  <script type="text/javascript" src="../../src/charsets.js"></script>
+  <script type="text/javascript" src="../../src/cidmaps.js"></script>
+  <script type="text/javascript" src="../../src/colorspace.js"></script>
+  <script type="text/javascript" src="../../src/crypto.js"></script>
+  <script type="text/javascript" src="../../src/evaluator.js"></script>
+  <script type="text/javascript" src="../../src/fonts.js"></script>
+  <script type="text/javascript" src="../../src/glyphlist.js"></script>
+  <script type="text/javascript" src="../../src/image.js"></script>
+  <script type="text/javascript" src="../../src/metrics.js"></script>
+  <script type="text/javascript" src="../../src/parser.js"></script>
+  <script type="text/javascript" src="../../src/pattern.js"></script>
+  <script type="text/javascript" src="../../src/stream.js"></script>
+  <script type="text/javascript" src="../../src/worker.js"></script>
+  <script type="text/javascript" src="../../external/jpgjs/jpg.js"></script>
+  <script type="text/javascript" src="../../src/jpx.js"></script>
+  <script type="text/javascript" src="../../src/jbig2.js"></script>-->
+  <title>PDF.js</title>
+  <script type="text/javascript">alert("Blah");</script>
+  <script type="text/javascript" src="pdf.js"></script>
+
+  <script type="text/javascript">
+      'use strict';
+
+      // Specify the main script used to create a new PDF.JS web worker.
+      // In production, change this to point to the combined `pdf.js` file.
+      //PDFJS.workerSrc = 'pdf.js';
+      PDFJS.disableWorker = true;
+
+      //
+      // Fetch the PDF document from the URL using promises
+      //
+      PDFJS.getDocument('file:///C:/Users/Patrick/Desktop/helloworld/helloworld2.pdf').then(function (pdf) {
+          // Using promise to fetch the page
+          pdf.getPage(1).then(function (page) {
+              var scale = 1.5;
+              var viewport = page.getViewport(scale);
+
+              //
+              // Prepare canvas using PDF page dimensions
+              //
+              var canvas = document.getElementById('the-canvas');
+              var context = canvas.getContext('2d');
+              canvas.height = viewport.height;
+              canvas.width = viewport.width;
+
+              //
+              // Render PDF page into canvas context
+              //
+              var renderContext = {
+                  canvasContext: context,
+                  viewport: viewport
+              };
+              page.render(renderContext);
+          });
+      });
+  </script>
+</head>
+
+<body>
+  <canvas id="the-canvas" style="border:1px solid black;"/>
+</body>
+
+</html>

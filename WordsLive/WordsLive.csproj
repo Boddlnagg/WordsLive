@@ -139,6 +139,12 @@
     <Compile Include="NotificationSettingsWindow.xaml.cs">
       <DependentUpon>NotificationSettingsWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="PdfControlPanel.xaml.cs">
+      <DependentUpon>PdfControlPanel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PdfHandler.cs" />
+    <Compile Include="PdfMedia.cs" />
+    <Compile Include="PdfPresentation.cs" />
     <Compile Include="PluginSettingsDictionary.cs" />
     <Compile Include="Songs\MasterOverrideOptions.cs" />
     <Compile Include="Songs\SongDataObject.cs" />
@@ -153,6 +159,7 @@
     </Compile>
     <Compile Include="XpsDocumentFileHandler.cs" />
     <Compile Include="XpsPresentation.cs" />
+    <EmbeddedResource Include="Resources\pdf.html" />
     <Page Include="Editor\SaveFilenameDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -162,6 +169,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="NotificationSettingsWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PdfControlPanel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

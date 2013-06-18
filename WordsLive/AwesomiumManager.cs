@@ -99,8 +99,10 @@ namespace WordsLive
 
 			core.ExtractResource("jquery.js", dataDirectory);
 			core.ExtractResource("SongPresentation.js", dataDirectory);
+			core.ExtractResource("pdf.js", dataDirectory);
 
 			Assembly.GetExecutingAssembly().ExtractResource("song.html", dataDirectory);
+			Assembly.GetExecutingAssembly().ExtractResource("pdf.html", dataDirectory);
 		}
 	}
 }

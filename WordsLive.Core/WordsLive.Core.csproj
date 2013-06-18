@@ -130,5 +130,8 @@
   <ItemGroup>
     <EmbeddedResource Include="Resources\SongPresentation.js" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\pdf.js" />
+  </ItemGroup>
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
 </Project>
