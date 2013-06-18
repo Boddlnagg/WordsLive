@@ -63,10 +63,10 @@ namespace WordsLive.Editor
 
 			string ext = uri.GetExtension();
 
+			Song song = null;
+
 			try
 			{
-				Song song;
-
 				if (ext == ".ppl")
 				{
 					song = new Song(uri, new PowerpraiseSongReader());
@@ -87,13 +87,16 @@ namespace WordsLive.Editor
 				{
 					throw new NotSupportedException("Song format is not supported.");
 				}
-
-				Load(song);
 			}
 			catch
 			{
 				Controller.ShowEditorWindow();
 				MessageBox.Show(String.Format(Resource.eMsgCouldNotOpenSong, uri.FormatLocal()), Resource.dialogError, MessageBoxButton.OK, MessageBoxImage.Error);
+			}
+
+			if (song != null)
+			{
+				Load(song);
 			}
 		}
 
@@ -126,7 +129,7 @@ namespace WordsLive.Editor
 		{
 			if (song == null)
 				throw new ArgumentNullException("song");
-			
+
 			if (song.Uri == null || song.IsImported)
 			{
 				SaveSongAs(song);
@@ -165,7 +168,7 @@ namespace WordsLive.Editor
 			}
 			else
 			{
-				dlg.FileName =  Path.GetFileNameWithoutExtension(Uri.UnescapeDataString(song.Uri.Segments.Last()));
+				dlg.FileName = Path.GetFileNameWithoutExtension(Uri.UnescapeDataString(song.Uri.Segments.Last()));
 			}
 
 			if (dlg.ShowDialog() == true)
@@ -192,7 +195,7 @@ namespace WordsLive.Editor
 					// TODO: add more formats
 					throw new InvalidOperationException("Invalid extension " + ext + ". This should not happen.");
 				}
-				
+
 			}
 		}
 
@@ -279,7 +282,7 @@ namespace WordsLive.Editor
 
 			if (e.Parameter != null && e.Parameter is EditorDocument)
 				doc = e.Parameter as EditorDocument;
-			else 
+			else
 				doc = Tabs != null ? (Tabs.SelectedItem as EditorDocument) : null;
 
 			if (e.Command == ApplicationCommands.Save)
