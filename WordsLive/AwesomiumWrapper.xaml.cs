@@ -110,7 +110,10 @@ namespace WordsLive
 
 		public void Close()
 		{
-			area.WindowSizeChanged -= area_WindowSizeChanged;
+			if (area != null)
+			{
+				area.WindowSizeChanged -= area_WindowSizeChanged;
+			}
 		}
 	}
 }
