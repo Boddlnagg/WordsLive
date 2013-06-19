@@ -6,7 +6,6 @@ using System.Runtime.InteropServices;
 using Awesomium.Core;
 using Awesomium.Core.Data;
 using WordsLive.Core;
-using WordsLive.Core.Songs.Storage;
 
 namespace WordsLive
 {
@@ -41,7 +40,7 @@ namespace WordsLive
 					//EnablePlugins = false, // TODO: make this configurable in case someone wants to use flash ...
 					/*HomeURL = Settings.Default.HomeURL,*/
 					/*LogPath = My.Application.UserAppDataPath,*/
-					LogLevel = LogLevel.Verbose,
+					LogLevel = LogLevel.None,
 					//AcceptLanguageOverride = "de-DE", // TODO: set this to the correct system language (needed for bibleserver)
 					ChildProcessPath = System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "WordsLive.Awesomium.exe"),
 				};

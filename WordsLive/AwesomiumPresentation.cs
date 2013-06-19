@@ -66,7 +66,10 @@ namespace WordsLive
 			var result = MessageBox.Show(Resource.vAwesomiumProcessCrashed, Resource.vAwesomiumProcessCrashedTitle, MessageBoxButton.OKCancel);
 
 			if (result == MessageBoxResult.OK)
+			{
+				this.Control.Web.Dispose();
 				Controller.ReloadActiveMedia();
+			}
 		}
 
 		public override void Close()

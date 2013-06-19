@@ -111,9 +111,8 @@ namespace WordsLive.Songs
 			}
 
 			this.Control.Web.IsTransparent = true;
+			this.Control.Web.ProcessCreated += Web_ProcessCreated;
 			currentSlideIndex = -1;
-
-			Control.Web.ProcessCreated += Web_ProcessCreated;
 		}
 
 		void Web_ProcessCreated(object sender, Awesomium.Core.WebViewEventArgs e)

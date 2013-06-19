@@ -51,7 +51,7 @@ namespace WordsLive.Songs
 			this.features = features;
 			this.control.ConsoleMessage += (obj, target) =>
 			{
-				throw new ApplicationException("SongDisplayController encountered JS error in line " + target.LineNumber + ": " + target.Message);
+				System.Windows.MessageBox.Show("SongDisplayController encountered JS error in " + target.Source + " (line " +  target.LineNumber + "): " + target.Message);
 			};
 			bridge = this.control.CreateGlobalJavascriptObject("bridge");
 			bridge.Bind("callbackLoaded", false, (sender, args) => OnSongLoaded());
@@ -65,7 +65,6 @@ namespace WordsLive.Songs
 
 			if (features != FeatureLevel.None)
 			{
-
 				var backgrounds = new List<JSValue>(song.Backgrounds.Count);
 
 				foreach (var bg in song.Backgrounds.Where(bg => bg.Type == SongBackgroundType.Image))

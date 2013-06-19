@@ -94,7 +94,6 @@ namespace WordsLive
 
 			backImage.Source = frontImage.Source;
 			frontImage.Source = surf.Image.Clone();
-			//swapBitmaps = !swapBitmaps;
 		}
 
 		public void Close()
