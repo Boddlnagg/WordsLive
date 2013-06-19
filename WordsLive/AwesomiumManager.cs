@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using Awesomium.Core;
@@ -13,23 +12,12 @@ namespace WordsLive
 	{
 		private static List<IWebView> controls = new List<IWebView>();
 		private static bool initialized = false;
-		private static DirectoryInfo dataDirectory;
-
-		public static DirectoryInfo DataDirectory
-		{
-			get
-			{
-				return dataDirectory;
-			}
-		}
 
 		public static void Init()
 		{
 			// We may be a new window in the same process.
 			if (!initialized && !WebCore.IsRunning)
 			{
-				InitData();
-
 				WebCore.CreatedView += WebCore_CreatedView;
 
 				// Setup WebCore with plugins enabled.            
@@ -101,18 +89,6 @@ namespace WordsLive
 
 			if (WebCore.IsRunning && !WebCore.IsShuttingDown)
 				WebCore.Shutdown();
-		}
-
-		private static void InitData()
-		{
-			dataDirectory = DataManager.TempDirectory.CreateSubdirectory("AwesomiumData");
-
-			var core = Assembly.GetAssembly(typeof(Media)); // WordsLive.Core.dll
-
-			//core.ExtractResource("jquery.js", dataDirectory);
-			//core.ExtractResource("SongPresentation.js", dataDirectory);
-
-			//Assembly.GetExecutingAssembly().ExtractResource("song.html", dataDirectory);
 		}
 
 		public class ResourceDataSource : DataSource

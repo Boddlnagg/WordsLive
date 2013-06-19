@@ -25,6 +25,7 @@ namespace WordsLive.Songs
 		private bool loaded = false;
 		private bool showChords = true;
 		private JSObject bridge;
+		private FeatureLevel features;
 
 		public bool ShowChords
 		{
@@ -48,6 +49,7 @@ namespace WordsLive.Songs
 		public SongDisplayController(IWebView control, FeatureLevel features = FeatureLevel.None)
 		{
 			this.control = control;
+			this.features = features;
 			bridge = this.control.CreateGlobalJavascriptObject("bridge");
 			bridge.Bind("callbackLoaded", false, (sender, args) => OnSongLoaded());
 			bridge["featureLevel"] = new JSValue(JsonConvert.SerializeObject(features));
@@ -58,21 +60,25 @@ namespace WordsLive.Songs
 			if (song == null)
 				throw new ArgumentNullException("song");
 
-			var backgrounds = new List<JSValue>(song.Backgrounds.Count);
-
-			foreach (var bg in song.Backgrounds.Where(bg => bg.Type == SongBackgroundType.Image))
+			if (features != FeatureLevel.None)
 			{
-				try
-				{
-					backgrounds.Add(new JSValue(DataManager.Backgrounds.GetFile(bg).Uri.AbsoluteUri));
-				}
-				catch (FileNotFoundException)
-				{
-					// ignore -> just show black background
-				}
-			}
 
-			bridge["preloadImages"] = new JSValue(backgrounds.ToArray());
+				var backgrounds = new List<JSValue>(song.Backgrounds.Count);
+
+				foreach (var bg in song.Backgrounds.Where(bg => bg.Type == SongBackgroundType.Image))
+				{
+					try
+					{
+						backgrounds.Add(new JSValue(DataManager.Backgrounds.GetFile(bg).Uri.AbsoluteUri));
+					}
+					catch (FileNotFoundException)
+					{
+						// ignore -> just show black background
+					}
+				}
+
+				bridge["preloadImages"] = new JSValue(backgrounds.ToArray());
+			}
 			bridge["songString"] = new JSValue(JsonConvert.SerializeObject(song));
 			bridge["showChords"] = new JSValue(ShowChords);
 			

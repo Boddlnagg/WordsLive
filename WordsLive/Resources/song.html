@@ -20,10 +20,13 @@ $(function () {
 
 	presentation.setShowChords(bridge.showChords);
 
-	$.each(bridge.preloadImages, function (i) {
-		var img = new Image();
-		img.src = bridge.preloadImages[i];
-	});
+	if (bridge.preloadImages !== undefined) {
+	    $.each(bridge.preloadImages, function (i) {
+	        var img = new Image();
+	        img.src = bridge.preloadImages[i];
+	    });
+	}
+
 	bridge.callbackLoaded();
 });
 	</script>

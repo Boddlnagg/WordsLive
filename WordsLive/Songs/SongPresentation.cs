@@ -41,15 +41,21 @@ namespace WordsLive.Songs
 			}
 		}
 
+		private bool showChords;
+
 		public bool ShowChords
 		{
 			get
 			{
-				return controller.ShowChords;
+				return showChords;
 			}
 			set
 			{
-				controller.ShowChords = value;
+				showChords = value;
+				if (controller != null)
+				{
+					controller.ShowChords = showChords;
+				}
 			}
 		}
 
@@ -107,9 +113,14 @@ namespace WordsLive.Songs
 
 			this.IsTransparent = true;
 
+			Control.Web.ProcessCreated += Web_ProcessCreated;
+		}
+
+		void Web_ProcessCreated(object sender, Awesomium.Core.WebViewEventArgs e)
+		{
 			controller = new SongDisplayController(Control.Web, SongDisplayController.FeatureLevel.None);
 
-			controller.SongLoaded += (sender, args) =>
+			controller.SongLoaded += (s, args) =>
 			{
 				OnFinishedLoading();
 			};
@@ -120,7 +131,7 @@ namespace WordsLive.Songs
 
 			this.Control.Web.ConsoleMessage += (obj, target) =>
 			{
-			    System.Windows.MessageBox.Show("JS error in line "+target.LineNumber+": "+target.Message);
+				System.Windows.MessageBox.Show("JS error in line " + target.LineNumber + ": " + target.Message);
 			};
 
 			controller.Load(this.song);
@@ -130,13 +141,6 @@ namespace WordsLive.Songs
 		{
 			UpdateSlide();
 		}
-
-		//void web_IsDirtyChanged(object sender, EventArgs e)
-		//{
-		//	Control.RenderWebView();
-		//	if (!Control.Web.IsDirty)
-		//		UpdateSlide();
-		//}
 
 		public event EventHandler FinishedLoading;
 
