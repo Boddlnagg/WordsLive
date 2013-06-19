@@ -76,7 +76,8 @@ namespace WordsLive
 		{
 			controls.Add(web);
 			// TODO: doesn't work, because WebSession is null at this point
-			web.WebSession.AddDataSource("WordsLive", new MyDataSource());
+			web.WebSession.AddDataSource("WordsLive", new ResourceDataSource(Assembly.GetExecutingAssembly()));
+			web.WebSession.AddDataSource("WordsLive.Core", new ResourceDataSource(Assembly.GetAssembly(typeof(Media))));
 		}
 
 		public static void Close(IWebView web)
@@ -109,26 +110,35 @@ namespace WordsLive
 			Assembly.GetExecutingAssembly().ExtractResource("song.html", dataDirectory);
 		}
 
-		public class MyDataSource : DataSource
+		public class ResourceDataSource : DataSource
 		{
+			private Assembly assembly;
+			public ResourceDataSource(Assembly assembly)
+			{
+				this.assembly = assembly;
+			}
+
 			protected override void OnRequest(DataSourceRequest request)
 			{
-				FileInfo fi = new FileInfo(Path.Combine(dataDirectory.FullName, request.Path));
-				if (fi.Exists)
+				try
 				{
-					using (var fs = new FileStream(fi.FullName, FileMode.Open, FileAccess.Read))
+					using (var stream = assembly.GetResourceStream(request.Path))
 					{
-						byte[] buffer = new byte[fs.Length];
-						fs.Read(buffer, 0, (int)fs.Length);
+						byte[] buffer = new byte[stream.Length];
+						stream.Read(buffer, 0, (int)stream.Length);
 						GCHandle pinnedBuffer = GCHandle.Alloc(buffer, GCHandleType.Pinned);
 						IntPtr pointer = pinnedBuffer.AddrOfPinnedObject();
 						SendResponse(request, new DataSourceResponse
 						{
 							Buffer = pointer,
- 							Size = (uint)fs.Length
+							Size = (uint)stream.Length
 						});
 						pinnedBuffer.Free();
 					}
+				}
+				catch
+				{
+					SendRequestFailed(request);
 				}
 			}
 		}
