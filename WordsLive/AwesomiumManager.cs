@@ -30,6 +30,8 @@ namespace WordsLive
 			{
 				InitData();
 
+				WebCore.CreatedView += WebCore_CreatedView;
+
 				// Setup WebCore with plugins enabled.            
 				WebConfig config = new WebConfig
 				{
@@ -72,12 +74,15 @@ namespace WordsLive
 			}
 		}
 
+		static void WebCore_CreatedView(object sender, CreatedViewEventArgs e)
+		{
+			e.NewView.WebSession.AddDataSource("WordsLive", new ResourceDataSource(Assembly.GetExecutingAssembly()));
+			e.NewView.WebSession.AddDataSource("WordsLive.Core", new ResourceDataSource(Assembly.GetAssembly(typeof(Media))));
+		}
+
 		public static void Register(IWebView web)
 		{
 			controls.Add(web);
-			// TODO: doesn't work, because WebSession is null at this point
-			web.WebSession.AddDataSource("WordsLive", new ResourceDataSource(Assembly.GetExecutingAssembly()));
-			web.WebSession.AddDataSource("WordsLive.Core", new ResourceDataSource(Assembly.GetAssembly(typeof(Media))));
 		}
 
 		public static void Close(IWebView web)
@@ -104,10 +109,10 @@ namespace WordsLive
 
 			var core = Assembly.GetAssembly(typeof(Media)); // WordsLive.Core.dll
 
-			core.ExtractResource("jquery.js", dataDirectory);
-			core.ExtractResource("SongPresentation.js", dataDirectory);
+			//core.ExtractResource("jquery.js", dataDirectory);
+			//core.ExtractResource("SongPresentation.js", dataDirectory);
 
-			Assembly.GetExecutingAssembly().ExtractResource("song.html", dataDirectory);
+			//Assembly.GetExecutingAssembly().ExtractResource("song.html", dataDirectory);
 		}
 
 		public class ResourceDataSource : DataSource

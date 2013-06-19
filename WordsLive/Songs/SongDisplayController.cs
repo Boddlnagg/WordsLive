@@ -40,6 +40,11 @@ namespace WordsLive.Songs
 			}
 		}
 
+		/// <summary>
+		/// Initializes a new instance of the SongDisplayController class.
+		/// </summary>
+		/// <param name="control">The web view that is controlled by this instance. Its IsProcessCreated property must be true.</param>
+		/// <param name="features">The desired feature level.</param>
 		public SongDisplayController(IWebView control, FeatureLevel features = FeatureLevel.None)
 		{
 			this.control = control;
@@ -71,7 +76,7 @@ namespace WordsLive.Songs
 			bridge["songString"] = new JSValue(JsonConvert.SerializeObject(song));
 			bridge["showChords"] = new JSValue(ShowChords);
 			
-			this.control.Source = new Uri("song.html");
+			this.control.Source = new Uri("asset://WordsLive/song.html");
 		}
 
 		public void UpdateFormatting(SongFormatting formatting, bool hasTranslation, bool hasChords)

@@ -508,8 +508,8 @@
 		 Other similar extension points exist, see Microsoft.Common.targets.
 	<Target Name="BeforeBuild">
 	</Target>-->
-  <!--<Target Name="AfterBuild">
-    <Move SourceFiles="$(TargetDir)AwesomiumProcess" DestinationFiles="$(TargetDir)WordsLive.Awesomium.exe" />
-  </Target>-->
+  <Target Name="AfterBuild">
+    <Move SourceFiles="$(TargetDir)awesomium_process" DestinationFiles="$(TargetDir)WordsLive.Awesomium.exe" />
+  </Target>
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
 </Project>

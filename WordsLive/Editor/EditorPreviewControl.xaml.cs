@@ -35,8 +35,10 @@ namespace WordsLive.Editor
 				(args.NewValue as Song).Sources[0].PropertyChanged += control.SongSource_PropertyChanged;
 			}
 
-			if (args.NewValue != null)
+			if (args.NewValue != null && control.Web.IsProcessCreated)
+			{
 				control.Load();
+			}
 		}
 
 		void controller_SongLoaded(object sender, EventArgs e)
@@ -64,7 +66,17 @@ namespace WordsLive.Editor
 			Web.Crashed += OnWebViewCrashed;
 			Web.ProcessInput = Awesomium.Core.ViewInput.None;
 
-			if (Song != null) // if this is not the first Init(), probably a song has already be loaded and must be reloaded
+			Web.ProcessCreated += OnWebProcessCreated;
+
+			if (Song != null && Web.IsProcessCreated) // if this is not the first Init(), probably a song has already be loaded and must be reloaded
+			{
+				Load();
+			}
+		}
+
+		void OnWebProcessCreated(object sender, Awesomium.Core.WebViewEventArgs e)
+		{
+			if (Song != null)
 			{
 				Load();
 			}
@@ -119,19 +131,23 @@ namespace WordsLive.Editor
 		{
 			get
 			{
-				return controller.ShowChords;
+				return showChords;
 			}
 			set
 			{
-				controller.ShowChords = value;
+				showChords = value;
+				if (controller != null)
+					controller.ShowChords = showChords;
 			}
 		}
+
+		private bool showChords = true;
 
 		private void Load()
 		{
 			controller = new SongDisplayController(Web, SongDisplayController.FeatureLevel.Backgrounds);
-			controller.ShowChords = true;
-			controller.SongLoaded +=controller_SongLoaded;
+			controller.ShowChords = showChords;
+			controller.SongLoaded += controller_SongLoaded;
 			controller.Load(Song);
 		}
 
