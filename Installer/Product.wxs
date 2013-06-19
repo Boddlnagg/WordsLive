@@ -146,7 +146,7 @@
 		</ComponentGroup>
 		<ComponentGroup Id="AwesomiumComponents" Directory="APPLICATIONFOLDER">
 			<Component Id="AwesomiumDllComponent">
-				<File Source="$(var.WordsLive.TargetDir)Awesomium.dll" Name="Awesomium.dll" KeyPath="yes" />
+				<File Source="$(var.WordsLive.TargetDir)awesomium.dll" Name="awesomium.dll" KeyPath="yes" />
 			</Component>
 			<Component Id="AwesomiumExeComponent">
 				<File Source="$(var.WordsLive.TargetDir)WordsLive.Awesomium.exe" Name="WordsLive.Awesomium.exe" KeyPath="yes" />
@@ -157,11 +157,26 @@
 			<Component Id="AwesomiumWindowsControlsDllComponent">
 				<File Source="$(var.WordsLive.TargetDir)Awesomium.Windows.Controls.dll" Name="Awesomium.Windows.Controls.dll" KeyPath="yes" />
 			</Component>
-			<Component Id="AwesomiumEnDllComponent">
-				<File Source="$(var.WordsLive.TargetDir)en-US.dll" Name="en-US.dll" KeyPath="yes" />
-			</Component>
 			<Component Id="AwesomiumIcuDllComponent">
-				<File Source="$(var.WordsLive.TargetDir)icudt42.dll" Name="icudt42.dll" KeyPath="yes" />
+				<File Source="$(var.WordsLive.TargetDir)icudt.dll" Name="icudt.dll" KeyPath="yes" />
+			</Component>
+			<Component Id="AwesomiumAvcodecDllComponent">
+				<File Source="$(var.WordsLive.TargetDir)avcodec-53.dll" Name="avcodec-53.dll" KeyPath="yes" />
+			</Component>
+			<Component Id="AwesomiumAvformatDllComponent">
+				<File Source="$(var.WordsLive.TargetDir)avformat-53.dll" Name="avformat-53.dll" KeyPath="yes" />
+			</Component>
+			<Component Id="AwesomiumAvutilDllComponent">
+				<File Source="$(var.WordsLive.TargetDir)avutil-51.dll" Name="avutil-51.dll" KeyPath="yes" />
+			</Component>
+			<Component Id="AwesomiumLibEGLDllComponent">
+				<File Source="$(var.WordsLive.TargetDir)libEGL.dll" Name="libEGL.dll" KeyPath="yes" />
+			</Component>
+			<Component Id="AwesomiumLibGLESDllComponent">
+				<File Source="$(var.WordsLive.TargetDir)libGLESv2.dll" Name="libGLESv2.dll" KeyPath="yes" />
+			</Component>
+			<Component Id="AwesomiumXInputDllComponent">
+				<File Source="$(var.WordsLive.TargetDir)xinput9_1_0.dll" Name="xinput9_1_0.dll" KeyPath="yes" />
 			</Component>
 		</ComponentGroup>
 		<ComponentGroup Id="DataComponents" Directory="DataFolder">
