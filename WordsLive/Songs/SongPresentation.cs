@@ -109,9 +109,9 @@ namespace WordsLive.Songs
 				this.Control.ForegroundGrid.Children.Add(videoBackground);
 				this.Control.BackgroundGrid.Children.Add(videoBackgroundClone);
 			}
-			
 
-			this.IsTransparent = true;
+			this.Control.Web.IsTransparent = true;
+			currentSlideIndex = -1;
 
 			Control.Web.ProcessCreated += Web_ProcessCreated;
 		}
@@ -126,13 +126,6 @@ namespace WordsLive.Songs
 			};
 
 			(Control.Web.Surface as ImageSurface).Updated += web_Updated;
-
-			currentSlideIndex = -1;
-
-			this.Control.Web.ConsoleMessage += (obj, target) =>
-			{
-				System.Windows.MessageBox.Show("JS error in line " + target.LineNumber + ": " + target.Message);
-			};
 
 			controller.Load(this.song);
 		}

@@ -79,17 +79,5 @@ namespace WordsLive
 			}
 			AwesomiumManager.Close(this.Control.Web);
 		}
-
-		public bool IsTransparent
-		{
-			get
-			{
-				return this.Control.Web.IsTransparent;
-			}
-			set
-			{
-				this.Control.Web.IsTransparent = value;
-			}
-		}
 	}
 }

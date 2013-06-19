@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using Awesomium.Core;
 using Newtonsoft.Json;
-using WordsLive.Core;
 using WordsLive.Core.Songs;
 
 namespace WordsLive.Songs
@@ -50,6 +49,10 @@ namespace WordsLive.Songs
 		{
 			this.control = control;
 			this.features = features;
+			this.control.ConsoleMessage += (obj, target) =>
+			{
+				throw new ApplicationException("SongDisplayController encountered JS error in line " + target.LineNumber + ": " + target.Message);
+			};
 			bridge = this.control.CreateGlobalJavascriptObject("bridge");
 			bridge.Bind("callbackLoaded", false, (sender, args) => OnSongLoaded());
 			bridge["featureLevel"] = new JSValue(JsonConvert.SerializeObject(features));
@@ -69,7 +72,7 @@ namespace WordsLive.Songs
 				{
 					try
 					{
-						backgrounds.Add(new JSValue(DataManager.Backgrounds.GetFile(bg).Uri.AbsoluteUri));
+						backgrounds.Add(new JSValue(bg.FilePath.Replace('\\', '/')));
 					}
 					catch (FileNotFoundException)
 					{
@@ -78,6 +81,7 @@ namespace WordsLive.Songs
 				}
 
 				bridge["preloadImages"] = new JSValue(backgrounds.ToArray());
+				bridge["backgroundPrefix"] = new JSValue("asset://backgrounds/");
 			}
 			bridge["songString"] = new JSValue(JsonConvert.SerializeObject(song));
 			bridge["showChords"] = new JSValue(ShowChords);

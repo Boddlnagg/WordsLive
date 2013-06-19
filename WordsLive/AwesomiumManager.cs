@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using Awesomium.Core;
 using Awesomium.Core.Data;
 using WordsLive.Core;
+using WordsLive.Core.Songs.Storage;
 
 namespace WordsLive
 {
@@ -66,6 +68,7 @@ namespace WordsLive
 		{
 			e.NewView.WebSession.AddDataSource("WordsLive", new ResourceDataSource(Assembly.GetExecutingAssembly()));
 			e.NewView.WebSession.AddDataSource("WordsLive.Core", new ResourceDataSource(Assembly.GetAssembly(typeof(Media))));
+			e.NewView.WebSession.AddDataSource("backgrounds", new BackgroundDataSource());
 		}
 
 		public static void Register(IWebView web)
@@ -113,6 +116,33 @@ namespace WordsLive
 						{
 							Buffer = pointer,
 							Size = (uint)stream.Length
+						});
+						pinnedBuffer.Free();
+					}
+				}
+				catch
+				{
+					SendRequestFailed(request);
+				}
+			}
+		}
+
+		public class BackgroundDataSource : DataSource
+		{
+			protected override void OnRequest(DataSourceRequest request)
+			{
+				try
+				{
+					var bg = DataManager.Backgrounds.GetFile("/" + request.Path);
+					using (WebClient client = new WebClient())
+					{
+						var bytes = client.DownloadData(bg.Uri);
+						GCHandle pinnedBuffer = GCHandle.Alloc(bytes, GCHandleType.Pinned);
+						IntPtr pointer = pinnedBuffer.AddrOfPinnedObject();
+						SendResponse(request, new DataSourceResponse
+						{
+							Buffer = pointer,
+							Size = (uint)bytes.Length
 						});
 						pinnedBuffer.Free();
 					}

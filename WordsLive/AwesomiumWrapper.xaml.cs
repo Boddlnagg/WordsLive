@@ -33,7 +33,6 @@ namespace WordsLive
 		}
 
 		private WriteableBitmap wb1, wb2;
-		private bool swapBitmaps;
 		private Int32Rect rect;
 
 		public AwesomiumWrapper()
