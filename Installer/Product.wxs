@@ -19,10 +19,10 @@
 		<!-- ARP Support Oder wie konfiguriert man Add/Remove Programs mit dem Windows Installer
 				Siehe auch http://msdn.microsoft.com/en-us/library/aa368032.aspx
 		-->
-		<Property Id="ARPHELPLINK" Value="http://www.wordslive.org" />
+		<!--<Property Id="ARPHELPLINK" Value="http://www.wordslive.org" />-->
 		<Property Id="ARPCONTACT" Value="WordsLive" />
 		<Property Id="ARPCOMMENTS" Value="Worship Projection Software" />
-		<Property Id="ARPURLINFOABOUT" Value="http://www.wordslive.org" />
+		<!--<Property Id="ARPURLINFOABOUT" Value="http://www.wordslive.org" />-->
 		<Property Id="ARPPRODUCTICON" Value="Viewer.ico" />
 
 		<Feature Id="ProductFeature" ConfigurableDirectory="APPLICATIONFOLDER" Level="1">

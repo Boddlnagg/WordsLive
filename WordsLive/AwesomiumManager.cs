@@ -13,7 +13,10 @@ namespace WordsLive
 	{
 		private static List<IWebView> controls = new List<IWebView>();
 		private static bool initialized = false;
-
+		
+		// TODO: look at this again and see if it's really necessary (and if it can be simplified)
+		// with the new Awesomium version.
+		// TODO: use custom-built WebSession for further configuration and add data sources (see below) only once
 		public static void Init()
 		{
 			// We may be a new window in the same process.
@@ -70,6 +73,7 @@ namespace WordsLive
 			e.NewView.WebSession.AddDataSource("backgrounds", new BackgroundDataSource());
 		}
 
+		// TODO: see if Register/Close is really necessary or if Awesomium cares for this by itself
 		public static void Register(IWebView web)
 		{
 			controls.Add(web);
@@ -93,6 +97,7 @@ namespace WordsLive
 				WebCore.Shutdown();
 		}
 
+		// TODO: move to separate file
 		public class ResourceDataSource : DataSource
 		{
 			private Assembly assembly;
@@ -126,6 +131,7 @@ namespace WordsLive
 			}
 		}
 
+		// TODO: move to separate file
 		public class BackgroundDataSource : DataSource
 		{
 			protected override void OnRequest(DataSourceRequest request)
