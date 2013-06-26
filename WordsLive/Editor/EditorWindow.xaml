@@ -7,8 +7,8 @@
 	Title="Editor - WordsLive"
 	MinHeight="300"
 	MinWidth="300"
-	Height = "{Binding Source={StaticResource settings}, Path=Default.EditorWindowHeight, Mode=TwoWay}"
-	Width = "{Binding Source={StaticResource settings}, Path=Default.EditorWindowWidth, Mode=TwoWay}"
+	Height="{Binding Source={StaticResource settings}, Path=Default.EditorWindowHeight, Mode=TwoWay}"
+	Width="{Binding Source={StaticResource settings}, Path=Default.EditorWindowWidth, Mode=TwoWay}"
 	Top="{Binding Source={StaticResource settings}, Path=Default.EditorWindowTop, Mode=TwoWay}"
 	Left="{Binding Source={StaticResource settings}, Path=Default.EditorWindowLeft, Mode=TwoWay}"
 	WindowState="{Binding Source={StaticResource settings}, Path=Default.EditorWindowState, Mode=TwoWay}"
@@ -28,6 +28,38 @@
 		<CommandBinding Command="{x:Static local:CustomCommands.AddMedia}" Executed="OnExecuteCommand" CanExecute="OnCommandCanExecute"/>
 		<CommandBinding Command="{x:Static local:CustomCommands.ShowSonglist}" Executed="OnExecuteCommand"/>
 	</Window.CommandBindings>
+	<Window.Resources>
+		<DataTemplate x:Key="ClosableTabItemTemplate">
+			<DockPanel MinWidth="120" HorizontalAlignment="Stretch">
+				<Button
+					Command="Close"
+					CommandParameter="{Binding}"
+					DockPanel.Dock="Right"
+					Focusable="False"
+					Margin="3,1,0,0"
+					Padding="0"
+					VerticalContentAlignment="Bottom"
+					Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"
+					Width="14" Height="14">
+					<Path Margin="2"
+						  Stroke="Gray"
+						  StrokeThickness="2"
+						  StrokeStartLineCap="Round"
+						  StrokeEndLineCap="Round"
+						  Stretch="Uniform"
+						  VerticalAlignment="Center"
+						  HorizontalAlignment="Center">
+						<Path.Data>
+							<Geometry>M0,0 L10,10 M0,10 L10,0</Geometry>
+						</Path.Data>
+					</Path>
+				</Button>
+				<ContentPresenter 
+					Content="{Binding Song.Title}"
+					VerticalAlignment="Center" />
+			</DockPanel>
+		</DataTemplate>
+	</Window.Resources>
 	<Grid
 		x:Name="LayoutRoot">
 		<Grid.RowDefinitions>
@@ -166,9 +198,10 @@
 			</CheckBox>
 		</ToolBar>
 		<Grid Grid.Row="2" Grid.Column="0" AllowDrop="True" Drop="Tabs_Drop" DragEnter="Tabs_DragEnterOrOver" DragOver="Tabs_DragEnterOrOver" Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}">
-			<TabControl x:Name="Tabs" ItemsSource="{Binding}" DisplayMemberPath="Song.Title">
+			<TabControl x:Name="Tabs" ItemsSource="{Binding}" ItemTemplate="{StaticResource ClosableTabItemTemplate}" HorizontalContentAlignment="Stretch">
 				<TabControl.ItemContainerStyle>
 					<Style TargetType="TabItem">
+						<Setter Property="Header" Value="{Binding Mode=OneTime}"/>
 						<Setter Property="Content" Value="{Binding Grid}"/>
 						<Setter Property="ToolTip" Value="{Binding Song.Uri}"/>
 						<Setter Property="ContextMenu">
