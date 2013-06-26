@@ -198,8 +198,6 @@
     <Resource Include="Artwork\AlignTopCenter.png" />
     <Resource Include="Artwork\AlignTopLeft.png" />
     <Resource Include="Artwork\AlignTopRight.png" />
-    <Resource Include="Artwork\DecreaseFontSize.png" />
-    <Resource Include="Artwork\IncreaseFontSize.png" />
     <Resource Include="Artwork\Small_DownArrow.png" />
     <Resource Include="Artwork\Small_Reload.png" />
     <Resource Include="Artwork\Small_UpArrow.png" />

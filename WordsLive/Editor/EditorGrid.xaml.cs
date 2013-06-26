@@ -45,6 +45,14 @@ namespace WordsLive.Editor
 			}
 		}
 
+		public ISongElement SelectedElement
+		{
+			get
+			{
+				return StructureTree.SelectedItem as ISongElement;
+			}
+		}
+
 		public EditorGrid(Song song, EditorWindow parent)
 		{
 			InitializeComponent();
@@ -442,6 +450,7 @@ namespace WordsLive.Editor
 				EnableSpellCheckCheckBox.IsEnabled = false;
 
 			OnPropertyChanged("SelectedPart");
+			OnPropertyChanged("SelectedElement");
 		}
 
 		private void OrderListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -702,46 +711,6 @@ namespace WordsLive.Editor
 
 				var newSlide = song.FindPartWithSlide(node as SongSlide).SplitSlide(node as SongSlide, tb.SelectionStart);
 			}
-			else if (e.Command == EditingCommands.IncreaseFontSize)
-			{
-				if (node is SongSlide)
-				{
-					SongSlide slide = node as SongSlide;
-					slide.Size++;
-				}
-				else if (node is Nodes.CopyrightNode)
-				{
-					var formatting = song.Formatting;
-					formatting.CopyrightText.Size++;
-					song.Formatting = formatting;
-				}
-				else if (node is Nodes.SourceNode)
-				{
-					var formatting = song.Formatting;
-					formatting.SourceText.Size++;
-					song.Formatting = formatting;
-				}
-			}
-			else if (e.Command == EditingCommands.DecreaseFontSize)
-			{
-				if (node is SongSlide)
-				{
-					SongSlide slide = node as SongSlide;
-					slide.Size--;
-				}
-				else if (node is Nodes.CopyrightNode)
-				{
-					var formatting = song.Formatting;
-					formatting.CopyrightText.Size--;
-					song.Formatting = formatting;
-				}
-				else if (node is Nodes.SourceNode)
-				{
-					var formatting = song.Formatting;
-					formatting.SourceText.Size--;
-					song.Formatting = formatting;
-				}
-			}
 			else if (e.Command == CustomCommands.ChooseBackground)
 			{
 				ChooseBackground(node);
@@ -850,10 +819,6 @@ namespace WordsLive.Editor
 			else if (e.Command == ApplicationCommands.Redo)
 			{
 				e.CanExecute = song.UndoManager.CanRedo;
-			}
-			else if (e.Command == EditingCommands.IncreaseFontSize || e.Command == EditingCommands.DecreaseFontSize)
-			{
-				e.CanExecute = node is SongSlide || node is Nodes.CopyrightNode || node is Nodes.SourceNode;
 			}
 			else if (e.Command == CustomCommands.Split)
 			{

@@ -14,7 +14,7 @@ using WordsLive.Songs;
 
 namespace WordsLive.Editor
 {
-	public partial class EditorWindow : Window
+	public partial class EditorWindow : Window, INotifyPropertyChanged
 	{
 		ObservableCollection<EditorDocument> openDocuments = new ObservableCollection<EditorDocument>();
 
@@ -35,7 +35,21 @@ namespace WordsLive.Editor
 					{
 						doc.Grid.PreviewControl.ShowChords = showChords;
 					}
+					OnPropertyChanged("ShowChords");
 				}
+			}
+		}
+
+		public bool FontSizeEnabled
+		{
+			get
+			{
+				var doc = Tabs.SelectedItem as EditorDocument;
+				if (doc == null)
+					return false;
+
+				var element = doc.Grid.SelectedElement as ISongElementWithSize;
+				return element != null;
 			}
 		}
 
@@ -44,6 +58,8 @@ namespace WordsLive.Editor
 			InitializeComponent();
 			this.DataContext = this;
 			Tabs.DataContext = openDocuments;
+
+			Tabs.SelectionChanged += (sender, args) => OnPropertyChanged("FontSizeEnabled");
 		}
 
 		public EditorDocument CheckSongOpened(Song song)
@@ -108,6 +124,12 @@ namespace WordsLive.Editor
 				opened = new EditorDocument(song, this);
 				openDocuments.Add(opened);
 			}
+
+			opened.Grid.PropertyChanged += (sender, args) =>
+			{
+				if (args.PropertyName == "SelectedElement")
+					OnPropertyChanged("FontSizeEnabled");
+			};
 
 			Tabs.SelectedItem = opened;
 		}
@@ -385,6 +407,14 @@ namespace WordsLive.Editor
 			{
 				Controller.ShowSongList();
 			}
+		}
+
+		public event PropertyChangedEventHandler PropertyChanged;
+
+		protected void OnPropertyChanged(string propertyName)
+		{
+			if (PropertyChanged != null)
+				PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 		}
 	}
 }

@@ -26,7 +26,7 @@ namespace WordsLive.Core.Songs
 	/// <summary>
 	/// Represents a slide in a song.
 	/// </summary>
-	public class SongSlide : INotifyPropertyChanged, ISongElement
+	public class SongSlide : INotifyPropertyChanged, ISongElementWithSize
 	{
 		private string text;
 		private string translation;

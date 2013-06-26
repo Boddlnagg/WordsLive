@@ -3,6 +3,7 @@
 	x:Class="WordsLive.Editor.EditorWindow" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:local="clr-namespace:WordsLive"
 	xmlns:resx="clr-namespace:WordsLive.Resources"
+	xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
 	Title="Editor - WordsLive"
 	MinHeight="300"
 	MinWidth="300"
@@ -151,18 +152,7 @@
 					Height="32"
 					Source="/WordsLive;component/Artwork/ChooseBackground.png" />
 			</Button>
-			<Button Command="DecreaseFontSize" Style="{StaticResource markDisabledButton}" ToolTip="{x:Static resx:Resource.eToolbarDecreaseFontSize}">
-				<Image
-					Width="32"
-					Height="32"
-					Source="/WordsLive;component/Artwork/DecreaseFontSize.png" />
-			</Button>
-			<Button Command="IncreaseFontSize" Style="{StaticResource markDisabledButton}" ToolTip="{x:Static resx:Resource.eToolbarIncreaseFontSize}">
-				<Image
-					Width="32"
-					Height="32"
-					Source="/WordsLive;component/Artwork/IncreaseFontSize.png" />
-			</Button>
+			<xctk:IntegerUpDown Value="{Binding ElementName=Tabs, Path=SelectedItem.Grid.SelectedElement.Size, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding FontSizeEnabled}" FontSize="18" Width="50" Minimum="1" Maximum="99"/>
 			<CheckBox ToolTip="{x:Static resx:Resource.eToolbarShowChords}" IsChecked="{Binding ShowChords}">
 				<Image Width="32" Height="32" Source="/WordsLive;component/Artwork/ShowChords.png" />
 			</CheckBox>
