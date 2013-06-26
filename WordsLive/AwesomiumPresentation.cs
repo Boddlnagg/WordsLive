@@ -80,7 +80,7 @@ namespace WordsLive
 			{
 				win.Dispatcher.Invoke(new Action(() => win.Close()));
 			}
-			AwesomiumManager.Close(this.Control.Web);
+			this.Control.Web.Dispose();
 		}
 	}
 }

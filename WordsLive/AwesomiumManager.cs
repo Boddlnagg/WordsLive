@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Net;
 using System.Reflection;
 using System.Runtime.InteropServices;
@@ -11,7 +10,6 @@ namespace WordsLive
 {
 	public class AwesomiumManager
 	{
-		private static List<IWebView> controls = new List<IWebView>();
 		private static bool initialized = false;
 		
 		// TODO: look at this again and see if it's really necessary (and if it can be simplified)
@@ -73,24 +71,12 @@ namespace WordsLive
 			e.NewView.WebSession.AddDataSource("backgrounds", new BackgroundDataSource());
 		}
 
-		// TODO: see if Register/Close is really necessary or if Awesomium cares for this by itself
-		public static void Register(IWebView web)
-		{
-			controls.Add(web);
-		}
-
-		public static void Close(IWebView web)
-		{
-			controls.Remove(web);
-			web.Dispose();
-		}
-
 		[Shutdown]
 		public static void Shutdown()
 		{
-			foreach (var c in controls)
+			foreach (var v in WebCore.Views)
 			{
-				c.Dispose();
+				v.Dispose();
 			}
 
 			if (WebCore.IsRunning && !WebCore.IsShuttingDown)

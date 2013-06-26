@@ -62,7 +62,6 @@ namespace WordsLive.Editor
 
 		private void Init()
 		{
-			AwesomiumManager.Register(Web);
 			Web.Crashed += OnWebViewCrashed;
 			Web.ProcessInput = Awesomium.Core.ViewInput.None;
 
@@ -84,7 +83,7 @@ namespace WordsLive.Editor
 
 		void OnWebViewCrashed(object sender, EventArgs e)
 		{
-			AwesomiumManager.Close(Web);
+			Web.Dispose();
 			var newWeb = new WebControl()
 			{
 				Width = 800,
@@ -275,7 +274,7 @@ namespace WordsLive.Editor
 
 		internal void Cleanup()
 		{
-			AwesomiumManager.Close(Web);
+			Web.Dispose();
 		}
 	}
 }

@@ -47,7 +47,6 @@ namespace WordsLive
 			if (!manualUpdate)
 			{
 				webControl = new WebControl();
-				AwesomiumManager.Register(webControl);
 				ForegroundGrid.Children.Add(webControl);
 			}
 			else
@@ -55,7 +54,6 @@ namespace WordsLive
 				int w = area.WindowSize.Width;
 				int h = area.WindowSize.Height;
 				webView = WebCore.CreateWebView(w, h);
-				AwesomiumManager.Register(webView);
 				webView.Surface = new ImageSurface(null);
 				wb1 = new WriteableBitmap(w, h, 96, 96, PixelFormats.Pbgra32, null);
 				wb2 = new WriteableBitmap(w, h, 96, 96, PixelFormats.Pbgra32, null);
