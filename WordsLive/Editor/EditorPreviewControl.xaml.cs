@@ -36,7 +36,7 @@ namespace WordsLive.Editor
 				(args.NewValue as Song).Sources[0].PropertyChanged += control.SongSource_PropertyChanged;
 			}
 
-			if (args.NewValue != null && control.Web.IsProcessCreated)
+			if (args.NewValue != null && control.web.IsProcessCreated)
 			{
 				control.Load();
 			}
@@ -51,7 +51,7 @@ namespace WordsLive.Editor
 
 		public event EventHandler FinishedLoading;
 
-		private global::Awesomium.Windows.Controls.WebControl Web;
+		private global::Awesomium.Windows.Controls.WebControl web;
 
 		public EditorPreviewControl()
 		{
@@ -65,20 +65,20 @@ namespace WordsLive.Editor
 
 		private void Init()
 		{
-			Web = new WebControl()
+			web = new WebControl()
 			{
 				Width = 800,
 				Height = 600,
 			};
 
-			webControlContainer.Child = Web;
+			webControlContainer.Child = web;
 			
-			Web.Crashed += OnWebViewCrashed;
-			Web.ProcessInput = ViewInput.None;
+			web.Crashed += OnWebViewCrashed;
+			web.ProcessInput = ViewInput.None;
 
-			Web.ProcessCreated += OnWebProcessCreated;
+			web.ProcessCreated += OnWebProcessCreated;
 
-			if (Song != null && Web.IsProcessCreated) // if this is not the first Init(), probably a song has already be loaded and must be reloaded
+			if (Song != null && web.IsProcessCreated) // if this is not the first Init(), probably a song has already be loaded and must be reloaded
 			{
 				Load();
 			}
@@ -94,7 +94,7 @@ namespace WordsLive.Editor
 
 		void OnWebViewCrashed(object sender, EventArgs e)
 		{
-			Web.Dispose();
+			web.Dispose();
 			Init();
 		}
 
@@ -147,7 +147,7 @@ namespace WordsLive.Editor
 
 		private void Load()
 		{
-			controller = new SongDisplayController(Web, SongDisplayController.FeatureLevel.Backgrounds);
+			controller = new SongDisplayController(web, SongDisplayController.FeatureLevel.Backgrounds);
 			controller.ShowChords = showChords;
 			controller.SongLoaded += controller_SongLoaded;
 			controller.Load(Song);
@@ -277,7 +277,7 @@ namespace WordsLive.Editor
 
 		internal void Cleanup()
 		{
-			Web.Dispose();
+			web.Dispose();
 		}
 	}
 }

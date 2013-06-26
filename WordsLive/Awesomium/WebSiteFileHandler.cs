@@ -16,23 +16,38 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+using System;
+using System.Collections.Generic;
+using WordsLive.Core;
+
 namespace WordsLive.Awesomium
 {
-	//public class WebSiteFileHandler : MediaFileHandler
-	//{
-	//    public override IEnumerable<string> Extensions
-	//    {
-	//        get { return new string[] { ".website", ".url" }; }
-	//    }
+	public class WebSiteFileHandler : MediaTypeHandler
+	{
+		public override IEnumerable<string> Extensions
+		{
+			get { return new string[] { ".website", ".url" }; }
+		}
 
-	//    public override string Description
-	//    {
-	//        get { return "Webseiten"; }
-	//    }
+		public override string Description
+		{
+			get { return "Webseiten"; }
+		}
 
-	//    public override Media TryHandle(FileInfo file)
-	//    {
-	//        return new WebSite(file.FullName);
-	//    }
-	//}
+		public override int Test(Uri uri)
+		{
+			//if (CheckExtension(uri))
+			//	return 100;
+
+			//if (uri.Scheme == "http" || uri.Scheme == "https")
+			//	return 50;
+
+			return -1;
+		}
+
+		public override Media Handle(Uri uri, Dictionary<string, string> options)
+		{
+			return new WebSite(uri);
+		}
+	}
 }
