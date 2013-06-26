@@ -155,8 +155,13 @@
 			<CheckBox ToolTip="{x:Static resx:Resource.eToolbarShowChords}" IsChecked="{Binding ShowChords}">
 				<Image Width="32" Height="32" Source="/WordsLive;component/Artwork/ShowChords.png" />
 			</CheckBox>
-			<xctk:IntegerUpDown ToolTip="{x:Static resx:Resource.eToolbarFontSize}" Value="{Binding ElementName=Tabs, Path=SelectedItem.Grid.SelectedElement.Size, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding FontSizeEnabled}" FontSize="18" Width="50" Minimum="1" Maximum="99"/>
-			<CheckBox ToolTip="{x:Static resx:Resource.eToolbarSingleFontSize}" IsEnabled="{Binding FontSizeEnabled}" IsChecked="{Binding ElementName=Tabs, Path=SelectedItem.Grid.SingleFontSize}">
+			<xctk:IntegerUpDown
+				Value="{Binding ElementName=Tabs, Path=SelectedItem.Grid.SelectedElement.Size, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+				Minimum="1" Maximum="99"
+				ToolTip="{x:Static resx:Resource.eToolbarFontSize}"
+				IsEnabled="{Binding FontSizeEnabled}"
+				FontSize="18" Width="50"/>
+			<CheckBox ToolTip="{x:Static resx:Resource.eToolbarSingleFontSize}" IsEnabled="{Binding FontSizeEnabled}" IsChecked="{Binding ElementName=Tabs, Path=SelectedItem.Grid.SingleFontSize}" Style="{StaticResource markDisabledCheckBox}">
 				<Image Width="16" Height="32" Source="/WordsLive;component/Artwork/LockChains.png" />
 			</CheckBox>
 		</ToolBar>
@@ -169,10 +174,9 @@
 						<Setter Property="ContextMenu">
 							<Setter.Value>
 								<ContextMenu>
-									<!-- TODO: localize -->
 									<!-- Binding Mode=OneTime is important here to prevent a memory leak -->
-									<MenuItem Header="Speichern" Command="Save" CommandParameter="{Binding Mode=OneTime}"/>
-									<MenuItem Header="Schließen" Command="Close" CommandParameter="{Binding Mode=OneTime}" />
+									<MenuItem Header="{x:Static resx:Resource.eMenuSaveSong}" Command="Save" CommandParameter="{Binding Mode=OneTime}"/>
+									<MenuItem Header="{x:Static resx:Resource.eMenuCloseSong}" Command="Close" CommandParameter="{Binding Mode=OneTime}" />
 								</ContextMenu>
 							</Setter.Value>
 						</Setter>
