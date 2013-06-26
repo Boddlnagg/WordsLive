@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Reflection;
 using WordsLive.Core;
 
@@ -36,10 +37,15 @@ namespace WordsLive.Slideshow.Impress
 		{
 			try
 			{
-				var asm = Assembly.LoadFrom("WordsLive.Slideshow.Impress.Bridge.dll");
+				string startupDir = new FileInfo(Assembly.GetExecutingAssembly().Location).Directory.FullName;
+				var asm = Assembly.LoadFrom(Path.Combine(startupDir, "WordsLive.Slideshow.Impress.Bridge.dll"));
 				PresentationType = asm.GetType("WordsLive.Slideshow.Impress.Bridge.ImpressPresentation");
 				if (PresentationType != null)
 					isAvailable = true;
+			}
+			catch (FileNotFoundException)
+			{
+				throw new DllNotFoundException("WordsLive.Slideshow.Impress.Bridge.dll");
 			}
 			catch (ReflectionTypeLoadException)
 			{
