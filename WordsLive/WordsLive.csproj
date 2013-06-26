@@ -113,6 +113,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Awesomium\BackgroundDataSource.cs" />
+    <Compile Include="Awesomium\ResourceDataSource.cs" />
     <Compile Include="ControlPanelLoadState.cs" />
     <Compile Include="Editor\BackgroundFileConverter.cs" />
     <Compile Include="Editor\EditControlHeaderConverter.cs" />
@@ -242,8 +244,8 @@
     <Compile Include="AudioVideo\WpfWrapper.xaml.cs">
       <DependentUpon>WpfWrapper.xaml</DependentUpon>
     </Compile>
-    <Compile Include="AwesomiumManager.cs" />
-    <Compile Include="AwesomiumPresentation.cs" />
+    <Compile Include="Awesomium\AwesomiumManager.cs" />
+    <Compile Include="Awesomium\AwesomiumPresentation.cs" />
     <Compile Include="Editor\ChooseFontControl.xaml.cs">
       <DependentUpon>ChooseFontControl.xaml</DependentUpon>
     </Compile>
@@ -253,7 +255,7 @@
     <Compile Include="Editor\SongSettingsWindow.xaml.cs">
       <DependentUpon>SongSettingsWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="AwesomiumWrapper.xaml.cs">
+    <Compile Include="Awesomium\AwesomiumWrapper.xaml.cs">
       <DependentUpon>AwesomiumWrapper.xaml</DependentUpon>
     </Compile>
     <Compile Include="Utils\ActivatableListBox\Activator.cs" />
@@ -300,7 +302,7 @@
     </Compile>
     <Compile Include="Songs\SongHandler.cs" />
     <Compile Include="Utils\StringSplitConverter.cs" />
-    <Compile Include="WebSiteFileHandler.cs" />
+    <Compile Include="Awesomium\WebSiteFileHandler.cs" />
     <Compile Include="UnhandledExceptionWindow.xaml.cs">
       <DependentUpon>UnhandledExceptionWindow.xaml</DependentUpon>
     </Compile>
@@ -351,7 +353,7 @@
     <Compile Include="Songs\SongSlideListBox.xaml.cs">
       <DependentUpon>SongSlideListBox.xaml</DependentUpon>
     </Compile>
-    <Compile Include="WebSiteControlPanel.xaml.cs">
+    <Compile Include="Awesomium\WebSiteControlPanel.xaml.cs">
       <DependentUpon>WebSiteControlPanel.xaml</DependentUpon>
     </Compile>
     <Content Include="Data\Standard.ppl">
@@ -410,7 +412,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="AwesomiumWrapper.xaml">
+    <Page Include="Awesomium\AwesomiumWrapper.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -461,7 +463,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="WebSiteControlPanel.xaml">
+    <Page Include="Awesomium\WebSiteControlPanel.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

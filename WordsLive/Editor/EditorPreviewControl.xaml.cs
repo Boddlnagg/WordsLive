@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
+using Awesomium.Core;
 using Awesomium.Windows.Controls;
 using WordsLive.Core.Songs;
 using WordsLive.Songs;
@@ -50,6 +51,8 @@ namespace WordsLive.Editor
 
 		public event EventHandler FinishedLoading;
 
+		private global::Awesomium.Windows.Controls.WebControl Web;
+
 		public EditorPreviewControl()
 		{
 			InitializeComponent();
@@ -62,8 +65,16 @@ namespace WordsLive.Editor
 
 		private void Init()
 		{
+			Web = new WebControl()
+			{
+				Width = 800,
+				Height = 600,
+			};
+
+			webControlContainer.Child = Web;
+			
 			Web.Crashed += OnWebViewCrashed;
-			Web.ProcessInput = Awesomium.Core.ViewInput.None;
+			Web.ProcessInput = ViewInput.None;
 
 			Web.ProcessCreated += OnWebProcessCreated;
 
@@ -73,7 +84,7 @@ namespace WordsLive.Editor
 			}
 		}
 
-		void OnWebProcessCreated(object sender, Awesomium.Core.WebViewEventArgs e)
+		void OnWebProcessCreated(object sender, WebViewEventArgs e)
 		{
 			if (Song != null)
 			{
@@ -84,14 +95,6 @@ namespace WordsLive.Editor
 		void OnWebViewCrashed(object sender, EventArgs e)
 		{
 			Web.Dispose();
-			var newWeb = new WebControl()
-			{
-				Width = 800,
-				Height = 600,
-			};
-
-			webControlContainer.Child = newWeb;
-			Web = newWeb;
 			Init();
 		}
 

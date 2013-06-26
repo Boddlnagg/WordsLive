@@ -5,8 +5,10 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
+using Awesomium.Core;
 using Awesomium.Windows.Controls;
 using WordsLive.AudioVideo;
+using WordsLive.Awesomium;
 using WordsLive.Core;
 using WordsLive.Core.Songs;
 
@@ -115,7 +117,7 @@ namespace WordsLive.Songs
 			currentSlideIndex = -1;
 		}
 
-		void Web_ProcessCreated(object sender, Awesomium.Core.WebViewEventArgs e)
+		void Web_ProcessCreated(object sender, WebViewEventArgs e)
 		{
 			controller = new SongDisplayController(Control.Web, SongDisplayController.FeatureLevel.None);
 
@@ -129,7 +131,7 @@ namespace WordsLive.Songs
 			controller.Load(this.song);
 		}
 
-		void web_Updated(object sender, Awesomium.Core.SurfaceUpdatedEventArgs e)
+		void web_Updated(object sender, SurfaceUpdatedEventArgs e)
 		{
 			UpdateSlide();
 		}
