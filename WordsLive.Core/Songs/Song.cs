@@ -297,8 +297,23 @@ namespace WordsLive.Core.Songs
 			}
 			set
 			{
-				Undo.ChangeFactory.OnChanging(this, "Formatting", formatting == null ? null : formatting.Clone(), value);
-				formatting = value;
+				using (Undo.ChangeFactory.Batch(this, "Formatting"))
+				{
+					Undo.ChangeFactory.OnChanging(this, "Formatting", formatting == null ? null : formatting.Clone(), value);
+					formatting = value;
+					var size = formatting.MainText.Size;
+					if (formatting.SingleFontSize && (!IsUndoEnabled || !UndoManager.IsUndoingOrRedoing))
+					{
+						foreach (var part in Parts)
+						{
+							foreach (var s in part.Slides)
+							{
+								s.Size = size;
+								formatting.MainText.Size = size;
+							}
+						}
+					}
+				}
 				OnPropertyChanged("Formatting");
 			}
 		}
@@ -1016,6 +1031,24 @@ namespace WordsLive.Core.Songs
 			{
 				Order.Add(r);
 			}
+		}
+
+		public bool CheckSingleFontSize()
+		{
+			if (FirstSlide == null)
+				return true; // use Formatting.MainText.Size
+
+			int size = FirstSlide.Size;
+			foreach (var part in Parts)
+			{
+				foreach (var s in part.Slides)
+				{
+					if (s.Size != size)
+						return false;
+				}
+			}
+			Formatting.MainText.Size = size;
+			return true;
 		}
 
 		#region Interface implementations

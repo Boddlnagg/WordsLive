@@ -138,9 +138,12 @@ namespace WordsLive.Core.Songs
 				{
 					Undo.ChangeFactory.OnChanging(this, "Size", size, value);
 					size = value;
-					var formatting = Root.Formatting;
-					formatting.MainText.Size = value;
-					Root.Formatting = formatting;
+					if (Root.Formatting.MainText.Size != size)
+					{
+						var formatting = Root.Formatting;
+						formatting.MainText.Size = value;
+						Root.Formatting = formatting;
+					}
 				}
 
 				OnPropertyChanged("Size");

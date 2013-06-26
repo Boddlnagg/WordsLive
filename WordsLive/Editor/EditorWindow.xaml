@@ -152,9 +152,12 @@
 					Height="32"
 					Source="/WordsLive;component/Artwork/ChooseBackground.png" />
 			</Button>
-			<xctk:IntegerUpDown Value="{Binding ElementName=Tabs, Path=SelectedItem.Grid.SelectedElement.Size, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding FontSizeEnabled}" FontSize="18" Width="50" Minimum="1" Maximum="99"/>
 			<CheckBox ToolTip="{x:Static resx:Resource.eToolbarShowChords}" IsChecked="{Binding ShowChords}">
 				<Image Width="32" Height="32" Source="/WordsLive;component/Artwork/ShowChords.png" />
+			</CheckBox>
+			<xctk:IntegerUpDown ToolTip="{x:Static resx:Resource.eToolbarFontSize}" Value="{Binding ElementName=Tabs, Path=SelectedItem.Grid.SelectedElement.Size, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding FontSizeEnabled}" FontSize="18" Width="50" Minimum="1" Maximum="99"/>
+			<CheckBox ToolTip="{x:Static resx:Resource.eToolbarSingleFontSize}" IsEnabled="{Binding FontSizeEnabled}" IsChecked="{Binding ElementName=Tabs, Path=SelectedItem.Grid.SingleFontSize}">
+				<Image Width="16" Height="32" Source="/WordsLive;component/Artwork/LockChains.png" />
 			</CheckBox>
 		</ToolBar>
 		<Grid Grid.Row="2" Grid.Column="0" AllowDrop="True" Drop="Tabs_Drop" DragEnter="Tabs_DragEnterOrOver" DragOver="Tabs_DragEnterOrOver" Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}">

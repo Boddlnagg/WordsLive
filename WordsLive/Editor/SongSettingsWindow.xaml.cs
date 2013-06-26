@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel;
 using System.Windows;
+using System.Windows.Media;
 using WordsLive.Core.Songs;
 using WordsLive.Utils;
-using System.Windows.Media;
 
 namespace WordsLive.Editor
 {
@@ -220,6 +220,18 @@ namespace WordsLive.Editor
 			set
 			{
 				formatting.MainText = value;
+			}
+		}
+
+		public bool SingleFontSize
+		{
+			get
+			{
+				return formatting.SingleFontSize;
+			}
+			set
+			{
+				formatting.SingleFontSize = value;
 			}
 		}
 

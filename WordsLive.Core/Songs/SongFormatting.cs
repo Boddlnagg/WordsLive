@@ -34,6 +34,11 @@ namespace WordsLive.Core.Songs
 		public SongTextFormatting MainText { get; set; }
 
 		/// <summary>
+		/// Gets or sets a value indicating whether the a single font size is used for all slides.
+		/// </summary>
+		public bool SingleFontSize { get; set; }
+
+		/// <summary>
 		/// Gets or sets the text formatting options for the translation.
 		/// </summary>
 		public SongTextFormatting TranslationText { get; set; }

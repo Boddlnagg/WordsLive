@@ -691,6 +691,24 @@ namespace WordsLive.Resources {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die You have checked the option to use the same font size for all slides, but currently there are multiple font sizes. If you continue, the current font size will be applied to all slides. Do you really want to use a single font size? ähnelt.
+        /// </summary>
+        public static string eMsgSingleFontSize {
+            get {
+                return ResourceManager.GetString("eMsgSingleFontSize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Multiple font sizes ähnelt.
+        /// </summary>
+        public static string eMsgSingleFontSizeTitle {
+            get {
+                return ResourceManager.GetString("eMsgSingleFontSizeTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die The selected background is a video background, but video backgrounds can only be used for the whole song. Shall this background be used for the whole song instead? ähnelt.
         /// </summary>
         public static string eMsgVideoBackgroundForElement {
@@ -727,20 +745,11 @@ namespace WordsLive.Resources {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Decrease font size ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die Font size ähnelt.
         /// </summary>
-        public static string eToolbarDecreaseFontSize {
+        public static string eToolbarFontSize {
             get {
-                return ResourceManager.GetString("eToolbarDecreaseFontSize", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Increase font size ähnelt.
-        /// </summary>
-        public static string eToolbarIncreaseFontSize {
-            get {
-                return ResourceManager.GetString("eToolbarIncreaseFontSize", resourceCulture);
+                return ResourceManager.GetString("eToolbarFontSize", resourceCulture);
             }
         }
         
@@ -759,6 +768,15 @@ namespace WordsLive.Resources {
         public static string eToolbarShowChords {
             get {
                 return ResourceManager.GetString("eToolbarShowChords", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Use font size for all slides ähnelt.
+        /// </summary>
+        public static string eToolbarSingleFontSize {
+            get {
+                return ResourceManager.GetString("eToolbarSingleFontSize", resourceCulture);
             }
         }
         

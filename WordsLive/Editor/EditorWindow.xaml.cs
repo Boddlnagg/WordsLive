@@ -390,6 +390,14 @@ namespace WordsLive.Editor
 				var win = new SongSettingsWindow(doc.Song.Formatting.Clone() as SongFormatting);
 				if (win.ShowDialog() == true)
 				{
+					if (win.Formatting.SingleFontSize && !doc.Song.CheckSingleFontSize())
+					{
+						var res = MessageBox.Show(Resource.eMsgSingleFontSize, Resource.eMsgSingleFontSizeTitle, MessageBoxButton.YesNo);
+						if (res == MessageBoxResult.No)
+						{
+							win.Formatting.SingleFontSize = false;
+						}
+					}
 					doc.Song.Formatting = win.Formatting;
 				}
 			}

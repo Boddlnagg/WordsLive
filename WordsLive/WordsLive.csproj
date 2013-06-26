@@ -354,6 +354,7 @@
     <Compile Include="Awesomium\WebSiteControlPanel.xaml.cs">
       <DependentUpon>WebSiteControlPanel.xaml</DependentUpon>
     </Compile>
+    <Resource Include="Artwork\LockChains.png" />
     <Content Include="Data\Standard.ppl">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

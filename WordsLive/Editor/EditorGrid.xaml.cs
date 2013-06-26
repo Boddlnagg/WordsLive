@@ -53,6 +53,38 @@ namespace WordsLive.Editor
 			}
 		}
 
+		public bool SingleFontSize
+		{
+			get
+			{
+				return song.Formatting.SingleFontSize;
+			}
+			set
+			{
+				if (song.Formatting.SingleFontSize != value)
+				{
+					if (value == true && !song.CheckSingleFontSize())
+					{
+						var res = MessageBox.Show(Resource.eMsgSingleFontSize, Resource.eMsgSingleFontSizeTitle, MessageBoxButton.YesNo);
+						if (res == MessageBoxResult.No)
+						{
+							return;
+						}
+					}
+
+					var formatting = (SongFormatting)song.Formatting.Clone();
+					var e = SelectedElement as ISongElementWithSize;
+					if (e != null)
+					{
+						formatting.MainText.Size = e.Size;
+					}
+					formatting.SingleFontSize = value;
+					song.Formatting = formatting;
+					OnPropertyChanged("SingleFontSize");
+				}
+			}
+		}
+
 		public EditorGrid(Song song, EditorWindow parent)
 		{
 			InitializeComponent();
@@ -66,6 +98,17 @@ namespace WordsLive.Editor
 
 			var tnp = (Nodes.TreeNodeProvider)FindResource("treeNodeProvider");
 			tnp.Song = song;
+
+			if (song.CheckSingleFontSize())
+			{
+				SingleFontSize = true;
+			}
+
+			song.PropertyChanged += (sender, args) =>
+			{
+				if (args.PropertyName == "Formatting")
+					OnPropertyChanged("SingleFontSize");
+			};
 
 			this.StructureTree.IsEnabled = false;
 			this.OrderListBox.IsEnabled = false;

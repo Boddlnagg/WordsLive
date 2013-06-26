@@ -106,14 +106,17 @@ namespace WordsLive.Editor
 
 		void Song_PropertyChanged(object sender, PropertyChangedEventArgs e)
 		{
-			if (e.PropertyName == "Formatting" || e.PropertyName == "HasChords" || e.PropertyName == "HasTranslation")
+			if (controller != null)
 			{
-				controller.UpdateFormatting(Song.Formatting, Song.HasTranslation, Song.HasChords);
-				Update(); // TODO: needed? (maybe for font size changes)
-			}
+				if (e.PropertyName == "Formatting" || e.PropertyName == "HasChords" || e.PropertyName == "HasTranslation")
+				{
+					controller.UpdateFormatting(Song.Formatting, Song.HasTranslation, Song.HasChords);
+					Update(); // TODO: needed? (maybe for font size changes)
+				}
 
-			if (e.PropertyName == "Copyright")
-				controller.SetCopyright(Song.Copyright);
+				if (e.PropertyName == "Copyright")
+					controller.SetCopyright(Song.Copyright);
+			}
 		}
 
 		void SongSource_PropertyChanged(object sender, PropertyChangedEventArgs e)
