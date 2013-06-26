@@ -60,6 +60,7 @@ namespace WordsLive.Editor
 			tnp.Song = song;
 
 			this.StructureTree.IsEnabled = false;
+			this.OrderListBox.IsEnabled = false;
 
 			this.PreviewControl.FinishedLoading += (sender, args) => InitSelection();
 		}
@@ -67,6 +68,7 @@ namespace WordsLive.Editor
 		private void InitSelection()
 		{
 			this.StructureTree.IsEnabled = true;
+			this.OrderListBox.IsEnabled = true;
 
 			if (this.StructureTree.IsLoaded)
 			{

@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
+using Awesomium.Core;
 using Awesomium.Windows.Controls;
 using WordsLive.Core.Songs;
 using WordsLive.Songs;
@@ -35,8 +36,10 @@ namespace WordsLive.Editor
 				(args.NewValue as Song).Sources[0].PropertyChanged += control.SongSource_PropertyChanged;
 			}
 
-			if (args.NewValue != null)
+			if (args.NewValue != null && control.web.IsProcessCreated)
+			{
 				control.Load();
+			}
 		}
 
 		void controller_SongLoaded(object sender, EventArgs e)
@@ -47,6 +50,8 @@ namespace WordsLive.Editor
 		SongDisplayController controller;
 
 		public event EventHandler FinishedLoading;
+
+		private global::Awesomium.Windows.Controls.WebControl web;
 
 		public EditorPreviewControl()
 		{
@@ -60,11 +65,28 @@ namespace WordsLive.Editor
 
 		private void Init()
 		{
-			AwesomiumManager.Register(Web);
-			Web.Crashed += OnWebViewCrashed;
-			Web.DeferInput();
+			web = new WebControl()
+			{
+				Width = 800,
+				Height = 600,
+			};
 
-			if (Song != null) // if this is not the first Init(), probably a song has already be loaded and must be reloaded
+			webControlContainer.Child = web;
+			
+			web.Crashed += OnWebViewCrashed;
+			web.ProcessInput = ViewInput.None;
+
+			web.ProcessCreated += OnWebProcessCreated;
+
+			if (Song != null && web.IsProcessCreated) // if this is not the first Init(), probably a song has already be loaded and must be reloaded
+			{
+				Load();
+			}
+		}
+
+		void OnWebProcessCreated(object sender, WebViewEventArgs e)
+		{
+			if (Song != null)
 			{
 				Load();
 			}
@@ -72,15 +94,7 @@ namespace WordsLive.Editor
 
 		void OnWebViewCrashed(object sender, EventArgs e)
 		{
-			AwesomiumManager.Close(Web);
-			var newWeb = new WebControl()
-			{
-				Width = 800,
-				Height = 600,
-			};
-
-			webControlContainer.Child = newWeb;
-			Web = newWeb;
+			web.Dispose();
 			Init();
 		}
 
@@ -119,19 +133,23 @@ namespace WordsLive.Editor
 		{
 			get
 			{
-				return controller.ShowChords;
+				return showChords;
 			}
 			set
 			{
-				controller.ShowChords = value;
+				showChords = value;
+				if (controller != null)
+					controller.ShowChords = showChords;
 			}
 		}
 
+		private bool showChords = true;
+
 		private void Load()
 		{
-			controller = new SongDisplayController(Web, SongDisplayController.FeatureLevel.Backgrounds);
-			controller.ShowChords = true;
-			controller.SongLoaded +=controller_SongLoaded;
+			controller = new SongDisplayController(web, SongDisplayController.FeatureLevel.Backgrounds);
+			controller.ShowChords = showChords;
+			controller.SongLoaded += controller_SongLoaded;
 			controller.Load(Song);
 		}
 
@@ -259,7 +277,7 @@ namespace WordsLive.Editor
 
 		internal void Cleanup()
 		{
-			AwesomiumManager.Close(Web);
+			web.Dispose();
 		}
 	}
 }

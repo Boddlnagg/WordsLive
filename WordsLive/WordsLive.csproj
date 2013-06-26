@@ -61,10 +61,10 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Awesomium.Core, Version=1.6.6.0, Culture=neutral, PublicKeyToken=e1a0d7c8071a5214, processorArchitecture=x86">
+    <Reference Include="Awesomium.Core, Version=1.7.1.0, Culture=neutral, PublicKeyToken=e1a0d7c8071a5214, processorArchitecture=x86">
       <Private>True</Private>
     </Reference>
-    <Reference Include="Awesomium.Windows.Controls, Version=1.6.6.0, Culture=neutral, PublicKeyToken=7a34e179b8b61c39, processorArchitecture=x86">
+    <Reference Include="Awesomium.Windows.Controls, Version=1.7.1.0, Culture=neutral, PublicKeyToken=7a34e179b8b61c39, processorArchitecture=x86">
       <Private>True</Private>
     </Reference>
     <Reference Include="Ionic.Zip, Version=1.9.1.8, Culture=neutral, PublicKeyToken=edbe51ad942a3f5c, processorArchitecture=MSIL">
@@ -72,7 +72,8 @@
       <HintPath>..\packages\DotNetZip.1.9.1.8\lib\net20\Ionic.Zip.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.4.5.11\lib\net40\Newtonsoft.Json.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Newtonsoft.Json.5.0.6\lib\net40\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="ReachFramework" />
     <Reference Include="System" />
@@ -112,6 +113,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Awesomium\BackgroundDataSource.cs" />
+    <Compile Include="Awesomium\ResourceDataSource.cs" />
     <Compile Include="ControlPanelLoadState.cs" />
     <Compile Include="Editor\BackgroundFileConverter.cs" />
     <Compile Include="Editor\EditControlHeaderConverter.cs" />
@@ -241,8 +244,8 @@
     <Compile Include="AudioVideo\WpfWrapper.xaml.cs">
       <DependentUpon>WpfWrapper.xaml</DependentUpon>
     </Compile>
-    <Compile Include="AwesomiumManager.cs" />
-    <Compile Include="AwesomiumPresentation.cs" />
+    <Compile Include="Awesomium\AwesomiumManager.cs" />
+    <Compile Include="Awesomium\AwesomiumPresentation.cs" />
     <Compile Include="Editor\ChooseFontControl.xaml.cs">
       <DependentUpon>ChooseFontControl.xaml</DependentUpon>
     </Compile>
@@ -252,7 +255,7 @@
     <Compile Include="Editor\SongSettingsWindow.xaml.cs">
       <DependentUpon>SongSettingsWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="AwesomiumWrapper.xaml.cs">
+    <Compile Include="Awesomium\AwesomiumWrapper.xaml.cs">
       <DependentUpon>AwesomiumWrapper.xaml</DependentUpon>
     </Compile>
     <Compile Include="Utils\ActivatableListBox\Activator.cs" />
@@ -299,7 +302,7 @@
     </Compile>
     <Compile Include="Songs\SongHandler.cs" />
     <Compile Include="Utils\StringSplitConverter.cs" />
-    <Compile Include="WebSiteFileHandler.cs" />
+    <Compile Include="Awesomium\WebSiteFileHandler.cs" />
     <Compile Include="UnhandledExceptionWindow.xaml.cs">
       <DependentUpon>UnhandledExceptionWindow.xaml</DependentUpon>
     </Compile>
@@ -350,7 +353,7 @@
     <Compile Include="Songs\SongSlideListBox.xaml.cs">
       <DependentUpon>SongSlideListBox.xaml</DependentUpon>
     </Compile>
-    <Compile Include="WebSiteControlPanel.xaml.cs">
+    <Compile Include="Awesomium\WebSiteControlPanel.xaml.cs">
       <DependentUpon>WebSiteControlPanel.xaml</DependentUpon>
     </Compile>
     <Content Include="Data\Standard.ppl">
@@ -409,7 +412,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="AwesomiumWrapper.xaml">
+    <Page Include="Awesomium\AwesomiumWrapper.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -460,7 +463,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="WebSiteControlPanel.xaml">
+    <Page Include="Awesomium\WebSiteControlPanel.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -509,7 +512,7 @@
 	<Target Name="BeforeBuild">
 	</Target>-->
   <Target Name="AfterBuild">
-    <Move SourceFiles="$(TargetDir)AwesomiumProcess" DestinationFiles="$(TargetDir)WordsLive.Awesomium.exe" />
+    <Move SourceFiles="$(TargetDir)awesomium_process" DestinationFiles="$(TargetDir)WordsLive.Awesomium.exe" />
   </Target>
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
 </Project>

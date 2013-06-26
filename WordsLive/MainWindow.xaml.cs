@@ -8,6 +8,7 @@ using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using WordsLive.Awesomium;
 using WordsLive.Core;
 using WordsLive.Core.Songs;
 using WordsLive.Core.Songs.Storage;

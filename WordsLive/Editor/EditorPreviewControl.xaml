@@ -6,7 +6,5 @@
              xmlns:awe="http://schemas.awesomium.com/winfx"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-    <Viewbox Stretch="Uniform" x:Name="webControlContainer">
-        <awe:WebControl Width="800" Height="600" x:Name="Web"></awe:WebControl>
-    </Viewbox>
+    <Viewbox Stretch="Uniform" x:Name="webControlContainer"/>
 </UserControl>

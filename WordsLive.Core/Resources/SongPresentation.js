@@ -4,6 +4,7 @@ SongPresentation.FontFactor = 1.3;
 SongPresentation.MarginFactor = 1.3;
 SongPresentation.LineFactor = 1.28;
 SongPresentation.BrowserStroke = false;
+SongPresentation.BackgroundPrefix = "";
 
 SongPresentation.FeatureLevel = {
 	None: 0,
@@ -63,7 +64,7 @@ function SongPresentation(id, song, featureLevel) {
 		this.backgroundsEnabled = true;
 
 		if (this.song.VideoBackground !== null) {
-			this.container.prepend($('<video src="' + this.song.VideoBackground.Video + '" style="width: 100%; background-color: black;" autoplay="autoplay" muted="muted" loop="loop" >').addClass('song-background'));
+			this.container.prepend($('<video src="' + + SongPresentation.BackgroundPrefix + this.song.VideoBackground.Video + '" style="width: 100%; background-color: black;" autoplay="autoplay" muted="muted" loop="loop" >').addClass('song-background'));
 		}
 
 		this.container.find('.song-background').show();
@@ -223,7 +224,7 @@ SongPresentation.prototype.showSlide = function (slide) {
 		if (slide.Background.Color !== undefined) {
 			bgCss = { 'background-color': SongPresentation.makeCssColor(slide.Background.Color) };
 		} else if (slide.Background.Image !== undefined) {
-			bgCss = { 'background-color': 'black', 'background-image': 'url(\'' + slide.Background.Image + '\')' };
+			bgCss = { 'background-color': 'black', 'background-image': 'url(\'' + SongPresentation.BackgroundPrefix + slide.Background.Image + '\')' };
 		} else {
 			// if it's a video, do nothing
 		}
