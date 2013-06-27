@@ -37,6 +37,8 @@ namespace WordsLive.Core.Songs.IO
 			if (stream == null)
 				throw new ArgumentNullException("stream");
 
+			song.LoadTemplate();
+
 			var doc = XDocument.Load(stream);
 
 			song.Order.Clear();

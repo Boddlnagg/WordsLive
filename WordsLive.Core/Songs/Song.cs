@@ -482,7 +482,7 @@ namespace WordsLive.Core.Songs
 			}
 		}
 
-		private void LoadTemplate()
+		public void LoadTemplate()
 		{
 			using (Stream stream = SongUriResolver.Default.Get(new Uri(DataManager.SongTemplate.FullName)))
 			{
