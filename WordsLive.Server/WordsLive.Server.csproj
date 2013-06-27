@@ -46,6 +46,9 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\WordsLive\Properties\CommonVersionInfo.cs">
+      <Link>Properties\CommonVersionInfo.cs</Link>
+    </Compile>
     <Compile Include="TestServer.cs" />
     <Compile Include="Utils\DigestAuthentication.cs" />
     <Compile Include="Utils\Extensions.cs" />

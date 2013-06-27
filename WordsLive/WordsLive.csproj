@@ -115,6 +115,7 @@
     </ApplicationDefinition>
     <Compile Include="Awesomium\BackgroundDataSource.cs" />
     <Compile Include="Awesomium\ResourceDataSource.cs" />
+    <Compile Include="Properties\CommonVersionInfo.cs" />
     <Compile Include="ControlPanelLoadState.cs" />
     <Compile Include="Editor\BackgroundFileConverter.cs" />
     <Compile Include="Editor\EditControlHeaderConverter.cs" />
