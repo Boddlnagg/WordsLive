@@ -19,11 +19,11 @@
 		<!-- ARP Support Oder wie konfiguriert man Add/Remove Programs mit dem Windows Installer
 				Siehe auch http://msdn.microsoft.com/en-us/library/aa368032.aspx
 		-->
-		<!--<Property Id="ARPHELPLINK" Value="http://www.wordslive.org" />-->
+		<Property Id="ARPHELPLINK" Value="http://www.wordslive.org" />
 		<Property Id="ARPCONTACT" Value="WordsLive" />
 		<Property Id="ARPCOMMENTS" Value="Worship Projection Software" />
-		<!--<Property Id="ARPURLINFOABOUT" Value="http://www.wordslive.org" />-->
-		<Property Id="ARPPRODUCTICON" Value="Viewer.ico" />
+		<Property Id="ARPURLINFOABOUT" Value="http://www.wordslive.org" />
+		<Property Id="ARPPRODUCTICON" Value="Icon.ico" />
 
 		<Feature Id="ProductFeature" ConfigurableDirectory="APPLICATIONFOLDER" Level="1">
 			<ComponentGroupRef Id="MainAssemblies" />
@@ -69,7 +69,7 @@
 			<Directory Id="DesktopFolder" Name="Desktop" />
 		</Directory>
 
-		<Icon Id="Viewer.ico" SourceFile="$(var.WordsLive.ProjectDir)Artwork\Viewer.ico" />
+		<Icon Id="Icon.ico" SourceFile="$(var.WordsLive.ProjectDir)Artwork\Icon.ico" />
 
 		<DirectoryRef Id="APPLICATIONFOLDER">
 			<Merge Id="VCRedist" SourceFile="$(var.ProjectDir)Microsoft_VC100_CRT_x86.msm" DiskId="1" Language="0"/>
@@ -82,9 +82,9 @@
 				<File Id="MainApplicationExe" Source="$(var.WordsLive.TargetDir)WordsLive.exe" Name="WordsLive.exe" KeyPath="yes" />
 				<File Source="$(var.WordsLive.TargetDir)WordsLive.exe.config" Name="WordsLive.exe.config"/>
 				<Shortcut Id="StartmenuApplicationShortcut" Directory="StartMenuShortcutsFolder" Name="$(var.ProductName)"
-									WorkingDirectory='APPLICATIONFOLDER' Icon="Viewer.ico" IconIndex="0" Advertise="yes" />
+									WorkingDirectory='APPLICATIONFOLDER' Icon="Icon.ico" IconIndex="0" Advertise="yes" />
 				<Shortcut Id="DesktopApplicationShortcut" Directory="DesktopFolder" Name="$(var.ProductName)"
-					WorkingDirectory='APPLICATIONFOLDER' Icon="Viewer.ico" IconIndex="0" Advertise="yes" />
+					WorkingDirectory='APPLICATIONFOLDER' Icon="Icon.ico" IconIndex="0" Advertise="yes" />
 			</Component>
 			<Component Id="CoreDllComponent">
 				<File Source="$(var.WordsLive.TargetDir)WordsLive.Core.dll" Name="WordsLive.Core.dll" KeyPath="yes" />
