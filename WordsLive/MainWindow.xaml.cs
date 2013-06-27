@@ -102,6 +102,7 @@ namespace WordsLive
 			this.orderList.ListChanged += (sender, args) => { portfolioChanged = true; };
 			this.orderList.NotifyTryOpenFileNotFoundMedia += (sender, args) =>
 			{
+				// TODO: localize
 				MessageBox.Show("Die Datei " + args.Media.Uri + " existiert nicht.");
 			};
 			this.orderList.NotifyTryOpenUnsupportedMedia += (sender, args) =>
@@ -551,22 +552,32 @@ namespace WordsLive
 
 		public void ShowSettingsWindow()
 		{
-			var win = new SettingsWindow();
-			if (this.IsLoaded)
-				win.Owner = this;
-			MasterOverrideOptions oldOptions = MasterOverrideOptions.CreateFromSettings();
-			win.ShowDialog();
-
-			if (win.DialogResult.HasValue && win.DialogResult.Value)
+			while (true)
 			{
-				if (ActiveMedia is SongMedia && !oldOptions.Equals(MasterOverrideOptions.CreateFromSettings()))
+				var win = new SettingsWindow();
+				if (this.IsLoaded)
+					win.Owner = this;
+				MasterOverrideOptions oldOptions = MasterOverrideOptions.CreateFromSettings();
+				win.ShowDialog();
+
+				if (win.DialogResult.HasValue && win.DialogResult.Value)
 				{
-					ReloadActiveMedia();
+					if (ActiveMedia is SongMedia && !oldOptions.Equals(MasterOverrideOptions.CreateFromSettings()))
+					{
+						ReloadActiveMedia();
+					}
+
+					DataManager.SongTemplate = new FileInfo(Properties.Settings.Default.SongTemplateFile);
+
+					if (Controller.TryUpdateServerSettings())
+					{
+						break;
+					}
+					else
+					{
+						MessageBox.Show(Resource.seMsgInitServerError);
+					}
 				}
-
-				DataManager.SongTemplate = new FileInfo(Properties.Settings.Default.SongTemplateFile);
-
-				Controller.UpdateServerSettings();
 			}
 		}
 

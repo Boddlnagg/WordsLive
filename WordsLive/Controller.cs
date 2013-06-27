@@ -50,9 +50,6 @@ namespace WordsLive
 			string startupDir = new FileInfo(Assembly.GetExecutingAssembly().Location).Directory.FullName;
 			LoadTypes(Assembly.LoadFrom(Path.Combine(startupDir, "WordsLive.Slideshow.dll"))); // TODO (Words): automatically load plugins
 
-			Server = new TestServer(80);
-			UpdateServerSettings();
-
 			InitSettings();
 
 			WordsLive.Utils.ImageLoader.Manager.Instance.LoadingImage = new System.Windows.Media.Imaging.BitmapImage(new Uri("/WordsLive;component/Artwork/LoadingAnimation.png", UriKind.Relative));
@@ -132,6 +129,12 @@ namespace WordsLive
 				Properties.Settings.Default.BackgroundsDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), "Powerpraise-Dateien", "Backgrounds");
 			}
 
+			if (!TryUpdateServerSettings())
+			{
+				MessageBox.Show(Resource.seMsgInitServerError);
+				window.ShowSettingsWindow();
+			}
+
 			while (!TryInitDataManager())
 			{
 				// TODO: this message box is not shown correctly (the first time, when the window is not yet loaded)
@@ -159,15 +162,20 @@ namespace WordsLive
 				return DataManager.TryInitUsingLocal(Properties.Settings.Default.SongsDirectory, Properties.Settings.Default.BackgroundsDirectory);
 		}
 
-		internal static void UpdateServerSettings()
+		internal static bool TryUpdateServerSettings()
 		{
+			if (Server == null)
+			{
+				Server = new TestServer(Properties.Settings.Default.EmbeddedServerPort);
+			}
+
 			if (Properties.Settings.Default.EmbeddedServerEnable)
 			{
 				var port = Properties.Settings.Default.EmbeddedServerPort;
 				var pwd = Properties.Settings.Default.EmbeddedServerPassword;
 				var enableUI = Properties.Settings.Default.EmbeddedServerEnableUI;
 
-				var settingsChanged = Server.Port != port || Server.Password != pwd;
+				var settingsChanged = Server.Port != port || Server.Password != pwd || !Server.IsRunning;
 
 				// TODO: do we need a restart for change of password?
 
@@ -182,9 +190,14 @@ namespace WordsLive
 					Server.Port = port;
 					Server.Password = pwd;
 
-					// TODO: catch exceptions and show meaningful error
-					//		 (esp. when port is already used -> show configuration window)
-					Server.Start();
+					try
+					{
+						Server.Start();
+					}
+					catch
+					{
+						return false;
+					}
 				}
 
 				if (Properties.Settings.Default.EmbeddedServerRedirectAll)
@@ -200,6 +213,8 @@ namespace WordsLive
 			{
 				Server.Stop();
 			}
+
+			return true;
 		}
 
 		#endregion

@@ -1204,6 +1204,15 @@ namespace WordsLive.Resources {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die The server could not be started. Make sure that the port is not used by any other application. ähnelt.
+        /// </summary>
+        public static string seMsgInitServerError {
+            get {
+                return ResourceManager.GetString("seMsgInitServerError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Local directories ähnelt.
         /// </summary>
         public static string seRadioLocal {

@@ -756,4 +756,7 @@
   <data name="eMsgSingleFontSizeTitle" xml:space="preserve">
     <value>Multiple font sizes</value>
   </data>
+  <data name="seMsgInitServerError" xml:space="preserve">
+    <value>The server could not be started. Make sure that the port is not used by any other application.</value>
+  </data>
 </root>
