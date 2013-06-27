@@ -88,7 +88,7 @@
 &lt;/ArrayOfString&gt;</Value>
     </Setting>
     <Setting Name="SongTemplateFile" Type="System.String" Scope="User">
-      <Value Profile="(Default)">Standard.ppl</Value>
+      <Value Profile="(Default)" />
     </Setting>
     <Setting Name="SongSlideTransition" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">350</Value>
@@ -176,6 +176,9 @@
     </Setting>
     <Setting Name="UseVlc" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="ApplicationVersion" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
     </Setting>
   </Settings>
 </SettingsFile>

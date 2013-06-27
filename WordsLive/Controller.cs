@@ -50,6 +50,8 @@ namespace WordsLive
 			string startupDir = new FileInfo(Assembly.GetExecutingAssembly().Location).Directory.FullName;
 			LoadTypes(Assembly.LoadFrom(Path.Combine(startupDir, "WordsLive.Slideshow.dll"))); // TODO (Words): automatically load plugins
 
+			UpgradeSettings();
+
 			InitSettings();
 
 			WordsLive.Utils.ImageLoader.Manager.Instance.LoadingImage = new System.Windows.Media.Imaging.BitmapImage(new Uri("/WordsLive;component/Artwork/LoadingAnimation.png", UriKind.Relative));
@@ -117,8 +119,24 @@ namespace WordsLive
 										 select type);
 		}
 
+		private void UpgradeSettings()
+		{
+			var a = Assembly.GetExecutingAssembly();
+			Version appVersion = a.GetName().Version;
+			string appVersionString = appVersion.ToString();
+
+			if (Properties.Settings.Default.ApplicationVersion != appVersion.ToString())
+			{
+				Properties.Settings.Default.Upgrade();
+				Properties.Settings.Default.ApplicationVersion = appVersionString;
+				Properties.Settings.Default.Save();
+			}
+		}
+
 		private void InitSettings()
 		{
+			var appDir = new FileInfo(Assembly.GetExecutingAssembly().Location).Directory;
+
 			if (string.IsNullOrEmpty(Properties.Settings.Default.SongsDirectory))
 			{
 				Properties.Settings.Default.SongsDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), "Powerpraise-Dateien", "Songs"); // TODO: localize?!
@@ -127,6 +145,11 @@ namespace WordsLive
 			if (string.IsNullOrEmpty(Properties.Settings.Default.BackgroundsDirectory))
 			{
 				Properties.Settings.Default.BackgroundsDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), "Powerpraise-Dateien", "Backgrounds");
+			}
+
+			if (string.IsNullOrEmpty(Properties.Settings.Default.SongTemplateFile))
+			{
+				Properties.Settings.Default.SongTemplateFile = Path.Combine(appDir.FullName, "Data", "Standard.ppl");
 			}
 
 			if (!TryUpdateServerSettings())
@@ -146,10 +169,6 @@ namespace WordsLive
 
 		private bool TryInitDataManager()
 		{
-			//init song template file
-			if (String.IsNullOrEmpty(Properties.Settings.Default.SongTemplateFile))
-				Properties.Settings.Default.SongTemplateFile = Path.Combine("Data", "Standard.ppl");
-
 			var fi = new FileInfo(Properties.Settings.Default.SongTemplateFile);
 			if (!fi.Exists)
 				return false;
