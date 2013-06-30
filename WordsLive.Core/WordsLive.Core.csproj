@@ -71,6 +71,7 @@
     <Compile Include="..\WordsLive\Properties\CommonVersionInfo.cs">
       <Link>Properties\CommonVersionInfo.cs</Link>
     </Compile>
+    <Compile Include="Songs\IO\SongFormatException.cs" />
     <Compile Include="Songs\ISongElementWithSize.cs" />
     <Compile Include="Songs\SongMedia.cs" />
     <Compile Include="Songs\Storage\SongUriResolver.cs" />

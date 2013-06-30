@@ -502,7 +502,7 @@
     <value>Die letzte Folie eines Liedteils kann nicht verschoben oder entfernt werden.</value>
   </data>
   <data name="eMsgCouldNotOpenSong" xml:space="preserve">
-    <value>Die Datei "{0}" konnte nicht geladen werden.</value>
+    <value>Die Datei "{0}" konnte nicht geladen werden. (Fehler: {1})</value>
   </data>
   <data name="eMenuAddToPortfolio" xml:space="preserve">
     <value>Lied zum aktuellen Portfolio hinzufügen</value>

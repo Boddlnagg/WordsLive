@@ -104,10 +104,10 @@ namespace WordsLive.Editor
 					throw new NotSupportedException("Song format is not supported.");
 				}
 			}
-			catch
+			catch(Exception e)
 			{
 				Controller.ShowEditorWindow();
-				MessageBox.Show(String.Format(Resource.eMsgCouldNotOpenSong, uri.FormatLocal()), Resource.dialogError, MessageBoxButton.OK, MessageBoxImage.Error);
+				MessageBox.Show(String.Format(Resource.eMsgCouldNotOpenSong, uri.FormatLocal(), e.Message), Resource.dialogError, MessageBoxButton.OK, MessageBoxImage.Error);
 			}
 
 			if (song != null)

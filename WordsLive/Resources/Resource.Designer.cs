@@ -637,7 +637,7 @@ namespace WordsLive.Resources {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Can not open the song &quot;{0}&quot;. ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die Can not open the song &quot;{0}&quot;. (Error: {1}) ähnelt.
         /// </summary>
         public static string eMsgCouldNotOpenSong {
             get {
