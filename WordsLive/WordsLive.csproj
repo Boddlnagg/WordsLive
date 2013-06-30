@@ -356,6 +356,10 @@
       <DependentUpon>WebSiteControlPanel.xaml</DependentUpon>
     </Compile>
     <Resource Include="Artwork\LockChains.png" />
+    <None Include="..\3rdParty\pptviewlib.dll">
+      <Link>pptviewlib.dll</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <Content Include="Data\Standard.ppl">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -493,7 +497,6 @@
     <Resource Include="Artwork\EditCurrent.png" />
     <Resource Include="Artwork\ViewCurrent.png" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <EmbeddedResource Include="Resources\Resource.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

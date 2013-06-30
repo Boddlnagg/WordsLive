@@ -5,7 +5,7 @@
 	<?define UpgradeCode="178f61e3-6be1-4081-9383-af3d34b29d08"?>
 	
 	<Product Id="*" Name="$(var.ProductName)" Language="!(loc.LANG)" Version="!(bind.FileVersion.MainApplicationExe)" Manufacturer="$(var.Manufacturer)" UpgradeCode="$(var.UpgradeCode)">
-		<Package InstallerVersion="300" Compressed="yes" InstallScope="perMachine" />
+		<Package InstallerVersion="405" Compressed="yes" InstallScope="perMachine" />
 
 		<PropertyRef Id="NETFRAMEWORK40CLIENT"/>
 
@@ -72,7 +72,7 @@
 		<Icon Id="Icon.ico" SourceFile="$(var.WordsLive.ProjectDir)Artwork\Icon.ico" />
 
 		<DirectoryRef Id="APPLICATIONFOLDER">
-			<Merge Id="VCRedist" SourceFile="$(var.ProjectDir)Microsoft_VC100_CRT_x86.msm" DiskId="1" Language="0"/>
+			<Merge Id="VCRedist" SourceFile="$(var.ProjectDir)Microsoft_VC110_CRT_x86.msm" DiskId="1" Language="0"/>
 		</DirectoryRef>
 	</Product>
 

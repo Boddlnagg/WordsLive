@@ -41,7 +41,7 @@
     <EmbeddedResource Include="en-US.wxl" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Microsoft_VC100_CRT_x86.msm" />
+    <Content Include="Microsoft_VC110_CRT_x86.msm" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\WordsLive\WordsLive.csproj">
