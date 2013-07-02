@@ -4,8 +4,10 @@
 		xmlns:local="clr-namespace:WordsLive.Editor"
 		xmlns:songs="clr-namespace:WordsLive.Core.Songs;assembly=WordsLive.Core"
 		xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+		xmlns:resx="clr-namespace:WordsLive.Resources"
 		Title="Lied formatieren" Height="500" Width="352" MinHeight="500" MinWidth="350"
 		Icon="/WordsLive;component/Artwork/Formatting.png">
+	<!-- TODO: localize -->
 	<Grid>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="*"/>
@@ -121,6 +123,7 @@
 								<RowDefinition Height="Auto"/>
 								<RowDefinition Height="Auto"/>
 								<RowDefinition Height="Auto"/>
+								<RowDefinition Height="Auto"/>
 							</Grid.RowDefinitions>
 							<Grid.ColumnDefinitions>
 								<ColumnDefinition Width="Auto"/>
@@ -135,6 +138,7 @@
 							<Label Grid.Row="1" Grid.Column="2">Richtung:</Label>
 							<TextBox IsEnabled="{Binding ElementName=ShadowCheckbox, Path=IsChecked}" Grid.Row="1" Grid.Column="3" Text="{Binding ShadowDirection}"></TextBox>
 							<local:ChooseFontControl Grid.ColumnSpan="4" Grid.Row="2" Font="{Binding MainText}"/>
+							<CheckBox Grid.Row="3" Grid.ColumnSpan="4" Margin="0,6" Content="{x:Static resx:Resource.eToolbarSingleFontSize}" IsChecked="{Binding SingleFontSize}" />
 						</Grid>
 					</GroupBox>
 					<GroupBox Header="Übersetzung" Grid.Row="3" Grid.ColumnSpan="2">

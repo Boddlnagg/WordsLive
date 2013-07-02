@@ -468,11 +468,11 @@
   <data name="eToolbarChangeBackground" xml:space="preserve">
     <value>Change background for selected element</value>
   </data>
-  <data name="eToolbarDecreaseFontSize" xml:space="preserve">
-    <value>Decrease font size</value>
+  <data name="eToolbarFontSize" xml:space="preserve">
+    <value>Font size</value>
   </data>
-  <data name="eToolbarIncreaseFontSize" xml:space="preserve">
-    <value>Increase font size</value>
+  <data name="eToolbarSingleFontSize" xml:space="preserve">
+    <value>Use font size for all slides</value>
   </data>
   <data name="eToolbarSaveAndReload" xml:space="preserve">
     <value>Save song and reload active presentation</value>
@@ -508,7 +508,7 @@
     <value>The last slide in a part cannot be moved or deleted.</value>
   </data>
   <data name="eMsgCouldNotOpenSong" xml:space="preserve">
-    <value>Can not open the song "{0}".</value>
+    <value>Can not open the song "{0}". (Error: {1})</value>
   </data>
   <data name="eMenuAddToPortfolio" xml:space="preserve">
     <value>Add song to current portfolio</value>
@@ -749,5 +749,14 @@
   </data>
   <data name="eGridContextSwapTextAndTranslation" xml:space="preserve">
     <value>Swap text and translation</value>
+  </data>
+  <data name="eMsgSingleFontSize" xml:space="preserve">
+    <value>You have checked the option to use the same font size for all slides, but currently there are multiple font sizes. If you continue, the current font size will be applied to all slides. Do you really want to use a single font size?</value>
+  </data>
+  <data name="eMsgSingleFontSizeTitle" xml:space="preserve">
+    <value>Multiple font sizes</value>
+  </data>
+  <data name="seMsgInitServerError" xml:space="preserve">
+    <value>The server could not be started. Make sure that the port is not used by any other application.</value>
   </data>
 </root>

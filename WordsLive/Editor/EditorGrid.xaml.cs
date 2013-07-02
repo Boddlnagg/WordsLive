@@ -45,6 +45,46 @@ namespace WordsLive.Editor
 			}
 		}
 
+		public ISongElement SelectedElement
+		{
+			get
+			{
+				return StructureTree.SelectedItem as ISongElement;
+			}
+		}
+
+		public bool SingleFontSize
+		{
+			get
+			{
+				return song.Formatting.SingleFontSize;
+			}
+			set
+			{
+				if (song.Formatting.SingleFontSize != value)
+				{
+					if (value == true && !song.CheckSingleFontSize())
+					{
+						var res = MessageBox.Show(Resource.eMsgSingleFontSize, Resource.eMsgSingleFontSizeTitle, MessageBoxButton.YesNo);
+						if (res == MessageBoxResult.No)
+						{
+							return;
+						}
+					}
+
+					var formatting = (SongFormatting)song.Formatting.Clone();
+					var e = SelectedElement as ISongElementWithSize;
+					if (e != null)
+					{
+						formatting.MainText.Size = e.Size;
+					}
+					formatting.SingleFontSize = value;
+					song.Formatting = formatting;
+					OnPropertyChanged("SingleFontSize");
+				}
+			}
+		}
+
 		public EditorGrid(Song song, EditorWindow parent)
 		{
 			InitializeComponent();
@@ -59,7 +99,19 @@ namespace WordsLive.Editor
 			var tnp = (Nodes.TreeNodeProvider)FindResource("treeNodeProvider");
 			tnp.Song = song;
 
+			if (song.CheckSingleFontSize())
+			{
+				SingleFontSize = true;
+			}
+
+			song.PropertyChanged += (sender, args) =>
+			{
+				if (args.PropertyName == "Formatting")
+					OnPropertyChanged("SingleFontSize");
+			};
+
 			this.StructureTree.IsEnabled = false;
+			this.OrderListBox.IsEnabled = false;
 
 			this.PreviewControl.FinishedLoading += (sender, args) => InitSelection();
 		}
@@ -67,6 +119,7 @@ namespace WordsLive.Editor
 		private void InitSelection()
 		{
 			this.StructureTree.IsEnabled = true;
+			this.OrderListBox.IsEnabled = true;
 
 			if (this.StructureTree.IsLoaded)
 			{
@@ -440,6 +493,7 @@ namespace WordsLive.Editor
 				EnableSpellCheckCheckBox.IsEnabled = false;
 
 			OnPropertyChanged("SelectedPart");
+			OnPropertyChanged("SelectedElement");
 		}
 
 		private void OrderListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -700,46 +754,6 @@ namespace WordsLive.Editor
 
 				var newSlide = song.FindPartWithSlide(node as SongSlide).SplitSlide(node as SongSlide, tb.SelectionStart);
 			}
-			else if (e.Command == EditingCommands.IncreaseFontSize)
-			{
-				if (node is SongSlide)
-				{
-					SongSlide slide = node as SongSlide;
-					slide.Size++;
-				}
-				else if (node is Nodes.CopyrightNode)
-				{
-					var formatting = song.Formatting;
-					formatting.CopyrightText.Size++;
-					song.Formatting = formatting;
-				}
-				else if (node is Nodes.SourceNode)
-				{
-					var formatting = song.Formatting;
-					formatting.SourceText.Size++;
-					song.Formatting = formatting;
-				}
-			}
-			else if (e.Command == EditingCommands.DecreaseFontSize)
-			{
-				if (node is SongSlide)
-				{
-					SongSlide slide = node as SongSlide;
-					slide.Size--;
-				}
-				else if (node is Nodes.CopyrightNode)
-				{
-					var formatting = song.Formatting;
-					formatting.CopyrightText.Size--;
-					song.Formatting = formatting;
-				}
-				else if (node is Nodes.SourceNode)
-				{
-					var formatting = song.Formatting;
-					formatting.SourceText.Size--;
-					song.Formatting = formatting;
-				}
-			}
 			else if (e.Command == CustomCommands.ChooseBackground)
 			{
 				ChooseBackground(node);
@@ -848,10 +862,6 @@ namespace WordsLive.Editor
 			else if (e.Command == ApplicationCommands.Redo)
 			{
 				e.CanExecute = song.UndoManager.CanRedo;
-			}
-			else if (e.Command == EditingCommands.IncreaseFontSize || e.Command == EditingCommands.DecreaseFontSize)
-			{
-				e.CanExecute = node is SongSlide || node is Nodes.CopyrightNode || node is Nodes.SourceNode;
 			}
 			else if (e.Command == CustomCommands.Split)
 			{

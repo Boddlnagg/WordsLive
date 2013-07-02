@@ -28,6 +28,8 @@ namespace WordsLive.Core.Songs.IO
 		{
 			using (StreamReader reader = new StreamReader(stream, System.Text.Encoding.Default, true))
 			{
+				song.LoadTemplate();
+
 				song.Order.Clear();
 				song.Parts.Clear();
 

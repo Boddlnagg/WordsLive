@@ -388,5 +388,68 @@ namespace WordsLive.Core.Tests.Songs
 			GC.Collect();
 			Assert.IsFalse(weak.IsAlive);
 		}
+
+		[Test]
+		public void CheckSingleFontSize()
+		{
+			Assert.IsTrue(song.CheckSingleFontSize());
+			Assert.AreEqual(30, song.Formatting.MainText.Size);
+			Assert.AreEqual(30, song.Parts[0].Slides[0].Size);
+		}
+
+		[Test]
+		public void SingleFontSize1()
+		{
+			var s1 = song.Parts[0].Slides[0];
+			var formatting = (SongFormatting)song.Formatting.Clone();
+			formatting.SingleFontSize = true;
+			song.Formatting = formatting; // applies the formatting -> changes every slide's size
+			var s2 = song.Parts[0].AddSlide();
+			ClearUndoRedoStack();
+			Assert.AreEqual(30, s1.Size);
+			Assert.AreEqual(30, s2.Size);
+			Assert.AreEqual(30, song.Formatting.MainText.Size);
+			s1.Size = 32;
+			Assert.AreEqual(32, s1.Size);
+			Assert.AreEqual(32, s2.Size);
+			Assert.AreEqual(32, song.Formatting.MainText.Size);
+			Assert.AreEqual(1, UndoStackSize);
+			Undo();
+			Assert.AreEqual(30, s1.Size);
+			Assert.AreEqual(30, s2.Size);
+			Redo();
+			Assert.AreEqual(32, s1.Size);
+			Assert.AreEqual(32, s2.Size);
+			Assert.AreEqual(32, song.Formatting.MainText.Size);
+			Assert.AreEqual(1, UndoStackSize);
+		}
+
+		[Test]
+		public void SingleFontSize2()
+		{
+			Assert.IsFalse(song.Formatting.SingleFontSize);
+			var s1 = song.Parts[0].Slides[0];
+			var s2 = song.Parts[0].AddSlide();
+			s2.Size = 32;
+			Assert.AreEqual(2, UndoStackSize);
+			Assert.IsFalse(song.CheckSingleFontSize());
+			ClearUndoRedoStack();
+			var formatting = (SongFormatting)song.Formatting.Clone();
+			formatting.SingleFontSize = true;
+			song.Formatting = formatting; // applies the formatting -> changes every slide's size
+			Assert.IsTrue(song.CheckSingleFontSize());
+			Assert.AreEqual(32, s1.Size);
+			Assert.AreEqual(32, s2.Size);
+			Assert.AreEqual(1, UndoStackSize);
+			Undo();
+			Assert.AreEqual(30, s1.Size);
+			Assert.AreEqual(32, s2.Size);
+			Assert.IsFalse(song.Formatting.SingleFontSize);
+			Redo();
+			Assert.AreEqual(32, s1.Size);
+			Assert.AreEqual(32, s2.Size);
+			Assert.IsTrue(song.Formatting.SingleFontSize);
+			Assert.AreEqual(1, UndoStackSize);
+		}
 	}
 }

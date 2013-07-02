@@ -17,8 +17,6 @@
  */
 
 using System;
-using System.Drawing;
-using System.IO;
 using Newtonsoft.Json;
 
 namespace WordsLive.Core.Songs.Json
@@ -37,26 +35,15 @@ namespace WordsLive.Core.Songs.Json
 			}
 			else
 			{
-
-				try
+				if (bg.Type == SongBackgroundType.Image)
 				{
-					var uri = DataManager.Backgrounds.GetFile(bg).Uri;
-					if (bg.Type == SongBackgroundType.Image)
-					{
-						writer.WritePropertyName("Image");
-						writer.WriteValue(uri);
-					}
-					else
-					{
-						writer.WritePropertyName("Video");
-						writer.WriteValue(uri);
-					}
+					writer.WritePropertyName("Image");
+					writer.WriteValue(bg.FilePath.Replace('\\', '/'));
 				}
-				catch (FileNotFoundException)
+				else
 				{
-					var conv = new JsonColorConverter();
-					writer.WritePropertyName("Color");
-					conv.WriteJson(writer, Color.Black, serializer);
+					writer.WritePropertyName("Video");
+					writer.WriteValue(bg.FilePath.Replace('\\', '/'));
 				}
 			}
 

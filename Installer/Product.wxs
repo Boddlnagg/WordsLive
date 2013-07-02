@@ -5,7 +5,7 @@
 	<?define UpgradeCode="178f61e3-6be1-4081-9383-af3d34b29d08"?>
 	
 	<Product Id="*" Name="$(var.ProductName)" Language="!(loc.LANG)" Version="!(bind.FileVersion.MainApplicationExe)" Manufacturer="$(var.Manufacturer)" UpgradeCode="$(var.UpgradeCode)">
-		<Package InstallerVersion="300" Compressed="yes" InstallScope="perMachine" />
+		<Package InstallerVersion="405" Compressed="yes" InstallScope="perMachine" />
 
 		<PropertyRef Id="NETFRAMEWORK40CLIENT"/>
 
@@ -23,7 +23,7 @@
 		<Property Id="ARPCONTACT" Value="WordsLive" />
 		<Property Id="ARPCOMMENTS" Value="Worship Projection Software" />
 		<Property Id="ARPURLINFOABOUT" Value="http://www.wordslive.org" />
-		<Property Id="ARPPRODUCTICON" Value="Viewer.ico" />
+		<Property Id="ARPPRODUCTICON" Value="Icon.ico" />
 
 		<Feature Id="ProductFeature" ConfigurableDirectory="APPLICATIONFOLDER" Level="1">
 			<ComponentGroupRef Id="MainAssemblies" />
@@ -69,10 +69,10 @@
 			<Directory Id="DesktopFolder" Name="Desktop" />
 		</Directory>
 
-		<Icon Id="Viewer.ico" SourceFile="$(var.WordsLive.ProjectDir)Artwork\Viewer.ico" />
+		<Icon Id="Icon.ico" SourceFile="$(var.WordsLive.ProjectDir)Artwork\Icon.ico" />
 
 		<DirectoryRef Id="APPLICATIONFOLDER">
-			<Merge Id="VCRedist" SourceFile="$(var.ProjectDir)Microsoft_VC100_CRT_x86.msm" DiskId="1" Language="0"/>
+			<Merge Id="VCRedist" SourceFile="$(var.ProjectDir)Microsoft_VC110_CRT_x86.msm" DiskId="1" Language="0"/>
 		</DirectoryRef>
 	</Product>
 
@@ -82,9 +82,9 @@
 				<File Id="MainApplicationExe" Source="$(var.WordsLive.TargetDir)WordsLive.exe" Name="WordsLive.exe" KeyPath="yes" />
 				<File Source="$(var.WordsLive.TargetDir)WordsLive.exe.config" Name="WordsLive.exe.config"/>
 				<Shortcut Id="StartmenuApplicationShortcut" Directory="StartMenuShortcutsFolder" Name="$(var.ProductName)"
-									WorkingDirectory='APPLICATIONFOLDER' Icon="Viewer.ico" IconIndex="0" Advertise="yes" />
+									WorkingDirectory='APPLICATIONFOLDER' Icon="Icon.ico" IconIndex="0" Advertise="yes" />
 				<Shortcut Id="DesktopApplicationShortcut" Directory="DesktopFolder" Name="$(var.ProductName)"
-					WorkingDirectory='APPLICATIONFOLDER' Icon="Viewer.ico" IconIndex="0" Advertise="yes" />
+					WorkingDirectory='APPLICATIONFOLDER' Icon="Icon.ico" IconIndex="0" Advertise="yes" />
 			</Component>
 			<Component Id="CoreDllComponent">
 				<File Source="$(var.WordsLive.TargetDir)WordsLive.Core.dll" Name="WordsLive.Core.dll" KeyPath="yes" />
@@ -146,7 +146,7 @@
 		</ComponentGroup>
 		<ComponentGroup Id="AwesomiumComponents" Directory="APPLICATIONFOLDER">
 			<Component Id="AwesomiumDllComponent">
-				<File Source="$(var.WordsLive.TargetDir)Awesomium.dll" Name="Awesomium.dll" KeyPath="yes" />
+				<File Source="$(var.WordsLive.TargetDir)awesomium.dll" Name="awesomium.dll" KeyPath="yes" />
 			</Component>
 			<Component Id="AwesomiumExeComponent">
 				<File Source="$(var.WordsLive.TargetDir)WordsLive.Awesomium.exe" Name="WordsLive.Awesomium.exe" KeyPath="yes" />
@@ -157,11 +157,26 @@
 			<Component Id="AwesomiumWindowsControlsDllComponent">
 				<File Source="$(var.WordsLive.TargetDir)Awesomium.Windows.Controls.dll" Name="Awesomium.Windows.Controls.dll" KeyPath="yes" />
 			</Component>
-			<Component Id="AwesomiumEnDllComponent">
-				<File Source="$(var.WordsLive.TargetDir)en-US.dll" Name="en-US.dll" KeyPath="yes" />
-			</Component>
 			<Component Id="AwesomiumIcuDllComponent">
-				<File Source="$(var.WordsLive.TargetDir)icudt42.dll" Name="icudt42.dll" KeyPath="yes" />
+				<File Source="$(var.WordsLive.TargetDir)icudt.dll" Name="icudt.dll" KeyPath="yes" />
+			</Component>
+			<Component Id="AwesomiumAvcodecDllComponent">
+				<File Source="$(var.WordsLive.TargetDir)avcodec-53.dll" Name="avcodec-53.dll" KeyPath="yes" />
+			</Component>
+			<Component Id="AwesomiumAvformatDllComponent">
+				<File Source="$(var.WordsLive.TargetDir)avformat-53.dll" Name="avformat-53.dll" KeyPath="yes" />
+			</Component>
+			<Component Id="AwesomiumAvutilDllComponent">
+				<File Source="$(var.WordsLive.TargetDir)avutil-51.dll" Name="avutil-51.dll" KeyPath="yes" />
+			</Component>
+			<Component Id="AwesomiumLibEGLDllComponent">
+				<File Source="$(var.WordsLive.TargetDir)libEGL.dll" Name="libEGL.dll" KeyPath="yes" />
+			</Component>
+			<Component Id="AwesomiumLibGLESDllComponent">
+				<File Source="$(var.WordsLive.TargetDir)libGLESv2.dll" Name="libGLESv2.dll" KeyPath="yes" />
+			</Component>
+			<Component Id="AwesomiumXInputDllComponent">
+				<File Source="$(var.WordsLive.TargetDir)xinput9_1_0.dll" Name="xinput9_1_0.dll" KeyPath="yes" />
 			</Component>
 		</ComponentGroup>
 		<ComponentGroup Id="DataComponents" Directory="DataFolder">

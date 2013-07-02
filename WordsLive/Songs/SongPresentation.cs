@@ -5,7 +5,10 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
+using Awesomium.Core;
+using Awesomium.Windows.Controls;
 using WordsLive.AudioVideo;
+using WordsLive.Awesomium;
 using WordsLive.Core;
 using WordsLive.Core.Songs;
 
@@ -40,15 +43,21 @@ namespace WordsLive.Songs
 			}
 		}
 
+		private bool showChords;
+
 		public bool ShowChords
 		{
 			get
 			{
-				return controller.ShowChords;
+				return showChords;
 			}
 			set
 			{
-				controller.ShowChords = value;
+				showChords = value;
+				if (controller != null)
+				{
+					controller.ShowChords = showChords;
+				}
 			}
 		}
 
@@ -102,34 +111,29 @@ namespace WordsLive.Songs
 				this.Control.ForegroundGrid.Children.Add(videoBackground);
 				this.Control.BackgroundGrid.Children.Add(videoBackgroundClone);
 			}
-			
 
-			this.IsTransparent = true;
+			this.Control.Web.IsTransparent = true;
+			this.Control.Web.ProcessCreated += Web_ProcessCreated;
+			currentSlideIndex = -1;
+		}
 
+		void Web_ProcessCreated(object sender, WebViewEventArgs e)
+		{
 			controller = new SongDisplayController(Control.Web, SongDisplayController.FeatureLevel.None);
 
-			controller.SongLoaded += (sender, args) =>
+			controller.SongLoaded += (s, args) =>
 			{
 				OnFinishedLoading();
 			};
 
-			Control.Web.IsDirtyChanged += new EventHandler(web_IsDirtyChanged);
-
-			currentSlideIndex = -1;
-
-			this.Control.Web.JSConsoleMessageAdded += (obj, target) =>
-			{
-			    System.Windows.MessageBox.Show("JS error in line "+target.LineNumber+": "+target.Message);
-			};
+			(Control.Web.Surface as ImageSurface).Updated += web_Updated;
 
 			controller.Load(this.song);
 		}
 
-		void web_IsDirtyChanged(object sender, EventArgs e)
+		void web_Updated(object sender, SurfaceUpdatedEventArgs e)
 		{
-			Control.RenderWebView();
-			if (!Control.Web.IsDirty)
-				UpdateSlide();
+			UpdateSlide();
 		}
 
 		public event EventHandler FinishedLoading;

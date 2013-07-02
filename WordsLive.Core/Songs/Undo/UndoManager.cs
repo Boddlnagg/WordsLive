@@ -60,6 +60,14 @@ namespace WordsLive.Core.Songs.Undo
 			}
 		}
 
+		public bool IsUndoingOrRedoing
+		{
+			get
+			{
+				return root.IsUndoingOrRedoing;
+			}
+		}
+
 		/// <summary>
 		/// Undo the latest change.
 		/// </summary>

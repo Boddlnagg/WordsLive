@@ -14,7 +14,7 @@ using WordsLive.Songs;
 
 namespace WordsLive.Editor
 {
-	public partial class EditorWindow : Window
+	public partial class EditorWindow : Window, INotifyPropertyChanged
 	{
 		ObservableCollection<EditorDocument> openDocuments = new ObservableCollection<EditorDocument>();
 
@@ -35,7 +35,21 @@ namespace WordsLive.Editor
 					{
 						doc.Grid.PreviewControl.ShowChords = showChords;
 					}
+					OnPropertyChanged("ShowChords");
 				}
+			}
+		}
+
+		public bool FontSizeEnabled
+		{
+			get
+			{
+				var doc = Tabs.SelectedItem as EditorDocument;
+				if (doc == null)
+					return false;
+
+				var element = doc.Grid.SelectedElement as ISongElementWithSize;
+				return element != null;
 			}
 		}
 
@@ -44,6 +58,8 @@ namespace WordsLive.Editor
 			InitializeComponent();
 			this.DataContext = this;
 			Tabs.DataContext = openDocuments;
+
+			Tabs.SelectionChanged += (sender, args) => OnPropertyChanged("FontSizeEnabled");
 		}
 
 		public EditorDocument CheckSongOpened(Song song)
@@ -63,10 +79,10 @@ namespace WordsLive.Editor
 
 			string ext = uri.GetExtension();
 
+			Song song = null;
+
 			try
 			{
-				Song song;
-
 				if (ext == ".ppl")
 				{
 					song = new Song(uri, new PowerpraiseSongReader());
@@ -87,13 +103,16 @@ namespace WordsLive.Editor
 				{
 					throw new NotSupportedException("Song format is not supported.");
 				}
-
-				Load(song);
 			}
-			catch
+			catch(Exception e)
 			{
 				Controller.ShowEditorWindow();
-				MessageBox.Show(String.Format(Resource.eMsgCouldNotOpenSong, uri.FormatLocal()), Resource.dialogError, MessageBoxButton.OK, MessageBoxImage.Error);
+				MessageBox.Show(String.Format(Resource.eMsgCouldNotOpenSong, uri.FormatLocal(), e.Message), Resource.dialogError, MessageBoxButton.OK, MessageBoxImage.Error);
+			}
+
+			if (song != null)
+			{
+				Load(song);
 			}
 		}
 
@@ -105,6 +124,12 @@ namespace WordsLive.Editor
 				opened = new EditorDocument(song, this);
 				openDocuments.Add(opened);
 			}
+
+			opened.Grid.PropertyChanged += (sender, args) =>
+			{
+				if (args.PropertyName == "SelectedElement")
+					OnPropertyChanged("FontSizeEnabled");
+			};
 
 			Tabs.SelectedItem = opened;
 		}
@@ -126,7 +151,7 @@ namespace WordsLive.Editor
 		{
 			if (song == null)
 				throw new ArgumentNullException("song");
-			
+
 			if (song.Uri == null || song.IsImported)
 			{
 				SaveSongAs(song);
@@ -165,7 +190,7 @@ namespace WordsLive.Editor
 			}
 			else
 			{
-				dlg.FileName =  Path.GetFileNameWithoutExtension(Uri.UnescapeDataString(song.Uri.Segments.Last()));
+				dlg.FileName = Path.GetFileNameWithoutExtension(Uri.UnescapeDataString(song.Uri.Segments.Last()));
 			}
 
 			if (dlg.ShowDialog() == true)
@@ -192,7 +217,7 @@ namespace WordsLive.Editor
 					// TODO: add more formats
 					throw new InvalidOperationException("Invalid extension " + ext + ". This should not happen.");
 				}
-				
+
 			}
 		}
 
@@ -279,7 +304,7 @@ namespace WordsLive.Editor
 
 			if (e.Parameter != null && e.Parameter is EditorDocument)
 				doc = e.Parameter as EditorDocument;
-			else 
+			else
 				doc = Tabs != null ? (Tabs.SelectedItem as EditorDocument) : null;
 
 			if (e.Command == ApplicationCommands.Save)
@@ -365,6 +390,14 @@ namespace WordsLive.Editor
 				var win = new SongSettingsWindow(doc.Song.Formatting.Clone() as SongFormatting);
 				if (win.ShowDialog() == true)
 				{
+					if (win.Formatting.SingleFontSize && !doc.Song.CheckSingleFontSize())
+					{
+						var res = MessageBox.Show(Resource.eMsgSingleFontSize, Resource.eMsgSingleFontSizeTitle, MessageBoxButton.YesNo);
+						if (res == MessageBoxResult.No)
+						{
+							win.Formatting.SingleFontSize = false;
+						}
+					}
 					doc.Song.Formatting = win.Formatting;
 				}
 			}
@@ -382,6 +415,14 @@ namespace WordsLive.Editor
 			{
 				Controller.ShowSongList();
 			}
+		}
+
+		public event PropertyChangedEventHandler PropertyChanged;
+
+		protected void OnPropertyChanged(string propertyName)
+		{
+			if (PropertyChanged != null)
+				PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 		}
 	}
 }

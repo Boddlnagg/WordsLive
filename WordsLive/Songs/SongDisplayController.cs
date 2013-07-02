@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using Awesomium.Core;
 using Newtonsoft.Json;
-using WordsLive.Core;
 using WordsLive.Core.Songs;
 
 namespace WordsLive.Songs
@@ -21,9 +20,11 @@ namespace WordsLive.Songs
 			Transitions
 		}
 
-		private IWebViewJavaScript control;
+		private IWebView control;
 		private bool loaded = false;
 		private bool showChords = true;
+		private JSObject bridge;
+		private FeatureLevel features;
 
 		public bool ShowChords
 		{
@@ -39,12 +40,22 @@ namespace WordsLive.Songs
 			}
 		}
 
-		public SongDisplayController(IWebViewJavaScript control, FeatureLevel features = FeatureLevel.None)
+		/// <summary>
+		/// Initializes a new instance of the SongDisplayController class.
+		/// </summary>
+		/// <param name="control">The web view that is controlled by this instance. Its IsProcessCreated property must be true.</param>
+		/// <param name="features">The desired feature level.</param>
+		public SongDisplayController(IWebView control, FeatureLevel features = FeatureLevel.None)
 		{
 			this.control = control;
-			this.control.CreateObject("bridge");
-			this.control.SetObjectCallback("bridge", "callbackLoaded", (sender, args) => OnSongLoaded());
-			this.control.SetObjectProperty("bridge", "featureLevel", new JSValue(JsonConvert.SerializeObject(features)));
+			this.features = features;
+			this.control.ConsoleMessage += (obj, target) =>
+			{
+				System.Windows.MessageBox.Show("SongDisplayController encountered JS error in " + target.Source + " (line " +  target.LineNumber + "): " + target.Message);
+			};
+			bridge = this.control.CreateGlobalJavascriptObject("bridge");
+			bridge.Bind("callbackLoaded", false, (sender, args) => OnSongLoaded());
+			bridge["featureLevel"] = new JSValue(JsonConvert.SerializeObject(features));
 		}
 
 		public void Load(Song song)
@@ -52,25 +63,29 @@ namespace WordsLive.Songs
 			if (song == null)
 				throw new ArgumentNullException("song");
 
-			var backgrounds = new List<JSValue>(song.Backgrounds.Count);
-
-			foreach (var bg in song.Backgrounds.Where(bg => bg.Type == SongBackgroundType.Image))
+			if (features != FeatureLevel.None)
 			{
-				try
-				{
-					backgrounds.Add(new JSValue(DataManager.Backgrounds.GetFile(bg).Uri.AbsoluteUri));
-				}
-				catch (FileNotFoundException)
-				{
-					// ignore -> just show black background
-				}
-			}
+				var backgrounds = new List<JSValue>(song.Backgrounds.Count);
 
-			this.control.SetObjectProperty("bridge", "preloadImages", new JSValue(backgrounds.ToArray()));
-			this.control.SetObjectProperty("bridge", "songString", new JSValue(JsonConvert.SerializeObject(song)));
-			this.control.SetObjectProperty("bridge", "showChords", new JSValue(ShowChords));
+				foreach (var bg in song.Backgrounds.Where(bg => bg.Type == SongBackgroundType.Image))
+				{
+					try
+					{
+						backgrounds.Add(new JSValue(bg.FilePath.Replace('\\', '/')));
+					}
+					catch (FileNotFoundException)
+					{
+						// ignore -> just show black background
+					}
+				}
+
+				bridge["preloadImages"] = new JSValue(backgrounds.ToArray());
+				bridge["backgroundPrefix"] = new JSValue("asset://backgrounds/");
+			}
+			bridge["songString"] = new JSValue(JsonConvert.SerializeObject(song));
+			bridge["showChords"] = new JSValue(ShowChords);
 			
-			this.control.LoadFile("song.html");
+			this.control.Source = new Uri("asset://WordsLive/song.html");
 		}
 
 		public void UpdateFormatting(SongFormatting formatting, bool hasTranslation, bool hasChords)

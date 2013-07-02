@@ -352,7 +352,7 @@ namespace WordsLive.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Standard.ppl")]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string SongTemplateFile {
             get {
                 return ((string)(this["SongTemplateFile"]));
@@ -706,6 +706,18 @@ namespace WordsLive.Properties {
             }
             set {
                 this["UseVlc"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string ApplicationVersion {
+            get {
+                return ((string)(this["ApplicationVersion"]));
+            }
+            set {
+                this["ApplicationVersion"] = value;
             }
         }
     }

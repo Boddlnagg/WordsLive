@@ -3,8 +3,8 @@
   <head>
 	<meta charset="utf-8" />
 	<title>Song Presentation</title>
-	<script src="jquery.js" type="text/javascript"></script>
-	<script src="SongPresentation.js" type="text/javascript"></script>
+	<script src="asset://WordsLive.Core/jquery.js" type="text/javascript"></script>
+	<script src="asset://WordsLive.Core/SongPresentation.js" type="text/javascript"></script>
 	<script type="text/javascript">
 String.prototype.replaceAll = function (replace, with_this) {
 	return this.replace(new RegExp(replace, 'g'), with_this);
@@ -14,16 +14,20 @@ var presentation;
 
 $(function () {
 	SongPresentation.BrowserStroke = true; // use WebKit text-stroke support
+	SongPresentation.BackgroundPrefix = bridge.backgroundPrefix;
 	presentation = new SongPresentation(0, JSON.parse(bridge.songString), bridge.featureLevel); // TODO: set SongPresentation.Transition if used
 	$('body').prepend(presentation.getContainer());
 	presentation.getContainer().show();
 
 	presentation.setShowChords(bridge.showChords);
 
-	$.each(bridge.preloadImages, function (i) {
-		var img = new Image();
-		img.src = bridge.preloadImages[i];
-	});
+	if (bridge.preloadImages !== undefined) {
+	    $.each(bridge.preloadImages, function (i) {
+			var img = new Image();
+			img.src = SongPresentation.BackgroundPrefix + bridge.preloadImages[i];
+		});
+	}
+
 	bridge.callbackLoaded();
 });
 	</script>

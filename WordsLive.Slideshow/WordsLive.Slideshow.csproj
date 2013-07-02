@@ -47,6 +47,9 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\WordsLive\Properties\CommonVersionInfo.cs">
+      <Link>Properties\CommonVersionInfo.cs</Link>
+    </Compile>
     <Compile Include="Impress\ImpressHandler.cs" />
     <Compile Include="Impress\ImpressMedia.cs" />
     <Compile Include="ISlideshowPresentation.cs" />

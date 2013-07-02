@@ -1,14 +1,31 @@
-﻿using System.Windows.Controls;
-using System.Windows.Media.Imaging;
-using System.Windows.Media;
-using Awesomium.Core;
-using System.Windows;
-using WordsLive.Presentation;
-using System.Windows.Media.Animation;
-using System;
-using Awesomium.Windows.Controls;
+﻿/*
+ * WordsLive - worship projection software
+ * Copyright (c) 2012 Patrick Reisert
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
 
-namespace WordsLive
+using System;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using Awesomium.Core;
+using Awesomium.Windows.Controls;
+using WordsLive.Presentation;
+
+namespace WordsLive.Awesomium
 {
 	/// <summary>
 	/// Interaktionslogik für AwesomiumWrapper.xaml
@@ -22,7 +39,7 @@ namespace WordsLive
 		private Image frontImage;
 		private Image backImage;
 
-		public IWebViewJavaScript Web
+		public IWebView Web
 		{
 			get
 			{
@@ -34,7 +51,6 @@ namespace WordsLive
 		}
 
 		private WriteableBitmap wb1, wb2;
-		private bool swapBitmaps;
 		private Int32Rect rect;
 
 		public AwesomiumWrapper()
@@ -49,7 +65,6 @@ namespace WordsLive
 			if (!manualUpdate)
 			{
 				webControl = new WebControl();
-				AwesomiumManager.Register(webControl);
 				ForegroundGrid.Children.Add(webControl);
 			}
 			else
@@ -57,7 +72,7 @@ namespace WordsLive
 				int w = area.WindowSize.Width;
 				int h = area.WindowSize.Height;
 				webView = WebCore.CreateWebView(w, h);
-				AwesomiumManager.Register(webView);
+				webView.Surface = new ImageSurface(null);
 				wb1 = new WriteableBitmap(w, h, 96, 96, PixelFormats.Pbgra32, null);
 				wb2 = new WriteableBitmap(w, h, 96, 96, PixelFormats.Pbgra32, null);
 				rect = new Int32Rect(0, 0, w, h);
@@ -78,22 +93,12 @@ namespace WordsLive
 			rect = new Int32Rect(0, 0, w, h);
 		}
 
-		public void RenderWebView()
-		{
-			if (webView == null)
-				throw new InvalidOperationException("Manual updating is disabled for this presentation.");
-
-			var buf = webView.Render();
-			if (swapBitmaps)
-				wb1.WritePixels(rect, buf.Buffer, (int)(buf.Rowspan * buf.Height), buf.Rowspan, 0, 0);
-			else
-				wb2.WritePixels(rect, buf.Buffer, (int)(buf.Rowspan * buf.Height), buf.Rowspan, 0, 0);
-		}
-
 		public void UpdateForeground()
 		{
 			if (webView == null)
 				throw new InvalidOperationException("Manual updating is disabled for this presentation.");
+
+			var surf = webView.Surface as ImageSurface;
 
 			if (frontImage == null)
 			{
@@ -104,8 +109,7 @@ namespace WordsLive
 			}
 
 			backImage.Source = frontImage.Source;
-			frontImage.Source = swapBitmaps ? wb1 : wb2;
-			swapBitmaps = !swapBitmaps;
+			frontImage.Source = surf.Image.Clone();
 		}
 
 		public void Close()

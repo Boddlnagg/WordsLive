@@ -468,12 +468,6 @@
   <data name="eToolbarChangeBackground" xml:space="preserve">
     <value>Hintergrund für ausgewähltes Element ändern</value>
   </data>
-  <data name="eToolbarDecreaseFontSize" xml:space="preserve">
-    <value>Schriftgröße verringern</value>
-  </data>
-  <data name="eToolbarIncreaseFontSize" xml:space="preserve">
-    <value>Schriftgröße erhöhen</value>
-  </data>
   <data name="eToolbarSaveAndReload" xml:space="preserve">
     <value>Lied speichern und aktive Präsentation neu laden</value>
   </data>
@@ -508,7 +502,7 @@
     <value>Die letzte Folie eines Liedteils kann nicht verschoben oder entfernt werden.</value>
   </data>
   <data name="eMsgCouldNotOpenSong" xml:space="preserve">
-    <value>Die Datei "{0}" konnte nicht geladen werden.</value>
+    <value>Die Datei "{0}" konnte nicht geladen werden. (Fehler: {1})</value>
   </data>
   <data name="eMenuAddToPortfolio" xml:space="preserve">
     <value>Lied zum aktuellen Portfolio hinzufügen</value>
@@ -749,5 +743,20 @@
   </data>
   <data name="eGridContextSwapTextAndTranslation" xml:space="preserve">
     <value>Liedtext und Übersetzung tauschen</value>
+  </data>
+  <data name="eToolbarFontSize" xml:space="preserve">
+    <value>Schriftgröße</value>
+  </data>
+  <data name="eToolbarSingleFontSize" xml:space="preserve">
+    <value>Schriftgröße für alle Folien übernehmen</value>
+  </data>
+  <data name="eMsgSingleFontSize" xml:space="preserve">
+    <value>Sie haben ausgewählt, dass die selbes Schriftgröße für alle Folien übernommen werden soll, aber es sind zurzeit verschiedene Schriftgrößen in Verwendung. Wenn Sie fortfahren, wird die aktuelle Schriftgröße auf alle Folien angewandt. Möchten Sie wirklich die selbe Schriftgröße für alle Folien übernehmen?</value>
+  </data>
+  <data name="eMsgSingleFontSizeTitle" xml:space="preserve">
+    <value>Verschiedene Schriftgrößen</value>
+  </data>
+  <data name="seMsgInitServerError" xml:space="preserve">
+    <value>Der Server konnte nicht gestartet werden. Stellen Sie sicher, dass der Port nicht von einer anderen Anwendung verwendet wird.</value>
   </data>
 </root>

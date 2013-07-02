@@ -16,6 +16,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+using System.ComponentModel;
 using WordsLive.Core.Songs;
 
 namespace WordsLive.Editor.Nodes
@@ -23,12 +24,41 @@ namespace WordsLive.Editor.Nodes
 	/// <summary>
 	/// Represents the node for the copyright metadata.
 	/// </summary>
-	public class CopyrightNode : MetadataNode
+	public class CopyrightNode : MetadataNode, ISongElementWithSize, INotifyPropertyChanged
 	{
+		public int Size
+		{
+			get
+			{
+				return Root.Formatting.CopyrightText.Size;
+			}
+			set
+			{
+				var formatting = (SongFormatting)Root.Formatting.Clone();
+				formatting.CopyrightText.Size = value;
+				Root.Formatting = formatting;
+			}
+		}
+
 		/// <summary>
 		/// Initializes a new instance of the <see cref="CopyrightNode"/> class.
 		/// </summary>
 		/// <param name="song">The song.</param>
-		public CopyrightNode(Song song) : base(song) { }
+		public CopyrightNode(Song song) : base(song)
+		{
+			song.PropertyChanged += (sender, args) =>
+			{
+				if (args.PropertyName == "Formatting")
+					OnPropertyChanged("Size");
+			};
+		}
+
+		public event PropertyChangedEventHandler PropertyChanged;
+
+		protected void OnPropertyChanged(string propertyName)
+		{
+			if (PropertyChanged != null)
+				PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+		}
 	}
 }

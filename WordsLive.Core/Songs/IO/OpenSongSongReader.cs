@@ -37,6 +37,8 @@ namespace WordsLive.Core.Songs.IO
 			if (stream == null)
 				throw new ArgumentNullException("stream");
 
+			song.LoadTemplate();
+
 			var doc = XDocument.Load(stream);
 
 			song.Order.Clear();
@@ -44,7 +46,7 @@ namespace WordsLive.Core.Songs.IO
 
 			if (doc.Root.Name != "song")
 			{
-				throw new ArgumentException("File is not a valid OpenSong song.");
+				throw new SongFormatException("File is not a valid OpenSong song.");
 			}
 
 			var root = doc.Root;
@@ -72,7 +74,7 @@ namespace WordsLive.Core.Songs.IO
 
 					var i = line.IndexOf("]");
 					if (i < 0)
-						throw new ArgumentException("File is not a valid OpenSong song: Invalid part declaration.");
+						throw new SongFormatException("File is not a valid OpenSong song: Invalid part declaration.");
 
 					partKey = line.Substring(1, i - 1).Trim();
 					partLineGroups = new List<LineGroup>();
@@ -115,7 +117,7 @@ namespace WordsLive.Core.Songs.IO
 						}
 						else
 						{
-							throw new ArgumentException("File is not a valid OpenSong song: Expected verse number.");
+							throw new SongFormatException("File is not a valid OpenSong song: Expected verse number.");
 						}
 					}
 					else if (char.IsDigit(line[0]))
@@ -136,7 +138,7 @@ namespace WordsLive.Core.Songs.IO
 					}
 					else
 					{
-						throw new ArgumentException("File is not a valid OpenSong song: Expected one of ' ', '.', ';' , '[0-9]'");
+						throw new SongFormatException("File is not a valid OpenSong song: Expected one of ' ', '.', ';' , '[0-9]'");
 					}
 				}
 			}
@@ -167,7 +169,7 @@ namespace WordsLive.Core.Songs.IO
 				lineGroups.Add(lastLineGroup);
 
 			if (lineGroups.Count == 0)
-				throw new ArgumentException("File is not a valid OpenSong song: Empty part");
+				throw new SongFormatException("File is not a valid OpenSong song: Empty part");
 
 			foreach (var lg in lineGroups)
 			{
@@ -178,7 +180,7 @@ namespace WordsLive.Core.Songs.IO
 			var noNumbers = !lineGroups[0].Lines[0].Number.HasValue;
 
 			if (noNumbers && lineGroups.Any(lg => lg.Lines.Any(l => l.Number.HasValue)))
-				throw new ArgumentException("File is not a valid OpenSong song: Found mixed numbered and unnumbered lines.");
+				throw new SongFormatException("File is not a valid OpenSong song: Found mixed numbered and unnumbered lines.");
 
 			int maxVerseNumber;
 			if (noNumbers)

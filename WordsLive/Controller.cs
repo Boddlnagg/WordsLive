@@ -50,8 +50,7 @@ namespace WordsLive
 			string startupDir = new FileInfo(Assembly.GetExecutingAssembly().Location).Directory.FullName;
 			LoadTypes(Assembly.LoadFrom(Path.Combine(startupDir, "WordsLive.Slideshow.dll"))); // TODO (Words): automatically load plugins
 
-			Server = new TestServer(80);
-			UpdateServerSettings();
+			UpgradeSettings();
 
 			InitSettings();
 
@@ -120,8 +119,24 @@ namespace WordsLive
 										 select type);
 		}
 
+		private void UpgradeSettings()
+		{
+			var a = Assembly.GetExecutingAssembly();
+			Version appVersion = a.GetName().Version;
+			string appVersionString = appVersion.ToString();
+
+			if (Properties.Settings.Default.ApplicationVersion != appVersion.ToString())
+			{
+				Properties.Settings.Default.Upgrade();
+				Properties.Settings.Default.ApplicationVersion = appVersionString;
+				Properties.Settings.Default.Save();
+			}
+		}
+
 		private void InitSettings()
 		{
+			var appDir = new FileInfo(Assembly.GetExecutingAssembly().Location).Directory;
+
 			if (string.IsNullOrEmpty(Properties.Settings.Default.SongsDirectory))
 			{
 				Properties.Settings.Default.SongsDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), "Powerpraise-Dateien", "Songs"); // TODO: localize?!
@@ -130,6 +145,17 @@ namespace WordsLive
 			if (string.IsNullOrEmpty(Properties.Settings.Default.BackgroundsDirectory))
 			{
 				Properties.Settings.Default.BackgroundsDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), "Powerpraise-Dateien", "Backgrounds");
+			}
+
+			if (string.IsNullOrEmpty(Properties.Settings.Default.SongTemplateFile))
+			{
+				Properties.Settings.Default.SongTemplateFile = Path.Combine(appDir.FullName, "Data", "Standard.ppl");
+			}
+
+			if (!TryUpdateServerSettings())
+			{
+				MessageBox.Show(Resource.seMsgInitServerError);
+				window.ShowSettingsWindow();
 			}
 
 			while (!TryInitDataManager())
@@ -143,10 +169,6 @@ namespace WordsLive
 
 		private bool TryInitDataManager()
 		{
-			//init song template file
-			if (String.IsNullOrEmpty(Properties.Settings.Default.SongTemplateFile))
-				Properties.Settings.Default.SongTemplateFile = Path.Combine("Data", "Standard.ppl");
-
 			var fi = new FileInfo(Properties.Settings.Default.SongTemplateFile);
 			if (!fi.Exists)
 				return false;
@@ -159,15 +181,20 @@ namespace WordsLive
 				return DataManager.TryInitUsingLocal(Properties.Settings.Default.SongsDirectory, Properties.Settings.Default.BackgroundsDirectory);
 		}
 
-		internal static void UpdateServerSettings()
+		internal static bool TryUpdateServerSettings()
 		{
+			if (Server == null)
+			{
+				Server = new TestServer(Properties.Settings.Default.EmbeddedServerPort);
+			}
+
 			if (Properties.Settings.Default.EmbeddedServerEnable)
 			{
 				var port = Properties.Settings.Default.EmbeddedServerPort;
 				var pwd = Properties.Settings.Default.EmbeddedServerPassword;
 				var enableUI = Properties.Settings.Default.EmbeddedServerEnableUI;
 
-				var settingsChanged = Server.Port != port || Server.Password != pwd;
+				var settingsChanged = Server.Port != port || Server.Password != pwd || !Server.IsRunning;
 
 				// TODO: do we need a restart for change of password?
 
@@ -182,9 +209,14 @@ namespace WordsLive
 					Server.Port = port;
 					Server.Password = pwd;
 
-					// TODO: catch exceptions and show meaningful error
-					//		 (esp. when port is already used -> show configuration window)
-					Server.Start();
+					try
+					{
+						Server.Start();
+					}
+					catch
+					{
+						return false;
+					}
 				}
 
 				if (Properties.Settings.Default.EmbeddedServerRedirectAll)
@@ -200,6 +232,8 @@ namespace WordsLive
 			{
 				Server.Stop();
 			}
+
+			return true;
 		}
 
 		#endregion
