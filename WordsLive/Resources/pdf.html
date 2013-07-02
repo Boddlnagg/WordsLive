@@ -5,72 +5,91 @@
   <title>PDF</title>
   <!-- In production, only one script (pdf.js) is necessary -->
   <script type="text/javascript" src="asset://WordsLive.Core/pdf.js"></script>
+  <script type="text/javascript" src="asset://WordsLive.Core/jquery.js"></script>
 
   <script type="text/javascript">
-      // Specify the main script used to create a new PDF.JS web worker.
-      // In production, change this to point to the combined `pdf.js` file.
-      PDFJS.workerSrc = 'asset://WordsLive.Core/pdf.js';
+	  // Specify the main script used to create a new PDF.JS web worker.
+	  // In production, change this to point to the combined `pdf.js` file.
+	  PDFJS.workerSrc = 'asset://WordsLive.Core/pdf.js';
 
-      var DOC_URL = 'asset://WordsLive/urimap/pdfpresentation.pdf';
+	  var DOC_URL = 'asset://WordsLive/urimap/pdfpresentation.pdf';
   </script>
   
   <style>
-  body { margin: 0; }
-  .pdfpage { position:relative; top: 0; left: 0; border: solid 1px black; margin: 10px; }
+  body { margin: 0; overflow: hidden;}
+  .pdfpage { position:relative; top: 0; left: 0; border-bottom: 1px solid gray; margin: 0; }
   .pdfpage > canvas { position: absolute; top: 0; left: 0; }
   .pdfpage > div { position: absolute; top: 0; left: 0; }
   </style>
 
   <script type="text/javascript">
-      'use strict';
+	  'use strict';
 
-      function renderPage(div, pdf, pageNumber, callback) {
-          pdf.getPage(pageNumber).then(function(page) {
-              var scale = 1.5;
-              var viewport = page.getViewport(scale);
+	  function renderPage(div, pdf, pageNumber, callback) {
+		  pdf.getPage(pageNumber).then(function(page) {
+			  var unscaledViewport = page.getViewport(1);
+			  var scale = $(document).width() / unscaledViewport.width;
+			  var viewport = page.getViewport(scale);
 
-              var pageDisplayWidth = viewport.width;
-              var pageDisplayHeight = viewport.height;
+			  var pageDisplayWidth = viewport.width;
+			  var pageDisplayHeight = viewport.height;
 
-              var pageDivHolder = document.createElement('div');
-              pageDivHolder.className = 'pdfpage';
-              pageDivHolder.style.width = pageDisplayWidth + 'px';
-              pageDivHolder.style.height = pageDisplayHeight + 'px';
-              div.appendChild(pageDivHolder);
+			  var pageDivHolder = document.createElement('div');
+			  pageDivHolder.className = 'pdfpage';
+			  $(pageDivHolder).attr('id', 'page_'+pageNumber);
+			  pageDivHolder.style.width = pageDisplayWidth + 'px';
+			  pageDivHolder.style.height = pageDisplayHeight + 'px';
+			  div.appendChild(pageDivHolder);
 
-              // Prepare canvas using PDF page dimensions
-              var canvas = document.createElement('canvas');
-              var context = canvas.getContext('2d');
-              canvas.width = pageDisplayWidth;
-              canvas.height = pageDisplayHeight;
-              pageDivHolder.appendChild(canvas);
+			  // Prepare canvas using PDF page dimensions
+			  var canvas = document.createElement('canvas');
+			  var context = canvas.getContext('2d');
+			  canvas.width = pageDisplayWidth;
+			  canvas.height = pageDisplayHeight;
+			  pageDivHolder.appendChild(canvas);
 
 
-              // Render PDF page into canvas context
-              var renderContext = {
-                  canvasContext: context,
-                  viewport: viewport
-              };
-              page.render(renderContext).then(callback);
+			  // Render PDF page into canvas context
+			  var renderContext = {
+				  canvasContext: context,
+				  viewport: viewport
+			  };
+			  page.render(renderContext).then(callback);
 
-              // Prepare and populate form elements layer
-              var formDiv = document.createElement('div');
-              pageDivHolder.appendChild(formDiv);
-          });
-      }
+			  // Prepare and populate form elements layer
+			  var formDiv = document.createElement('div');
+			  pageDivHolder.appendChild(formDiv);
+		  });
+	  }
 
-      // Fetch the PDF document from the URL using promices
-      PDFJS.getDocument(DOC_URL).then(function getPdfForm(pdf) {
-          // Rendering all pages starting from first
-          var viewer = document.getElementById('viewer');
-          var pageNumber = 1;
-          renderPage(viewer, pdf, pageNumber++, function pageRenderingComplete() {
-              if (pageNumber > pdf.numPages)
-                  return; // All pages rendered
-              // Continue rendering of the next page
-              renderPage(viewer, pdf, pageNumber++, pageRenderingComplete);
-          });
-      });
+	  var doc;
+
+	  function renderAll() {
+	      // Rendering all pages starting from first
+	      var viewer = document.getElementById('viewer');
+	      var pageNumber = 1;
+	      renderPage(viewer, doc, pageNumber++, function pageRenderingComplete() {
+	          if (pageNumber > doc.numPages)
+	              return; // All pages rendered
+	          // Continue rendering of the next page
+	          renderPage(viewer, doc, pageNumber++, pageRenderingComplete);
+	      });
+	  }
+
+	  // Fetch the PDF document from the URL using promices
+	  PDFJS.getDocument(DOC_URL).then(function getPdfForm(pdf) {
+	      doc = pdf;
+	      renderAll();
+	  });
+
+	  $(window).resize(function () {
+	      $('#viewer').empty();
+	      renderAll();
+	  });
+
+	  function gotoPage(p) {
+	      $(window).scrollTop($('#page_'+p).offset().top)
+	  }
   </script>
 </head>
 

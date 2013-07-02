@@ -63,5 +63,10 @@ namespace WordsLive
 		{
 			get { return ControlPanelLoadState.Loaded; }
 		}
+
+		private void Button_Click(object sender, System.Windows.RoutedEventArgs e)
+		{
+			presentation.GotoPage(int.Parse(pageTextBox.Text));
+		}
 	}
 }
