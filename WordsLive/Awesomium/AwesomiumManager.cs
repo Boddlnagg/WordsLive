@@ -80,9 +80,9 @@ namespace WordsLive.Awesomium
 
 		static void WebCore_CreatedView(object sender, CreatedViewEventArgs e)
 		{
-			e.NewView.WebSession.AddDataSource("WordsLive", new ResourceDataSource(Assembly.GetExecutingAssembly()));
-			e.NewView.WebSession.AddDataSource("WordsLive.Core", new ResourceDataSource(Assembly.GetAssembly(typeof(Media))));
-			e.NewView.WebSession.AddDataSource("backgrounds", new BackgroundDataSource());
+			e.NewView.WebSession.AddDataSource("WordsLive", new ChainableDataSource(UriMapDataSource.Instance, new ResourceDataSource(Assembly.GetExecutingAssembly())));
+			e.NewView.WebSession.AddDataSource("WordsLive.Core", new ChainableDataSource(new ResourceDataSource(Assembly.GetAssembly(typeof(Media)))));
+			e.NewView.WebSession.AddDataSource("backgrounds", new ChainableDataSource(new BackgroundDataSource()));
 		}
 
 		[Shutdown]

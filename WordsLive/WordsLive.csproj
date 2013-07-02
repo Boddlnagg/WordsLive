@@ -114,6 +114,9 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Awesomium\BackgroundDataSource.cs" />
+    <Compile Include="Awesomium\ChainableDataSource.cs" />
+    <Compile Include="Awesomium\IDataSource.cs" />
+    <Compile Include="Awesomium\UriMapDataSource.cs" />
     <Compile Include="Awesomium\ResourceDataSource.cs" />
     <Compile Include="Properties\CommonVersionInfo.cs" />
     <Compile Include="ControlPanelLoadState.cs" />

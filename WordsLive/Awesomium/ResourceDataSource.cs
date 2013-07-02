@@ -24,7 +24,7 @@ using WordsLive.Core;
 
 namespace WordsLive.Awesomium
 {
-	public class ResourceDataSource : DataSource
+	public class ResourceDataSource : IDataSource
 	{
 		private Assembly assembly;
 		public ResourceDataSource(Assembly assembly)
@@ -32,7 +32,7 @@ namespace WordsLive.Awesomium
 			this.assembly = assembly;
 		}
 
-		protected override void OnRequest(DataSourceRequest request)
+		public bool HandleRequest(DataSourceRequest request, Action<DataSourceResponse> respond)
 		{
 			try
 			{
@@ -42,17 +42,18 @@ namespace WordsLive.Awesomium
 					stream.Read(buffer, 0, (int)stream.Length);
 					GCHandle pinnedBuffer = GCHandle.Alloc(buffer, GCHandleType.Pinned);
 					IntPtr pointer = pinnedBuffer.AddrOfPinnedObject();
-					SendResponse(request, new DataSourceResponse
+					respond(new DataSourceResponse
 					{
 						Buffer = pointer,
 						Size = (uint)stream.Length
 					});
 					pinnedBuffer.Free();
+					return true;
 				}
 			}
 			catch
 			{
-				SendRequestFailed(request);
+				return false;
 			}
 		}
 	}

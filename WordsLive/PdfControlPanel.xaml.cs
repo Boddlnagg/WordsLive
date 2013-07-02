@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Windows;
 using System.Windows.Controls;
+using WordsLive.Awesomium;
 using WordsLive.Core;
 
 namespace WordsLive
@@ -35,9 +35,15 @@ namespace WordsLive
 				throw new ArgumentException("media must be of type PdfMedia");
 
 			this.media = media as PdfMedia;
+
+			if (!media.Uri.IsFile)
+				throw new NotImplementedException("Loading remote URIs not implemented yet.");
+
+			// TODO: handle case where this is already mapped, because of a PDF presentation already loaded
+			UriMapDataSource.Instance.Add("pdfpresentation.pdf", media.Uri);
 			presentation = Controller.PresentationManager.CreatePresentation<PdfPresentation>();
 			presentation.Load(true);
-			presentation.Control.Web.ConsoleMessage += (sender, args) => MessageBox.Show(args.Message);
+			//presentation.Control.Web.ConsoleMessage += (sender, args) => MessageBox.Show(args.Message);
 			presentation.Control.Web.LoadURL(new Uri("asset://WordsLive/pdf.html"));
 			Controller.PresentationManager.CurrentPresentation = presentation;
 		}
@@ -49,6 +55,7 @@ namespace WordsLive
 
 		public void Close()
 		{
+			UriMapDataSource.Instance.Remove("pdfpresentation.pdf");
 			presentation.Close();
 		}
 
