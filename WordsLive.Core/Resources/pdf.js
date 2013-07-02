@@ -1377,7 +1377,7 @@ var PDFDocument = (function PDFDocumentClosure() {
 // Use only for debugging purposes. This should not be used in any code that is
 // in mozilla master.
 var log = (function() {
-  if (false /*'console' in globalScope && 'log' in globalScope['console']*/) {
+  if ('console' in globalScope && 'log' in globalScope['console']) {
     return globalScope['console']['log'].bind(globalScope['console']);
   } else {
     return function nop() {

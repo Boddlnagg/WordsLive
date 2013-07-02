@@ -2,78 +2,80 @@
 <html>
 
 <head>
+  <title>PDF</title>
   <!-- In production, only one script (pdf.js) is necessary -->
-  <!-- In production, change the content of PDFJS.workerSrc below -->
-  <!--<script type="text/javascript" src="../../src/network.js"></script>
-  <script type="text/javascript" src="../../src/chunked_stream.js"></script>
-  <script type="text/javascript" src="../../src/pdf_manager.js"></script>
-  <script type="text/javascript" src="../../src/core.js"></script>
-  <script type="text/javascript" src="../../src/util.js"></script>
-  <script type="text/javascript" src="../../src/api.js"></script>
-  <script type="text/javascript" src="../../src/canvas.js"></script>
-  <script type="text/javascript" src="../../src/obj.js"></script>
-  <script type="text/javascript" src="../../src/annotation.js"></script>
-  <script type="text/javascript" src="../../src/function.js"></script>
-  <script type="text/javascript" src="../../src/charsets.js"></script>
-  <script type="text/javascript" src="../../src/cidmaps.js"></script>
-  <script type="text/javascript" src="../../src/colorspace.js"></script>
-  <script type="text/javascript" src="../../src/crypto.js"></script>
-  <script type="text/javascript" src="../../src/evaluator.js"></script>
-  <script type="text/javascript" src="../../src/fonts.js"></script>
-  <script type="text/javascript" src="../../src/glyphlist.js"></script>
-  <script type="text/javascript" src="../../src/image.js"></script>
-  <script type="text/javascript" src="../../src/metrics.js"></script>
-  <script type="text/javascript" src="../../src/parser.js"></script>
-  <script type="text/javascript" src="../../src/pattern.js"></script>
-  <script type="text/javascript" src="../../src/stream.js"></script>
-  <script type="text/javascript" src="../../src/worker.js"></script>
-  <script type="text/javascript" src="../../external/jpgjs/jpg.js"></script>
-  <script type="text/javascript" src="../../src/jpx.js"></script>
-  <script type="text/javascript" src="../../src/jbig2.js"></script>-->
-  <title>PDF.js</title>
-  <script type="text/javascript">alert("Blah");</script>
-  <script type="text/javascript" src="pdf.js"></script>
+  <script type="text/javascript" src="asset://WordsLive.Core/pdf.js"></script>
+
+  <script type="text/javascript">
+      // Specify the main script used to create a new PDF.JS web worker.
+      // In production, change this to point to the combined `pdf.js` file.
+      PDFJS.workerSrc = 'asset://WordsLive.Core/pdf.js';
+
+      var DOC_URL = 'asset://WordsLive/gembrief.pdf';
+  </script>
+  
+  <style>
+  body { margin: 0; }
+  .pdfpage { position:relative; top: 0; left: 0; border: solid 1px black; margin: 10px; }
+  .pdfpage > canvas { position: absolute; top: 0; left: 0; }
+  .pdfpage > div { position: absolute; top: 0; left: 0; }
+  </style>
 
   <script type="text/javascript">
       'use strict';
 
-      // Specify the main script used to create a new PDF.JS web worker.
-      // In production, change this to point to the combined `pdf.js` file.
-      //PDFJS.workerSrc = 'pdf.js';
-      PDFJS.disableWorker = true;
-
-      //
-      // Fetch the PDF document from the URL using promises
-      //
-      PDFJS.getDocument('file:///C:/Users/Patrick/Desktop/helloworld/helloworld2.pdf').then(function (pdf) {
-          // Using promise to fetch the page
-          pdf.getPage(1).then(function (page) {
+      function renderPage(div, pdf, pageNumber, callback) {
+          pdf.getPage(pageNumber).then(function(page) {
               var scale = 1.5;
               var viewport = page.getViewport(scale);
 
-              //
-              // Prepare canvas using PDF page dimensions
-              //
-              var canvas = document.getElementById('the-canvas');
-              var context = canvas.getContext('2d');
-              canvas.height = viewport.height;
-              canvas.width = viewport.width;
+              var pageDisplayWidth = viewport.width;
+              var pageDisplayHeight = viewport.height;
 
-              //
+              var pageDivHolder = document.createElement('div');
+              pageDivHolder.className = 'pdfpage';
+              pageDivHolder.style.width = pageDisplayWidth + 'px';
+              pageDivHolder.style.height = pageDisplayHeight + 'px';
+              div.appendChild(pageDivHolder);
+
+              // Prepare canvas using PDF page dimensions
+              var canvas = document.createElement('canvas');
+              var context = canvas.getContext('2d');
+              canvas.width = pageDisplayWidth;
+              canvas.height = pageDisplayHeight;
+              pageDivHolder.appendChild(canvas);
+
+
               // Render PDF page into canvas context
-              //
               var renderContext = {
                   canvasContext: context,
                   viewport: viewport
               };
-              page.render(renderContext);
+              page.render(renderContext).then(callback);
+
+              // Prepare and populate form elements layer
+              var formDiv = document.createElement('div');
+              pageDivHolder.appendChild(formDiv);
+          });
+      }
+
+      // Fetch the PDF document from the URL using promices
+      PDFJS.getDocument(DOC_URL).then(function getPdfForm(pdf) {
+          // Rendering all pages starting from first
+          var viewer = document.getElementById('viewer');
+          var pageNumber = 1;
+          renderPage(viewer, pdf, pageNumber++, function pageRenderingComplete() {
+              if (pageNumber > pdf.numPages)
+                  return; // All pages rendered
+              // Continue rendering of the next page
+              renderPage(viewer, pdf, pageNumber++, pageRenderingComplete);
           });
       });
   </script>
 </head>
 
 <body>
-  <canvas id="the-canvas" style="border:1px solid black;"/>
+  <div id="viewer"></div>
 </body>
 
 </html>

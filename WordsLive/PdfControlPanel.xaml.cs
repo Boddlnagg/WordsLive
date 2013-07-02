@@ -36,9 +36,9 @@ namespace WordsLive
 
 			this.media = media as PdfMedia;
 			presentation = Controller.PresentationManager.CreatePresentation<PdfPresentation>();
-			presentation.Load(false);
-			presentation.Control.Web.JSConsoleMessageAdded += (sender, args) => MessageBox.Show(args.Message);
-			presentation.Control.Web.LoadFile(@"pdf.html");
+			presentation.Load(true);
+			presentation.Control.Web.ConsoleMessage += (sender, args) => MessageBox.Show(args.Message);
+			presentation.Control.Web.LoadURL(new Uri("asset://WordsLive/pdf.html"));
 			Controller.PresentationManager.CurrentPresentation = presentation;
 		}
 
