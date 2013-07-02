@@ -1,4 +1,22 @@
-﻿using System;
+﻿/*
+ * WordsLive - worship projection software
+ * Copyright (c) 2012-2013 Patrick Reisert
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows;
@@ -21,23 +39,6 @@ namespace WordsLive.Songs
 			InitializeComponent();
 		}
 
-		private void filterButton_Click(object sender, RoutedEventArgs e)
-		{
-			// work-around for IsDefault-Button data-binding bug (see http://berndhengelein.de/2009/03/wpf-databinding-in-verbindung-mit-einem-defaultbutton/)
-			TextBox focusedTextBox = Keyboard.FocusedElement as TextBox;
-			if (null != focusedTextBox)
-			{
-				BindingExpression bindingExpression = focusedTextBox.GetBindingExpression(TextBox.TextProperty);
-				if (null != bindingExpression)
-				{
-					bindingExpression.UpdateSource();
-				}
-			}
-
-			ICollectionView view = CollectionViewSource.GetDefaultView(songListView.ItemsSource);
-			view.Filter = filter.IsEmpty ? null : new Predicate<object>(FilterCallback);
-		}
-
 		private bool FilterCallback(object item)
 		{
 			return filter.Matches((SongData)item);
@@ -48,6 +49,12 @@ namespace WordsLive.Songs
 			songListView.DataContext = this.list;
 			songListView.Items.SortDescriptions.Add(new SortDescription("Title", ListSortDirection.Ascending));
 			filter = new SongFilter();
+			filter.PropertyChanged += (s, a) =>
+			{
+				ICollectionView view = CollectionViewSource.GetDefaultView(songListView.ItemsSource);
+				view.Filter = filter.IsEmpty ? null : new Predicate<object>(FilterCallback);
+				songListView.SelectedIndex = 0;
+			};
 			filterGroupBox.DataContext = filter;
 
 			new Action(LoadSongs).BeginInvoke(null, null);
