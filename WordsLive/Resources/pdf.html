@@ -11,8 +11,6 @@
 	  // Specify the main script used to create a new PDF.JS web worker.
 	  // In production, change this to point to the combined `pdf.js` file.
 	  PDFJS.workerSrc = 'asset://WordsLive.Core/pdf.js';
-
-	  var DOC_URL = 'asset://WordsLive/urimap/pdfpresentation.pdf';
   </script>
   
   <style>
@@ -77,7 +75,7 @@
 	  }
 
 	  // Fetch the PDF document from the URL using promices
-	  PDFJS.getDocument(DOC_URL).then(function getPdfForm(pdf) {
+	  PDFJS.getDocument(bridge.document).then(function getPdfForm(pdf) {
 	      doc = pdf;
 	      renderAll();
 	  });

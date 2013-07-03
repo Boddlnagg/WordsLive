@@ -39,12 +39,8 @@ namespace WordsLive
 			if (!media.Uri.IsFile)
 				throw new NotImplementedException("Loading remote URIs not implemented yet.");
 
-			// TODO: handle case where this is already mapped, because of a PDF presentation already loaded
-			UriMapDataSource.Instance.Add("pdfpresentation.pdf", media.Uri);
 			presentation = Controller.PresentationManager.CreatePresentation<PdfPresentation>();
-			presentation.Load(true);
-			//presentation.Control.Web.ConsoleMessage += (sender, args) => MessageBox.Show(args.Message);
-			presentation.Control.Web.LoadURL(new Uri("asset://WordsLive/pdf.html"));
+			presentation.Load(this.media);
 			Controller.PresentationManager.CurrentPresentation = presentation;
 		}
 
@@ -55,8 +51,7 @@ namespace WordsLive
 
 		public void Close()
 		{
-			UriMapDataSource.Instance.Remove("pdfpresentation.pdf");
-			presentation.Close();
+			//presentation.Close();
 		}
 
 		public ControlPanelLoadState LoadState
