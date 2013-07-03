@@ -223,6 +223,60 @@ namespace WordsLive.Resources {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Current page ähnelt.
+        /// </summary>
+        public static string docCurrentPage {
+            get {
+                return ResourceManager.GetString("docCurrentPage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Next page ähnelt.
+        /// </summary>
+        public static string docNextPage {
+            get {
+                return ResourceManager.GetString("docNextPage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Page scale ähnelt.
+        /// </summary>
+        public static string docPageScale {
+            get {
+                return ResourceManager.GetString("docPageScale", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Previous page ähnelt.
+        /// </summary>
+        public static string docPreviousPage {
+            get {
+                return ResourceManager.GetString("docPreviousPage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Fit to width ähnelt.
+        /// </summary>
+        public static string docScaleFitToWidth {
+            get {
+                return ResourceManager.GetString("docScaleFitToWidth", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Whole page ähnelt.
+        /// </summary>
+        public static string docScaleWholePage {
+            get {
+                return ResourceManager.GetString("docScaleWholePage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Open in editor ähnelt.
         /// </summary>
         public static string eCommandOpenInEditor {

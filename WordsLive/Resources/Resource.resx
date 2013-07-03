@@ -759,4 +759,22 @@
   <data name="seMsgInitServerError" xml:space="preserve">
     <value>The server could not be started. Make sure that the port is not used by any other application.</value>
   </data>
+  <data name="docCurrentPage" xml:space="preserve">
+    <value>Current page</value>
+  </data>
+  <data name="docNextPage" xml:space="preserve">
+    <value>Next page</value>
+  </data>
+  <data name="docPageScale" xml:space="preserve">
+    <value>Page scale</value>
+  </data>
+  <data name="docPreviousPage" xml:space="preserve">
+    <value>Previous page</value>
+  </data>
+  <data name="docScaleFitToWidth" xml:space="preserve">
+    <value>Fit to width</value>
+  </data>
+  <data name="docScaleWholePage" xml:space="preserve">
+    <value>Whole page</value>
+  </data>
 </root>

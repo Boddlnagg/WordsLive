@@ -19,27 +19,27 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <StackPanel Orientation="Horizontal" Margin="10">
-            <TextBox Text="{Binding CurrentPage}"  HorizontalAlignment="Left" VerticalAlignment="Center" Height="23" Margin="0" Width="50" PreviewKeyDown="TextBox_PreviewKeyDown"/>
+            <TextBox ToolTip="{x:Static resx:Resource.docCurrentPage}" Text="{Binding CurrentPage}"  HorizontalAlignment="Left" VerticalAlignment="Center" Height="23" Margin="0" Width="50" PreviewKeyDown="TextBox_PreviewKeyDown"/>
             <TextBlock Text="/" HorizontalAlignment="Left" Margin="3,0,1,0" VerticalAlignment="Center"/>
             <TextBlock Text="{Binding FormattedPageCount}" HorizontalAlignment="Left" Width="40" Margin="0,0,3,0" VerticalAlignment="Center"/>
             <Button Command="PreviousPage" HorizontalAlignment="Left" Margin="3,0" VerticalAlignment="Top" Width="120" HorizontalContentAlignment="Left">
                 <StackPanel Orientation="Horizontal">
                     <Image Margin="5,0" Width="16" Height="16" Source="/WordsLive;component/Artwork/Small_ArrowLeft.png" />
-                    <Label Content="Previous page" />
+                    <Label Content="{x:Static resx:Resource.docPreviousPage}" />
                 </StackPanel>
             </Button>
             <Button Command="NextPage" HorizontalAlignment="Left" Margin="3,0" VerticalAlignment="Top" Width="120" HorizontalContentAlignment="Stretch">
                 <StackPanel Orientation="Horizontal">
                     <Image Margin="5,0" Width="16" Height="16" Source="/WordsLive;component/Artwork/Small_ArrowRight.png" />
-                    <Label Content="Next page"/>
+                    <Label Content="{x:Static resx:Resource.docNextPage}"/>
                 </StackPanel>
             </Button>
         </StackPanel>
 
-        <GroupBox Header="Page size" Grid.Row="1" Padding="2">
+        <GroupBox Header="{x:Static resx:Resource.docPageScale}" Grid.Row="1" Padding="2">
             <StackPanel Orientation="Vertical">
-                <RadioButton Content="Fit to width" IsChecked="{Binding Path=PageScale, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static local:DocumentPageScale.FitToWidth}}" Margin="2"/>
-                <RadioButton Content="Whole page" IsChecked="{Binding Path=PageScale, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static local:DocumentPageScale.WholePage}}" Margin="2"/>
+                <RadioButton Content="{x:Static resx:Resource.docScaleFitToWidth}" IsChecked="{Binding Path=PageScale, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static local:DocumentPageScale.FitToWidth}}" Margin="2"/>
+                <RadioButton Content="{x:Static resx:Resource.docScaleWholePage}" IsChecked="{Binding Path=PageScale, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static local:DocumentPageScale.WholePage}}" Margin="2"/>
             </StackPanel>
         </GroupBox>
     </Grid>
