@@ -118,7 +118,9 @@
     <Compile Include="Awesomium\IDataSource.cs" />
     <Compile Include="Awesomium\UriMapDataSource.cs" />
     <Compile Include="Awesomium\ResourceDataSource.cs" />
+    <Compile Include="Documents\DocumentMedia.cs" />
     <Compile Include="Documents\DocumentPageScale.cs" />
+    <Compile Include="Documents\IDocumentPresentation.cs" />
     <Compile Include="Properties\CommonVersionInfo.cs" />
     <Compile Include="ControlPanelLoadState.cs" />
     <Compile Include="Editor\BackgroundFileConverter.cs" />
@@ -162,9 +164,6 @@
     <Compile Include="Utils\AppendEllipsisConverter.cs" />
     <Compile Include="Utils\RemoveAccessKeyConverter.cs" />
     <Compile Include="Documents\XpsDocument.cs" />
-    <Compile Include="Documents\XpsDocumentControlPanel.xaml.cs">
-      <DependentUpon>XpsDocumentControlPanel.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Documents\XpsDocumentHandler.cs" />
     <Compile Include="Documents\XpsPresentation.cs" />
     <EmbeddedResource Include="Resources\pdf.html" />
@@ -181,10 +180,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Documents\DocumentControlPanel.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Documents\XpsDocumentControlPanel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

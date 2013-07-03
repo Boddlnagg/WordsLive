@@ -7,14 +7,11 @@ using WordsLive.Core;
 
 namespace WordsLive.Documents
 {
-	/// <summary>
-	/// Interaktionslogik für PdfControlPanel.xaml
-	/// </summary>
-	[TargetMedia(typeof(PdfDocument))]
+	[TargetMedia(typeof(DocumentMedia))]
 	public partial class DocumentControlPanel : UserControl, IMediaControlPanel, INotifyPropertyChanged
 	{
-		private PdfPresentation presentation;
-		private PdfDocument media;
+		private IDocumentPresentation presentation;
+		private DocumentMedia media;
 		private ControlPanelLoadState loadState = ControlPanelLoadState.Loading;
 		private DocumentPageScale pageScale = DocumentPageScale.FitToWidth;
 
@@ -82,22 +79,22 @@ namespace WordsLive.Documents
 
 		public void Init(Media media)
 		{
-			if (!(media is PdfDocument))
-				throw new ArgumentException("media must be of type PdfMedia");
+			if (!(media is DocumentMedia))
+				throw new ArgumentException("media must be of type DocumentMedia");
 
-			this.media = media as PdfDocument;
+			this.media = media as DocumentMedia;
 
 			if (!media.Uri.IsFile)
 				throw new NotImplementedException("Loading remote URIs not implemented yet.");
 
-			presentation = Controller.PresentationManager.CreatePresentation<PdfPresentation>();
+			presentation = this.media.CreatePresentation();
 			presentation.DocumentLoaded += (sender, args) =>
 			{
 				LoadState = ControlPanelLoadState.Loaded;
+				Controller.PresentationManager.CurrentPresentation = presentation;
 				OnPropertyChanged("FormattedPageCount");
 			};
-			presentation.Load(this.media);
-			Controller.PresentationManager.CurrentPresentation = presentation;
+			presentation.Load();
 		}
 
 		public bool IsUpdatable
@@ -107,7 +104,8 @@ namespace WordsLive.Documents
 
 		public void Close()
 		{
-			//presentation.Close();
+			if (presentation != Controller.PresentationManager.CurrentPresentation)
+				presentation.Close();
 		}
 
 		public ControlPanelLoadState LoadState

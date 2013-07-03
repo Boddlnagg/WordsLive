@@ -4,14 +4,16 @@ using WordsLive.Awesomium;
 
 namespace WordsLive.Documents
 {
-	public class PdfPresentation : AwesomiumPresentation
+	public class PdfPresentation : AwesomiumPresentation, IDocumentPresentation
 	{
 		JSObject bridge;
 		string uriKey;
 
+		public PdfDocument Document { get; internal set; }
+
 		public bool IsLoaded { get; private set; }
 
-		public void Load(PdfDocument pdf)
+		public void Load()
 		{
 			base.Load(true); // TODO: set to false
 			int nr = 0;
@@ -21,7 +23,7 @@ namespace WordsLive.Documents
 			} while (UriMapDataSource.Instance.Exists(uriKey));
 
 
-			UriMapDataSource.Instance.Add(uriKey, pdf.Uri);
+			UriMapDataSource.Instance.Add(uriKey, Document.Uri);
 			bridge = this.Control.Web.CreateGlobalJavascriptObject("bridge");
 			bridge["document"] = "asset://WordsLive/urimap/" + uriKey;
 			bridge.Bind("loaded", false, (sender, args) => {
