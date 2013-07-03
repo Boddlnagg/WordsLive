@@ -1,6 +1,8 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Windows.Controls;
-using WordsLive.Awesomium;
+using System.Windows.Data;
+using System.Windows.Input;
 using WordsLive.Core;
 
 namespace WordsLive
@@ -9,14 +11,17 @@ namespace WordsLive
 	/// Interaktionslogik für PdfControlPanel.xaml
 	/// </summary>
 	[TargetMedia(typeof(PdfMedia))]
-	public partial class PdfControlPanel : UserControl, IMediaControlPanel
+	public partial class PdfControlPanel : UserControl, IMediaControlPanel, INotifyPropertyChanged
 	{
 		private PdfPresentation presentation;
 		private PdfMedia media;
+		private ControlPanelLoadState loadState = ControlPanelLoadState.Loading;
+		private DocumentPageScale pageScale = DocumentPageScale.FitToWidth;
 
 		public PdfControlPanel()
 		{
 			InitializeComponent();
+			this.DataContext = this;
 		}
 
 		public Control Control
@@ -27,6 +32,52 @@ namespace WordsLive
 		public Media Media
 		{
 			get { return media; }
+		}
+
+		public string FormattedPageCount
+		{
+			get
+			{
+				return presentation.IsLoaded ? presentation.PageCount.ToString() : "-";
+			}
+		}
+
+		public int CurrentPage
+		{
+			get
+			{
+				return presentation.IsLoaded ? presentation.CurrentPage : 1;
+			}
+			set
+			{
+				if (value != presentation.CurrentPage)
+				{
+					presentation.GotoPage(value);
+				}
+			}
+		}
+
+		public DocumentPageScale PageScale
+		{
+			get
+			{
+				return pageScale;
+			}
+			set
+			{
+				if (pageScale != value)
+				{
+					pageScale = value;
+
+					if (pageScale == DocumentPageScale.FitToWidth)
+						presentation.FitToWidth();
+					else
+						presentation.WholePage();
+
+					OnPropertyChanged("PageScale");
+					OnPropertyChanged("CurrentPage");
+				}
+			}
 		}
 
 		public void Init(Media media)
@@ -40,6 +91,11 @@ namespace WordsLive
 				throw new NotImplementedException("Loading remote URIs not implemented yet.");
 
 			presentation = Controller.PresentationManager.CreatePresentation<PdfPresentation>();
+			presentation.DocumentLoaded += (sender, args) =>
+			{
+				LoadState = ControlPanelLoadState.Loaded;
+				OnPropertyChanged("FormattedPageCount");
+			};
 			presentation.Load(this.media);
 			Controller.PresentationManager.CurrentPresentation = presentation;
 		}
@@ -56,32 +112,62 @@ namespace WordsLive
 
 		public ControlPanelLoadState LoadState
 		{
-			get { return ControlPanelLoadState.Loaded; }
+			get
+			{
+				return loadState;
+			}
+			private set
+			{
+				loadState = value;
+				OnPropertyChanged("LoadState");
+			}
 		}
 
-		private void Button_Click(object sender, System.Windows.RoutedEventArgs e)
+		private void CommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)
 		{
-			presentation.GotoPage(int.Parse(pageTextBox.Text));
+			if (e.Command == NavigationCommands.PreviousPage || e.Command == NavigationCommands.NextPage)
+			{
+				e.CanExecute = LoadState == ControlPanelLoadState.Loaded;
+				e.Handled = true;
+			}
 		}
 
-		private void Button_Click_1(object sender, System.Windows.RoutedEventArgs e)
+		private void CommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
 		{
-			presentation.PreviousPage();
+			if (e.Command == NavigationCommands.PreviousPage)
+			{
+				presentation.PreviousPage();
+				OnPropertyChanged("CurrentPage");
+			}
+			else if (e.Command == NavigationCommands.NextPage)
+			{
+				presentation.NextPage();
+				OnPropertyChanged("CurrentPage");
+			}
 		}
 
-		private void Button_Click_2(object sender, System.Windows.RoutedEventArgs e)
+		public event PropertyChangedEventHandler PropertyChanged;
+
+		protected void OnPropertyChanged(string propertyName)
 		{
-			presentation.NextPage();
+			if (PropertyChanged != null)
+				PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 		}
 
-		private void Button_Click_3(object sender, System.Windows.RoutedEventArgs e)
+		private void TextBox_PreviewKeyDown(object sender, KeyEventArgs e)
 		{
-			presentation.FitToWidth();
+			var textBox = sender as TextBox;
+			if (e.Key == Key.Enter || e.Key == Key.Return)
+			{
+				BindingExpression exp = textBox.GetBindingExpression(TextBox.TextProperty);
+				exp.UpdateSource();
+			}
 		}
+	}
 
-		private void Button_Click_4(object sender, System.Windows.RoutedEventArgs e)
-		{
-			presentation.WholePage();
-		}
+	public enum DocumentPageScale
+	{
+		FitToWidth,
+		WholePage
 	}
 }

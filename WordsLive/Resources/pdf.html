@@ -14,7 +14,7 @@
 	</script>
   
 	<style>
-		body { margin: 0; overflow: hidden; background-color: gray;}
+		body { margin: 0; overflow: hidden; background-color: black;}
 		.pdfpage { position:relative; top: 0; left: 0; border-bottom: 1px solid gray; margin: auto; }
 		.pdfpage > canvas { position: absolute; top: 0; left: 0; }
 		.pdfpage > div { position: absolute; top: 0; left: 0; }
@@ -73,7 +73,7 @@
 		var doc;
 
 		function renderAll() {
-		    unscaledViewport = null;
+			unscaledViewport = null;
 			// Rendering all pages starting from first
 			var viewer = document.getElementById('viewer');
 			$(viewer).empty();
@@ -89,6 +89,7 @@
 		// Fetch the PDF document from the URL using promices
 		PDFJS.getDocument(bridge.document).then(function getPdfForm(pdf) {
 			doc = pdf;
+			bridge.loaded();
 			renderAll();
 		});
 
@@ -104,17 +105,17 @@
 		});
 
 		function wholePage() {
-		    if (!isWholePage) {
-		        isWholePage = true;
-		        renderAll();
-		    }
+			if (!isWholePage) {
+				isWholePage = true;
+				renderAll();
+			}
 		}
 
 		function fitToWidth() {
-		    if (isWholePage) {
-		        isWholePage = false;
-		        renderAll();
-		    }
+			if (isWholePage) {
+				isWholePage = false;
+				renderAll();
+			}
 		}
 
 		function gotoPage(p) {
@@ -133,6 +134,10 @@
 				if ($('#page_'+p).offset().top > t)
 					return p-1;
 			}
+			return doc.numPages;
+		}
+		
+		function getPageCount() {
 			return doc.numPages;
 		}
 	  
