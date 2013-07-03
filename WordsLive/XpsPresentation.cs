@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using WordsLive.Presentation.Wpf;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows;
+using WordsLive.Presentation.Wpf;
 
 
 namespace WordsLive
@@ -14,6 +10,9 @@ namespace WordsLive
 		public XpsPresentation()
 		{
 			this.Control.Style = Application.Current.FindResource("reducedDocumentViewer") as Style;
+			this.Control.ShowPageBorders = false;
+			this.Control.HorizontalPageSpacing = 0;
+			this.Control.VerticalPageSpacing = 0;
 		}
 		public void SetSourceDocument(XpsDocument doc)
 		{

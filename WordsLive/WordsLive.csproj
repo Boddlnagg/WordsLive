@@ -164,7 +164,7 @@
     <Compile Include="XpsDocumentControlPanel.xaml.cs">
       <DependentUpon>XpsDocumentControlPanel.xaml</DependentUpon>
     </Compile>
-    <Compile Include="XpsDocumentFileHandler.cs" />
+    <Compile Include="XpsDocumentHandler.cs" />
     <Compile Include="XpsPresentation.cs" />
     <EmbeddedResource Include="Resources\pdf.html" />
     <Page Include="Editor\SaveFilenameDialog.xaml">

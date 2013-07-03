@@ -69,8 +69,8 @@
 								BorderBrush="{TemplateBinding BorderBrush}" Focusable="False">
 							<Grid Background="{x:Static Brushes.Black}" KeyboardNavigation.TabNavigation="Local">
 								<ScrollViewer CanContentScroll="true"
-									HorizontalScrollBarVisibility="Auto"
-									VerticalScrollBarVisibility="Auto"
+									HorizontalScrollBarVisibility="Hidden"
+									VerticalScrollBarVisibility="Hidden"
 									x:Name="PART_ContentHost"
 									IsTabStop="true"/>
 							</Grid>
