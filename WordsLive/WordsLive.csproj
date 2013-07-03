@@ -366,10 +366,6 @@
       <DependentUpon>WebSiteControlPanel.xaml</DependentUpon>
     </Compile>
     <Resource Include="Artwork\LockChains.png" />
-    <None Include="..\3rdParty\pptviewlib.dll">
-      <Link>pptviewlib.dll</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <Content Include="Data\Standard.ppl">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
