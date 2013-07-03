@@ -2,8 +2,7 @@
 using System.Windows.Controls;
 using WordsLive.Presentation.Wpf;
 
-
-namespace WordsLive
+namespace WordsLive.Documents
 {
 	public class XpsPresentation : WpfPresentation<DocumentViewer>
 	{

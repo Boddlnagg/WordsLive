@@ -2,7 +2,7 @@
 using Awesomium.Core;
 using WordsLive.Awesomium;
 
-namespace WordsLive
+namespace WordsLive.Documents
 {
 	public class PdfPresentation : AwesomiumPresentation
 	{
@@ -11,7 +11,7 @@ namespace WordsLive
 
 		public bool IsLoaded { get; private set; }
 
-		public void Load(PdfMedia pdf)
+		public void Load(PdfDocument pdf)
 		{
 			base.Load(true); // TODO: set to false
 			int nr = 0;

@@ -1,9 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using WordsLive.Core;
-using System.IO;
-using System;
 
-namespace WordsLive
+namespace WordsLive.Documents
 {
 	public class XpsDocumentHandler : MediaTypeHandler
 	{

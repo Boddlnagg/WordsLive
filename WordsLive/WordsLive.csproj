@@ -118,6 +118,7 @@
     <Compile Include="Awesomium\IDataSource.cs" />
     <Compile Include="Awesomium\UriMapDataSource.cs" />
     <Compile Include="Awesomium\ResourceDataSource.cs" />
+    <Compile Include="Documents\DocumentPageScale.cs" />
     <Compile Include="Properties\CommonVersionInfo.cs" />
     <Compile Include="ControlPanelLoadState.cs" />
     <Compile Include="Editor\BackgroundFileConverter.cs" />
@@ -146,12 +147,12 @@
     <Compile Include="NotificationSettingsWindow.xaml.cs">
       <DependentUpon>NotificationSettingsWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="PdfControlPanel.xaml.cs">
-      <DependentUpon>PdfControlPanel.xaml</DependentUpon>
+    <Compile Include="Documents\DocumentControlPanel.xaml.cs">
+      <DependentUpon>DocumentControlPanel.xaml</DependentUpon>
     </Compile>
-    <Compile Include="PdfHandler.cs" />
-    <Compile Include="PdfMedia.cs" />
-    <Compile Include="PdfPresentation.cs" />
+    <Compile Include="Documents\PdfDocumentHandler.cs" />
+    <Compile Include="Documents\PdfDocument.cs" />
+    <Compile Include="Documents\PdfPresentation.cs" />
     <Compile Include="PluginSettingsDictionary.cs" />
     <Compile Include="Songs\MasterOverrideOptions.cs" />
     <Compile Include="Songs\SongDataObject.cs" />
@@ -160,12 +161,12 @@
     <Compile Include="Utils\EnumToIndexConverter.cs" />
     <Compile Include="Utils\AppendEllipsisConverter.cs" />
     <Compile Include="Utils\RemoveAccessKeyConverter.cs" />
-    <Compile Include="XpsDocument.cs" />
-    <Compile Include="XpsDocumentControlPanel.xaml.cs">
+    <Compile Include="Documents\XpsDocument.cs" />
+    <Compile Include="Documents\XpsDocumentControlPanel.xaml.cs">
       <DependentUpon>XpsDocumentControlPanel.xaml</DependentUpon>
     </Compile>
-    <Compile Include="XpsDocumentHandler.cs" />
-    <Compile Include="XpsPresentation.cs" />
+    <Compile Include="Documents\XpsDocumentHandler.cs" />
+    <Compile Include="Documents\XpsPresentation.cs" />
     <EmbeddedResource Include="Resources\pdf.html" />
     <Page Include="Editor\SaveFilenameDialog.xaml">
       <SubType>Designer</SubType>
@@ -179,11 +180,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="PdfControlPanel.xaml">
+    <Page Include="Documents\DocumentControlPanel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="XpsDocumentControlPanel.xaml">
+    <Page Include="Documents\XpsDocumentControlPanel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

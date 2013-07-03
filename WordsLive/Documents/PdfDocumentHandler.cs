@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using WordsLive.Core;
 
-namespace WordsLive
+namespace WordsLive.Documents
 {
-	public class PdfHandler : MediaTypeHandler
+	public class PdfDocumentHandler : MediaTypeHandler
 	{
 		public override IEnumerable<string> Extensions
 		{
@@ -26,7 +26,7 @@ namespace WordsLive
 
 		public override Media Handle(Uri uri, Dictionary<string, string> options)
 		{
-			return new PdfMedia(uri);
+			return new PdfDocument(uri);
 		}
 	}
 }

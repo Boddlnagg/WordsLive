@@ -5,20 +5,20 @@ using System.Windows.Data;
 using System.Windows.Input;
 using WordsLive.Core;
 
-namespace WordsLive
+namespace WordsLive.Documents
 {
 	/// <summary>
 	/// Interaktionslogik für PdfControlPanel.xaml
 	/// </summary>
-	[TargetMedia(typeof(PdfMedia))]
-	public partial class PdfControlPanel : UserControl, IMediaControlPanel, INotifyPropertyChanged
+	[TargetMedia(typeof(PdfDocument))]
+	public partial class DocumentControlPanel : UserControl, IMediaControlPanel, INotifyPropertyChanged
 	{
 		private PdfPresentation presentation;
-		private PdfMedia media;
+		private PdfDocument media;
 		private ControlPanelLoadState loadState = ControlPanelLoadState.Loading;
 		private DocumentPageScale pageScale = DocumentPageScale.FitToWidth;
 
-		public PdfControlPanel()
+		public DocumentControlPanel()
 		{
 			InitializeComponent();
 			this.DataContext = this;
@@ -82,10 +82,10 @@ namespace WordsLive
 
 		public void Init(Media media)
 		{
-			if (!(media is PdfMedia))
+			if (!(media is PdfDocument))
 				throw new ArgumentException("media must be of type PdfMedia");
 
-			this.media = media as PdfMedia;
+			this.media = media as PdfDocument;
 
 			if (!media.Uri.IsFile)
 				throw new NotImplementedException("Loading remote URIs not implemented yet.");
@@ -163,11 +163,5 @@ namespace WordsLive
 				exp.UpdateSource();
 			}
 		}
-	}
-
-	public enum DocumentPageScale
-	{
-		FitToWidth,
-		WholePage
 	}
 }

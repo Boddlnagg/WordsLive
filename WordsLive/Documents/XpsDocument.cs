@@ -3,7 +3,7 @@ using System.IO;
 using WordsLive.Core;
 using Xps = System.Windows.Xps.Packaging;
 
-namespace WordsLive
+namespace WordsLive.Documents
 {
 	public class XpsDocument : Media
 	{
