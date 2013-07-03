@@ -31,6 +31,26 @@ namespace WordsLive
 			this.Control.Web.ExecuteJavascript("gotoPage("+page.ToString()+");");
 		}
 
+		public void NextPage()
+		{
+			this.Control.Web.ExecuteJavascript("nextPage();");
+		}
+
+		public void PreviousPage()
+		{
+			this.Control.Web.ExecuteJavascript("prevPage();");
+		}
+
+		public void FitToWidth()
+		{
+			this.Control.Web.ExecuteJavascript("fitToWidth()");
+		}
+
+		public void WholePage()
+		{
+			this.Control.Web.ExecuteJavascript("wholePage()");
+		}
+
 		public override void Close()
 		{
 			base.Close();

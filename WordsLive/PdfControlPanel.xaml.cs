@@ -63,5 +63,25 @@ namespace WordsLive
 		{
 			presentation.GotoPage(int.Parse(pageTextBox.Text));
 		}
+
+		private void Button_Click_1(object sender, System.Windows.RoutedEventArgs e)
+		{
+			presentation.PreviousPage();
+		}
+
+		private void Button_Click_2(object sender, System.Windows.RoutedEventArgs e)
+		{
+			presentation.NextPage();
+		}
+
+		private void Button_Click_3(object sender, System.Windows.RoutedEventArgs e)
+		{
+			presentation.FitToWidth();
+		}
+
+		private void Button_Click_4(object sender, System.Windows.RoutedEventArgs e)
+		{
+			presentation.WholePage();
+		}
 	}
 }
