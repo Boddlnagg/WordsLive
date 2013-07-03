@@ -161,5 +161,23 @@ namespace WordsLive.Documents
 				exp.UpdateSource();
 			}
 		}
+
+		protected override void OnPreviewKeyDown(KeyEventArgs e)
+		{
+			base.OnPreviewKeyDown(e);
+
+			if (e.Key == Key.Right || e.Key == Key.Down || e.Key == Key.PageDown)
+			{
+				presentation.NextPage();
+				OnPropertyChanged("CurrentPage");
+				e.Handled = true;
+			}
+			else if (e.Key == Key.Left || e.Key == Key.Up || e.Key == Key.PageUp)
+			{
+				presentation.PreviousPage();
+				OnPropertyChanged("CurrentPage");
+				e.Handled = true;
+			}
+		}
 	}
 }

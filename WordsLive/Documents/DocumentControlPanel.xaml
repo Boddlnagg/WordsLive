@@ -7,7 +7,8 @@
              xmlns:wl="clr-namespace:WordsLive"
              xmlns:local="clr-namespace:WordsLive.Documents"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="400">
+             d:DesignHeight="300" d:DesignWidth="400"
+             Focusable="True">
     <UserControl.CommandBindings>
         <CommandBinding Command="NextPage" CanExecute="CommandBinding_CanExecute" Executed="CommandBinding_Executed"/>
         <CommandBinding Command="PreviousPage" CanExecute="CommandBinding_CanExecute" Executed="CommandBinding_Executed"/>
