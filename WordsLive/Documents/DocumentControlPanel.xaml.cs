@@ -49,7 +49,7 @@ namespace WordsLive.Documents
 			{
 				if (value != presentation.CurrentPage)
 				{
-					presentation.GotoPage(value);
+					presentation.GoToPage(value);
 				}
 			}
 		}
@@ -66,10 +66,7 @@ namespace WordsLive.Documents
 				{
 					pageScale = value;
 
-					if (pageScale == DocumentPageScale.FitToWidth)
-						presentation.FitToWidth();
-					else
-						presentation.WholePage();
+					presentation.PageScale = pageScale;
 
 					OnPropertyChanged("PageScale");
 					OnPropertyChanged("CurrentPage");
@@ -102,8 +99,12 @@ namespace WordsLive.Documents
 			get { return false; } // TODO
 		}
 
+		bool closed = false;
+
 		public void Close()
 		{
+			closed = true;
+
 			if (presentation != Controller.PresentationManager.CurrentPresentation)
 				presentation.Close();
 		}
@@ -123,9 +124,14 @@ namespace WordsLive.Documents
 
 		private void CommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)
 		{
-			if (e.Command == NavigationCommands.PreviousPage || e.Command == NavigationCommands.NextPage)
+			if (e.Command == NavigationCommands.PreviousPage)
 			{
-				e.CanExecute = LoadState == ControlPanelLoadState.Loaded;
+				e.CanExecute = LoadState == ControlPanelLoadState.Loaded && !closed && presentation.CanGoToPreviousPage;
+				e.Handled = true;
+			}
+			else if (e.Command == NavigationCommands.NextPage)
+			{
+				e.CanExecute = LoadState == ControlPanelLoadState.Loaded && !closed && presentation.CanGoToNextPage;
 				e.Handled = true;
 			}
 		}

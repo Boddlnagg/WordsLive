@@ -6,8 +6,9 @@ namespace WordsLive.Documents
 {
 	public class PdfPresentation : AwesomiumPresentation, IDocumentPresentation
 	{
-		JSObject bridge;
-		string uriKey;
+		private JSObject bridge;
+		private string uriKey;
+		private DocumentPageScale pageScale;
 
 		public PdfDocument Document { get; internal set; }
 
@@ -34,7 +35,7 @@ namespace WordsLive.Documents
 			this.Control.Web.LoadURL(new Uri("asset://WordsLive/pdf.html"));
 		}
 
-		public void GotoPage(int page)
+		public void GoToPage(int page)
 		{
 			if (!IsLoaded)
 				throw new InvalidOperationException("Document not loaded yet.");
@@ -58,20 +59,46 @@ namespace WordsLive.Documents
 			this.Control.Web.ExecuteJavascript("prevPage();");
 		}
 
-		public void FitToWidth()
+		public bool CanGoToPreviousPage
 		{
-			if (!IsLoaded)
-				throw new InvalidOperationException("Document not loaded yet.");
+			get
+			{
+				if (!IsLoaded)
+					throw new InvalidOperationException("Document not loaded yet.");
 
-			this.Control.Web.ExecuteJavascript("fitToWidth()");
+				return CurrentPage > 1;
+			}
 		}
 
-		public void WholePage()
+		public bool CanGoToNextPage
 		{
-			if (!IsLoaded)
-				throw new InvalidOperationException("Document not loaded yet.");
+			get
+			{
+				if (!IsLoaded)
+					throw new InvalidOperationException("Document not loaded yet.");
 
-			this.Control.Web.ExecuteJavascript("wholePage()");
+				return CurrentPage < PageCount;
+			}
+		}
+
+		public DocumentPageScale PageScale
+		{
+			get
+			{
+				return pageScale;
+			}
+			set
+			{
+				pageScale = value;
+
+				if (IsLoaded)
+				{
+					if (pageScale == DocumentPageScale.FitToWidth)
+						this.Control.Web.ExecuteJavascript("fitToWidth()");
+					else
+						this.Control.Web.ExecuteJavascript("wholePage()");
+				}
+			}
 		}
 
 		public int CurrentPage

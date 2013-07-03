@@ -7,16 +7,21 @@ namespace WordsLive.Documents
 {
 	public class XpsPresentation : WpfPresentation<DocumentViewer>, IDocumentPresentation
 	{
+		private DocumentPageScale pageScale = DocumentPageScale.FitToWidth;
+
 		public XpsPresentation()
 		{
 			this.Control.Style = Application.Current.FindResource("reducedDocumentViewer") as Style;
 			this.Control.ShowPageBorders = false;
 			this.Control.HorizontalPageSpacing = 0;
 			this.Control.VerticalPageSpacing = 0;
+			this.Control.SizeChanged += (sender, args) => ApplyPageScale();
 		}
+
 		public void SetSourceDocument(XpsDocument doc)
 		{
 			this.Control.Document = doc.Document.GetFixedDocumentSequence();
+			this.Control.FitToWidth();
 		}
 
 		public void Load()
@@ -37,7 +42,7 @@ namespace WordsLive.Documents
 			get { return Control.MasterPageNumber; }
 		}
 
-		public void GotoPage(int page)
+		public void GoToPage(int page)
 		{
 			Control.GoToPage(page);
 		}
@@ -52,14 +57,44 @@ namespace WordsLive.Documents
 			Control.NextPage();
 		}
 
-		public void FitToWidth()
+		public bool CanGoToPreviousPage
 		{
-			Control.FitToWidth();
+			get
+			{
+				return Control.CanGoToPreviousPage;
+			}
 		}
 
-		public void WholePage()
+		public bool CanGoToNextPage
 		{
-			Control.FitToMaxPagesAcross(1);
+			get
+			{
+				return Control.CanGoToNextPage;
+			}
+		}
+
+		public DocumentPageScale PageScale
+		{
+			get
+			{
+				return pageScale;
+			}
+			set
+			{
+				if (pageScale != value)
+				{
+					pageScale = value;
+					ApplyPageScale();
+				}
+			}
+		}
+
+		private void ApplyPageScale()
+		{
+			if (pageScale == DocumentPageScale.FitToWidth)
+				Control.FitToWidth();
+			else
+				Control.FitToMaxPagesAcross(1);
 		}
 
 		public event EventHandler DocumentLoaded;

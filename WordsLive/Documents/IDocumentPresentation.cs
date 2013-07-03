@@ -9,11 +9,12 @@ namespace WordsLive.Documents
 		bool IsLoaded { get; }
 		int PageCount { get; }
 		int CurrentPage { get; }
-		void GotoPage(int page);
+		void GoToPage(int page);
 		void PreviousPage();
 		void NextPage();
-		void FitToWidth();
-		void WholePage();
+		bool CanGoToPreviousPage { get; }
+		bool CanGoToNextPage { get; }
+		DocumentPageScale PageScale { get; set; }
 		event EventHandler DocumentLoaded;
 	}
 }
