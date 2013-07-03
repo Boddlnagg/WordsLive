@@ -1,0 +1,157 @@
+<!doctype html>
+<html>
+
+<head>
+	<title>PDF</title>
+	<!-- In production, only one script (pdf.js) is necessary -->
+	<script type="text/javascript" src="asset://WordsLive.Core/pdf.js"></script>
+	<script type="text/javascript" src="asset://WordsLive.Core/jquery.js"></script>
+	<script type="text/javascript" src="asset://WordsLive.Core/jquery.mousewheel.js"></script>
+	<script type="text/javascript">
+		// Specify the main script used to create a new PDF.JS web worker.
+		// In production, change this to point to the combined `pdf.js` file.
+		PDFJS.workerSrc = 'asset://WordsLive.Core/pdf.js';
+	</script>
+  
+	<style>
+		body { margin: 0; overflow: hidden; background-color: black;}
+		.pdfpage { position:relative; top: 0; left: 0; border-bottom: 1px solid gray; margin: auto; }
+		.pdfpage > canvas { position: absolute; top: 0; left: 0; }
+		.pdfpage > div { position: absolute; top: 0; left: 0; }
+	</style>
+
+	<script type="text/javascript">
+		'use strict';
+
+		var doc;
+		var isWholePage = false;
+		var unscaledViewport = null;
+		var scale;
+
+		function renderPage(div, pdf, pageNumber, callback) {
+			pdf.getPage(pageNumber).then(function(page) {
+				if (unscaledViewport === null) {
+					unscaledViewport = page.getViewport(1);
+					scale = $(document).width() / unscaledViewport.width;
+					if (isWholePage && unscaledViewport.height * scale > $(document).height()) {
+						scale = $(document).height() / unscaledViewport.height;
+					}
+				}
+				var viewport = page.getViewport(scale);
+
+				var pageDisplayWidth = viewport.width;
+				var pageDisplayHeight = viewport.height;
+
+				var pageDivHolder = document.createElement('div');
+				pageDivHolder.className = 'pdfpage';
+				$(pageDivHolder).attr('id', 'page_'+pageNumber);
+				pageDivHolder.style.width = pageDisplayWidth + 'px';
+				pageDivHolder.style.height = pageDisplayHeight + 'px';
+				div.appendChild(pageDivHolder);
+
+				// Prepare canvas using PDF page dimensions
+				var canvas = document.createElement('canvas');
+				var context = canvas.getContext('2d');
+				canvas.width = pageDisplayWidth;
+				canvas.height = pageDisplayHeight;
+				pageDivHolder.appendChild(canvas);
+
+
+				// Render PDF page into canvas context
+				var renderContext = {
+					canvasContext: context,
+					viewport: viewport
+				};
+				page.render(renderContext).then(callback);
+
+				// Prepare and populate form elements layer
+				var formDiv = document.createElement('div');
+				pageDivHolder.appendChild(formDiv);
+			});
+		}
+
+		var doc;
+
+		function renderAll() {
+			unscaledViewport = null;
+			// Rendering all pages starting from first
+			var viewer = document.getElementById('viewer');
+			$(viewer).empty();
+			var pageNumber = 1;
+			renderPage(viewer, doc, pageNumber++, function pageRenderingComplete() {
+				if (pageNumber > doc.numPages)
+					return; // All pages rendered
+				// Continue rendering of the next page
+				renderPage(viewer, doc, pageNumber++, pageRenderingComplete);
+			});
+		}
+
+		// Fetch the PDF document from the URL using promices
+		PDFJS.getDocument(bridge.document).then(function getPdfForm(pdf) {
+			doc = pdf;
+			bridge.loaded();
+			renderAll();
+		});
+
+		$(window).resize(function () {
+			renderAll();
+		});
+
+		$(function () {
+			$('#viewer').bind("mousewheel", function (ev, delta) {
+				var scrollTop = $(window).scrollTop();
+				$(window).scrollTop(scrollTop - Math.round(delta*50));
+			});
+		});
+
+		function wholePage() {
+			if (!isWholePage) {
+				isWholePage = true;
+				renderAll();
+			}
+		}
+
+		function fitToWidth() {
+			if (isWholePage) {
+				isWholePage = false;
+				renderAll();
+			}
+		}
+
+		function gotoPage(p) {
+			if (p >= 1 && p <= doc.numPages) {
+				$(window).scrollTop($('#page_'+p).offset().top)
+			}
+		}
+	  
+		function getCurrentPage() {
+			var t = $(window).scrollTop();
+			if (t == 0)
+				return 1;
+			
+			for (var p = 1; p <= doc.numPages; p++) {
+				//alert(p +': '+$('#page_' + p).offset().top + ' >= ' + t);
+				if ($('#page_'+p).offset().top > t)
+					return p-1;
+			}
+			return doc.numPages;
+		}
+		
+		function getPageCount() {
+			return doc.numPages;
+		}
+	  
+		function nextPage() {
+			gotoPage(getCurrentPage() + 1);
+		}
+	  
+		function prevPage() {
+			gotoPage(getCurrentPage() - 1);
+		}
+	</script>
+</head>
+
+<body>
+	<div id="viewer"></div>
+</body>
+</html>

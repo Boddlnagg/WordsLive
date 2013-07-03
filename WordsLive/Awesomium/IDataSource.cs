@@ -16,38 +16,14 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 using System;
-using System.Net;
-using System.Runtime.InteropServices;
 using Awesomium.Core.Data;
-using WordsLive.Core;
 
 namespace WordsLive.Awesomium
 {
-	public class BackgroundDataSource : IDataSource
+	public interface IDataSource
 	{
-		public bool HandleRequest(DataSourceRequest request, Action<DataSourceResponse> respond)
-		{
-			try
-			{
-				var bg = DataManager.Backgrounds.GetFile("/" + request.Path);
-				using (WebClient client = new WebClient())
-				{
-					var bytes = client.DownloadData(bg.Uri);
-					GCHandle pinnedBuffer = GCHandle.Alloc(bytes, GCHandleType.Pinned);
-					IntPtr pointer = pinnedBuffer.AddrOfPinnedObject();
-					respond(new DataSourceResponse
-					{
-						Buffer = pointer,
-						Size = (uint)bytes.Length
-					});
-				}
-				return true;
-			}
-			catch
-			{
-				return false;
-			}
-		}
+		bool HandleRequest(DataSourceRequest request, Action<DataSourceResponse> respond);
 	}
 }

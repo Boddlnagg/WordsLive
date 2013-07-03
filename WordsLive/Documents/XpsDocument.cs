@@ -1,11 +1,10 @@
 ﻿using System;
 using System.IO;
-using WordsLive.Core;
 using Xps = System.Windows.Xps.Packaging;
 
-namespace WordsLive
+namespace WordsLive.Documents
 {
-	public class XpsDocument : Media
+	public class XpsDocument : DocumentMedia
 	{
 		public Xps.XpsDocument Document { get; private set; }
 
@@ -17,6 +16,13 @@ namespace WordsLive
 				throw new NotImplementedException("Loading XPS document from remote URI not implemented yet.");
 
 			Document = new Xps.XpsDocument(this.Uri.LocalPath, FileAccess.Read);
+		}
+
+		public override IDocumentPresentation CreatePresentation()
+		{
+			var pres = Controller.PresentationManager.CreatePresentation<XpsPresentation>();
+			pres.SetSourceDocument(this);
+			return pres;
 		}
 	}
 }
