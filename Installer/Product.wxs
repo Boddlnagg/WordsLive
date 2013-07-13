@@ -143,6 +143,9 @@
 			<Component Id="PowerpointViewerLibDllComponent">
 				<File Source="$(var.WordsLive.TargetDir)PowerpointViewerLib.dll" Name="PowerpointViewerLib.dll" KeyPath="yes" />
 			</Component>
+		  <Component Id="OOoWorkaroundDllComponent">
+				<File Source="$(var.WordsLive.TargetDir)cli_oootypes.fixed.dll" Name="cli_oootypes.fixed.dll" KeyPath="yes" />
+			</Component>
 		</ComponentGroup>
 		<ComponentGroup Id="AwesomiumComponents" Directory="APPLICATIONFOLDER">
 			<Component Id="AwesomiumDllComponent">
