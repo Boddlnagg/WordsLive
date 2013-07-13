@@ -120,10 +120,10 @@ namespace WordsLive.Slideshow.Impress.Bridge
 			Area.WindowSizeChanged += Area_WindowSizeChanged;
 
 			Task.Factory.StartNew(PerformLoad).ContinueWith(t =>
-				Controller.Dispatcher.Invoke(new Action(() => { base.OnLoaded(false); throw t.Exception.InnerException; })),
+				Controller.Dispatcher.Invoke(new Action(() => { base.OnLoaded(false); throw new Exception("Exception occured while loading presentation", t.Exception.InnerException); })),
 				TaskContinuationOptions.OnlyOnFaulted); ;
 
-			Controller.FocusMainWindow();
+			Controller.FocusMainWindow(); // TODO: focus after loading
 		}
 
 		void PerformLoad()
