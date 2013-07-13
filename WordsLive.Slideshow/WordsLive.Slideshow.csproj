@@ -52,6 +52,7 @@
     </Compile>
     <Compile Include="Impress\ImpressHandler.cs" />
     <Compile Include="Impress\ImpressMedia.cs" />
+    <Compile Include="Interop.cs" />
     <Compile Include="ISlideshowPresentation.cs" />
     <Compile Include="PowerpointViewer\PowerpointHandler.cs" />
     <Compile Include="Resources\Resource.de.Designer.cs">
@@ -76,9 +77,8 @@
     </Compile>
     <Compile Include="PowerpointViewer\PowerpointViewerMedia.cs" />
     <Compile Include="PowerpointViewer\PowerpointViewerPresentation.cs" />
-    <Compile Include="SlideshowPreviewProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-	<None Include="..\3rdParty\pptviewlib.dll">
+    <None Include="..\3rdParty\pptviewlib.dll">
       <Link>pptviewlib.dll</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

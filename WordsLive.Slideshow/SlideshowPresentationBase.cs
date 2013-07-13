@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Windows.Media.Imaging;
 using WordsLive.Presentation;
 
 namespace WordsLive.Slideshow
@@ -54,13 +53,7 @@ namespace WordsLive.Slideshow
 			// not possible
 		}
 
-		protected virtual void LoadPreviewProvider()
-		{
-			Controller.Dispatcher.Invoke((Action)delegate
-			{
-				preview = new SlideshowPreviewProvider(this);
-			});
-		}
+		protected abstract void LoadPreviewProvider();
 
 		public IPreviewProvider Preview
 		{
@@ -72,9 +65,7 @@ namespace WordsLive.Slideshow
 
 		public virtual void Close()
 		{
-			var prev = preview as SlideshowPreviewProvider;
-			if (prev != null)
-				prev.Close();
+			// do nothing
 		}
 
 		#region Events
@@ -116,8 +107,6 @@ namespace WordsLive.Slideshow
 		public abstract void Show();
 
 		public abstract void Hide();
-
-		public abstract BitmapSource CaptureWindow(int width);
 
 		public abstract IList<SlideThumbnail> Thumbnails { get; }
 

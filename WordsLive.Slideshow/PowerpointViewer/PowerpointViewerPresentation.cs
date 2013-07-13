@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Threading.Tasks;
-using System.Windows.Media.Imaging;
 using PowerpointViewerLib;
 using WordsLive.Presentation;
 using WordsLive.Presentation.Wpf;
@@ -29,7 +28,7 @@ namespace WordsLive.Slideshow.PowerpointViewer
 						int animations = doc.GetSlideStepCount(i - 1) - 1;
 						thumbnails.Add(new SlideThumbnail
 						{
-							Image = SlideshowPreviewProvider.ConvertBitmap(bmp),
+							Image = Interop.ConvertBitmap(bmp),
 							Title = String.Format(Resource.slideN, i) + " (" +
 								(animations == 0 ? Resource.animations0 :
 								(animations == 1 ? Resource.animations1 :
@@ -198,12 +197,5 @@ namespace WordsLive.Slideshow.PowerpointViewer
 		{
 			doc.PrevStep();
 		}
-
-		public override BitmapSource CaptureWindow(int width)
-		{
-			return SlideshowPreviewProvider.ConvertBitmap(doc.CaptureWindow(width));
-		}
-
-		
 	}
 }

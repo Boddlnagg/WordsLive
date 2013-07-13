@@ -17,6 +17,11 @@ namespace WordsLive.Presentation.Wpf
 			}
 		}
 
+		public void UpdateSource(IntPtr windowHandle)
+		{
+			thumb.Source = windowHandle;
+		}
+
 		protected override UIElement WpfControl
 		{
 			get

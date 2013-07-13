@@ -13,6 +13,7 @@ using unoidl.com.sun.star.drawing;
 using unoidl.com.sun.star.frame;
 using unoidl.com.sun.star.lang;
 using unoidl.com.sun.star.presentation;
+using WordsLive.Presentation.Wpf;
 using WordsLive.Slideshow.Resources;
 
 namespace WordsLive.Slideshow.Impress.Bridge
@@ -237,6 +238,9 @@ namespace WordsLive.Slideshow.Impress.Bridge
 			{
 				ShowWindow(presentationHandle, 0); // hide presentation window if needed
 			}
+
+			if (preview != null)
+			(preview as LiveWindowPreviewProvider).UpdateSource(presentationHandle);
 		}
 
 		private void GetWindowHandles(out IntPtr presenterConsoleHandle, out IntPtr presentationHandle)
@@ -333,6 +337,14 @@ namespace WordsLive.Slideshow.Impress.Bridge
 			}
 		}
 
+		protected override void LoadPreviewProvider()
+		{
+			Controller.Dispatcher.Invoke((Action)delegate
+			{
+				preview = new LiveWindowPreviewProvider(presentationHandle);
+			});
+		}
+
 		public override void Show()
 		{
 			isShown = true;
@@ -380,43 +392,6 @@ namespace WordsLive.Slideshow.Impress.Bridge
 			{
 				return controller.getCurrentSlideIndex();
 			}
-		}
-
-		private Bitmap Capture(int thumbnailWidth)
-		{
-			Rect rc;
-			GetWindowRect(presentationHandle, out rc);
-
-			Bitmap bm = new Bitmap(Area.WindowSize.Width, Area.WindowSize.Height);
-			Graphics g = Graphics.FromImage(bm);
-			IntPtr hdc = g.GetHdc();
-
-			PrintWindow(presentationHandle, hdc, 0);
-
-			g.ReleaseHdc(hdc);
-			g.Flush();
-			g.Dispose();
-
-			if (thumbnailWidth > 0)
-			{
-				double ratio = (double)Area.WindowSize.Width / Area.WindowSize.Height;
-				int thumbnailHeight = (int)(thumbnailWidth / ratio);
-
-				Bitmap result = new Bitmap(thumbnailWidth, thumbnailHeight);
-				using (Graphics gg = Graphics.FromImage((Image)result))
-					gg.DrawImage(bm, 0, 0, thumbnailWidth, thumbnailHeight);
-				bm.Dispose();
-				return result;
-			}
-			else
-			{
-				return bm; // do not resize
-			}
-		}
-
-		public override System.Windows.Media.Imaging.BitmapSource CaptureWindow(int width)
-		{
-			return SlideshowPreviewProvider.ConvertBitmap(Capture(width));
 		}
 	}
 }
