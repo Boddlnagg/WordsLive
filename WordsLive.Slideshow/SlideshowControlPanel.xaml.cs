@@ -40,6 +40,8 @@ namespace WordsLive.Slideshow
 						LoadState = ControlPanelLoadState.Loaded;
 						Controller.PresentationManager.CurrentPresentation = pres;
 						this.slideListView.DataContext = pres.Thumbnails;
+						// make sure that toolbar buttons are enabled
+						CommandManager.InvalidateRequerySuggested();
 						this.Focus();
 					}
 					else

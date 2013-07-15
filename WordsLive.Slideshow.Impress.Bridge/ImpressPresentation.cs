@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -120,11 +119,10 @@ namespace WordsLive.Slideshow.Impress.Bridge
 
 			Area.WindowSizeChanged += Area_WindowSizeChanged;
 
-			Task.Factory.StartNew(PerformLoad).ContinueWith(t =>
+			var task = Task.Factory.StartNew(PerformLoad);
+			task.ContinueWith(t =>
 				Controller.Dispatcher.Invoke(new Action(() => { base.OnLoaded(false); throw new Exception("Exception occured while loading presentation", t.Exception.InnerException); })),
-				TaskContinuationOptions.OnlyOnFaulted); ;
-
-			Controller.FocusMainWindow(); // TODO: focus after loading
+				TaskContinuationOptions.OnlyOnFaulted);
 		}
 
 		void PerformLoad()
@@ -166,13 +164,39 @@ namespace WordsLive.Slideshow.Impress.Bridge
 			base.OnLoaded(true);
 		}
 
+		int? restoreSlideIndex = null;
+
 		void Area_WindowSizeChanged(object sender, EventArgs e)
 		{
-			if (presentationHandle != IntPtr.Zero)
-				MoveWindow(presentationHandle, 0, 0, Area.WindowSize.Width, Area.WindowSize.Height, true);
+			System.Windows.Forms.MessageBox.Show("Can't automatically resize this presentation. Please reload.");
+			//if (presentationHandle != IntPtr.Zero)
+			//{
+			//	restoreSlideIndex = controller.getCurrentSlideIndex();
+			//	if (currentDisplay != GetAreaDisplayIndex())
+			//	{
+			//		SetDisplay();
+			//	}
+			//	//ResizeWindow();
+			//}
 		}
 
-		private int GetDisplayIndex()
+		private void SetDisplay()
+		{
+			presentation.setPropertyValue("Display", new uno.Any(GetAreaDisplayIndex()));
+		}
+
+		private void ResizeWindow()
+		{
+			// MoveWindow will set the correct size, but only if the location is the displays's top-left corner.
+			// Furthemore when we resize the window, a dropshadow remains, because the window class has CS_DROPSHADOW enabled and we can't change the window class.
+			// Therefore we use Area.Screen.Bounds instead of Area.WindowLocation
+			MoveWindow(presentationHandle, Area.Screen.Bounds.Left, Area.Screen.Bounds.Top, Area.WindowSize.Width, Area.WindowSize.Height, true);
+
+			//IntPtr child = FindWindowEx(presentationHandle, IntPtr.Zero, "SALOBJECT", null);
+			//IntPtr child2 = FindWindowEx(child, IntPtr.Zero, "SALOBJECTCHILD", null);
+		}
+
+		private int GetAreaDisplayIndex()
 		{
 			for (int i = 0; i < System.Windows.Forms.Screen.AllScreens.Length; i++)
 			{
@@ -195,7 +219,9 @@ namespace WordsLive.Slideshow.Impress.Bridge
 		private void Start()
 		{
 			controller = null;
-			presentation.setPropertyValue("Display", new uno.Any(GetDisplayIndex()));
+
+			SetDisplay();
+
 			presentation.start();
 
 			int i = 1;
@@ -209,38 +235,41 @@ namespace WordsLive.Slideshow.Impress.Bridge
 			if (controller == null)
 				throw new InvalidOperationException(); // TODO (Slideshow.Impress)
 
+			var x = controller.isFullScreen();
+
 			controller.addSlideShowListener(listener);
 
-			controller.gotoSlideIndex(0);
+			controller.gotoSlideIndex(restoreSlideIndex.HasValue ? restoreSlideIndex.Value : 0);
 
 			IntPtr presenterConsoleHandle;
 
 			GetWindowHandles(out presenterConsoleHandle, out presentationHandle);
 
-			//int CS_DROPSHADOW = 0x20000;
-			//var bit = GetClassLongPtr(presentationHandle, -26).ToInt32() & CS_DROPSHADOW;
-			//SetClassLong(presentationHandle, -26, new IntPtr(GetClassLongPtr(presentationHandle, -26).ToInt32() & ~CS_DROPSHADOW));
-			//Console.WriteLine(Marshal.GetLastWin32Error()); // 5 = Access denied
-			//bit = GetClassLongPtr(presentationHandle, -26).ToInt32() & CS_DROPSHADOW;
-
-
-			//IntPtr child = FindWindowEx(presentationHandle, IntPtr.Zero, "SALOBJECT", null);
-			//IntPtr child2 = FindWindowEx(child, IntPtr.Zero, "SALOBJECTCHILD", null);
-
-			// Resizing the window works, but a dropshadow remains and moving doesn't, so we'll ignore Area.WindowLocation
-			MoveWindow(presentationHandle, 0, 0, Area.WindowSize.Width, Area.WindowSize.Height, true);
-
 			WordsLive.Presentation.Wpf.Interop.RemoveFromAeroPeek(presentationHandle);
 
-			ShowWindow(presenterConsoleHandle, 0); // hide presenter console
+			if (presenterConsoleHandle != IntPtr.Zero)
+			{
+				ShowWindow(presenterConsoleHandle, 0); // hide presenter console
+			}
+
+			ResizeWindow();
 
 			if (!isShown)
 			{
-				ShowWindow(presentationHandle, 0); // hide presentation window if needed
+				ShowWindow(presentationHandle,11); // hide presentation window if needed // 0
+
+				IntPtr child = FindWindowEx(presentationHandle, IntPtr.Zero, "SALOBJECT", null);
+				IntPtr child2 = FindWindowEx(child, IntPtr.Zero, "SALOBJECTCHILD", null);
+
+				ShowWindow(child, 11);
 			}
 
 			if (preview != null)
-			(preview as LiveWindowPreviewProvider).UpdateSource(presentationHandle);
+			{
+				(preview as LiveWindowPreviewProvider).UpdateSource(presentationHandle);
+			}
+
+			Controller.Dispatcher.Invoke(new Action(() => Controller.FocusMainWindow()));
 		}
 
 		private void GetWindowHandles(out IntPtr presenterConsoleHandle, out IntPtr presentationHandle)
@@ -249,11 +278,18 @@ namespace WordsLive.Slideshow.Impress.Bridge
 			IntPtr parent = presenterConsoleHandle;
 			IntPtr child = IntPtr.Zero;
 
-			while (child == IntPtr.Zero)
+			int i = 0;
+
+			while (child == IntPtr.Zero && i++ < 100)
 			{
 				parent = FindWindowEx(IntPtr.Zero, parent, "SALTMPSUBFRAME", null);
 				child = FindWindowEx(parent, IntPtr.Zero, "SALOBJECT", null);
 			}
+			if (child == IntPtr.Zero)
+			{
+				throw new InvalidOperationException("Couldn't find presentation window.");
+			}
+
 			presentationHandle = parent;
 		}
 
@@ -295,15 +331,11 @@ namespace WordsLive.Slideshow.Impress.Bridge
 		{
 			try
 			{
-				if (presentationEnded || controller.getCurrentSlideIndex() == -1)
+				if (!RestartIfNecessary())
 				{
-					controller.removeSlideShowListener(listener);
-					presentation.end();
-					Start();
-					Controller.FocusMainWindow();
-					presentationEnded = false;
+					restoreSlideIndex = controller.getCurrentSlideIndex();
 				}
-				controller.gotoSlideIndex(index);
+				Task.Factory.StartNew(() => controller.gotoSlideIndex(index));
 			}
 			catch (DisposedException)
 			{
@@ -315,8 +347,11 @@ namespace WordsLive.Slideshow.Impress.Bridge
 		{
 			try
 			{
-				if (!presentationEnded)
+				if (!RestartIfNecessary())
+				{
+					restoreSlideIndex = controller.getCurrentSlideIndex();
 					controller.gotoNextEffect();
+				}
 			}
 			catch (DisposedException)
 			{
@@ -327,13 +362,34 @@ namespace WordsLive.Slideshow.Impress.Bridge
 		public override void PreviousStep()
 		{
 			try
-			{ 
-				if (!presentationEnded)
-					controller.gotoPreviousEffect();
+			{
+				if (!RestartIfNecessary())
+				{
+					restoreSlideIndex = controller.getCurrentSlideIndex();
+					// use a new task here to work around an issue with multiple successive calls to this method
+					// (callee freezes, might be a deadlock)
+					Task.Factory.StartNew(() => controller.gotoPreviousEffect());
+				}
 			}
 			catch (DisposedException)
 			{
 				OnClosedExternally();
+			}
+		}
+
+		private bool RestartIfNecessary()
+		{
+			if (presentationEnded || controller.getCurrentSlideIndex() == -1)
+			{
+				controller.removeSlideShowListener(listener);
+				presentation.end();
+				Start();
+				presentationEnded = false;
+				return true;
+			}
+			else
+			{
+				return false;
 			}
 		}
 
@@ -348,34 +404,40 @@ namespace WordsLive.Slideshow.Impress.Bridge
 		public override void Show()
 		{
 			isShown = true;
-			ShowWindow(presentationHandle, 8);
+			ShowWindow(presentationHandle, 4); // 8
+			ResizeWindow();
 			Controller.FocusMainWindow();
 		}
 
 		public override void Close()
 		{
-			try
+			Area.WindowSizeChanged -= Area_WindowSizeChanged;
+			Task.Factory.StartNew(() => {
+				try
+				{
+					if (presentation != null)
+						presentation.end();
+					if (component != null)
+						component.dispose();
+					if (desktop != null && desktop.getCurrentComponent() == null) // no component is running anymore
+						desktop.terminate();
+				}
+				catch (DisposedException)
+				{
+					// ignore
+				}
+			}).ContinueWith((t) => 
 			{
-				if (presentation != null)
-					presentation.end();
-				if (component != null)
-					component.dispose();
-				if (desktop != null && desktop.getCurrentComponent() == null) // no component is running anymore
-					desktop.terminate();
-			}
-			catch (DisposedException)
-			{
-				// ignore
-			}
-			controller = null;
+				controller = null;
 
-			base.Close();
+				base.Close();
+			});
 		}
 
 		public override void Hide()
 		{
 			isShown = false;
-			ShowWindow(presentationHandle, 0);
+			ShowWindow(presentationHandle, 11); // 0
 		}
 
 		public override IList<SlideThumbnail> Thumbnails
@@ -390,7 +452,14 @@ namespace WordsLive.Slideshow.Impress.Bridge
 		{
 			get
 			{
-				return controller.getCurrentSlideIndex();
+				try
+				{
+					return controller.getCurrentSlideIndex();
+				}
+				catch (DisposedException)
+				{
+					return -1;
+				}
 			}
 		}
 	}
