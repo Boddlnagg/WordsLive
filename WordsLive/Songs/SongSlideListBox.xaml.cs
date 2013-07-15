@@ -176,9 +176,9 @@ namespace WordsLive.Songs
 			public int OrderPosition { get; set; } // this is needed so every slide will be unique
 		}
 
-		protected override void OnKeyDown(System.Windows.Input.KeyEventArgs e)
+		protected override void OnKeyDown(KeyEventArgs e)
 		{
-			if (e.Key == System.Windows.Input.Key.Enter || e.Key == System.Windows.Input.Key.Return)
+			if (e.Key == Key.Enter || e.Key == Key.Return)
 			{
 				if (Keyboard.FocusedElement is ListBoxItem)
 				{
@@ -191,7 +191,23 @@ namespace WordsLive.Songs
 					}
 				}
 			}
-
+			else if (e.Key == Key.PageDown || e.Key == Key.Down || e.Key == Key.Right)
+			{
+				if (SelectedIndex + 1 < Items.Count)
+				{
+					SelectedIndex++;
+					e.Handled = true;
+				}
+			}
+			else if (e.Key == Key.PageUp || e.Key == Key.Up || e.Key == Key.Left)
+			{
+				if (SelectedIndex > 0)
+				{
+					SelectedIndex--;
+					e.Handled = true;
+				}
+			}
+			
 			string part;
 			if (partAccessKeys.ContainsKey(e.Key.ToString()))
 				part = partAccessKeys[e.Key.ToString()];
