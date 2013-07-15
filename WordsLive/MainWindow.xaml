@@ -17,7 +17,8 @@
 	Top="{Binding Source={StaticResource settings}, Path=Default.MainWindowTop, Mode=TwoWay}"
 	Left="{Binding Source={StaticResource settings}, Path=Default.MainWindowLeft, Mode=TwoWay}"
 	WindowState="{Binding Source={StaticResource settings}, Path=Default.MainWindowState, Mode=TwoWay}"
-	Icon="/WordsLive;component/Artwork/Viewer.png ">
+	Icon="/WordsLive;component/Artwork/Viewer.png "
+    Loaded="Window_Loaded">
 	<Window.CommandBindings>
 		<CommandBinding Command="Open" Executed="OnExecuteCommand"/>
 		<CommandBinding Command="Save" CanExecute="OnCommandCanExecute" Executed="OnExecuteCommand"/>

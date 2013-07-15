@@ -952,5 +952,10 @@ namespace WordsLive
 		}
 
 		#endregion
+
+		private void Window_Loaded(object sender, RoutedEventArgs e)
+		{
+			WordsLive.Presentation.Wpf.WpfPresentationWindow.Instance.Owner = this;
+		}
 	}
 }
