@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
 using unoidl.com.sun.star.awt;
@@ -168,16 +169,10 @@ namespace WordsLive.Slideshow.Impress.Bridge
 
 		void Area_WindowSizeChanged(object sender, EventArgs e)
 		{
-			System.Windows.Forms.MessageBox.Show("Can't automatically resize this presentation. Please reload.");
-			//if (presentationHandle != IntPtr.Zero)
-			//{
-			//	restoreSlideIndex = controller.getCurrentSlideIndex();
-			//	if (currentDisplay != GetAreaDisplayIndex())
-			//	{
-			//		SetDisplay();
-			//	}
-			//	//ResizeWindow();
-			//}
+			if (presentationHandle != IntPtr.Zero)
+			{
+				ResizeWindow();
+			}
 		}
 
 		private void SetDisplay()
@@ -190,6 +185,11 @@ namespace WordsLive.Slideshow.Impress.Bridge
 			// MoveWindow will set the correct size, but only if the location is the displays's top-left corner.
 			// Furthemore when we resize the window, a dropshadow remains, because the window class has CS_DROPSHADOW enabled and we can't change the window class.
 			// Therefore we use Area.Screen.Bounds instead of Area.WindowLocation
+			MoveWindow(presentationHandle, Area.Screen.Bounds.Left, Area.Screen.Bounds.Top, Area.WindowSize.Width, Area.WindowSize.Height, true);
+
+			// wait a moment and resize again (this is needed, for when the display changes,
+			// the first call will only move it to the correct screen but leave the window in fullscreen mode)
+			Thread.Sleep(100);
 			MoveWindow(presentationHandle, Area.Screen.Bounds.Left, Area.Screen.Bounds.Top, Area.WindowSize.Width, Area.WindowSize.Height, true);
 
 			//IntPtr child = FindWindowEx(presentationHandle, IntPtr.Zero, "SALOBJECT", null);
@@ -227,7 +227,7 @@ namespace WordsLive.Slideshow.Impress.Bridge
 			int i = 1;
 			while (controller == null && i < 150)
 			{
-				System.Threading.Thread.Sleep(100);
+				Thread.Sleep(100);
 				i++;
 				controller = presentation.getController();
 			}
@@ -335,6 +335,8 @@ namespace WordsLive.Slideshow.Impress.Bridge
 				{
 					restoreSlideIndex = controller.getCurrentSlideIndex();
 				}
+				// use a new task here to work around an issue with multiple successive calls to this method
+				// (callee freezes, might be a deadlock)
 				Task.Factory.StartNew(() => controller.gotoSlideIndex(index));
 			}
 			catch (DisposedException)
@@ -350,7 +352,9 @@ namespace WordsLive.Slideshow.Impress.Bridge
 				if (!RestartIfNecessary())
 				{
 					restoreSlideIndex = controller.getCurrentSlideIndex();
-					controller.gotoNextEffect();
+					// use a new task here to work around an issue with multiple successive calls to this method
+					// (callee freezes, might be a deadlock)
+					Task.Factory.StartNew(() => controller.gotoNextEffect());
 				}
 			}
 			catch (DisposedException)
@@ -405,7 +409,6 @@ namespace WordsLive.Slideshow.Impress.Bridge
 		{
 			isShown = true;
 			ShowWindow(presentationHandle, 4); // 8
-			ResizeWindow();
 			Controller.FocusMainWindow();
 		}
 
