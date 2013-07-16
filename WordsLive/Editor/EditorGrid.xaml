@@ -17,17 +17,24 @@
 		<CommandBinding Command="{x:Static my:CustomCommands.ChooseBackground}" CanExecute="GridCommand_CanExecute" Executed="GridCommand_Executed"/>
 	</Grid.CommandBindings>
 	<Grid.Resources>
+		<ContextMenu x:Key="extendedTextBoxContextMenu">
+			<MenuItem Command="Cut" />
+			<MenuItem Command="Copy" />
+			<MenuItem Command="Paste" />
+			<MenuItem Command="SelectAll" />
+		</ContextMenu>
 		<local:LanguageToLanguageCodeConverter x:Key="languageToLanguageCodeConverter"/>
 		<local:EditControlHeaderConverter x:Key="editControlHeaderConverter"/>
 		<nodes:TreeNodeProvider x:Key="treeNodeProvider"/>
 		<DataTemplate x:Key="emptyEditTemplate"/>
 		<DataTemplate x:Key="editCopyrightTextBoxTemplate">
 			<TextBox AcceptsReturn="True" IsUndoEnabled="False"
-			Text="{Binding Path=Root.Copyright, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+					 Text="{Binding Path=Root.Copyright, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+					 ContextMenu="{StaticResource extendedTextBoxContextMenu}"/>
 		</DataTemplate>
 		<DataTemplate x:Key="editCategoryTextBoxTemplate">
 			<TextBox AcceptsReturn="True" IsUndoEnabled="False"
-			Text="{Binding Path=Root.Category, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+					 Text="{Binding Path=Root.Category, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 		</DataTemplate>
 		<DataTemplate x:Key="editTextWithTranslationTemplate">
 			<Grid Background="White">
@@ -41,11 +48,13 @@
 				<TextBox Name="TextTextBox" Grid.Column="0" AcceptsReturn="True" IsUndoEnabled="False"
 					 Language="{Binding Path=Root.Language, Converter={StaticResource languageToLanguageCodeConverter}, ConverterCulture=en-US}"
 					 Text="{Binding Path=Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-					 SpellCheck.IsEnabled="{Binding ElementName=EnableSpellCheckCheckBox, Path=IsChecked, Mode=OneWay}"/>
+					 SpellCheck.IsEnabled="{Binding ElementName=EnableSpellCheckCheckBox, Path=IsChecked, Mode=OneWay}"
+                     ContextMenu="{StaticResource extendedTextBoxContextMenu}"/>
 				<TextBox Grid.Column="2" Name="TranslationTextBox" AcceptsReturn="True" IsUndoEnabled="False"
 					 Text="{Binding Path=Translation, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
 					 Language="{Binding Path=Root.TranslationLanguage, Converter={StaticResource languageToLanguageCodeConverter}, ConverterCulture=en-US}"
-					 SpellCheck.IsEnabled="{Binding ElementName=EnableSpellCheckCheckBox, Path=IsChecked, Mode=OneWay}"/>
+					 SpellCheck.IsEnabled="{Binding ElementName=EnableSpellCheckCheckBox, Path=IsChecked, Mode=OneWay}"
+                     ContextMenu="{StaticResource extendedTextBoxContextMenu}"/>
 				<Expander Name="TranslationExpander" Grid.Column="3" ExpandDirection="Left" IsExpanded="{Binding ElementName=StructureTree, Path=SelectedItem.Root.HasTranslation, Mode=OneTime}"
 					  Expanded="TranslationExpanderExpanded">
 					<Expander.Header>

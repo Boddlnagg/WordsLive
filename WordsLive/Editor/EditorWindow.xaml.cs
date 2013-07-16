@@ -233,6 +233,8 @@ namespace WordsLive.Editor
 			if (doc == null)
 				throw new ArgumentNullException("doc");
 
+			bool doSave = false;
+
 			if (doc.Song.IsModified)
 			{
 				var res = MessageBox.Show(String.Format(Resource.eMsgSaveSongChanges, doc.Song.Title), Resource.eMsgSaveSongChangesTitle, MessageBoxButton.YesNoCancel);
@@ -243,15 +245,24 @@ namespace WordsLive.Editor
 
 				if (res == MessageBoxResult.Yes)
 				{
+					doSave = true;
 					SaveSong(doc.Song);
 				}
 			}
 
-			openDocuments.Remove(doc);
+			bool didSave = !doc.Song.IsModified;
 
-			doc.Grid.Cleanup();
-
-			return true;
+			// it might still be modified when saving was cancelled
+			if (!doSave || didSave)
+			{
+				openDocuments.Remove(doc);
+				doc.Grid.Cleanup();
+				return true;
+			}
+			else
+			{
+				return false;
+			}
 		}
 
 		private void Tabs_Drop(object sender, DragEventArgs e)
