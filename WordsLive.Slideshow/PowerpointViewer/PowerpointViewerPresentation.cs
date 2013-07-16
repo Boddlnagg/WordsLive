@@ -41,6 +41,14 @@ namespace WordsLive.Slideshow.PowerpointViewer
 			}
 		}
 
+		public override bool IsEndless
+		{
+			get
+			{
+				return doc.IsEndless;
+			}
+		}
+
 		PowerpointViewerDocument doc;
 		private bool showOnLoaded = false;
 		private bool isShown = false;

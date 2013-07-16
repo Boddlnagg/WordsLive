@@ -110,6 +110,8 @@ namespace WordsLive.Slideshow
 
 		public abstract IList<SlideThumbnail> Thumbnails { get; }
 
+		public abstract bool IsEndless { get; }
+
 		public abstract int SlideIndex { get; }
 
 		#endregion

@@ -22,6 +22,7 @@ namespace WordsLive.Slideshow
 		void PreviousStep();
 		int SlideIndex { get; }
 		IList<SlideThumbnail> Thumbnails { get; }
+		bool IsEndless { get; }
 		event EventHandler<SlideshowLoadedEventArgs> Loaded;
 		event EventHandler SlideIndexChanged;
 		event EventHandler ClosedExternally;

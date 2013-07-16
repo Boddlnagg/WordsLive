@@ -108,6 +108,19 @@ namespace WordsLive.Slideshow.Impress.Bridge
 
 		List<SlideThumbnail> thumbnails = new List<SlideThumbnail>();
 
+		private bool? isEndless = null;
+
+		public override bool IsEndless
+		{
+			get
+			{
+				if (!isEndless.HasValue)
+					throw new InvalidOperationException("Slideshow not loaded yet.");
+
+				return isEndless.Value;
+			}
+		}
+
 		public void Init(FileInfo file)
 		{
 			this.file = file;
@@ -230,6 +243,9 @@ namespace WordsLive.Slideshow.Impress.Bridge
 				throw new InvalidOperationException(); // TODO (Slideshow.Impress)
 
 			controller.addSlideShowListener(listener);
+
+			if (!isEndless.HasValue)
+				isEndless = controller.isEndless();
 
 			controller.gotoSlideIndex(restoreSlideIndex.HasValue ? restoreSlideIndex.Value : 0);
 
