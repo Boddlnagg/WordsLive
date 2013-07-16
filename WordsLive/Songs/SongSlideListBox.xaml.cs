@@ -19,30 +19,30 @@ namespace WordsLive.Songs
 		private Dictionary<string, string> partAccessKeys = new Dictionary<string, string>();
 		private Dictionary<string, int> partAccessIndices = new Dictionary<string, int>();
 
-		public static readonly RoutedEvent SelectPreviousEvent =
+		public static readonly RoutedEvent NavigateBeyondFirstEvent =
 		EventManager.RegisterRoutedEvent(
-			"SelectPrevious",
+			"NavigateBeyondFirst",
 			RoutingStrategy.Bubble,
 			typeof(RoutedEventHandler),
 			typeof(SongSlideListBox));
 
-		public static readonly RoutedEvent SelectNextEvent =
+		public static readonly RoutedEvent NavigateBeyondLastEvent =
 		EventManager.RegisterRoutedEvent(
-			"SelectNext",
+			"NavigateBeyondLast",
 			RoutingStrategy.Bubble,
 			typeof(RoutedEventHandler),
 			typeof(SongSlideListBox));
 
-		public event RoutedEventHandler SelectPrevious
+		public event RoutedEventHandler NavigateBeyondFirst
 		{
-			add { AddHandler(SelectPreviousEvent, value); }
-			remove { RemoveHandler(SelectPreviousEvent, value); }
+			add { AddHandler(NavigateBeyondFirstEvent, value); }
+			remove { RemoveHandler(NavigateBeyondFirstEvent, value); }
 		}
 
-		public event RoutedEventHandler SelectNext
+		public event RoutedEventHandler NavigateBeyondLast
 		{
-			add { AddHandler(SelectNextEvent, value); }
-			remove { RemoveHandler(SelectNextEvent, value); }
+			add { AddHandler(NavigateBeyondLastEvent, value); }
+			remove { RemoveHandler(NavigateBeyondLastEvent, value); }
 		}
 
 		public SongSlide SelectedSlide
@@ -227,7 +227,7 @@ namespace WordsLive.Songs
 				}
 				else
 				{
-					RaiseEvent(new RoutedEventArgs(SelectNextEvent, this));
+					RaiseEvent(new RoutedEventArgs(NavigateBeyondLastEvent, this));
 				}
 			}
 			else if (e.Key == Key.PageUp || e.Key == Key.Up || e.Key == Key.Left)
@@ -239,7 +239,7 @@ namespace WordsLive.Songs
 				}
 				else
 				{
-					RaiseEvent(new RoutedEventArgs(SelectPreviousEvent, this));
+					RaiseEvent(new RoutedEventArgs(NavigateBeyondFirstEvent, this));
 				}
 			}
 			

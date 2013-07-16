@@ -192,7 +192,17 @@ namespace WordsLive.Images
 			}
 			else
 			{
-				Controller.TryActivatePrevious();
+				switch (FinishAction)
+				{
+					case FinishAction.Rerun:
+						slideListView.SelectedIndex = slideListView.Items.Count - 1;
+						break;
+					case FinishAction.NextMedia:
+					case FinishAction.Blackscreen:
+					case FinishAction.Stop:
+						Controller.TryActivatePrevious();
+						break;
+				}
 			}
 		}
 
