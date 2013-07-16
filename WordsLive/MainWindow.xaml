@@ -18,7 +18,7 @@
 	Left="{Binding Source={StaticResource settings}, Path=Default.MainWindowLeft, Mode=TwoWay}"
 	WindowState="{Binding Source={StaticResource settings}, Path=Default.MainWindowState, Mode=TwoWay}"
 	Icon="/WordsLive;component/Artwork/Viewer.png "
-    Loaded="Window_Loaded">
+	Loaded="Window_Loaded">
 	<Window.CommandBindings>
 		<CommandBinding Command="Open" Executed="OnExecuteCommand"/>
 		<CommandBinding Command="Save" CanExecute="OnCommandCanExecute" Executed="OnExecuteCommand"/>
@@ -213,6 +213,9 @@
 										<FontWeight>Bold</FontWeight>
 									</Setter.Value>
 								</Setter>
+							</DataTrigger>
+							<DataTrigger Binding="{Binding IsActivatable}" Value="False">
+								<Setter Property="Foreground" Value="Gray"/>
 							</DataTrigger>
 						</Style.Triggers>
 					</Style>

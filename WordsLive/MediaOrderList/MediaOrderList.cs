@@ -185,6 +185,7 @@ namespace WordsLive.MediaOrderList
 
 		private bool CanActivate(MediaOrderItem item)
 		{
+			// TODO: use item.Data.IsActivatable and get rid of the events somehow
 			if (item.Data is UnsupportedMedia)
 			{
 				OnNotifyTryOpenUnsupportedMedia(item.Data);

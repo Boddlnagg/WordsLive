@@ -32,6 +32,7 @@ namespace WordsLive.MediaOrderList
 			OnPropertyChanged("Title");
 			OnPropertyChanged("Path");
 			OnPropertyChanged("Icon");
+			OnPropertyChanged("IsActivatable");
 		}
 
 		public string Title
@@ -66,6 +67,14 @@ namespace WordsLive.MediaOrderList
 			get
 			{
 				return this.iconProvider.Icon;
+			}
+		}
+
+		public bool IsActivatable
+		{
+			get
+			{
+				return !(this.Data is FileNotFoundMedia || this.Data is UnsupportedMedia);
 			}
 		}
 
