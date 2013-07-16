@@ -304,15 +304,15 @@ namespace WordsLive
 			orderList.Reload(orderList.ActiveItem);
 		}
 
-		internal void TryActivateNext()
+		internal void TryActivateOffset(int offset)
 		{
 			if (ActiveMedia == null)
 				return;
 
-			int index = orderList.IndexOf(orderList.ActiveItem);
-			if (orderList.Count > index + 1)
+			int newIndex = orderList.IndexOf(orderList.ActiveItem) + offset;
+			if (newIndex >= 0 && newIndex < orderList.Count)
 			{
-				orderList.ActiveItem = orderList[index + 1];
+				orderList.ActiveItem = orderList[newIndex];
 			}
 		}
 

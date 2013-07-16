@@ -187,7 +187,13 @@ namespace WordsLive.Images
 		protected void ShowPrevious()
 		{
 			if (slideListView.SelectedIndex > 0)
+			{
 				slideListView.SelectedIndex--;
+			}
+			else
+			{
+				Controller.TryActivatePrevious();
+			}
 		}
 
 		public bool IsUpdatable

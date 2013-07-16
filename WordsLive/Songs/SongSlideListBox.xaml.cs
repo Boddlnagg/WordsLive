@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
@@ -17,6 +18,32 @@ namespace WordsLive.Songs
 		private Song song;
 		private Dictionary<string, string> partAccessKeys = new Dictionary<string, string>();
 		private Dictionary<string, int> partAccessIndices = new Dictionary<string, int>();
+
+		public static readonly RoutedEvent SelectPreviousEvent =
+		EventManager.RegisterRoutedEvent(
+			"SelectPrevious",
+			RoutingStrategy.Bubble,
+			typeof(RoutedEventHandler),
+			typeof(SongSlideListBox));
+
+		public static readonly RoutedEvent SelectNextEvent =
+		EventManager.RegisterRoutedEvent(
+			"SelectNext",
+			RoutingStrategy.Bubble,
+			typeof(RoutedEventHandler),
+			typeof(SongSlideListBox));
+
+		public event RoutedEventHandler SelectPrevious
+		{
+			add { AddHandler(SelectPreviousEvent, value); }
+			remove { RemoveHandler(SelectPreviousEvent, value); }
+		}
+
+		public event RoutedEventHandler SelectNext
+		{
+			add { AddHandler(SelectNextEvent, value); }
+			remove { RemoveHandler(SelectNextEvent, value); }
+		}
 
 		public SongSlide SelectedSlide
 		{
@@ -198,6 +225,10 @@ namespace WordsLive.Songs
 					SelectedIndex++;
 					e.Handled = true;
 				}
+				else
+				{
+					RaiseEvent(new RoutedEventArgs(SelectNextEvent, this));
+				}
 			}
 			else if (e.Key == Key.PageUp || e.Key == Key.Up || e.Key == Key.Left)
 			{
@@ -205,6 +236,10 @@ namespace WordsLive.Songs
 				{
 					SelectedIndex--;
 					e.Handled = true;
+				}
+				else
+				{
+					RaiseEvent(new RoutedEventArgs(SelectPreviousEvent, this));
 				}
 			}
 			

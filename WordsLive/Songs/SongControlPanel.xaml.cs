@@ -152,6 +152,16 @@ namespace WordsLive.Songs
 			}
 		}
 
+		private void ListBox_SelectNext(object sender, System.Windows.RoutedEventArgs e)
+		{
+			Controller.TryActivateNext();
+		}
+
+		private void ListBox_SelectPrevious(object sender, System.Windows.RoutedEventArgs e)
+		{
+			Controller.TryActivatePrevious();
+		}
+
 		public bool IsUpdatable
 		{
 			get { return true; }

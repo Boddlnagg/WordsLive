@@ -395,7 +395,12 @@ namespace WordsLive
 
 		public static void TryActivateNext()
 		{
-			instance.window.TryActivateNext();
+			instance.window.TryActivateOffset(1);
+		}
+
+		public static void TryActivatePrevious()
+		{
+			instance.window.TryActivateOffset(-1);
 		}
 
 		public static PluginSettingsDictionary PluginSettings

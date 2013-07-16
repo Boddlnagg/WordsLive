@@ -12,5 +12,6 @@
 	<UserControl.CommandBindings>
 		<CommandBinding Command="{x:Static my:CustomCommands.SwapTextAndTranslation}" CanExecute="OnCanExecuteCommand"/>
 	</UserControl.CommandBindings>
-	<local:SongSlideListBox x:Name="SlideListBox" SelectionChanged="ListBox_SelectionChanged" />
+	<local:SongSlideListBox x:Name="SlideListBox" SelectionChanged="ListBox_SelectionChanged"
+							SelectNext="ListBox_SelectNext"  SelectPrevious="ListBox_SelectPrevious"/>
 </UserControl>
