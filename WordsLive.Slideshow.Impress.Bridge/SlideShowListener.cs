@@ -1,7 +1,7 @@
 ﻿using System;
-using unoidl.com.sun.star.presentation;
-using unoidl.com.sun.star.lang;
 using unoidl.com.sun.star.animations;
+using unoidl.com.sun.star.lang;
+using unoidl.com.sun.star.presentation;
 
 namespace WordsLive.Slideshow.Impress.Bridge
 {
@@ -14,6 +14,7 @@ namespace WordsLive.Slideshow.Impress.Bridge
 		public event EventHandler SlideTransitionEnded;
 		public event EventHandler SlideEnded;
 		public event EventHandler Paused;
+		public event EventHandler SlideAnimationsEnded;
 
 		public void slideTransitionStarted()
 		{
@@ -45,6 +46,10 @@ namespace WordsLive.Slideshow.Impress.Bridge
 		public void disposing(EventObject Source) { }
 		public void hyperLinkClicked(string hyperLink) { }
 		public void resumed() { }
-		public void slideAnimationsEnded() { }
+		public void slideAnimationsEnded()
+		{
+			if (SlideAnimationsEnded != null)
+				SlideAnimationsEnded(this, EventArgs.Empty);
+		}
 	}
 }

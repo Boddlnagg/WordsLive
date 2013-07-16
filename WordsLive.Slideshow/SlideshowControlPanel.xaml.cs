@@ -54,7 +54,7 @@ namespace WordsLive.Slideshow
 
 			pres.SlideIndexChanged += (sender, args) =>
 			{
-				this.Dispatcher.Invoke(new Action(presentation_SlideChanged));
+				this.Dispatcher.BeginInvoke(new Action(presentation_SlideChanged));
 			};
 
 			pres.ClosedExternally += (sender, args) =>

@@ -102,7 +102,6 @@ namespace WordsLive.Slideshow.Impress.Bridge
 		XDesktop desktop;
 		SlideShowListener listener = new SlideShowListener();
 		IntPtr presentationHandle, mainHandle;
-		bool presentationEnded;
 		bool isShown;
 
 		FileInfo file;
@@ -150,11 +149,6 @@ namespace WordsLive.Slideshow.Impress.Bridge
 			listener.SlideTransitionStarted += (sender, args) =>
 			{
 				OnSlideIndexChanged();
-			};
-
-			listener.Paused += (sender, args) =>
-			{
-				presentationEnded = true;
 			};
 
 			Start();
@@ -234,8 +228,6 @@ namespace WordsLive.Slideshow.Impress.Bridge
 
 			if (controller == null)
 				throw new InvalidOperationException(); // TODO (Slideshow.Impress)
-
-			var x = controller.isFullScreen();
 
 			controller.addSlideShowListener(listener);
 
@@ -335,6 +327,7 @@ namespace WordsLive.Slideshow.Impress.Bridge
 				{
 					restoreSlideIndex = controller.getCurrentSlideIndex();
 				}
+
 				// use a new task here to work around an issue with multiple successive calls to this method
 				// (callee freezes, might be a deadlock)
 				Task.Factory.StartNew(() => controller.gotoSlideIndex(index));
@@ -352,9 +345,25 @@ namespace WordsLive.Slideshow.Impress.Bridge
 				if (!RestartIfNecessary())
 				{
 					restoreSlideIndex = controller.getCurrentSlideIndex();
+
+					bool isPaused = controller.isPaused();
+
 					// use a new task here to work around an issue with multiple successive calls to this method
 					// (callee freezes, might be a deadlock)
-					Task.Factory.StartNew(() => controller.gotoNextEffect());
+					Task.Factory.StartNew(() => 
+					{
+						controller.gotoNextEffect();
+						if (!isPaused)
+						{
+							Thread.Sleep(50);
+							if (controller.isPaused())
+							{
+								// gotoPreviousEffect needs to be called multiple times if
+								// there are effects on the last slide
+								controller.gotoPreviousSlide();
+							}
+						}
+					});
 				}
 			}
 			catch (DisposedException)
@@ -383,12 +392,11 @@ namespace WordsLive.Slideshow.Impress.Bridge
 
 		private bool RestartIfNecessary()
 		{
-			if (presentationEnded || controller.getCurrentSlideIndex() == -1)
+			if (controller.getCurrentSlideIndex() == -1)
 			{
 				controller.removeSlideShowListener(listener);
 				presentation.end();
 				Start();
-				presentationEnded = false;
 				return true;
 			}
 			else
