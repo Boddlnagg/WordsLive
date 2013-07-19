@@ -433,6 +433,10 @@ namespace WordsLive.Slideshow.Impress.Bridge
 		{
 			isShown = true;
 			ShowWindow(presentationHandle, 4); // 8
+			if (!Area.Fullscreen)
+			{
+				ResizeWindow();
+			}
 			Controller.FocusMainWindow();
 		}
 
