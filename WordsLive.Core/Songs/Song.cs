@@ -456,6 +456,7 @@ namespace WordsLive.Core.Songs
 			Sources = new ObservableCollection<SongSource>();
 			Order = new ObservableCollection<SongPartReference>();
 			Backgrounds = new ObservableCollection<SongBackground>();
+			this.uriResolver = SongUriResolver.Default;
 		}
 
 		public Song(string path) : this(new Uri(new FileInfo(path).FullName)) { }
