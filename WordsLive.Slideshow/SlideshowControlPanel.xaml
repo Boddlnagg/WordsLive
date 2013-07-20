@@ -29,7 +29,7 @@
 			</ListView.CommandBindings>
 			<ListView.Resources>
 				<Style TargetType="{x:Type Border}" x:Key="borderStyle">
-					<Setter Property="BorderBrush" Value="White"/>
+					<Setter Property="BorderBrush" Value="Transparent"/>
 					<Style.Triggers>
 						<DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType={x:Type ListBoxItem}},Path=IsSelected}" Value="True">
 							<Setter Property="BorderBrush" Value="{StaticResource {x:Static SystemColors.HighlightBrushKey}}"/>
