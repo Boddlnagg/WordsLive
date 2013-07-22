@@ -18,6 +18,9 @@ namespace WordsLive.Slideshow
 			InitializeComponent();
 
 			LoadState = ControlPanelLoadState.Loading;
+
+			// TODO: remove in a future version
+			Controller.PluginSettings.Unset(Settings.Namespace, "EnableLivePreview");
 		}
 
 		public Control Control

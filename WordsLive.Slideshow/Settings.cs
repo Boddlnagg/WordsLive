@@ -1,10 +1,9 @@
-﻿using System;
-
+﻿
 namespace WordsLive.Slideshow
 {
 	public static class Settings
 	{
-		private const string ns = "Slideshow";
+		public static readonly string Namespace = "Slideshow";
 
 		//public static bool EnableLivePreview
 		//{
