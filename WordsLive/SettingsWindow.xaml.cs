@@ -219,16 +219,6 @@ namespace WordsLive
 
 		#endregion
 
-		private void Button_Click(object sender, RoutedEventArgs e)
-		{
-			if (this.IsValid())
-			{
-				Properties.Settings.Default.DataServerPassword = dataServerPasswordBox.Password;
-				Properties.Settings.Default.EmbeddedServerPassword = embeddedServerPasswordBox.Password;
-				this.DialogResult = true;
-			}
-		}
-
 		public string Error
 		{
 			get { return null; }
@@ -259,6 +249,27 @@ namespace WordsLive
 				}
 				return null;
 			}
+		}
+
+		protected override void OnClosing(CancelEventArgs e)
+		{
+			base.OnClosing(e);
+
+			if (this.IsValid())
+			{
+				Properties.Settings.Default.DataServerPassword = dataServerPasswordBox.Password;
+				Properties.Settings.Default.EmbeddedServerPassword = embeddedServerPasswordBox.Password;
+				this.DialogResult = true;
+			}
+			else
+			{
+				e.Cancel = true;
+			}
+		}
+
+		private void Button_Click(object sender, RoutedEventArgs e)
+		{
+			this.Close();
 		}
 	}
 }
