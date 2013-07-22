@@ -45,6 +45,7 @@ namespace WordsLive.Awesomium
 				(this.Control.Web as WebControl).ProcessInput = ViewInput.None;
 
 			win = new Window();
+			win.Owner = WordsLive.Presentation.Wpf.WpfPresentationWindow.Instance.Owner;
 			win.Width = this.Area.WindowSize.Width;
 			win.Height = this.Area.WindowSize.Height;
 			win.Content = base.Control;
