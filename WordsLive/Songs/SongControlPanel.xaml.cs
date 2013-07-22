@@ -172,21 +172,15 @@ namespace WordsLive.Songs
 			get { return ControlPanelLoadState.Loaded; }
 		}
 
-		private bool showChords;
-
 		public bool ShowChords
 		{
 			get
 			{
-				return showChords;
+				return presentation.ShowChords;
 			}
 			set
 			{
-				if (value != showChords)
-				{
-					showChords = value;
-					presentation.ShowChords = value;
-				}
+				presentation.ShowChords = value;
 			}
 		}
 

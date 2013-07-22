@@ -120,6 +120,7 @@ namespace WordsLive.Songs
 		void Web_ProcessCreated(object sender, WebViewEventArgs e)
 		{
 			controller = new SongDisplayController(Control.Web, SongDisplayController.FeatureLevel.None);
+			controller.ShowChords = showChords;
 
 			controller.SongLoaded += (s, args) =>
 			{

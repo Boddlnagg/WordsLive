@@ -2,7 +2,6 @@
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
 using Awesomium.Core;
 using Awesomium.Windows.Controls;
 using WordsLive.Core.Songs;

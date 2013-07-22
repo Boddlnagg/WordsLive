@@ -36,7 +36,7 @@ namespace WordsLive.Songs
 			{
 				showChords = value;
 				if (loaded)
-					control.ExecuteJavascript("presentation.setShowChords("+JsonConvert.SerializeObject(showChords)+")");
+					control.ExecuteJavascript("presentation.setShowChords(" + JsonConvert.SerializeObject(showChords) + ")");
 			}
 		}
 
