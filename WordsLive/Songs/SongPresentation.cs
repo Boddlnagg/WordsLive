@@ -216,6 +216,9 @@ namespace WordsLive.Songs
 
 		public override void Close()
 		{
+			(Control.Web.Surface as ImageSurface).Updated -= web_Updated;
+			Control.Web.ProcessCreated -= Web_ProcessCreated;
+
 			base.Close();
 			if (videoBackground != null)
 				videoBackground.Destroy();

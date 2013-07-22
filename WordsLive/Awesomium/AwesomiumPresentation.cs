@@ -93,6 +93,9 @@ namespace WordsLive.Awesomium
 
 		public override void Close()
 		{
+			Control.Web.ShowCreatedWebView -= OnShowCreatedWebView;
+			Control.Web.Crashed -= OnWebviewCrashed;
+
 			base.Close();
 			this.Control.Close();
 			if (win != null)

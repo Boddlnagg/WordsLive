@@ -118,6 +118,11 @@ namespace WordsLive.Awesomium
 			{
 				area.WindowSizeChanged -= area_WindowSizeChanged;
 			}
+
+			if (Web != null)
+			{
+				Web.Dispose();
+			}
 		}
 	}
 }

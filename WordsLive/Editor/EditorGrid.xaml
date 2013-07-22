@@ -49,12 +49,12 @@
 					 Language="{Binding Path=Root.Language, Converter={StaticResource languageToLanguageCodeConverter}, ConverterCulture=en-US}"
 					 Text="{Binding Path=Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
 					 SpellCheck.IsEnabled="{Binding ElementName=EnableSpellCheckCheckBox, Path=IsChecked, Mode=OneWay}"
-                     ContextMenu="{StaticResource extendedTextBoxContextMenu}"/>
+					 ContextMenu="{StaticResource extendedTextBoxContextMenu}"/>
 				<TextBox Grid.Column="2" Name="TranslationTextBox" AcceptsReturn="True" IsUndoEnabled="False"
 					 Text="{Binding Path=Translation, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
 					 Language="{Binding Path=Root.TranslationLanguage, Converter={StaticResource languageToLanguageCodeConverter}, ConverterCulture=en-US}"
 					 SpellCheck.IsEnabled="{Binding ElementName=EnableSpellCheckCheckBox, Path=IsChecked, Mode=OneWay}"
-                     ContextMenu="{StaticResource extendedTextBoxContextMenu}"/>
+					 ContextMenu="{StaticResource extendedTextBoxContextMenu}"/>
 				<Expander Name="TranslationExpander" Grid.Column="3" ExpandDirection="Left" IsExpanded="{Binding ElementName=StructureTree, Path=SelectedItem.Root.HasTranslation, Mode=OneTime}"
 					  Expanded="TranslationExpanderExpanded">
 					<Expander.Header>

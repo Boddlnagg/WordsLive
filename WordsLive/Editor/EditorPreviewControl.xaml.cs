@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using Awesomium.Core;
 using Awesomium.Windows.Controls;
 using WordsLive.Core.Songs;
@@ -94,7 +95,7 @@ namespace WordsLive.Editor
 
 		void OnWebViewCrashed(object sender, EventArgs e)
 		{
-			web.Dispose();
+			Cleanup();
 			Init();
 		}
 
@@ -280,7 +281,16 @@ namespace WordsLive.Editor
 
 		internal void Cleanup()
 		{
-			web.Dispose();
+			if (web != null)
+			{
+				web.Crashed -= OnWebViewCrashed;
+				web.ProcessCreated -= OnWebProcessCreated;
+
+				web.Dispose();
+				DependencyObject p = (web.Surface as WebViewPresenter);
+				web = null;
+				webControlContainer.Child = null;
+			}
 		}
 	}
 }
