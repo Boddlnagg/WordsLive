@@ -22,7 +22,7 @@ using System.IO;
 
 namespace WordsLive.Core.Songs.Storage
 {
-	public class LocalSongStorage: SongStorage
+	public class LocalSongStorage : SongStorage
 	{
 		private string directory;
 
@@ -110,6 +110,31 @@ namespace WordsLive.Core.Songs.Storage
 		public override bool Exists(string name)
 		{
 			return File.Exists(Path.Combine(directory, name));
+		}
+
+		public override Uri TryRewriteUri(Uri uri)
+		{
+			if (uri.IsFile)
+			{
+				// rewrite local song URIs to song:// schema
+				var store = DataManager.Songs as LocalSongStorage;
+				try
+				{
+					FileInfo fi1 = new FileInfo(Uri.UnescapeDataString(uri.AbsolutePath));
+					var name = Uri.UnescapeDataString(uri.Segments[uri.Segments.Length - 1]);
+					var fi2 = store.GetLocal(name);
+					if (fi1.Exists && fi2.Exists && fi1.FullName == fi2.FullName)
+					{
+						return new Uri("song:///" + name);
+					}
+				}
+				catch (FileNotFoundException)
+				{
+					return uri;
+				}
+			}
+
+			return uri;
 		}
 	}
 }

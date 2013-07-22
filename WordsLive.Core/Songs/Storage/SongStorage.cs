@@ -20,7 +20,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using WordsLive.Core.Songs.IO;
 
 namespace WordsLive.Core.Songs.Storage
 {
@@ -108,5 +107,16 @@ namespace WordsLive.Core.Songs.Storage
 		//{
 		//	throw new NotImplementedException();
 		//}
+
+		/// <summary>
+		/// Try to rewrite the given URI to use the song:// schema if it is served by this
+		/// storage implementation.
+		/// </summary>
+		/// <param name="uri">The URI to rewrite.</param>
+		/// <returns>A rewritten URI or the original unchanged URI.</returns>
+		public virtual Uri TryRewriteUri(Uri uri)
+		{
+			return uri;
+		}
 	}
 }

@@ -77,6 +77,8 @@ namespace WordsLive.Editor
 			if (uri == null)
 				throw new ArgumentNullException("uri");
 
+			uri = DataManager.Songs.TryRewriteUri(uri);
+
 			string ext = uri.GetExtension();
 
 			Song song = null;
