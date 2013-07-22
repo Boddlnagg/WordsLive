@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Xml.Serialization;
-using System.Xml.Schema;
 using System.Xml;
+using System.Xml.Schema;
+using System.Xml.Serialization;
 
 namespace WordsLive
 {
@@ -14,20 +12,50 @@ namespace WordsLive
 
 		public bool Contains(string ns, string key)
 		{
+			if (string.IsNullOrWhiteSpace(ns))
+				throw new ArgumentException("ns");
+
+			if (string.IsNullOrWhiteSpace(key))
+				throw new ArgumentException("key");
+
 			key = ns + ":" + key;
 			return dictionary.ContainsKey(key);
 		}
 
 		public T Get<T>(string ns, string key)
 		{
+			if (string.IsNullOrWhiteSpace(ns))
+				throw new ArgumentException("ns");
+
+			if (string.IsNullOrWhiteSpace(key))
+				throw new ArgumentException("key");
+
 			key = ns + ":" + key;
 			return (T)dictionary[key];
 		}
 
 		public void Set<T>(string ns, string key, T value)
 		{
+			if (string.IsNullOrWhiteSpace(ns))
+				throw new ArgumentException("ns");
+
+			if (string.IsNullOrWhiteSpace(key))
+				throw new ArgumentException("key");
+
 			key = ns + ":" + key;
 			dictionary[key] = value;
+		}
+
+		public void Unset(string ns, string key)
+		{
+			if (string.IsNullOrWhiteSpace(ns))
+				throw new ArgumentException("ns");
+
+			if (string.IsNullOrWhiteSpace(key))
+				throw new ArgumentException("key");
+
+			key = ns + ":" + key;
+			dictionary.Remove(key);
 		}
 
 		public XmlSchema GetSchema()

@@ -7,5 +7,4 @@
 			 xmlns:resx="clr-namespace:WordsLive.Slideshow.Resources"
 			 mc:Ignorable="d" 
 			 d:DesignHeight="300" d:DesignWidth="300">
-	<CheckBox IsChecked="{Binding EnableLivePreview}" Content="{x:Static resx:Resource.seEnableLivePreview}"/>
 </UserControl>
