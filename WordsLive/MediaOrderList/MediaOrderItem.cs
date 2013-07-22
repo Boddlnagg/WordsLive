@@ -29,6 +29,10 @@ namespace WordsLive.MediaOrderList
 				Data = newData;
 				iconProvider = Controller.IconProviders.CreateProvider(newData);
 			}
+			else
+			{
+				iconProvider.Invalidate();
+			}
 			OnPropertyChanged("Title");
 			OnPropertyChanged("Path");
 			OnPropertyChanged("Icon");

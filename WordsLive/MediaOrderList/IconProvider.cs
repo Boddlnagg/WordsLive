@@ -24,7 +24,7 @@ namespace WordsLive.MediaOrderList
 			}
 		}
 
-		public void Update()
+		public void Invalidate()
 		{
 			cached = null;
 		}
