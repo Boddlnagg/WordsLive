@@ -53,7 +53,7 @@ namespace WordsLive
 
 		IMediaControlPanel currentPanel = null;
 
-		bool portfolioChanged = false;
+		bool portfolioModified = false;
 
 		public IMediaControlPanel CurrentPanel
 		{
@@ -99,7 +99,7 @@ namespace WordsLive
 			MediaManager.MediaLoaded += MediaManager_MediaLoaded;
 
 			this.OrderListBox.DataContext = orderList;
-			this.orderList.ListChanged += (sender, args) => { portfolioChanged = true; };
+			this.orderList.ListChanged += (sender, args) => { portfolioModified = true; };
 			this.orderList.NotifyTryOpenFileNotFoundMedia += (sender, args) =>
 			{
 				// TODO: localize
@@ -232,11 +232,20 @@ namespace WordsLive
 
 		private void Window_Closing(object sender, CancelEventArgs e)
 		{
-			if (portfolioChanged)
+			if (portfolioModified)
 			{
-				// TODO: ask whether to save portfolio
+				NewPortfolio();
 			}
-			e.Cancel = !Controller.TryCloseAllWindows();
+
+			// it might still be modified if saving was cancelled
+			if (portfolioModified)
+			{
+				e.Cancel = true;
+			}
+			else
+			{
+				e.Cancel = !Controller.TryCloseAllWindows();
+			}
 		}
 
 		private void Window_Closed(object sender, EventArgs e)
@@ -339,28 +348,38 @@ namespace WordsLive
 					orderList.Add(MediaManager.LoadMediaMetadata(new Uri(dlg.FileName), null));
 				}
 
-				portfolioChanged = true;
+				portfolioModified = true;
 			}
 		}
 
 		private void NewPortfolio()
 		{
-			if (portfolioChanged && orderList.Count > 0)
+			if (portfolioModified && orderList.Count > 0)
 			{
 				var res = MessageBox.Show(Resource.vMsgSavePortfolioChanges, Resource.vMsgSavePortfolioChangesTitle, MessageBoxButton.YesNoCancel);
 				if (res == MessageBoxResult.Cancel)
+				{
 					return;
+				}
 				else if (res == MessageBoxResult.Yes)
+				{
 					SavePortfolio();
+
+					// it might still be modified if saving was cancelled
+					if (portfolioModified)
+					{
+						return;
+					}
+				}
 			}
 			orderList.Clear();
 			PortfolioFile = null;
-			portfolioChanged = false;
+			portfolioModified = false;
 		}
 
 		public void OpenPortfolio(string file = null)
 		{
-			if (portfolioChanged && orderList.Count > 0)
+			if (portfolioModified && orderList.Count > 0)
 			{
 				var res = MessageBox.Show(Resource.vMsgSavePortfolioChanges, Resource.vMsgSavePortfolioChangesTitle, MessageBoxButton.YesNoCancel);
 				if (res == MessageBoxResult.Cancel)
@@ -389,7 +408,7 @@ namespace WordsLive
 				foreach (Media data in result)
 					orderList.Add(data);
 				PortfolioFile = new FileInfo(file);
-				portfolioChanged = false;
+				portfolioModified = false;
 
 				System.Windows.Shell.JumpList.AddToRecentCategory(file);
 			}
@@ -408,7 +427,7 @@ namespace WordsLive
 			else
 			{
 				MediaManager.SavePortfolio(from m in orderList select m.Data, PortfolioFile.FullName);
-				portfolioChanged = false;
+				portfolioModified = false;
 			}
 		}
 
@@ -427,7 +446,7 @@ namespace WordsLive
 			{
 				MediaManager.SavePortfolio(from m in orderList select m.Data, dlg.FileName);
 				PortfolioFile = new FileInfo(dlg.FileName);
-				portfolioChanged = false;
+				portfolioModified = false;
 			}
 		}
 
@@ -686,7 +705,7 @@ namespace WordsLive
 				if (boundaryItem != null)
 				{
 					OrderListBox.ScrollIntoView(boundaryItem);
-					portfolioChanged = true;
+					portfolioModified = true;
 				}
 			}
 			else if (e.Command == CustomCommands.MoveDown)
@@ -695,7 +714,7 @@ namespace WordsLive
 				if (boundaryItem != null)
 				{
 					OrderListBox.ScrollIntoView(boundaryItem);
-					portfolioChanged = true;
+					portfolioModified = true;
 				}
 			}
 			else if (e.Command == ApplicationCommands.Delete)
@@ -718,7 +737,7 @@ namespace WordsLive
 						this.OrderListBox.SelectedIndex = this.OrderListBox.Items.Count - 1;
 						OrderListBox.ScrollIntoView(this.OrderListBox.SelectedItem);
 					}
-					portfolioChanged = true;
+					portfolioModified = true;
 				}
 			}
 			else if (e.Command == CustomCommands.Activate)
