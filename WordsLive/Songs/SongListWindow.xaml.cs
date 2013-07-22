@@ -110,7 +110,16 @@ namespace WordsLive.Songs
 				return;
 
 			var song = (SongData)songListView.ItemContainerGenerator.ItemFromContainer(sender as ListViewItem);
-			Controller.AddToPortfolio(song.Uri);
+			AddToPortfolio(song);
+		}
+
+		private void AddToPortfolio(SongData data)
+		{
+			Controller.AddToPortfolio(data.Uri);
+			this.Topmost = true;
+			Controller.FocusMainWindow();
+			this.Topmost = false;
+			this.Focus();
 		}
 
 		private void OnCanExecuteCommand(object sender, CanExecuteRoutedEventArgs e)
@@ -141,7 +150,7 @@ namespace WordsLive.Songs
 
 			if (e.Command == CustomCommands.AddMedia)
 			{
-				Controller.AddToPortfolio(data.Uri);
+				AddToPortfolio(data);
 			}
 			else if (e.Command == CustomCommands.OpenInEditor)
 			{
