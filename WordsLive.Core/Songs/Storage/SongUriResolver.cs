@@ -18,6 +18,8 @@
 
 using System;
 using System.IO;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace WordsLive.Core.Songs.Storage
 {
@@ -61,6 +63,29 @@ namespace WordsLive.Core.Songs.Storage
 			{
 				return (ForceStorage ?? DataManager.Songs).Get(GetFilename(uri));
 				
+			}
+			else if (uri.IsFile)
+			{
+				try
+				{
+					return File.OpenRead(uri.LocalPath);
+				}
+				catch (DirectoryNotFoundException)
+				{
+					throw new FileNotFoundException(uri.LocalPath);
+				}
+			}
+			else
+			{
+				throw new NotSupportedException();
+			}
+		}
+
+		public async Task<Stream> GetAsync(Uri uri, CancellationToken cancellation)
+		{
+			if (uri.Scheme == "song")
+			{
+				return await (ForceStorage ?? DataManager.Songs).GetAsync(GetFilename(uri), cancellation);
 			}
 			else if (uri.IsFile)
 			{

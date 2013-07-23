@@ -130,5 +130,19 @@ namespace WordsLive.Core
 				return FromError<TResult>(e);
 			}
 		}
+
+		public static TResult WaitAndUnwrapException<TResult>(this Task<TResult> task, CancellationToken cancellationToken = default(CancellationToken))
+		{
+			try
+			{
+				task.Wait(cancellationToken);
+				return task.Result;
+			}
+			catch (AggregateException ex)
+			{
+				// note: this destroys the stack trace
+				throw ex.InnerException;
+			}
+		}
 	}
 }

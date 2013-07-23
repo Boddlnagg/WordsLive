@@ -64,6 +64,13 @@ namespace WordsLive.Core.Tests.Songs
 		}
 
 		[Test]
+		public void LoadAsync()
+		{
+			var asyncSong = Song.LoadAsync(@"TestData\SimpleSong.ppl").WaitAndUnwrapException();
+			Assert.AreEqual("SimpleTitle", asyncSong.Title);
+		}
+
+		[Test]
 		public void AddRemovePart()
 		{
 			song.AddPart(new SongPart(song, "NewPart"));

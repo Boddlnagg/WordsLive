@@ -19,6 +19,8 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace WordsLive.Core.Songs.Storage
 {
@@ -50,6 +52,7 @@ namespace WordsLive.Core.Songs.Storage
 		{
 			// TODO: implement caching
 			SongData data;
+
 			foreach (string file in Directory.GetFiles(directory))
 			{
 				data = null;
@@ -64,6 +67,11 @@ namespace WordsLive.Core.Songs.Storage
 				if (data != null)
 					yield return data;
 			}
+		}
+
+		public override Task<IEnumerable<SongData>> AllAsync()
+		{
+			return TaskHelpers.FromResult(All());
 		}
 
 		/// <summary>
@@ -85,6 +93,11 @@ namespace WordsLive.Core.Songs.Storage
 				throw new FileNotFoundException(name);
 
 			return File.OpenRead(fullPath);
+		}
+
+		public override Task<Stream> GetAsync(string name, CancellationToken cancellation = default(CancellationToken))
+		{
+			return TaskHelpers.FromResult(Get(name));
 		}
 
 		public override FileTransaction Put(string path)

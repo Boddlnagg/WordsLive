@@ -22,6 +22,8 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using Newtonsoft.Json;
 using WordsLive.Core.Songs.IO;
 using WordsLive.Core.Songs.Storage;
@@ -481,6 +483,48 @@ namespace WordsLive.Core.Songs
 			{
 				IsImported = true;
 			}
+		}
+
+		public static Task<Song> LoadAsync(string path, CancellationToken cancellation = default(CancellationToken))
+		{
+			return LoadAsync(new Uri(new FileInfo(path).FullName), cancellation);
+		}
+
+		public static Task<Song> LoadAsync(Uri uri, CancellationToken cancellation = default(CancellationToken))
+		{
+			return LoadAsync(uri, SongUriResolver.Default, new PowerpraiseSongReader(), cancellation);
+		}
+
+		public static Task<Song> LoadAsync(Uri uri, SongUriResolver resolver, CancellationToken cancellation = default(CancellationToken))
+		{
+			return LoadAsync(uri, resolver, new PowerpraiseSongReader(), cancellation);
+		}
+
+		public static Task<Song> LoadAsync(Uri uri, ISongReader reader, CancellationToken cancellation = default(CancellationToken))
+		{
+			return LoadAsync(uri, SongUriResolver.Default, reader, cancellation);
+		}
+
+		public static async Task<Song> LoadAsync(Uri uri, SongUriResolver resolver, ISongReader reader, CancellationToken cancellation = default(CancellationToken))
+		{
+			var song = new Song();
+			song.Uri = uri;
+			song.uriResolver = resolver;
+
+			using (Stream stream = await song.uriResolver.GetAsync(uri, cancellation))
+			{
+				cancellation.ThrowIfCancellationRequested();
+				Action<Song, Stream> read = (sng, strm) => reader.Read(sng, strm);
+
+				await Task.Factory.FromAsync<Song, Stream>(read.BeginInvoke, read.EndInvoke, song, stream, null);
+			}
+
+			if (!(reader is PowerpraiseSongReader))
+			{
+				song.IsImported = true;
+			}
+
+			return song;
 		}
 
 		public void LoadTemplate()

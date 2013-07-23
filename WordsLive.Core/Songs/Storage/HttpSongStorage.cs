@@ -20,6 +20,9 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
+using System.Net.Http;
+using System.Threading;
+using System.Threading.Tasks;
 using Newtonsoft.Json;
 
 namespace WordsLive.Core.Songs.Storage
@@ -27,6 +30,8 @@ namespace WordsLive.Core.Songs.Storage
 	public class HttpSongStorage : SongStorage
 	{
 		private WebClient client;
+
+		private HttpClient client2;
 
 		class GZipWebClient : WebClient
 		{
@@ -41,6 +46,9 @@ namespace WordsLive.Core.Songs.Storage
 		public HttpSongStorage(string baseAddress, NetworkCredential credential = null)
 		{
 			this.client = new GZipWebClient();
+			client.Encoding = System.Text.Encoding.UTF8;
+			this.client2 = new HttpClient(new HttpClientHandler { Credentials = credential });
+			client2.BaseAddress = new Uri(baseAddress);
 			client.BaseAddress = baseAddress;
 			if (credential != null)
 				client.Credentials = credential;
@@ -49,6 +57,11 @@ namespace WordsLive.Core.Songs.Storage
 		public override IEnumerable<SongData> All()
 		{
 			return FetchSongData("list");
+		}
+
+		public override Task<IEnumerable<SongData>> AllAsync()
+		{
+			return FetchSongDataAsync("list");
 		}
 
 		public override IEnumerable<SongData> WhereTitleContains(string query)
@@ -73,24 +86,24 @@ namespace WordsLive.Core.Songs.Storage
 
 		public override int Count()
 		{
-			var result = client.DownloadString("count");
+			var result = client2.GetStringAsync("count").WaitAndUnwrapException();
 			return int.Parse(result);
 		}
 
-		public override Stream Get(string path)
+		public override Stream Get(string name)
 		{
-			try
-			{
-				var result = client.DownloadData(path);
-				return new MemoryStream(result);
-			}
-			catch (WebException e)
-			{
-				if (((HttpWebResponse)e.Response).StatusCode == HttpStatusCode.NotFound) // 404
-					throw new FileNotFoundException();
-				else
-					throw;
-			}
+			return GetAsync(name).WaitAndUnwrapException();
+		}
+
+		public override async Task<Stream> GetAsync(string name, CancellationToken cancellation = default(CancellationToken))
+		{
+			var result = await client2.GetAsync(name, cancellation).ConfigureAwait(false);
+			if (result.StatusCode == HttpStatusCode.NotFound)
+				throw new FileNotFoundException();
+			else if (!result.IsSuccessStatusCode)
+				throw new HttpRequestException();
+
+			return await result.Content.ReadAsStreamAsync().ConfigureAwait(false);
 		}
 
 		public override FileTransaction Put(string path)
@@ -143,8 +156,13 @@ namespace WordsLive.Core.Songs.Storage
 
 		private IEnumerable<SongData> FetchSongData(string path)
 		{
-			client.Encoding = System.Text.Encoding.UTF8;
-			var result = client.DownloadString(path);
+			var result = client2.GetStringAsync(path).WaitAndUnwrapException();
+			return JsonConvert.DeserializeObject<IEnumerable<SongData>>(result);
+		}
+
+		private async Task<IEnumerable<SongData>> FetchSongDataAsync(string path)
+		{
+			var result = await client2.GetStringAsync(path).ConfigureAwait(false);
 			return JsonConvert.DeserializeObject<IEnumerable<SongData>>(result);
 		}
 	}

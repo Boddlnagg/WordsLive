@@ -20,6 +20,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace WordsLive.Core.Songs.Storage
 {
@@ -38,6 +40,12 @@ namespace WordsLive.Core.Songs.Storage
 		/// </summary>
 		/// <returns>All available songs.</returns>
 		public abstract IEnumerable<SongData> All();
+
+		/// <summary>
+		/// Gets all available songs the provider can provide asynchronously.
+		/// </summary>
+		/// <returns>All available songs.</returns>
+		public abstract Task<IEnumerable<SongData>> AllAsync();
 
 		/// <summary>
 		/// Filters the songs by title.
@@ -89,6 +97,8 @@ namespace WordsLive.Core.Songs.Storage
 		}
 
 		public abstract Stream Get(string name);
+
+		public abstract Task<Stream> GetAsync(string name, CancellationToken cancellation);
 
 		public abstract FileTransaction Put(string name);
 
