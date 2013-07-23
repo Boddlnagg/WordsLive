@@ -4,7 +4,6 @@ namespace WordsLive
 {
 	/*
 	 * TODO:
-	 * - PDF support via pdf.js?
 	 * - Include reveal.js?
 	 * - Shortcuts in the menu are shown as "Ctrl" instead of "Strg" in German language
 	 * - Maintain correct window z-order using SetWindowPos, especially for ImpressPresentation
@@ -12,7 +11,9 @@ namespace WordsLive
 	 * - Put WordsLive.Slideshow (+Bridge) under GPLv3 and add COPYING.txt and README.txt
 	 *   (with note that PowerpointViewerLib and WordsLive.Slideshow are under GPL) to distribution/installer
 	 * - Refactor drag & drop (introduce helper class)
-	 * - Use MessageBox from WpfToolkit.Extended?
+	 * - Save latest directories for portfolios/media separately
+	 * - Improve first start experience (settings window)
+	 * - Add errorlog?
 	 */
 
 	public partial class App : Application
