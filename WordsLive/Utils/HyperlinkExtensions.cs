@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Documents;
 
 namespace WordsLive.Utils
@@ -34,7 +33,7 @@ namespace WordsLive.Utils
 
 		private static void Hyperlink_RequestNavigate(object sender, System.Windows.Navigation.RequestNavigateEventArgs e)
 		{
-			Process.Start(new ProcessStartInfo(e.Uri.AbsoluteUri));
+			e.Uri.OpenInBrowser();
 			e.Handled = true;
 		}
 	}

@@ -789,4 +789,13 @@
   <data name="vMenuOnlineManual" xml:space="preserve">
     <value>Online-Hilfe</value>
   </data>
+  <data name="updMsgFailed" xml:space="preserve">
+    <value>Die Überprüfung auf Updates ist fehlgeschlagen. Stellen Sie sicher, dass Sie mit dem Internet verbunden sind.</value>
+  </data>
+  <data name="updMsgNewVersion" xml:space="preserve">
+    <value>Eine neue Version von WordsLive ({0}) ist verfügbar. Jetzt herunterladen?</value>
+  </data>
+  <data name="updMsgUpToDate" xml:space="preserve">
+    <value>Sie haben bereits die neueste Version von WordsLive.</value>
+  </data>
 </root>

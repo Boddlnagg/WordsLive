@@ -1,6 +1,6 @@
-﻿using System;
-using System.Reflection;
+﻿using System.Reflection;
 using System.Windows;
+using WordsLive.Utils;
 
 namespace WordsLive
 {
@@ -17,9 +17,7 @@ namespace WordsLive
 		{
 			get
 			{
-				var a = Assembly.GetExecutingAssembly();
-				Version appVersion = a.GetName().Version;
-				return appVersion.Major + "." + appVersion.Minor + "." + appVersion.Build;
+				return Assembly.GetExecutingAssembly().GetName().Version.SimplifyVersion().ToString();
 			}
 		}
 	}

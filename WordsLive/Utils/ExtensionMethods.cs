@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
@@ -204,6 +205,24 @@ namespace WordsLive.Utils
 				dirInfo.Create();
 				dirInfo.Refresh();
 			}
+		}
+
+		public static Version SimplifyVersion(this Version version)
+		{
+			if (version.Revision == 0)
+			{
+				if (version.Build == 0)
+				{
+					return new Version(version.Major, version.Minor);
+				}
+				return new Version(version.Major, version.Minor, version.Build);
+			}
+			return version;
+		}
+
+		public static void OpenInBrowser(this Uri uri)
+		{
+			Process.Start(new ProcessStartInfo(uri.AbsoluteUri));
 		}
 	}
 }

@@ -1600,6 +1600,33 @@ namespace WordsLive.Resources {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Checking for updates failed. Please make sure that you are connected to the internet. ähnelt.
+        /// </summary>
+        public static string updMsgFailed {
+            get {
+                return ResourceManager.GetString("updMsgFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die A new version of WordsLive ({0}) is available. Download now? ähnelt.
+        /// </summary>
+        public static string updMsgNewVersion {
+            get {
+                return ResourceManager.GetString("updMsgNewVersion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Your installation of WordsLive is up to date. ähnelt.
+        /// </summary>
+        public static string updMsgUpToDate {
+            get {
+                return ResourceManager.GetString("updMsgUpToDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die The display process WordsLive.Awesomium.exe was closed or crashed. WordsLive will try to reload the current presentation in order to restore it. ähnelt.
         /// </summary>
         public static string vAwesomiumProcessCrashed {

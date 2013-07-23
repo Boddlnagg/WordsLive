@@ -789,4 +789,13 @@
   <data name="vMenuOnlineManual" xml:space="preserve">
     <value>Online Help</value>
   </data>
+  <data name="updMsgFailed" xml:space="preserve">
+    <value>Checking for updates failed. Please make sure that you are connected to the internet.</value>
+  </data>
+  <data name="updMsgNewVersion" xml:space="preserve">
+    <value>A new version of WordsLive ({0}) is available. Download now?</value>
+  </data>
+  <data name="updMsgUpToDate" xml:space="preserve">
+    <value>Your installation of WordsLive is up to date.</value>
+  </data>
 </root>

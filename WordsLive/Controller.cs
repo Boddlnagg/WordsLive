@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Reflection;
 using System.Threading;
 using System.Windows;
+using System.Xml.Linq;
 using Microsoft.Win32;
 using WordsLive.Core;
 using WordsLive.Editor;
@@ -12,6 +14,7 @@ using WordsLive.MediaOrderList;
 using WordsLive.Resources;
 using WordsLive.Server;
 using WordsLive.Songs;
+using WordsLive.Utils;
 
 namespace WordsLive
 {
@@ -125,10 +128,11 @@ namespace WordsLive
 			Version appVersion = a.GetName().Version;
 			string appVersionString = appVersion.ToString();
 
-			if (Properties.Settings.Default.ApplicationVersion != appVersion.ToString())
+			if (Properties.Settings.Default.ApplicationVersion != appVersionString)
 			{
 				Properties.Settings.Default.Upgrade();
 				Properties.Settings.Default.ApplicationVersion = appVersionString;
+				Properties.Settings.Default.NoUpdateVersion = appVersionString;
 				Properties.Settings.Default.Save();
 			}
 		}
@@ -465,6 +469,52 @@ namespace WordsLive
 			}
 
 			return true;
+		}
+
+		internal static async void CheckForUpdates(bool silent)
+		{
+			var hc = new HttpClient();
+			try
+			{
+				var str = await hc.GetStringAsync(new Uri("http://wordslive.org/version.xml"));
+				var reader = new StringReader(str);
+				var doc = XDocument.Load(reader);
+				var latestVersion = new Version(doc.Root.Element("version").Value);
+				var currentVersion = Assembly.GetExecutingAssembly().GetName().Version;
+				var noUpdateVersion = new Version(Properties.Settings.Default.NoUpdateVersion);
+				var latestUri = new Uri(doc.Root.Element("url").Value);
+
+				if (currentVersion >= latestVersion)
+				{
+					if (!silent)
+					{
+						MessageBox.Show(instance.window, Resource.updMsgUpToDate, "");
+					}
+				}
+				else if (!silent || noUpdateVersion < latestVersion)
+				{
+					var result = MessageBox.Show(instance.window, String.Format(Resource.updMsgNewVersion, latestVersion.SimplifyVersion().ToString()), "", MessageBoxButton.YesNoCancel);
+
+					if (result == MessageBoxResult.Yes)
+					{
+						// open download in browser and don't show update alert again
+						latestUri.OpenInBrowser();
+						Properties.Settings.Default.NoUpdateVersion = latestVersion.ToString();
+					}
+					else if (result == MessageBoxResult.No)
+					{
+						// don't show update alert again (until newer version is available)
+						Properties.Settings.Default.NoUpdateVersion = latestVersion.ToString();
+					}
+				}
+			}
+			catch (Exception)
+			{
+				if (!silent)
+				{
+					MessageBox.Show(instance.window, Resource.updMsgFailed, "", MessageBoxButton.OK, MessageBoxImage.Error);
+				}
+			}
 		}
 		#endregion
 	}

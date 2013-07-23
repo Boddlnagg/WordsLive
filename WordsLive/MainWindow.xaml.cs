@@ -22,6 +22,7 @@ using WordsLive.Utils;
 
 namespace WordsLive
 {
+	// TODO: simplify this class by splitting it up
 	public partial class MainWindow : Window, INotifyPropertyChanged
 	{
 		private MediaOrderList.MediaOrderList orderList = new MediaOrderList.MediaOrderList();
@@ -574,7 +575,7 @@ namespace WordsLive
 			}
 			else if (e.Command == CustomCommands.CheckForUpdates)
 			{
-				throw new NotImplementedException();
+				Controller.CheckForUpdates(false);
 			}
 			else if (e.Command == CustomCommands.ShowAboutDialog)
 			{
@@ -990,6 +991,10 @@ namespace WordsLive
 		private void Window_Loaded(object sender, RoutedEventArgs e)
 		{
 			WordsLive.Presentation.Wpf.WpfPresentationWindow.Instance.Owner = this;
+
+			Controller.CheckForUpdates(true);
+
+			// TODO: move as much as possible from the controller initialization here
 		}
 	}
 }
