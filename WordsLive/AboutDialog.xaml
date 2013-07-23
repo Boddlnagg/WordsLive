@@ -1,0 +1,23 @@
+﻿<Window x:Class="WordsLive.AboutDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:resx="clr-namespace:WordsLive.Resources"
+        xmlns:utils="clr-namespace:WordsLive.Utils"
+        Title="WordsLive" 
+        SizeToContent="WidthAndHeight"
+        WindowStyle="ToolWindow"
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="NoResize">
+    <Grid Height="312" Width="493">
+        <Image Source="/WordsLive;component/Artwork/AboutDialog.png"/>
+        <Button Content="{x:Static resx:Resource.dialogClose}" IsCancel="True" IsDefault="True" Margin="0,0,10,10" Height="23" Width="90" HorizontalAlignment="Right" VerticalAlignment="Bottom"/>
+        <TextBlock Margin="177,10,10,38">WordsLive – worship projection software<LineBreak/>
+            Version <Run Text="{Binding VersionString, Mode=OneWay}"/><LineBreak/>
+            <LineBreak/>
+            Copyright © 2013 Patrick Reisert<LineBreak/>
+            Licensed under the terms of the GPLv3.<LineBreak/>
+            <LineBreak/>
+            Website: <Hyperlink  NavigateUri="http://wordslive.org" utils:HyperlinkExtensions.IsExternal="True">http://wordslive.org</Hyperlink>   
+        </TextBlock>
+    </Grid>
+</Window>

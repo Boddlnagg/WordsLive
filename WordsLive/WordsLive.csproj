@@ -146,6 +146,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="AboutDialog.xaml.cs">
+      <DependentUpon>AboutDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Awesomium\BackgroundDataSource.cs" />
     <Compile Include="Awesomium\ChainableDataSource.cs" />
     <Compile Include="Awesomium\IDataSource.cs" />
@@ -192,6 +195,7 @@
     <Compile Include="Songs\MasterOverrideOptions.cs" />
     <Compile Include="Songs\SongDataObject.cs" />
     <Compile Include="TestPresentation.cs" />
+    <Compile Include="Utils\HyperlinkExtensions.cs" />
     <Compile Include="Utils\InsertionAdorner.cs" />
     <Compile Include="Utils\EnumToIndexConverter.cs" />
     <Compile Include="Utils\AppendEllipsisConverter.cs" />
@@ -200,6 +204,10 @@
     <Compile Include="Documents\XpsDocumentHandler.cs" />
     <Compile Include="Documents\XpsPresentation.cs" />
     <EmbeddedResource Include="Resources\pdf.html" />
+    <Page Include="AboutDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Editor\SaveFilenameDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -399,6 +407,7 @@
       <DependentUpon>WebSiteControlPanel.xaml</DependentUpon>
     </Compile>
     <Resource Include="Artwork\LockChains.png" />
+    <Resource Include="Artwork\AboutDialog.png" />
     <Content Include="Data\Standard.ppl">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

@@ -578,7 +578,9 @@ namespace WordsLive
 			}
 			else if (e.Command == CustomCommands.ShowAboutDialog)
 			{
-				throw new NotImplementedException();
+				var dlg = new AboutDialog();
+				dlg.Owner = this;
+				dlg.ShowDialog();
 			}
 		}
 
