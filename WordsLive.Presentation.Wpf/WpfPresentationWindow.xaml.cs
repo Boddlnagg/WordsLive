@@ -2,7 +2,6 @@
 using System.Windows;
 using System.Windows.Interop;
 using System.Windows.Media.Animation;
-using WordsLive.Core;
 
 namespace WordsLive.Presentation.Wpf
 {
@@ -26,13 +25,6 @@ namespace WordsLive.Presentation.Wpf
 		private WpfPresentationWindow()
 		{
 			InitializeComponent();
-		}
-
-		[Shutdown]
-		public static void Shutdown()
-		{
-			if (Instance != null)
-				Instance.Close();
 		}
 
 		/// <summary>

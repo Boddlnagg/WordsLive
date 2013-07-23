@@ -85,14 +85,13 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\WordsLive.Core\WordsLive.Core.csproj">
-      <Project>{AABDBF78-74B7-40DD-A327-FABF1FA758F8}</Project>
-      <Name>WordsLive.Core</Name>
-    </ProjectReference>
     <ProjectReference Include="..\WordsLive.Presentation\WordsLive.Presentation.csproj">
       <Project>{7103EF3D-12DE-4381-95D4-1A440F0AA1D9}</Project>
       <Name>WordsLive.Presentation</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
