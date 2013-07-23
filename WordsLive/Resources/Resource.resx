@@ -520,7 +520,7 @@
     <value>Open songlist</value>
   </data>
   <data name="veMenuWindow" xml:space="preserve">
-    <value>Window</value>
+    <value>_Window</value>
   </data>
   <data name="vMenuShowEditorWindow" xml:space="preserve">
     <value>Open editor window</value>
@@ -776,5 +776,17 @@
   </data>
   <data name="docScaleWholePage" xml:space="preserve">
     <value>Whole page</value>
+  </data>
+  <data name="vMenuAbout" xml:space="preserve">
+    <value>About WordsLive</value>
+  </data>
+  <data name="vMenuCheckForUpdates" xml:space="preserve">
+    <value>Check for Updates</value>
+  </data>
+  <data name="vMenuHelp" xml:space="preserve">
+    <value>_Help</value>
+  </data>
+  <data name="vMenuOnlineManual" xml:space="preserve">
+    <value>Online Help</value>
   </data>
 </root>

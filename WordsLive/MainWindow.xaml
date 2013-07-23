@@ -26,6 +26,9 @@
 		<CommandBinding Command="New" Executed="OnExecuteCommand"/>
 		<CommandBinding Command="Refresh" CanExecute="OnCommandCanExecute" Executed="OnExecuteCommand"/>
 		<CommandBinding Command="{x:Static local:CustomCommands.Exit}" Executed="OnExecuteCommand"/>
+		<CommandBinding Command="Help" Executed="OnExecuteCommand"/>
+		<CommandBinding Command="{x:Static local:CustomCommands.CheckForUpdates}" Executed="OnExecuteCommand"/>
+		<CommandBinding Command="{x:Static local:CustomCommands.ShowAboutDialog}" Executed="OnExecuteCommand"/>
 		<CommandBinding Command="{x:Static local:CustomCommands.ShowSonglist}" Executed="OnExecuteCommand"/>
 		<CommandBinding Command="{x:Static local:CustomCommands.EditActive}" CanExecute="OnCommandCanExecute" Executed="OnExecuteCommand"/>
 		<CommandBinding Command="{x:Static local:CustomCommands.SwitchWindow}" Executed="OnExecuteCommand"/>
@@ -118,9 +121,12 @@
 					</MenuItem.Icon>
 				</MenuItem>
 			</MenuItem>
-			<!-- TODO <MenuItem Header="Hilfe">
-				<MenuItem Header="Über WordsLive"/>
-			</MenuItem>-->
+			<MenuItem Header="{x:Static resx:Resource.vMenuHelp}">
+				<MenuItem Header="{x:Static resx:Resource.vMenuOnlineManual}" Command="Help"/>
+				<MenuItem Header="{x:Static resx:Resource.vMenuCheckForUpdates}" Command="{x:Static local:CustomCommands.CheckForUpdates}"/>
+				<Separator/>
+				<MenuItem Header="{x:Static resx:Resource.vMenuAbout}" Command="{x:Static local:CustomCommands.ShowAboutDialog}"/>
+			</MenuItem>
 		</Menu>
 		<ToolBar Grid.Row="1" Margin="0" VerticalAlignment="Top" ToolBarTray.IsLocked="True">
 			<Button Command="{x:Static local:CustomCommands.SwitchWindow}" ToolTip="{Binding Converter={StaticResource RemoveAccessKeyConverter}, ConverterParameter={x:Static resx:Resource.vMenuShowEditorWindow}}">

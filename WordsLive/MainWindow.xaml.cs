@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Windows;
@@ -566,6 +567,18 @@ namespace WordsLive
 			else if (e.Command == CustomCommands.ShowNotification)
 			{
 				NotificationController.Instance.ShowSettingsWindow();
+			}
+			else if (e.Command == ApplicationCommands.Help)
+			{
+				Process.Start("http://wordslive.org/manual/");
+			}
+			else if (e.Command == CustomCommands.CheckForUpdates)
+			{
+				throw new NotImplementedException();
+			}
+			else if (e.Command == CustomCommands.ShowAboutDialog)
+			{
+				throw new NotImplementedException();
 			}
 		}
 

@@ -12,6 +12,18 @@ namespace WordsLive
 			private set;
 		}
 
+		public static RoutedCommand CheckForUpdates
+		{
+			get;
+			private set;
+		}
+
+		public static RoutedCommand ShowAboutDialog
+		{
+			get;
+			private set;
+		}
+
 		public static RoutedCommand ShowSonglist
 		{
 			get;
@@ -186,6 +198,8 @@ namespace WordsLive
 			Type t = typeof(CustomCommands);
 
 			Exit = new RoutedCommand("Exit", t);
+			CheckForUpdates = new RoutedCommand("CheckForUpdates", t);
+			ShowAboutDialog = new RoutedCommand("ShowAboutDialog", t);
 			ShowSonglist = new RoutedCommand("ShowSonglist", t, new InputGestureCollection { new KeyGesture(Key.F, ModifierKeys.Control) });
 			SwitchWindow = new RoutedCommand("SwitchWindow", t, new InputGestureCollection { new KeyGesture(Key.W, ModifierKeys.Control) });
 			EditActive = new RoutedCommand("EditActive", t);
