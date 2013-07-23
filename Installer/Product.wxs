@@ -3,7 +3,7 @@
 	<?define ProductName="WordsLive"?>
 	<?define Manufacturer="WordsLive"?>
 	<?define UpgradeCode="178f61e3-6be1-4081-9383-af3d34b29d08"?>
-	
+
 	<Product Id="*" Name="$(var.ProductName)" Language="!(loc.LANG)" Version="!(bind.FileVersion.MainApplicationExe)" Manufacturer="$(var.Manufacturer)" UpgradeCode="$(var.UpgradeCode)">
 		<Package InstallerVersion="405" Compressed="yes" InstallScope="perMachine" />
 
@@ -32,7 +32,8 @@
 			<ComponentGroupRef Id="PowerpointViewerLibComponents" />
 			<ComponentGroupRef Id="AwesomiumComponents" />
 			<ComponentGroupRef Id="DataComponents" />
-			<ComponentGroupRef Id="I18n"/>
+			<ComponentGroupRef Id="I18nComponents"/>
+			<ComponentGroupRef Id="DotNet4CompatibilityAssemblies"/>
 			<ComponentRef Id="StartMenuShortcutsFolder"/>
 		</Feature>
 
@@ -41,7 +42,7 @@
 		</Feature>
 
 		<Property Id="WIXUI_INSTALLDIR" Value="APPLICATIONFOLDER" />
-		
+
 		<UI>
 			<UIRef Id="WixUI_InstallDirNoLicense" />
 			<UIRef Id="WixUI_ErrorProgressText" />
@@ -86,113 +87,142 @@
 				<Shortcut Id="DesktopApplicationShortcut" Directory="DesktopFolder" Name="$(var.ProductName)"
 					WorkingDirectory='APPLICATIONFOLDER' Icon="Icon.ico" IconIndex="0" Advertise="yes" />
 			</Component>
-			<Component Id="CoreDllComponent">
+			<Component>
 				<File Source="$(var.WordsLive.TargetDir)WordsLive.Core.dll" Name="WordsLive.Core.dll" KeyPath="yes" />
 			</Component>
-			<Component Id="ServerDllComponent">
+			<Component>
 				<File Source="$(var.WordsLive.TargetDir)WordsLive.Server.dll" Name="WordsLive.Server.dll" KeyPath="yes" />
 			</Component>
-			<Component Id="PresentationDllComponent">
+			<Component>
 				<File Source="$(var.WordsLive.TargetDir)WordsLive.Presentation.dll" Name="WordsLive.Presentation.dll" KeyPath="yes" />
 			</Component>
-			<Component Id="PresentationWpfDllComponent">
+			<Component>
 				<File Source="$(var.WordsLive.TargetDir)WordsLive.Presentation.Wpf.dll" Name="WordsLive.Presentation.Wpf.dll" KeyPath="yes" />
 			</Component>
-			<Component Id="SlideshowDllComponent">
+			<Component>
 				<File Source="$(var.WordsLive.TargetDir)WordsLive.Slideshow.dll" Name="WordsLive.Slideshow.dll" KeyPath="yes" />
 			</Component>
-			<Component Id="SlideshowImpressBridgeDllComponent">
+			<Component>
 				<File Source="$(var.WordsLive.TargetDir)WordsLive.Slideshow.Impress.Bridge.dll" Name="WordsLive.Slideshow.Impress.Bridge.dll" KeyPath="yes" />
 			</Component>
 		</ComponentGroup>
 		<ComponentGroup Id="ThirdPartyAssemblies" Directory="APPLICATIONFOLDER">
-			<Component Id="IonicZipComponent">
+			<Component>
 				<File Source="$(var.WordsLive.TargetDir)Ionic.Zip.dll" Name="Ionic.Zip.dll" KeyPath="yes" />
 			</Component>
-			<Component Id="MonitoredUndoComponent">
+			<Component>
 				<File Source="$(var.WordsLive.TargetDir)MonitoredUndo.dll" Name="MonitoredUndo.dll" KeyPath="yes" />
 			</Component>
-			<Component Id="WpfToolkitComponent">
+			<Component>
 				<File Source="$(var.WordsLive.TargetDir)WPFToolkit.Extended.dll" Name="WPFToolkit.Extended.dll" KeyPath="yes" />
 			</Component>
-			<Component Id="NewtonsoftJsonComponent">
+			<Component>
 				<File Source="$(var.WordsLive.TargetDir)Newtonsoft.Json.dll" Name="Newtonsoft.Json.dll" KeyPath="yes" />
 			</Component>
-			<Component Id="FireflyComponent">
+			<Component>
 				<File Source="$(var.WordsLive.TargetDir)Firefly.dll" Name="Firefly.dll" KeyPath="yes" />
 			</Component>
-			<Component Id="OwinComponent">
+			<Component>
 				<File Source="$(var.WordsLive.TargetDir)Owin.dll" Name="Owin.dll" KeyPath="yes" />
 			</Component>
 		</ComponentGroup>
 		<ComponentGroup Id="VlcDotNetAssemblies" Directory="APPLICATIONFOLDER">
-			<Component Id="VlcDotNetCoreComponent">
+			<Component>
 				<File Source="$(var.WordsLive.TargetDir)Vlc.DotNet.Core.dll" Name="Vlc.DotNet.Core.dll" KeyPath="yes" />
 			</Component>
-			<Component Id="VlcDotNetCoreInteropsComponent">
+			<Component>
 				<File Source="$(var.WordsLive.TargetDir)Vlc.DotNet.Core.Interops.dll" Name="Vlc.DotNet.Core.Interops.dll" KeyPath="yes" />
 			</Component>
-			<Component Id="VlcDotNetWpfComponent">
+			<Component>
 				<File Source="$(var.WordsLive.TargetDir)Vlc.DotNet.Wpf.dll" Name="Vlc.DotNet.Wpf.dll" KeyPath="yes" />
 			</Component>
 		</ComponentGroup>
 		<ComponentGroup Id="PowerpointViewerLibComponents" Directory="APPLICATIONFOLDER">
-			<Component Id="PptviewlibDllComponent">
+			<Component>
 				<File Source="$(var.WordsLive.TargetDir)pptviewlib.dll" Name="pptviewlib.dll" KeyPath="yes" />
 			</Component>
-			<Component Id="PowerpointViewerLibDllComponent">
+			<Component>
 				<File Source="$(var.WordsLive.TargetDir)PowerpointViewerLib.dll" Name="PowerpointViewerLib.dll" KeyPath="yes" />
 			</Component>
-		  <Component Id="OOoWorkaroundDllComponent">
+			<Component>
 				<File Source="$(var.WordsLive.TargetDir)cli_oootypes.fixed.dll" Name="cli_oootypes.fixed.dll" KeyPath="yes" />
 			</Component>
 		</ComponentGroup>
 		<ComponentGroup Id="AwesomiumComponents" Directory="APPLICATIONFOLDER">
-			<Component Id="AwesomiumDllComponent">
+			<Component>
 				<File Source="$(var.WordsLive.TargetDir)awesomium.dll" Name="awesomium.dll" KeyPath="yes" />
 			</Component>
-			<Component Id="AwesomiumExeComponent">
+			<Component>
 				<File Source="$(var.WordsLive.TargetDir)WordsLive.Awesomium.exe" Name="WordsLive.Awesomium.exe" KeyPath="yes" />
 			</Component>
-			<Component Id="AwesomiumCoreDllComponent">
+			<Component>
 				<File Source="$(var.WordsLive.TargetDir)Awesomium.Core.dll" Name="Awesomium.Core.dll" KeyPath="yes" />
 			</Component>
-			<Component Id="AwesomiumWindowsControlsDllComponent">
+			<Component>
 				<File Source="$(var.WordsLive.TargetDir)Awesomium.Windows.Controls.dll" Name="Awesomium.Windows.Controls.dll" KeyPath="yes" />
 			</Component>
-			<Component Id="AwesomiumIcuDllComponent">
+			<Component>
 				<File Source="$(var.WordsLive.TargetDir)icudt.dll" Name="icudt.dll" KeyPath="yes" />
 			</Component>
-			<Component Id="AwesomiumAvcodecDllComponent">
+			<Component>
 				<File Source="$(var.WordsLive.TargetDir)avcodec-53.dll" Name="avcodec-53.dll" KeyPath="yes" />
 			</Component>
-			<Component Id="AwesomiumAvformatDllComponent">
+			<Component>
 				<File Source="$(var.WordsLive.TargetDir)avformat-53.dll" Name="avformat-53.dll" KeyPath="yes" />
 			</Component>
-			<Component Id="AwesomiumAvutilDllComponent">
+			<Component>
 				<File Source="$(var.WordsLive.TargetDir)avutil-51.dll" Name="avutil-51.dll" KeyPath="yes" />
 			</Component>
-			<Component Id="AwesomiumLibEGLDllComponent">
+			<Component>
 				<File Source="$(var.WordsLive.TargetDir)libEGL.dll" Name="libEGL.dll" KeyPath="yes" />
 			</Component>
-			<Component Id="AwesomiumLibGLESDllComponent">
+			<Component>
 				<File Source="$(var.WordsLive.TargetDir)libGLESv2.dll" Name="libGLESv2.dll" KeyPath="yes" />
 			</Component>
-			<Component Id="AwesomiumXInputDllComponent">
+			<Component>
 				<File Source="$(var.WordsLive.TargetDir)xinput9_1_0.dll" Name="xinput9_1_0.dll" KeyPath="yes" />
 			</Component>
 		</ComponentGroup>
 		<ComponentGroup Id="DataComponents" Directory="DataFolder">
-			<Component Id="SongTemplateComponent">
+			<Component>
 				<File Source="$(var.WordsLive.TargetDir)Data\Standard.ppl" Name="Standard.ppl" KeyPath="yes" />
 			</Component>
 		</ComponentGroup>
-		<ComponentGroup Id="I18n">
+		<ComponentGroup Id="I18nComponents">
 			<Component Directory="I18nDeFolder">
 				<File Source="$(var.WordsLive.TargetDir)de\WordsLive.resources.dll" Name="WordsLive.resources.dll" KeyPath="yes"/>
 			</Component>
 			<Component Directory="I18nDeFolder">
 				<File Source="$(var.WordsLive.TargetDir)de\WordsLive.Slideshow.resources.dll" Name="WordsLive.Slideshow.resources.dll" KeyPath="yes"/>
+			</Component>
+		</ComponentGroup>
+		<ComponentGroup Id="DotNet4CompatibilityAssemblies" Directory="APPLICATIONFOLDER">
+			<Component>
+				<File Source="$(var.WordsLive.TargetDir)Microsoft.Threading.Tasks.dll" Name="Microsoft.Threading.Tasks.dll" KeyPath="yes"/>
+			</Component>
+			<Component>
+				<File Source="$(var.WordsLive.TargetDir)Microsoft.Threading.Tasks.Extensions.dll" Name="Microsoft.Threading.Tasks.Extensions.dll" KeyPath="yes"/>
+			</Component>
+			<Component>
+				<File Source="$(var.WordsLive.TargetDir)Microsoft.Threading.Tasks.Extensions.Desktop.dll" Name="Microsoft.Threading.Tasks.Extensions.Desktop.dll" KeyPath="yes"/>
+			</Component>
+			<Component>
+				<File Source="$(var.WordsLive.TargetDir)System.Runtime.dll" Name="System.Runtime.dll" KeyPath="yes"/>
+			</Component>
+			<Component>
+				<File Source="$(var.WordsLive.TargetDir)System.Threading.Tasks.dll" Name="System.Threading.Tasks.dll" KeyPath="yes"/>
+			</Component>
+			<Component>
+				<File Source="$(var.WordsLive.TargetDir)System.Net.Http.dll" Name="System.Net.Http.dll" KeyPath="yes"/>
+			</Component>
+			<Component>
+				<File Source="$(var.WordsLive.TargetDir)System.Net.Http.Extensions.dll" Name="System.Net.Http.Extensions.dll" KeyPath="yes"/>
+			</Component>
+			<Component>
+				<File Source="$(var.WordsLive.TargetDir)System.Net.Http.Primitives.dll" Name="System.Net.Http.Primitives.dll" KeyPath="yes"/>
+			</Component>
+			<Component>
+				<File Source="$(var.WordsLive.TargetDir)System.Net.Http.WebRequest.dll" Name="System.Net.Http.WebRequest.dll" KeyPath="yes"/>
 			</Component>
 		</ComponentGroup>
 	</Fragment>
