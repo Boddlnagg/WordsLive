@@ -53,11 +53,9 @@ namespace WordsLive
 			string startupDir = new FileInfo(Assembly.GetExecutingAssembly().Location).Directory.FullName;
 			LoadTypes(Assembly.LoadFrom(Path.Combine(startupDir, "WordsLive.Slideshow.dll"))); // TODO (Words): automatically load plugins
 
-			UpgradeSettings();
-
-			InitSettings();
-
 			WordsLive.Utils.ImageLoader.Manager.Instance.LoadingImage = new System.Windows.Media.Imaging.BitmapImage(new Uri("/WordsLive;component/Artwork/LoadingAnimation.png", UriKind.Relative));
+
+			UpgradeSettings();
 		}
 
 		void HandleDisplaySettingsChanged(object sender, EventArgs e)
@@ -122,7 +120,7 @@ namespace WordsLive
 										 select type);
 		}
 
-		private void UpgradeSettings()
+		private static void UpgradeSettings()
 		{
 			var a = Assembly.GetExecutingAssembly();
 			Version appVersion = a.GetName().Version;
@@ -137,7 +135,7 @@ namespace WordsLive
 			}
 		}
 
-		private void InitSettings()
+		internal static void InitializeSettings()
 		{
 			var appDir = new FileInfo(Assembly.GetExecutingAssembly().Location).Directory;
 
@@ -159,15 +157,15 @@ namespace WordsLive
 			if (!TryUpdateServerSettings())
 			{
 				MessageBox.Show(Resource.seMsgInitServerError);
-				window.ShowSettingsWindow();
+				instance.window.ShowSettingsWindow();
 			}
 
-			while (!TryInitDataManager())
+			while (!instance.TryInitDataManager())
 			{
 				// TODO: this message box is not shown correctly (the first time, when the window is not yet loaded)
 				// TODO: show more detailed information about what's wrong (use Exceptions?)
 				MessageBox.Show(Resource.seMsgInitDataError);
-				window.ShowSettingsWindow();
+				instance.window.ShowSettingsWindow();
 			}
 		}
 

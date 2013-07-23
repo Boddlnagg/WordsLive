@@ -102,6 +102,8 @@ namespace WordsLive
 
 			this.OrderListBox.DataContext = orderList;
 			this.orderList.ListChanged += (sender, args) => { portfolioModified = true; };
+
+			Controller.Initialize();
 		}
 
 		void MediaManager_MediaLoaded(object sender, MediaEventArgs args)
@@ -947,44 +949,47 @@ namespace WordsLive
 
 		private void Window_Loaded(object sender, RoutedEventArgs e)
 		{
-			WordsLive.Presentation.Wpf.WpfPresentationWindow.Instance.Owner = this;
-
-			Controller.CheckForUpdates(true);
-
-			Controller.Initialize();
-
-			if (Controller.PresentationAreaSettings.Count(s => s.IsAvailable) > 0)
+			this.Dispatcher.BeginInvoke((Action)(() =>
 			{
-				Controller.UpdatePresentationAreaFromSettings();
-			}
-			else
-			{
-				ShowPresentationAreaSettingsWindow();
-			}
+				WordsLive.Presentation.Wpf.WpfPresentationWindow.Instance.Owner = this;
 
-			// Update the preview on presentation status changes ...
-			Controller.PresentationManager.PropertyChanged += (s, args) =>
-			{
-				if (args.PropertyName == "Status" || args.PropertyName == "CurrentPresentation")
+				Controller.CheckForUpdates(true);
+
+				Controller.InitializeSettings();
+
+				if (Controller.PresentationAreaSettings.Count(s => s.IsAvailable) > 0)
 				{
-					UpdatePreview();
+					Controller.UpdatePresentationAreaFromSettings();
 				}
-			};
+				else
+				{
+					ShowPresentationAreaSettingsWindow();
+				}
 
-			// ... and area changes
-			Controller.PresentationManager.Area.WindowSizeChanged += (s, args) =>
-			{
+				// Update the preview on presentation status changes ...
+				Controller.PresentationManager.PropertyChanged += (s, args) =>
+				{
+					if (args.PropertyName == "Status" || args.PropertyName == "CurrentPresentation")
+					{
+						UpdatePreview();
+					}
+				};
+
+				// ... and area changes
+				Controller.PresentationManager.Area.WindowSizeChanged += (s, args) =>
+				{
+					this.previewBorder.Width = Controller.PresentationManager.Area.WindowSize.Width;
+					this.previewBorder.Height = Controller.PresentationManager.Area.WindowSize.Height;
+				};
+
 				this.previewBorder.Width = Controller.PresentationManager.Area.WindowSize.Width;
 				this.previewBorder.Height = Controller.PresentationManager.Area.WindowSize.Height;
-			};
 
-			this.previewBorder.Width = Controller.PresentationManager.Area.WindowSize.Width;
-			this.previewBorder.Height = Controller.PresentationManager.Area.WindowSize.Height;
-
-			if (!String.IsNullOrEmpty(App.StartupPortfolio))
-			{
-				OpenPortfolio(App.StartupPortfolio);
-			}
+				if (!String.IsNullOrEmpty(App.StartupPortfolio))
+				{
+					OpenPortfolio(App.StartupPortfolio);
+				}
+			}), System.Windows.Threading.DispatcherPriority.Loaded);
 		}
 	}
 }

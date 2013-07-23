@@ -155,6 +155,7 @@ namespace WordsLive.Core
 		/// <param name="media"></param>
 		public static void LoadMedia(Media media)
 		{
+			// TODO: make async?
 			if (media == null)
 				throw new ArgumentNullException("media");
 
@@ -165,7 +166,7 @@ namespace WordsLive.Core
 		/// <summary>
 		/// This event is called when a media object was loaded.
 		/// </summary>
-		public static event EventHandler<MediaEventArgs> MediaLoaded;
+		public static event EventHandler<MediaEventArgs> MediaLoaded; // TODO: rename to MediaLoading
 
 		private static void OnMediaLoaded(Media media)
 		{

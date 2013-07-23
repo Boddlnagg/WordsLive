@@ -63,7 +63,7 @@ namespace WordsLive
 				
 			if (panelType != null)
 			{
-				IMediaControlPanel panel = (IMediaControlPanel)System.Activator.CreateInstance(panelType); ;
+				IMediaControlPanel panel = (IMediaControlPanel)System.Activator.CreateInstance(panelType);
 				panel.Init(data);
 				return panel;
 			}
