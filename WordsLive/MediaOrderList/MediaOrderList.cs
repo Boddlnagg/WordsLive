@@ -2,15 +2,11 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Windows;
 using WordsLive.Core;
 
 namespace WordsLive.MediaOrderList
 {
-	public class MediaNotificationEventArgs : EventArgs
-	{
-		public Media Media { get; set; }
-	}
-
 	public class MediaOrderList : BindingList<MediaOrderItem>, INotifyPropertyChanged
 	{
 		private MediaOrderItem activeItem;
@@ -185,36 +181,20 @@ namespace WordsLive.MediaOrderList
 
 		private bool CanActivate(MediaOrderItem item)
 		{
-			// TODO: use item.Data.IsActivatable and get rid of the events somehow
 			if (item.Data is UnsupportedMedia)
 			{
-				OnNotifyTryOpenUnsupportedMedia(item.Data);
+				MessageBox.Show(String.Format(Resources.Resource.vMsgActivateUnsupportedMedia, item.Data.Uri));
 				return false;
 			}
 			else if (item.Data is FileNotFoundMedia)
 			{
-				OnNotifyTryOpenFileNotFoundMedia(item.Data);
+				MessageBox.Show(String.Format(Resources.Resource.vMsgActivateFileNotFoundMedia, item.Data.Uri));
 				return false;
 			}
 			else
 			{
 				return true;
 			}
-		}
-
-		public event EventHandler<MediaNotificationEventArgs> NotifyTryOpenUnsupportedMedia;
-		public event EventHandler<MediaNotificationEventArgs> NotifyTryOpenFileNotFoundMedia;
-
-		protected void OnNotifyTryOpenUnsupportedMedia(Media media)
-		{
-			if (NotifyTryOpenUnsupportedMedia != null)
-				NotifyTryOpenUnsupportedMedia(this, new MediaNotificationEventArgs { Media = media });
-		}
-
-		protected void OnNotifyTryOpenFileNotFoundMedia(Media media)
-		{
-			if (NotifyTryOpenFileNotFoundMedia != null)
-				NotifyTryOpenFileNotFoundMedia(this, new MediaNotificationEventArgs { Media = media });
 		}
 
 		private MediaOrderItem CreateItem(Media media)

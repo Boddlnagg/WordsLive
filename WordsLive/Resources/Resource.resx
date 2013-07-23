@@ -798,4 +798,10 @@
   <data name="updMsgUpToDate" xml:space="preserve">
     <value>Your installation of WordsLive is up to date.</value>
   </data>
+  <data name="vMsgActivateFileNotFoundMedia" xml:space="preserve">
+    <value>The file {0} doesn't exist.</value>
+  </data>
+  <data name="vMsgActivateUnsupportedMedia" xml:space="preserve">
+    <value>The file {0} cannot be shown, because its format is not supported.</value>
+  </data>
 </root>

@@ -102,15 +102,6 @@ namespace WordsLive
 
 			this.OrderListBox.DataContext = orderList;
 			this.orderList.ListChanged += (sender, args) => { portfolioModified = true; };
-			this.orderList.NotifyTryOpenFileNotFoundMedia += (sender, args) =>
-			{
-				// TODO: localize
-				MessageBox.Show("Die Datei " + args.Media.Uri + " existiert nicht.");
-			};
-			this.orderList.NotifyTryOpenUnsupportedMedia += (sender, args) =>
-			{
-				MessageBox.Show("Die Datei " + args.Media.Uri + " kann nicht angezeigt werden, da das Format nicht unterstützt wird.");
-			};
 
 			Controller.Initialize();
 

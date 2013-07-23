@@ -1987,6 +1987,24 @@ namespace WordsLive.Resources {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die The file {0} doesn&apos;t exist. ähnelt.
+        /// </summary>
+        public static string vMsgActivateFileNotFoundMedia {
+            get {
+                return ResourceManager.GetString("vMsgActivateFileNotFoundMedia", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die The file {0} cannot be shown, because its format is not supported. ähnelt.
+        /// </summary>
+        public static string vMsgActivateUnsupportedMedia {
+            get {
+                return ResourceManager.GetString("vMsgActivateUnsupportedMedia", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die The current portfolio might contain unsaved changes. Do you want to save them? ähnelt.
         /// </summary>
         public static string vMsgSavePortfolioChanges {

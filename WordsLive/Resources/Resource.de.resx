@@ -798,4 +798,10 @@
   <data name="updMsgUpToDate" xml:space="preserve">
     <value>Sie haben bereits die neueste Version von WordsLive.</value>
   </data>
+  <data name="vMsgActivateFileNotFoundMedia" xml:space="preserve">
+    <value>Die Datei {0} existiert nicht.</value>
+  </data>
+  <data name="vMsgActivateUnsupportedMedia" xml:space="preserve">
+    <value>Die Datei {0} kann nicht angezeigt werden, da das Format nicht unterstützt wird.</value>
+  </data>
 </root>
