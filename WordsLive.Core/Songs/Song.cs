@@ -514,9 +514,7 @@ namespace WordsLive.Core.Songs
 			using (Stream stream = await song.uriResolver.GetAsync(uri, cancellation))
 			{
 				cancellation.ThrowIfCancellationRequested();
-				Action<Song, Stream> read = (sng, strm) => reader.Read(sng, strm);
-
-				await Task.Factory.FromAsync<Song, Stream>(read.BeginInvoke, read.EndInvoke, song, stream, null);
+				reader.Read(song, stream);
 			}
 
 			if (!(reader is PowerpraiseSongReader))

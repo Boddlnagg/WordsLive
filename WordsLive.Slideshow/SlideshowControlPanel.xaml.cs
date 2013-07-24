@@ -62,7 +62,7 @@ namespace WordsLive.Slideshow
 
 			pres.ClosedExternally += (sender, args) =>
 			{
-				this.Dispatcher.Invoke(new Action(() =>
+				this.Dispatcher.BeginInvoke(new Action(() =>
 				{
 					Controller.PresentationManager.CurrentPresentation = null;
 					Controller.FocusMainWindow();
