@@ -30,6 +30,7 @@ using WordsLive.Server.Utils.WebSockets;
 
 namespace WordsLive.Server
 {
+	using System.Net.Http;
 	using System.Threading;
 	using Owin.Builder;
 	using Owin.Types;
@@ -203,11 +204,15 @@ window.addEventListener('load', init, false);
 				app,
 				(env) => 
 					{
-						var requestPath = (string)env["owin.RequestPath"];
-						if (!requestPath.StartsWith("/backgrounds/"))
+						var request = new OwinRequest(env);
+
+						if (request.CanAccept)
+							return false;
+
+						if (!request.Path.StartsWith("/backgrounds/"))
 							return true;
 
-						if (requestPath.EndsWith("/list") || requestPath.EndsWith("/listall"))
+						if (request.Path.EndsWith("/list") || request.Path.EndsWith("/listall"))
 							return true;
 
 						return false; // all other requests to /backgrounds/ without /list(all)
@@ -274,7 +279,7 @@ window.addEventListener('load', init, false);
 				else if (request.Path == "/")
 				{
 					var response = new OwinResponse(env);
-					return response.WriteAsync(HtmlContent);
+					return RespondString(response, HtmlContent, "text/html");
 				}
 				else
 				{
@@ -299,6 +304,7 @@ window.addEventListener('load', init, false);
 			}
 
 			builder.UseFunc(WebSocketHandler);
+			builder.UseFunc(BackgroundsHandler);
 
 			var app = Owin.StartupExtensions.Build<AppFunc>(builder);
 
@@ -315,6 +321,70 @@ window.addEventListener('load', init, false);
 
 			server.Dispose();
 			server = null;
+		}
+
+		private AppFunc BackgroundsHandler(AppFunc next)
+		{
+			return (env) =>
+			{
+				var request = new OwinRequest(env);
+				var response = new OwinResponse(env);
+
+				var backgrounds = DataManager.ActualBackgroundStorage;
+
+				if (request.Path.StartsWith("/backgrounds/"))
+				{
+					if (request.Method != "GET")
+						return RespondMethodNotAllowed(response);
+
+					var query = Uri.UnescapeDataString(request.Path.Substring("/backgrounds".Length));
+
+					if (query.EndsWith("/list"))
+					{
+						string path = query.Substring(0, query.Length - "list".Length);
+						var dir = backgrounds.GetDirectory(path);
+
+						try
+						{
+							StringBuilder sb = new StringBuilder();
+							ListBackgroundEntries(dir, sb);
+
+							return RespondString(response, sb.ToString());
+						}
+						catch (FileNotFoundException)
+						{
+							return RespondNotFound(response);
+						}
+					}
+					else if (query == "/listall")
+					{
+						StringBuilder sb = new StringBuilder();
+						ListBackgroundEntries(backgrounds.Root, sb, true);
+						return RespondString(response, sb.ToString());
+					}
+					else
+					{
+						bool preview = false;
+						if (query.EndsWith("/preview"))
+						{
+							preview = true;
+							query = query.Substring(0, query.Length - "/preview".Length);
+						}
+
+						try
+						{
+							var file = backgrounds.GetFile(query);
+							return RespondDownloaded(response, preview ? file.PreviewUri : file.Uri);
+						}
+						catch (FileNotFoundException)
+						{
+							RespondNotFound(response);
+						}
+					}
+				}
+
+				return next(env);
+			};
 		}
 
 		//private void App(IDictionary<string, object> env, ResultDelegate result, Action<Exception> fault)
@@ -534,15 +604,45 @@ window.addEventListener('load', init, false);
 		//	);
 		//}
 
-		//private void RespondNotFound(ResultDelegate del)
-		//{
-		//	Respond(del, "Not Found", code: "404 Not Found");
-		//}
+		private async Task RespondDownloaded(OwinResponse response, Uri uri)
+		{
+			if (uri.IsFile)
+			{
+				using (var stream = File.OpenRead(uri.LocalPath))
+				{
+					await stream.CopyToAsync(response.Body).ConfigureAwait(false);
+				}
+			}
+			else
+			{
+				using (HttpClient client = new HttpClient())
+				{
+					// TODO: set content type
+					var body = await client.GetStreamAsync(uri).ConfigureAwait(false);
+					await body.CopyToAsync(response.Body).ConfigureAwait(false);
+				}
+			}
+		}
 
-		//private void RespondMethodNotAllowed(ResultDelegate del)
-		//{
-		//	Respond(del, "Request method not allowed.", code: "405 Method Not Allowed");
-		//}
+		private Task RespondString(OwinResponse response, string content, string contentType = "text/plain")
+		{
+			response.SetHeader("Content-Type", contentType + ";charset=utf-8");
+			return response.WriteAsync(content);
+		}
+
+		private Task RespondNotFound(OwinResponse response)
+		{
+			response.StatusCode = 404;
+			response.ReasonPhrase = "Not Found";
+			return response.WriteAsync("Not Found");
+		}
+
+		private Task RespondMethodNotAllowed(OwinResponse response)
+		{
+			response.StatusCode = 405;
+			response.ReasonPhrase = "Method Not Allowed";
+			return response.WriteAsync("Request method not allowed.");
+		}
 
 		private byte[] ReadStream(Stream stream)
 		{
