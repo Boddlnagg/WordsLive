@@ -28,16 +28,6 @@ namespace WordsLive.Core.Songs.Storage
 		private string directory;
 
 		/// <summary>
-		/// Gets or sets the allowed image extensions.
-		/// </summary>
-		public IEnumerable<string> AllowedImageExtensions { get; set; }
-
-		/// <summary>
-		/// Gets or sets the allowed video extensions.
-		/// </summary>
-		public IEnumerable<string> AllowedVideoExtensions { get; set; }
-
-		/// <summary>
 		/// Initializes a new instance of the <see cref="LocalBackgroundStorage"/> class.
 		/// </summary>
 		/// <param name="directory">The root directory.</param>
@@ -68,11 +58,11 @@ namespace WordsLive.Core.Songs.Storage
 
 			string dir = path.Substring(0, path.LastIndexOf('/') + 1);
 
-			if (AllowedImageExtensions != null && AllowedImageExtensions.Contains(file.Extension, StringComparer.OrdinalIgnoreCase))
+			if (AllowedImageTypes.ContainsKey(file.Extension.ToLowerInvariant()))
 			{
 				return new BackgroundFile(this, new BackgroundDirectory(this, dir), file.Name, false);
 			}
-			else if (AllowedVideoExtensions != null && AllowedVideoExtensions.Contains(file.Extension, StringComparer.OrdinalIgnoreCase))
+			else if (AllowedVideoTypes.ContainsKey(file.Extension.ToLowerInvariant()))
 			{
 				return new BackgroundFile(this, new BackgroundDirectory(this, dir), file.Name, true);
 			}
@@ -101,11 +91,11 @@ namespace WordsLive.Core.Songs.Storage
 
 			foreach (var file in info.GetFiles())
 			{
-				if (AllowedImageExtensions != null && AllowedImageExtensions.Contains(file.Extension, StringComparer.OrdinalIgnoreCase))
+				if (AllowedImageTypes.ContainsKey(file.Extension.ToLowerInvariant()))
 				{
 					yield return new BackgroundFile(this, dir, file.Name, false);
 				}
-				else if (AllowedVideoExtensions != null && AllowedVideoExtensions.Contains(file.Extension, StringComparer.OrdinalIgnoreCase))
+				else if (AllowedVideoTypes.ContainsKey(file.Extension.ToLowerInvariant()))
 				{
 					yield return new BackgroundFile(this, dir, file.Name, true);
 				}

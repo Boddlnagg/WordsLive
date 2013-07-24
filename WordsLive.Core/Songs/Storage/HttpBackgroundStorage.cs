@@ -46,6 +46,9 @@ namespace WordsLive.Core.Songs.Storage
 		{
 			int i = path.LastIndexOf('/');
 			var directory = new BackgroundDirectory(this, path.Substring(0, i + 1));
+
+			// TODO: don't use GetListing but instead use AllowedImageTypes/AllowedVideoTypes
+			// to find out whether this is a video
 			var entries = GetListing(directory).Where(e => e.Path == path);
 			if (!entries.Any())
 				throw new FileNotFoundException(path);
@@ -87,7 +90,6 @@ namespace WordsLive.Core.Songs.Storage
 			if (result.StatusCode == HttpStatusCode.NotFound)
 				throw new FileNotFoundException();
 
-
 			if (!result.IsSuccessStatusCode)
 				throw new HttpRequestException();
 
@@ -110,6 +112,7 @@ namespace WordsLive.Core.Songs.Storage
 				entry = entry.Trim();
 				IsDirectory = entry.EndsWith("/");
 
+				// TODO: remove [VIDEO] tag (also in PHP server)
 				if (!IsDirectory && entry.EndsWith(" [VIDEO]", StringComparison.InvariantCultureIgnoreCase))
 				{
 					Path = entry.Substring(0, entry.Length - 8).TrimEnd();
