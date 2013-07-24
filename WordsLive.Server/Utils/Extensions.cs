@@ -27,42 +27,6 @@ namespace WordsLive.Server.Utils
 {
 	public static class Extensions
 	{
-		// GetHeader() taken from https://github.com/owin/gate/blob/master/src/Main/Gate/Headers.cs
-		// Licensed under APL 2.0
-
-		public static IEnumerable<string> GetHeaders(this IDictionary<string, IEnumerable<string>> headers,
-			string name)
-		{
-			IEnumerable<string> value;
-			return headers != null && headers.TryGetValue(name, out value) ? value : null;
-		}
-
-		public static string GetHeader(this IDictionary<string, IEnumerable<string>> headers,
-			string name)
-		{
-			var values = GetHeaders(headers, name);
-			if (values == null)
-			{
-				return null;
-			}
-
-			switch (values.Count())
-			{
-				case 0:
-					return string.Empty;
-				case 1:
-					return values.First();
-				default:
-					return string.Join(",", values);
-			}
-		}
-
-		public static string ComputeMD5Hash(this string str)
-		{
-			var md5Hasher = MD5.Create();
-			return BitConverter.ToString(md5Hasher.ComputeHash(Encoding.Default.GetBytes(str))).Replace("-", "").ToLower();
-		}
-
 		public static ArraySegment<byte> Concat(this ArraySegment<byte> target, ArraySegment<byte> source)
 		{
 			if (target.Array.Length < target.Count + source.Count)
@@ -84,38 +48,38 @@ namespace WordsLive.Server.Utils
 			return new ArraySegment<byte>(target.Array, target.Offset, target.Count + source.Count);
 		}
 
-		public static BodyDelegate BufferedRequestBody(
-			BodyDelegate requestBody, int contentLength, Action<byte[]> doneAction)
-		{
-			return
-				(write, flush, end, cancel) =>
-				{
-					var buffer = new ArraySegment<byte>(new byte[contentLength], 0, 0);
+		//public static BodyDelegate BufferedRequestBody(
+		//	BodyDelegate requestBody, int contentLength, Action<byte[]> doneAction)
+		//{
+		//	return
+		//		(write, flush, end, cancel) =>
+		//		{
+		//			var buffer = new ArraySegment<byte>(new byte[contentLength], 0, 0);
 
-					requestBody.Invoke(
-						data =>
-						{
-							buffer = buffer.Concat(data);
+		//			requestBody.Invoke(
+		//				data =>
+		//				{
+		//					buffer = buffer.Concat(data);
 
-							if (buffer.Count < contentLength)
-							{
-								return false;
-							}
-							else
-							{
-								doneAction(buffer.Array);
-								write(new ArraySegment<byte>(Encoding.Default.GetBytes("OK")));
-								return true;
-							}
-						},
-						_ => false,
-						ex =>
-						{
-							end(ex);
-						},
-						cancel);
-				};
-		}
+		//					if (buffer.Count < contentLength)
+		//					{
+		//						return false;
+		//					}
+		//					else
+		//					{
+		//						doneAction(buffer.Array);
+		//						write(new ArraySegment<byte>(Encoding.Default.GetBytes("OK")));
+		//						return true;
+		//					}
+		//				},
+		//				_ => false,
+		//				ex =>
+		//				{
+		//					end(ex);
+		//				},
+		//				cancel);
+		//		};
+		//}
 
 		//public static Action<Action<string>, Action<Exception>> BufferRequestBody(BodyDelegate requestBody, byte[] buffer, StringBuilder sb, int totalBytesRead, int contentLength)
 		//{

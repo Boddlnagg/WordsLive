@@ -1,29 +1,17 @@
-﻿/*
- * WordsLive - worship projection software
- * Copyright (c) 2012 Patrick Reisert
- * 
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with this program. If not, see <http://www.gnu.org/licenses/>.
- */
-
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
-using Owin;
+using System.Threading.Tasks;
+using Owin.Types;
+using Owin.Types.Helpers;
 
 namespace WordsLive.Server.Utils
 {
+	using AppFunc = Func<IDictionary<string, object>, Task>;
+
 	public static class DigestAuthentication
 	{
 		public struct UserPassword
@@ -40,26 +28,24 @@ namespace WordsLive.Server.Utils
 			}
 		}
 
-		public static AppDelegate Enable(AppDelegate app, Func<IDictionary<string, object>, bool> requiresAuth, string realm, Func<string, UserPassword?> authenticator)
+		public static AppFunc Enable(AppFunc next, Func<IDictionary<string, object>, bool> requiresAuth, string realm, Func<string, UserPassword?> authenticator)
 		{
-			return (env, result, fault) =>
+			return env =>
 			{
 				if (!requiresAuth(env))
 				{
-					app(env, result, fault);
-					return;
+					return next(env);
 				}
 
-				var requestHeaders = (IDictionary<string, IEnumerable<string>>)env["owin.RequestHeaders"];
+				var requestHeaders = (IDictionary<string, string[]>)env[OwinConstants.RequestHeaders];
 
-				var header = requestHeaders.GetHeader("Authorization");
+				var header = OwinHelpers.GetHeader(requestHeaders, "Authorization");
 
 				var parsedHeader = ParseDigestHeader(header);
 
 				if (parsedHeader == null)
 				{
-					Unauthorized(result, realm);
-					return;
+					return Unauthorized(env, realm);
 				}
 
 				string user = parsedHeader["username"];
@@ -67,40 +53,37 @@ namespace WordsLive.Server.Utils
 
 				// TODO: check for increment of "nc" header value
 
-				if (!pwd.HasValue || !IsValidResponse(pwd.Value.GetHA1(user, realm), (string)env["owin.RequestMethod"], parsedHeader))
+				if (!pwd.HasValue || !IsValidResponse(pwd.Value.GetHA1(user, realm), (string)env[OwinConstants.RequestMethod], parsedHeader))
 				{
-					Unauthorized(result, realm);
-					return;
+					return Unauthorized(env, realm);
 				}
 
 				env["gate.RemoteUser"] = user;
-				app(env, result, fault);
-				return;
+				return next(env);
 			};
 		}
 
-		private static void Unauthorized(ResultDelegate result, string realm)
+		private static async Task Unauthorized(IDictionary<string, object> env, string realm)
 		{
-			result(
-				"401 Unauthorized",
-				new Dictionary<string, IEnumerable<string>>(StringComparer.OrdinalIgnoreCase)
+			env[OwinConstants.ResponseStatusCode] = 401;
+			env[OwinConstants.ResponseReasonPhrase] = "Unauthorized";
+
+			var responseHeaders = (IDictionary<string, string[]>)env[OwinConstants.ResponseHeaders];
+
+			responseHeaders.Add(
+				"WWW-Authenticate",
+				new[]
 				{
-					{
-						"WWW-Authenticate", new []
-						{
-							"Digest realm=\"" + realm + "\"," +
-							"qop=\"auth\"," +
-							"nonce=\"" + GenerateNonce() + "\"," +
-							"opaque=\"" + realm.ComputeMD5Hash() + "\""
-						}
-					}
-				},
-				(write, flush, end, cancel) =>
-				{
-					var bytes = Encoding.Default.GetBytes("Authorization required");
-					write(new ArraySegment<byte>(bytes));
-					end(null);
+					"Digest realm=\"" + realm + "\"," +
+					"qop=\"auth\"," +
+					"nonce=\"" + GenerateNonce() + "\"," +
+					"opaque=\"" + realm.ComputeMD5Hash() + "\""
 				});
+
+			var response = (Stream)env[OwinConstants.ResponseBody];
+			var bytes = Encoding.Default.GetBytes("Authorization required");
+			await response.WriteAsync(bytes, 0, bytes.Length);
+			return;
 		}
 
 		private static string GenerateNonce()
@@ -156,6 +139,12 @@ namespace WordsLive.Server.Utils
 				digestHeader["cnonce"] + ":" +
 				digestHeader["qop"] + ":" + ha2).ComputeMD5Hash();
 			return digestHeader["response"] == validResponse;
+		}
+
+		public static string ComputeMD5Hash(this string str)
+		{
+			var md5Hasher = MD5.Create();
+			return BitConverter.ToString(md5Hasher.ComputeHash(Encoding.Default.GetBytes(str))).Replace("-", "").ToLower();
 		}
 	}
 }

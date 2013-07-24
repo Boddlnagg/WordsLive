@@ -19,19 +19,23 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.IO.Compression;
-using System.Linq;
 using System.Net;
 using System.Text;
+using System.Threading.Tasks;
 using Firefly.Http;
-using Newtonsoft.Json;
 using Owin;
-using WordsLive.Core;
 using WordsLive.Core.Songs.Storage;
 using WordsLive.Server.Utils;
+using WordsLive.Server.Utils.WebSockets;
 
 namespace WordsLive.Server
 {
+	using System.Threading;
+	using Owin.Builder;
+	using Owin.Types;
+	using WordsLive.Core;
+	using AppFunc = Func<IDictionary<string, object>, Task>;
+
 	static class Workaround
 	{
 		#pragma warning disable 169
@@ -116,7 +120,6 @@ window.addEventListener('load', init, false);
 </head>
 <body>
 <h2>WebSocket Echo Test</h2>
-<p><i>Requested: ###</i></p>
 <div id='output'></div>
 </body>
 </html>";
@@ -194,7 +197,7 @@ window.addEventListener('load', init, false);
 			return new HttpBackgroundStorage("http://localhost:" + Port + "/backgrounds/", cred); // alternative: ipv4.fiddler
 		}
 
-		private static AppDelegate EnableAuthentication(AppDelegate app, string password)
+		private static AppFunc EnableAuthentication(AppFunc app, string password)
 		{
 			return DigestAuthentication.Enable(
 				app,
@@ -216,20 +219,90 @@ window.addEventListener('load', init, false);
 			);
 		}
 
+		private AppFunc WebSocketHandler(AppFunc next)
+		{
+			return (env) =>
+			{
+				var request = new OwinRequest(env);
+
+				if (request.Path == "/Echo" && request.CanAccept)
+				{
+					request.Accept(async (socket) =>
+					{
+						const int maxMessageSize = 1024;
+						byte[] receiveBuffer = new byte[maxMessageSize];
+
+						Console.WriteLine("WebSocket connection established.");
+
+						while (true)
+						{
+							ArraySegment<byte> buffer = new ArraySegment<byte>(receiveBuffer);
+							var received = await socket.ReceiveAsync(buffer, CancellationToken.None);
+							if (received.MessageType == 0x8) // close
+							{
+								await socket.CloseAsync(CancellationToken.None);
+								return;
+							}
+							else if (received.MessageType == 0x2) // binary
+							{
+								await socket.CloseAsync((int)WebSocketCloseStatus.InvalidMessageType, "Cannot accept binary frame", CancellationToken.None);
+							}
+							else
+							{
+								int count = received.Count;
+
+								while (received.EndOfMessage == false)
+								{
+									if (count >= maxMessageSize)
+									{
+										throw new NotSupportedException();
+									}
+
+									received = await socket.ReceiveAsync(new ArraySegment<byte>(receiveBuffer, count, maxMessageSize - count), CancellationToken.None);
+									count += received.Count;
+								}
+
+								var receivedString = Encoding.UTF8.GetString(receiveBuffer, 0, count);
+								var echoString = receivedString;
+								ArraySegment<byte> outputBuffer = new ArraySegment<byte>(Encoding.UTF8.GetBytes(echoString));
+								await socket.SendAsync(outputBuffer, (int)WebSocketMessageType.Text, true, CancellationToken.None);
+							}
+						}
+					});
+					return TaskHelpers.Completed();
+				}
+				else if (request.Path == "/")
+				{
+					var response = new OwinResponse(env);
+					return response.WriteAsync(HtmlContent);
+				}
+				else
+				{
+					return next(env);
+				}
+			};
+		}
+
 		/// <summary>
 		/// Starts this server.
 		/// </summary>
 		public void Start()
 		{
 			var fac = new ServerFactory();
-			AppDelegate app = App;
+
+			var builder = new AppBuilder();
+			builder.UseWebSockets();
 
 			if (!String.IsNullOrEmpty(Password))
 			{
-				app = EnableAuthentication(app, Password);
+				builder.UseFunc(EnableAuthentication, Password);
 			}
 
-			server = fac.Create(WebSockets.Enable(app, "/Echo", OnWebSocketConnection), this.Port);
+			builder.UseFunc(WebSocketHandler);
+
+			var app = Owin.StartupExtensions.Build<AppFunc>(builder);
+
+			server = fac.Create(app, this.Port);
 		}
 
 		/// <summary>
@@ -244,253 +317,232 @@ window.addEventListener('load', init, false);
 			server = null;
 		}
 
-		private Action<int, ArraySegment<byte>> OnWebSocketConnection(Action<int, ArraySegment<byte>> outgoing)
-		{
-			Console.WriteLine("<-> Connected");
-			//outgoing(1, new ArraySegment<byte>(Encoding.Default.GetBytes("Good morning!")));
-			return
-				(opcode, data) =>
-				{
-					Console.WriteLine(" -> Incoming opcode: {0}", opcode);
-					switch (opcode)
-					{
-						case 1:
-							var prev = Console.ForegroundColor;
-							Console.ForegroundColor = ConsoleColor.Blue;
-							Console.WriteLine(Encoding.Default.GetString(data.Array, data.Offset, data.Count)); // UTF8?
-							Console.ForegroundColor = prev;
-							break;
-					}
-					outgoing(opcode, data);
-				};
-		}
+		//private void App(IDictionary<string, object> env, ResultDelegate result, Action<Exception> fault)
+		//{
+		//	string requestPath = Uri.UnescapeDataString((string)env["owin.RequestPath"]);
+		//	string requestMethod = (string)env["owin.RequestMethod"];
 
-		private void App(IDictionary<string, object> env, ResultDelegate result, Action<Exception> fault)
-		{
-			string requestPath = Uri.UnescapeDataString((string)env["owin.RequestPath"]);
-			string requestMethod = (string)env["owin.RequestMethod"];
+		//	var songs = DataManager.ActualSongStorage;
+		//	var backgrounds = DataManager.ActualBackgroundStorage;
 
-			var songs = DataManager.ActualSongStorage;
-			var backgrounds = DataManager.ActualBackgroundStorage;
+		//	if (requestPath.StartsWith("/backgrounds/"))
+		//	{
+		//		if (requestMethod != "GET")
+		//			RespondMethodNotAllowed(result);
 
-			if (requestPath.StartsWith("/backgrounds/"))
-			{
-				if (requestMethod != "GET")
-					RespondMethodNotAllowed(result);
-
-				var query = requestPath.Substring("/backgrounds".Length);
+		//		var query = requestPath.Substring("/backgrounds".Length);
 				
-				if (query.EndsWith("/list"))
-				{
-					string path = query.Substring(0, query.Length - "list".Length);
-					var dir = backgrounds.GetDirectory(path);
+		//		if (query.EndsWith("/list"))
+		//		{
+		//			string path = query.Substring(0, query.Length - "list".Length);
+		//			var dir = backgrounds.GetDirectory(path);
 
-					try
-					{
-						StringBuilder sb = new StringBuilder();
-						ListBackgroundEntries(dir, sb);
+		//			try
+		//			{
+		//				StringBuilder sb = new StringBuilder();
+		//				ListBackgroundEntries(dir, sb);
 
-						Respond(result, sb.ToString());
-					}
-					catch (FileNotFoundException)
-					{
-						RespondNotFound(result);
-					}
-				}
-				else if (query == "/listall")
-				{
-					StringBuilder sb = new StringBuilder();
-					ListBackgroundEntries(backgrounds.Root, sb, true);
-					Respond(result, sb.ToString());
-				}
-				else
-				{
-					bool preview = false;
-					if (query.EndsWith("/preview"))
-					{
-						preview = true;
-						query = query.Substring(0, query.Length - "/preview".Length);
-					}
+		//				Respond(result, sb.ToString());
+		//			}
+		//			catch (FileNotFoundException)
+		//			{
+		//				RespondNotFound(result);
+		//			}
+		//		}
+		//		else if (query == "/listall")
+		//		{
+		//			StringBuilder sb = new StringBuilder();
+		//			ListBackgroundEntries(backgrounds.Root, sb, true);
+		//			Respond(result, sb.ToString());
+		//		}
+		//		else
+		//		{
+		//			bool preview = false;
+		//			if (query.EndsWith("/preview"))
+		//			{
+		//				preview = true;
+		//				query = query.Substring(0, query.Length - "/preview".Length);
+		//			}
 
-					try
-					{
-						var file = backgrounds.GetFile(query);
-						using (WebClient client = new WebClient())
-						{
-							var bytes = client.DownloadData(preview ? file.PreviewUri : file.Uri);
-							// TODO: the Content-Type is always octet-stream if using local files. Is that a problem?
-							var contentType = client.ResponseHeaders["Content-Type"];
-							Respond(result, bytes, contentType: contentType);
-						}
-					}
-					catch (FileNotFoundException)
-					{
-						RespondNotFound(result);
-					}
-				}
-			}
-			else if (requestPath.StartsWith("/songs/"))
-			{
-				string query = requestPath.Substring("/songs/".Length);
-				if (query == "list")
-				{
-					if (requestMethod != "GET")
-						RespondMethodNotAllowed(result);
+		//			try
+		//			{
+		//				var file = backgrounds.GetFile(query);
+		//				using (WebClient client = new WebClient())
+		//				{
+		//					var bytes = client.DownloadData(preview ? file.PreviewUri : file.Uri);
+		//					// TODO: the Content-Type is always octet-stream if using local files. Is that a problem?
+		//					var contentType = client.ResponseHeaders["Content-Type"];
+		//					Respond(result, bytes, contentType: contentType);
+		//				}
+		//			}
+		//			catch (FileNotFoundException)
+		//			{
+		//				RespondNotFound(result);
+		//			}
+		//		}
+		//	}
+		//	else if (requestPath.StartsWith("/songs/"))
+		//	{
+		//		string query = requestPath.Substring("/songs/".Length);
+		//		if (query == "list")
+		//		{
+		//			if (requestMethod != "GET")
+		//				RespondMethodNotAllowed(result);
 
-					RespondGzip(result, JsonConvert.SerializeObject(songs.All()));
-				}
-				else if (query == "count")
-				{
-					if (requestMethod != "GET")
-						RespondMethodNotAllowed(result);
+		//			RespondGzip(result, JsonConvert.SerializeObject(songs.All()));
+		//		}
+		//		else if (query == "count")
+		//		{
+		//			if (requestMethod != "GET")
+		//				RespondMethodNotAllowed(result);
 
-					Respond(result, songs.Count().ToString());
-				}
-				else if (query.StartsWith("filter/"))
-				{
-					if (requestMethod != "GET")
-						RespondMethodNotAllowed(result);
+		//			Respond(result, songs.Count().ToString());
+		//		}
+		//		else if (query.StartsWith("filter/"))
+		//		{
+		//			if (requestMethod != "GET")
+		//				RespondMethodNotAllowed(result);
 
-					query = query.Substring("filter/".Length);
-					var i = query.IndexOf('/');
-					if (i < 0)
-						RespondNotFound(result);
+		//			query = query.Substring("filter/".Length);
+		//			var i = query.IndexOf('/');
+		//			if (i < 0)
+		//				RespondNotFound(result);
 
-					var filter = query.Substring(0, i);
-					var filterQuery = SongData.NormalizeSearchString(query.Substring(i + 1));
+		//			var filter = query.Substring(0, i);
+		//			var filterQuery = SongData.NormalizeSearchString(query.Substring(i + 1));
 
-					if (filter == "text")
-					{
-						RespondGzip(result, JsonConvert.SerializeObject(songs.WhereTextContains(filterQuery)));
-					}
-					else if (filter == "title")
-					{
-						RespondGzip(result, JsonConvert.SerializeObject(songs.WhereTitleContains(filterQuery)));
-					}
-					else if (filter == "source")
-					{
-						RespondGzip(result, JsonConvert.SerializeObject(songs.WhereSourceContains(filterQuery)));
-					}
-					else if (filter == "copyright")
-					{
-						RespondGzip(result, JsonConvert.SerializeObject(songs.WhereCopyrightContains(filterQuery)));
-					}
-					else
-					{
-						RespondNotFound(result); // unsupported filter method
-					}
-				}
-				else
-				{
-					if (requestMethod == "GET")
-					{
-						try
-						{
-							using (var stream = songs.Get(query))
-							{
-								// TODO: send Last-Modified header
-								Respond(result, ReadStream(stream), contentType: "text/xml");
-							}
-						}
-						catch (FileNotFoundException)
-						{
-							RespondNotFound(result);
-						}
-						catch (ArgumentException)
-						{
-							RespondNotFound(result);
-						}
-					}
-					else if (requestMethod == "PUT")
-					{
-						var contentLength = int.Parse(((IDictionary<string, IEnumerable<string>>)env["owin.RequestHeaders"])["Content-Length"].Single());
-						var requestBody = (BodyDelegate)env["owin.RequestBody"];
+		//			if (filter == "text")
+		//			{
+		//				RespondGzip(result, JsonConvert.SerializeObject(songs.WhereTextContains(filterQuery)));
+		//			}
+		//			else if (filter == "title")
+		//			{
+		//				RespondGzip(result, JsonConvert.SerializeObject(songs.WhereTitleContains(filterQuery)));
+		//			}
+		//			else if (filter == "source")
+		//			{
+		//				RespondGzip(result, JsonConvert.SerializeObject(songs.WhereSourceContains(filterQuery)));
+		//			}
+		//			else if (filter == "copyright")
+		//			{
+		//				RespondGzip(result, JsonConvert.SerializeObject(songs.WhereCopyrightContains(filterQuery)));
+		//			}
+		//			else
+		//			{
+		//				RespondNotFound(result); // unsupported filter method
+		//			}
+		//		}
+		//		else
+		//		{
+		//			if (requestMethod == "GET")
+		//			{
+		//				try
+		//				{
+		//					using (var stream = songs.Get(query))
+		//					{
+		//						// TODO: send Last-Modified header
+		//						Respond(result, ReadStream(stream), contentType: "text/xml");
+		//					}
+		//				}
+		//				catch (FileNotFoundException)
+		//				{
+		//					RespondNotFound(result);
+		//				}
+		//				catch (ArgumentException)
+		//				{
+		//					RespondNotFound(result);
+		//				}
+		//			}
+		//			else if (requestMethod == "PUT")
+		//			{
+		//				var contentLength = int.Parse(((IDictionary<string, IEnumerable<string>>)env["owin.RequestHeaders"])["Content-Length"].Single());
+		//				var requestBody = (BodyDelegate)env["owin.RequestBody"];
 
-						var responseBody = Server.Utils.Extensions.BufferedRequestBody(requestBody, contentLength, (bytes) =>
-							{
-								using (var ft = songs.Put(query))
-								{
-									ft.Stream.Write(bytes, 0, bytes.Length);
-								}
-							});
+		//				var responseBody = Server.Utils.Extensions.BufferedRequestBody(requestBody, contentLength, (bytes) =>
+		//					{
+		//						using (var ft = songs.Put(query))
+		//						{
+		//							ft.Stream.Write(bytes, 0, bytes.Length);
+		//						}
+		//					});
 
-						result(
-							"200 OK",
-							new Dictionary<string, IEnumerable<string>>(StringComparer.OrdinalIgnoreCase)
-						{
-							{"Content-Type", new[] {"text/plain"}},
-						},
-							responseBody
-						);
-					}
-					else if (requestMethod == "DELETE")
-					{
-						try
-						{
-							songs.Delete(query);
-							Respond(result, "OK");
-						}
-						catch (FileNotFoundException)
-						{
-							RespondNotFound(result);
-						}
-					}
-				}
-			}
-			else
-			{
-				Respond(result, HtmlContent.Replace("###", requestPath), contentType: "text/html");
-			}
-		}
+		//				result(
+		//					"200 OK",
+		//					new Dictionary<string, IEnumerable<string>>(StringComparer.OrdinalIgnoreCase)
+		//				{
+		//					{"Content-Type", new[] {"text/plain"}},
+		//				},
+		//					responseBody
+		//				);
+		//			}
+		//			else if (requestMethod == "DELETE")
+		//			{
+		//				try
+		//				{
+		//					songs.Delete(query);
+		//					Respond(result, "OK");
+		//				}
+		//				catch (FileNotFoundException)
+		//				{
+		//					RespondNotFound(result);
+		//				}
+		//			}
+		//		}
+		//	}
+		//	else
+		//	{
+		//		Respond(result, HtmlContent.Replace("###", requestPath), contentType: "text/html");
+		//	}
+		//}
 
-		private void Respond(ResultDelegate del, string response, string contentType = "text/plain", string code = "200 OK")
-		{
-			Respond(del, Encoding.UTF8.GetBytes(response), contentType + "; charset=utf-8", code);
-		}
+		//private void Respond(ResultDelegate del, string response, string contentType = "text/plain", string code = "200 OK")
+		//{
+		//	Respond(del, Encoding.UTF8.GetBytes(response), contentType + "; charset=utf-8", code);
+		//}
 
-		private void RespondGzip(ResultDelegate del, string response, string contentType = "text/plain", string code = "200 OK")
-		{
-			var inStream = new MemoryStream(Encoding.UTF8.GetBytes(response));
-			var outStream = new MemoryStream();
-			using (GZipStream tinyStream = new GZipStream(outStream, CompressionMode.Compress))
-			{
-				inStream.CopyTo(tinyStream);
-			}
-			Respond(del, outStream.ToArray(), contentType + "; charset=utf-8", code, "gzip");
-			outStream.Close();
-			inStream.Close();
-		}
+		//private void RespondGzip(ResultDelegate del, string response, string contentType = "text/plain", string code = "200 OK")
+		//{
+		//	var inStream = new MemoryStream(Encoding.UTF8.GetBytes(response));
+		//	var outStream = new MemoryStream();
+		//	using (GZipStream tinyStream = new GZipStream(outStream, CompressionMode.Compress))
+		//	{
+		//		inStream.CopyTo(tinyStream);
+		//	}
+		//	Respond(del, outStream.ToArray(), contentType + "; charset=utf-8", code, "gzip");
+		//	outStream.Close();
+		//	inStream.Close();
+		//}
 
-		private void Respond(ResultDelegate del, byte[] response, string contentType = "text/plain", string code = "200 OK", string contentEncoding = null)
-		{
-			var headers = new Dictionary<string, IEnumerable<string>>(StringComparer.OrdinalIgnoreCase);
+		//private void Respond(ResultDelegate del, byte[] response, string contentType = "text/plain", string code = "200 OK", string contentEncoding = null)
+		//{
+		//	var headers = new Dictionary<string, IEnumerable<string>>(StringComparer.OrdinalIgnoreCase);
 
-			if (contentType != null)
-				headers.Add("Content-Type", new[] { contentType });
+		//	if (contentType != null)
+		//		headers.Add("Content-Type", new[] { contentType });
 
-			if (contentEncoding != null)
-				headers.Add("Content-Encoding", new[] { contentEncoding });
+		//	if (contentEncoding != null)
+		//		headers.Add("Content-Encoding", new[] { contentEncoding });
 
-			del(
-				code,
-				headers,
-				(write, flush, end, cancel) =>
-				{
-					write(new ArraySegment<byte>(response));
-					end(null);
-				}
-			);
-		}
+		//	del(
+		//		code,
+		//		headers,
+		//		(write, flush, end, cancel) =>
+		//		{
+		//			write(new ArraySegment<byte>(response));
+		//			end(null);
+		//		}
+		//	);
+		//}
 
-		private void RespondNotFound(ResultDelegate del)
-		{
-			Respond(del, "Not Found", code: "404 Not Found");
-		}
+		//private void RespondNotFound(ResultDelegate del)
+		//{
+		//	Respond(del, "Not Found", code: "404 Not Found");
+		//}
 
-		private void RespondMethodNotAllowed(ResultDelegate del)
-		{
-			Respond(del, "Request method not allowed.", code: "405 Method Not Allowed");
-		}
+		//private void RespondMethodNotAllowed(ResultDelegate del)
+		//{
+		//	Respond(del, "Request method not allowed.", code: "405 Method Not Allowed");
+		//}
 
 		private byte[] ReadStream(Stream stream)
 		{
