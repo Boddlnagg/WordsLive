@@ -21,12 +21,13 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 
 namespace WordsLive.Core.Songs.Storage
 {
 	public class HttpBackgroundStorage : BackgroundStorage
 	{
-		private WebClient client;
+		private HttpClient client;
 		private string baseAddress;
 
 		/// <summary>
@@ -36,11 +37,9 @@ namespace WordsLive.Core.Songs.Storage
 		/// <param name="credentials">The credentials, if needed.</param>
 		public HttpBackgroundStorage(string baseAddress, NetworkCredential credential = null)
 		{
-			this.client = new WebClient();
+			this.client = new HttpClient(new HttpClientHandler { Credentials = credential });
 			this.baseAddress = baseAddress;
-			client.BaseAddress = baseAddress;
-			if (credential != null)
-				client.Credentials = credential;
+			client.BaseAddress = new Uri(baseAddress);
 		}
 
 		public override BackgroundFile GetFile(string path)
@@ -86,7 +85,7 @@ namespace WordsLive.Core.Songs.Storage
 		{
 			try
 			{
-				var result = client.DownloadString(directory.Path.Substring(1) + "list");
+				var result = client.GetStringAsync(directory.Path.Substring(1) + "list").WaitAndUnwrapException();
 				return result.Split('\n').Where(p => p.Trim() != String.Empty).Select(p => new ListingEntry(p)).ToArray();
 			}
 			catch (WebException)
