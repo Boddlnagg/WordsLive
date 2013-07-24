@@ -18,6 +18,7 @@
 
 using System.IO;
 using System.Net;
+using System.Net.Http;
 using System.Text;
 
 namespace WordsLive.Core.Songs.Storage
@@ -29,14 +30,14 @@ namespace WordsLive.Core.Songs.Storage
 	{
 		private MemoryStream stream;
 		private string relativeUri;
-		private WebClient client;
+		private HttpClient client;
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="HttpFileTransaction"/> class.
 		/// </summary>
 		/// <param name="relativeUri">The URI to upload to (relative to the base address set in the WebClient).</param>
-		/// <param name="client">The WebClient to use.</param>
-		public HttpFileTransaction(string relativeUri, WebClient client)
+		/// <param name="client">The HttpClient to use.</param>
+		public HttpFileTransaction(string relativeUri, HttpClient client)
 		{
 			stream = new MemoryStream();
 			this.relativeUri = relativeUri;
@@ -54,9 +55,9 @@ namespace WordsLive.Core.Songs.Storage
 		protected override void DoFinish()
 		{
 			stream.Close();
-			var result = Encoding.ASCII.GetString(client.UploadData(relativeUri, "PUT", stream.ToArray()));
-			if (result != "OK")
-				throw new WebException("Uploading failed");
+			var result = client.PutAsync(relativeUri, new ByteArrayContent(stream.ToArray())).WaitAndUnwrapException();
+			if (!result.IsSuccessStatusCode)
+				throw new HttpRequestException("Uploading failed");
 		}
 	}
 }

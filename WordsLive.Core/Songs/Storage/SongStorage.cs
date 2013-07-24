@@ -102,6 +102,10 @@ namespace WordsLive.Core.Songs.Storage
 
 		public abstract FileTransaction Put(string name);
 
+		/// <summary>
+		/// Delete a song. If the song doesn't exist, no Exception is thrown.
+		/// </summary>
+		/// <param name="name">The song's name.</param>
 		public abstract void Delete(string name);
 
 		public abstract FileInfo GetLocal(string name);

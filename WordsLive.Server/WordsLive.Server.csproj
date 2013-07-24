@@ -101,7 +101,6 @@
     </Compile>
     <Compile Include="TestServer.cs" />
     <Compile Include="Utils\DigestAuthentication.cs" />
-    <Compile Include="Utils\Extensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utils\WebSockets\OpaqueToWebsockets.cs" />
     <Compile Include="Utils\WebSockets\WebSocketCloseStatus.cs" />
