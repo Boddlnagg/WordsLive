@@ -117,7 +117,7 @@ namespace WordsLive.Core
 			{
 				songs.Count(); // get song count for testing the connection and password
 			}
-			catch (System.Net.WebException)
+			catch (System.Net.Http.HttpRequestException)
 			{
 				return false; // problem with the connection
 			}

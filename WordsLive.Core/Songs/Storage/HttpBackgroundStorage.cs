@@ -83,15 +83,17 @@ namespace WordsLive.Core.Songs.Storage
 		/// <returns></returns>
 		private IEnumerable<ListingEntry> GetListing(BackgroundDirectory directory)
 		{
-			try
-			{
-				var result = client.GetStringAsync(directory.Path.Substring(1) + "list").WaitAndUnwrapException();
-				return result.Split('\n').Where(p => p.Trim() != String.Empty).Select(p => new ListingEntry(p)).ToArray();
-			}
-			catch (WebException)
-			{
+			var result = client.GetAsync(directory.Path.Substring(1) + "list").WaitAndUnwrapException();
+			if (result.StatusCode == HttpStatusCode.NotFound)
 				throw new FileNotFoundException();
-			}
+
+
+			if (!result.IsSuccessStatusCode)
+				throw new HttpRequestException();
+
+			var str = result.Content.ReadAsStringAsync().WaitAndUnwrapException();
+
+			return str.Split('\n').Where(p => p.Trim() != String.Empty).Select(p => new ListingEntry(p)).ToArray();
 		}
 
 		/// <summary>
