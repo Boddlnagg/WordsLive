@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel;
-using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -8,6 +7,7 @@ using System.Windows.Media;
 using WordsLive.Core;
 using WordsLive.Core.Songs;
 using WordsLive.Core.Songs.Storage;
+using WordsLive.Resources;
 using WordsLive.Utils;
 
 namespace WordsLive.Editor
@@ -78,7 +78,7 @@ namespace WordsLive.Editor
 				}
 				else
 				{
-					MessageBox.Show("Die Hintergrundbilddatei wurde nicht gefunden und wird durch einen schwarzen Hintergrund ersetzt.");
+					MessageBox.Show(this, Resource.cbMsgNotFound, Resource.cbMsgNotFoundTitle);
 					UseColor = true;
 					ColorPicker.SelectedColor = Colors.Black;
 				}

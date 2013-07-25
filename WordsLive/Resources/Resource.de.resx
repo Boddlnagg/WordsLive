@@ -804,4 +804,10 @@
   <data name="vMsgActivateUnsupportedMedia" xml:space="preserve">
     <value>Die Datei {0} kann nicht angezeigt werden, da das Format nicht unterstützt wird.</value>
   </data>
+  <data name="cbMsgNotFound" xml:space="preserve">
+    <value>Die Hintergrundbilddatei wurde nicht gefunden und wird durch einen schwarzen Hintergrund ersetzt.</value>
+  </data>
+  <data name="cbMsgNotFoundTitle" xml:space="preserve">
+    <value>Hintergrund nicht gefunden</value>
+  </data>
 </root>

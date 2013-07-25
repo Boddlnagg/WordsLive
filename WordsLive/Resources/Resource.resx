@@ -804,4 +804,10 @@
   <data name="vMsgActivateUnsupportedMedia" xml:space="preserve">
     <value>The file {0} cannot be shown, because its format is not supported.</value>
   </data>
+  <data name="cbMsgNotFound" xml:space="preserve">
+    <value>The background currently in use for this song was not found and is replaced by a black background.</value>
+  </data>
+  <data name="cbMsgNotFoundTitle" xml:space="preserve">
+    <value>Background not found</value>
+  </data>
 </root>
