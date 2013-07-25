@@ -29,29 +29,16 @@ namespace WordsLive.Core.Songs.Storage
 {
 	public class HttpSongStorage : SongStorage
 	{
-		private WebClient client;
-
-		private HttpClient client2;
-
-		class GZipWebClient : WebClient
-		{
-			protected override WebRequest GetWebRequest(Uri address)
-			{
-				HttpWebRequest request = (HttpWebRequest)base.GetWebRequest(address);
-				request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
-				return request;
-			}
-		}
+		private HttpClient client;
 
 		public HttpSongStorage(string baseAddress, NetworkCredential credential = null)
 		{
-			this.client = new GZipWebClient();
-			client.Encoding = System.Text.Encoding.UTF8;
-			this.client2 = new HttpClient(new HttpClientHandler { Credentials = credential });
-			client2.BaseAddress = new Uri(baseAddress);
-			client.BaseAddress = baseAddress;
-			if (credential != null)
-				client.Credentials = credential;
+			this.client = new HttpClient(new HttpClientHandler {
+				Credentials = credential,
+				AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate
+			});
+
+			client.BaseAddress = new Uri(baseAddress);
 		}
 
 		public override IEnumerable<SongData> All()
@@ -86,7 +73,7 @@ namespace WordsLive.Core.Songs.Storage
 
 		public override int Count()
 		{
-			var result = client2.GetStringAsync("count").WaitAndUnwrapException();
+			var result = client.GetStringAsync("count").WaitAndUnwrapException();
 			return int.Parse(result);
 		}
 
@@ -97,7 +84,7 @@ namespace WordsLive.Core.Songs.Storage
 
 		public override async Task<Stream> GetAsync(string name, CancellationToken cancellation = default(CancellationToken))
 		{
-			var result = await client2.GetAsync(name, cancellation).ConfigureAwait(false);
+			var result = await client.GetAsync(name, cancellation).ConfigureAwait(false);
 			if (result.StatusCode == HttpStatusCode.NotFound)
 				throw new FileNotFoundException();
 			else if (!result.IsSuccessStatusCode)
@@ -113,9 +100,15 @@ namespace WordsLive.Core.Songs.Storage
 
 		public override void Delete(string name)
 		{
-			var result = client.UploadString(name, "DELETE", "");
-			if (result != "OK")
-				throw new WebException("Deleting failed.");
+			var result = client.DeleteAsync(name).WaitAndUnwrapException();
+			if (result.StatusCode == HttpStatusCode.NotFound)
+			{
+				return;
+			}
+			else if (!result.IsSuccessStatusCode)
+			{
+				throw new HttpRequestException("Deleting failed.");
+			}
 		}
 
 		public override FileInfo GetLocal(string name)
@@ -156,13 +149,13 @@ namespace WordsLive.Core.Songs.Storage
 
 		private IEnumerable<SongData> FetchSongData(string path)
 		{
-			var result = client2.GetStringAsync(path).WaitAndUnwrapException();
+			var result = client.GetStringAsync(path).WaitAndUnwrapException();
 			return JsonConvert.DeserializeObject<IEnumerable<SongData>>(result);
 		}
 
 		private async Task<IEnumerable<SongData>> FetchSongDataAsync(string path)
 		{
-			var result = await client2.GetStringAsync(path).ConfigureAwait(false);
+			var result = await client.GetStringAsync(path).ConfigureAwait(false);
 			return JsonConvert.DeserializeObject<IEnumerable<SongData>>(result);
 		}
 	}

@@ -19,19 +19,26 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.IO.Compression;
-using System.Linq;
 using System.Net;
 using System.Text;
+using System.Threading.Tasks;
 using Firefly.Http;
-using Newtonsoft.Json;
 using Owin;
-using WordsLive.Core;
 using WordsLive.Core.Songs.Storage;
 using WordsLive.Server.Utils;
+using WordsLive.Server.Utils.WebSockets;
 
 namespace WordsLive.Server
 {
+	using System.IO.Compression;
+	using System.Net.Http;
+	using System.Threading;
+	using Newtonsoft.Json;
+	using Owin.Builder;
+	using Owin.Types;
+	using WordsLive.Core;
+	using AppFunc = Func<IDictionary<string, object>, Task>;
+
 	static class Workaround
 	{
 		#pragma warning disable 169
@@ -116,7 +123,6 @@ window.addEventListener('load', init, false);
 </head>
 <body>
 <h2>WebSocket Echo Test</h2>
-<p><i>Requested: ###</i></p>
 <div id='output'></div>
 </body>
 </html>";
@@ -194,17 +200,21 @@ window.addEventListener('load', init, false);
 			return new HttpBackgroundStorage("http://localhost:" + Port + "/backgrounds/", cred); // alternative: ipv4.fiddler
 		}
 
-		private static AppDelegate EnableAuthentication(AppDelegate app, string password)
+		private static AppFunc EnableAuthentication(AppFunc app, string password)
 		{
 			return DigestAuthentication.Enable(
 				app,
 				(env) => 
 					{
-						var requestPath = (string)env["owin.RequestPath"];
-						if (!requestPath.StartsWith("/backgrounds/"))
+						var request = new OwinRequest(env);
+
+						if (request.CanAccept)
+							return false;
+
+						if (!request.Path.StartsWith("/backgrounds/"))
 							return true;
 
-						if (requestPath.EndsWith("/list") || requestPath.EndsWith("/listall"))
+						if (request.Path.EndsWith("/list") || request.Path.EndsWith("/listall"))
 							return true;
 
 						return false; // all other requests to /backgrounds/ without /list(all)
@@ -216,20 +226,92 @@ window.addEventListener('load', init, false);
 			);
 		}
 
+		private AppFunc WebSocketHandler(AppFunc next)
+		{
+			return (env) =>
+			{
+				var request = new OwinRequest(env);
+
+				if (request.Path == "/Echo" && request.CanAccept)
+				{
+					request.Accept(async (socket) =>
+					{
+						const int maxMessageSize = 1024;
+						byte[] receiveBuffer = new byte[maxMessageSize];
+
+						Console.WriteLine("WebSocket connection established.");
+
+						while (true)
+						{
+							ArraySegment<byte> buffer = new ArraySegment<byte>(receiveBuffer);
+							var received = await socket.ReceiveAsync(buffer, CancellationToken.None);
+							if (received.MessageType == 0x8) // close
+							{
+								await socket.CloseAsync(CancellationToken.None);
+								return;
+							}
+							else if (received.MessageType == 0x2) // binary
+							{
+								await socket.CloseAsync((int)WebSocketCloseStatus.InvalidMessageType, "Cannot accept binary frame", CancellationToken.None);
+							}
+							else
+							{
+								int count = received.Count;
+
+								while (received.EndOfMessage == false)
+								{
+									if (count >= maxMessageSize)
+									{
+										throw new NotSupportedException();
+									}
+
+									received = await socket.ReceiveAsync(new ArraySegment<byte>(receiveBuffer, count, maxMessageSize - count), CancellationToken.None);
+									count += received.Count;
+								}
+
+								var receivedString = Encoding.UTF8.GetString(receiveBuffer, 0, count);
+								var echoString = receivedString;
+								ArraySegment<byte> outputBuffer = new ArraySegment<byte>(Encoding.UTF8.GetBytes(echoString));
+								await socket.SendAsync(outputBuffer, (int)WebSocketMessageType.Text, true, CancellationToken.None);
+							}
+						}
+					});
+					return TaskHelpers.Completed();
+				}
+				else if (request.Path == "/")
+				{
+					var response = new OwinResponse(env);
+					return RespondString(response, HtmlContent, "text/html");
+				}
+				else
+				{
+					return next(env);
+				}
+			};
+		}
+
 		/// <summary>
 		/// Starts this server.
 		/// </summary>
 		public void Start()
 		{
 			var fac = new ServerFactory();
-			AppDelegate app = App;
+
+			var builder = new AppBuilder();
+			builder.UseWebSockets();
 
 			if (!String.IsNullOrEmpty(Password))
 			{
-				app = EnableAuthentication(app, Password);
+				builder.UseFunc(EnableAuthentication, Password);
 			}
 
-			server = fac.Create(WebSockets.Enable(app, "/Echo", OnWebSocketConnection), this.Port);
+			builder.UseFunc(WebSocketHandler);
+			builder.UseFunc(BackgroundsHandler);
+			builder.UseFunc(SongsHandler);
+
+			var app = Owin.StartupExtensions.Build<AppFunc>(builder);
+
+			server = fac.Create(app, this.Port);
 		}
 
 		/// <summary>
@@ -244,272 +326,258 @@ window.addEventListener('load', init, false);
 			server = null;
 		}
 
-		private Action<int, ArraySegment<byte>> OnWebSocketConnection(Action<int, ArraySegment<byte>> outgoing)
+		private AppFunc BackgroundsHandler(AppFunc next)
 		{
-			Console.WriteLine("<-> Connected");
-			//outgoing(1, new ArraySegment<byte>(Encoding.Default.GetBytes("Good morning!")));
-			return
-				(opcode, data) =>
-				{
-					Console.WriteLine(" -> Incoming opcode: {0}", opcode);
-					switch (opcode)
-					{
-						case 1:
-							var prev = Console.ForegroundColor;
-							Console.ForegroundColor = ConsoleColor.Blue;
-							Console.WriteLine(Encoding.Default.GetString(data.Array, data.Offset, data.Count)); // UTF8?
-							Console.ForegroundColor = prev;
-							break;
-					}
-					outgoing(opcode, data);
-				};
-		}
-
-		private void App(IDictionary<string, object> env, ResultDelegate result, Action<Exception> fault)
-		{
-			string requestPath = Uri.UnescapeDataString((string)env["owin.RequestPath"]);
-			string requestMethod = (string)env["owin.RequestMethod"];
-
-			var songs = DataManager.ActualSongStorage;
-			var backgrounds = DataManager.ActualBackgroundStorage;
-
-			if (requestPath.StartsWith("/backgrounds/"))
+			return (env) =>
 			{
-				if (requestMethod != "GET")
-					RespondMethodNotAllowed(result);
+				var request = new OwinRequest(env);
+				var response = new OwinResponse(env);
 
-				var query = requestPath.Substring("/backgrounds".Length);
-				
-				if (query.EndsWith("/list"))
+				var requestPath = Uri.UnescapeDataString(request.Path);
+
+				var backgrounds = DataManager.ActualBackgroundStorage;
+
+				if (requestPath.StartsWith("/backgrounds/"))
 				{
-					string path = query.Substring(0, query.Length - "list".Length);
-					var dir = backgrounds.GetDirectory(path);
+					if (request.Method != "GET")
+						return RespondMethodNotAllowed(response);
 
-					try
-					{
-						StringBuilder sb = new StringBuilder();
-						ListBackgroundEntries(dir, sb);
+					var query = requestPath.Substring("/backgrounds".Length);
 
-						Respond(result, sb.ToString());
-					}
-					catch (FileNotFoundException)
+					if (query.EndsWith("/list"))
 					{
-						RespondNotFound(result);
-					}
-				}
-				else if (query == "/listall")
-				{
-					StringBuilder sb = new StringBuilder();
-					ListBackgroundEntries(backgrounds.Root, sb, true);
-					Respond(result, sb.ToString());
-				}
-				else
-				{
-					bool preview = false;
-					if (query.EndsWith("/preview"))
-					{
-						preview = true;
-						query = query.Substring(0, query.Length - "/preview".Length);
-					}
+						string path = query.Substring(0, query.Length - "list".Length);
+						var dir = backgrounds.GetDirectory(path);
 
-					try
-					{
-						var file = backgrounds.GetFile(query);
-						using (WebClient client = new WebClient())
+						try
 						{
-							var bytes = client.DownloadData(preview ? file.PreviewUri : file.Uri);
-							// TODO: the Content-Type is always octet-stream if using local files. Is that a problem?
-							var contentType = client.ResponseHeaders["Content-Type"];
-							Respond(result, bytes, contentType: contentType);
+							StringBuilder sb = new StringBuilder();
+							ListBackgroundEntries(dir, sb);
+
+							return RespondString(response, sb.ToString());
+						}
+						catch (FileNotFoundException)
+						{
+							return RespondNotFound(response);
 						}
 					}
-					catch (FileNotFoundException)
+					else if (query == "/listall")
 					{
-						RespondNotFound(result);
-					}
-				}
-			}
-			else if (requestPath.StartsWith("/songs/"))
-			{
-				string query = requestPath.Substring("/songs/".Length);
-				if (query == "list")
-				{
-					if (requestMethod != "GET")
-						RespondMethodNotAllowed(result);
-
-					RespondGzip(result, JsonConvert.SerializeObject(songs.All()));
-				}
-				else if (query == "count")
-				{
-					if (requestMethod != "GET")
-						RespondMethodNotAllowed(result);
-
-					Respond(result, songs.Count().ToString());
-				}
-				else if (query.StartsWith("filter/"))
-				{
-					if (requestMethod != "GET")
-						RespondMethodNotAllowed(result);
-
-					query = query.Substring("filter/".Length);
-					var i = query.IndexOf('/');
-					if (i < 0)
-						RespondNotFound(result);
-
-					var filter = query.Substring(0, i);
-					var filterQuery = SongData.NormalizeSearchString(query.Substring(i + 1));
-
-					if (filter == "text")
-					{
-						RespondGzip(result, JsonConvert.SerializeObject(songs.WhereTextContains(filterQuery)));
-					}
-					else if (filter == "title")
-					{
-						RespondGzip(result, JsonConvert.SerializeObject(songs.WhereTitleContains(filterQuery)));
-					}
-					else if (filter == "source")
-					{
-						RespondGzip(result, JsonConvert.SerializeObject(songs.WhereSourceContains(filterQuery)));
-					}
-					else if (filter == "copyright")
-					{
-						RespondGzip(result, JsonConvert.SerializeObject(songs.WhereCopyrightContains(filterQuery)));
+						StringBuilder sb = new StringBuilder();
+						ListBackgroundEntries(backgrounds.Root, sb, true);
+						return RespondString(response, sb.ToString());
 					}
 					else
 					{
-						RespondNotFound(result); // unsupported filter method
+						bool preview = false;
+						if (query.EndsWith("/preview"))
+						{
+							preview = true;
+							query = query.Substring(0, query.Length - "/preview".Length);
+						}
+
+						try
+						{
+							var file = backgrounds.GetFile(query);
+							return RespondDownloaded(response, preview ? file.PreviewUri : file.Uri);
+						}
+						catch (FileNotFoundException)
+						{
+							return RespondNotFound(response);
+						}
 					}
 				}
 				else
 				{
-					if (requestMethod == "GET")
+					return next(env);
+				}
+			};
+		}
+
+		private AppFunc SongsHandler(AppFunc next)
+		{
+			return (env) =>
+			{
+				var request = new OwinRequest(env);
+				var response = new OwinResponse(env);
+
+				var requestPath = Uri.UnescapeDataString(request.Path);
+
+				var songs = DataManager.ActualSongStorage;
+
+				if (requestPath.StartsWith("/songs/"))
+				{
+					string query = requestPath.Substring("/songs/".Length);
+					if (query == "list")
 					{
-						try
+						if (request.Method != "GET")
+							return RespondMethodNotAllowed(response);
+
+						return RespondCompressedString(response, JsonConvert.SerializeObject(songs.All()), "application/json");
+					}
+					else if (query == "count")
+					{
+						if (request.Method != "GET")
+							return RespondMethodNotAllowed(response);
+
+						return RespondString(response, songs.Count().ToString());
+					}
+					else if (query.StartsWith("filter/"))
+					{
+						if (request.Method != "GET")
+							return RespondMethodNotAllowed(response);
+
+						query = query.Substring("filter/".Length);
+						var i = query.IndexOf('/');
+						if (i < 0)
+							return RespondNotFound(response);
+
+						var filter = query.Substring(0, i);
+						var filterQuery = SongData.NormalizeSearchString(query.Substring(i + 1));
+
+						if (filter == "text")
 						{
-							using (var stream = songs.Get(query))
+							return RespondCompressedString(response, JsonConvert.SerializeObject(songs.WhereTextContains(filterQuery)), "application/json");
+						}
+						else if (filter == "title")
+						{
+							return RespondCompressedString(response, JsonConvert.SerializeObject(songs.WhereTitleContains(filterQuery)), "application/json");
+						}
+						else if (filter == "source")
+						{
+							return RespondCompressedString(response, JsonConvert.SerializeObject(songs.WhereSourceContains(filterQuery)), "application/json");
+						}
+						else if (filter == "copyright")
+						{
+							return RespondCompressedString(response, JsonConvert.SerializeObject(songs.WhereCopyrightContains(filterQuery)), "application/json");
+						}
+						else
+						{
+							return RespondNotFound(response); // unsupported filter method
+						}
+					}
+					else
+					{
+						if (request.Method == "GET")
+						{
+							return RespondGetSong(response, songs, query);
+						}
+						else if (request.Method == "PUT")
+						{
+							return RespondPutSong(request, response, songs, query);
+						}
+						else if (request.Method == "DELETE")
+						{
+							try
 							{
-								// TODO: send Last-Modified header
-								Respond(result, ReadStream(stream), contentType: "text/xml");
+								songs.Delete(query);
+								return TaskHelpers.Completed();
+							}
+							catch (FileNotFoundException)
+							{
+								return RespondNotFound(response);
 							}
 						}
-						catch (FileNotFoundException)
+						else
 						{
-							RespondNotFound(result);
-						}
-						catch (ArgumentException)
-						{
-							RespondNotFound(result);
+							return RespondMethodNotAllowed(response);
 						}
 					}
-					else if (requestMethod == "PUT")
-					{
-						var contentLength = int.Parse(((IDictionary<string, IEnumerable<string>>)env["owin.RequestHeaders"])["Content-Length"].Single());
-						var requestBody = (BodyDelegate)env["owin.RequestBody"];
+				}
+				else
+				{
+					return next(env);
+				}
+			};
+		}
 
-						var responseBody = Server.Utils.Extensions.BufferedRequestBody(requestBody, contentLength, (bytes) =>
-							{
-								using (var ft = songs.Put(query))
-								{
-									ft.Stream.Write(bytes, 0, bytes.Length);
-								}
-							});
+		private async Task RespondGetSong(OwinResponse response, SongStorage storage, string name)
+		{
+			bool success = true;
+			try
+			{
+				using (var stream = await storage.GetAsync(name, CancellationToken.None))
+				{
+					response.SetHeader("Content-Type", "text/xml");
+					await stream.CopyToAsync(response.Body);
+					// TODO: send Last-Modified header
+				}
+			}
+			catch (FileNotFoundException)
+			{
+				success = false;
+			}
+			catch (ArgumentException)
+			{
+				success = false;
+			}
 
-						result(
-							"200 OK",
-							new Dictionary<string, IEnumerable<string>>(StringComparer.OrdinalIgnoreCase)
-						{
-							{"Content-Type", new[] {"text/plain"}},
-						},
-							responseBody
-						);
-					}
-					else if (requestMethod == "DELETE")
-					{
-						try
-						{
-							songs.Delete(query);
-							Respond(result, "OK");
-						}
-						catch (FileNotFoundException)
-						{
-							RespondNotFound(result);
-						}
-					}
+			if (!success)
+			{
+				await RespondNotFound(response);
+			}
+		}
+
+		private async Task RespondPutSong(OwinRequest request, OwinResponse response, SongStorage storage, string name)
+		{
+			var contentLength = request.Headers["Content-Length"];
+			// TODO: error handling
+			var ft = storage.Put(name);
+			await request.Body.CopyToAsync(ft.Stream);
+			await ft.FinishAsync();
+		}
+
+		private async Task RespondDownloaded(OwinResponse response, Uri uri)
+		{
+			if (uri.IsFile)
+			{
+				using (var stream = File.OpenRead(uri.LocalPath))
+				{
+					await stream.CopyToAsync(response.Body).ConfigureAwait(false);
 				}
 			}
 			else
 			{
-				Respond(result, HtmlContent.Replace("###", requestPath), contentType: "text/html");
-			}
-		}
-
-		private void Respond(ResultDelegate del, string response, string contentType = "text/plain", string code = "200 OK")
-		{
-			Respond(del, Encoding.UTF8.GetBytes(response), contentType + "; charset=utf-8", code);
-		}
-
-		private void RespondGzip(ResultDelegate del, string response, string contentType = "text/plain", string code = "200 OK")
-		{
-			var inStream = new MemoryStream(Encoding.UTF8.GetBytes(response));
-			var outStream = new MemoryStream();
-			using (GZipStream tinyStream = new GZipStream(outStream, CompressionMode.Compress))
-			{
-				inStream.CopyTo(tinyStream);
-			}
-			Respond(del, outStream.ToArray(), contentType + "; charset=utf-8", code, "gzip");
-			outStream.Close();
-			inStream.Close();
-		}
-
-		private void Respond(ResultDelegate del, byte[] response, string contentType = "text/plain", string code = "200 OK", string contentEncoding = null)
-		{
-			var headers = new Dictionary<string, IEnumerable<string>>(StringComparer.OrdinalIgnoreCase);
-
-			if (contentType != null)
-				headers.Add("Content-Type", new[] { contentType });
-
-			if (contentEncoding != null)
-				headers.Add("Content-Encoding", new[] { contentEncoding });
-
-			del(
-				code,
-				headers,
-				(write, flush, end, cancel) =>
+				using (HttpClient client = new HttpClient())
 				{
-					write(new ArraySegment<byte>(response));
-					end(null);
-				}
-			);
-		}
-
-		private void RespondNotFound(ResultDelegate del)
-		{
-			Respond(del, "Not Found", code: "404 Not Found");
-		}
-
-		private void RespondMethodNotAllowed(ResultDelegate del)
-		{
-			Respond(del, "Request method not allowed.", code: "405 Method Not Allowed");
-		}
-
-		private byte[] ReadStream(Stream stream)
-		{
-			byte[] bytes;
-
-			if (stream is MemoryStream)
-			{
-				bytes = (stream as MemoryStream).ToArray();
-			}
-			else
-			{
-				using (MemoryStream ms = new MemoryStream())
-				{
-					stream.CopyTo(ms);
-					bytes = ms.ToArray();
+					// TODO: set content type
+					var body = await client.GetStreamAsync(uri).ConfigureAwait(false);
+					await body.CopyToAsync(response.Body).ConfigureAwait(false);
 				}
 			}
+		}
 
-			return bytes;
+		private Task RespondString(OwinResponse response, string content, string contentType = "text/plain")
+		{
+			response.SetHeader("Content-Type", contentType + ";charset=utf-8");
+			return response.WriteAsync(content);
+		}
+
+		private async Task RespondCompressedString(OwinResponse response, string content, string contentType = "text/plain")
+		{
+			response.SetHeader("Content-Type", contentType + ";charset=utf-8");
+			response.SetHeader("Content-Encoding", "gzip");
+			using (var inStream = new MemoryStream(Encoding.UTF8.GetBytes(content)))
+			{
+				using (GZipStream compressedStream = new GZipStream(response.Body, CompressionMode.Compress, true))
+				{
+					await inStream.CopyToAsync(compressedStream);
+				}
+			}
+		}
+
+		private Task RespondNotFound(OwinResponse response)
+		{
+			response.StatusCode = 404;
+			response.ReasonPhrase = "Not Found";
+			return response.WriteAsync("Not Found");
+		}
+
+		private Task RespondMethodNotAllowed(OwinResponse response)
+		{
+			response.StatusCode = 405;
+			response.ReasonPhrase = "Method Not Allowed";
+			return response.WriteAsync("Request method not allowed.");
 		}
 
 		private void ListBackgroundEntries(BackgroundDirectory parent, StringBuilder sb, bool recursive = false)

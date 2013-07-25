@@ -21,12 +21,13 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 
 namespace WordsLive.Core.Songs.Storage
 {
 	public class HttpBackgroundStorage : BackgroundStorage
 	{
-		private WebClient client;
+		private HttpClient client;
 		private string baseAddress;
 
 		/// <summary>
@@ -36,27 +37,24 @@ namespace WordsLive.Core.Songs.Storage
 		/// <param name="credentials">The credentials, if needed.</param>
 		public HttpBackgroundStorage(string baseAddress, NetworkCredential credential = null)
 		{
-			this.client = new WebClient();
+			this.client = new HttpClient(new HttpClientHandler { Credentials = credential });
 			this.baseAddress = baseAddress;
-			client.BaseAddress = baseAddress;
-			if (credential != null)
-				client.Credentials = credential;
+			client.BaseAddress = new Uri(baseAddress);
 		}
 
 		public override BackgroundFile GetFile(string path)
 		{
 			int i = path.LastIndexOf('/');
 			var directory = new BackgroundDirectory(this, path.Substring(0, i + 1));
-			var entries = GetListing(directory).Where(e => e.Path == path);
-			if (!entries.Any())
-				throw new FileNotFoundException(path);
 
-			return new BackgroundFile(this, directory, path.Substring(i + 1), entries.Single().IsVideo);
+			var name = path.Substring(i + 1);
+
+			return new BackgroundFile(this, directory, name, IsVideo(name));
 		}
 
 		public override IEnumerable<BackgroundFile> GetFiles(BackgroundDirectory directory)
 		{
-			return GetListing(directory).Where(e => !e.IsDirectory).Select(e => new BackgroundFile(this, directory, Path.GetFileName(e.Path), e.IsVideo)).OrderBy(f => f.Name);
+			return GetListing(directory).Where(e => !e.IsDirectory).Select(e => new BackgroundFile(this, directory, Path.GetFileName(e.Path), IsVideo(e.Path))).OrderBy(f => f.Name);
 		}
 
 		public override IEnumerable<BackgroundDirectory> GetDirectories(BackgroundDirectory parent)
@@ -84,15 +82,28 @@ namespace WordsLive.Core.Songs.Storage
 		/// <returns></returns>
 		private IEnumerable<ListingEntry> GetListing(BackgroundDirectory directory)
 		{
-			try
-			{
-				var result = client.DownloadString(directory.Path.Substring(1) + "list");
-				return result.Split('\n').Where(p => p.Trim() != String.Empty).Select(p => new ListingEntry(p)).ToArray();
-			}
-			catch (WebException)
-			{
+			var result = client.GetAsync(directory.Path.Substring(1) + "list").WaitAndUnwrapException();
+			if (result.StatusCode == HttpStatusCode.NotFound)
 				throw new FileNotFoundException();
-			}
+
+			if (!result.IsSuccessStatusCode)
+				throw new HttpRequestException();
+
+			var str = result.Content.ReadAsStringAsync().WaitAndUnwrapException();
+
+			return str.Split('\n').Where(p => p.Trim() != String.Empty).Select(p => new ListingEntry(p)).ToArray();
+		}
+
+		private bool IsVideo(string path)
+		{
+			var di = path.LastIndexOf('.');
+
+			if (di == -1)
+				return false;
+
+			var ext = path.Substring(di).ToLowerInvariant();
+
+			return AllowedVideoTypes.ContainsKey(ext);
 		}
 
 		/// <summary>
@@ -101,24 +112,26 @@ namespace WordsLive.Core.Songs.Storage
 		private class ListingEntry
 		{
 			public string Path { get; private set; }
-			public bool IsVideo { get; private set; }
 			public bool IsDirectory { get; private set; }
 
 			public ListingEntry(string entry)
 			{
-				entry = entry.Trim();
+				Path = entry.Trim();
 				IsDirectory = entry.EndsWith("/");
+			}
+		}
 
-				if (!IsDirectory && entry.EndsWith(" [VIDEO]", StringComparison.InvariantCultureIgnoreCase))
-				{
-					Path = entry.Substring(0, entry.Length - 8).TrimEnd();
-					IsVideo = true;
-				}
-				else
-				{
-					Path = entry;
-					IsVideo = false;
-				}
+		public override bool FileExists(BackgroundFile file)
+		{
+			var path = file.Path;
+			try
+			{
+				var entries = GetListing(file.Parent);
+				return entries.Any(e => e.Path == path);
+			}
+			catch (FileNotFoundException)
+			{
+				return false;
 			}
 		}
 	}

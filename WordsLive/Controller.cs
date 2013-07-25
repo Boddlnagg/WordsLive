@@ -126,12 +126,25 @@ namespace WordsLive
 			var a = Assembly.GetExecutingAssembly();
 			Version appVersion = a.GetName().Version;
 			string appVersionString = appVersion.ToString();
+			bool modified = false;
 
+			
 			if (Properties.Settings.Default.ApplicationVersion != appVersionString)
 			{
 				Properties.Settings.Default.Upgrade();
 				Properties.Settings.Default.ApplicationVersion = appVersionString;
 				Properties.Settings.Default.NoUpdateVersion = appVersionString;
+				modified = true;
+			}
+
+			if (String.IsNullOrEmpty(Properties.Settings.Default.NoUpdateVersion))
+			{
+				Properties.Settings.Default.NoUpdateVersion = appVersionString;
+				modified = true;
+			}
+
+			if (modified)
+			{
 				Properties.Settings.Default.Save();
 			}
 		}
@@ -475,11 +488,12 @@ namespace WordsLive
 			var hc = new HttpClient();
 			try
 			{
-				var str = await hc.GetStringAsync(new Uri("http://wordslive.org/version.xml"));
+				var currentVersion = Assembly.GetExecutingAssembly().GetName().Version;
+				var uri = new Uri("http://wordslive.org/version.xml"); 
+				var str = await hc.GetStringAsync(uri);
 				var reader = new StringReader(str);
 				var doc = XDocument.Load(reader);
 				var latestVersion = new Version(doc.Root.Element("version").Value);
-				var currentVersion = Assembly.GetExecutingAssembly().GetName().Version;
 				var noUpdateVersion = new Version(Properties.Settings.Default.NoUpdateVersion);
 				var latestUri = new Uri(doc.Root.Element("url").Value);
 

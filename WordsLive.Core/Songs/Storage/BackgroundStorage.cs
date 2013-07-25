@@ -28,6 +28,36 @@ namespace WordsLive.Core.Songs.Storage
 	/// </summary>
 	public abstract class BackgroundStorage
 	{
+		private Dictionary<string, string> allowedImageTypes = new Dictionary<string, string> {
+			{".png", "image/png"},
+			{".jpg", "image/jpeg"},
+			{".jpeg", "image/jpeg"}
+		};
+
+		private Dictionary<string, string> allowedVideoTypes = new Dictionary<string, string> {
+			{".mp4", "video/mp4"},
+			{".wmv", "video/x-ms-wmv"},
+			{".avi", "video/avi"},
+			{".mov", "video/quicktime"},
+			{".ogv", "video/ogg"}
+		};
+
+		public Dictionary<string, string> AllowedImageTypes
+		{
+			get
+			{
+				return allowedImageTypes;
+			}
+		}
+
+		public Dictionary<string, string> AllowedVideoTypes
+		{
+			get
+			{
+				return allowedVideoTypes;
+			}
+		}
+
 		/// <summary>
 		/// Gets the root directory.
 		/// </summary>
@@ -45,7 +75,6 @@ namespace WordsLive.Core.Songs.Storage
 		/// </summary>
 		/// <param name="path">The path.</param>
 		/// <returns>The background file instance.</returns>
-		/// <exception cref="FileNotFoundException">The file was not found.</exception>
 		public abstract BackgroundFile GetFile(string path);
 
 		/// <summary>
@@ -104,5 +133,7 @@ namespace WordsLive.Core.Songs.Storage
 
 			return GetFile("/" + background.FilePath.Replace('\\', '/'));
 		}
+
+		public abstract bool FileExists(BackgroundFile file);
 	}
 }

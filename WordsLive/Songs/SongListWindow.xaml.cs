@@ -45,7 +45,7 @@ namespace WordsLive.Songs
 			return filter.Matches((SongData)item);
 		}
 
-		private void Window_Loaded(object sender, RoutedEventArgs e)
+		private async void Window_Loaded(object sender, RoutedEventArgs e)
 		{
 			songListView.DataContext = this.list;
 			songListView.Items.SortDescriptions.Add(new SortDescription("Title", ListSortDirection.Ascending));
@@ -58,7 +58,7 @@ namespace WordsLive.Songs
 			};
 			filterGroupBox.DataContext = filter;
 
-			Task.Factory.StartNew(LoadSongs);
+			await Task.Factory.StartNew(LoadSongs);
 		}
 
 		private void LoadSongs()

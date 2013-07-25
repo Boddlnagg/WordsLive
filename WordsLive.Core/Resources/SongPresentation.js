@@ -222,7 +222,7 @@ SongPresentation.prototype.showSlide = function (slide) {
 	var bgCss = null;
 	if (this.backgroundsEnabled && slide.Background != null) {
 		if (slide.Background.Color !== undefined) {
-			bgCss = { 'background-color': SongPresentation.makeCssColor(slide.Background.Color) };
+			bgCss = { 'background-color': SongPresentation.makeCssColor(slide.Background.Color), 'background-image': 'none' };
 		} else if (slide.Background.Image !== undefined) {
 			bgCss = { 'background-color': 'black', 'background-image': 'url(\'' + SongPresentation.BackgroundPrefix + slide.Background.Image + '\')' };
 		} else {

@@ -117,7 +117,7 @@ namespace WordsLive.Core
 			{
 				songs.Count(); // get song count for testing the connection and password
 			}
-			catch (System.Net.WebException)
+			catch (System.Net.Http.HttpRequestException)
 			{
 				return false; // problem with the connection
 			}
@@ -148,12 +148,7 @@ namespace WordsLive.Core
 
 			if (backgroundsDirectory.EndsWith("\\"))
 				backgroundsDirectory = backgroundsDirectory.Substring(0, backgroundsDirectory.Length - 1);
-			var backgrounds = new LocalBackgroundStorage(backgroundsDirectory)
-			{
-				// TODO: add more?
-				AllowedImageExtensions = new string[] { ".png", ".jpg", ".jpeg" },
-				AllowedVideoExtensions = new string[] { ".mp4", ".wmv", ".avi", ".mov", ".ogv" }
-			};
+			var backgrounds = new LocalBackgroundStorage(backgroundsDirectory);
 
 			ActualSongStorage = songs;
 			ActualBackgroundStorage = backgrounds;

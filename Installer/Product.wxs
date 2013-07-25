@@ -19,15 +19,16 @@
 		<!-- ARP Support Oder wie konfiguriert man Add/Remove Programs mit dem Windows Installer
 				Siehe auch http://msdn.microsoft.com/en-us/library/aa368032.aspx
 		-->
-		<Property Id="ARPHELPLINK" Value="http://www.wordslive.org" />
+		<Property Id="ARPHELPLINK" Value="http://wordslive.org" />
 		<Property Id="ARPCONTACT" Value="WordsLive" />
 		<Property Id="ARPCOMMENTS" Value="Worship Projection Software" />
-		<Property Id="ARPURLINFOABOUT" Value="http://www.wordslive.org" />
+		<Property Id="ARPURLINFOABOUT" Value="http://wordslive.org" />
 		<Property Id="ARPPRODUCTICON" Value="Icon.ico" />
 
 		<Feature Id="ProductFeature" ConfigurableDirectory="APPLICATIONFOLDER" Level="1">
 			<ComponentGroupRef Id="MainAssemblies" />
 			<ComponentGroupRef Id="ThirdPartyAssemblies" />
+			<ComponentGroupRef Id="ServerAssemblies" />
 			<ComponentGroupRef Id="VlcDotNetAssemblies" />
 			<ComponentGroupRef Id="PowerpointViewerLibComponents" />
 			<ComponentGroupRef Id="AwesomiumComponents" />
@@ -91,7 +92,13 @@
 				<File Source="$(var.WordsLive.TargetDir)WordsLive.Core.dll" Name="WordsLive.Core.dll" KeyPath="yes" />
 			</Component>
 			<Component>
+				<File Source="$(var.WordsLive.TargetDir)WordsLive.Core.dll.config" Name="WordsLive.Core.dll.config" KeyPath="yes" />
+			</Component>
+			<Component>
 				<File Source="$(var.WordsLive.TargetDir)WordsLive.Server.dll" Name="WordsLive.Server.dll" KeyPath="yes" />
+			</Component>
+			<Component>
+				<File Source="$(var.WordsLive.TargetDir)WordsLive.Server.dll.config" Name="WordsLive.Server.dll.config" KeyPath="yes" />
 			</Component>
 			<Component>
 				<File Source="$(var.WordsLive.TargetDir)WordsLive.Presentation.dll" Name="WordsLive.Presentation.dll" KeyPath="yes" />
@@ -100,10 +107,19 @@
 				<File Source="$(var.WordsLive.TargetDir)WordsLive.Presentation.Wpf.dll" Name="WordsLive.Presentation.Wpf.dll" KeyPath="yes" />
 			</Component>
 			<Component>
+				<File Source="$(var.WordsLive.TargetDir)WordsLive.Presentation.Wpf.dll.config" Name="WordsLive.Presentation.Wpf.dll.config" KeyPath="yes" />
+			</Component>
+			<Component>
 				<File Source="$(var.WordsLive.TargetDir)WordsLive.Slideshow.dll" Name="WordsLive.Slideshow.dll" KeyPath="yes" />
 			</Component>
 			<Component>
+				<File Source="$(var.WordsLive.TargetDir)WordsLive.Slideshow.dll.config" Name="WordsLive.Slideshow.dll.config" KeyPath="yes" />
+			</Component>
+			<Component>
 				<File Source="$(var.WordsLive.TargetDir)WordsLive.Slideshow.Impress.Bridge.dll" Name="WordsLive.Slideshow.Impress.Bridge.dll" KeyPath="yes" />
+			</Component>
+		<Component>
+				<File Source="$(var.WordsLive.TargetDir)WordsLive.Slideshow.Impress.Bridge.dll.config" Name="WordsLive.Slideshow.Impress.Bridge.dll.config" KeyPath="yes" />
 			</Component>
 		</ComponentGroup>
 		<ComponentGroup Id="ThirdPartyAssemblies" Directory="APPLICATIONFOLDER">
@@ -119,11 +135,22 @@
 			<Component>
 				<File Source="$(var.WordsLive.TargetDir)Newtonsoft.Json.dll" Name="Newtonsoft.Json.dll" KeyPath="yes" />
 			</Component>
+		</ComponentGroup>
+		<ComponentGroup Id="ServerAssemblies" Directory="APPLICATIONFOLDER">
 			<Component>
 				<File Source="$(var.WordsLive.TargetDir)Firefly.dll" Name="Firefly.dll" KeyPath="yes" />
 			</Component>
 			<Component>
 				<File Source="$(var.WordsLive.TargetDir)Owin.dll" Name="Owin.dll" KeyPath="yes" />
+			</Component>
+			<Component>
+				<File Source="$(var.WordsLive.TargetDir)Owin.Types.dll" Name="Owin.Types.dll" KeyPath="yes" />
+			</Component>
+			<Component>
+				<File Source="$(var.WordsLive.TargetDir)Owin.Builder.dll" Name="Owin.Builder.dll" KeyPath="yes" />
+			</Component>
+			<Component>
+				<File Source="$(var.WordsLive.TargetDir)Owin.Extensions.dll" Name="Owin.Extensions.dll" KeyPath="yes" />
 			</Component>
 		</ComponentGroup>
 		<ComponentGroup Id="VlcDotNetAssemblies" Directory="APPLICATIONFOLDER">

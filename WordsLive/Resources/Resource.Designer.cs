@@ -142,6 +142,24 @@ namespace WordsLive.Resources {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die The background currently in use for this song was not found and is replaced by a black background. ähnelt.
+        /// </summary>
+        public static string cbMsgNotFound {
+            get {
+                return ResourceManager.GetString("cbMsgNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Background not found ähnelt.
+        /// </summary>
+        public static string cbMsgNotFoundTitle {
+            get {
+                return ResourceManager.GetString("cbMsgNotFoundTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Preview size: ähnelt.
         /// </summary>
         public static string cbPreviewSize {
