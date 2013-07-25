@@ -48,13 +48,9 @@ namespace WordsLive.Core.Songs.Storage
 		/// </summary>
 		/// <param name="path">The path.</param>
 		/// <returns>The background file instance.</returns>
-		/// <exception cref="FileNotFoundException">The file was not found.</exception>
 		public override BackgroundFile GetFile(string path)
 		{
 			var file = new FileInfo(Path.Combine(directory, path.Substring(1).Replace('/', Path.DirectorySeparatorChar)));
-
-			if (!file.Exists)
-				throw new FileNotFoundException(path + " not found."); // TODO: get rid of this exception??
 
 			string dir = path.Substring(0, path.LastIndexOf('/') + 1);
 
@@ -68,7 +64,7 @@ namespace WordsLive.Core.Songs.Storage
 			}
 			else
 			{
-				throw new FileNotFoundException(path + " not found.");
+				throw new ArgumentException(path + " of invalid type.");
 			}
 		}
 
@@ -162,6 +158,11 @@ namespace WordsLive.Core.Songs.Storage
 				return new DirectoryInfo(directory);
 
 			return new DirectoryInfo(Path.Combine(directory, dir.Path.Substring(1).Replace('/', Path.DirectorySeparatorChar)));
+		}
+
+		public override bool FileExists(BackgroundFile file)
+		{
+			return File.Exists(GetFileUri(file).LocalPath);
 		}
 	}
 }

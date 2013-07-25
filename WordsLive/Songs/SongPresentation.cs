@@ -11,6 +11,7 @@ using WordsLive.AudioVideo;
 using WordsLive.Awesomium;
 using WordsLive.Core;
 using WordsLive.Core.Songs;
+using WordsLive.Utils;
 
 namespace WordsLive.Songs
 {
@@ -19,8 +20,8 @@ namespace WordsLive.Songs
 		private Song song;
 		private Dictionary<SongSlide, int> slides = new Dictionary<SongSlide, int>();
 		private SongDisplayController controller;
-		private Image frontImage;
-		private Image backImage;
+		private ImageGrid frontImage;
+		private ImageGrid backImage;
 		private Storyboard storyboard;
 		private BaseMediaControl videoBackground;
 		private System.Windows.Shapes.Rectangle videoBackgroundClone;
@@ -83,8 +84,8 @@ namespace WordsLive.Songs
 
 			if (song.VideoBackground == null)
 			{
-				frontImage = new Image { Stretch = Stretch.Fill };
-				backImage = new Image { Stretch = Stretch.Fill };
+				frontImage = new ImageGrid { Background = Brushes.Black, Stretch = Stretch.Fill };
+				backImage = new ImageGrid { Background = Brushes.Black, Stretch = Stretch.Fill };
 
 				this.Control.BackgroundGrid.Children.Add(backImage);
 				this.Control.ForegroundGrid.Children.Add(frontImage);

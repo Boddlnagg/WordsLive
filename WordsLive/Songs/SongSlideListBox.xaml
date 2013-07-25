@@ -4,6 +4,7 @@
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	xmlns:local="clr-namespace:WordsLive.Songs"
+	xmlns:utils="clr-namespace:WordsLive.Utils"
 	mc:Ignorable="d"
 	x:Class="WordsLive.Songs.SongSlideListBox"
 	d:DesignWidth="200" d:DesignHeight="200"
@@ -45,7 +46,7 @@
 					<ColumnDefinition Width="*" SharedSizeGroup="TextGroup"/>
 					<ColumnDefinition Width="Auto" SharedSizeGroup="TranslationGroup"/>
 				</Grid.ColumnDefinitions>
-				<Image Grid.Column="0" VerticalAlignment="Top" Source="{Binding Background, Converter={StaticResource BackgroundConverter}, ConverterParameter=60}" Height="45" Width="60" Stretch="Fill"/>
+				<utils:ImageGrid Grid.Column="0" VerticalAlignment="Top" Source="{Binding Background, Converter={StaticResource BackgroundConverter}, ConverterParameter=60}" Height="45" Width="60" Stretch="Fill" Background="Black"/>
 				<TextBlock Grid.Column="1" Name="text" TextWrapping="Wrap" Text="{Binding Path=Text}" VerticalAlignment="Center" Margin="10,0,0,0" FontSize="13" HorizontalAlignment="Stretch"/>
 				<TextBlock Grid.Column="2" Name="translation" TextWrapping="Wrap" Text="{Binding Path=Translation}" Foreground="Gray"  VerticalAlignment="Center" Margin="10,0,0,0" FontSize="13"/>
 			</Grid>

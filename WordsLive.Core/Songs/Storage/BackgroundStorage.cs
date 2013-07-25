@@ -75,7 +75,6 @@ namespace WordsLive.Core.Songs.Storage
 		/// </summary>
 		/// <param name="path">The path.</param>
 		/// <returns>The background file instance.</returns>
-		/// <exception cref="FileNotFoundException">The file was not found.</exception>
 		public abstract BackgroundFile GetFile(string path);
 
 		/// <summary>
@@ -134,5 +133,7 @@ namespace WordsLive.Core.Songs.Storage
 
 			return GetFile("/" + background.FilePath.Replace('\\', '/'));
 		}
+
+		public abstract bool FileExists(BackgroundFile file);
 	}
 }

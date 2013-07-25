@@ -82,6 +82,14 @@ namespace WordsLive.Core.Songs.Storage
 			}
 		}
 
+		public bool Exists
+		{
+			get
+			{
+				return storage.FileExists(this);
+			}
+		}
+
 		public override bool Equals(object obj)
 		{
 			var other = obj as BackgroundFile;

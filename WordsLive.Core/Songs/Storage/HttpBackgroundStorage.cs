@@ -47,18 +47,14 @@ namespace WordsLive.Core.Songs.Storage
 			int i = path.LastIndexOf('/');
 			var directory = new BackgroundDirectory(this, path.Substring(0, i + 1));
 
-			// TODO: don't use GetListing but instead use AllowedImageTypes/AllowedVideoTypes
-			// to find out whether this is a video
-			var entries = GetListing(directory).Where(e => e.Path == path);
-			if (!entries.Any())
-				throw new FileNotFoundException(path);
+			var name = path.Substring(i + 1);
 
-			return new BackgroundFile(this, directory, path.Substring(i + 1), entries.Single().IsVideo);
+			return new BackgroundFile(this, directory, name, IsVideo(name));
 		}
 
 		public override IEnumerable<BackgroundFile> GetFiles(BackgroundDirectory directory)
 		{
-			return GetListing(directory).Where(e => !e.IsDirectory).Select(e => new BackgroundFile(this, directory, Path.GetFileName(e.Path), e.IsVideo)).OrderBy(f => f.Name);
+			return GetListing(directory).Where(e => !e.IsDirectory).Select(e => new BackgroundFile(this, directory, Path.GetFileName(e.Path), IsVideo(e.Path))).OrderBy(f => f.Name);
 		}
 
 		public override IEnumerable<BackgroundDirectory> GetDirectories(BackgroundDirectory parent)
@@ -98,31 +94,44 @@ namespace WordsLive.Core.Songs.Storage
 			return str.Split('\n').Where(p => p.Trim() != String.Empty).Select(p => new ListingEntry(p)).ToArray();
 		}
 
+		private bool IsVideo(string path)
+		{
+			var di = path.LastIndexOf('.');
+
+			if (di == -1)
+				return false;
+
+			var ext = path.Substring(di).ToLowerInvariant();
+
+			return AllowedVideoTypes.ContainsKey(ext);
+		}
+
 		/// <summary>
 		/// Helper class for single listing entries, used by the GetListing method
 		/// </summary>
 		private class ListingEntry
 		{
 			public string Path { get; private set; }
-			public bool IsVideo { get; private set; }
 			public bool IsDirectory { get; private set; }
 
 			public ListingEntry(string entry)
 			{
-				entry = entry.Trim();
+				Path = entry.Trim();
 				IsDirectory = entry.EndsWith("/");
+			}
+		}
 
-				// TODO: remove [VIDEO] tag (also in PHP server)
-				if (!IsDirectory && entry.EndsWith(" [VIDEO]", StringComparison.InvariantCultureIgnoreCase))
-				{
-					Path = entry.Substring(0, entry.Length - 8).TrimEnd();
-					IsVideo = true;
-				}
-				else
-				{
-					Path = entry;
-					IsVideo = false;
-				}
+		public override bool FileExists(BackgroundFile file)
+		{
+			var path = file.Path;
+			try
+			{
+				var entries = GetListing(file.Parent);
+				return entries.Any(e => e.Path == path);
+			}
+			catch (FileNotFoundException)
+			{
+				return false;
 			}
 		}
 	}
