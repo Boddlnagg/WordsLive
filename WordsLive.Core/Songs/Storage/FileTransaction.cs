@@ -18,6 +18,7 @@
 
 using System;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace WordsLive.Core.Songs.Storage
 {
@@ -47,10 +48,20 @@ namespace WordsLive.Core.Songs.Storage
 			DoFinish();
 		}
 
+		public Task FinishAsync()
+		{
+			if (IsFinished)
+				throw new InvalidOperationException("Transaction already finished.");
+
+			return DoFinishAsync();
+		}
+
 		/// <summary>
 		/// Actual implementation called by the Finish method.
 		/// </summary>
 		protected abstract void DoFinish();
+
+		protected abstract Task DoFinishAsync();
 
 		public void Dispose()
 		{

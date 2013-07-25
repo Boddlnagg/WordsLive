@@ -144,5 +144,18 @@ namespace WordsLive.Core
 				throw ex.InnerException;
 			}
 		}
+
+		public static void WaitAndUnwrapException(this Task task, CancellationToken cancellationToken = default(CancellationToken))
+		{
+			try
+			{
+				task.Wait(cancellationToken);
+			}
+			catch (AggregateException ex)
+			{
+				// note: this destroys the stack trace
+				throw ex.InnerException;
+			}
+		}
 	}
 }

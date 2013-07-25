@@ -17,9 +17,8 @@
  */
 
 using System.IO;
-using System.Net;
 using System.Net.Http;
-using System.Text;
+using System.Threading.Tasks;
 
 namespace WordsLive.Core.Songs.Storage
 {
@@ -54,8 +53,13 @@ namespace WordsLive.Core.Songs.Storage
 
 		protected override void DoFinish()
 		{
+			DoFinishAsync().WaitAndUnwrapException();
+		}
+
+		protected override async Task DoFinishAsync()
+		{
 			stream.Close();
-			var result = client.PutAsync(relativeUri, new ByteArrayContent(stream.ToArray())).WaitAndUnwrapException();
+			var result = await client.PutAsync(relativeUri, new ByteArrayContent(stream.ToArray())).ConfigureAwait(false);
 			if (!result.IsSuccessStatusCode)
 				throw new HttpRequestException("Uploading failed");
 		}

@@ -522,10 +522,9 @@ window.addEventListener('load', init, false);
 		{
 			var contentLength = request.Headers["Content-Length"];
 			// TODO: error handling
-			using (var ft = storage.Put(name))
-			{
-				await request.Body.CopyToAsync(ft.Stream);
-			}
+			var ft = storage.Put(name);
+			await request.Body.CopyToAsync(ft.Stream);
+			await ft.FinishAsync();
 		}
 
 		private async Task RespondDownloaded(OwinResponse response, Uri uri)

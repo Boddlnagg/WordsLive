@@ -16,8 +16,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-using System;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace WordsLive.Core.Songs.Storage
 {
@@ -41,6 +41,12 @@ namespace WordsLive.Core.Songs.Storage
 		protected override void DoFinish()
 		{
 			stream.Close();
+		}
+
+		protected override Task DoFinishAsync()
+		{
+			stream.Close();
+			return TaskHelpers.Completed();
 		}
 	}
 }
