@@ -48,7 +48,7 @@ namespace WordsLive.Server
 		#pragma warning restore 169
 	}
 
-	public class TestServer
+	public class MainServer
 	{
 		/// <summary>
 		/// Test page for WebSocket test
@@ -174,7 +174,7 @@ window.addEventListener('load', init, false);
 			}
 		}
 
-		public TestServer(int port)
+		public MainServer(int port)
 		{
 			this.port = port;
 		}

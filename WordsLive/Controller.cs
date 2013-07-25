@@ -219,7 +219,7 @@ namespace WordsLive
 		{
 			if (Server == null)
 			{
-				Server = new TestServer(Properties.Settings.Default.EmbeddedServerPort);
+				Server = new MainServer(Properties.Settings.Default.EmbeddedServerPort);
 			}
 
 			if (Properties.Settings.Default.EmbeddedServerEnable)
@@ -273,7 +273,7 @@ namespace WordsLive
 		#endregion
 
 		#region Public (static) members
-		public static TestServer Server { get; private set; }
+		public static MainServer Server { get; private set; }
 
 		public static bool IsShuttingDown
 		{
