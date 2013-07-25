@@ -1,6 +1,6 @@
 ﻿/*
  * WordsLive - worship projection software
- * Copyright (c) 2012 Patrick Reisert
+ * Copyright (c) 2013 Patrick Reisert
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,6 +24,9 @@ using WordsLive.Core;
 
 namespace WordsLive.Awesomium
 {
+	/// <summary>
+	/// This is currently not used (handler is disabled
+	/// </summary>
 	[TargetMedia(typeof(WebSite))]
 	public partial class WebSiteControlPanel : UserControl, IMediaControlPanel
 	{

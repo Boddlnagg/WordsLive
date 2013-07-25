@@ -1,4 +1,22 @@
-﻿using System;
+﻿/*
+ * WordsLive - worship projection software
+ * Copyright (c) 2013 Patrick Reisert
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Windows;
@@ -8,6 +26,9 @@ using System.Windows.Media;
 
 namespace WordsLive.Utils
 {
+	/// <summary>
+	/// Collection of various extension methods.
+	/// </summary>
 	public static class ExtensionMethods
 	{
 		/// <summary>
@@ -55,6 +76,12 @@ namespace WordsLive.Utils
 			return true;
 		}
 
+		/// <summary>
+		/// Sets the selected item on a tree view.
+		/// </summary>
+		/// <param name="treeView">The tree view</param>
+		/// <param name="item">The item to select.</param>
+		/// <returns><c>true</c> if the selection was successful; <c>false</c> if no (e.g. the item didn't exist).</returns>
 		static public bool SetSelectedItem(this TreeView treeView, object item)
 		{
 			return SetSelected(treeView, item);
