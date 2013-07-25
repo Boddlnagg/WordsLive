@@ -1,5 +1,4 @@
-﻿
-namespace WordsLive.Server.Utils.WebSockets
+﻿namespace WordsLive.Server.Utils.WebSockets
 {
 	public enum WebSocketCloseStatus
 	{

@@ -19,24 +19,24 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Compression;
 using System.Net;
+using System.Net.Http;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Firefly.Http;
+using Newtonsoft.Json;
 using Owin;
+using Owin.Builder;
+using Owin.Types;
+using WordsLive.Core;
 using WordsLive.Core.Songs.Storage;
 using WordsLive.Server.Utils;
 using WordsLive.Server.Utils.WebSockets;
 
 namespace WordsLive.Server
 {
-	using System.IO.Compression;
-	using System.Net.Http;
-	using System.Threading;
-	using Newtonsoft.Json;
-	using Owin.Builder;
-	using Owin.Types;
-	using WordsLive.Core;
 	using AppFunc = Func<IDictionary<string, object>, Task>;
 
 	static class Workaround
@@ -50,6 +50,9 @@ namespace WordsLive.Server
 
 	public class TestServer
 	{
+		/// <summary>
+		/// Test page for WebSocket test
+		/// </summary>
 		private string HtmlContent
 		{
 			get

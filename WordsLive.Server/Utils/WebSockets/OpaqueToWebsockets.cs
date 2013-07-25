@@ -10,6 +10,10 @@ using Owin.Types.Helpers;
 
 namespace WordsLive.Server.Utils.WebSockets
 {
+	// Taken from https://github.com/owin/gate/blob/master/src/Main/Gate.Middleware/WebSockets/OpaqueToWebSocket.cs
+
+	// This should be removed once there is a complete official implementation
+
 	using AppFunc = Func<IDictionary<string, object>, Task>;
 	using WebSocketAccept =
 					Action

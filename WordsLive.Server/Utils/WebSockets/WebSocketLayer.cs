@@ -1,14 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Owin.Types;
+using WordsLive.Core;
 
 namespace WordsLive.Server.Utils.WebSockets
 {
-	using System.Text;
-	using Owin.Types;
-	using WordsLive.Core;
+	// Taken from https://github.com/owin/gate/blob/master/src/Main/Gate.Middleware/WebSockets/WebSocketLayer.cs
+	
+	// This should be removed once there is a complete official implementation
+
 	using WebSocketCloseAsync =
 					Func
 					<
