@@ -16,9 +16,16 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+using System.Windows.Controls;
+using System.Windows.Media;
+
 namespace WordsLive.Presentation.Wpf
 {
-    public class Blackscreen : WpfPresentation<BlackscreenControl>
-    {
-    }
+	public class BlackscreenControl : UserControl
+	{
+		public BlackscreenControl()
+		{
+			this.Background = Brushes.Black;
+		}
+	}
 }

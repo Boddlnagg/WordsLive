@@ -56,18 +56,12 @@
     </Compile>
     <Compile Include="Interop.cs" />
     <Compile Include="Blackscreen.cs" />
-    <Compile Include="BlackscreenControl.xaml.cs">
-      <DependentUpon>BlackscreenControl.xaml</DependentUpon>
-    </Compile>
+    <Compile Include="BlackscreenControl.cs" />
     <Compile Include="IWpfPresentation.cs" />
     <Compile Include="LiveWindowPreviewProvider.cs" />
     <Compile Include="WindowThumbnail.cs" />
     <Compile Include="WpfPreviewProvider.cs" />
     <Compile Include="CloningWpfPreviewProvider.cs" />
-    <Page Include="BlackscreenControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="WpfPresentationWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
