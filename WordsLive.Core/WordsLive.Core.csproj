@@ -113,6 +113,7 @@
     <Compile Include="Songs\IO\SongFormatException.cs" />
     <Compile Include="Songs\ISongElementWithSize.cs" />
     <Compile Include="Songs\SongMedia.cs" />
+    <Compile Include="Songs\Storage\SongStorageEntry.cs" />
     <Compile Include="Songs\Storage\SongUriResolver.cs" />
     <Compile Include="Songs\Storage\BackgroundStorage.cs" />
     <Compile Include="Songs\Storage\BackgroundFile.cs" />

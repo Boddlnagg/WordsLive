@@ -82,7 +82,7 @@ namespace WordsLive.Core.Songs.Storage
 		/// The resource as a stream.
 		/// </returns>
 		/// <exception cref="FileNotFoundException">The resource was not found.</exception>
-		public override Stream Get(string name)
+		public override SongStorageEntry Get(string name)
 		{
 			if (name.Contains("\\") || name.Contains("/"))
 				throw new ArgumentException("Song filename must not contain a full path.");
@@ -92,10 +92,10 @@ namespace WordsLive.Core.Songs.Storage
 			if (!File.Exists(fullPath))
 				throw new FileNotFoundException(name);
 
-			return File.OpenRead(fullPath);
+			return new SongStorageEntry(File.OpenRead(fullPath), File.GetLastWriteTimeUtc(fullPath));
 		}
 
-		public override Task<Stream> GetAsync(string name, CancellationToken cancellation = default(CancellationToken))
+		public override Task<SongStorageEntry> GetAsync(string name, CancellationToken cancellation = default(CancellationToken))
 		{
 			return TaskHelpers.FromResult(Get(name));
 		}

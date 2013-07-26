@@ -77,12 +77,12 @@ namespace WordsLive.Core.Songs.Storage
 			return int.Parse(result);
 		}
 
-		public override Stream Get(string name)
+		public override SongStorageEntry Get(string name)
 		{
 			return GetAsync(name).WaitAndUnwrapException();
 		}
 
-		public override async Task<Stream> GetAsync(string name, CancellationToken cancellation = default(CancellationToken))
+		public override async Task<SongStorageEntry> GetAsync(string name, CancellationToken cancellation = default(CancellationToken))
 		{
 			var result = await client.GetAsync(name, cancellation).ConfigureAwait(false);
 			if (result.StatusCode == HttpStatusCode.NotFound)
@@ -90,7 +90,9 @@ namespace WordsLive.Core.Songs.Storage
 			else if (!result.IsSuccessStatusCode)
 				throw new HttpRequestException();
 
-			return await result.Content.ReadAsStreamAsync().ConfigureAwait(false);
+			var stream = await result.Content.ReadAsStreamAsync().ConfigureAwait(false);
+
+			return new SongStorageEntry(stream, result.Content.Headers.LastModified);
 		}
 
 		public override FileTransaction Put(string path)
@@ -122,11 +124,11 @@ namespace WordsLive.Core.Songs.Storage
 			if (fi.Exists)
 				return fi;
 
-			using (var stream = Get(name))
+			using (var entry = Get(name))
 			{
 				using (FileStream fs = File.OpenWrite(fi.FullName))
 				{
-					stream.CopyTo(fs);
+					entry.Stream.CopyTo(fs);
 				}
 			}
 
@@ -137,7 +139,7 @@ namespace WordsLive.Core.Songs.Storage
 		{
 			try
 			{
-				var stream = Get(name);
+				var stream = Get(name).Stream;
 				stream.Close();
 				return true;
 			}

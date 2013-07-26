@@ -139,11 +139,14 @@ namespace WordsLive.Server
 			bool success = true;
 			try
 			{
-				using (var stream = await storage.GetAsync(name, CancellationToken.None))
+				using (var entry = await storage.GetAsync(name, CancellationToken.None))
 				{
 					response.SetHeader("Content-Type", "text/xml");
-					await stream.CopyToAsync(response.Body);
-					// TODO: send Last-Modified header
+					if (entry.LastModified.HasValue)
+					{
+						response.SetHeader("Last-Modified", entry.LastModified.Value.ToString("r"));
+					}
+					await entry.Stream.CopyToAsync(response.Body);
 				}
 			}
 			catch (FileNotFoundException)

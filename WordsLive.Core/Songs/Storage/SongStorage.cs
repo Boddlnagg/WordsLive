@@ -96,9 +96,9 @@ namespace WordsLive.Core.Songs.Storage
 			return All().Count();
 		}
 
-		public abstract Stream Get(string name);
+		public abstract SongStorageEntry Get(string name);
 
-		public abstract Task<Stream> GetAsync(string name, CancellationToken cancellation);
+		public abstract Task<SongStorageEntry> GetAsync(string name, CancellationToken cancellation);
 
 		public abstract FileTransaction Put(string name);
 

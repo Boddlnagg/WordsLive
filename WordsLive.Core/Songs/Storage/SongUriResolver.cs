@@ -61,7 +61,7 @@ namespace WordsLive.Core.Songs.Storage
 		{
 			if (uri.Scheme == "song")
 			{
-				return (ForceStorage ?? DataManager.Songs).Get(GetFilename(uri));
+				return (ForceStorage ?? DataManager.Songs).Get(GetFilename(uri)).Stream;
 				
 			}
 			else if (uri.IsFile)
@@ -85,7 +85,8 @@ namespace WordsLive.Core.Songs.Storage
 		{
 			if (uri.Scheme == "song")
 			{
-				return await (ForceStorage ?? DataManager.Songs).GetAsync(GetFilename(uri), cancellation);
+				var entry = await (ForceStorage ?? DataManager.Songs).GetAsync(GetFilename(uri), cancellation);
+				return entry.Stream;
 			}
 			else if (uri.IsFile)
 			{
