@@ -54,18 +54,7 @@ namespace WordsLive.Core.Songs.Storage
 
 			string dir = path.Substring(0, path.LastIndexOf('/') + 1);
 
-			if (AllowedImageTypes.ContainsKey(file.Extension.ToLowerInvariant()))
-			{
-				return new BackgroundFile(this, new BackgroundDirectory(this, dir), file.Name, false);
-			}
-			else if (AllowedVideoTypes.ContainsKey(file.Extension.ToLowerInvariant()))
-			{
-				return new BackgroundFile(this, new BackgroundDirectory(this, dir), file.Name, true);
-			}
-			else
-			{
-				throw new ArgumentException(path + " of invalid type.");
-			}
+			return new BackgroundFile(this, new BackgroundDirectory(this, dir), file.Name);
 		}
 
 		/// <summary>
@@ -87,14 +76,7 @@ namespace WordsLive.Core.Songs.Storage
 
 			foreach (var file in info.GetFiles())
 			{
-				if (AllowedImageTypes.ContainsKey(file.Extension.ToLowerInvariant()))
-				{
-					yield return new BackgroundFile(this, dir, file.Name, false);
-				}
-				else if (AllowedVideoTypes.ContainsKey(file.Extension.ToLowerInvariant()))
-				{
-					yield return new BackgroundFile(this, dir, file.Name, true);
-				}
+				yield return new BackgroundFile(this, dir, file.Name);
 			}
 		}
 

@@ -32,19 +32,29 @@ namespace WordsLive.Core.Songs.Storage
 		/// <summary>
 		/// Gets a value indicating whether this background is a video.
 		/// </summary>
-		public bool IsVideo { get; private set; }
+		public bool IsVideo
+		{
+			get
+			{
+				var ext = Extension;
+
+				if (ext == String.Empty)
+					return false;
+				else
+					return storage.AllowedVideoTypes.ContainsKey(Extension);
+			}
+		}
 
 		/// <summary>
 		/// Gets the parent directory.
 		/// </summary>
 		public BackgroundDirectory Parent { get; private set; }
 
-		internal BackgroundFile(BackgroundStorage storage, BackgroundDirectory parent, string name, bool isVideo)
+		internal BackgroundFile(BackgroundStorage storage, BackgroundDirectory parent, string name)
 		{
 			this.storage = storage;
 			this.Name = name;
 			this.Parent = parent;
-			this.IsVideo = isVideo;
 		}
 
 		/// <summary>
@@ -79,6 +89,38 @@ namespace WordsLive.Core.Songs.Storage
 			get
 			{
 				return storage.GetPreviewUri(this);
+			}
+		}
+
+		public string Extension
+		{
+			get
+			{
+				var di = Name.LastIndexOf('.');
+
+				if (di == -1)
+					return String.Empty;
+
+				return Name.Substring(di).ToLowerInvariant();
+			}
+		}
+
+		public string MimeType
+		{
+			get
+			{
+				var ext = Extension;
+
+				if (String.IsNullOrEmpty(ext))
+					return String.Empty;
+
+				if (storage.AllowedImageTypes.ContainsKey(ext))
+					return storage.AllowedImageTypes[ext];
+
+				if (storage.AllowedVideoTypes.ContainsKey(ext))
+					return storage.AllowedVideoTypes[ext];
+
+				return String.Empty;
 			}
 		}
 

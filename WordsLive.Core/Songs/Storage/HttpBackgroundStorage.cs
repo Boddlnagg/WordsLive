@@ -49,12 +49,12 @@ namespace WordsLive.Core.Songs.Storage
 
 			var name = path.Substring(i + 1);
 
-			return new BackgroundFile(this, directory, name, IsVideo(name));
+			return new BackgroundFile(this, directory, name);
 		}
 
 		public override IEnumerable<BackgroundFile> GetFiles(BackgroundDirectory directory)
 		{
-			return GetListing(directory).Where(e => !e.IsDirectory).Select(e => new BackgroundFile(this, directory, Path.GetFileName(e.Path), IsVideo(e.Path))).OrderBy(f => f.Name);
+			return GetListing(directory).Where(e => !e.IsDirectory).Select(e => new BackgroundFile(this, directory, Path.GetFileName(e.Path))).OrderBy(f => f.Name);
 		}
 
 		public override IEnumerable<BackgroundDirectory> GetDirectories(BackgroundDirectory parent)
@@ -92,18 +92,6 @@ namespace WordsLive.Core.Songs.Storage
 			var str = result.Content.ReadAsStringAsync().WaitAndUnwrapException();
 
 			return str.Split('\n').Where(p => p.Trim() != String.Empty).Select(p => new ListingEntry(p)).ToArray();
-		}
-
-		private bool IsVideo(string path)
-		{
-			var di = path.LastIndexOf('.');
-
-			if (di == -1)
-				return false;
-
-			var ext = path.Substring(di).ToLowerInvariant();
-
-			return AllowedVideoTypes.ContainsKey(ext);
 		}
 
 		/// <summary>
