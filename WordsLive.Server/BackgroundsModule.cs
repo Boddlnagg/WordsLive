@@ -94,13 +94,11 @@ namespace WordsLive.Server
 				sb.Append('\n');
 
 				if (recursive)
-					ListBackgroundEntries(subdir, sb);
+					ListBackgroundEntries(subdir, sb, true);
 			}
 			foreach (var file in parent.Files)
 			{
 				sb.Append(file.Path);
-				if (file.IsVideo)
-					sb.Append(" [VIDEO]");
 				sb.Append('\n');
 			}
 		}
