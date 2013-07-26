@@ -1,0 +1,31 @@
+# Require authentication for everything but background files
+SetEnvIf Request_URI "/backgrounds/list$" RequireAuth
+SetEnvIf Request_URI "/backgrounds/listall$" RequireAuth
+SetEnvIf Request_URI "/backgrounds/(.+)/list$" RequireAuth
+SetEnvIf Request_URI "/songs/(.+)$" RequireAuth
+
+RewriteEngine on
+# Direct requests to php files are forbidden
+RewriteCond %{THE_REQUEST} \.php[\ /?].*HTTP/
+RewriteRule ^.*$ - [F]
+
+RewriteRule ^backgrounds/listall index.php?module=backgrounds&listall [L]
+RewriteRule ^backgrounds/list index.php?module=backgrounds&list [L]
+RewriteRule ^backgrounds/(.+)/list index.php?module=backgrounds&list&path=$1 [L]
+RewriteRule ^backgrounds/(.+)/preview index.php?module=backgrounds&preview&path=$1 [L]
+RewriteRule ^backgrounds/(.+)$ index.php?module=backgrounds&path=$1 [L]
+RewriteRule ^songs/list index.php?module=songs&list [L]
+RewriteRule ^songs/count index.php?module=songs&count [L]
+RewriteRule ^songs/filter/([a-z]+)/(.+)$ index.php?module=songs&filter=$1&query=$2 [L]
+RewriteRule ^songs/(.+)$ index.php?module=songs&path=$1 [L]
+
+# Set your absolute path to .htdigest below
+AuthUserFile /.../.../.htdigest
+AuthType Digest
+AuthName "WordsLive"
+Require valid-user
+
+Order Allow,Deny
+Allow from env=!RequireAuth
+Deny from env=RequireAuth
+Satisfy any
