@@ -110,7 +110,7 @@ namespace WordsLive.Server
 			}
 		}
 
-		private void ListBackgroundEntries(BackgroundDirectory parent, StringBuilder sb, bool recursive = false)
+		private void ListBackgroundEntries(BackgroundStorageDirectory parent, StringBuilder sb, bool recursive = false)
 		{
 			foreach (var subdir in parent.Directories)
 			{

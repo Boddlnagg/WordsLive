@@ -85,7 +85,7 @@ namespace WordsLive.Editor
 
 			UseImage = background.IsFile;
 
-			directoryView.DataContext = new BackgroundDirectory[] { DataManager.Backgrounds.Root };
+			directoryView.DataContext = new BackgroundStorageDirectory[] { DataManager.Backgrounds.Root };
 
 			if (background.IsFile)
 			{
@@ -109,11 +109,11 @@ namespace WordsLive.Editor
 
 		private void SelectEntry(string path)
 		{ 
-			var beginItem = (BackgroundDirectory)directoryView.Items[0];
+			var beginItem = (BackgroundStorageDirectory)directoryView.Items[0];
 			SelectEntry(path, beginItem, (TreeViewItem)directoryView.ItemContainerGenerator.ContainerFromItem(beginItem));
 		}
 
-		private void SelectEntry(string remainingSelectPath, BackgroundDirectory currentNode, TreeViewItem currentContainer)
+		private void SelectEntry(string remainingSelectPath, BackgroundStorageDirectory currentNode, TreeViewItem currentContainer)
 		{
 			var i = remainingSelectPath.IndexOf('\\');
 			if (i >= 0)
@@ -143,7 +143,7 @@ namespace WordsLive.Editor
 		{
 			if (UseImage)
 			{
-				var entry = (BackgroundFile)imageListView.SelectedItem;
+				var entry = (BackgroundStorageEntry)imageListView.SelectedItem;
 				if (entry == null)
 				{
 					MessageBox.Show("Es ist kein Bild ausgewählt.");

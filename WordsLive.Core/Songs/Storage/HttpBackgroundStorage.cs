@@ -42,33 +42,33 @@ namespace WordsLive.Core.Songs.Storage
 			client.BaseAddress = new Uri(baseAddress);
 		}
 
-		public override BackgroundFile GetFile(string path)
+		public override BackgroundStorageEntry GetFile(string path)
 		{
 			int i = path.LastIndexOf('/');
-			var directory = new BackgroundDirectory(this, path.Substring(0, i + 1));
+			var directory = new BackgroundStorageDirectory(this, path.Substring(0, i + 1));
 
 			var name = path.Substring(i + 1);
 
-			return new BackgroundFile(this, directory, name);
+			return new BackgroundStorageEntry(this, directory, name);
 		}
 
-		public override IEnumerable<BackgroundFile> GetFiles(BackgroundDirectory directory)
+		public override IEnumerable<BackgroundStorageEntry> GetFiles(BackgroundStorageDirectory directory)
 		{
-			return GetListing(directory).Where(e => !e.IsDirectory).Select(e => new BackgroundFile(this, directory, Path.GetFileName(e.Path))).OrderBy(f => f.Name);
+			return GetListing(directory).Where(e => !e.IsDirectory).Select(e => new BackgroundStorageEntry(this, directory, Path.GetFileName(e.Path))).OrderBy(f => f.Name);
 		}
 
-		public override IEnumerable<BackgroundDirectory> GetDirectories(BackgroundDirectory parent)
+		public override IEnumerable<BackgroundStorageDirectory> GetDirectories(BackgroundStorageDirectory parent)
 		{
-			return GetListing(parent).Where(e => e.IsDirectory).Select(e => new BackgroundDirectory(this, e.Path)).OrderBy(d => d.Name);
+			return GetListing(parent).Where(e => e.IsDirectory).Select(e => new BackgroundStorageDirectory(this, e.Path)).OrderBy(d => d.Name);
 		}
 
-		public override Uri GetFileUri(BackgroundFile file)
+		public override Uri GetFileUri(BackgroundStorageEntry file)
 		{
 			// this requires no authentication
 			return new Uri(baseAddress + file.Path.Substring(1));
 		}
 
-		public override Uri GetPreviewUri(BackgroundFile file)
+		public override Uri GetPreviewUri(BackgroundStorageEntry file)
 		{
 			// this requires no authentication
 			return new Uri(baseAddress + file.Path.Substring(1) + "/preview");
@@ -80,7 +80,7 @@ namespace WordsLive.Core.Songs.Storage
 		/// </summary>
 		/// <param name="directory"></param>
 		/// <returns></returns>
-		private IEnumerable<ListingEntry> GetListing(BackgroundDirectory directory)
+		private IEnumerable<ListingEntry> GetListing(BackgroundStorageDirectory directory)
 		{
 			var result = client.GetAsync(directory.Path.Substring(1) + "list").WaitAndUnwrapException();
 			if (result.StatusCode == HttpStatusCode.NotFound)
@@ -109,7 +109,7 @@ namespace WordsLive.Core.Songs.Storage
 			}
 		}
 
-		public override bool FileExists(BackgroundFile file)
+		public override bool FileExists(BackgroundStorageEntry file)
 		{
 			var path = file.Path;
 			try

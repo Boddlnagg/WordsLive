@@ -61,11 +61,11 @@ namespace WordsLive.Core.Songs.Storage
 		/// <summary>
 		/// Gets the root directory.
 		/// </summary>
-		public virtual BackgroundDirectory Root
+		public virtual BackgroundStorageDirectory Root
 		{
 			get
 			{
-				return new BackgroundDirectory(this, "/");
+				return new BackgroundStorageDirectory(this, "/");
 			}
 		}
 
@@ -75,7 +75,7 @@ namespace WordsLive.Core.Songs.Storage
 		/// </summary>
 		/// <param name="path">The path.</param>
 		/// <returns>The background file instance.</returns>
-		public abstract BackgroundFile GetFile(string path);
+		public abstract BackgroundStorageEntry GetFile(string path);
 
 		/// <summary>
 		/// Gets all available background files in a specified directory.
@@ -84,7 +84,7 @@ namespace WordsLive.Core.Songs.Storage
 		/// <returns>
 		/// A list of background files.
 		/// </returns>
-		public abstract IEnumerable<BackgroundFile> GetFiles(BackgroundDirectory directory);
+		public abstract IEnumerable<BackgroundStorageEntry> GetFiles(BackgroundStorageDirectory directory);
 
 		/// <summary>
 		/// Gets all subdirectories of a specified directory.
@@ -93,16 +93,16 @@ namespace WordsLive.Core.Songs.Storage
 		/// <returns>
 		/// A list of subdirectories.
 		/// </returns>
-		public abstract IEnumerable<BackgroundDirectory> GetDirectories(BackgroundDirectory parent);
+		public abstract IEnumerable<BackgroundStorageDirectory> GetDirectories(BackgroundStorageDirectory parent);
 
 		/// <summary>
-		/// Gets a instance of <see cref="BackgroundDirectory"/> from a path.
+		/// Gets a instance of <see cref="BackgroundStorageDirectory"/> from a path.
 		/// </summary>
 		/// <param name="path">The path.</param>
 		/// <returns>The directory.</returns>
-		public virtual BackgroundDirectory GetDirectory(string path)
+		public virtual BackgroundStorageDirectory GetDirectory(string path)
 		{
-			return new BackgroundDirectory(this, path);
+			return new BackgroundStorageDirectory(this, path);
 		}
 
 		/// <summary>
@@ -110,7 +110,7 @@ namespace WordsLive.Core.Songs.Storage
 		/// </summary>
 		/// <param name="file">The file.</param>
 		/// <returns>The file's URI.</returns>
-		public abstract Uri GetFileUri(BackgroundFile file);
+		public abstract Uri GetFileUri(BackgroundStorageEntry file);
 
 		/// <summary>
 		/// Gets the URI of the preview of a background file, if available.
@@ -118,7 +118,7 @@ namespace WordsLive.Core.Songs.Storage
 		/// </summary>
 		/// <param name="file">The file.</param>
 		/// <returns>The URI of a preview of the file.</returns>
-		public abstract Uri GetPreviewUri(BackgroundFile file);
+		public abstract Uri GetPreviewUri(BackgroundStorageEntry file);
 
 		/// <summary>
 		/// Gets the file specified by a <see cref="SongBackground"/> instance.
@@ -126,7 +126,7 @@ namespace WordsLive.Core.Songs.Storage
 		/// </summary>
 		/// <param name="background">The background to get the file for.</param>
 		/// <returns>The background file.</returns>
-		public BackgroundFile GetFile(Songs.SongBackground background)
+		public BackgroundStorageEntry GetFile(Songs.SongBackground background)
 		{
 			if (!background.IsFile)
 				throw new ArgumentException("background is not a file");
@@ -134,6 +134,6 @@ namespace WordsLive.Core.Songs.Storage
 			return GetFile("/" + background.FilePath.Replace('\\', '/'));
 		}
 
-		public abstract bool FileExists(BackgroundFile file);
+		public abstract bool FileExists(BackgroundStorageEntry file);
 	}
 }

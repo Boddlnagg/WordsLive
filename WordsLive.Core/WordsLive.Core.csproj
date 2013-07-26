@@ -116,8 +116,8 @@
     <Compile Include="Songs\Storage\SongStorageEntry.cs" />
     <Compile Include="Songs\Storage\SongUriResolver.cs" />
     <Compile Include="Songs\Storage\BackgroundStorage.cs" />
-    <Compile Include="Songs\Storage\BackgroundFile.cs" />
-    <Compile Include="Songs\Storage\BackgroundDirectory.cs" />
+    <Compile Include="Songs\Storage\BackgroundStorageEntry.cs" />
+    <Compile Include="Songs\Storage\BackgroundStorageDirectory.cs" />
     <Compile Include="Songs\Storage\HttpBackgroundStorage.cs" />
     <Compile Include="Songs\Storage\HttpFileTransaction.cs" />
     <Compile Include="DataManager.cs" />

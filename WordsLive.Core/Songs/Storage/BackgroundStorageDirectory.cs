@@ -25,7 +25,7 @@ namespace WordsLive.Core.Songs.Storage
 	/// Represents a directory that contains backgrounds. An instance of this class can only be obtained
 	/// using an instance of <see cref="BackgroundStorage"/>.
 	/// </summary>
-	public class BackgroundDirectory
+	public class BackgroundStorageDirectory
 	{
 		private BackgroundStorage storage;
 
@@ -34,7 +34,7 @@ namespace WordsLive.Core.Songs.Storage
 		/// </summary>
 		private string parentPath;
 
-		internal BackgroundDirectory(BackgroundStorage storage, string path)
+		internal BackgroundStorageDirectory(BackgroundStorage storage, string path)
 		{
 			this.storage = storage;
 			int i = path.Substring(0, path.Length - 1).LastIndexOf('/');
@@ -58,14 +58,14 @@ namespace WordsLive.Core.Songs.Storage
 		/// <summary>
 		/// Gets the parent directory
 		/// </summary>
-		public BackgroundDirectory Parent
+		public BackgroundStorageDirectory Parent
 		{
 			get
 			{
 				if (parentPath == null)
 					return null;
 				else
-					return new BackgroundDirectory(this.storage, this.parentPath);
+					return new BackgroundStorageDirectory(this.storage, this.parentPath);
 			}
 		}
 		
@@ -95,7 +95,7 @@ namespace WordsLive.Core.Songs.Storage
 		/// <summary>
 		/// Gets the subdirectories in this directory.
 		/// </summary>
-		public IEnumerable<BackgroundDirectory> Directories
+		public IEnumerable<BackgroundStorageDirectory> Directories
 		{
 			get
 			{
@@ -106,7 +106,7 @@ namespace WordsLive.Core.Songs.Storage
 		/// <summary>
 		/// Gets the actual backgrounds in this directory.
 		/// </summary>
-		public IEnumerable<BackgroundFile> Files
+		public IEnumerable<BackgroundStorageEntry> Files
 		{
 			get
 			{
@@ -116,7 +116,7 @@ namespace WordsLive.Core.Songs.Storage
 
 		public override bool Equals(object obj)
 		{
-			var other = obj as BackgroundDirectory;
+			var other = obj as BackgroundStorageDirectory;
 
 			if (other == null)
 				return false;

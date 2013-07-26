@@ -48,13 +48,13 @@ namespace WordsLive.Core.Songs.Storage
 		/// </summary>
 		/// <param name="path">The path.</param>
 		/// <returns>The background file instance.</returns>
-		public override BackgroundFile GetFile(string path)
+		public override BackgroundStorageEntry GetFile(string path)
 		{
 			var file = new FileInfo(Path.Combine(directory, path.Substring(1).Replace('/', Path.DirectorySeparatorChar)));
 
 			string dir = path.Substring(0, path.LastIndexOf('/') + 1);
 
-			return new BackgroundFile(this, new BackgroundDirectory(this, dir), file.Name);
+			return new BackgroundStorageEntry(this, new BackgroundStorageDirectory(this, dir), file.Name);
 		}
 
 		/// <summary>
@@ -64,7 +64,7 @@ namespace WordsLive.Core.Songs.Storage
 		/// <returns>
 		/// A list of background files (relative to the specified directory).
 		/// </returns>
-		public override IEnumerable<BackgroundFile> GetFiles(BackgroundDirectory dir)
+		public override IEnumerable<BackgroundStorageEntry> GetFiles(BackgroundStorageDirectory dir)
 		{
 			if (dir == null)
 				throw new ArgumentNullException("dir");
@@ -76,7 +76,10 @@ namespace WordsLive.Core.Songs.Storage
 
 			foreach (var file in info.GetFiles())
 			{
-				yield return new BackgroundFile(this, dir, file.Name);
+				var ext = file.Extension.ToLowerInvariant();
+
+				if (AllowedImageTypes.ContainsKey(ext) || AllowedVideoTypes.ContainsKey(ext))
+					yield return new BackgroundStorageEntry(this, dir, file.Name);
 			}
 		}
 
@@ -87,7 +90,7 @@ namespace WordsLive.Core.Songs.Storage
 		/// <returns>
 		/// A list of subdirectories.
 		/// </returns>
-		public override IEnumerable<BackgroundDirectory> GetDirectories(BackgroundDirectory parent)
+		public override IEnumerable<BackgroundStorageDirectory> GetDirectories(BackgroundStorageDirectory parent)
 		{
 			if (parent == null)
 				throw new ArgumentNullException("parent");
@@ -99,7 +102,7 @@ namespace WordsLive.Core.Songs.Storage
 
 			foreach (var dir in info.GetDirectories().Where(d => d.Name != "[Thumbnails]"))
 			{
-				yield return new BackgroundDirectory(this, parent.Path + dir.Name + "/");
+				yield return new BackgroundStorageDirectory(this, parent.Path + dir.Name + "/");
 			}
 		}
 
@@ -110,7 +113,7 @@ namespace WordsLive.Core.Songs.Storage
 		/// <returns>
 		/// The file's URI.
 		/// </returns>
-		public override Uri GetFileUri(BackgroundFile file)
+		public override Uri GetFileUri(BackgroundStorageEntry file)
 		{
 			var realPath = Path.Combine(directory, file.Path.Substring(1).Replace('/', Path.DirectorySeparatorChar));
 			return new Uri(realPath);
@@ -124,7 +127,7 @@ namespace WordsLive.Core.Songs.Storage
 		/// <returns>
 		/// The URI of a preview of the file.
 		/// </returns>
-		public override Uri GetPreviewUri(BackgroundFile file)
+		public override Uri GetPreviewUri(BackgroundStorageEntry file)
 		{
 			return GetFileUri(file);
 		}
@@ -134,7 +137,7 @@ namespace WordsLive.Core.Songs.Storage
 		/// </summary>
 		/// <param name="dir">The directory to get the path for.</param>
 		/// <returns>A DirectoryInfo for the absolute path.</returns>
-		private DirectoryInfo GetAbsoluteDirectory(BackgroundDirectory dir)
+		private DirectoryInfo GetAbsoluteDirectory(BackgroundStorageDirectory dir)
 		{
 			if (dir.IsRoot)
 				return new DirectoryInfo(directory);
@@ -142,7 +145,7 @@ namespace WordsLive.Core.Songs.Storage
 			return new DirectoryInfo(Path.Combine(directory, dir.Path.Substring(1).Replace('/', Path.DirectorySeparatorChar)));
 		}
 
-		public override bool FileExists(BackgroundFile file)
+		public override bool FileExists(BackgroundStorageEntry file)
 		{
 			return File.Exists(GetFileUri(file).LocalPath);
 		}

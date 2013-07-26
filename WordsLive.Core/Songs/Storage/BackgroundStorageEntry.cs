@@ -20,7 +20,7 @@ using System;
 
 namespace WordsLive.Core.Songs.Storage
 {
-	public class BackgroundFile
+	public class BackgroundStorageEntry
 	{
 		private BackgroundStorage storage;
 
@@ -48,9 +48,9 @@ namespace WordsLive.Core.Songs.Storage
 		/// <summary>
 		/// Gets the parent directory.
 		/// </summary>
-		public BackgroundDirectory Parent { get; private set; }
+		public BackgroundStorageDirectory Parent { get; private set; }
 
-		internal BackgroundFile(BackgroundStorage storage, BackgroundDirectory parent, string name)
+		internal BackgroundStorageEntry(BackgroundStorage storage, BackgroundStorageDirectory parent, string name)
 		{
 			this.storage = storage;
 			this.Name = name;
@@ -134,7 +134,7 @@ namespace WordsLive.Core.Songs.Storage
 
 		public override bool Equals(object obj)
 		{
-			var other = obj as BackgroundFile;
+			var other = obj as BackgroundStorageEntry;
 
 			if (other == null)
 				return false;
