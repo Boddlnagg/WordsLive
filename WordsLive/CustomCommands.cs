@@ -187,6 +187,12 @@ namespace WordsLive
 			private set;
 		}
 
+		public static RoutedCommand ToggleBlackscreen
+		{
+			get;
+			private set;
+		}
+
 		public static RoutedCommand ShowTestImage
 		{
 			get;
@@ -242,6 +248,7 @@ namespace WordsLive
 			HidePresentation = new RoutedCommand("HidePresentation", t, new InputGestureCollection { new KeyGesture(Key.F6) });
 			Blackscreen = new RoutedCommand("Blackscreen", t, new InputGestureCollection { new KeyGesture(Key.F7) });
 			ShowPresentation = new RoutedCommand("ShowPresentation", t, new InputGestureCollection { new KeyGesture(Key.F8) });
+			ToggleBlackscreen = new RoutedCommand("ToggleBlackscreen", t); // TODO: add configurable keyboard shortcut
 			ShowTestImage = new RoutedCommand("ShowTestImage", t);
 			ShowNotification = new RoutedCommand("ShowNotification", t);
 			RotateLeft = new RoutedCommand("RotateLeft", t);

@@ -56,6 +56,7 @@
 		<CommandBinding Command="{x:Static local:CustomCommands.HidePresentation}" Executed="OnExecuteCommand"/>
 		<CommandBinding Command="{x:Static local:CustomCommands.Blackscreen}" Executed="OnExecuteCommand"/>
 		<CommandBinding Command="{x:Static local:CustomCommands.ShowPresentation}" Executed="OnExecuteCommand" CanExecute="OnCommandCanExecute"/>
+		<CommandBinding Command="{x:Static local:CustomCommands.ToggleBlackscreen}" Executed="OnExecuteCommand"/>
 		<CommandBinding Command="{x:Static local:CustomCommands.ShowTestImage}" Executed="OnExecuteCommand"/>
 		<CommandBinding Command="{x:Static local:CustomCommands.ShowNotification}" Executed="OnExecuteCommand"/>
 	</Window.CommandBindings>

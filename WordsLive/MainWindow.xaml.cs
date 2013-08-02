@@ -536,6 +536,19 @@ namespace WordsLive
 			{
 				Controller.PresentationManager.Status = PresentationStatus.Show;
 			}
+			else if (e.Command == CustomCommands.ToggleBlackscreen)
+			{
+				var canShow = Controller.PresentationManager.CurrentPresentation != null;
+
+				if (Controller.PresentationManager.Status == PresentationStatus.Blackscreen && canShow)
+				{
+					Controller.PresentationManager.Status = PresentationStatus.Show;
+				}
+				else
+				{
+					Controller.PresentationManager.Status = PresentationStatus.Blackscreen;
+				}
+			}
 			else if (e.Command == CustomCommands.ShowTestImage)
 			{
 				orderList.ActiveItem = null;
