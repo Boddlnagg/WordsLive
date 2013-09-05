@@ -223,6 +223,8 @@ namespace WordsLive.Songs
 
 		protected override void OnKeyDown(KeyEventArgs e)
 		{
+			int previousIndex = SelectedIndex;
+
 			if (e.Key == Key.Enter || e.Key == Key.Return)
 			{
 				if (Keyboard.FocusedElement is ListBoxItem)
@@ -260,24 +262,42 @@ namespace WordsLive.Songs
 					RaiseEvent(new RoutedEventArgs(NavigateBeyondFirstEvent, this));
 				}
 			}
-			
-			string part;
-			if (partAccessKeys.ContainsKey(e.Key.ToString()))
-				part = partAccessKeys[e.Key.ToString()];
-			else if (partAccessKeys.ContainsKey(e.Key.ToString().Replace("NumPad", "")))
-				part = partAccessKeys[e.Key.ToString().Replace("NumPad", "")];
-			else if (e.Key.ToString().Length == 2 && e.Key.ToString()[0] == 'D' && partAccessKeys.ContainsKey(e.Key.ToString().Substring(1)))
-				part = partAccessKeys[e.Key.ToString().Substring(1)];
 			else
-				return;
+			{
+				string part;
+				if (partAccessKeys.ContainsKey(e.Key.ToString()))
+					part = partAccessKeys[e.Key.ToString()];
+				else if (partAccessKeys.ContainsKey(e.Key.ToString().Replace("NumPad", "")))
+					part = partAccessKeys[e.Key.ToString().Replace("NumPad", "")];
+				else if (e.Key.ToString().Length == 2 && e.Key.ToString()[0] == 'D' && partAccessKeys.ContainsKey(e.Key.ToString().Substring(1)))
+					part = partAccessKeys[e.Key.ToString().Substring(1)];
+				else
+					return;
 
-			e.Handled = true;
+				e.Handled = true;
 
-			var selectedContainer = FindNextItemWithPartName(part);
+				var selectedContainer = FindNextItemWithPartName(part);
 
-			this.SelectedItem = selectedContainer;
+				this.SelectedItem = selectedContainer;
+			}
+
+			ScrollBeyond(previousIndex, SelectedIndex);
 
 			base.OnKeyUp(e);
+		}
+
+		private void ScrollBeyond(int oldIndex, int newIndex)
+		{
+			if (newIndex > oldIndex && newIndex + 1 < Items.Count)
+			{
+				// scroll down one more slide
+				ScrollIntoView(Items[newIndex + 1]);
+			}
+			else if (newIndex < oldIndex && newIndex > 0)
+			{
+				// scroll up one more slide
+				ScrollIntoView(Items[newIndex - 1]);
+			}
 		}
 
 		protected override void OnSelectionChanged(SelectionChangedEventArgs e)
