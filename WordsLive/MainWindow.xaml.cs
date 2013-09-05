@@ -438,9 +438,10 @@ namespace WordsLive
 		internal void AddToPortfolio(Uri uri)
 		{
 			var media = MediaManager.LoadMediaMetadata(uri, null);
-			if (ActiveMedia != null)
+			var selectedMedia = OrderListBox.SelectedItem as MediaOrderItem;
+			if (selectedMedia != null)
 			{
-				int index = orderList.IndexOf(orderList.ActiveItem);
+				int index = orderList.IndexOf(selectedMedia);
 				orderList.Insert(index + 1, media);
 			}
 			else
