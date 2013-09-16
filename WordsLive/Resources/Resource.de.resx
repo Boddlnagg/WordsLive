@@ -810,4 +810,7 @@
   <data name="cbMsgNotFoundTitle" xml:space="preserve">
     <value>Hintergrund nicht gefunden</value>
   </data>
+  <data name="cbApplyToAllSlides" xml:space="preserve">
+    <value>Diesen Hintergrund für alle Folien übernehmen</value>
+  </data>
 </root>

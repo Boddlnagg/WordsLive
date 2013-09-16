@@ -35,15 +35,18 @@
 		<local:BackgroundFileConverter x:Key="backgroundFileConverter"/>
 	</Window.Resources>
 	<DockPanel>
-		<Grid DockPanel.Dock="Bottom" Height="35">
+		<Grid DockPanel.Dock="Top" Height="35">
 			<CheckBox IsChecked="{Binding Path=UseColor, Mode=TwoWay}" Height="Auto" VerticalAlignment="Center" Name="UseColorCheckbox" HorizontalAlignment="Left" Margin="6,0,0,0" Content="{x:Static resx:Resource.cbUseSingleColor}"/>
 			<xctk:ColorPicker Margin="167,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left" Width="50" IsEnabled="{Binding ElementName=UseColorCheckbox, Path=IsChecked}" Name="ColorPicker"/>
-			<Button Content="{x:Static resx:Resource.dialogOK}" IsDefault="True" Margin="0,0,5,0" VerticalAlignment="Center" HorizontalAlignment="Right" Width="75" Click="OKButton_Click" />
-			<Button Content="{x:Static resx:Resource.dialogCancel}" IsCancel="True" Margin="0,0,86,0" VerticalAlignment="Center" HorizontalAlignment="Right" Width="75" />
 			<Slider Height="23" Minimum="100" Maximum="300" Value="{Binding Source={StaticResource settings}, Path=Default.ChooseBackgroundPreviewWidth, Mode=TwoWay}" Margin="322,6,167,6" Name="PreviewSizeSlider" VerticalAlignment="Center" />
 			<Label Content="{x:Static resx:Resource.cbPreviewSize}" Height="27" HorizontalAlignment="Left" Margin="223,0,0,0" VerticalAlignment="Center" />
 		</Grid>
-			<Grid IsEnabled="{Binding Path=UseImage}">
+		<Grid DockPanel.Dock="Bottom" Height="35">
+			<CheckBox IsChecked="{Binding Path=ApplyToAllSlides, Mode=TwoWay}" Height="Auto" VerticalAlignment="Center" Name="ApplyToAllSlidesCheckbox" HorizontalAlignment="Left" Margin="6,0,0,0" Content="{x:Static resx:Resource.cbApplyToAllSlides}" IsEnabled="{Binding Path=NotCanOnlyApplyToAllSlides}"/>
+			<Button Content="{x:Static resx:Resource.dialogOK}" IsDefault="True" Margin="0,0,5,0" VerticalAlignment="Center" HorizontalAlignment="Right" Width="75" Click="OKButton_Click" />
+			<Button Content="{x:Static resx:Resource.dialogCancel}" IsCancel="True" Margin="0,0,86,0" VerticalAlignment="Center" HorizontalAlignment="Right" Width="75" />
+		</Grid>
+		<Grid IsEnabled="{Binding Path=UseImage}">
 				<Grid.ColumnDefinitions>
 					<ColumnDefinition Width="*"/>
 					<ColumnDefinition Width="5"/>

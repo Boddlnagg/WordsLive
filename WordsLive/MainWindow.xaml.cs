@@ -661,7 +661,7 @@ namespace WordsLive
 						if (portfolioBackground == null)
 							portfolioBackground = SongBackground.Default;
 
-						var win = new ChooseBackgroundWindow(portfolioBackground);
+						var win = new ChooseBackgroundWindow(portfolioBackground, true);
 						win.Owner = this;
 						win.ShowDialog();
 						if (win.DialogResult == true)

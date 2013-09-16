@@ -142,6 +142,15 @@ namespace WordsLive.Resources {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Apply this background to all slides ähnelt.
+        /// </summary>
+        public static string cbApplyToAllSlides {
+            get {
+                return ResourceManager.GetString("cbApplyToAllSlides", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die The background currently in use for this song was not found and is replaced by a black background. ähnelt.
         /// </summary>
         public static string cbMsgNotFound {

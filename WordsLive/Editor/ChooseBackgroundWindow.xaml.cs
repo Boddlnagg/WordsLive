@@ -16,6 +16,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+using System;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows;
@@ -68,6 +69,50 @@ namespace WordsLive.Editor
 			}
 		}
 
+		private bool applyToAllSlides;
+
+		public bool ApplyToAllSlides
+		{
+			get
+			{
+				return applyToAllSlides;
+			}
+			set
+			{
+				if (canOnlyApplyToAllSlides && !value)
+					throw new InvalidOperationException("Can't enable property 'ApplyToAllSlides'");
+
+				applyToAllSlides = value;
+				OnNotifyPropertyChanged("ApplyToAllSlides");
+			}
+		}
+
+		private bool canOnlyApplyToAllSlides;
+
+		public bool CanOnlyApplyToAllSlides
+		{
+			get
+			{
+				return canOnlyApplyToAllSlides;
+			}
+			private set
+			{
+				canOnlyApplyToAllSlides = value;
+
+				if (value)
+					ApplyToAllSlides = true;
+			}
+		}
+
+		// for data-binding
+		public bool NotCanOnlyApplyToAllSlides
+		{
+			get
+			{
+				return !CanOnlyApplyToAllSlides;
+			}
+		}
+
 		public event PropertyChangedEventHandler PropertyChanged;
 
 		protected void OnNotifyPropertyChanged(string property)
@@ -77,9 +122,11 @@ namespace WordsLive.Editor
 		}
 
 
-		public ChooseBackgroundWindow(SongBackground background)
+		public ChooseBackgroundWindow(SongBackground background, bool canOnlyApplyToAllSlides)
 		{
 			InitializeComponent();
+
+			this.CanOnlyApplyToAllSlides = canOnlyApplyToAllSlides;
 
 			this.DataContext = this;
 

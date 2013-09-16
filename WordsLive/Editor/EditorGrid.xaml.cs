@@ -599,14 +599,14 @@ namespace WordsLive.Editor
 			else
 				throw new ArgumentException("element must be either Song, SongPart or SongSlide.");
 
-			var win = new ChooseBackgroundWindow(bg);
+			var win = new ChooseBackgroundWindow(bg, element is Song);
 			win.Owner = this.FindVisualParent<Window>();
 			win.ShowDialog();
 			if (win.DialogResult.HasValue && win.DialogResult.Value)
 			{
-				if (element is Song)
+				if (element is Song || win.ApplyToAllSlides)
 				{
-					var song = element as Song;
+					var song = element.Root;
 
 					song.SetBackground(win.ChosenBackground);
 

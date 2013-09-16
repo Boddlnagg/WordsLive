@@ -146,6 +146,9 @@ namespace WordsLive.Editor
 
 		void SongSlide_PropertyChanged(object sender, PropertyChangedEventArgs e)
 		{
+			if (!(element is SongSlide))
+				return;
+
 			if (e.PropertyName == "Text" || e.PropertyName == "Translation" || e.PropertyName == "Background" || e.PropertyName == "Size")
 				controller.ShowSlide((SongSlide)element);
 		}
