@@ -25,7 +25,6 @@ namespace WordsLive
 	 * - Include reveal.js?
 	 * - Shortcuts in the menu are shown as "Ctrl" instead of "Strg" in German language
 	 * - Refactor drag & drop (introduce helper class)
-	 * - Save latest directories for portfolios/media separately
 	 * - Add errorlog?
 	 * - Improve first-start experience (e.g. creation of songs/backgrounds directory)
 	 */

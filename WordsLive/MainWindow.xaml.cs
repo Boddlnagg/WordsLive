@@ -311,9 +311,10 @@ namespace WordsLive
 			typeFilters.AddRange(from h in MediaManager.Handlers select h.Description + "|" + String.Join(";", h.Extensions.Select(s => "*" + s)));
 			typeFilters.Add(Resource.vFilterAllFiles+"|*");
 
-			Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
+			var dlg = new Microsoft.Win32.OpenFileDialog();
 			dlg.Filter = String.Join("|", typeFilters);
 			dlg.Multiselect = true;
+			dlg.InitialDirectory = Properties.Settings.Default.LastMediaDirectory;
 
 			if (dlg.ShowDialog() == true)
 			{
@@ -326,6 +327,8 @@ namespace WordsLive
 				{
 					orderList.Add(MediaManager.LoadMediaMetadata(new Uri(dlg.FileName), null));
 				}
+
+				Properties.Settings.Default.LastMediaDirectory = Path.GetDirectoryName(dlg.FileNames[0]);
 
 				portfolioModified = true;
 			}
@@ -369,12 +372,16 @@ namespace WordsLive
 
 			if (file == null)
 			{
-				Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
+				var dlg = new Microsoft.Win32.OpenFileDialog();
 				dlg.DefaultExt = ".ppp";
 				dlg.Filter = "Powerpraise-Portfolio|*.ppp";
+				dlg.InitialDirectory = Properties.Settings.Default.LastPortfolioDirectory;
 
 				if (dlg.ShowDialog() == true)
+				{
 					file = dlg.FileName;
+					Properties.Settings.Default.LastPortfolioDirectory = Path.GetDirectoryName(dlg.FileName);
+				}
 				else
 					return;
 			}
@@ -412,9 +419,10 @@ namespace WordsLive
 
 		private void SavePortfolioAs()
 		{
-			Microsoft.Win32.SaveFileDialog dlg = new Microsoft.Win32.SaveFileDialog();
+			var dlg = new Microsoft.Win32.SaveFileDialog();
 			dlg.DefaultExt = ".ppp";
 			dlg.Filter = "Powerpraise Portfolio|*.ppp";
+			dlg.InitialDirectory = Properties.Settings.Default.LastPortfolioDirectory;
 
 			if (PortfolioFile != null)
 			{
@@ -425,6 +433,7 @@ namespace WordsLive
 			{
 				MediaManager.SavePortfolio(from m in orderList select m.Data, dlg.FileName);
 				PortfolioFile = new FileInfo(dlg.FileName);
+				Properties.Settings.Default.LastPortfolioDirectory = Path.GetDirectoryName(dlg.FileName);
 				portfolioModified = false;
 			}
 		}

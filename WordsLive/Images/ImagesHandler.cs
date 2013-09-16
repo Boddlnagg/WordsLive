@@ -59,7 +59,7 @@ namespace WordsLive.Images
 			var res = MessageBox.Show(Resource.imgMsgMultipleCreateSlideshow, Resource.imgMsgMultipleCreateSlideshowTitle, MessageBoxButton.YesNoCancel);
 			if (res == MessageBoxResult.Yes)
 			{
-				Microsoft.Win32.SaveFileDialog dlg = new Microsoft.Win32.SaveFileDialog();
+				var dlg = new Microsoft.Win32.SaveFileDialog();
 				dlg.DefaultExt = ".show";
 				dlg.Filter = "Diashow|*.show"; // TODO: localize
 

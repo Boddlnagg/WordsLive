@@ -732,5 +732,41 @@ namespace WordsLive.Properties {
                 this["NoUpdateVersion"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string LastPortfolioDirectory {
+            get {
+                return ((string)(this["LastPortfolioDirectory"]));
+            }
+            set {
+                this["LastPortfolioDirectory"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string LastMediaDirectory {
+            get {
+                return ((string)(this["LastMediaDirectory"]));
+            }
+            set {
+                this["LastMediaDirectory"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string LastSongDirectory {
+            get {
+                return ((string)(this["LastSongDirectory"]));
+            }
+            set {
+                this["LastSongDirectory"] = value;
+            }
+        }
     }
 }

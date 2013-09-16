@@ -171,6 +171,8 @@ namespace WordsLive
 		{
 			var appDir = new FileInfo(Assembly.GetExecutingAssembly().Location).Directory;
 
+			// TODO: check if Powerpraise-Dateien directory exists, if not, show directory chooser dialog (with ability to create new directory)
+
 			if (string.IsNullOrEmpty(Properties.Settings.Default.SongsDirectory))
 			{
 				Properties.Settings.Default.SongsDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), "Powerpraise-Dateien", "Songs"); // TODO: localize?!
@@ -185,6 +187,25 @@ namespace WordsLive
 			{
 				Properties.Settings.Default.SongTemplateFile = Path.Combine(appDir.FullName, "Data", "Standard.ppl");
 			}
+
+			// set last portfolio/media directory to "My Documents" and last song directory to song repository
+
+			if (string.IsNullOrEmpty(Properties.Settings.Default.LastPortfolioDirectory))
+			{
+				Properties.Settings.Default.LastPortfolioDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+			}
+
+			if (string.IsNullOrEmpty(Properties.Settings.Default.LastMediaDirectory))
+			{
+				Properties.Settings.Default.LastMediaDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+			}
+
+			if (string.IsNullOrEmpty(Properties.Settings.Default.LastSongDirectory))
+			{
+				Properties.Settings.Default.LastSongDirectory = Properties.Settings.Default.SongsDirectory;
+			}
+
+			// try to initialize embedded server
 
 			if (!TryUpdateServerSettings())
 			{

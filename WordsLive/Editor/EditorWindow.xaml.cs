@@ -160,9 +160,11 @@ namespace WordsLive.Editor
 			Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
 			dlg.DefaultExt = ".ppl";
 			dlg.Filter = "Powerpraise-Lied|*.ppl|SongBeamer-Lied|*.sng|ChordPro-Datei|*.chopro;*.cho;*.pro";
+			dlg.InitialDirectory = Properties.Settings.Default.LastSongDirectory;
 
 			if (dlg.ShowDialog() == true)
 			{
+				Properties.Settings.Default.LastSongDirectory = Path.GetDirectoryName(dlg.FileName);
 				LoadOrImport(new Uri(dlg.FileName));
 			}
 		}
@@ -199,11 +201,13 @@ namespace WordsLive.Editor
 		private void ExportSong(Song song)
 		{
 			// TODO: localize
-			Microsoft.Win32.SaveFileDialog dlg = new Microsoft.Win32.SaveFileDialog();
+			var dlg = new Microsoft.Win32.SaveFileDialog();
 			string[] exts = { ".ppl", ".html" };
 			dlg.DefaultExt = exts[0];
 			dlg.Filter = "Powerpraise-Lied|*.ppl|HTML-Dokument|*.html"; // must be same order as exts
 			dlg.Title = Resource.eMenuExportSong;
+			dlg.InitialDirectory = Properties.Settings.Default.LastSongDirectory;
+
 			if (song.Uri == null)
 			{
 				dlg.FileName = song.Title;
@@ -215,6 +219,8 @@ namespace WordsLive.Editor
 
 			if (dlg.ShowDialog() == true)
 			{
+				Properties.Settings.Default.LastSongDirectory = Path.GetDirectoryName(dlg.FileName);
+
 				string path = dlg.FileName;
 				string ext = Path.GetExtension(path).ToLower();
 
