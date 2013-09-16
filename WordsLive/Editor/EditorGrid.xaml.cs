@@ -816,7 +816,7 @@ namespace WordsLive.Editor
 					{
 						// apply change
 						song.Title = res.SongName;
-						// TODO (Editor): ask whether to rename file?
+						// TODO: ask whether to rename file?
 					}
 				}
 			}

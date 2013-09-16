@@ -258,7 +258,7 @@ namespace WordsLive.Slideshow.Impress.Bridge
 			}
 
 			if (controller == null)
-				throw new InvalidOperationException(); // TODO (Slideshow.Impress)
+				throw new InvalidOperationException();
 
 			controller.addSlideShowListener(listener);
 

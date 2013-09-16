@@ -28,7 +28,7 @@ namespace WordsLive.Slideshow.PowerpointViewer
 	{
 		public override IEnumerable<string> Extensions
 		{
-			get { return new string[] { ".ppt", ".pptx" }; } // TODO (Slideshow.PowerpointViewer): pptx untested
+			get { return new string[] { ".ppt", ".pptx" }; } // TODO: pptx untested
 		}
 
 		public override string Description

@@ -29,7 +29,7 @@ namespace WordsLive.MediaOrderList
 
 		protected override ImageSource CreateIcon()
 		{
-			// TODO (Words): create an image (or XAML-resource?)
+			// TODO: create an image (or XAML-resource?)
 			return null;
 		}
 	}
