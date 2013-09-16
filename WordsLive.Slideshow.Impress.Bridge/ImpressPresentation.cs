@@ -41,6 +41,9 @@ namespace WordsLive.Slideshow.Impress.Bridge
 	/// </summary>
 	public class ImpressPresentation : SlideshowPresentationBase
 	{
+		// TODO: try to maintain correct window z-order using SetWindowPos, especially for ImpressPresentation
+		// (see http://msdn.microsoft.com/en-us/library/windows/desktop/ms633545%28v=vs.85%29.aspx)
+
 		#region P/Invokes
 		[DllImport("user32.dll", SetLastError = true, CharSet = System.Runtime.InteropServices.CharSet.Auto)]
 		static extern IntPtr FindWindow(string lpClassName, string lpWindowName);

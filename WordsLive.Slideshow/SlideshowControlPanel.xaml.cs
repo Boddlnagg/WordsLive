@@ -37,7 +37,7 @@ namespace WordsLive.Slideshow
 
 			LoadState = ControlPanelLoadState.Loading;
 
-			// TODO: remove in a future version
+			// TODO: remove this line in a future version
 			Controller.PluginSettings.Unset(Settings.Namespace, "EnableLivePreview");
 		}
 
