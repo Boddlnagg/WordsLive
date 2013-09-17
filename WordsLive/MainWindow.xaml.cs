@@ -318,6 +318,8 @@ namespace WordsLive
 
 			if (dlg.ShowDialog() == true)
 			{
+				Properties.Settings.Default.LastMediaDirectory = Path.GetDirectoryName(dlg.FileNames[0]);
+
 				if (dlg.FileNames.Count() > 1)
 				{
 					foreach (var m in MediaManager.LoadMultipleMediaMetadata(dlg.FileNames.Select(f => new Uri(f))))
@@ -327,8 +329,6 @@ namespace WordsLive
 				{
 					orderList.Add(MediaManager.LoadMediaMetadata(new Uri(dlg.FileName), null));
 				}
-
-				Properties.Settings.Default.LastMediaDirectory = Path.GetDirectoryName(dlg.FileNames[0]);
 
 				portfolioModified = true;
 			}

@@ -18,6 +18,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Windows;
 using WordsLive.Core;
@@ -62,9 +63,11 @@ namespace WordsLive.Images
 				var dlg = new Microsoft.Win32.SaveFileDialog();
 				dlg.DefaultExt = ".show";
 				dlg.Filter = "Diashow|*.show"; // TODO: localize
+				dlg.InitialDirectory = Properties.Settings.Default.LastMediaDirectory;
 
 				if (dlg.ShowDialog() == true)
 				{
+					Properties.Settings.Default.LastMediaDirectory = Path.GetDirectoryName(dlg.FileName);
 					var media = new ImagesMedia(new Uri(dlg.FileName));
 					media.CreateSlideshow(uris);
 					return new Media[] { media };
