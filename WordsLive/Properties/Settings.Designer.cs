@@ -768,5 +768,17 @@ namespace WordsLive.Properties {
                 this["LastSongDirectory"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool EditorShowOrderSlidesContent {
+            get {
+                return ((bool)(this["EditorShowOrderSlidesContent"]));
+            }
+            set {
+                this["EditorShowOrderSlidesContent"] = value;
+            }
+        }
     }
 }

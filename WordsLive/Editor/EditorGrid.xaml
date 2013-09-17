@@ -334,7 +334,7 @@
 		<Button CommandTarget="{Binding ElementName=OrderListBox}" Command="{x:Static my:CustomCommands.Insert}" Style="{StaticResource markDisabledToolbarButton}" ToolTip="{x:Static resx:Resource.eGridOrderAddButton}"  HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="0,2" DockPanel.Dock="Right" Focusable="False">
 			<Image Width="16" Height="16" Source="/WordsLive;component/Artwork/Small_Plus.png" />
 		</Button>
-		<CheckBox x:Name="showSlidesCheckBox" VerticalAlignment="Center" DockPanel.Dock="Right" IsChecked="True" Margin="2,0">
+		<CheckBox x:Name="showSlidesCheckBox" IsChecked="{Binding Source={StaticResource settings}, Path=Default.EditorShowOrderSlidesContent, Mode=TwoWay}" VerticalAlignment="Center" DockPanel.Dock="Right" Margin="2,0">
 			<TextBlock TextTrimming="CharacterEllipsis" ToolTip="{Binding Path=Text, RelativeSource={RelativeSource Self}}" Text="{x:Static resx:Resource.eGridOrderShowSlidesCheckbox}"/>
 		</CheckBox>
 	</DockPanel>
