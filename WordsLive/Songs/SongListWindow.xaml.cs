@@ -19,6 +19,7 @@
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -34,6 +35,7 @@ namespace WordsLive.Songs
 	{
 		private SongFilter filter;
 		ObservableCollection<SongData> list = new ObservableCollection<SongData>();
+		private CancellationTokenSource cts;
 
 		public SongListWindow()
 		{
@@ -58,21 +60,36 @@ namespace WordsLive.Songs
 			};
 			filterGroupBox.DataContext = filter;
 
-			await Task.Factory.StartNew(LoadSongs);
+			await LoadSongsAsync();
 		}
 
-		private void LoadSongs()
+		private async Task LoadSongsAsync()
 		{
+			try
+			{
+				cts = new CancellationTokenSource();
+				await Task.Factory.StartNew(LoadSongs, cts.Token, cts.Token);
+			}
+			catch (TaskCanceledException)
+			{
+				UpdateStatus(true);
+			}
+		}
+
+		private void LoadSongs(object state)
+		{
+			var token = (CancellationToken)state;
 			foreach (var song in DataManager.Songs.All())
 			{
+				token.ThrowIfCancellationRequested();
 				this.Dispatcher.BeginInvoke(new Action<SongData>(this.list.Add), song);
-				this.Dispatcher.BeginInvoke(new Action<bool>(LoadUpdateUI), System.Windows.Threading.DispatcherPriority.Normal, false);
+				this.Dispatcher.BeginInvoke(new Action<bool>(UpdateStatus), System.Windows.Threading.DispatcherPriority.Normal, false);
 			}
 
-			this.Dispatcher.BeginInvoke(new Action<bool>(LoadUpdateUI), System.Windows.Threading.DispatcherPriority.Normal, true);
+			this.Dispatcher.BeginInvoke(new Action<bool>(UpdateStatus), System.Windows.Threading.DispatcherPriority.Normal, true);
 		}
 
-		private void LoadUpdateUI(bool finished)
+		private void UpdateStatus(bool finished)
 		{
 			if (finished)
 				this.labelStatus.Content = String.Format(Resource.slFinishedLoadingN, this.list.Count);
@@ -141,7 +158,7 @@ namespace WordsLive.Songs
 			}
 		}
 
-		private void OnExecuteCommand(object sender, ExecutedRoutedEventArgs e)
+		private async void OnExecuteCommand(object sender, ExecutedRoutedEventArgs e)
 		{
 			SongData data;
 			if (e.Parameter as SongData != null)
@@ -166,11 +183,18 @@ namespace WordsLive.Songs
 				{
 					provider.Delete(data.Filename);
 					list.Remove(data);
+					UpdateStatus(true);
 				}
 			}
 			else if (e.Command == ApplicationCommands.Close)
 			{
 				this.Close();
+			}
+			else if (e.Command == NavigationCommands.Refresh)
+			{
+				cts.Cancel();
+				Dispatcher.Invoke((Action)list.Clear);
+				await LoadSongsAsync();
 			}
 		}
 	}

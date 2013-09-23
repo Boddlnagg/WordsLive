@@ -663,9 +663,6 @@
   <data name="nButtonShow" xml:space="preserve">
     <value>Anzeigen</value>
   </data>
-  <data name="nButtonUpdate" xml:space="preserve">
-    <value>Aktualisieren</value>
-  </data>
   <data name="nLabelAlignment" xml:space="preserve">
     <value>Ausrichtung</value>
   </data>
@@ -812,5 +809,8 @@
   </data>
   <data name="cbApplyToAllSlides" xml:space="preserve">
     <value>Diesen Hintergrund für alle Folien übernehmen</value>
+  </data>
+  <data name="dialogRefresh" xml:space="preserve">
+    <value>Aktualisieren</value>
   </data>
 </root>

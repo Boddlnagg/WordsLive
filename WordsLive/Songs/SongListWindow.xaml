@@ -39,6 +39,7 @@
 	<Window.CommandBindings>
 		<CommandBinding Command="{x:Static local:CustomCommands.AddMedia}" CanExecute="OnCanExecuteCommand"  Executed="OnExecuteCommand"/>
 		<CommandBinding Command="Close" Executed="OnExecuteCommand"/>
+		<CommandBinding Command="Refresh" Executed="OnExecuteCommand"/>
 		<CommandBinding Command="Delete" CanExecute="OnCanExecuteCommand"  Executed="OnExecuteCommand"/>
 		<CommandBinding Command="{x:Static local:CustomCommands.OpenInEditor}" CanExecute="OnCanExecuteCommand" Executed="OnExecuteCommand"/>
 	</Window.CommandBindings>
@@ -50,14 +51,14 @@
 		</Grid.RowDefinitions>
 		<GroupBox Header="{x:Static resx:Resource.slSearch}" Name="filterGroupBox" Grid.Row="0">
 			<Grid>
-				<TextBox AcceptsReturn="False" Name="filterTextBox" Margin="6,5,175,0" Text="{Binding Path=Keyword, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Height="23" TextWrapping="Wrap" />
-				<CheckBox Content="{x:Static resx:Resource.slSearchInText}" IsChecked="{Binding Path=SearchInText}" Height="16" HorizontalAlignment="Right" Margin="0,8,6,0" Name="filterCheckBox" VerticalAlignment="Top" />
+				<TextBox AcceptsReturn="False" Margin="6,5,175,0" Text="{Binding Path=Keyword, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Height="23" TextWrapping="Wrap" />
+				<CheckBox Content="{x:Static resx:Resource.slSearchInText}" IsChecked="{Binding Path=SearchInText}" Height="16" HorizontalAlignment="Right" Margin="0,8,6,0" VerticalAlignment="Top" />
 				<Expander Header="{x:Static resx:Resource.slAdvanced}" HorizontalAlignment="Left" Margin="6,34,0,0" VerticalAlignment="Top" Width="564" IsExpanded="{Binding Source={StaticResource settings}, Path=Default.SongListSearchExpanded, Mode=TwoWay}">
 					<Grid>
 						<Label Content="{x:Static resx:Resource.slSource}" HorizontalAlignment="Left" Margin="-1,1,0,0" Height="28" VerticalAlignment="Top" />
-						<TextBox Text="{Binding Path=Source, UpdateSourceTrigger=PropertyChanged}" Height="23" HorizontalAlignment="Left" Margin="84,3,0,0" Name="filterSourceSongbookTextBox" VerticalAlignment="Top" Width="120" />
+						<TextBox Text="{Binding Path=Source, UpdateSourceTrigger=PropertyChanged}" Height="23" HorizontalAlignment="Left" Margin="84,3,0,0" VerticalAlignment="Top" Width="120" />
 						<Label Content="{x:Static resx:Resource.slCopyright}" Height="28" HorizontalAlignment="Left" Margin="210,1,0,0" VerticalAlignment="Top" />
-						<TextBox Text="{Binding Path=Copyright, UpdateSourceTrigger=PropertyChanged}" Height="23" HorizontalAlignment="Left" Margin="281,3,0,0" Name="filterCopyrightTextBox" VerticalAlignment="Top" Width="120" />
+						<TextBox Text="{Binding Path=Copyright, UpdateSourceTrigger=PropertyChanged}" Height="23" HorizontalAlignment="Left" Margin="281,3,0,0" VerticalAlignment="Top" Width="120" />
 					</Grid>
 				</Expander>
 			</Grid>
@@ -91,7 +92,8 @@
 			</ListView.ItemContainerStyle>
 		</ListView>
 		<Button IsDefault="True" Command="{x:Static local:CustomCommands.AddMedia}" Content="{x:Static resx:Resource.slAddSong}" Grid.Row="2" Height="23" HorizontalAlignment="Right" Margin="0,6,6,6" Name="buttonAddSong" VerticalAlignment="Center" Width="110"/>
-		<Button IsCancel="True" Command="Close" Content="{x:Static resx:Resource.dialogClose}" Grid.Row="2" Height="23" Margin="0,6,122,6" Name="buttonClose" VerticalAlignment="Center" HorizontalAlignment="Right" Width="110" />
+		<Button Command="Refresh" Content="{x:Static resx:Resource.dialogRefresh}" Grid.Row="2" Height="23" Margin="0,6,121,6" VerticalAlignment="Center" HorizontalAlignment="Right" Width="110" />
 		<Label Grid.Row="2" Height="Auto" HorizontalAlignment="Left" Margin="6,0,0,0" Foreground="Gray" x:Name="labelStatus" Content="{x:Static resx:Resource.slLoading}" VerticalAlignment="Center" />
+		<Button IsCancel="True" Command="Close" Content="{x:Static resx:Resource.dialogClose}" Grid.Row="2" Height="23" Margin="0,6,236,6" VerticalAlignment="Center" HorizontalAlignment="Right" Width="110" />
 	</Grid>
 </Window>

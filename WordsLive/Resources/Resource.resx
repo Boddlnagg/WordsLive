@@ -669,9 +669,6 @@
   <data name="nButtonShow" xml:space="preserve">
     <value>Show</value>
   </data>
-  <data name="nButtonUpdate" xml:space="preserve">
-    <value>Update</value>
-  </data>
   <data name="nLabelAlignment" xml:space="preserve">
     <value>Alignment</value>
   </data>
@@ -812,5 +809,8 @@
   </data>
   <data name="cbApplyToAllSlides" xml:space="preserve">
     <value>Apply this background to all slides</value>
+  </data>
+  <data name="dialogRefresh" xml:space="preserve">
+    <value>Refresh</value>
   </data>
 </root>

@@ -60,7 +60,7 @@
                         </Style.Setters>
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding IsShown}" Value="True">
-                                <Setter Property="Text" Value="{x:Static resx:Resource.nButtonUpdate}"/>
+                                <Setter Property="Text" Value="{x:Static resx:Resource.dialogRefresh}"/>
                             </DataTrigger>
                         </Style.Triggers>
                     </Style>

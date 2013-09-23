@@ -250,6 +250,15 @@ namespace WordsLive.Resources {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Refresh ähnelt.
+        /// </summary>
+        public static string dialogRefresh {
+            get {
+                return ResourceManager.GetString("dialogRefresh", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Current page ähnelt.
         /// </summary>
         public static string docCurrentPage {
@@ -921,15 +930,6 @@ namespace WordsLive.Resources {
         public static string nButtonShow {
             get {
                 return ResourceManager.GetString("nButtonShow", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Update ähnelt.
-        /// </summary>
-        public static string nButtonUpdate {
-            get {
-                return ResourceManager.GetString("nButtonUpdate", resourceCulture);
             }
         }
         
