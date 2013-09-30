@@ -392,7 +392,7 @@ namespace WordsLive
 			{
 				if (win is SongListWindow)
 				{
-					win.Focus();
+					(win as SongListWindow).FocusSearch();
 					opened = true;
 					break;
 				}

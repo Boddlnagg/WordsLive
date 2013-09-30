@@ -140,6 +140,13 @@ namespace WordsLive.Songs
 			this.Focus();
 		}
 
+		public void FocusSearch()
+		{
+			this.Focus();
+			this.filterTextBox.SelectAll();
+			this.filterTextBox.Focus();
+		}
+
 		private void OnCanExecuteCommand(object sender, CanExecuteRoutedEventArgs e)
 		{
 			SongData data;
@@ -195,6 +202,10 @@ namespace WordsLive.Songs
 				cts.Cancel();
 				Dispatcher.Invoke((Action)list.Clear);
 				await LoadSongsAsync();
+			}
+			else if (e.Command == CustomCommands.ShowSonglist)
+			{
+				this.FocusSearch();
 			}
 		}
 	}

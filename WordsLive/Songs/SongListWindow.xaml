@@ -42,6 +42,7 @@
 		<CommandBinding Command="Refresh" Executed="OnExecuteCommand"/>
 		<CommandBinding Command="Delete" CanExecute="OnCanExecuteCommand"  Executed="OnExecuteCommand"/>
 		<CommandBinding Command="{x:Static local:CustomCommands.OpenInEditor}" CanExecute="OnCanExecuteCommand" Executed="OnExecuteCommand"/>
+		<CommandBinding Command="{x:Static local:CustomCommands.ShowSonglist}" Executed="OnExecuteCommand"/>
 	</Window.CommandBindings>
 	<Grid>
 		<Grid.RowDefinitions>
@@ -51,7 +52,7 @@
 		</Grid.RowDefinitions>
 		<GroupBox Header="{x:Static resx:Resource.slSearch}" Name="filterGroupBox" Grid.Row="0">
 			<Grid>
-				<TextBox AcceptsReturn="False" Margin="6,5,175,0" Text="{Binding Path=Keyword, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Height="23" TextWrapping="Wrap" />
+				<TextBox x:Name="filterTextBox" AcceptsReturn="False" Margin="6,5,175,0" Text="{Binding Path=Keyword, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Height="23" TextWrapping="Wrap" />
 				<CheckBox Content="{x:Static resx:Resource.slSearchInText}" IsChecked="{Binding Path=SearchInText}" Height="16" HorizontalAlignment="Right" Margin="0,8,6,0" VerticalAlignment="Top" />
 				<Expander Header="{x:Static resx:Resource.slAdvanced}" HorizontalAlignment="Left" Margin="6,34,0,0" VerticalAlignment="Top" Width="564" IsExpanded="{Binding Source={StaticResource settings}, Path=Default.SongListSearchExpanded, Mode=TwoWay}">
 					<Grid>
