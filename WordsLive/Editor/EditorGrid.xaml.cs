@@ -401,68 +401,75 @@ namespace WordsLive.Editor
 
 		private void StructureTree_Drop(object sender, DragEventArgs e)
 		{
-			var tree = (TreeView)sender;
-
-			if (e.Data.GetData(typeof(SongSlide)) != null)
+			try
 			{
-				ISongElement targetNode = tree.GetItemAtPosition(e.GetPosition(tree)).Header as ISongElement;
-				SongSlide dragNode = e.Data.GetData(typeof(SongSlide)) as SongSlide;
+				var tree = (TreeView)sender;
 
-				if (e.KeyStates.HasFlag(DragDropKeyStates.ControlKey)) // copy
+				if (e.Data.GetData(typeof(SongSlide)) != null)
 				{
-					if (targetNode is SongSlide)
-						song.CopySlideAfter(dragNode, targetNode as SongSlide);
-					else if (targetNode is SongPart)
-						song.CopySlide(dragNode, targetNode as SongPart);
-				}
-				else
-				{
-					if (targetNode == dragNode)
-						return;
+					ISongElement targetNode = tree.GetItemAtPosition(e.GetPosition(tree)).Header as ISongElement;
+					SongSlide dragNode = e.Data.GetData(typeof(SongSlide)) as SongSlide;
 
-					if (song.FindPartWithSlide(dragNode).Slides.Count <= 1)
+					if (e.KeyStates.HasFlag(DragDropKeyStates.ControlKey)) // copy
 					{
-						MessageBox.Show(Resource.eMsgMoveLastSlideInPart, Resource.dialogError, MessageBoxButton.OK, MessageBoxImage.Error);
-						return;
+						if (targetNode is SongSlide)
+							song.CopySlideAfter(dragNode, targetNode as SongSlide);
+						else if (targetNode is SongPart)
+							song.CopySlide(dragNode, targetNode as SongPart);
+					}
+					else
+					{
+						if (targetNode == dragNode)
+							return;
+
+						if (song.FindPartWithSlide(dragNode).Slides.Count <= 1)
+						{
+							MessageBox.Show(Resource.eMsgMoveLastSlideInPart, Resource.dialogError, MessageBoxButton.OK, MessageBoxImage.Error);
+							return;
+						}
+
+						if (targetNode is SongSlide)
+							song.MoveSlideAfter(dragNode, targetNode as SongSlide);
+						else if (targetNode is SongPart)
+							song.MoveSlide(dragNode, targetNode as SongPart);
+
+						tree.SetSelectedItem(dragNode);
+					}
+				}
+				else if (e.Data.GetData(typeof(SongPart)) != null)
+				{
+					ISongElement targetNode = tree.GetItemAtPosition(e.GetPosition(tree)).Header as ISongElement;
+					SongPart dragNode = e.Data.GetData(typeof(SongPart)) as SongPart;
+					SongPart targetPart;
+					if (targetNode is SongSlide)
+					{
+						targetPart = song.FindPartWithSlide(targetNode as SongSlide);
+					}
+					else
+					{
+						targetPart = (SongPart)targetNode;
 					}
 
-					if (targetNode is SongSlide)
-						song.MoveSlideAfter(dragNode, targetNode as SongSlide);
-					else if (targetNode is SongPart)
-						song.MoveSlide(dragNode, targetNode as SongPart);
-
-					tree.SetSelectedItem(dragNode);
+					if (e.KeyStates.HasFlag(DragDropKeyStates.ControlKey))
+					{
+						// copy part: request name for the copy first
+						var res = ShowRenamePartDialog(null);
+						if (res.DialogResult.HasValue && res.DialogResult.Value)
+						{
+							SongPart newPart = song.CopyPart(dragNode, res.PartName, targetPart);
+							tree.SetSelectedItem(newPart);
+						}
+					}
+					else
+					{
+						song.MovePart(dragNode, targetPart);
+						tree.SetSelectedItem(dragNode);
+					}
 				}
 			}
-			else if (e.Data.GetData(typeof(SongPart)) != null)
+			catch (Exception ex)
 			{
-				ISongElement targetNode = tree.GetItemAtPosition(e.GetPosition(tree)).Header as ISongElement;
-				SongPart dragNode = e.Data.GetData(typeof(SongPart)) as SongPart;
-				SongPart targetPart;
-				if (targetNode is SongSlide)
-				{
-					targetPart = song.FindPartWithSlide(targetNode as SongSlide);
-				}
-				else
-				{
-					targetPart = (SongPart)targetNode;
-				}
-
-				if (e.KeyStates.HasFlag(DragDropKeyStates.ControlKey))
-				{
-					// copy part: request name for the copy first
-					var res = ShowRenamePartDialog(null);
-					if (res.DialogResult.HasValue && res.DialogResult.Value)
-					{
-						SongPart newPart = song.CopyPart(dragNode, res.PartName, targetPart);
-						tree.SetSelectedItem(newPart);
-					}
-				}
-				else
-				{
-					song.MovePart(dragNode, targetPart);
-					tree.SetSelectedItem(dragNode);
-				}
+				Controller.ShowUnhandledException(ex, false);
 			}
 		}
 

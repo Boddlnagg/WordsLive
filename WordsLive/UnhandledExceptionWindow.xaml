@@ -32,7 +32,7 @@
 			ScrollViewer.HorizontalScrollBarVisibility="Auto"
 			ScrollViewer.VerticalScrollBarVisibility="Auto"
 			ScrollViewer.CanContentScroll="True"/>
-		<Button Grid.Row="2" Height="23" Width="120" Margin="0,6,6,6" HorizontalAlignment="Right" IsDefault="True" Click="Button_Click" Content="{x:Static resx:Resource.dialogAbort}" />
+		<Button IsEnabled="{Binding CanAbort}" Grid.Row="2" Height="23" Width="120" Margin="0,6,6,6" HorizontalAlignment="Right" IsDefault="True" Click="Button_Click" Content="{x:Static resx:Resource.dialogAbort}" />
 		<Button Grid.Row="2" Height="23" Width="120" Margin="0,6,132,6" HorizontalAlignment="Right" IsCancel="True" Content="{x:Static resx:Resource.dialogIgnore}" />
 	</Grid>
 </Window>

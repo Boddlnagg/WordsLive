@@ -289,56 +289,63 @@ namespace WordsLive.Images
 
 		private void slideListView_Drop(object sender, System.Windows.DragEventArgs e)
 		{
-			this.RemoveInsertionAdorner();
-
-			int i = GetIndexAtPosition(e.GetPosition(slideListView));
-			bool isInFirstHalf = false;
-
-			if (i >= 0)
+			try
 			{
-				if (slideListView.HasItems)
-				{
-					var container = slideListView.ItemContainerGenerator.ContainerFromIndex(i) as FrameworkElement;
-					isInFirstHalf = e.GetPosition(container).IsInFirstHalf(container, false);
-				}
-				else
-				{
-					i = 0;
-				}
+				this.RemoveInsertionAdorner();
 
-				// Data comes from list itself
-				if (e.Data.GetData(typeof(ImageInfo)) != null)
+				int i = GetIndexAtPosition(e.GetPosition(slideListView));
+				bool isInFirstHalf = false;
+
+				if (i >= 0)
 				{
-					if (oldIndex < 0 || i == oldIndex)
-						return;
-
-					if (i < oldIndex)
-						i++;
-
-					if (isInFirstHalf)
-						i--;
-
-					media.Images.Move(oldIndex, i);
-					oldIndex = -1;
-				}
-				// Data comes from explorer
-				else if (e.Data.GetData(DataFormats.FileDrop) != null)
-				{
-					if (media.Images.Count > 0)
+					if (slideListView.HasItems)
 					{
-						i++;
-
-						if (isInFirstHalf)
-							i--;
+						var container = slideListView.ItemContainerGenerator.ContainerFromIndex(i) as FrameworkElement;
+						isInFirstHalf = e.GetPosition(container).IsInFirstHalf(container, false);
 					}
 					else
 					{
 						i = 0;
 					}
 
-					string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
-					media.InsertImages(files.Select(f => new Uri(f)), i);
+					// Data comes from list itself
+					if (e.Data.GetData(typeof(ImageInfo)) != null)
+					{
+						if (oldIndex < 0 || i == oldIndex)
+							return;
+
+						if (i < oldIndex)
+							i++;
+
+						if (isInFirstHalf)
+							i--;
+
+						media.Images.Move(oldIndex, i);
+						oldIndex = -1;
+					}
+					// Data comes from explorer
+					else if (e.Data.GetData(DataFormats.FileDrop) != null)
+					{
+						if (media.Images.Count > 0)
+						{
+							i++;
+
+							if (isInFirstHalf)
+								i--;
+						}
+						else
+						{
+							i = 0;
+						}
+
+						string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+						media.InsertImages(files.Select(f => new Uri(f)), i);
+					}
 				}
+			}
+			catch (Exception ex)
+			{
+				Controller.ShowUnhandledException(ex, false);
 			}
 		}
 

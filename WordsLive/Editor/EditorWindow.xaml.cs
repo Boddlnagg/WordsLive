@@ -293,18 +293,25 @@ namespace WordsLive.Editor
 
 		private void Tabs_Drop(object sender, DragEventArgs e)
 		{
-			if (e.Data.GetData(SongDataObject.SongDataFormat) != null)
+			try
 			{
-				var song = (SongData)e.Data.GetData(SongDataObject.SongDataFormat);
-				LoadOrImport(song.Uri);
-			}
-			else if (e.Data.GetData(DataFormats.FileDrop) != null)
-			{
-				string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
-				foreach (var file in files)
+				if (e.Data.GetData(SongDataObject.SongDataFormat) != null)
 				{
-					LoadOrImport(new Uri(file));
+					var song = (SongData)e.Data.GetData(SongDataObject.SongDataFormat);
+					LoadOrImport(song.Uri);
 				}
+				else if (e.Data.GetData(DataFormats.FileDrop) != null)
+				{
+					string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+					foreach (var file in files)
+					{
+						LoadOrImport(new Uri(file));
+					}
+				}
+			}
+			catch (Exception ex)
+			{
+				Controller.ShowUnhandledException(ex, false);
 			}
 		}
 
@@ -425,6 +432,7 @@ namespace WordsLive.Editor
 			else if (e.Command == CustomCommands.SongSettings)
 			{
 				var win = new SongSettingsWindow(doc.Song.Formatting.Clone() as SongFormatting);
+				win.Owner = this;
 				if (win.ShowDialog() == true)
 				{
 					if (win.Formatting.SingleFontSize && !doc.Song.CheckSingleFontSize())

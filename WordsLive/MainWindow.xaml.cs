@@ -848,109 +848,116 @@ namespace WordsLive
 
 		void OrderListBox_Drop(object sender, DragEventArgs e)
 		{
-			this.RemoveInsertionAdorner();
-
-			int index = OrderListBox.GetIndexAtPosition(e.GetPosition(OrderListBox));
-
-			FrameworkElement container;
-			bool isInFirstHalf = false;
-
-			if (index >= 0)
+			try
 			{
-				container = OrderListBox.ItemContainerGenerator.ContainerFromIndex(index) as FrameworkElement;
-				isInFirstHalf = e.GetPosition(container).IsInFirstHalf(container, true);
-			}
-			else
-			{
-				index = OrderListBox.HasItems ? OrderListBox.Items.Count - 1 : 0;
-			}
+				this.RemoveInsertionAdorner();
 
-			// Data comes from list itself
-			if (e.Data.GetData(typeof(MediaOrderItem)) != null)
-			{
+				int index = OrderListBox.GetIndexAtPosition(e.GetPosition(OrderListBox));
 
-				if (oldIndex < 0 || index == oldIndex)
-					return;
+				FrameworkElement container;
+				bool isInFirstHalf = false;
 
-				if (index < oldIndex)
-					index++;
-
-				if (isInFirstHalf)
-					index--;
-
-				MediaOrderItem movedItem = orderList[oldIndex];
-
-				if (index < 0)
-					orderList.Move(new MediaOrderItem[] { movedItem }, orderList.Count - oldIndex - 1);
-				else
-					orderList.Move(new MediaOrderItem[] { movedItem }, index - oldIndex);
-
-				oldIndex = -1;
-			}
-			// Data comes from song list
-			else if (e.Data.GetData(SongDataObject.SongDataFormat) != null)
-			{
-				if (OrderListBox.HasItems)
-					index++;
-
-				if (isInFirstHalf)
-					index--;
-
-				SongData data = (SongData)e.Data.GetData(SongDataObject.SongDataFormat);
-				Media m = MediaManager.LoadMediaMetadata(data.Uri, null);
-				orderList.Insert(index, m);
-			}
-			// Data comes from explorer
-			else if (e.Data.GetData(DataFormats.FileDrop) != null)
-			{
-				if (OrderListBox.HasItems)
-					index++;
-
-				if (isInFirstHalf)
-					index--;
-
-				string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
-
-				IEnumerable<Media> result;
-
-				if (files.Length < 1)
-					return;
-
-				if (files.Length == 1)
+				if (index >= 0)
 				{
-					if (MediaManager.TryLoadPortfolio(files[0], out result))
+					container = OrderListBox.ItemContainerGenerator.ContainerFromIndex(index) as FrameworkElement;
+					isInFirstHalf = e.GetPosition(container).IsInFirstHalf(container, true);
+				}
+				else
+				{
+					index = OrderListBox.HasItems ? OrderListBox.Items.Count - 1 : 0;
+				}
+
+				// Data comes from list itself
+				if (e.Data.GetData(typeof(MediaOrderItem)) != null)
+				{
+
+					if (oldIndex < 0 || index == oldIndex)
+						return;
+
+					if (index < oldIndex)
+						index++;
+
+					if (isInFirstHalf)
+						index--;
+
+					MediaOrderItem movedItem = orderList[oldIndex];
+
+					if (index < 0)
+						orderList.Move(new MediaOrderItem[] { movedItem }, orderList.Count - oldIndex - 1);
+					else
+						orderList.Move(new MediaOrderItem[] { movedItem }, index - oldIndex);
+
+					oldIndex = -1;
+				}
+				// Data comes from song list
+				else if (e.Data.GetData(SongDataObject.SongDataFormat) != null)
+				{
+					if (OrderListBox.HasItems)
+						index++;
+
+					if (isInFirstHalf)
+						index--;
+
+					SongData data = (SongData)e.Data.GetData(SongDataObject.SongDataFormat);
+					Media m = MediaManager.LoadMediaMetadata(data.Uri, null);
+					orderList.Insert(index, m);
+				}
+				// Data comes from explorer
+				else if (e.Data.GetData(DataFormats.FileDrop) != null)
+				{
+					if (OrderListBox.HasItems)
+						index++;
+
+					if (isInFirstHalf)
+						index--;
+
+					string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+
+					IEnumerable<Media> result;
+
+					if (files.Length < 1)
+						return;
+
+					if (files.Length == 1)
 					{
-						// TODO: maybe insert contents at drop position if the portfolio isn't empty?
-						Controller.OpenPortfolio(files[0]);
+						if (MediaManager.TryLoadPortfolio(files[0], out result))
+						{
+							// TODO: maybe insert contents at drop position if the portfolio isn't empty?
+							Controller.OpenPortfolio(files[0]);
+						}
+						else
+						{
+							Media m = MediaManager.LoadMediaMetadata(new Uri(files[0]), null);
+							orderList.Insert(index, m);
+						}
 					}
 					else
 					{
-						Media m = MediaManager.LoadMediaMetadata(new Uri(files[0]), null);
+						foreach (var m in MediaManager.LoadMultipleMediaMetadata(files.Select(f => new Uri(f))))
+						{
+							orderList.Insert(index++, m);
+						}
+					}
+				}
+				else if (e.Data.GetData(typeof(String)) != null)
+				{
+					string data = (string)e.Data.GetData(typeof(String));
+					Uri u = null;
+					if (!Uri.TryCreate(data, UriKind.Absolute, out u))
+					{
+						Uri.TryCreate("http://" + data, UriKind.Absolute, out u);
+					}
+
+					if (u != null)
+					{
+						Media m = MediaManager.LoadMediaMetadata(u, null);
 						orderList.Insert(index, m);
 					}
 				}
-				else
-				{
-					foreach (var m in MediaManager.LoadMultipleMediaMetadata(files.Select(f => new Uri(f))))
-					{
-						orderList.Insert(index++, m);
-					}
-				}
 			}
-			else if (e.Data.GetData(typeof(String)) != null)
+			catch (Exception ex)
 			{
-				string data = (string)e.Data.GetData(typeof(String));
-				Uri u = null;
-				if (!Uri.TryCreate(data, UriKind.Absolute, out u))
-				{
-					Uri.TryCreate("http://" + data, UriKind.Absolute, out u);
-				}
-
-				if (u != null)
-				{
-					Media m = MediaManager.LoadMediaMetadata(u, null);
-					orderList.Insert(index, m);
-				}
+				Controller.ShowUnhandledException(ex, false);
 			}
 		}
 

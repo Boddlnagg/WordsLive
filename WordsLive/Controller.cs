@@ -100,12 +100,16 @@ namespace WordsLive
 		{
 			if (window.IsLoaded)
 			{
-				UnhandledExceptionWindow win = new UnhandledExceptionWindow(e.Exception);
-				win.Owner = window;
-				var result = win.ShowDialog();
-				if (result.HasValue && result.Value == false)
-					e.Handled = true;
+				e.Handled = ShowUnhandledException(e.Exception, true);
 			}
+		}
+
+		public static bool ShowUnhandledException(Exception e, bool canAbort = true)
+		{
+			UnhandledExceptionWindow win = new UnhandledExceptionWindow(e, canAbort);
+			win.Owner = instance.window;
+			var result = win.ShowDialog();
+			return (result.HasValue && result.Value == false);
 		}
 
 		private void LoadTypes(Assembly assembly)

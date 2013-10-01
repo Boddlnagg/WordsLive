@@ -29,11 +29,18 @@ namespace WordsLive
 			private set;
 		}
 
+		public bool CanAbort
+		{
+			get;
+			private set;
+		}
 
-		public UnhandledExceptionWindow(Exception exception)
+
+		public UnhandledExceptionWindow(Exception exception, bool canAbort = true)
 		{
 			InitializeComponent();
 
+			this.CanAbort = canAbort;
 			this.Exception = exception;
 			this.DataContext = this;
 		}
