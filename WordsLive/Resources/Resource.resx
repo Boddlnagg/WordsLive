@@ -813,4 +813,10 @@
   <data name="dialogRefresh" xml:space="preserve">
     <value>Refresh</value>
   </data>
+  <data name="eMenuImportFromClipboard" xml:space="preserve">
+    <value>Import SongSelect song from Clipboard</value>
+  </data>
+  <data name="eMsgCouldNotImportFromClipboard" xml:space="preserve">
+    <value>Could not import song from SongSelect. The text in the clipboard is not valid.</value>
+  </data>
 </root>

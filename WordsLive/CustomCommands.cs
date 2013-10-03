@@ -73,6 +73,12 @@ namespace WordsLive
 			private set;
 		}
 
+		public static RoutedCommand ImportFromClipboard
+		{
+			get;
+			private set;
+		}
+
 		public static RoutedCommand Activate
 		{
 			get;
@@ -229,6 +235,7 @@ namespace WordsLive
 			EditActive = new RoutedCommand("EditActive", t);
 			OpenInEditor = new RoutedCommand("OpenInEditor", t);
 			Export = new RoutedCommand("Export", t);
+			ImportFromClipboard = new RoutedCommand("ImportFromClipboard", t, new InputGestureCollection { new KeyGesture(Key.V, ModifierKeys.Control) });
 			Activate = new RoutedCommand("Activate", t);
 			ShowSettings = new RoutedCommand("ShowSettings", t);
 			ViewCurrent = new RoutedCommand("ViewCurrent", t);

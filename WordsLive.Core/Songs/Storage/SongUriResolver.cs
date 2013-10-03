@@ -57,7 +57,7 @@ namespace WordsLive.Core.Songs.Storage
 			
 		//}
 
-		public Stream Get(Uri uri)
+		public virtual Stream Get(Uri uri)
 		{
 			if (uri.Scheme == "song")
 			{
@@ -81,7 +81,7 @@ namespace WordsLive.Core.Songs.Storage
 			}
 		}
 
-		public async Task<Stream> GetAsync(Uri uri, CancellationToken cancellation)
+		public virtual async Task<Stream> GetAsync(Uri uri, CancellationToken cancellation)
 		{
 			if (uri.Scheme == "song")
 			{
@@ -105,7 +105,7 @@ namespace WordsLive.Core.Songs.Storage
 			}
 		}
 
-		public FileTransaction Put(Uri uri)
+		public virtual FileTransaction Put(Uri uri)
 		{
 			if (uri.Scheme == "song")
 			{

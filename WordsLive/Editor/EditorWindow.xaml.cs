@@ -21,6 +21,8 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using WordsLive.Core;
@@ -371,6 +373,20 @@ namespace WordsLive.Editor
 			{
 				e.CanExecute = doc != null;
 			}
+			else if (e.Command == CustomCommands.ImportFromClipboard)
+			{
+				e.CanExecute = false;
+				if (Clipboard.ContainsText())
+				{
+					string text = Clipboard.GetText();
+					var firstNewline = text.IndexOf('\n');
+					if (firstNewline > 0 && text.Length >= firstNewline + 1)
+					{
+						var next = text[firstNewline + 1];
+						e.CanExecute = (next == '\n' || next == '\r') && text.Contains("CCLI");
+					}
+				}
+			}
 			else if (e.Command == ApplicationCommands.Close || e.Command == CustomCommands.SongSettings)
 			{
 				e.CanExecute = doc != null;
@@ -419,6 +435,18 @@ namespace WordsLive.Editor
 			else if (e.Command == CustomCommands.Export)
 			{
 				ExportSong(doc.Song);
+			}
+			else if (e.Command == CustomCommands.ImportFromClipboard)
+			{
+				try
+				{
+					var song = new Song(null, new ClipboardUriResolver(), new CcliTxtSongReader());
+					Load(song);
+				}
+				catch
+				{
+					MessageBox.Show(Resource.eMsgCouldNotImportFromClipboard);
+				}
 			}
 			else if (e.Command == ApplicationCommands.Close)
 			{
@@ -476,6 +504,32 @@ namespace WordsLive.Editor
 		{
 			if (PropertyChanged != null)
 				PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+		}
+
+		// private class to import directly from clipboard
+		private class ClipboardUriResolver : SongUriResolver
+		{
+			public override Stream Get(Uri uri)
+			{
+				if (Clipboard.ContainsText())
+				{
+					return new MemoryStream(System.Text.Encoding.UTF8.GetBytes(Clipboard.GetText()));
+				}
+				else
+				{
+					throw new InvalidOperationException("No text in clipboard.");
+				}
+			}
+
+			public override Task<Stream> GetAsync(Uri uri, CancellationToken cancellation)
+			{
+				return TaskHelpers.FromResult(Get(uri));
+			}
+
+			public override FileTransaction Put(Uri uri)
+			{
+				throw new NotImplementedException();
+			}
 		}
 	}
 }

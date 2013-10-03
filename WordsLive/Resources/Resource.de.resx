@@ -813,4 +813,10 @@
   <data name="dialogRefresh" xml:space="preserve">
     <value>Aktualisieren</value>
   </data>
+  <data name="eMenuImportFromClipboard" xml:space="preserve">
+    <value>SongSelect-Lied aus Zwischenablage importieren</value>
+  </data>
+  <data name="eMsgCouldNotImportFromClipboard" xml:space="preserve">
+    <value>Lied konnte nicht aus SongSelect importiert werden. Der Text in der Zwischenablage ist ungültig.</value>
+  </data>
 </root>

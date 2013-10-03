@@ -619,6 +619,15 @@ namespace WordsLive.Resources {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Import SongSelect song from Clipboard ähnelt.
+        /// </summary>
+        public static string eMenuImportFromClipboard {
+            get {
+                return ResourceManager.GetString("eMenuImportFromClipboard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die New song ähnelt.
         /// </summary>
         public static string eMenuNewSong {
@@ -723,6 +732,15 @@ namespace WordsLive.Resources {
         public static string eMetadataSourceTitle {
             get {
                 return ResourceManager.GetString("eMetadataSourceTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Could not import song from SongSelect. The text in the clipboard is not valid. ähnelt.
+        /// </summary>
+        public static string eMsgCouldNotImportFromClipboard {
+            get {
+                return ResourceManager.GetString("eMsgCouldNotImportFromClipboard", resourceCulture);
             }
         }
         
