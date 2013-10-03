@@ -110,6 +110,9 @@
     <Compile Include="..\WordsLive\Properties\CommonVersionInfo.cs">
       <Link>Properties\CommonVersionInfo.cs</Link>
     </Compile>
+    <Compile Include="Songs\IO\CcliSongReader.cs" />
+    <Compile Include="Songs\IO\CcliTxtSongReader.cs" />
+    <Compile Include="Songs\IO\CcliUsrSongReader.cs" />
     <Compile Include="Songs\IO\SongFormatException.cs" />
     <Compile Include="Songs\ISongElementWithSize.cs" />
     <Compile Include="Songs\SongMedia.cs" />

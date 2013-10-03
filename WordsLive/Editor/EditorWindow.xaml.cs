@@ -115,6 +115,14 @@ namespace WordsLive.Editor
 				{
 					song = new Song(uri, new ChordProSongReader());
 				}
+				else if (ext == ".usr")
+				{
+					song = new Song(uri, new CcliUsrSongReader());
+				}
+				else if (ext == ".txt")
+				{
+					song = new Song(uri, new CcliTxtSongReader());
+				}
 				else if (ext == "") // OpenSong songs have no file extension
 				{
 					song = new Song(uri, new OpenSongSongReader());
@@ -159,7 +167,7 @@ namespace WordsLive.Editor
 			// TODO: localize
 			Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
 			dlg.DefaultExt = ".ppl";
-			dlg.Filter = "Powerpraise-Lied|*.ppl|SongBeamer-Lied|*.sng|ChordPro-Datei|*.chopro;*.cho;*.pro";
+			dlg.Filter = "Powerpraise-Lied|*.ppl|SongBeamer-Lied|*.sng|ChordPro-Datei|*.chopro;*.cho;*.pro|SongSelect-Datei|*.usr;*.txt";
 			dlg.InitialDirectory = Properties.Settings.Default.LastSongDirectory;
 
 			if (dlg.ShowDialog() == true)

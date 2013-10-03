@@ -16,9 +16,9 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 using System;
 using System.IO;
+using System.Text;
 
 namespace WordsLive.Core.Songs.IO
 {
@@ -26,13 +26,18 @@ namespace WordsLive.Core.Songs.IO
 	{
 		public void Read(Song song, Stream stream)
 		{
-			using (StreamReader reader = new StreamReader(stream, System.Text.Encoding.Default, true))
+			if (song == null)
+				throw new ArgumentNullException("song");
+
+			if (stream == null)
+				throw new ArgumentNullException("stream");
+
+			song.LoadTemplate();
+			song.Order.Clear();
+			song.Parts.Clear();
+
+			using (StreamReader reader = new StreamReader(stream, Encoding.Default, true))
 			{
-				song.LoadTemplate();
-
-				song.Order.Clear();
-				song.Parts.Clear();
-
 				string line;
 				bool inTab = false;
 				SongPart chorusPart = null;
