@@ -134,12 +134,14 @@ namespace WordsLive.Editor
 
 			directoryView.DataContext = new BackgroundStorageDirectory[] { DataManager.Backgrounds.Root };
 
+			string selectPath = String.Empty;
+
 			if (background.IsFile)
 			{
 				var file = DataManager.Backgrounds.GetFile(background);
 				if (file.Exists)
 				{
-					directoryView.Loaded += (sender, args) => SelectEntry(background.FilePath);
+					selectPath = background.FilePath;
 				}
 				else
 				{
@@ -152,6 +154,14 @@ namespace WordsLive.Editor
 			{
 				ColorPicker.SelectedColor = Color.FromRgb(background.Color.R, background.Color.G, background.Color.B);
 			}
+
+			RoutedEventHandler selectAction = null;
+			selectAction = (sender, args) =>
+			{
+				SelectEntry(selectPath);
+				directoryView.Loaded -= selectAction;
+			};
+			directoryView.Loaded += selectAction;
 		}
 
 		private void SelectEntry(string path)
