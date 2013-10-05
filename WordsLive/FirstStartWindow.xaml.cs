@@ -19,15 +19,14 @@
 using System;
 using System.ComponentModel;
 using System.IO;
+using System.Reflection;
 using System.Windows;
 using System.Xml.Linq;
+using Ionic.Zip;
 using WordsLive.Resources;
 
 namespace WordsLive
 {
-	/// <summary>
-	/// Interaktionslogik für FirstStartWindow.xaml
-	/// </summary>
 	public partial class FirstStartWindow : Window, INotifyPropertyChanged
 	{
 		public bool IsPowerpraiseInstalled
@@ -143,6 +142,10 @@ namespace WordsLive
 				{
 					Directory.CreateDirectory(Properties.Settings.Default.SongsDirectory);
 					Directory.CreateDirectory(Properties.Settings.Default.BackgroundsDirectory);
+
+					var appDir = new FileInfo(Assembly.GetExecutingAssembly().Location).Directory;
+					var examplesZip = ZipFile.Read(Path.Combine(appDir.FullName, "Data", "Examples.zip"));
+					examplesZip.ExtractAll(actualDirectory);
 				}
 			}
 			catch (Exception ex)
