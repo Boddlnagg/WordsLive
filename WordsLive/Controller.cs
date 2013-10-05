@@ -150,15 +150,16 @@ namespace WordsLive
 			Version appVersion = a.GetName().Version;
 			string appVersionString = appVersion.ToString();
 			bool modified = false;
-
-			if (String.IsNullOrEmpty(Properties.Settings.Default.ApplicationVersion))
-			{
-				instance.isFirstStart = true;
-			}
 			
 			if (Properties.Settings.Default.ApplicationVersion != appVersionString)
 			{
 				Properties.Settings.Default.Upgrade();
+
+				if (String.IsNullOrEmpty(Properties.Settings.Default.ApplicationVersion))
+				{
+					instance.isFirstStart = true;
+				}
+
 				Properties.Settings.Default.ApplicationVersion = appVersionString;
 				Properties.Settings.Default.NoUpdateVersion = appVersionString;
 				modified = true;
