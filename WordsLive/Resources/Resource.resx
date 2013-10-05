@@ -819,4 +819,16 @@
   <data name="eMsgCouldNotImportFromClipboard" xml:space="preserve">
     <value>Could not import song from SongSelect. The text in the clipboard is not valid.</value>
   </data>
+  <data name="fsCouldNotInitDirectory" xml:space="preserve">
+    <value>Couldn't initialize directory ({0}). Please choose another one.</value>
+  </data>
+  <data name="fsInfo" xml:space="preserve">
+    <value>You seem to be running WordsLive for the first time. Please choose an directory to store songs and backgrounds. If the directory does not yet exist, it will be created and populated with some example data. You can change this directory any time in the future by navigating to "Settings" in the menu.</value>
+  </data>
+  <data name="fsTitle" xml:space="preserve">
+    <value>First Start</value>
+  </data>
+  <data name="fsUsePowerpraiseDirectory" xml:space="preserve">
+    <value>Use same directory as Powerpraise (if installed)</value>
+  </data>
 </root>

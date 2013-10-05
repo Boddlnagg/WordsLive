@@ -158,6 +158,9 @@
     <Compile Include="Documents\DocumentMedia.cs" />
     <Compile Include="Documents\DocumentPageScale.cs" />
     <Compile Include="Documents\IDocumentPresentation.cs" />
+    <Compile Include="FirstStartWindow.xaml.cs">
+      <DependentUpon>FirstStartWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Properties\CommonVersionInfo.cs" />
     <Compile Include="ControlPanelLoadState.cs" />
     <Compile Include="Editor\BackgroundFileConverter.cs" />
@@ -211,6 +214,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Editor\SaveFilenameDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="FirstStartWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

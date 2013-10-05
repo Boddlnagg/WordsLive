@@ -889,6 +889,42 @@ namespace WordsLive.Resources {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Couldn&apos;t initialize directory ({0}). Please choose another one. ähnelt.
+        /// </summary>
+        public static string fsCouldNotInitDirectory {
+            get {
+                return ResourceManager.GetString("fsCouldNotInitDirectory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die You seem to be running WordsLive for the first time. Please choose an directory to store songs and backgrounds. If the directory does not yet exist, it will be created and populated with some example data. You can change this directory any time in the future by navigating to &quot;Settings&quot; in the menu. ähnelt.
+        /// </summary>
+        public static string fsInfo {
+            get {
+                return ResourceManager.GetString("fsInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die First Start ähnelt.
+        /// </summary>
+        public static string fsTitle {
+            get {
+                return ResourceManager.GetString("fsTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Use same directory as Powerpraise (if installed) ähnelt.
+        /// </summary>
+        public static string fsUsePowerpraiseDirectory {
+            get {
+                return ResourceManager.GetString("fsUsePowerpraiseDirectory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die You&apos;ve selected multiple image files. Do you want to add them as a single slideshow? When selecting &quot;Yes&quot; you will be prompted for a location to save the slideshow. Selecting &quot;No&quot; means the images will be added one by one. ähnelt.
         /// </summary>
         public static string imgMsgMultipleCreateSlideshow {

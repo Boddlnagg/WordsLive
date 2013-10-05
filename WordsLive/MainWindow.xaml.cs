@@ -1037,7 +1037,7 @@ namespace WordsLive
 				{
 					OpenPortfolio(App.StartupPortfolio);
 				}
-			}), System.Windows.Threading.DispatcherPriority.Loaded);
+			}));
 		}
 	}
 }

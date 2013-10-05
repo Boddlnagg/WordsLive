@@ -54,6 +54,7 @@ namespace WordsLive
 		private List<Window> openedWindows = new List<Window>();
 
 		private bool isShuttingDown;
+		private bool isFirstStart = false;
 		#endregion
 
 		#region Private methods
@@ -150,6 +151,10 @@ namespace WordsLive
 			string appVersionString = appVersion.ToString();
 			bool modified = false;
 
+			if (String.IsNullOrEmpty(Properties.Settings.Default.ApplicationVersion))
+			{
+				instance.isFirstStart = true;
+			}
 			
 			if (Properties.Settings.Default.ApplicationVersion != appVersionString)
 			{
@@ -175,16 +180,11 @@ namespace WordsLive
 		{
 			var appDir = new FileInfo(Assembly.GetExecutingAssembly().Location).Directory;
 
-			// TODO: check if Powerpraise-Dateien directory exists, if not, show directory chooser dialog (with ability to create new directory)
-
-			if (string.IsNullOrEmpty(Properties.Settings.Default.SongsDirectory))
+			if (instance.isFirstStart)
 			{
-				Properties.Settings.Default.SongsDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), "Powerpraise-Dateien", "Songs"); // TODO: localize?!
-			}
-
-			if (string.IsNullOrEmpty(Properties.Settings.Default.BackgroundsDirectory))
-			{
-				Properties.Settings.Default.BackgroundsDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), "Powerpraise-Dateien", "Backgrounds");
+				var win = new FirstStartWindow();
+				win.Owner = instance.window;
+				win.ShowDialog();
 			}
 
 			if (string.IsNullOrEmpty(Properties.Settings.Default.SongTemplateFile))
