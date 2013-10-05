@@ -214,6 +214,9 @@
 			<Component>
 				<File Source="$(var.WordsLive.TargetDir)Data\Standard.ppl" Name="Standard.ppl" KeyPath="yes" />
 			</Component>
+			<Component>
+				<File Source="$(var.WordsLive.TargetDir)Data\Examples.zip" Name="Examples.zip" KeyPath="yes" />
+			</Component>
 		</ComponentGroup>
 		<ComponentGroup Id="I18nComponents">
 			<Component Directory="I18nDeFolder">
