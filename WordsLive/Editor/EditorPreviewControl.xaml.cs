@@ -85,9 +85,11 @@ namespace WordsLive.Editor
 		{
 			web = new WebControl()
 			{
-				Width = 800,
-				Height = 600,
+				Width = Controller.PresentationManager.Area.WindowSize.Width,
+				Height = Controller.PresentationManager.Area.WindowSize.Height,
 			};
+
+			Controller.PresentationManager.Area.WindowSizeChanged += Area_WindowSizeChanged;
 
 			webControlContainer.Child = web;
 			
@@ -99,6 +101,17 @@ namespace WordsLive.Editor
 			if (Song != null && web.IsProcessCreated) // if this is not the first Init(), probably a song has already be loaded and must be reloaded
 			{
 				Load();
+			}
+		}
+
+		void Area_WindowSizeChanged(object sender, EventArgs e)
+		{
+			web.Width = Controller.PresentationManager.Area.WindowSize.Width;
+			web.Height = Controller.PresentationManager.Area.WindowSize.Height;
+
+			if (controller != null)
+			{
+				controller.UpdateFormatting(Song.Formatting, Song.HasTranslation, Song.HasChords);
 			}
 		}
 
@@ -301,6 +314,8 @@ namespace WordsLive.Editor
 
 		internal void Cleanup()
 		{
+			Controller.PresentationManager.Area.WindowSizeChanged -= Area_WindowSizeChanged;
+
 			if (web != null)
 			{
 				web.Crashed -= OnWebViewCrashed;
