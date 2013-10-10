@@ -97,8 +97,8 @@ namespace WordsLive.Songs
 
 			if (song.VideoBackground == null)
 			{
-				frontImage = new ImageGrid { Background = Brushes.Black, Stretch = Stretch.Fill };
-				backImage = new ImageGrid { Background = Brushes.Black, Stretch = Stretch.Fill };
+				frontImage = new ImageGrid { Background = Brushes.Black, Stretch = Stretch.UniformToFill };
+				backImage = new ImageGrid { Background = Brushes.Black, Stretch = Stretch.UniformToFill };
 
 				this.Control.BackgroundGrid.Children.Add(backImage);
 				this.Control.ForegroundGrid.Children.Add(frontImage);
