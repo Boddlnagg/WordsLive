@@ -38,10 +38,6 @@ namespace WordsLive.Core.Songs.IO
 			if (stream == null)
 				throw new ArgumentNullException("stream");
 
-			song.LoadTemplate();
-			song.Order.Clear();
-			song.Parts.Clear();
-
 			using (StreamReader reader = new StreamReader(stream, Encoding.UTF8))
 			{
 				string line;

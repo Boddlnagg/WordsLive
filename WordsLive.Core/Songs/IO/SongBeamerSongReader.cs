@@ -24,6 +24,14 @@ namespace WordsLive.Core.Songs.IO
 {
 	public class SongBeamerSongReader : ISongReader
 	{
+		public bool NeedsTemplate
+		{
+			get
+			{
+				return true;
+			}
+		}
+
 		/// <summary>
 		/// Reads the song data from a stream.
 		/// </summary>
@@ -36,11 +44,6 @@ namespace WordsLive.Core.Songs.IO
 
 			if (stream == null)
 				throw new ArgumentNullException("stream");
-
-			song.LoadTemplate();
-
-			song.Order.Clear();
-			song.Parts.Clear();
 
 			using (StreamReader reader = new StreamReader(stream, System.Text.Encoding.Default, true))
 			{

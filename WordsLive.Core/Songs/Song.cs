@@ -474,6 +474,11 @@ namespace WordsLive.Core.Songs
 			this.Uri = uri;
 			this.uriResolver = resolver;
 
+			if (reader.NeedsTemplate)
+			{
+				LoadClearTemplate();
+			}
+
 			using (Stream stream = uriResolver.Get(uri))
 			{
 				reader.Read(this, stream);
@@ -511,6 +516,11 @@ namespace WordsLive.Core.Songs
 			song.Uri = uri;
 			song.uriResolver = resolver;
 
+			if (reader.NeedsTemplate)
+			{
+				song.LoadClearTemplate();
+			}
+
 			using (Stream stream = await song.uriResolver.GetAsync(uri, cancellation))
 			{
 				cancellation.ThrowIfCancellationRequested();
@@ -532,6 +542,13 @@ namespace WordsLive.Core.Songs
 				var reader = new PowerpraiseSongReader();
 				reader.Read(this, stream);
 			}
+		}
+
+		private void LoadClearTemplate()
+		{
+			LoadTemplate();
+			Order.Clear();
+			Parts.Clear();
 		}
 
 		/// <summary>

@@ -30,6 +30,14 @@ namespace WordsLive.Core.Songs.IO
 	/// </summary>
 	public class PowerpraiseSongReader : ISongReader
 	{
+		public bool NeedsTemplate
+		{
+			get
+			{
+				return false;
+			}
+		}
+
 		/// <summary>
 		/// Reads the song data from a stream.
 		/// </summary>

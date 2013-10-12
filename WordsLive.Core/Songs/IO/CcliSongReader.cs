@@ -56,5 +56,13 @@ namespace WordsLive.Core.Songs.IO
 		}
 
 		public abstract void Read(Song song, Stream stream);
+
+		public bool NeedsTemplate
+		{
+			get
+			{
+				return true;
+			}
+		}
 	}
 }

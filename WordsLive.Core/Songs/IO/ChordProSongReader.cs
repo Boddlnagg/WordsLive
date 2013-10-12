@@ -24,6 +24,14 @@ namespace WordsLive.Core.Songs.IO
 {
 	public class ChordProSongReader : ISongReader
 	{
+		public bool NeedsTemplate
+		{
+			get
+			{
+				return true;
+			}
+		}
+
 		public void Read(Song song, Stream stream)
 		{
 			if (song == null)
@@ -31,10 +39,6 @@ namespace WordsLive.Core.Songs.IO
 
 			if (stream == null)
 				throw new ArgumentNullException("stream");
-
-			song.LoadTemplate();
-			song.Order.Clear();
-			song.Parts.Clear();
 
 			using (StreamReader reader = new StreamReader(stream, Encoding.Default, true))
 			{

@@ -27,6 +27,14 @@ namespace WordsLive.Core.Songs.IO
 {
 	public class OpenSongSongReader : ISongReader
 	{
+		public bool NeedsTemplate
+		{
+			get
+			{
+				return true;
+			}
+		}
+
 		private static Regex wordRegex = new Regex("[^\\s]+", RegexOptions.Compiled);
 
 		public void Read(Song song, Stream stream)
@@ -37,12 +45,7 @@ namespace WordsLive.Core.Songs.IO
 			if (stream == null)
 				throw new ArgumentNullException("stream");
 
-			song.LoadTemplate();
-
 			var doc = XDocument.Load(stream);
-
-			song.Order.Clear();
-			song.Parts.Clear();
 
 			if (doc.Root.Name != "song")
 			{
