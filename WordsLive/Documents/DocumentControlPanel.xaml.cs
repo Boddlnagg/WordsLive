@@ -190,7 +190,7 @@ namespace WordsLive.Documents
 		{
 			base.OnPreviewKeyDown(e);
 
-			if (e.Key == Key.Right || e.Key == Key.Down || e.Key == Key.PageDown)
+			if (e.Key == Key.Right || e.Key == Key.Down || e.Key == Key.PageDown || e.Key == Key.Space)
 			{
 				presentation.NextPage();
 				OnPropertyChanged("CurrentPage");

@@ -238,7 +238,7 @@ namespace WordsLive.Songs
 					}
 				}
 			}
-			else if (e.Key == Key.PageDown || e.Key == Key.Down || e.Key == Key.Right)
+			else if (e.Key == Key.PageDown || e.Key == Key.Down || e.Key == Key.Right || e.Key == Key.Space)
 			{
 				if (SelectedIndex + 1 < Items.Count)
 				{

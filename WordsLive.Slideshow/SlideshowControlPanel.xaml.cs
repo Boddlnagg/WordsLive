@@ -121,7 +121,7 @@ namespace WordsLive.Slideshow
 
 		private void slideListView_PreviewKeyDown(object sender, KeyEventArgs e)
 		{
-			if (e.Key == Key.Right || e.Key == Key.Down || e.Key == Key.PageDown)
+			if (e.Key == Key.Right || e.Key == Key.Down || e.Key == Key.PageDown || e.Key == Key.Space)
 			{
 				pres.NextStep();
 				e.Handled = true;

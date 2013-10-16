@@ -164,7 +164,7 @@ namespace WordsLive.Images
 
 		private void slideListView_PreviewKeyDown(object sender, KeyEventArgs e)
 		{
-			if (e.Key == Key.Right || e.Key == Key.Down || e.Key == Key.PageDown)
+			if (e.Key == Key.Right || e.Key == Key.Down || e.Key == Key.PageDown || e.Key == Key.Space)
 			{
 				ShowNext();
 				e.Handled = true;
