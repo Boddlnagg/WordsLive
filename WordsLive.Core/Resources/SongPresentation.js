@@ -61,10 +61,10 @@ function SongPresentation(id, song, featureLevel) {
 	this.transitionsEnabled = false;
 
 	if (featureLevel >= SongPresentation.FeatureLevel.Backgrounds) {
-	    this.backgroundsEnabled = true;
+		this.backgroundsEnabled = true;
 
 		if (this.song.VideoBackground !== null) {
-		    this.container.prepend($('<video src="' + SongPresentation.BackgroundPrefix + this.song.VideoBackground.Video + '" style="width: 100%; background-color: black;" autoplay="autoplay" muted="muted" loop="loop" >').addClass('song-background'));
+			this.container.prepend($('<video src="' + SongPresentation.BackgroundPrefix + this.song.VideoBackground.Video + '" style="width: 100%; background-color: black;" autoplay="autoplay" muted="muted" loop="loop" >').addClass('song-background'));
 		}
 
 		this.container.find('.song-background').show();
@@ -226,8 +226,8 @@ SongPresentation.prototype.showSlide = function (slide) {
 		} else if (slide.Background.Image !== undefined) {
 			bgCss = { 'background-color': 'black', 'background-image': 'url(\'' + SongPresentation.BackgroundPrefix + slide.Background.Image + '\')' };
 		} else {
-		    // if it's a video, remove any background css
-		    bgCss = { 'background-color': 'none', 'background-image': 'none' };
+			// if it's a video, remove any background css
+			bgCss = { 'background-color': 'none', 'background-image': 'none' };
 		}
 	}
 
@@ -596,6 +596,7 @@ SongPresentation.insertStyleGeneral = function () {
 	.song span {                      	\
 		display: block;               	\
 		overflow: visible;            	\
+		white-space: nowrap;            \
 	}                                 	\
 										\
 	/* Chords */                      	\
