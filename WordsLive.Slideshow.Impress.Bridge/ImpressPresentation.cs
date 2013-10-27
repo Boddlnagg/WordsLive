@@ -168,6 +168,9 @@ namespace WordsLive.Slideshow.Impress.Bridge
 			var componentLoader = (XComponentLoader)desktop;
 			component = componentLoader.loadComponentFromURL(CreateFileUrl(file.FullName), "_blank", 0, new PropertyValue[] { });
 
+			// TODO: while/before loading, set the viewsettings ViewId:=view1, PageKind:=0 to reset to the default view
+			// (instead of notes or outline view). Unfortunately these settings aren't accesible in the API ...
+
 			// Get the main window's handle and hide the window
 			document = (XModel)component;
 			XWindow window = document.getCurrentController().getFrame().getContainerWindow();
@@ -329,6 +332,7 @@ namespace WordsLive.Slideshow.Impress.Bridge
 
 		private void CreateThumbnails()
 		{
+			// TODO: this currently only works when the default view is selected (not outline or notes)
 			var pages = (document as XDrawPagesSupplier).getDrawPages();
 			var file = Path.GetTempFileName();
 			for (int i = 0; i < pages.getCount(); i++)
