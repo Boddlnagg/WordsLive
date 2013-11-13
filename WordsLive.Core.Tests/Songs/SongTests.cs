@@ -18,128 +18,127 @@
 
 using System;
 using System.Linq;
-using NUnit.Framework;
 using WordsLive.Core.Songs;
+using Xunit;
 
 namespace WordsLive.Core.Tests.Songs
 {
-	[TestFixture]
 	public class SongTests : SongTestsBase
 	{
-		[Test]
+		[Fact]
 		public void VerifyLoaded()
 		{
-			Assert.AreEqual(0, UndoStackSize);
-			Assert.AreEqual(0, RedoStackSize);
+			Assert.Equal(0, UndoStackSize);
+			Assert.Equal(0, RedoStackSize);
 
-			Assert.AreEqual("SimpleTitle", song.Title);
-			Assert.AreEqual("SimpleCategory", song.Category);
-			Assert.AreEqual("SimpleCopyright", song.Copyright);
-			Assert.AreEqual("English", song.Language);
-			Assert.AreEqual("SimpleLine", song.Text);
-			Assert.AreEqual("SimpleLine", song.TextWithoutChords);
-			Assert.AreEqual(1, song.Sources.Count);
-			Assert.AreEqual("SimpleSongbook", song.Sources.First().Songbook);
-			Assert.AreEqual(1, song.Parts.Count);
+			Assert.Equal("SimpleTitle", song.Title);
+			Assert.Equal("SimpleCategory", song.Category);
+			Assert.Equal("SimpleCopyright", song.Copyright);
+			Assert.Equal("English", song.Language);
+			Assert.Equal("SimpleLine", song.Text);
+			Assert.Equal("SimpleLine", song.TextWithoutChords);
+			Assert.Equal(1, song.Sources.Count);
+			Assert.Equal("SimpleSongbook", song.Sources.First().Songbook);
+			Assert.Equal(1, song.Parts.Count);
 
 			// parts
 			var part = song.Parts.First();
-			Assert.AreEqual("SimplePart", part.Name);
-			Assert.AreEqual("SimpleLine", part.Text);
-			Assert.AreEqual("SimpleLine", part.TextWithoutChords);
+			Assert.Equal("SimplePart", part.Name);
+			Assert.Equal("SimpleLine", part.Text);
+			Assert.Equal("SimpleLine", part.TextWithoutChords);
 
 			// slides
-			Assert.AreEqual(1, part.Slides.Count);
+			Assert.Equal(1, part.Slides.Count);
 			var slide = part.Slides.First();
-			Assert.AreEqual("SimpleLine", slide.Text);
-			Assert.AreEqual("SimpleLine", slide.TextWithoutChords);
-			Assert.AreEqual(30, slide.Size);
-			Assert.AreEqual(0, slide.BackgroundIndex);
+			Assert.Equal("SimpleLine", slide.Text);
+			Assert.Equal("SimpleLine", slide.TextWithoutChords);
+			Assert.Equal(30, slide.Size);
+			Assert.Equal(0, slide.BackgroundIndex);
 
 			// backgrounds
-			Assert.AreEqual(1, song.Backgrounds.Count);
+			Assert.Equal(1, song.Backgrounds.Count);
 			var bg = song.Backgrounds.First();
-			Assert.AreEqual(SongBackgroundType.Color, bg.Type);
-			Assert.AreEqual(System.Drawing.Color.Black.ToArgb(), bg.Color.ToArgb());
+			Assert.Equal(SongBackgroundType.Color, bg.Type);
+			Assert.Equal(System.Drawing.Color.Black.ToArgb(), bg.Color.ToArgb());
 		}
 
-		[Test]
+		[Fact]
 		public void LoadAsync()
 		{
 			var asyncSong = Song.LoadAsync(@"TestData\SimpleSong.ppl").WaitAndUnwrapException();
-			Assert.AreEqual("SimpleTitle", asyncSong.Title);
+			Assert.Equal("SimpleTitle", asyncSong.Title);
 		}
 
-		[Test]
+		[Fact]
 		public void AddRemovePart()
 		{
 			song.AddPart(new SongPart(song, "NewPart"));
-			Assert.AreEqual(2, song.Parts.Count);
-			Assert.AreEqual("NewPart", song.Parts[1].Name);
+			Assert.Equal(2, song.Parts.Count);
+			Assert.Equal("NewPart", song.Parts[1].Name);
 			song.RemovePart(song.Parts[1]);
-			Assert.AreEqual(1, song.Parts.Count);
-			Assert.AreEqual("SimplePart", song.Parts[0].Name);
+			Assert.Equal(1, song.Parts.Count);
+			Assert.Equal("SimplePart", song.Parts[0].Name);
 		}
 
-		[Test]
+		[Fact]
 		public void AddPartUndoRedo()
 		{
 			song.AddPart(new SongPart(song, "NewPart"));
-			Assert.AreEqual(1, UndoStackSize);
+			Assert.Equal(1, UndoStackSize);
 			Undo(); // undo add
-			Assert.AreEqual(1, song.Parts.Count);
-			Assert.AreEqual("SimplePart", song.Parts[0].Name);
+			Assert.Equal(1, song.Parts.Count);
+			Assert.Equal("SimplePart", song.Parts[0].Name);
 			Redo(); // redo add
-			Assert.AreEqual(2, song.Parts.Count);
-			Assert.AreEqual("NewPart", song.Parts[1].Name);
+			Assert.Equal(2, song.Parts.Count);
+			Assert.Equal("NewPart", song.Parts[1].Name);
 		}
 
-		[Test]
+		[Fact]
 		public void RemovePartUndoRedo()
 		{
 			song.AddPart(new SongPart(song, "NewPart"));
 			ClearUndoRedoStack();
 			song.RemovePart(song.Parts[0]);
-			Assert.AreEqual("NewPart", song.Parts.Single().Name);
-			Assert.AreEqual(1, UndoStackSize);
+			Assert.Equal("NewPart", song.Parts.Single().Name);
+			Assert.Equal(1, UndoStackSize);
 			Undo(); // undo remove
-			Assert.AreEqual(2, song.Parts.Count);
-			Assert.AreEqual("SimplePart", song.Parts[0].Name);
-			Assert.AreEqual("NewPart", song.Parts[1].Name);
+			Assert.Equal(2, song.Parts.Count);
+			Assert.Equal("SimplePart", song.Parts[0].Name);
+			Assert.Equal("NewPart", song.Parts[1].Name);
 			Redo(); // redo remove
-			Assert.AreEqual("NewPart", song.Parts.Single().Name);
+			Assert.Equal("NewPart", song.Parts.Single().Name);
 		}
 
-		[Test]
+		[Fact]
 		public void MovePartUndoRedo()
 		{
 			song.AddPart(new SongPart(song, "NewPart"));
 			ClearUndoRedoStack();
 			song.MovePart(song.Parts[1], song.Parts[0]); // move NewPart before SimplePart
-			Assert.AreEqual(2, song.Parts.Count);
-			Assert.AreEqual("NewPart", song.Parts[0].Name);
-			Assert.AreEqual("SimplePart", song.Parts[1].Name);
-			Assert.AreEqual(1, UndoStackSize);
+			Assert.Equal(2, song.Parts.Count);
+			Assert.Equal("NewPart", song.Parts[0].Name);
+			Assert.Equal("SimplePart", song.Parts[1].Name);
+			Assert.Equal(1, UndoStackSize);
 			Undo();
-			Assert.AreEqual("SimplePart", song.Parts[0].Name);
-			Assert.AreEqual("NewPart", song.Parts[1].Name);
+			Assert.Equal("SimplePart", song.Parts[0].Name);
+			Assert.Equal("NewPart", song.Parts[1].Name);
 			Redo();
-			Assert.AreEqual(2, song.Parts.Count);
-			Assert.AreEqual("NewPart", song.Parts[0].Name);
-			Assert.AreEqual("SimplePart", song.Parts[1].Name);
+			Assert.Equal(2, song.Parts.Count);
+			Assert.Equal("NewPart", song.Parts[0].Name);
+			Assert.Equal("SimplePart", song.Parts[1].Name);
 		}
 
-		[Test]
+		[Fact]
 		public void FindPartWithSlide()
 		{
 			var slide1 = new SongSlide(song);
 			var slide2 = new SongSlide(song);
 			song.AddPart(new SongPart(song, "NewPart1", new SongSlide[] { slide1 }));
 			song.AddPart(new SongPart(song, "NewPart2", new SongSlide[] { slide2 }));
-			Assert.AreEqual("NewPart2", song.FindPartWithSlide(slide2).Name);
+			Assert.Equal("NewPart2", song.FindPartWithSlide(slide2).Name);
 		}
 
-		[Test]
+		[Fact]
 		public void MoveSlide()
 		{
 			var part1 = song.Parts.Single();
@@ -150,16 +149,16 @@ namespace WordsLive.Core.Tests.Songs
 			ClearUndoRedoStack();
 
 			song.MoveSlide(slide0, part2);
-			Assert.AreEqual(1, part1.Slides.Count);
-			Assert.AreEqual(2, part2.Slides.Count);
-			Assert.AreSame(slide0, part2.Slides[1]);
-			Assert.AreEqual(1, UndoStackSize);
+			Assert.Equal(1, part1.Slides.Count);
+			Assert.Equal(2, part2.Slides.Count);
+			Assert.Same(slide0, part2.Slides[1]);
+			Assert.Equal(1, UndoStackSize);
 			Undo();
-			Assert.AreEqual(2, part1.Slides.Count);
-			Assert.AreEqual(1, part2.Slides.Count);
+			Assert.Equal(2, part1.Slides.Count);
+			Assert.Equal(1, part2.Slides.Count);
 		}
 
-		[Test]
+		[Fact]
 		public void MoveSlideAfter()
 		{
 			var part1 = song.Parts.Single();
@@ -171,61 +170,61 @@ namespace WordsLive.Core.Tests.Songs
 			ClearUndoRedoStack();
 
 			song.MoveSlideAfter(slide0, slide2);
-			Assert.AreEqual(1, part1.Slides.Count);
-			Assert.AreEqual(2, part2.Slides.Count);
-			Assert.AreSame(slide0, part2.Slides[1]);
-			Assert.AreEqual(1, UndoStackSize);
+			Assert.Equal(1, part1.Slides.Count);
+			Assert.Equal(2, part2.Slides.Count);
+			Assert.Same(slide0, part2.Slides[1]);
+			Assert.Equal(1, UndoStackSize);
 			Undo();
-			Assert.AreEqual(2, part1.Slides.Count);
-			Assert.AreEqual(1, part2.Slides.Count);
+			Assert.Equal(2, part1.Slides.Count);
+			Assert.Equal(1, part2.Slides.Count);
 		}
 
-		[Test]
+		[Fact]
 		public void AddBackground()
 		{
-			Assert.AreEqual(song.Backgrounds.Single(), new SongBackground(System.Drawing.Color.Black));
+			Assert.Equal(song.Backgrounds.Single(), new SongBackground(System.Drawing.Color.Black));
 			song.AddBackground(new SongBackground(System.Drawing.Color.Red));
-			Assert.AreEqual(2, song.Backgrounds.Count);
+			Assert.Equal(2, song.Backgrounds.Count);
 			song.AddBackground(new SongBackground(System.Drawing.Color.Black)); // black is already there
-			Assert.AreEqual(2, song.Backgrounds.Count);
-			Assert.AreEqual(2, UndoStackSize);
+			Assert.Equal(2, song.Backgrounds.Count);
+			Assert.Equal(2, UndoStackSize);
 			Undo();
 			Undo();
-			Assert.AreEqual(song.Backgrounds.Single(), new SongBackground(System.Drawing.Color.Black));
+			Assert.Equal(song.Backgrounds.Single(), new SongBackground(System.Drawing.Color.Black));
 		}
 
-		[Test]
+		[Fact]
 		public void CleanBackgrounds()
 		{
 			song.AddBackground(new SongBackground(System.Drawing.Color.Red));
 			ClearUndoRedoStack();
 
 			song.CleanBackgrounds();
-			Assert.AreEqual(song.Backgrounds.Single(), new SongBackground(System.Drawing.Color.Black));
-			Assert.AreEqual(1, UndoStackSize);
+			Assert.Equal(song.Backgrounds.Single(), new SongBackground(System.Drawing.Color.Black));
+			Assert.Equal(1, UndoStackSize);
 			Undo();
-			Assert.AreEqual(2, song.Backgrounds.Count);
+			Assert.Equal(2, song.Backgrounds.Count);
 			song.Parts[0].Slides[0].BackgroundIndex = 1;
 			song.CleanBackgrounds();
-			Assert.AreEqual(song.Backgrounds.Single(), new SongBackground(System.Drawing.Color.Red));
+			Assert.Equal(song.Backgrounds.Single(), new SongBackground(System.Drawing.Color.Red));
 		}
 
-		[Test]
+		[Fact]
 		public void CopyPartUndoRedo()
 		{
 			var part0 = song.Parts.Single();
 			var part1 = song.CopyPart(part0, "PartCopy", part0); // inserts the copy before part0
-			Assert.AreEqual(2, song.Parts.Count);
-			Assert.AreEqual("PartCopy", song.Parts[0].Name);
-			Assert.AreEqual("SimpleLine", song.Parts[0].Text);
-			Assert.AreEqual(1, UndoStackSize);
+			Assert.Equal(2, song.Parts.Count);
+			Assert.Equal("PartCopy", song.Parts[0].Name);
+			Assert.Equal("SimpleLine", song.Parts[0].Text);
+			Assert.Equal(1, UndoStackSize);
 			Undo();
-			Assert.AreEqual("SimplePart", song.Parts.Single().Name);
+			Assert.Equal("SimplePart", song.Parts.Single().Name);
 			Redo();
-			Assert.AreEqual(2, song.Parts.Count);
+			Assert.Equal(2, song.Parts.Count);
 		}
 
-		[Test]
+		[Fact]
 		public void CopySlideUndoRedo()
 		{
 			var part0 = song.Parts.Single();
@@ -235,17 +234,17 @@ namespace WordsLive.Core.Tests.Songs
 			ClearUndoRedoStack();
 
 			song.CopySlide(part0.Slides.Single(), part1);
-			Assert.AreEqual(2, part1.Slides.Count);
-			Assert.AreEqual("SimpleLine", part1.Slides[1].Text);
-			Assert.AreEqual(1, UndoStackSize);
+			Assert.Equal(2, part1.Slides.Count);
+			Assert.Equal("SimpleLine", part1.Slides[1].Text);
+			Assert.Equal(1, UndoStackSize);
 			Undo();
-			Assert.AreSame(slide, part1.Slides.Single());
+			Assert.Same(slide, part1.Slides.Single());
 			Redo();
-			Assert.AreEqual(2, part1.Slides.Count);
-			Assert.AreEqual(1, part0.Slides.Count);
+			Assert.Equal(2, part1.Slides.Count);
+			Assert.Equal(1, part0.Slides.Count);
 		}
 
-		[Test]
+		[Fact]
 		public void AddPartToOrderUndoRedo()
 		{
 			var part1 = new SongPart(song, "NewPart1", new SongSlide[] { new SongSlide(song) });
@@ -255,20 +254,20 @@ namespace WordsLive.Core.Tests.Songs
 			ClearUndoRedoStack();
 
 			song.AddPartToOrder(part1);
-			Assert.AreEqual(2, song.Order.Count);
-			Assert.AreEqual("NewPart1", song.Order[1].Part.Name);
+			Assert.Equal(2, song.Order.Count);
+			Assert.Equal("NewPart1", song.Order[1].Part.Name);
 			song.AddPartToOrder(part2, 0);
-			Assert.AreEqual(3, song.Order.Count);
-			Assert.AreEqual("NewPart2", song.Order[0].Part.Name);
-			Assert.AreEqual("NewPart1", song.Order[2].Part.Name);
-			Assert.AreEqual(2, UndoStackSize);
+			Assert.Equal(3, song.Order.Count);
+			Assert.Equal("NewPart2", song.Order[0].Part.Name);
+			Assert.Equal("NewPart1", song.Order[2].Part.Name);
+			Assert.Equal(2, UndoStackSize);
 			Undo();
-			Assert.AreEqual("NewPart1", song.Order[1].Part.Name);
+			Assert.Equal("NewPart1", song.Order[1].Part.Name);
 			Redo();
-			Assert.AreEqual(3, song.Order.Count);
+			Assert.Equal(3, song.Order.Count);
 		}
 
-		[Test]
+		[Fact]
 		public void MovePartInOrderUndoRedo()
 		{
 			var part1 = new SongPart(song, "NewPart1", new SongSlide[] { new SongSlide(song) });
@@ -281,18 +280,18 @@ namespace WordsLive.Core.Tests.Songs
 			ClearUndoRedoStack();
 
 			song.MovePartInOrder(ref2, 0); // move part2 to beginning
-			Assert.AreSame(part2, song.Order[0].Part);
-			Assert.AreSame(ref2, song.Order[0]);
-			Assert.AreSame(ref3, song.Order[3]);
-			Assert.AreEqual(1, UndoStackSize);
+			Assert.Same(part2, song.Order[0].Part);
+			Assert.Same(ref2, song.Order[0]);
+			Assert.Same(ref3, song.Order[3]);
+			Assert.Equal(1, UndoStackSize);
 			Undo();
-			Assert.AreSame(ref2, song.Order[2]);
-			Assert.AreSame(ref3, song.Order[3]);
+			Assert.Same(ref2, song.Order[2]);
+			Assert.Same(ref3, song.Order[3]);
 			Redo();
-			Assert.AreSame(ref2, song.Order[0]);
+			Assert.Same(ref2, song.Order[0]);
 		}
 
-		[Test]
+		[Fact]
 		public void RemovePartUndoRedo2()
 		{
 			var part1 = new SongPart(song, "NewPart1", new SongSlide[] { new SongSlide(song) });
@@ -300,20 +299,20 @@ namespace WordsLive.Core.Tests.Songs
 			var reference = song.AddPartToOrder(part1);
 			ClearUndoRedoStack();
 
-			Assert.AreSame(reference, song.Order[1]);
-			Assert.AreEqual(2, song.Order.Count);
+			Assert.Same(reference, song.Order[1]);
+			Assert.Equal(2, song.Order.Count);
 			song.RemovePart(part1);
-			Assert.AreEqual(1, song.Parts.Count);
-			Assert.AreEqual(1, song.Order.Count);
-			Assert.AreEqual(1, UndoStackSize);
+			Assert.Equal(1, song.Parts.Count);
+			Assert.Equal(1, song.Order.Count);
+			Assert.Equal(1, UndoStackSize);
 			Undo();
-			Assert.AreSame(reference, song.Order[1]);
-			Assert.AreEqual(2, song.Order.Count);
+			Assert.Same(reference, song.Order[1]);
+			Assert.Equal(2, song.Order.Count);
 			Redo();
-			Assert.AreEqual(1, song.Parts.Count);
+			Assert.Equal(1, song.Parts.Count);
 		}
 
-		[Test]
+		[Fact]
 		public void RemovePartFromOrder()
 		{
 			var part0 = song.Parts.Single();
@@ -322,11 +321,11 @@ namespace WordsLive.Core.Tests.Songs
 			var reference = song.AddPartToOrder(part1);
 			ClearUndoRedoStack();
 			song.RemovePartFromOrder(song.Order[0]);
-			Assert.AreEqual(1, song.Order.Count);
-			Assert.AreSame(reference, song.Order[0]);
+			Assert.Equal(1, song.Order.Count);
+			Assert.Same(reference, song.Order[0]);
 		}
 
-		[Test]
+		[Fact]
 		public void SetBackgroundUndoRedo()
 		{
 			var part1 = new SongPart(song, "NewPart1", new SongSlide[] { new SongSlide(song) });
@@ -334,19 +333,19 @@ namespace WordsLive.Core.Tests.Songs
 			part1.SetBackground(new SongBackground(System.Drawing.Color.Red));
 			ClearUndoRedoStack();
 
-			Assert.AreEqual(System.Drawing.Color.Black.ToArgb(), song.Parts[0].Slides.Single().Background.Color.ToArgb());
-			Assert.AreEqual(System.Drawing.Color.Red.ToArgb(), song.Parts[1].Slides.Single().Background.Color.ToArgb());
+			Assert.Equal(System.Drawing.Color.Black.ToArgb(), song.Parts[0].Slides.Single().Background.Color.ToArgb());
+			Assert.Equal(System.Drawing.Color.Red.ToArgb(), song.Parts[1].Slides.Single().Background.Color.ToArgb());
 			song.SetBackground(new SongBackground(System.Drawing.Color.Green));
-			Assert.AreEqual(System.Drawing.Color.Green.ToArgb(), song.Backgrounds.Single().Color.ToArgb());
-			Assert.AreEqual(1, UndoStackSize);
+			Assert.Equal(System.Drawing.Color.Green.ToArgb(), song.Backgrounds.Single().Color.ToArgb());
+			Assert.Equal(1, UndoStackSize);
 			Undo();
-			Assert.AreEqual(System.Drawing.Color.Black.ToArgb(), song.Parts[0].Slides.Single().Background.Color.ToArgb());
-			Assert.AreEqual(System.Drawing.Color.Red.ToArgb(), song.Parts[1].Slides.Single().Background.Color.ToArgb());
+			Assert.Equal(System.Drawing.Color.Black.ToArgb(), song.Parts[0].Slides.Single().Background.Color.ToArgb());
+			Assert.Equal(System.Drawing.Color.Red.ToArgb(), song.Parts[1].Slides.Single().Background.Color.ToArgb());
 			Redo();
-			Assert.AreEqual(System.Drawing.Color.Green.ToArgb(), song.Backgrounds.Single().Color.ToArgb());
+			Assert.Equal(System.Drawing.Color.Green.ToArgb(), song.Backgrounds.Single().Color.ToArgb());
 		}
 
-		[Test]
+		[Fact]
 		public void RemoveAllChordsUndoRedo()
 		{
 			var slide = song.Parts.Single().Slides.Single();
@@ -354,15 +353,15 @@ namespace WordsLive.Core.Tests.Songs
 			ClearUndoRedoStack();
 
 			Core.Songs.Chords.Chords.RemoveAll(song);
-			Assert.AreEqual(slide.Text, "TestTest2");
-			Assert.AreEqual(1, UndoStackSize);
+			Assert.Equal(slide.Text, "TestTest2");
+			Assert.Equal(1, UndoStackSize);
 			Undo();
-			Assert.AreEqual(slide.Text, "Test[Em]Test2[G]");
+			Assert.Equal(slide.Text, "Test[Em]Test2[G]");
 			Redo();
-			Assert.AreEqual(slide.Text, "TestTest2");
+			Assert.Equal(slide.Text, "TestTest2");
 		}
 
-		[Test]
+		[Fact]
 		public void TransposeChordsUndoRedo()
 		{
 			var slide = song.Parts.Single().Slides.Single();
@@ -370,41 +369,41 @@ namespace WordsLive.Core.Tests.Songs
 			ClearUndoRedoStack();
 
 			Core.Songs.Chords.Chords.Transpose(song, new Core.Songs.Chords.Key("Em"), 5);
-			Assert.AreEqual(slide.Text, "Test[Am]Test2[C]");
-			Assert.AreEqual(1, UndoStackSize);
+			Assert.Equal(slide.Text, "Test[Am]Test2[C]");
+			Assert.Equal(1, UndoStackSize);
 			Undo();
-			Assert.AreEqual(slide.Text, "Test[Em]Test2[G]");
+			Assert.Equal(slide.Text, "Test[Em]Test2[G]");
 			Redo();
-			Assert.AreEqual(slide.Text, "Test[Am]Test2[C]");
+			Assert.Equal(slide.Text, "Test[Am]Test2[C]");
 		}
 
-		[Test]
+		[Fact]
 		public void CreateSongData()
 		{
 			song.Title = "Komma, Test\nNeue   Zeile";
 			var data = Core.Songs.Storage.SongData.Create(song);
-			Assert.AreEqual("Komma Test Neue Zeile", data.SearchTitle);
+			Assert.Equal("Komma Test Neue Zeile", data.SearchTitle);
 		}
 
-		[Test]
+		[Fact]
 		public void GCCollect()
 		{
 			song.Title = "Test";
 			WeakReference weak = new WeakReference(song);
 			song = null;
 			GC.Collect();
-			Assert.IsFalse(weak.IsAlive);
+			Assert.False(weak.IsAlive);
 		}
 
-		[Test]
+		[Fact]
 		public void CheckSingleFontSize()
 		{
-			Assert.IsTrue(song.CheckSingleFontSize());
-			Assert.AreEqual(30, song.Formatting.MainText.Size);
-			Assert.AreEqual(30, song.Parts[0].Slides[0].Size);
+			Assert.True(song.CheckSingleFontSize());
+			Assert.Equal(30, song.Formatting.MainText.Size);
+			Assert.Equal(30, song.Parts[0].Slides[0].Size);
 		}
 
-		[Test]
+		[Fact]
 		public void SingleFontSize1()
 		{
 			var s1 = song.Parts[0].Slides[0];
@@ -413,50 +412,50 @@ namespace WordsLive.Core.Tests.Songs
 			song.Formatting = formatting; // applies the formatting -> changes every slide's size
 			var s2 = song.Parts[0].AddSlide();
 			ClearUndoRedoStack();
-			Assert.AreEqual(30, s1.Size);
-			Assert.AreEqual(30, s2.Size);
-			Assert.AreEqual(30, song.Formatting.MainText.Size);
+			Assert.Equal(30, s1.Size);
+			Assert.Equal(30, s2.Size);
+			Assert.Equal(30, song.Formatting.MainText.Size);
 			s1.Size = 32;
-			Assert.AreEqual(32, s1.Size);
-			Assert.AreEqual(32, s2.Size);
-			Assert.AreEqual(32, song.Formatting.MainText.Size);
-			Assert.AreEqual(1, UndoStackSize);
+			Assert.Equal(32, s1.Size);
+			Assert.Equal(32, s2.Size);
+			Assert.Equal(32, song.Formatting.MainText.Size);
+			Assert.Equal(1, UndoStackSize);
 			Undo();
-			Assert.AreEqual(30, s1.Size);
-			Assert.AreEqual(30, s2.Size);
+			Assert.Equal(30, s1.Size);
+			Assert.Equal(30, s2.Size);
 			Redo();
-			Assert.AreEqual(32, s1.Size);
-			Assert.AreEqual(32, s2.Size);
-			Assert.AreEqual(32, song.Formatting.MainText.Size);
-			Assert.AreEqual(1, UndoStackSize);
+			Assert.Equal(32, s1.Size);
+			Assert.Equal(32, s2.Size);
+			Assert.Equal(32, song.Formatting.MainText.Size);
+			Assert.Equal(1, UndoStackSize);
 		}
 
-		[Test]
+		[Fact]
 		public void SingleFontSize2()
 		{
-			Assert.IsFalse(song.Formatting.SingleFontSize);
+			Assert.False(song.Formatting.SingleFontSize);
 			var s1 = song.Parts[0].Slides[0];
 			var s2 = song.Parts[0].AddSlide();
 			s2.Size = 32;
-			Assert.AreEqual(2, UndoStackSize);
-			Assert.IsFalse(song.CheckSingleFontSize());
+			Assert.Equal(2, UndoStackSize);
+			Assert.False(song.CheckSingleFontSize());
 			ClearUndoRedoStack();
 			var formatting = (SongFormatting)song.Formatting.Clone();
 			formatting.SingleFontSize = true;
 			song.Formatting = formatting; // applies the formatting -> changes every slide's size
-			Assert.IsTrue(song.CheckSingleFontSize());
-			Assert.AreEqual(32, s1.Size);
-			Assert.AreEqual(32, s2.Size);
-			Assert.AreEqual(1, UndoStackSize);
+			Assert.True(song.CheckSingleFontSize());
+			Assert.Equal(32, s1.Size);
+			Assert.Equal(32, s2.Size);
+			Assert.Equal(1, UndoStackSize);
 			Undo();
-			Assert.AreEqual(30, s1.Size);
-			Assert.AreEqual(32, s2.Size);
-			Assert.IsFalse(song.Formatting.SingleFontSize);
+			Assert.Equal(30, s1.Size);
+			Assert.Equal(32, s2.Size);
+			Assert.False(song.Formatting.SingleFontSize);
 			Redo();
-			Assert.AreEqual(32, s1.Size);
-			Assert.AreEqual(32, s2.Size);
-			Assert.IsTrue(song.Formatting.SingleFontSize);
-			Assert.AreEqual(1, UndoStackSize);
+			Assert.Equal(32, s1.Size);
+			Assert.Equal(32, s2.Size);
+			Assert.True(song.Formatting.SingleFontSize);
+			Assert.Equal(1, UndoStackSize);
 		}
 	}
 }

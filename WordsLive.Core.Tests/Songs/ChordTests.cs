@@ -17,85 +17,81 @@
  */
 
 using System;
-using NUnit.Framework;
 using WordsLive.Core.Songs.Chords;
+using Xunit;
+using Xunit.Extensions;
 
 namespace WordsLive.Core.Tests.Songs
 {
-	[TestFixture]
 	public class ChordTests
 	{
-		[TearDown]
-		public void Reset()
-		{
-			Chords.LongChordNames = false;
-			Chords.GermanNotation = false;
-		}
-
-		[Test]
-		[TestCase("C", "C")]
-		[TestCase("E", "E")]
-		[TestCase("F#", "F#")]
-		[TestCase("Fis", "F#")]
-		[TestCase("Gb", "Gb")]
-		[TestCase("G#", "Ab")]
-		[TestCase("H", "B")]
-		[TestCase("B", "B")]
-		[TestCase("Bb", "Bb")]
+		[Theory]
+		[InlineData("C", "C")]
+		[InlineData("E", "E")]
+		[InlineData("F#", "F#")]
+		[InlineData("Fis", "F#")]
+		[InlineData("Gb", "Gb")]
+		[InlineData("G#", "Ab")]
+		[InlineData("H", "B")]
+		[InlineData("B", "B")]
+		[InlineData("Bb", "Bb")]
 		public void KeyTest(string key, string expectedNote)
 		{
 			Chords.GermanNotation = false;
 			Chords.LongChordNames = false;
 			var k = new Key(key);
-			Assert.IsTrue(k.IsMajor);
-			Assert.AreEqual(expectedNote, k.ToString());
+			Assert.True(k.IsMajor);
+			Assert.Equal(expectedNote, k.ToString());
 		}
 
-		[Test]
-		[TestCase("C", "C")]
-		[TestCase("E", "E")]
-		[TestCase("F#", "F#")]
-		[TestCase("Fis", "F#")]
-		[TestCase("Gb", "Gb")]
-		[TestCase("G#", "Ab")]
-		[TestCase("H", "H")]
-		[TestCase("B", "B")]
-		[TestCase("Bb", "B")]
+		[Theory]
+		[InlineData("C", "C")]
+		[InlineData("E", "E")]
+		[InlineData("F#", "F#")]
+		[InlineData("Fis", "F#")]
+		[InlineData("Gb", "Gb")]
+		[InlineData("G#", "Ab")]
+		[InlineData("H", "H")]
+		[InlineData("B", "B")]
+		[InlineData("Bb", "B")]
 		public void KeyTestGerman(string key, string expectedNote)
 		{
 			Chords.GermanNotation = true;
 			Chords.LongChordNames = false;
 			var k = new Key(key);
-			Assert.IsTrue(k.IsMajor);
-			Assert.AreEqual(expectedNote, k.ToString());
+			Assert.True(k.IsMajor);
+			Assert.Equal(expectedNote, k.ToString());
+			Chords.GermanNotation = false;
 		}
 
-		[Test]
-		[ExpectedException(typeof(InvalidOperationException))]
+		[Fact]
 		public void KeyTestNonGermanLongNames()
 		{
 			Chords.GermanNotation = false;
 			Chords.LongChordNames = true;
-			new Key("C").ToString();
+			Assert.Throws<InvalidOperationException>(() => new Key("C").ToString());
+			Chords.LongChordNames = false;
 		}
 
-		[Test]
-		[TestCase("C", "C")]
-		[TestCase("E", "E")]
-		[TestCase("F#", "Fis")]
-		[TestCase("Fis", "Fis")]
-		[TestCase("Gb", "Ges")]
-		[TestCase("G#", "As")]
-		[TestCase("H", "H")]
-		[TestCase("B", "B")]
-		[TestCase("Bb", "B")]
+		[Theory]
+		[InlineData("C", "C")]
+		[InlineData("E", "E")]
+		[InlineData("F#", "Fis")]
+		[InlineData("Fis", "Fis")]
+		[InlineData("Gb", "Ges")]
+		[InlineData("G#", "As")]
+		[InlineData("H", "H")]
+		[InlineData("B", "B")]
+		[InlineData("Bb", "B")]
 		public void KeyTestGermanLongNames(string key, string expectedNote)
 		{
 			Chords.GermanNotation = true;
 			Chords.LongChordNames = true;
 			var k = new Key(key);
-			Assert.IsTrue(k.IsMajor);
-			Assert.AreEqual(expectedNote, k.ToString());
+			Assert.True(k.IsMajor);
+			Assert.Equal(expectedNote, k.ToString());
+			Chords.LongChordNames = false;
+			Chords.GermanNotation = false;
 		}
 	}
 }

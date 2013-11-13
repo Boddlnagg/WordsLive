@@ -18,67 +18,67 @@
 
 using System;
 using System.IO;
-using NUnit.Framework;
+using Xunit;
+using Xunit.Extensions;
 
 namespace WordsLive.Core.Tests
 {
-	[TestFixture]
 	public class ExtensionsTests
 	{
-		[Test]
+		[Fact]
 		public void UriGetExtension()
 		{
-			Assert.AreEqual(".xml", new Uri("C:\\Foo\\Bar\\Test.xml").GetExtension());
+			Assert.Equal(".xml", new Uri("C:\\Foo\\Bar\\Test.xml").GetExtension());
 		}
 
-		[Test]
+		[Fact]
 		public void UriGetExtensionEmpty()
 		{
-			Assert.AreEqual("", new Uri("C:\\Foo\\Bar\\Test").GetExtension());
+			Assert.Equal("", new Uri("C:\\Foo\\Bar\\Test").GetExtension());
 		}
 
-		[Test]
+		[Fact]
 		public void UriGetExtensionHttp()
 		{
-			Assert.AreEqual(".zip", new Uri("http://example.com/Bar/Test.zip").GetExtension());
+			Assert.Equal(".zip", new Uri("http://example.com/Bar/Test.zip").GetExtension());
 		}
 
-		[Test]
+		[Fact]
 		public void UriGetExtensionHttpEmpty()
 		{
-			Assert.AreEqual("", new Uri("http://example.com/Bar/Test").GetExtension());
+			Assert.Equal("", new Uri("http://example.com/Bar/Test").GetExtension());
 		}
 
-		[Test]
-		[TestCase("C:\\Foo\\Bar\\Test.xml")]
-		[TestCase("C:\\Foo\\Bar\\Test.")]
-		[TestCase("C:\\Foo\\Bar\\")]
-		[TestCase("C:\\Foo\\Bar\\Test.xml.zip")]
-		[TestCase("C:\\Foo Bar\\Test.xml.zip")]
-		[TestCase("C:\\Foo Bar\\Test.XML")]
+		[Theory]
+		[InlineData("C:\\Foo\\Bar\\Test.xml")]
+		[InlineData("C:\\Foo\\Bar\\Test")]
+		[InlineData("C:\\Foo\\Bar\\")]
+		[InlineData("C:\\Foo\\Bar\\Test.xml.zip")]
+		[InlineData("C:\\Foo Bar\\Test.xml.zip")]
+		[InlineData("C:\\Foo Bar\\Test.XML")]
 		public void UriGetExtensionMatchesPath(string path)
 		{
-			Assert.AreEqual(Path.GetExtension(path), new Uri(path).GetExtension());
+			Assert.Equal(Path.GetExtension(path), new Uri(path).GetExtension());
 		}
 
-		[Test]
-		[TestCase("C:\\Foo\\Bar\\Test.xml")]
-		[TestCase("C:\\Foo\\Bar\\Test.")]
-		[TestCase("C:\\Foo Bar\\")]
-		[TestCase("C:\\Foo\\Bar\\Test.xml.zip")]
+		[Theory]
+		[InlineData("C:\\Foo\\Bar\\Test.xml")]
+		[InlineData("C:\\Foo\\Bar\\Test")]
+		[InlineData("C:\\Foo Bar\\")]
+		[InlineData("C:\\Foo\\Bar\\Test.xml.zip")]
 		public void FormatLocalMatchesFileInfo(string path)
 		{
-			Assert.AreEqual(new FileInfo(path).FullName, new Uri(path).FormatLocal());
+			Assert.Equal(new FileInfo(path).FullName, new Uri(path).FormatLocal());
 		}
 
-		[Test]
-		[TestCase("http://example.com/Bar/")]
-		[TestCase("http://www.example.com/Bar/Test")]
-		[TestCase("http://localhost/Bar/Test.zip.xml")]
-		[TestCase("http://localhost:1234/Bar/Test.xml")]
+		[Theory]
+		[InlineData("http://example.com/Bar/")]
+		[InlineData("http://www.example.com/Bar/Test")]
+		[InlineData("http://localhost/Bar/Test.zip.xml")]
+		[InlineData("http://localhost:1234/Bar/Test.xml")]
 		public void FormatLocalHttp(string path)
 		{
-			Assert.AreEqual(path, new Uri(path).FormatLocal());
+			Assert.Equal(path, new Uri(path).FormatLocal());
 		}
 	}
 }

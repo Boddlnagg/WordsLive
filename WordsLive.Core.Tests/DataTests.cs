@@ -18,14 +18,13 @@
 
 using System;
 using System.IO;
-using NUnit.Framework;
+using Xunit;
 
 namespace WordsLive.Core.Tests
 {
-	[TestFixture]
 	public class DataTests
 	{
-		[Test]
+		[Fact]
 		public void TempDirectory()
 		{
 			var dir = new DataManager.TemporaryDirectory();
@@ -34,7 +33,7 @@ namespace WordsLive.Core.Tests
 			stream.Close();
 			dir = null;
 			GC.Collect();
-			Assert.IsFalse(info.Exists);
+			Assert.False(info.Exists);
 		}
 	}
 }

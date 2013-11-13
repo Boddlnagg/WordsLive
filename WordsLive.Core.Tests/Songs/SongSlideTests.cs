@@ -18,12 +18,11 @@
 
 using System;
 using System.Linq;
-using NUnit.Framework;
 using WordsLive.Core.Songs;
+using Xunit;
 
 namespace WordsLive.Core.Tests.Songs
 {
-	[TestFixture]
 	class SongSlideTests : SongTestsBase
 	{
 		protected SongPart part;
@@ -36,45 +35,45 @@ namespace WordsLive.Core.Tests.Songs
 			slide = part.Slides.Single();
 		}
 
-		[Test]
+		[Fact]
 		public void CopySlide()
 		{
 			var copy = slide.Copy();
-			Assert.AreEqual("SimpleLine", copy.Text);
-			Assert.AreEqual(30, copy.Size);
+			Assert.Equal("SimpleLine", copy.Text);
+			Assert.Equal(30, copy.Size);
 			copy.Size = 20;
-			Assert.AreEqual(30, slide.Size);
+			Assert.Equal(30, slide.Size);
 		}
 
-		[Test]
+		[Fact]
 		public void ChangeFontSizeUndoRedo()
 		{
-			Assert.AreEqual(30, slide.Size);
-			Assert.AreEqual(30, song.Formatting.MainText.Size);
+			Assert.Equal(30, slide.Size);
+			Assert.Equal(30, song.Formatting.MainText.Size);
 			slide.Size = 20;
-			Assert.AreEqual(20, slide.Size);
-			Assert.AreEqual(20, song.Formatting.MainText.Size);
-			Assert.AreEqual(1, UndoStackSize);
+			Assert.Equal(20, slide.Size);
+			Assert.Equal(20, song.Formatting.MainText.Size);
+			Assert.Equal(1, UndoStackSize);
 			Undo();
-			Assert.AreEqual(30, slide.Size);
-			Assert.AreEqual(30, song.Formatting.MainText.Size);
+			Assert.Equal(30, slide.Size);
+			Assert.Equal(30, song.Formatting.MainText.Size);
 			Redo();
-			Assert.AreEqual(20, slide.Size);
-			Assert.AreEqual(20, song.Formatting.MainText.Size);
+			Assert.Equal(20, slide.Size);
+			Assert.Equal(20, song.Formatting.MainText.Size);
 		}
 
-		[Test]
+		[Fact]
 		public void ChangeTextUndoRedo()
 		{
 			slide.Text = "NewText";
-			Assert.AreEqual(1, UndoStackSize);
+			Assert.Equal(1, UndoStackSize);
 			Undo();
-			Assert.AreEqual(slide.Text, "SimpleLine");
+			Assert.Equal(slide.Text, "SimpleLine");
 			Redo();
-			Assert.AreEqual(slide.Text, "NewText");
+			Assert.Equal(slide.Text, "NewText");
 		}
 
-		[Test]
+		[Fact]
 		public void ChangeTextNotify()
 		{
 			bool notified = false;
@@ -85,12 +84,12 @@ namespace WordsLive.Core.Tests.Songs
 					notified = true;
 			};
 
-			Assert.IsFalse(notified);
+			Assert.False(notified);
 			slide.Text = "NewText";
-			Assert.IsTrue(notified);
+			Assert.True(notified);
 		}
 
-		[Test]
+		[Fact]
 		public void ChangeTextWithChordsNotify()
 		{
 			bool notified = false;
@@ -101,17 +100,17 @@ namespace WordsLive.Core.Tests.Songs
 					notified = true;
 			};
 
-			Assert.IsFalse(notified);
+			Assert.False(notified);
 			slide.Text = "NewText";
-			Assert.IsFalse(notified);
-			Assert.IsFalse(slide.HasChords);
+			Assert.False(notified);
+			Assert.False(slide.HasChords);
 			slide.Text = "New[C]Text";
-			Assert.IsTrue(notified);
-			Assert.IsTrue(slide.HasChords);
-			Assert.AreEqual("NewText", slide.TextWithoutChords);
+			Assert.True(notified);
+			Assert.True(slide.HasChords);
+			Assert.Equal("NewText", slide.TextWithoutChords);
 		}
 
-		[Test]
+		[Fact]
 		public void ChangeTextMerge()
 		{
 			slide.Text = "A";
@@ -119,23 +118,23 @@ namespace WordsLive.Core.Tests.Songs
 			slide.Text = "AB";
 			slide.Text = "ABC";
 			slide.Text = "ABCD"; // the last two should be merged with the change above
-			Assert.AreEqual(3, UndoStackSize);
+			Assert.Equal(3, UndoStackSize);
 			Undo();
-			Assert.AreEqual("A", slide.Text);
+			Assert.Equal("A", slide.Text);
 		}
 
-		[Test]
+		[Fact]
 		public void SetBackgroundUndoRedo()
 		{
-			Assert.AreEqual(System.Drawing.Color.Black.ToArgb(), slide.Background.Color.ToArgb());
+			Assert.Equal(System.Drawing.Color.Black.ToArgb(), slide.Background.Color.ToArgb());
 			var newBg = new SongBackground(System.Drawing.Color.Red);
 			slide.SetBackground(newBg);
-			Assert.AreEqual(System.Drawing.Color.Red.ToArgb(), slide.Background.Color.ToArgb());
-			Assert.AreEqual(1, UndoStackSize);
+			Assert.Equal(System.Drawing.Color.Red.ToArgb(), slide.Background.Color.ToArgb());
+			Assert.Equal(1, UndoStackSize);
 			Undo();
-			Assert.AreEqual(System.Drawing.Color.Black.ToArgb(), slide.Background.Color.ToArgb());
+			Assert.Equal(System.Drawing.Color.Black.ToArgb(), slide.Background.Color.ToArgb());
 			Redo();
-			Assert.AreEqual(System.Drawing.Color.Red.ToArgb(), slide.Background.Color.ToArgb());
+			Assert.Equal(System.Drawing.Color.Red.ToArgb(), slide.Background.Color.ToArgb());
 		}
 	}
 }

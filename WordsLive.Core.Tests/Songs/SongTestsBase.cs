@@ -19,7 +19,6 @@
 using System;
 using System.IO;
 using System.Linq;
-using NUnit.Framework;
 using WordsLive.Core.Songs;
 
 namespace WordsLive.Core.Tests.Songs
@@ -27,6 +26,18 @@ namespace WordsLive.Core.Tests.Songs
 	public abstract class SongTestsBase
 	{
 		protected Song song;
+
+		public SongTestsBase()
+		{
+			// called before each test
+			Init();
+		}
+
+		public virtual void Init()
+		{
+			song = new Song(@"TestData\SimpleSong.ppl");
+			song.IsUndoEnabled = true;
+		}
 
 		protected void ClearUndoRedoStack()
 		{
@@ -57,13 +68,6 @@ namespace WordsLive.Core.Tests.Songs
 			{
 				return song.UndoManager.Root.RedoStack.Count();
 			}
-		}
-
-		[SetUp]
-		public virtual void Init()
-		{
-			song = new Song(@"TestData\SimpleSong.ppl");
-			song.IsUndoEnabled = true;
 		}
 	}
 }
