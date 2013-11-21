@@ -137,7 +137,7 @@
     <Compile Include="MediaManager.cs" />
     <Compile Include="MediaTypeHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="Resources\jquery.js" />
+    <EmbeddedResource Include="Resources\thirdparty\jquery.js" />
     <Compile Include="ShutdownAttribute.cs" />
     <Compile Include="Songs\Chords\Chords.cs" />
     <Compile Include="Songs\Chords\ChordSymbol.cs" />
@@ -180,13 +180,13 @@
     <EmbeddedResource Include="Resources\SongPresentation.js" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Resources\pdf.js" />
+    <EmbeddedResource Include="Resources\thirdparty\pdf.js" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Resources\jquery.mousewheel.js" />
+    <EmbeddedResource Include="Resources\thirdparty\jquery.mousewheel.js" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Resources\pdf.worker.js" />
+    <EmbeddedResource Include="Resources\thirdparty\pdf.worker.js" />
   </ItemGroup>
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.10\tools\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.10\tools\Microsoft.Bcl.Build.targets')" />
