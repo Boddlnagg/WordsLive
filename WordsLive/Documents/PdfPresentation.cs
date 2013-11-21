@@ -49,7 +49,7 @@ namespace WordsLive.Documents
 				IsLoaded = true;
 				OnDocumentLoaded();
 			});
-			//presentation.Control.Web.ConsoleMessage += (sender, args) => MessageBox.Show(args.Message);
+			//this.Control.Web.ConsoleMessage += (sender, args) => System.Windows.MessageBox.Show(args.Message);
 			this.Control.Web.LoadURL(new Uri("asset://WordsLive/pdf.html"));
 		}
 

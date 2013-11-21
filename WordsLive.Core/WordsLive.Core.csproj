@@ -185,6 +185,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Resources\jquery.mousewheel.js" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\pdf.worker.js" />
+  </ItemGroup>
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.10\tools\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.10\tools\Microsoft.Bcl.Build.targets')" />
   <Target Name="EnsureBclBuildImported" BeforeTargets="BeforeBuild" Condition="'$(BclBuildImported)' == ''">
