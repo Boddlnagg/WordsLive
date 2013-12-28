@@ -320,15 +320,30 @@ namespace WordsLive
 			{
 				Properties.Settings.Default.LastMediaDirectory = Path.GetDirectoryName(dlg.FileNames[0]);
 
-				if (dlg.FileNames.Count() > 1)
+				MediaOrderItem inserted = null;
+
+				var selectedMedia = OrderListBox.SelectedItem as MediaOrderItem;
+				int insertionIndex;
+				if (selectedMedia != null)
 				{
-					foreach (var m in MediaManager.LoadMultipleMediaMetadata(dlg.FileNames.Select(f => new Uri(f))))
-						orderList.Add(m);
+					insertionIndex = orderList.IndexOf(selectedMedia) + 1;
 				}
 				else
 				{
-					orderList.Add(MediaManager.LoadMediaMetadata(new Uri(dlg.FileName), null));
+					insertionIndex = orderList.Count;
 				}
+
+				if (dlg.FileNames.Count() > 1)
+				{
+					foreach (var m in MediaManager.LoadMultipleMediaMetadata(dlg.FileNames.Select(f => new Uri(f))))
+						inserted = orderList.Insert(insertionIndex++, m);
+				}
+				else
+				{
+					inserted = orderList.Insert(insertionIndex, MediaManager.LoadMediaMetadata(new Uri(dlg.FileName), null));
+				}
+
+				OrderListBox.SelectedItem = inserted;
 
 				portfolioModified = true;
 			}
@@ -448,15 +463,18 @@ namespace WordsLive
 		{
 			var media = MediaManager.LoadMediaMetadata(uri, null);
 			var selectedMedia = OrderListBox.SelectedItem as MediaOrderItem;
+			MediaOrderItem inserted;
 			if (selectedMedia != null)
 			{
 				int index = orderList.IndexOf(selectedMedia);
-				orderList.Insert(index + 1, media);
+				inserted = orderList.Insert(index + 1, media);
 			}
 			else
 			{
-				orderList.Add(media);
+				inserted = orderList.Add(media);
 			}
+
+			OrderListBox.SelectedItem = inserted;
 		}
 
 		private void OnCommandCanExecute(object sender, CanExecuteRoutedEventArgs e)

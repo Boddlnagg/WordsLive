@@ -78,14 +78,18 @@ namespace WordsLive.MediaOrderList
 				ActiveItemChanged(this, EventArgs.Empty);
 		}
 
-		public void Add(Media media)
+		public MediaOrderItem Add(Media media)
 		{
-			this.Add(CreateItem(media));
+			var item = CreateItem(media);
+			this.Add(item);
+			return item;
 		}
 
-		public void Insert(int index, Media media)
+		public MediaOrderItem Insert(int index, Media media)
 		{
-			this.Insert(index, CreateItem(media));
+			var item = CreateItem(media);
+			this.Insert(index, item);
+			return item;
 		}
 
 		public MediaOrderItem Move(IEnumerable<MediaOrderItem> items, int delta)
