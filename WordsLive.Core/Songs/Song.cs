@@ -581,6 +581,7 @@ namespace WordsLive.Core.Songs
 		{
 			Write(uri, new PowerpraiseSongWriter());
 			this.Uri = uri;
+			this.uriResolver = SongUriResolver.Default;
 			OnPropertyChanged("Uri");
 
 			IsModified = false;
