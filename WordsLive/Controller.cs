@@ -397,6 +397,9 @@ namespace WordsLive
 			{
 				if (win is SongListWindow)
 				{
+					if (win.WindowState == WindowState.Minimized)
+						win.WindowState = WindowState.Normal;
+
 					(win as SongListWindow).FocusSearch();
 					opened = true;
 					break;
@@ -430,6 +433,9 @@ namespace WordsLive
 			{
 				if (win is EditorWindow)
 				{
+					if (win.WindowState == WindowState.Minimized)
+						win.WindowState = WindowState.Normal;
+
 					win.Focus();
 					return win as EditorWindow;
 				}
@@ -444,8 +450,12 @@ namespace WordsLive
 
 		public static void FocusMainWindow()
 		{
-			instance.window.Activate();
-			instance.window.Focus();
+			Window win = instance.window;
+			if (win.WindowState == WindowState.Minimized)
+				win.WindowState = WindowState.Normal;
+
+			win.Activate();
+			win.Focus();
 		}
 
 		public static void ReloadActiveMedia()
