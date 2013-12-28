@@ -1051,9 +1051,17 @@ namespace WordsLive
 				this.previewBorder.Width = Controller.PresentationManager.Area.WindowSize.Width;
 				this.previewBorder.Height = Controller.PresentationManager.Area.WindowSize.Height;
 
-				if (!String.IsNullOrEmpty(App.StartupPortfolio))
+				if (!String.IsNullOrEmpty(App.StartupFile))
 				{
-					OpenPortfolio(App.StartupPortfolio);
+					if (App.StartupFile.EndsWith(".ppp"))
+					{
+						OpenPortfolio(App.StartupFile);
+					}
+					else
+					{
+						var editor = Controller.ShowEditorWindow();
+						editor.LoadOrImport(new Uri(App.StartupFile));
+					}						
 				}
 			}));
 		}
