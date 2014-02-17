@@ -565,6 +565,15 @@ namespace WordsLive.Resources {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Change background for selected element ähnelt.
+        /// </summary>
+        public static string eMenuChangeBackground {
+            get {
+                return ResourceManager.GetString("eMenuChangeBackground", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Close song ähnelt.
         /// </summary>
         public static string eMenuCloseSong {
@@ -840,15 +849,6 @@ namespace WordsLive.Resources {
         public static string eNewSongTitle {
             get {
                 return ResourceManager.GetString("eNewSongTitle", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Change background for selected element ähnelt.
-        /// </summary>
-        public static string eToolbarChangeBackground {
-            get {
-                return ResourceManager.GetString("eToolbarChangeBackground", resourceCulture);
             }
         }
         

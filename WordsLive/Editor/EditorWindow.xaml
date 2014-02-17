@@ -132,13 +132,18 @@
 						<Image Width="24" Source="/WordsLive;component/Artwork/Redo.png" />
 					</MenuItem.Icon>
 				</MenuItem>
-				<MenuItem Header="{x:Static resx:Resource.eMenuSplitTextAtCursor}" Command="{x:Static local:CustomCommands.Split}"/>
-				<MenuItem Header="{Binding Converter={StaticResource AppendEllipsisConverter}, ConverterParameter={x:Static resx:Resource.eMenuEditChords}}" Command="{x:Static local:CustomCommands.EditChords}"/>
+				<MenuItem Header="{Binding Converter={StaticResource AppendEllipsisConverter}, ConverterParameter={x:Static resx:Resource.eMenuChangeBackground}}" Command="{x:Static local:CustomCommands.ChooseBackground}">
+					<MenuItem.Icon>
+						<Image Width="24" Source="/WordsLive;component/Artwork/ChooseBackground.png" />
+					</MenuItem.Icon>
+				</MenuItem>
 				<MenuItem Header="{Binding Converter={StaticResource AppendEllipsisConverter}, ConverterParameter={x:Static resx:Resource.eMenuFormatSong}}" Command="{x:Static local:CustomCommands.SongSettings}">
 					<MenuItem.Icon>
 						<Image Width="24" Source="/WordsLive;component/Artwork/Formatting.png" />
 					</MenuItem.Icon>
 				</MenuItem>
+				<MenuItem Header="{x:Static resx:Resource.eMenuSplitTextAtCursor}" Command="{x:Static local:CustomCommands.Split}"/>
+				<MenuItem Header="{Binding Converter={StaticResource AppendEllipsisConverter}, ConverterParameter={x:Static resx:Resource.eMenuEditChords}}" Command="{x:Static local:CustomCommands.EditChords}"/>
 			</MenuItem>
 			<MenuItem Header="{x:Static resx:Resource.veMenuWindow}">
 				<MenuItem Header="{x:Static resx:Resource.veMenuShowSonglist}" Command="{x:Static local:CustomCommands.ShowSonglist}">
@@ -199,7 +204,7 @@
 					Source="/WordsLive;component/Artwork/Redo.png" />
 			</Button>
 			<Separator/>
-			<Button Command="{x:Static local:CustomCommands.ChooseBackground}" Style="{StaticResource markDisabledButton}" ToolTip="{Binding Converter={StaticResource RemoveAccessKeyConverter}, ConverterParameter={x:Static resx:Resource.eToolbarChangeBackground}}">
+			<Button Command="{x:Static local:CustomCommands.ChooseBackground}" Style="{StaticResource markDisabledButton}" ToolTip="{Binding Converter={StaticResource RemoveAccessKeyConverter}, ConverterParameter={x:Static resx:Resource.eMenuChangeBackground}}">
 				<Image
 					Width="32"
 					Height="32"

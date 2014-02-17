@@ -465,7 +465,7 @@
   <data name="eNewSongTitle" xml:space="preserve">
     <value>Neues Lied</value>
   </data>
-  <data name="eToolbarChangeBackground" xml:space="preserve">
+  <data name="eMenuChangeBackground" xml:space="preserve">
     <value>Hintergrund für ausgewähltes Element ändern</value>
   </data>
   <data name="eToolbarSaveAndReload" xml:space="preserve">
