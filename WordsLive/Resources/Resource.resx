@@ -831,4 +831,10 @@
   <data name="fsUsePowerpraiseDirectory" xml:space="preserve">
     <value>Use same directory as Powerpraise (if installed)</value>
   </data>
+  <data name="vImagesSlideshowEmpty" xml:space="preserve">
+    <value>This slideshow is currently empty. You can add one or more photos/images by dragging them from the Windows Explorer into this area. The order of the images can also be changed afterwards.</value>
+  </data>
+  <data name="vMenuCreateSlideshow" xml:space="preserve">
+    <value>Create Slideshow ...</value>
+  </data>
 </root>

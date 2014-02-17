@@ -831,4 +831,10 @@
   <data name="fsTitle" xml:space="preserve">
     <value>Erster Start</value>
   </data>
+  <data name="vImagesSlideshowEmpty" xml:space="preserve">
+    <value>Die Diashow ist enthält zurzeit keine Bilder. Fügen Sie Fotos und Bilder hinzu, indem Sie eine oder mehrere Dateien aus dem Windows Explorer mit der Maus in diesen Bereich ziehen. Sie können auch nachträglich die Reihenfolge der Bilder ändern.</value>
+  </data>
+  <data name="vMenuCreateSlideshow" xml:space="preserve">
+    <value>Diashow erzeugen ...</value>
+  </data>
 </root>

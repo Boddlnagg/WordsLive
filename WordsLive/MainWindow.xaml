@@ -1,6 +1,6 @@
 ﻿<!--
 - WordsLive - worship projection software
-- Copyright (c) 2013 Patrick Reisert
+- Copyright (c) 2014 Patrick Reisert
 - 
 - This program is free software: you can redistribute it and/or modify
 - it under the terms of the GNU General Public License as published by
@@ -59,6 +59,7 @@
 		<CommandBinding Command="{x:Static local:CustomCommands.ToggleBlackscreen}" Executed="OnExecuteCommand"/>
 		<CommandBinding Command="{x:Static local:CustomCommands.ShowTestImage}" Executed="OnExecuteCommand"/>
 		<CommandBinding Command="{x:Static local:CustomCommands.ShowNotification}" Executed="OnExecuteCommand"/>
+		<CommandBinding Command="{x:Static local:CustomCommands.CreateSlideshow}" Executed="OnExecuteCommand"/>
 	</Window.CommandBindings>
 	<Grid x:Name="LayoutRoot">
 		<Grid.RowDefinitions>
@@ -100,6 +101,7 @@
 						<Image Width="24" Source="/WordsLive;component/Artwork/Songlist.png" />
 					</MenuItem.Icon>
 				</MenuItem>
+				<MenuItem Header="{x:Static resx:Resource.vMenuCreateSlideshow}" Command="{x:Static local:CustomCommands.CreateSlideshow}"/>
 			</MenuItem>
 			<MenuItem Header="{x:Static resx:Resource.vMenuActivePresentation}">
 				<MenuItem Header="{x:Static resx:Resource.vMenuRefresh}" Command="Refresh"/>

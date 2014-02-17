@@ -1,6 +1,6 @@
 ﻿<!--
 - WordsLive - worship projection software
-- Copyright (c) 2013 Patrick Reisert
+- Copyright (c) 2014 Patrick Reisert
 - 
 - This program is free software: you can redistribute it and/or modify
 - it under the terms of the GNU General Public License as published by
@@ -51,70 +51,85 @@
 				</ComboBox.ItemTemplate>
 			</ComboBox>
 		</ToolBar>
-		<ListView Grid.IsSharedSizeScope="True" x:Name="slideListView" SelectionChanged="slideListView_SelectionChanged" ItemsSource="{Binding Media.Images}" KeyboardNavigation.DirectionalNavigation="None" PreviewKeyDown="slideListView_PreviewKeyDown"
+		<Grid>
+			<ListView Grid.IsSharedSizeScope="True" x:Name="slideListView" SelectionChanged="slideListView_SelectionChanged" ItemsSource="{Binding Media.Images}" KeyboardNavigation.DirectionalNavigation="None" PreviewKeyDown="slideListView_PreviewKeyDown"
 			  AllowDrop="True" DragEnter="slideListView_DragEnterOrOver" DragOver="slideListView_DragEnterOrOver" DragLeave="slideListView_DragLeave" Drop="slideListView_Drop"
 			  PreviewMouseMove="slideListView_PreviewMouseMove"
 			  PreviewMouseLeftButtonDown="slideListView_PreviewMouseLeftButtonDown">
-			<ListView.CommandBindings>
-				<CommandBinding Command="Delete" CanExecute="CanExecuteCommand" Executed="CommandExecuted"/>
-				<CommandBinding Command="Save" Executed="CommandExecuted" CanExecute="CanExecuteCommand"/>
-				<CommandBinding Command="{x:Static local:CustomCommands.RotateLeft}" Executed="CommandExecuted" CanExecute="CanExecuteCommand"/>
-				<CommandBinding Command="{x:Static local:CustomCommands.RotateRight}" Executed="CommandExecuted" CanExecute="CanExecuteCommand"/>
-			</ListView.CommandBindings>
-			<ListView.Resources>
-				<Style TargetType="{x:Type Border}" x:Key="borderStyle">
-					<Setter Property="BorderBrush" Value="White"/>
-					<Style.Triggers>
-						<DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType={x:Type ListBoxItem}},Path=IsSelected}" Value="True">
-							<Setter Property="BorderBrush" Value="{StaticResource {x:Static SystemColors.HighlightBrushKey}}"/>
-						</DataTrigger>
-					</Style.Triggers>
-				</Style>
-			</ListView.Resources>
-			<ListView.Style>
-				<Style TargetType="{x:Type ListView}">
-					<Style.Resources>
-						<SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="White"/>
-						<SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="White"/>
-					</Style.Resources>
-				</Style>
-			</ListView.Style>
-			<ListView.ItemsPanel>
-				<ItemsPanelTemplate>
-					<WrapPanel Width="{Binding (FrameworkElement.ActualWidth), RelativeSource={RelativeSource AncestorType=ScrollContentPresenter}}"
+				<ListView.CommandBindings>
+					<CommandBinding Command="Delete" CanExecute="CanExecuteCommand" Executed="CommandExecuted"/>
+					<CommandBinding Command="Save" Executed="CommandExecuted" CanExecute="CanExecuteCommand"/>
+					<CommandBinding Command="{x:Static local:CustomCommands.RotateLeft}" Executed="CommandExecuted" CanExecute="CanExecuteCommand"/>
+					<CommandBinding Command="{x:Static local:CustomCommands.RotateRight}" Executed="CommandExecuted" CanExecute="CanExecuteCommand"/>
+				</ListView.CommandBindings>
+				<ListView.Resources>
+					<Style TargetType="{x:Type Border}" x:Key="borderStyle">
+						<Setter Property="BorderBrush" Value="White"/>
+						<Style.Triggers>
+							<DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType={x:Type ListBoxItem}},Path=IsSelected}" Value="True">
+								<Setter Property="BorderBrush" Value="{StaticResource {x:Static SystemColors.HighlightBrushKey}}"/>
+							</DataTrigger>
+						</Style.Triggers>
+					</Style>
+				</ListView.Resources>
+				<ListView.Style>
+					<Style TargetType="{x:Type ListView}">
+						<Style.Resources>
+							<SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="White"/>
+							<SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="White"/>
+						</Style.Resources>
+					</Style>
+				</ListView.Style>
+				<ListView.ItemsPanel>
+					<ItemsPanelTemplate>
+						<WrapPanel Width="{Binding (FrameworkElement.ActualWidth), RelativeSource={RelativeSource AncestorType=ScrollContentPresenter}}"
 								ItemWidth="{Binding (ListView.View).ItemWidth, RelativeSource={RelativeSource AncestorType=ListView}}"
 								MinWidth="{Binding ItemWidth, RelativeSource={RelativeSource Self}}"
 								ItemHeight="{Binding (ListView.View).ItemHeight, RelativeSource={RelativeSource AncestorType=ListView}}"/>
-				</ItemsPanelTemplate>
-			</ListView.ItemsPanel>
-			<ListView.ItemTemplate>
-				<DataTemplate>
-					<Grid>
-						<Grid.ColumnDefinitions>
-							<ColumnDefinition Width="Auto" SharedSizeGroup="Column"/>
-						</Grid.ColumnDefinitions>
-						<Grid.RowDefinitions>
-							<RowDefinition Height="Auto" SharedSizeGroup="Row"/>
-						</Grid.RowDefinitions>
-						<Border BorderThickness="3" Style="{StaticResource borderStyle}">
-							<Image imageloader:Loader.Source="{Binding Source}" imageloader:Loader.SourceType="{Binding SourceType}" ToolTip="{Binding Title}" Margin="2,2,2,2" Height="120">
-								<Image.ContextMenu>
-									<ContextMenu>
-										<MenuItem Header="{x:Static resx:Resource.vImagesContextMenuRemove}" Command="Delete" CommandParameter="{Binding}" CommandTarget="{Binding ElementName=slideListView}"/>
-										<MenuItem Header="{x:Static resx:Resource.vImagesRotateLeft}" Command="{x:Static local:CustomCommands.RotateLeft}" CommandParameter="{Binding}" CommandTarget="{Binding ElementName=slideListView}"/>
-										<MenuItem Header="{x:Static resx:Resource.vImagesRotateRight}" Command="{x:Static local:CustomCommands.RotateRight}" CommandParameter="{Binding}" CommandTarget="{Binding ElementName=slideListView}"/>
-									</ContextMenu>
-								</Image.ContextMenu>
-							</Image>
-						</Border>
-					</Grid>
-				</DataTemplate>
-			</ListView.ItemTemplate>
-			<ListView.ItemContainerStyle>
-				<Style TargetType="ListViewItem">
-					<EventSetter Event="PreviewMouseRightButtonDown" Handler="ListViewItem_PreviewMouseRightButtonDown" />
-				</Style>
-			</ListView.ItemContainerStyle>
-		</ListView>
+					</ItemsPanelTemplate>
+				</ListView.ItemsPanel>
+				<ListView.ItemTemplate>
+					<DataTemplate>
+						<Grid>
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition Width="Auto" SharedSizeGroup="Column"/>
+							</Grid.ColumnDefinitions>
+							<Grid.RowDefinitions>
+								<RowDefinition Height="Auto" SharedSizeGroup="Row"/>
+							</Grid.RowDefinitions>
+							<Border BorderThickness="3" Style="{StaticResource borderStyle}">
+								<Image imageloader:Loader.Source="{Binding Source}" imageloader:Loader.SourceType="{Binding SourceType}" ToolTip="{Binding Title}" Margin="2,2,2,2" Height="120">
+									<Image.ContextMenu>
+										<ContextMenu>
+											<MenuItem Header="{x:Static resx:Resource.vImagesContextMenuRemove}" Command="Delete" CommandParameter="{Binding}" CommandTarget="{Binding ElementName=slideListView}"/>
+											<MenuItem Header="{x:Static resx:Resource.vImagesRotateLeft}" Command="{x:Static local:CustomCommands.RotateLeft}" CommandParameter="{Binding}" CommandTarget="{Binding ElementName=slideListView}"/>
+											<MenuItem Header="{x:Static resx:Resource.vImagesRotateRight}" Command="{x:Static local:CustomCommands.RotateRight}" CommandParameter="{Binding}" CommandTarget="{Binding ElementName=slideListView}"/>
+										</ContextMenu>
+									</Image.ContextMenu>
+								</Image>
+							</Border>
+						</Grid>
+					</DataTemplate>
+				</ListView.ItemTemplate>
+				<ListView.ItemContainerStyle>
+					<Style TargetType="ListViewItem">
+						<EventSetter Event="PreviewMouseRightButtonDown" Handler="ListViewItem_PreviewMouseRightButtonDown" />
+					</Style>
+				</ListView.ItemContainerStyle>
+			</ListView>
+			<TextBlock Text="{x:Static resx:Resource.vImagesSlideshowEmpty}" Foreground="Gray"
+					   Margin="50" TextAlignment="Center" VerticalAlignment="Center" TextWrapping="Wrap">
+				<TextBlock.Style>
+					<Style TargetType="{x:Type TextBlock}">
+						<Setter Property="Visibility" Value="Collapsed"/>
+						<Style.Triggers>
+							<DataTrigger Binding="{Binding ElementName=slideListView, Path=Items.Count}" Value="0">
+								<Setter Property="Visibility" Value="Visible"/>
+							</DataTrigger>
+						</Style.Triggers>
+					</Style>
+				</TextBlock.Style>
+			</TextBlock>
+		</Grid>
 	</DockPanel>
 </UserControl>
