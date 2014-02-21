@@ -27,14 +27,14 @@
 			 mc:Ignorable="d" 
 			 d:DesignHeight="200" d:DesignWidth="450"
 			 Loaded="Control_Loaded">
-	<Grid>
+	<Grid IsEnabled="{Binding Path=LoadState, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static my:ControlPanelLoadState.Loaded}}">
 		<Grid.RowDefinitions>
 			<RowDefinition Height="Auto"/>
 			<RowDefinition Height="Auto"/>
 			<RowDefinition Height="Auto"/>
 			<RowDefinition Height="*"/>
 		</Grid.RowDefinitions>
-		<DockPanel IsEnabled="{Binding Path=LoadState, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static my:ControlPanelLoadState.Loaded}}" Grid.Row="0" Height="80" HorizontalAlignment="Stretch">
+		<DockPanel Grid.Row="0" Height="80" HorizontalAlignment="Stretch">
 			<Slider DockPanel.Dock="Bottom" Name="timelineSlider" Margin="5" ValueChanged="SeekToMediaPosition" IsMoveToPointEnabled="True"/>
 			<Button Click="OnMouseDownPlayPauseMedia" Width="32" Height="32"  Margin="5" x:Name="playPauseButton">
 				<Button.Style>

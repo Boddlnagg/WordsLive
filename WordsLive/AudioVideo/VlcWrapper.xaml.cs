@@ -43,28 +43,32 @@ namespace WordsLive.AudioVideo
 		{
 			if (e.Data == Vlc.DotNet.Core.Interops.Signatures.LibVlc.Media.States.Playing)
 			{
-				if (!initialized && media.Duration.TotalMilliseconds > 0)
+				if (!initialized)
 				{
-					if (!Autoplay)
-						vlc.Pause();
-					else
-						rect.Visibility = System.Windows.Visibility.Hidden;
+					if (media.Duration.TotalMilliseconds > 0)
+					{
+						if (!Autoplay)
+							vlc.Pause();
+						else
+							rect.Visibility = System.Windows.Visibility.Hidden;
 
-					durationMilliseconds = (float)media.Duration.TotalMilliseconds;
-					initialized = true;
-					OnMediaLoaded();
-				}
-			}
-			else if (e.Data == Vlc.DotNet.Core.Interops.Signatures.LibVlc.Media.States.Ended)
-			{
-				var subItems = media.SubItems;
-				if (subItems.Count > 0)
-				{
-					media.StateChanged -= OnMediaStateChange;
-					subItems[0].StateChanged += OnMediaStateChange;
-					media = subItems[0];
-					vlc.Media = subItems[0];
-					vlc.Play();
+						durationMilliseconds = (float)media.Duration.TotalMilliseconds;
+						initialized = true;
+						OnMediaLoaded();
+					}
+					else if (media.SubItems.Count > 0)
+					{
+						var subItems = media.SubItems;
+						media.StateChanged -= OnMediaStateChange;
+						subItems[0].StateChanged += OnMediaStateChange;
+						media = subItems[0];
+						vlc.Media = subItems[0];
+						vlc.Play();
+					}
+					else
+					{
+						OnMediaFailed();
+					}
 				}
 			}
 		}
