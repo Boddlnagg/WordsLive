@@ -1,6 +1,6 @@
 ﻿/*
  * WordsLive - worship projection software
- * Copyright (c) 2013 Patrick Reisert
+ * Copyright (c) 2014 Patrick Reisert
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -141,14 +141,22 @@ namespace WordsLive.Editor
 
 			if (this.StructureTree.IsLoaded)
 			{
-				this.StructureTree.SetSelectedItem(song);
+				ISongElement preselectElement;
+				if (song.Parts.Count == 0)
+					preselectElement = song;
+				else if (song.Parts[0].Slides.Count == 0)
+					preselectElement = song.Parts[0];
+				else
+					preselectElement = song.Parts[0].Slides[0];
+
+				this.StructureTree.SelectItem(preselectElement);
 				this.StructureTree.Focus();
 			}
 		}
 
 		private void AddSlide(SongPart part)
 		{
-			this.StructureTree.SetSelectedItem(part.AddSlide());
+			this.StructureTree.SelectItem(part.AddSlide());
 		}
 
 		private void AddPart()
@@ -157,8 +165,7 @@ namespace WordsLive.Editor
 			if (res.DialogResult.HasValue && res.DialogResult.Value)
 			{
 				var newPart = song.AddPart(res.PartName);
-				// TODO: select first slide instead
-				this.StructureTree.SetSelectedItem(newPart);
+				this.StructureTree.SelectItem(newPart.Slides.First());
 			}
 		}
 
@@ -433,7 +440,7 @@ namespace WordsLive.Editor
 						else if (targetNode is SongPart)
 							song.MoveSlide(dragNode, targetNode as SongPart);
 
-						tree.SetSelectedItem(dragNode);
+						tree.SelectItem(dragNode);
 					}
 				}
 				else if (e.Data.GetData(typeof(SongPart)) != null)
@@ -457,13 +464,13 @@ namespace WordsLive.Editor
 						if (res.DialogResult.HasValue && res.DialogResult.Value)
 						{
 							SongPart newPart = song.CopyPart(dragNode, res.PartName, targetPart);
-							tree.SetSelectedItem(newPart);
+							tree.SelectItem(newPart);
 						}
 					}
 					else
 					{
 						song.MovePart(dragNode, targetPart);
-						tree.SetSelectedItem(dragNode);
+						tree.SelectItem(dragNode);
 					}
 				}
 			}
@@ -541,9 +548,9 @@ namespace WordsLive.Editor
 			orderSelected = true;
 			var selectedPart = ((SongPartReference)listBox.SelectedItem).Part;
 			if (selectedPart.Slides.Count > 0)
-				StructureTree.SetSelectedItem(selectedPart.Slides[0]);
+				StructureTree.SelectItem(selectedPart.Slides[0]);
 			else
-				StructureTree.SetSelectedItem(selectedPart);
+				StructureTree.SelectItem(selectedPart);
 			orderSelected = false;
 
 			listBox.Focus();
@@ -861,7 +868,7 @@ namespace WordsLive.Editor
 			else if (e.Command == CustomCommands.Duplicate)
 			{
 				var newSlide = song.FindPartWithSlide(node as SongSlide).DuplicateSlide(node as SongSlide);
-				this.StructureTree.SetSelectedItem(newSlide);
+				this.StructureTree.SelectItem(newSlide);
 			}
 			else if (e.Command == CustomCommands.SwapTextAndTranslation)
 			{

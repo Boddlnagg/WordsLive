@@ -1,6 +1,6 @@
 ﻿/*
  * WordsLive - worship projection software
- * Copyright (c) 2013 Patrick Reisert
+ * Copyright (c) 2014 Patrick Reisert
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -74,54 +74,6 @@ namespace WordsLive.Utils
 
 			// All dependency objects are valid
 			return true;
-		}
-
-		/// <summary>
-		/// Sets the selected item on a tree view.
-		/// </summary>
-		/// <param name="treeView">The tree view</param>
-		/// <param name="item">The item to select.</param>
-		/// <returns><c>true</c> if the selection was successful; <c>false</c> if no (e.g. the item didn't exist).</returns>
-		static public bool SetSelectedItem(this TreeView treeView, object item)
-		{
-			return SetSelected(treeView, item);
-		}
-
-		static private bool SetSelected(ItemsControl parent, object child)
-		{
-			if (parent == null || child == null)
-			{
-				return false;
-			}
-
-			TreeViewItem childNode = parent.ItemContainerGenerator
-				.ContainerFromItem(child) as TreeViewItem;
-
-			if (childNode != null)
-			{
-				childNode.Focus();
-				return childNode.IsSelected = true;
-			}
-
-			if (parent.Items.Count > 0)
-			{
-				foreach (object childItem in parent.Items)
-				{
-					ItemsControl childControl = parent
-						.ItemContainerGenerator
-						.ContainerFromItem(childItem)
-						as ItemsControl;
-
-					(childControl as TreeViewItem).IsExpanded = true;
-
-					if (SetSelected(childControl, child))
-					{
-						return true;
-					}
-				}
-			}
-
-			return false;
 		}
 
 		public static T FindLogicalParent<T>(this DependencyObject source) where T : DependencyObject
