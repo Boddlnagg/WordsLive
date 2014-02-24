@@ -94,7 +94,7 @@ namespace WordsLive.Core.Songs.Undo
 			if (!instance.Root.IsUndoEnabled)
 				return;
 
-			var ch = DefaultChangeFactory.GetChange(instance, propertyName, oldValue, newValue);
+			var ch = DefaultChangeFactory.Current.GetChange(instance, propertyName, oldValue, newValue);
 			var x = ch.ChangeKey.GetType();
 			if (instance.Root.IsModified &&
 				instance.Root.UndoManager.Root.UndoStack.Count() > 0 &&
