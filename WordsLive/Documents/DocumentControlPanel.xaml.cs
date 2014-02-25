@@ -114,7 +114,7 @@ namespace WordsLive.Documents
 
 		public bool IsUpdatable
 		{
-			get { return false; } // TODO
+			get { return false; } // TODO: make it improve anything to make this updatable?
 		}
 
 		bool closed = false;

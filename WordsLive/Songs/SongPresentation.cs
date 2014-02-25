@@ -105,7 +105,7 @@ namespace WordsLive.Songs
 			}
 			else
 			{
-				videoBackground = new AudioVideo.VlcWrapper(); // TODO: use configurable wrapper
+				videoBackground = new AudioVideo.VlcWrapper(); // TODO: use configurable wrapper (does WPF work?)
 				
 				videoBackground.Autoplay = true;
 				videoBackground.Loop = true;

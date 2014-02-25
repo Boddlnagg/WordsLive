@@ -21,7 +21,7 @@ using System.Windows.Input;
 
 namespace WordsLive
 {
-	// TODO: move some commands to class where they are used
+	// TODO: move some commands to class where they are used (use DelegateCommand?)
 	public static class CustomCommands
 	{
 		public static RoutedCommand Exit

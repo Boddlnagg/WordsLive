@@ -146,9 +146,16 @@ namespace WordsLive.Images
 				foreach (var img in Images)
 				{
 					if (img.Uri.IsFile)
-						writer.WriteLine(img.Uri.LocalPath); // TODO: support relative paths?
+					{
+						writer.WriteLine(img.Uri.LocalPath);
+						// TODO: support relative paths? (maybe write the full path of
+						// the file itself in the first line to fall back to absolute paths
+						// in case the slideshow was moved and the images were not)
+					}
 					else
+					{
 						writer.WriteLine(img.Uri.AbsoluteUri);
+					}
 				}
 			}
 		}

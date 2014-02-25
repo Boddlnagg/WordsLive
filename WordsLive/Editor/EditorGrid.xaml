@@ -74,7 +74,7 @@
 					 SpellCheck.IsEnabled="{Binding ElementName=EnableSpellCheckCheckBox, Path=IsChecked, Mode=OneWay}"
 					 ContextMenu="{StaticResource extendedTextBoxContextMenu}"/>
 				<Expander Name="TranslationExpander" Grid.Column="3" ExpandDirection="Left" IsExpanded="{Binding ElementName=StructureTree, Path=SelectedItem.Root.HasTranslation, Mode=OneTime}"
-					  Expanded="TranslationExpanderExpanded">
+					  Expanded="TranslationExpanderExpandedCollapsed" Collapsed="TranslationExpanderExpandedCollapsed">
 					<Expander.Header>
 						<TextBlock Text="{x:Static resx:Resource.eGridTranslation}" Margin="5,0">
 						<TextBlock.LayoutTransform>

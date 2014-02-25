@@ -226,7 +226,7 @@ namespace WordsLive.Images
 
 		public bool IsUpdatable
 		{
-			get { return false; } // TODO
+			get { return false; } // TODO: would it improve anything if this is updatable?
 		}
 
 		public ControlPanelLoadState LoadState

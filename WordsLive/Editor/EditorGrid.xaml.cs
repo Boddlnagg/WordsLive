@@ -680,12 +680,21 @@ namespace WordsLive.Editor
 			}
 		}
 
-		private void TranslationExpanderExpanded(object sender, RoutedEventArgs e)
+		private void TranslationExpanderExpandedCollapsed(object sender, RoutedEventArgs e)
 		{
 			Expander exp = (Expander)sender;
 			Grid g = exp.FindVisualParent<Grid>();
-			var t = (TextBox)g.FindName("TranslationTextBox");
-			// TODO: set (keyboard) focus to t
+			TextBox t;
+			if (exp.IsExpanded)
+			{
+				t = (TextBox)g.FindName("TranslationTextBox");
+			}
+			else
+			{
+				t = (TextBox)g.FindName("TextTextBox");
+			}
+			// directly calling Keyboard.Focus(t) doesn't work
+			Dispatcher.BeginInvoke(new Action(() => Keyboard.Focus(t)));
 		}
 
 		public event PropertyChangedEventHandler PropertyChanged;

@@ -80,7 +80,7 @@ namespace WordsLive
 		void HandleDisplaySettingsChanged(object sender, EventArgs e)
 		{
 			// TODO: is there a better way than starting a new thread?
-			// TODO: use Task.Factory.StartNew
+			// TODO: use Task.Factory.StartNew and Task.Delay()
 			// (we need to wait some time before updating, for else Windows will resize/move the windows again)
 			new Thread((ThreadStart) delegate
 			{

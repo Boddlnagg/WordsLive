@@ -124,6 +124,11 @@ namespace WordsLive.Songs
 		/// given keyword and/or source/copyright strings and <c>false</c> otherwise.</returns>
 		public bool Matches(SongData song)
 		{
+			// TODO: The keyword search should be able to search in source and copyright directly.
+			//		 Furthermore the full text search should search for multiple independent words (ignoring their order)
+			//		 and only search for an exact match if the phrase is quoted like "search phrase".
+			//       This change also needs to be done in the PHP MediaServer implementation.
+
 			if (IsEmpty)
 			{
 				return true;
