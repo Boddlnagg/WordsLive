@@ -79,7 +79,8 @@
 						<Image Width="24" Source="/WordsLive;component/Artwork/Open.png" />
 					</MenuItem.Icon>
 				</MenuItem>
-				<MenuItem Header="{x:Static resx:Resource.vMenuSavePortfolio}" Command="Save">
+				<!-- TODO: Refactor command system to use DelegateCommand or ReactiveUI -->
+				<MenuItem Header="{x:Static resx:Resource.vMenuSavePortfolio}" Command="Save" CommandTarget="{Binding ElementName=Window}">
 					<MenuItem.Icon>
 						<Image Width="24" Source="/WordsLive;component/Artwork/Save.png" />
 					</MenuItem.Icon>
@@ -163,7 +164,7 @@
 			<Button Command="Open" ToolTip="{Binding Converter={StaticResource RemoveAccessKeyConverter}, ConverterParameter={x:Static resx:Resource.vMenuOpenPortfolio}}">
 				<Image Width="32" Height="32" Source="/WordsLive;component/Artwork/Open.png" />
 			</Button>
-			<Button Command="Save" Style="{StaticResource markDisabledButton}" ToolTip="{Binding Converter={StaticResource RemoveAccessKeyConverter}, ConverterParameter={x:Static resx:Resource.vMenuSavePortfolio}}">
+			<Button Command="Save" CommandTarget="{Binding ElementName=Window}" Style="{StaticResource markDisabledButton}" ToolTip="{Binding Converter={StaticResource RemoveAccessKeyConverter}, ConverterParameter={x:Static resx:Resource.vMenuSavePortfolio}}">
 				<Image Width="32" Height="32" Source="/WordsLive;component/Artwork/Save.png" />
 			</Button>
 			<Separator/>
