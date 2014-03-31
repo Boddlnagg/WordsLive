@@ -21,6 +21,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Threading.Tasks;
+using System.Windows;
 using PowerpointViewerLib;
 using WordsLive.Presentation;
 using WordsLive.Presentation.Wpf;
@@ -70,6 +71,7 @@ namespace WordsLive.Slideshow.PowerpointViewer
 		PowerpointViewerDocument doc;
 		private bool showOnLoaded = false;
 		private bool isShown = false;
+		private bool hasShownHiddenWarning = false;
 
 		public FileInfo File { get; set; }
 
@@ -132,6 +134,18 @@ namespace WordsLive.Slideshow.PowerpointViewer
 				doc.SlideChanged += (sender, args) =>
 				{
 					base.OnSlideIndexChanged();
+				};
+
+				doc.HiddenSlide += (sender, args) =>
+				{
+					Controller.Dispatcher.Invoke(new Action(() =>
+					{
+						if (!hasShownHiddenWarning)
+						{
+							MessageBox.Show(Resource.errorMsgHiddenSlides, Resource.errorMsgHiddenSlidesTitle, MessageBoxButton.OK, MessageBoxImage.Warning);
+							hasShownHiddenWarning = true;
+						}
+					}));
 				};
 
 				LoadPreviewProvider();

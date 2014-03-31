@@ -129,6 +129,12 @@
   <data name="errorMsgClosedExternally" xml:space="preserve">
     <value>Die Präsentation wurde unerwartet geschlossen. WordsLive hat die Anzeige schwarz geschaltet und wird versuchen, die Präsentation neu zu laden.</value>
   </data>
+  <data name="errorMsgHiddenSlides" xml:space="preserve">
+    <value>Die Präsentation scheint versteckte Folien zu enthalten. Dies wird in WordsLive nicht korrekt unterstützt, wenn die Präsentation mit dem PowerPoint Viewer angezeigt wird. Sie können diese Warnung ignorieren und weiterhin mit "Weiter" und "Zurück" die Präsentation steuern. Das direkte Auswählen von Folien wird hingegen wahrscheinlich nicht funktionieren.</value>
+  </data>
+  <data name="errorMsgHiddenSlidesTitle" xml:space="preserve">
+    <value>Warning: Hidden Slides</value>
+  </data>
   <data name="next" xml:space="preserve">
     <value>Weiter</value>
   </data>
