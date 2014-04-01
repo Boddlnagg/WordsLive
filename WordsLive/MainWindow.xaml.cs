@@ -1066,18 +1066,30 @@ namespace WordsLive
 
 				this.previewBorder.Width = Controller.PresentationManager.Area.WindowSize.Width;
 				this.previewBorder.Height = Controller.PresentationManager.Area.WindowSize.Height;
+			}));
+		}
 
-				if (!String.IsNullOrEmpty(App.StartupFile))
+		/// <summary>
+		/// This is called from the Application class ...
+		/// (1) on startup from the Window.Loaded event
+		/// (2) from the single instance controller, when another instance of the program was started
+		/// </summary>
+		/// <param name="args">The command line arguments.</param>
+		public void HandleCommandLineArgs(string[] args)
+		{
+			this.Dispatcher.BeginInvoke((Action)(() => 
+			{
+				if (args.Length > 0 && !String.IsNullOrWhiteSpace(args[0]))
 				{
-					if (App.StartupFile.EndsWith(".ppp"))
+					if (args[0].EndsWith(".ppp"))
 					{
-						OpenPortfolio(App.StartupFile);
+						OpenPortfolio(args[0]);
 					}
 					else
 					{
 						var editor = Controller.ShowEditorWindow();
-						editor.LoadOrImport(new Uri(App.StartupFile));
-					}						
+						editor.LoadOrImport(new Uri(args[0]));
+					}
 				}
 			}));
 		}

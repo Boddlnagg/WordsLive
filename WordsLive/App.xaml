@@ -1,6 +1,6 @@
 ﻿<!--
 - WordsLive - worship projection software
-- Copyright (c) 2013 Patrick Reisert
+- Copyright (c) 2014 Patrick Reisert
 - 
 - This program is free software: you can redistribute it and/or modify
 - it under the terms of the GNU General Public License as published by
@@ -23,8 +23,7 @@
 	xmlns:properties="clr-namespace:WordsLive.Properties"
 	xmlns:sys="clr-namespace:System;assembly=mscorlib"
 	xmlns:songs="clr-namespace:WordsLive.Songs"
-	x:Class="WordsLive.App" StartupUri="MainWindow.xaml"
-	Startup="ApplicationStartup">
+	x:Class="WordsLive.App">
 	<Application.Resources>
 		<utils:EnumToBooleanConverter x:Key="EnumToBooleanConverter" />
 		<utils:EnumToIndexConverter x:Key="EnumToIndexConverter" />

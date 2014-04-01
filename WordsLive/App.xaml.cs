@@ -1,6 +1,6 @@
 ﻿/*
  * WordsLive - worship projection software
- * Copyright (c) 2013 Patrick Reisert
+ * Copyright (c) 2014 Patrick Reisert
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,7 +16,9 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+using System;
 using System.Windows;
+using WordsLive.Util;
 
 namespace WordsLive
 {
@@ -30,15 +32,22 @@ namespace WordsLive
 
 	public partial class App : Application
 	{
-		public static string StartupFile { get; private set; }
+		private readonly Guid appGuid = new Guid("{CA63A296-1B1C-4675-8B6F-9C95458C7CD1}");
 
-		private void ApplicationStartup(object sender, StartupEventArgs e)
+		protected override void OnStartup(StartupEventArgs e)
 		{
-			if (e.Args.Length > 0)
-				StartupFile = e.Args[0];
+			//System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo("en-US");
+			//System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
 
-			//Thread.CurrentThread.CurrentUICulture = new CultureInfo("en-US");
-			//Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
+			SingleInstance si = new SingleInstance(appGuid);
+			si.ArgsRecieved += (args) => (this.MainWindow as MainWindow).HandleCommandLineArgs(args);
+			si.Run(() =>
+			{
+				var win = new MainWindow();
+				win.Loaded += (sender, args) => win.HandleCommandLineArgs(e.Args);
+				win.Show();
+				return this.MainWindow;
+			}, e.Args);
 		}
 	}
 }
