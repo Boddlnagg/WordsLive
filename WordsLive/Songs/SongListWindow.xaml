@@ -31,11 +31,6 @@
 		Icon="/WordsLive;component/Artwork/Tiny_Songlist.png"
 		Title="{x:Static resx:Resource.slTitle}"
 		FocusManager.FocusedElement="{Binding ElementName=filterTextBox}">
-	<Window.Resources>
-		<DataTemplate x:Key="titleTemplate">
-			<TextBlock Text="{Binding Title}" ToolTip="{Binding Filename}"/>
-		</DataTemplate>
-	</Window.Resources>
 	<Window.CommandBindings>
 		<CommandBinding Command="{x:Static local:CustomCommands.AddMedia}" CanExecute="OnCanExecuteCommand"  Executed="OnExecuteCommand"/>
 		<CommandBinding Command="Close" Executed="OnExecuteCommand"/>
@@ -71,6 +66,9 @@
 					<Setter Property="TextWrapping" Value="NoWrap" />
 					<Setter Property="TextTrimming" Value="CharacterEllipsis" />
 				</Style>
+				<DataTemplate x:Key="titleTemplate">
+					<TextBlock Text="{Binding Title}" ToolTip="{Binding Filename}" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis"/>
+				</DataTemplate>
 				<ContextMenu x:Key="contextMenu">
 					<MenuItem Header="{x:Static resx:Resource.eCommandOpenInEditor}" Command="{x:Static local:CustomCommands.OpenInEditor}" CommandParameter="{Binding}"/>
 					<MenuItem Command="Delete" CommandParameter="{Binding}"/>
