@@ -1,6 +1,6 @@
 ﻿/*
  * WordsLive - worship projection software
- * Copyright (c) 2013 Patrick Reisert
+ * Copyright (c) 2014 Patrick Reisert
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -268,11 +268,18 @@ namespace WordsLive.Images
 				}
 
 				if (e.Data.GetData(typeof(ImageInfo)) != null)
+				{
 					e.Effects = DragDropEffects.Move;
-				else if (((string[])e.Data.GetData(DataFormats.FileDrop)).Where((f) => ImagesMedia.IsValidImageUri(new Uri(f))).Any())
+				}
+				else if (e.Data.GetData(DataFormats.FileDrop) != null &&
+					((string[])e.Data.GetData(DataFormats.FileDrop)).Where((f) => ImagesMedia.IsValidImageUri(new Uri(f))).Any())
+				{
 					e.Effects = DragDropEffects.Copy;
+				}
 				else
+				{
 					e.Effects = DragDropEffects.None;
+				}
 			}
 			else
 			{

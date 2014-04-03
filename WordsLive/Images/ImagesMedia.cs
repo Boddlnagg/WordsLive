@@ -1,6 +1,6 @@
 ﻿/*
  * WordsLive - worship projection software
- * Copyright (c) 2013 Patrick Reisert
+ * Copyright (c) 2014 Patrick Reisert
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -87,18 +87,46 @@ namespace WordsLive.Images
 
 			using (var reader = new StreamReader(Uri.LocalPath))
 			{
-				string line;
+				string line = reader.ReadLine();
 
-				while ((line = reader.ReadLine()) != null)
+				if (line == null)
+					yield break;
+
+				Uri alternateBaseUri = null;
+
+				if (line.StartsWith("#"))
+				{
+					alternateBaseUri = new Uri(line.Substring(1).Trim());
+					line = reader.ReadLine(); // read next line
+				}
+
+				while (line != null)
 				{
 					ImageInfo next = null;
 					try
 					{
-						next = new ImageInfo(new Uri(line));
+						var relativeUri = new Uri(line, UriKind.RelativeOrAbsolute);
+						if (relativeUri.IsAbsoluteUri)
+							next = new ImageInfo(relativeUri);
+						else
+						{
+							var uri = new Uri(Uri, relativeUri);
+							if (uri.IsFile && !File.Exists(uri.LocalPath))
+							{
+								// try alternate base uri if the file does not exist
+								uri = new Uri(alternateBaseUri, relativeUri);
+							}
+							
+							next = new ImageInfo(uri);
+						}
 					}
 					catch (UriFormatException)
 					{
 						continue;
+					}
+					finally
+					{
+						line = reader.ReadLine(); // read next line
 					}
 
 					yield return next;
@@ -143,14 +171,15 @@ namespace WordsLive.Images
 
 			using (var writer = new StreamWriter(Uri.LocalPath))
 			{
+				// write the full path of the slideshow file itself in the first line
+				// in order to fall back to absolute paths in case the slideshow was moved
+				// and the images were not
+				writer.WriteLine("#" + Uri.LocalPath);
 				foreach (var img in Images)
 				{
 					if (img.Uri.IsFile)
 					{
-						writer.WriteLine(img.Uri.LocalPath);
-						// TODO: support relative paths? (maybe write the full path of
-						// the file itself in the first line to fall back to absolute paths
-						// in case the slideshow was moved and the images were not)
+						writer.WriteLine(Uri.MakeRelativeUri(img.Uri).FormatLocal());
 					}
 					else
 					{

@@ -1,6 +1,6 @@
 ﻿/*
  * WordsLive - worship projection software
- * Copyright (c) 2013 Patrick Reisert
+ * Copyright (c) 2014 Patrick Reisert
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -75,10 +75,17 @@ namespace WordsLive.Core
 
 		public static string FormatLocal(this Uri uri)
 		{
-			if (uri.IsFile)
-				return uri.LocalPath;
+			if (uri.IsAbsoluteUri)
+			{
+				if (uri.IsFile)
+					return uri.LocalPath;
+				else
+					return uri.AbsoluteUri;
+			}
 			else
-				return uri.AbsoluteUri;
+			{
+				return Uri.UnescapeDataString(uri.ToString());
+			}
 		}
 
 		public static NameValueCollection ParseQueryString(this Uri uri)
