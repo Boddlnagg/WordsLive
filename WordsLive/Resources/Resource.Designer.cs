@@ -1321,6 +1321,15 @@ namespace WordsLive.Resources {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Use VLC for audio and video playback (if available) ähnelt.
+        /// </summary>
+        public static string seExternalUseVLC {
+            get {
+                return ResourceManager.GetString("seExternalUseVLC", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Data sources ähnelt.
         /// </summary>
         public static string seHeaderDataSources {
@@ -1438,11 +1447,65 @@ namespace WordsLive.Resources {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Password: ähnelt.
+        /// </summary>
+        public static string seRemotingEmbeddedServerPassword {
+            get {
+                return ResourceManager.GetString("seRemotingEmbeddedServerPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Port: ähnelt.
+        /// </summary>
+        public static string seRemotingEmbeddedServerPort {
+            get {
+                return ResourceManager.GetString("seRemotingEmbeddedServerPort", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Enable embedded display server ähnelt.
+        /// </summary>
+        public static string seRemotingEnableEmbeddedServer {
+            get {
+                return ResourceManager.GetString("seRemotingEnableEmbeddedServer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Redirect all requests over embedded data server (not recommended) ähnelt.
+        /// </summary>
+        public static string seRemotingEnableRedirect {
+            get {
+                return ResourceManager.GetString("seRemotingEnableRedirect", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die External Tools ähnelt.
+        /// </summary>
+        public static string seTabExternalTools {
+            get {
+                return ResourceManager.GetString("seTabExternalTools", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die General ähnelt.
         /// </summary>
         public static string seTabGeneral {
             get {
                 return ResourceManager.GetString("seTabGeneral", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Remoting ähnelt.
+        /// </summary>
+        public static string seTabRemoting {
+            get {
+                return ResourceManager.GetString("seTabRemoting", resourceCulture);
             }
         }
         

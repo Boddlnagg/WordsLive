@@ -1,6 +1,6 @@
 ﻿<!--
 - WordsLive - worship projection software
-- Copyright (c) 2013 Patrick Reisert
+- Copyright (c) 2014 Patrick Reisert
 - 
 - This program is free software: you can redistribute it and/or modify
 - it under the terms of the GNU General Public License as published by
@@ -130,11 +130,11 @@
 					</GroupBox>
 				</Grid>
 			</TabItem>
-			<TabItem Header="Remoting">
+			<TabItem Header="{x:Static resx:Resource.seTabRemoting}">
 				<GroupBox>
 					<!-- TODO: localize -->
 					<GroupBox.Header>
-						<CheckBox x:Name="enableDisplayServerCheckBox" Content="Enable embedded display server" IsChecked="{Binding EmbeddedServerEnable}"/>
+						<CheckBox x:Name="enableDisplayServerCheckBox" Content="{x:Static resx:Resource.seRemotingEnableEmbeddedServer}" IsChecked="{Binding EmbeddedServerEnable}"/>
 					</GroupBox.Header>
 					<Grid IsEnabled="{Binding ElementName=enableDisplayServerCheckBox, Path=IsChecked}">
 						<Grid.RowDefinitions>
@@ -147,22 +147,24 @@
 							<ColumnDefinition Width="Auto"/>
 							<ColumnDefinition Width="*"/>
 						</Grid.ColumnDefinitions>
-						<Label Grid.Row="0" Height="28" Content="Port:"/>
+						<Label Grid.Row="0" Height="28" Content="{x:Static resx:Resource.seRemotingEmbeddedServerPort}"/>
 						<TextBox Grid.Row="0" Height="23" Grid.Column="1" Text="{Binding EmbeddedServerPort, ValidatesOnDataErrors=True}" Style="{StaticResource textBoxInError}"/>
-						<Label Grid.Row="1" Content="Password:"/>
+						<Label Grid.Row="1" Content="{x:Static resx:Resource.seRemotingEmbeddedServerPassword}"/>
 						<PasswordBox x:Name="embeddedServerPasswordBox" Grid.Row="1" Grid.Column="1" Height="23"/>
 						<CheckBox Grid.Row="2" Grid.ColumnSpan="2" Margin="3" IsChecked="{Binding EmbeddedServerRedirectAll}">
-							<TextBlock TextWrapping="WrapWithOverflow" Text="Redirect all requests over embedded data server (not recommended)"/>
+							<TextBlock TextWrapping="WrapWithOverflow" Text="{x:Static resx:Resource.seRemotingEnableRedirect}"/>
 						</CheckBox>
-						<CheckBox Grid.Row="3" Grid.ColumnSpan="2" Margin="3" IsChecked="{Binding EmbeddedServerEnableUI}">
+						<!--<CheckBox Grid.Row="3" Grid.ColumnSpan="2" Margin="3" IsChecked="{Binding EmbeddedServerEnableUI}">
 							<TextBlock Text="Enable browser UI" TextWrapping="WrapWithOverflow"/>
-						</CheckBox>
+						</CheckBox>-->
 					</Grid>
 				</GroupBox>
 			</TabItem>
-			<TabItem Header="External Tools">
-				<!-- TODO: localize -->
-				<CheckBox Content="Use VLC for audio and video playback (if available)" IsChecked="{Binding UseVlc}" IsEnabled="{Binding IsVlcAvailable}"/>
+			<TabItem Header="{x:Static resx:Resource.seTabExternalTools}">
+				<CheckBox IsChecked="{Binding UseVlc}" IsEnabled="{Binding IsVlcAvailable}">
+					<TextBlock Text="{x:Static resx:Resource.seExternalUseVLC}" TextWrapping="Wrap"/>
+				</CheckBox>
+				<!-- TODO: add setting whether to use Impress or PowerPoint for PPT files and whether to use PPT Viewer or full PPT if available-->
 			</TabItem>
 		</TabControl>
 		<Button Grid.Row="2" Content="{x:Static resx:Resource.dialogClose}" Margin="0,0,6,6" Height="23" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="90" IsDefault="True" Click="Button_Click"/>

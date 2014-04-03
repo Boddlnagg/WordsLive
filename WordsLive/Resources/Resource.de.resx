@@ -861,6 +861,27 @@
   <data name="cfTooltipShadow" xml:space="preserve">
     <value>Schatten</value>
   </data>
+  <data name="seExternalUseVLC" xml:space="preserve">
+    <value>Verwende VLC, um Audio- und Videodateien abzuspielen (falls installiert)</value>
+  </data>
+  <data name="seRemotingEmbeddedServerPassword" xml:space="preserve">
+    <value>Passwort:</value>
+  </data>
+  <data name="seRemotingEmbeddedServerPort" xml:space="preserve">
+    <value>Port:</value>
+  </data>
+  <data name="seRemotingEnableEmbeddedServer" xml:space="preserve">
+    <value>Eingebetteten Server aktivieren</value>
+  </data>
+  <data name="seRemotingEnableRedirect" xml:space="preserve">
+    <value>Alle Anfragen über eingebetteten Server umleiten (nicht empfohlen)</value>
+  </data>
+  <data name="seTabExternalTools" xml:space="preserve">
+    <value>Externe Programme</value>
+  </data>
+  <data name="seTabRemoting" xml:space="preserve">
+    <value>Netzwerk</value>
+  </data>
   <data name="ssCheckboxOutline" xml:space="preserve">
     <value>Umrandung</value>
   </data>
