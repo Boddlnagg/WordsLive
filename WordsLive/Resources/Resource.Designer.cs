@@ -178,6 +178,15 @@ namespace WordsLive.Resources {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Backgrounds ähnelt.
+        /// </summary>
+        public static string cbRootNode {
+            get {
+                return ResourceManager.GetString("cbRootNode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Choose background ähnelt.
         /// </summary>
         public static string cbTitle {
@@ -192,6 +201,69 @@ namespace WordsLive.Resources {
         public static string cbUseSingleColor {
             get {
                 return ResourceManager.GetString("cbUseSingleColor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Bold ähnelt.
+        /// </summary>
+        public static string cfTooltipBold {
+            get {
+                return ResourceManager.GetString("cfTooltipBold", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Font ähnelt.
+        /// </summary>
+        public static string cfTooltipFont {
+            get {
+                return ResourceManager.GetString("cfTooltipFont", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Text Color ähnelt.
+        /// </summary>
+        public static string cfTooltipFontColor {
+            get {
+                return ResourceManager.GetString("cfTooltipFontColor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Font Size ähnelt.
+        /// </summary>
+        public static string cfTooltipFontSize {
+            get {
+                return ResourceManager.GetString("cfTooltipFontSize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Italic ähnelt.
+        /// </summary>
+        public static string cfTooltipItalic {
+            get {
+                return ResourceManager.GetString("cfTooltipItalic", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Outline ähnelt.
+        /// </summary>
+        public static string cfTooltipOutline {
+            get {
+                return ResourceManager.GetString("cfTooltipOutline", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Shadow ähnelt.
+        /// </summary>
+        public static string cfTooltipShadow {
+            get {
+                return ResourceManager.GetString("cfTooltipShadow", resourceCulture);
             }
         }
         
@@ -1677,6 +1749,258 @@ namespace WordsLive.Resources {
         public static string slTitle {
             get {
                 return ResourceManager.GetString("slTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Outline ähnelt.
+        /// </summary>
+        public static string ssCheckboxOutline {
+            get {
+                return ResourceManager.GetString("ssCheckboxOutline", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Shadow ähnelt.
+        /// </summary>
+        public static string ssCheckboxShadow {
+            get {
+                return ResourceManager.GetString("ssCheckboxShadow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Copyright ähnelt.
+        /// </summary>
+        public static string ssGroupHeaderCopyright {
+            get {
+                return ResourceManager.GetString("ssGroupHeaderCopyright", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Formatting ähnelt.
+        /// </summary>
+        public static string ssGroupHeaderFormatting {
+            get {
+                return ResourceManager.GetString("ssGroupHeaderFormatting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Line Spacing ähnelt.
+        /// </summary>
+        public static string ssGroupHeaderLineSpacing {
+            get {
+                return ResourceManager.GetString("ssGroupHeaderLineSpacing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Margins ähnelt.
+        /// </summary>
+        public static string ssGroupHeaderMargins {
+            get {
+                return ResourceManager.GetString("ssGroupHeaderMargins", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Source ähnelt.
+        /// </summary>
+        public static string ssGroupHeaderSource {
+            get {
+                return ResourceManager.GetString("ssGroupHeaderSource", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Text Alignment ähnelt.
+        /// </summary>
+        public static string ssGroupHeaderTextAlignment {
+            get {
+                return ResourceManager.GetString("ssGroupHeaderTextAlignment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Translation ähnelt.
+        /// </summary>
+        public static string ssGroupHeaderTranslation {
+            get {
+                return ResourceManager.GetString("ssGroupHeaderTranslation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Bottom: ähnelt.
+        /// </summary>
+        public static string ssLabelBottom {
+            get {
+                return ResourceManager.GetString("ssLabelBottom", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Left: ähnelt.
+        /// </summary>
+        public static string ssLabelLeft {
+            get {
+                return ResourceManager.GetString("ssLabelLeft", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Spacing between lines: ähnelt.
+        /// </summary>
+        public static string ssLabelLineSpacing {
+            get {
+                return ResourceManager.GetString("ssLabelLineSpacing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Bottom margin: ähnelt.
+        /// </summary>
+        public static string ssLabelMarginBottom {
+            get {
+                return ResourceManager.GetString("ssLabelMarginBottom", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Right margin: ähnelt.
+        /// </summary>
+        public static string ssLabelMarginRight {
+            get {
+                return ResourceManager.GetString("ssLabelMarginRight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Top margin: ähnelt.
+        /// </summary>
+        public static string ssLabelMarginTop {
+            get {
+                return ResourceManager.GetString("ssLabelMarginTop", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die All Slides ähnelt.
+        /// </summary>
+        public static string ssLabelMetaDisplayAllSlides {
+            get {
+                return ResourceManager.GetString("ssLabelMetaDisplayAllSlides", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die First Slide ähnelt.
+        /// </summary>
+        public static string ssLabelMetaDisplayFirstSlide {
+            get {
+                return ResourceManager.GetString("ssLabelMetaDisplayFirstSlide", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Last Slide ähnelt.
+        /// </summary>
+        public static string ssLabelMetaDisplayLastSlide {
+            get {
+                return ResourceManager.GetString("ssLabelMetaDisplayLastSlide", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Not Displayed ähnelt.
+        /// </summary>
+        public static string ssLabelMetaDisplayNone {
+            get {
+                return ResourceManager.GetString("ssLabelMetaDisplayNone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Right: ähnelt.
+        /// </summary>
+        public static string ssLabelRight {
+            get {
+                return ResourceManager.GetString("ssLabelRight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Direction: ähnelt.
+        /// </summary>
+        public static string ssLabelShadowDirection {
+            get {
+                return ResourceManager.GetString("ssLabelShadowDirection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Top: ähnelt.
+        /// </summary>
+        public static string ssLabelTop {
+            get {
+                return ResourceManager.GetString("ssLabelTop", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Block below text lines ähnelt.
+        /// </summary>
+        public static string ssLabelTranslationBlock {
+            get {
+                return ResourceManager.GetString("ssLabelTranslationBlock", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Inline between text lines ähnelt.
+        /// </summary>
+        public static string ssLabelTranslationInline {
+            get {
+                return ResourceManager.GetString("ssLabelTranslationInline", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Spacing between text and translation: ähnelt.
+        /// </summary>
+        public static string ssLabelTranslationLineSpacing {
+            get {
+                return ResourceManager.GetString("ssLabelTranslationLineSpacing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Copyright/Source ähnelt.
+        /// </summary>
+        public static string ssTabMeta {
+            get {
+                return ResourceManager.GetString("ssTabMeta", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Song Text ähnelt.
+        /// </summary>
+        public static string ssTabText {
+            get {
+                return ResourceManager.GetString("ssTabText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Format Song ähnelt.
+        /// </summary>
+        public static string ssTitle {
+            get {
+                return ResourceManager.GetString("ssTitle", resourceCulture);
             }
         }
         

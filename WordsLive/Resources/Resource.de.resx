@@ -837,4 +837,112 @@
   <data name="vMenuCreateSlideshow" xml:space="preserve">
     <value>Diashow erzeugen ...</value>
   </data>
+  <data name="cbRootNode" xml:space="preserve">
+    <value>Hintergrundbilder</value>
+  </data>
+  <data name="cfTooltipBold" xml:space="preserve">
+    <value>Fett</value>
+  </data>
+  <data name="cfTooltipFont" xml:space="preserve">
+    <value>Schriftart</value>
+  </data>
+  <data name="cfTooltipFontColor" xml:space="preserve">
+    <value>Schriftfarbe</value>
+  </data>
+  <data name="cfTooltipFontSize" xml:space="preserve">
+    <value>Schriftgröße</value>
+  </data>
+  <data name="cfTooltipItalic" xml:space="preserve">
+    <value>Kursiv</value>
+  </data>
+  <data name="cfTooltipOutline" xml:space="preserve">
+    <value>Umrandung</value>
+  </data>
+  <data name="cfTooltipShadow" xml:space="preserve">
+    <value>Schatten</value>
+  </data>
+  <data name="ssCheckboxOutline" xml:space="preserve">
+    <value>Umrandung</value>
+  </data>
+  <data name="ssCheckboxShadow" xml:space="preserve">
+    <value>Schatten</value>
+  </data>
+  <data name="ssGroupHeaderCopyright" xml:space="preserve">
+    <value>Copyright</value>
+  </data>
+  <data name="ssGroupHeaderFormatting" xml:space="preserve">
+    <value>Formatierung</value>
+  </data>
+  <data name="ssGroupHeaderLineSpacing" xml:space="preserve">
+    <value>Zeilenabstand</value>
+  </data>
+  <data name="ssGroupHeaderMargins" xml:space="preserve">
+    <value>Seitenränder</value>
+  </data>
+  <data name="ssGroupHeaderSource" xml:space="preserve">
+    <value>Quelle</value>
+  </data>
+  <data name="ssGroupHeaderTextAlignment" xml:space="preserve">
+    <value>Textausrichtung</value>
+  </data>
+  <data name="ssGroupHeaderTranslation" xml:space="preserve">
+    <value>Übersetzung</value>
+  </data>
+  <data name="ssLabelBottom" xml:space="preserve">
+    <value>Unten:</value>
+  </data>
+  <data name="ssLabelLeft" xml:space="preserve">
+    <value>Links:</value>
+  </data>
+  <data name="ssLabelLineSpacing" xml:space="preserve">
+    <value>Abstand zwischen Zeilen:</value>
+  </data>
+  <data name="ssLabelMarginBottom" xml:space="preserve">
+    <value>Abstand unten:</value>
+  </data>
+  <data name="ssLabelMarginRight" xml:space="preserve">
+    <value>Abstand rechts:</value>
+  </data>
+  <data name="ssLabelMarginTop" xml:space="preserve">
+    <value>Abstand oben:</value>
+  </data>
+  <data name="ssLabelMetaDisplayAllSlides" xml:space="preserve">
+    <value>Alle Folien</value>
+  </data>
+  <data name="ssLabelMetaDisplayFirstSlide" xml:space="preserve">
+    <value>Erste Folie</value>
+  </data>
+  <data name="ssLabelMetaDisplayLastSlide" xml:space="preserve">
+    <value>Letzte Folie</value>
+  </data>
+  <data name="ssLabelMetaDisplayNone" xml:space="preserve">
+    <value>Nicht anzeigen</value>
+  </data>
+  <data name="ssLabelRight" xml:space="preserve">
+    <value>Rechts:</value>
+  </data>
+  <data name="ssLabelShadowDirection" xml:space="preserve">
+    <value>Richtung:</value>
+  </data>
+  <data name="ssLabelTop" xml:space="preserve">
+    <value>Oben:</value>
+  </data>
+  <data name="ssLabelTranslationBlock" xml:space="preserve">
+    <value>Als Block unter dem Liedtext</value>
+  </data>
+  <data name="ssLabelTranslationInline" xml:space="preserve">
+    <value>Zwischen den Liedzeilen</value>
+  </data>
+  <data name="ssLabelTranslationLineSpacing" xml:space="preserve">
+    <value>Abstand zwischen Liedzeile und Übersetzung:</value>
+  </data>
+  <data name="ssTabMeta" xml:space="preserve">
+    <value>Copyright/Quelle</value>
+  </data>
+  <data name="ssTabText" xml:space="preserve">
+    <value>Liedtext</value>
+  </data>
+  <data name="ssTitle" xml:space="preserve">
+    <value>Lied formatieren</value>
+  </data>
 </root>

@@ -1,6 +1,6 @@
 ﻿<!--
 - WordsLive - worship projection software
-- Copyright (c) 2013 Patrick Reisert
+- Copyright (c) 2014 Patrick Reisert
 - 
 - This program is free software: you can redistribute it and/or modify
 - it under the terms of the GNU General Public License as published by
@@ -22,6 +22,7 @@
 		xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
 		xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
 		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+		xmlns:resx="clr-namespace:WordsLive.Resources"
 		mc:Ignorable="d" 
 		d:DesignHeight="26" d:DesignWidth="300">
 	<Grid>
@@ -34,7 +35,7 @@
 			<ColumnDefinition Width="*"/>
 			<ColumnDefinition Width="*"/>
 		</Grid.ColumnDefinitions>
-		<ComboBox ToolTip="Schriftart" Margin="0,0,6,0" x:Name="FontComboBox" Grid.Column="0" ItemsSource="{x:Static Fonts.SystemFontFamilies}">
+		<ComboBox ToolTip="{x:Static resx:Resource.cfTooltipFont}" Margin="0,0,6,0" x:Name="FontComboBox" Grid.Column="0" ItemsSource="{x:Static Fonts.SystemFontFamilies}">
 			<ComboBox.ItemTemplate>
 				<DataTemplate>
 					<TextBlock Text="{Binding}" FontFamily="{Binding}" FontSize="14"/>
@@ -46,11 +47,11 @@
 				</ItemsPanelTemplate>
 			</ComboBox.ItemsPanel>
 		</ComboBox>
-		<ToggleButton ToolTip="Fett" Width="26" Margin="0,0,6,0" Grid.Column="1" FontWeight="Bold" IsChecked="{Binding Font.Bold, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}">B</ToggleButton>
-		<ToggleButton ToolTip="Kursiv" Width="26" Margin="0,0,6,0" Grid.Column="2" FontStyle="Italic" IsChecked="{Binding Font.Italic, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}">I</ToggleButton>
-		<TextBox ToolTip="Schriftgröße" Width="26" Margin="0,0,6,0" Grid.Column="3" Text="{Binding Font.Size, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}"/>
-		<xctk:ColorPicker ToolTip="Schriftfarbe" Margin="0,0,6,0" Grid.Column="4" Width="50" Name="ColorPicker"/>
-		<TextBox ToolTip="Umrandung" Margin="0,0,6,0" Width="26" Grid.Column="5" Text="{Binding Font.Outline, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}"/>
-		<TextBox ToolTip="Schatten" Width="26" Grid.Column="6" Text="{Binding Font.Shadow, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}"/>
+		<ToggleButton ToolTip="{x:Static resx:Resource.cfTooltipBold}" Width="26" Margin="0,0,6,0" Grid.Column="1" FontWeight="Bold" IsChecked="{Binding Font.Bold, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}">B</ToggleButton>
+		<ToggleButton ToolTip="{x:Static resx:Resource.cfTooltipItalic}" Width="26" Margin="0,0,6,0" Grid.Column="2" FontStyle="Italic" IsChecked="{Binding Font.Italic, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}">I</ToggleButton>
+		<TextBox ToolTip="{x:Static resx:Resource.cfTooltipFontSize}" Width="26" Margin="0,0,6,0" Grid.Column="3" Text="{Binding Font.Size, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}"/>
+		<xctk:ColorPicker ToolTip="{x:Static resx:Resource.cfTooltipFontColor}" Margin="0,0,6,0" Grid.Column="4" Width="50" Name="ColorPicker"/>
+		<TextBox ToolTip="{x:Static resx:Resource.cfTooltipOutline}" Margin="0,0,6,0" Width="26" Grid.Column="5" Text="{Binding Font.Outline, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}"/>
+		<TextBox ToolTip="{x:Static resx:Resource.cfTooltipShadow}" Width="26" Grid.Column="6" Text="{Binding Font.Shadow, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}"/>
 	</Grid>
 </UserControl>

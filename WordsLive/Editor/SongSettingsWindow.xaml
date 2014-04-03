@@ -1,6 +1,6 @@
 ﻿<!--
 - WordsLive - worship projection software
-- Copyright (c) 2013 Patrick Reisert
+- Copyright (c) 2014 Patrick Reisert
 - 
 - This program is free software: you can redistribute it and/or modify
 - it under the terms of the GNU General Public License as published by
@@ -23,16 +23,15 @@
 		xmlns:songs="clr-namespace:WordsLive.Core.Songs;assembly=WordsLive.Core"
 		xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
 		xmlns:resx="clr-namespace:WordsLive.Resources"
-		Title="Lied formatieren" Height="500" Width="352" MinHeight="500" MinWidth="350"
+		Title="{x:Static resx:Resource.ssTitle}" Height="500" Width="352" MinHeight="500" MinWidth="350"
 		Icon="/WordsLive;component/Artwork/Formatting.png">
-	<!-- TODO: localize -->
 	<Grid>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="*"/>
 			<RowDefinition Height="Auto"/>
 		</Grid.RowDefinitions>
 		<TabControl Grid.Row="0">
-			<TabItem Header="Liedtext">
+			<TabItem Header="{x:Static resx:Resource.ssTabText}">
 				<Grid>
 					<Grid.ColumnDefinitions>
 						<ColumnDefinition Width="Auto"/>
@@ -44,7 +43,7 @@
 						<RowDefinition Height="Auto"/>
 						<RowDefinition Height="Auto"/>
 					</Grid.RowDefinitions>
-					<GroupBox Header="Textausrichtung" Grid.Column="0" Grid.Row="0" Grid.RowSpan="2">
+					<GroupBox Header="{x:Static resx:Resource.ssGroupHeaderTextAlignment}" Grid.Column="0" Grid.Row="0" Grid.RowSpan="2">
 						<Grid>
 							<Grid.RowDefinitions>
 								<RowDefinition Height="Auto"/>
@@ -94,7 +93,7 @@
 							</RadioButton>
 						</Grid>
 					</GroupBox>
-					<GroupBox Header="Seitenränder" Grid.Column="1" Grid.Row="0">
+					<GroupBox Header="{x:Static resx:Resource.ssGroupHeaderMargins}" Grid.Column="1" Grid.Row="0">
 						<Grid>
 							<Grid.ColumnDefinitions>
 								<ColumnDefinition Width="Auto"/>
@@ -106,13 +105,13 @@
 								<RowDefinition Height="Auto"/>
 								<RowDefinition Height="Auto"/>
 							</Grid.RowDefinitions>
-							<Label Grid.Row="0" Grid.Column="0">Oben:</Label>
+							<Label Grid.Row="0" Grid.Column="0" Content="{x:Static resx:Resource.ssLabelTop}"/>
 							<TextBox Grid.Row="0" Grid.Column="1" Text="{Binding BorderTop, ValidatesOnDataErrors=True}" Style="{StaticResource textBoxInError}"/>
-							<Label Grid.Row="1" Grid.Column="0">Unten:</Label>
+							<Label Grid.Row="1" Grid.Column="0" Content="{x:Static resx:Resource.ssLabelBottom}"/>
 							<TextBox Grid.Row="1" Grid.Column="1" Text="{Binding BorderBottom, ValidatesOnDataErrors=True}" Style="{StaticResource textBoxInError}"/>
-							<Label Grid.Row="0" Grid.Column="2">Links:</Label>
+							<Label Grid.Row="0" Grid.Column="2" Content="{x:Static resx:Resource.ssLabelLeft}"/>
 							<TextBox Grid.Row="0" Grid.Column="3" Text="{Binding BorderLeft, ValidatesOnDataErrors=True}" Style="{StaticResource textBoxInError}"/>
-							<Label Grid.Row="1" Grid.Column="2">Rechts:</Label>
+							<Label Grid.Row="1" Grid.Column="2" Content="{x:Static resx:Resource.ssLabelRight}"/>
 							<TextBox Grid.Row="1" Grid.Column="3" Text="{Binding BorderRight, ValidatesOnDataErrors=True}" Style="{StaticResource textBoxInError}"/>
 							</Grid>
 					</GroupBox>
@@ -124,18 +123,18 @@
 							<ColumnDefinition Width="Auto"/>
 							<ColumnDefinition Width="*"/>
 						</Grid.ColumnDefinitions>
-						<GroupBox Grid.Column="1" Header="Zeilenabstand">
+						<GroupBox Grid.Column="1" Header="{x:Static resx:Resource.ssGroupHeaderLineSpacing}">
 							<Grid>
 								<Grid.ColumnDefinitions>
 									<ColumnDefinition Width="Auto"/>
 									<ColumnDefinition/>
 								</Grid.ColumnDefinitions>
-								<Label Grid.Row="0" Grid.Column="0">Abstand zwischen Zeilen:</Label>
+								<Label Grid.Row="0" Grid.Column="0" Content="{x:Static resx:Resource.ssLabelLineSpacing}"/>
 								<TextBox Grid.Row="0" Grid.Column="1" Text="{Binding TextLineSpacing, ValidatesOnDataErrors=True}" Style="{StaticResource textBoxInError}"/>
 							</Grid>
 						</GroupBox>
 						</Grid>
-					<GroupBox Header="Formatierung" Grid.Row="2" Grid.ColumnSpan="2">
+					<GroupBox Header="{x:Static resx:Resource.ssGroupHeaderFormatting}" Grid.Row="2" Grid.ColumnSpan="2">
 						<Grid>
 							<Grid.RowDefinitions>
 								<RowDefinition Height="Auto"/>
@@ -149,17 +148,17 @@
 								<ColumnDefinition Width="Auto"/>
 								<ColumnDefinition Width="*"/>
 							</Grid.ColumnDefinitions>
-							<CheckBox x:Name="OutlineCheckbox" Grid.Row="0" VerticalAlignment="Center" IsChecked="{Binding IsOutlineEnabled}">Umrandung</CheckBox>
+							<CheckBox x:Name="OutlineCheckbox" Grid.Row="0" VerticalAlignment="Center" IsChecked="{Binding IsOutlineEnabled}" Content="{x:Static resx:Resource.ssCheckboxOutline}"/>
 							<xctk:ColorPicker SelectedColor="{Binding OutlineColor}" IsEnabled="{Binding ElementName=OutlineCheckbox, Path=IsChecked}" Grid.Row="0" Grid.Column="1" Width="50" Margin="6,0,0,3" HorizontalAlignment="Left"/>
-							<CheckBox x:Name="ShadowCheckbox" Grid.Row="1" VerticalAlignment="Center" IsChecked="{Binding IsShadowEnabled}">Schatten</CheckBox>
+							<CheckBox x:Name="ShadowCheckbox" Grid.Row="1" VerticalAlignment="Center" IsChecked="{Binding IsShadowEnabled}" Content="{x:Static resx:Resource.ssCheckboxShadow}"/>
 							<xctk:ColorPicker SelectedColor="{Binding ShadowColor}" IsEnabled="{Binding ElementName=ShadowCheckbox, Path=IsChecked}" Grid.Row="1" Grid.Column="1" Width="50" Margin="6,0,0,3"  HorizontalAlignment="Left"/>
-							<Label Grid.Row="1" Grid.Column="2">Richtung:</Label>
+							<Label Grid.Row="1" Grid.Column="2" Content="{x:Static resx:Resource.ssLabelShadowDirection}"/>
 							<TextBox IsEnabled="{Binding ElementName=ShadowCheckbox, Path=IsChecked}" Grid.Row="1" Grid.Column="3" Text="{Binding ShadowDirection}"></TextBox>
 							<local:ChooseFontControl Grid.ColumnSpan="4" Grid.Row="2" Font="{Binding MainText}"/>
 							<CheckBox Grid.Row="3" Grid.ColumnSpan="4" Margin="0,6" Content="{x:Static resx:Resource.eToolbarSingleFontSize}" IsChecked="{Binding SingleFontSize}" />
 						</Grid>
 					</GroupBox>
-					<GroupBox Header="Übersetzung" Grid.Row="3" Grid.ColumnSpan="2">
+					<GroupBox Header="{x:Static resx:Resource.ssGroupHeaderTranslation}" Grid.Row="3" Grid.ColumnSpan="2">
 						<Grid>
 							<Grid.RowDefinitions>
 								<RowDefinition Height="Auto"/>
@@ -171,22 +170,22 @@
 								<ColumnDefinition Width="Auto"/>
 								<ColumnDefinition Width="*"/>
 							</Grid.ColumnDefinitions>
-							<RadioButton Grid.ColumnSpan="2" Grid.Row="0" IsChecked="{Binding TranslationPosition, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static songs:TranslationPosition.Inline}}">Zwischen den Liedzeilen</RadioButton>
-							<RadioButton Grid.ColumnSpan="2" Grid.Row="1" IsEnabled="False" IsChecked="{Binding TranslationPosition, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static songs:TranslationPosition.Block}}">Als Block unter dem Liedtext</RadioButton>
-							<Label Grid.Row="2" Grid.Column="0">Abstand zwischen Liedzeile und Übersetzung:</Label>
+							<RadioButton Grid.ColumnSpan="2" Grid.Row="0" IsChecked="{Binding TranslationPosition, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static songs:TranslationPosition.Inline}}" Content="{x:Static resx:Resource.ssLabelTranslationInline}"/>
+							<RadioButton Grid.ColumnSpan="2" Grid.Row="1" IsEnabled="False" IsChecked="{Binding TranslationPosition, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static songs:TranslationPosition.Block}}" Content="{x:Static resx:Resource.ssLabelTranslationBlock}"/>
+							<Label Grid.Row="2" Grid.Column="0" Content="{x:Static resx:Resource.ssLabelTranslationLineSpacing}"/>
 							<TextBox Grid.Row="2" Grid.Column="1" Text="{Binding TranslationLineSpacing, ValidatesOnDataErrors=True}" Style="{StaticResource textBoxInError}"/>
 							<local:ChooseFontControl Margin="0,6,0,0" Grid.Row="3" Grid.ColumnSpan="2" Font="{Binding TranslationText}"/>
 						</Grid>
 					</GroupBox>
 				</Grid>
 			</TabItem>
-			<TabItem Header="Copyright/Quelle">
+			<TabItem Header="{x:Static resx:Resource.ssTabMeta}">
 				<Grid>
 					<Grid.RowDefinitions>
 						<RowDefinition Height="Auto"/>
 						<RowDefinition Height="Auto"/>
 					</Grid.RowDefinitions>
-					<GroupBox Header="Copyright" Grid.Row="0">
+					<GroupBox Header="{x:Static resx:Resource.ssGroupHeaderCopyright}" Grid.Row="0">
 						<Grid>
 							<Grid.ColumnDefinitions>
 								<ColumnDefinition Width="Auto"/>
@@ -197,10 +196,10 @@
 								<RowDefinition Height="Auto"/>
 							</Grid.RowDefinitions>
 							<StackPanel Grid.Column="0" Grid.Row="0" Margin="0,0,6,0">
-								<RadioButton IsChecked="{Binding CopyrightDisplayPosition, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static songs:MetadataDisplayPosition.FirstSlide}}">Erste Folie</RadioButton>
-								<RadioButton IsChecked="{Binding CopyrightDisplayPosition, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static songs:MetadataDisplayPosition.LastSlide}}">Letzte Folie</RadioButton>
-								<RadioButton IsChecked="{Binding CopyrightDisplayPosition, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static songs:MetadataDisplayPosition.AllSlides}}">Alle Folien</RadioButton>
-								<RadioButton IsChecked="{Binding CopyrightDisplayPosition, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static songs:MetadataDisplayPosition.None}}">Nicht anzeigen</RadioButton>
+								<RadioButton IsChecked="{Binding CopyrightDisplayPosition, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static songs:MetadataDisplayPosition.FirstSlide}}" Content="{x:Static resx:Resource.ssLabelMetaDisplayFirstSlide}"/>
+								<RadioButton IsChecked="{Binding CopyrightDisplayPosition, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static songs:MetadataDisplayPosition.LastSlide}}" Content="{x:Static resx:Resource.ssLabelMetaDisplayLastSlide}"/>
+								<RadioButton IsChecked="{Binding CopyrightDisplayPosition, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static songs:MetadataDisplayPosition.AllSlides}}" Content="{x:Static resx:Resource.ssLabelMetaDisplayAllSlides}"/>
+								<RadioButton IsChecked="{Binding CopyrightDisplayPosition, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static songs:MetadataDisplayPosition.None}}" Content="{x:Static resx:Resource.ssLabelMetaDisplayNone}"/>
 							</StackPanel>
 							<Grid Grid.Column="1" Grid.Row="0">
 								<Grid.ColumnDefinitions>
@@ -210,13 +209,13 @@
 								<Grid.RowDefinitions>
 									<RowDefinition Height="Auto"/>
 								</Grid.RowDefinitions>
-								<Label Grid.Column="0" Grid.Row="0">Abstand unten:</Label>
+								<Label Grid.Column="0" Grid.Row="0" Content="{x:Static resx:Resource.ssLabelMarginBottom}"></Label>
 								<TextBox Grid.Column="1" Grid.Row="0" Text="{Binding CopyrightBorderBottom}"/>
 							</Grid>
 							<local:ChooseFontControl Margin="0,6,0,0" Grid.Row="1" Grid.ColumnSpan="2" Font="{Binding CopyrightText}"/>
 						</Grid>
 					</GroupBox>
-					<GroupBox Header="Quelle" Grid.Row="1">
+					<GroupBox Header="{x:Static resx:Resource.ssGroupHeaderSource}" Grid.Row="1">
 						<Grid>
 							<Grid.ColumnDefinitions>
 								<ColumnDefinition Width="Auto"/>
@@ -227,10 +226,10 @@
 								<RowDefinition Height="Auto"/>
 							</Grid.RowDefinitions>
 							<StackPanel Grid.Column="0" Margin="0,0,6,0">
-								<RadioButton IsChecked="{Binding SourceDisplayPosition, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static songs:MetadataDisplayPosition.FirstSlide}}">Erste Folie</RadioButton>
-								<RadioButton IsChecked="{Binding SourceDisplayPosition, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static songs:MetadataDisplayPosition.LastSlide}}">Letzte Folie</RadioButton>
-								<RadioButton IsChecked="{Binding SourceDisplayPosition, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static songs:MetadataDisplayPosition.AllSlides}}">Alle Folien</RadioButton>
-								<RadioButton IsChecked="{Binding SourceDisplayPosition, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static songs:MetadataDisplayPosition.None}}">Nicht anzeigen</RadioButton>
+								<RadioButton IsChecked="{Binding SourceDisplayPosition, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static songs:MetadataDisplayPosition.FirstSlide}}" Content="{x:Static resx:Resource.ssLabelMetaDisplayFirstSlide}"/>
+								<RadioButton IsChecked="{Binding SourceDisplayPosition, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static songs:MetadataDisplayPosition.LastSlide}}" Content="{x:Static resx:Resource.ssLabelMetaDisplayLastSlide}"/>
+								<RadioButton IsChecked="{Binding SourceDisplayPosition, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static songs:MetadataDisplayPosition.AllSlides}}" Content="{x:Static resx:Resource.ssLabelMetaDisplayAllSlides}"/>
+								<RadioButton IsChecked="{Binding SourceDisplayPosition, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static songs:MetadataDisplayPosition.None}}" Content="{x:Static resx:Resource.ssLabelMetaDisplayNone}"/>
 							</StackPanel>
 							<Grid Grid.Column="1">
 								<Grid.ColumnDefinitions>
@@ -241,9 +240,9 @@
 									<RowDefinition Height="Auto"/>
 									<RowDefinition Height="Auto"/>
 								</Grid.RowDefinitions>
-								<Label Grid.Column="0" Grid.Row="0">Abstand oben:</Label>
+								<Label Grid.Column="0" Grid.Row="0" Content="{x:Static resx:Resource.ssLabelMarginTop}"/>
 								<TextBox Grid.Column="1" Grid.Row="0" Text="{Binding SourceBorderTop}"/>
-								<Label Grid.Column="0" Grid.Row="1">Abstand rechts:</Label>
+								<Label Grid.Column="0" Grid.Row="1" Content="{x:Static resx:Resource.ssLabelMarginRight}"/>
 								<TextBox Grid.Column="1" Grid.Row="1" Text="{Binding SourceBorderRight}"/>
 							</Grid>
 							<local:ChooseFontControl Margin="0,6,0,0" Grid.Row="1" Grid.ColumnSpan="2" Font="{Binding SourceText}"/>

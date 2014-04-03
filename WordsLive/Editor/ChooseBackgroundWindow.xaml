@@ -69,7 +69,7 @@
 										<Setter Property="Text" Value="{Binding Name}"/>
 										<Style.Triggers>
 											<DataTrigger Binding="{Binding Path=IsRoot}" Value="True">
-												<Setter Property="Text" Value="Backgrounds" /> <!-- TODO: localize -->
+												<Setter Property="Text" Value="{x:Static resx:Resource.cbRootNode}" />
 											</DataTrigger>
 										</Style.Triggers>
 									</Style>
