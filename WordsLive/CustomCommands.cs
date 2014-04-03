@@ -18,255 +18,249 @@
 
 using System;
 using System.Windows.Input;
+using WordsLive.Utils;
 
 namespace WordsLive
 {
 	// TODO: move some commands to class where they are used (use DelegateCommand?)
 	public static class CustomCommands
 	{
-		public static RoutedCommand Exit
+		#region Valid Custom RoutedCommands
+		public static LocalizedRoutedCommand Exit
 		{
 			get;
 			private set;
 		}
 
-		public static RoutedCommand CheckForUpdates
+		public static LocalizedRoutedCommand SwitchWindow
 		{
 			get;
 			private set;
 		}
 
-		public static RoutedCommand ShowAboutDialog
+		public static LocalizedRoutedCommand Rename
 		{
 			get;
 			private set;
 		}
 
-		public static RoutedCommand ShowSonglist
+		public static LocalizedRoutedCommand Insert
 		{
 			get;
 			private set;
 		}
 
-		public static RoutedCommand SwitchWindow
+		public static LocalizedRoutedCommand MoveUp
 		{
 			get;
 			private set;
 		}
 
-		public static RoutedCommand EditActive
+		public static LocalizedRoutedCommand MoveDown
+		{
+			get;
+			private set;
+		}
+		#endregion
+
+		public static LocalizedRoutedCommand OpenInEditor
 		{
 			get;
 			private set;
 		}
 
-		// TODO: move to editor class
-		public static RoutedCommand OpenInEditor
+		public static LocalizedRoutedCommand ShowSettings
 		{
 			get;
 			private set;
 		}
 
-		public static RoutedCommand Export
+		public static LocalizedRoutedCommand ChooseBackground
 		{
 			get;
 			private set;
 		}
 
-		public static RoutedCommand ImportFromClipboard
+		public static LocalizedRoutedCommand ChoosePresentationArea
 		{
 			get;
 			private set;
 		}
 
-		public static RoutedCommand Activate
+		public static LocalizedRoutedCommand AddMedia
 		{
 			get;
 			private set;
 		}
 
-		public static RoutedCommand ShowSettings
+		public static LocalizedRoutedCommand HidePresentation
 		{
 			get;
 			private set;
 		}
 
-		public static RoutedCommand ViewCurrent
+		public static LocalizedRoutedCommand Blackscreen
 		{
 			get;
 			private set;
 		}
 
-		public static RoutedCommand ChooseBackground
+		public static LocalizedRoutedCommand ShowPresentation
 		{
 			get;
 			private set;
 		}
 
-		public static RoutedCommand ChoosePresentationArea
+		public static LocalizedRoutedCommand ToggleBlackscreen
 		{
 			get;
 			private set;
 		}
 
-		public static RoutedCommand Rename
+		#region Only used in Viewer
+		// These should probably not be routed commands
+		public static LocalizedRoutedCommand CheckForUpdates
 		{
 			get;
 			private set;
 		}
 
-		public static RoutedCommand Insert
+		public static LocalizedRoutedCommand ShowAboutDialog
 		{
 			get;
 			private set;
 		}
 
-		public static RoutedCommand MoveUp
+		public static LocalizedRoutedCommand Activate
 		{
 			get;
 			private set;
 		}
 
-		public static RoutedCommand MoveDown
+		public static LocalizedRoutedCommand EditActive
 		{
 			get;
 			private set;
 		}
 
-		public static RoutedCommand AddPart
+		public static LocalizedRoutedCommand ShowTestImage
 		{
 			get;
 			private set;
 		}
 
-		public static RoutedCommand Duplicate
+		public static LocalizedRoutedCommand ShowNotification
 		{
 			get;
 			private set;
 		}
 
-		public static RoutedCommand Split
+		public static LocalizedRoutedCommand RotateLeft
 		{
 			get;
 			private set;
 		}
 
-		public static RoutedCommand SwapTextAndTranslation
+		public static LocalizedRoutedCommand RotateRight
 		{
 			get;
 			private set;
 		}
 
-		public static RoutedCommand SongSettings
+		public static LocalizedRoutedCommand CreateSlideshow
+		{
+			get;
+			private set;
+		}
+		#endregion
+
+		#region Only used in Editor
+		// These should probably not be routed commands
+		public static LocalizedRoutedCommand Export
 		{
 			get;
 			private set;
 		}
 
-		public static RoutedCommand EditChords
+		public static LocalizedRoutedCommand ViewCurrent
 		{
 			get;
 			private set;
 		}
 
-		public static RoutedCommand AddMedia
+		public static LocalizedRoutedCommand AddPart
 		{
 			get;
 			private set;
 		}
 
-		public static RoutedCommand HidePresentation
+		public static LocalizedRoutedCommand Duplicate
 		{
 			get;
 			private set;
 		}
 
-		public static RoutedCommand Blackscreen
+		public static LocalizedRoutedCommand Split
 		{
 			get;
 			private set;
 		}
 
-		public static RoutedCommand ShowPresentation
+		public static LocalizedRoutedCommand SwapTextAndTranslation
 		{
 			get;
 			private set;
 		}
 
-		public static RoutedCommand ToggleBlackscreen
+		public static LocalizedRoutedCommand SongSettings
 		{
 			get;
 			private set;
 		}
 
-		public static RoutedCommand ShowTestImage
+		public static LocalizedRoutedCommand EditChords
 		{
 			get;
 			private set;
 		}
-
-		public static RoutedCommand ShowNotification
-		{
-			get;
-			private set;
-		}
-
-		public static RoutedCommand RotateLeft
-		{
-			get;
-			private set;
-		}
-
-		public static RoutedCommand RotateRight
-		{
-			get;
-			private set;
-		}
-
-		public static RoutedCommand CreateSlideshow
-		{
-			get;
-			private set;
-		}
+		#endregion
 
 		static CustomCommands()
 		{
 			Type t = typeof(CustomCommands);
 
-			Exit = new RoutedCommand("Exit", t);
-			CheckForUpdates = new RoutedCommand("CheckForUpdates", t);
-			ShowAboutDialog = new RoutedCommand("ShowAboutDialog", t);
-			ShowSonglist = new RoutedCommand("ShowSonglist", t, new InputGestureCollection { new KeyGesture(Key.F, ModifierKeys.Control) });
-			SwitchWindow = new RoutedCommand("SwitchWindow", t, new InputGestureCollection { new KeyGesture(Key.W, ModifierKeys.Control) });
-			EditActive = new RoutedCommand("EditActive", t);
-			OpenInEditor = new RoutedCommand("OpenInEditor", t);
-			Export = new RoutedCommand("Export", t);
-			ImportFromClipboard = new RoutedCommand("ImportFromClipboard", t, new InputGestureCollection { new KeyGesture(Key.V, ModifierKeys.Control) });
-			Activate = new RoutedCommand("Activate", t);
-			ShowSettings = new RoutedCommand("ShowSettings", t);
-			ViewCurrent = new RoutedCommand("ViewCurrent", t);
-			ChooseBackground = new RoutedCommand("ChooseBackground", t);
-			ChoosePresentationArea = new RoutedCommand("ChoosePresentationArea", t);
-			Rename = new RoutedCommand("Rename", t, new InputGestureCollection { new KeyGesture(Key.F2) });
-			Insert = new RoutedCommand("Insert", t, new InputGestureCollection { new KeyGesture(Key.Insert) });
-			MoveUp = new RoutedCommand("MoveUp", t);
-			MoveDown = new RoutedCommand("MoveDown", t);
-			AddPart = new RoutedCommand("AddPart", t);
-			Duplicate = new RoutedCommand("Duplicate", t);
-			Split = new RoutedCommand("Split", t);
-			SwapTextAndTranslation = new RoutedCommand("SwapTextAndTranslation", t);
-			SongSettings = new RoutedCommand("SongSettings", t);
-			EditChords = new RoutedCommand("EditChords", t);
-			AddMedia = new RoutedCommand("AddMedia", t);
-			HidePresentation = new RoutedCommand("HidePresentation", t, new InputGestureCollection { new KeyGesture(Key.F6) });
-			Blackscreen = new RoutedCommand("Blackscreen", t, new InputGestureCollection { new KeyGesture(Key.F7) });
-			ShowPresentation = new RoutedCommand("ShowPresentation", t, new InputGestureCollection { new KeyGesture(Key.F8) });
-			ToggleBlackscreen = new RoutedCommand("ToggleBlackscreen", t); // TODO: add configurable keyboard shortcut
-			ShowTestImage = new RoutedCommand("ShowTestImage", t);
-			ShowNotification = new RoutedCommand("ShowNotification", t);
-			RotateLeft = new RoutedCommand("RotateLeft", t);
-			RotateRight = new RoutedCommand("RotateRight", t);
-			CreateSlideshow = new RoutedCommand("CreateSlideshow", t);
+			Exit = new LocalizedRoutedCommand("Exit", t, new InputGestureCollection { new KeyGesture(Key.F4, ModifierKeys.Alt) });
+			CheckForUpdates = new LocalizedRoutedCommand("CheckForUpdates", t);
+			ShowAboutDialog = new LocalizedRoutedCommand("ShowAboutDialog", t);
+			SwitchWindow = new LocalizedRoutedCommand("SwitchWindow", t, new InputGestureCollection { new KeyGesture(Key.W, ModifierKeys.Control) });
+			EditActive = new LocalizedRoutedCommand("EditActive", t);
+			OpenInEditor = new LocalizedRoutedCommand("OpenInEditor", t);
+			Export = new LocalizedRoutedCommand("Export", t);
+			Activate = new LocalizedRoutedCommand("Activate", t);
+			ShowSettings = new LocalizedRoutedCommand("ShowSettings", t);
+			ViewCurrent = new LocalizedRoutedCommand("ViewCurrent", t);
+			ChooseBackground = new LocalizedRoutedCommand("ChooseBackground", t);
+			ChoosePresentationArea = new LocalizedRoutedCommand("ChoosePresentationArea", t);
+			Rename = new LocalizedRoutedCommand("Rename", t, new InputGestureCollection { new KeyGesture(Key.F2) });
+			Insert = new LocalizedRoutedCommand("Insert", t, new InputGestureCollection { new KeyGesture(Key.Insert) });
+			MoveUp = new LocalizedRoutedCommand("MoveUp", t, new InputGestureCollection { new KeyGesture(Key.Up, ModifierKeys.Control) });
+			MoveDown = new LocalizedRoutedCommand("MoveDown", t, new InputGestureCollection { new KeyGesture(Key.Down, ModifierKeys.Control) });
+			AddPart = new LocalizedRoutedCommand("AddPart", t);
+			Duplicate = new LocalizedRoutedCommand("Duplicate", t);
+			Split = new LocalizedRoutedCommand("Split", t);
+			SwapTextAndTranslation = new LocalizedRoutedCommand("SwapTextAndTranslation", t);
+			SongSettings = new LocalizedRoutedCommand("SongSettings", t);
+			EditChords = new LocalizedRoutedCommand("EditChords", t);
+			AddMedia = new LocalizedRoutedCommand("AddMedia", t, new InputGestureCollection { new KeyGesture(Key.M, ModifierKeys.Control) });
+			HidePresentation = new LocalizedRoutedCommand("HidePresentation", t, new InputGestureCollection { new KeyGesture(Key.F6) });
+			Blackscreen = new LocalizedRoutedCommand("Blackscreen", t, new InputGestureCollection { new KeyGesture(Key.F7) });
+			ShowPresentation = new LocalizedRoutedCommand("ShowPresentation", t, new InputGestureCollection { new KeyGesture(Key.F8) });
+			ToggleBlackscreen = new LocalizedRoutedCommand("ToggleBlackscreen", t); // TODO: add configurable keyboard shortcut
+			ShowTestImage = new LocalizedRoutedCommand("ShowTestImage", t);
+			ShowNotification = new LocalizedRoutedCommand("ShowNotification", t);
+			RotateLeft = new LocalizedRoutedCommand("RotateLeft", t);
+			RotateRight = new LocalizedRoutedCommand("RotateRight", t);
+			CreateSlideshow = new LocalizedRoutedCommand("CreateSlideshow", t);
 		}
 	}
 }

@@ -1,6 +1,6 @@
 ﻿<!--
 - WordsLive - worship projection software
-- Copyright (c) 2013 Patrick Reisert
+- Copyright (c) 2014 Patrick Reisert
 - 
 - This program is free software: you can redistribute it and/or modify
 - it under the terms of the GNU General Public License as published by
@@ -38,13 +38,13 @@
 		<CommandBinding Command="SaveAs" Executed="OnExecuteCommand" CanExecute="OnCommandCanExecute"/>
 		<CommandBinding Command="Close" Executed="OnExecuteCommand" CanExecute="OnCommandCanExecute"/>
 		<CommandBinding Command="{x:Static local:CustomCommands.Export}" Executed="OnExecuteCommand" CanExecute="OnCommandCanExecute"/>
-		<CommandBinding Command="{x:Static local:CustomCommands.ImportFromClipboard}" Executed="OnExecuteCommand" CanExecute="OnCommandCanExecute"/>
+		<CommandBinding Command="Paste" Executed="OnExecuteCommand" CanExecute="OnCommandCanExecute"/>
 		<CommandBinding Command="{x:Static local:CustomCommands.SwitchWindow}" Executed="OnExecuteCommand"/>
 		<CommandBinding Command="{x:Static local:CustomCommands.ViewCurrent}" Executed="OnExecuteCommand" CanExecute="OnCommandCanExecute"/>
 		<CommandBinding Command="{x:Static local:CustomCommands.SongSettings}" Executed="OnExecuteCommand" CanExecute="OnCommandCanExecute"/>
 		<CommandBinding Command="{x:Static local:CustomCommands.EditChords}" Executed="OnExecuteCommand" CanExecute="OnCommandCanExecute"/>
 		<CommandBinding Command="{x:Static local:CustomCommands.AddMedia}" Executed="OnExecuteCommand" CanExecute="OnCommandCanExecute"/>
-		<CommandBinding Command="{x:Static local:CustomCommands.ShowSonglist}" Executed="OnExecuteCommand"/>
+		<CommandBinding Command="Find" Executed="OnExecuteCommand"/>
 	</Window.CommandBindings>
 	<Window.Resources>
 		<DataTemplate x:Key="ClosableTabItemTemplate">
@@ -114,7 +114,7 @@
 					Header="{Binding Converter={StaticResource AppendEllipsisConverter}, ConverterParameter={x:Static resx:Resource.eMenuExportSong}}" Command="{x:Static local:CustomCommands.Export}"/>
 				<Separator/>
 				<MenuItem
-					Header="{x:Static resx:Resource.eMenuImportFromClipboard}" Command="{x:Static local:CustomCommands.ImportFromClipboard}"/>
+					Header="{x:Static resx:Resource.eMenuImportFromClipboard}" Command="Paste"/>
 				<Separator/>
 				<MenuItem
 					Header="{x:Static resx:Resource.eMenuAddToPortfolio}" Command="{x:Static local:CustomCommands.AddMedia}"/>
@@ -146,12 +146,12 @@
 				<MenuItem Header="{Binding Converter={StaticResource AppendEllipsisConverter}, ConverterParameter={x:Static resx:Resource.eMenuEditChords}}" Command="{x:Static local:CustomCommands.EditChords}"/>
 			</MenuItem>
 			<MenuItem Header="{x:Static resx:Resource.veMenuWindow}">
-				<MenuItem Header="{x:Static resx:Resource.veMenuShowSonglist}" Command="{x:Static local:CustomCommands.ShowSonglist}">
+				<MenuItem Header="{x:Static resx:Resource.veMenuShowSonglist}" Command="Find">
 					<MenuItem.Icon>
 						<Image Width="24" Source="/WordsLive;component/Artwork/Songlist.png" />
 					</MenuItem.Icon>
 				</MenuItem>
-				<MenuItem Header="{x:Static resx:Resource.eMenuShowPresenter}" Command="{x:Static local:CustomCommands.SwitchWindow}">
+				<MenuItem Header="{x:Static resx:Resource.eMenuShowPresenter}" Command="{x:Static local:CustomCommands.SwitchWindow}"  InputGestureText="{Binding Command.GestureText, RelativeSource={RelativeSource Self}}">
 					<MenuItem.Icon>
 						<Image Width="24" Source="/WordsLive;component/Artwork/Viewer.png" />
 					</MenuItem.Icon>

@@ -47,7 +47,7 @@
 		<CommandBinding Command="Help" Executed="OnExecuteCommand"/>
 		<CommandBinding Command="{x:Static local:CustomCommands.CheckForUpdates}" Executed="OnExecuteCommand"/>
 		<CommandBinding Command="{x:Static local:CustomCommands.ShowAboutDialog}" Executed="OnExecuteCommand"/>
-		<CommandBinding Command="{x:Static local:CustomCommands.ShowSonglist}" Executed="OnExecuteCommand"/>
+		<CommandBinding Command="Find" Executed="OnExecuteCommand"/>
 		<CommandBinding Command="{x:Static local:CustomCommands.EditActive}" CanExecute="OnCommandCanExecute" Executed="OnExecuteCommand"/>
 		<CommandBinding Command="{x:Static local:CustomCommands.SwitchWindow}" Executed="OnExecuteCommand"/>
 		<CommandBinding Command="{x:Static local:CustomCommands.ShowSettings}" Executed="OnExecuteCommand"/>
@@ -87,7 +87,7 @@
 				</MenuItem>
 				<MenuItem Header="{Binding Converter={StaticResource AppendEllipsisConverter}, ConverterParameter={x:Static resx:Resource.vMenuSavePortfolioAs}}" Command="SaveAs"/>
 				<Separator/>
-				<MenuItem Header="{Binding Converter={StaticResource AppendEllipsisConverter}, ConverterParameter={x:Static resx:Resource.vMenuSettings}}" Command="{x:Static local:CustomCommands.ShowSettings}">
+				<MenuItem Header="{Binding Converter={StaticResource AppendEllipsisConverter}, ConverterParameter={x:Static resx:Resource.vMenuSettings}}" Command="{x:Static local:CustomCommands.ShowSettings}" InputGestureText="{Binding Command.GestureText, RelativeSource={RelativeSource Self}}">
 					<MenuItem.Icon>
 						<Image Width="24" Source="/WordsLive;component/Artwork/Settings.png" />
 					</MenuItem.Icon>
@@ -96,8 +96,12 @@
 				<MenuItem Header="{x:Static resx:Resource.vMenuExit}" Command="{x:Static local:CustomCommands.Exit}"/>
 			</MenuItem>
 			<MenuItem Header="{x:Static resx:Resource.vMenuMedia}">
-				<MenuItem Header="{Binding Converter={StaticResource AppendEllipsisConverter}, ConverterParameter={x:Static resx:Resource.vMenuAddMedia}}" Command="{x:Static local:CustomCommands.AddMedia}"/>
-				<MenuItem Header="{x:Static resx:Resource.vMenuShowSonglist}" Command="{x:Static local:CustomCommands.ShowSonglist}">
+				<MenuItem Header="{Binding Converter={StaticResource AppendEllipsisConverter}, ConverterParameter={x:Static resx:Resource.vMenuAddMedia}}" Command="{x:Static local:CustomCommands.AddMedia}" InputGestureText="{Binding Command.GestureText, RelativeSource={RelativeSource Self}}">
+					<MenuItem.Icon>
+						<Image Width="16" Source="/WordsLive;component/Artwork/Small_Plus.png" />
+					</MenuItem.Icon>
+				</MenuItem>
+				<MenuItem Header="{x:Static resx:Resource.vMenuShowSonglist}" Command="Find">
 					<MenuItem.Icon>
 						<Image Width="24" Source="/WordsLive;component/Artwork/Songlist.png" />
 					</MenuItem.Icon>
@@ -132,12 +136,12 @@
 				<MenuItem Header="{Binding Converter={StaticResource AppendEllipsisConverter}, ConverterParameter={x:Static resx:Resource.vMenuShowNotification}}" Command="{x:Static local:CustomCommands.ShowNotification}"/>
 			</MenuItem>
 			<MenuItem Header="{x:Static resx:Resource.veMenuWindow}">
-				<MenuItem Header="{x:Static resx:Resource.veMenuShowSonglist}" Command="{x:Static local:CustomCommands.ShowSonglist}">
+				<MenuItem Header="{x:Static resx:Resource.veMenuShowSonglist}" Command="Find">
 					<MenuItem.Icon>
 						<Image Width="24" Source="/WordsLive;component/Artwork/Songlist.png" />
 					</MenuItem.Icon>
 				</MenuItem>
-				<MenuItem Header="{x:Static resx:Resource.vMenuShowEditorWindow}" Command="{x:Static local:CustomCommands.SwitchWindow}">
+				<MenuItem Header="{x:Static resx:Resource.vMenuShowEditorWindow}" Command="{x:Static local:CustomCommands.SwitchWindow}" InputGestureText="{Binding Command.GestureText, RelativeSource={RelativeSource Self}}">
 					<MenuItem.Icon>
 						<Image Width="24" Source="/WordsLive;component/Artwork/Editor.png" />
 					</MenuItem.Icon>
@@ -184,7 +188,7 @@
 				<Image Width="32" Height="32" HorizontalAlignment="Left" VerticalAlignment="Top" Source="/WordsLive;component/Artwork/ShowPresentation.png"/>
 			</RadioButton>
 			<Separator/>
-			<Button Command="{x:Static local:CustomCommands.ShowSonglist}" ToolTip="{Binding Converter={StaticResource RemoveAccessKeyConverter}, ConverterParameter={x:Static resx:Resource.vMenuShowSonglist}}">
+			<Button Command="Find" ToolTip="{Binding Converter={StaticResource RemoveAccessKeyConverter}, ConverterParameter={x:Static resx:Resource.vMenuShowSonglist}}">
 				<Image Width="32" Height="32" Source="/WordsLive;component/Artwork/Songlist.png" />
 			</Button>
 			<CheckBox ToolTip="{Binding Converter={StaticResource RemoveAccessKeyConverter}, ConverterParameter={x:Static resx:Resource.vMenuUsePortfolioBackground}}" IsChecked="{Binding UsePortfolioBackground}">
@@ -274,8 +278,8 @@
 			<TextBlock x:Name="ContentHeader" Padding="5" VerticalAlignment="Top" Text="{Binding ElementName=OrderListBox,Path=(alb:Activator.ActiveItem).Title}" Margin="0" Grid.Column="2" Background="{StaticResource HeaderGradientBrush}" Height="26"/>
 			<TextBlock Padding="5" Text="{x:Static resx:Resource.vPanelPreview}" Grid.Row="2" Margin="0" Background="{StaticResource HeaderGradientBrush}" Height="26" VerticalAlignment="Top"/>
 			<Viewbox Margin="6,32,6,6" Grid.Row="2" x:Name="PreviewBox"/>
-			<GridSplitter HorizontalAlignment="Stretch" Grid.Row="1" VerticalAlignment="Stretch" Height="5" Background="#FFF0F0F0" BorderBrush="#FFE3E3E3" BorderThickness="0,1" Grid.ColumnSpan="2"/>
-			<GridSplitter Grid.Column="1" BorderBrush="#FFE3E3E3" Background="#FFF0F0F0" BorderThickness="1,0" Grid.RowSpan="3" HorizontalAlignment="Stretch" Margin="0" />
+			<GridSplitter HorizontalAlignment="Stretch" Grid.Row="1" VerticalAlignment="Stretch" Height="5" Background="#FFF0F0F0" BorderBrush="#FFE3E3E3" BorderThickness="0,1" Grid.ColumnSpan="2" Focusable="False"/>
+			<GridSplitter Grid.Column="1" BorderBrush="#FFE3E3E3" Background="#FFF0F0F0" BorderThickness="1,0" Grid.RowSpan="3" HorizontalAlignment="Stretch" Margin="0" Focusable="False"/>
 			<DockPanel x:Name="OrderListHeader" LastChildFill="False" Margin="0" VerticalAlignment="Top" Background="{DynamicResource HeaderGradientBrush}" Height="26">
 				<!--<DockPanel.Resources>
 					<Style TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">

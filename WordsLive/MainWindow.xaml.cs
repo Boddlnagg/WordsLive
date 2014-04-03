@@ -312,6 +312,7 @@ namespace WordsLive
 			typeFilters.Add(Resource.vFilterAllFiles+"|*");
 
 			var dlg = new Microsoft.Win32.OpenFileDialog();
+			dlg.Title = Resource.vMenuAddMedia;
 			dlg.Filter = String.Join("|", typeFilters);
 			dlg.Multiselect = true;
 			dlg.InitialDirectory = Properties.Settings.Default.LastMediaDirectory;
@@ -523,7 +524,7 @@ namespace WordsLive
 			{
 				this.Close();
 			}
-			else if (e.Command == CustomCommands.ShowSonglist)
+			else if (e.Command == ApplicationCommands.Find)
 			{
 				Controller.ShowSongList();
 			}
@@ -757,6 +758,12 @@ namespace WordsLive
 					OrderListBox.ScrollIntoView(boundaryItem);
 					portfolioModified = true;
 				}
+
+				// set keyboard focus to last selected element (this is the element that
+				// was selected last when using Shift+Arrow key selection, therefore this should keep
+				// the selection where it was before) instead of moving focus to list box
+				// where it would end up by default with Ctlr+Arrow keys.
+				Keyboard.Focus((ListBoxItem)OrderListBox.ItemContainerGenerator.ContainerFromItem(selected.Last()));
 			}
 			else if (e.Command == CustomCommands.MoveDown)
 			{
@@ -766,6 +773,8 @@ namespace WordsLive
 					OrderListBox.ScrollIntoView(boundaryItem);
 					portfolioModified = true;
 				}
+
+				Keyboard.Focus((ListBoxItem)OrderListBox.ItemContainerGenerator.ContainerFromItem(selected.Last()));
 			}
 			else if (e.Command == ApplicationCommands.Delete)
 			{
@@ -792,7 +801,7 @@ namespace WordsLive
 			}
 			else if (e.Command == CustomCommands.Activate)
 			{
-				orderList.ActiveItem = selected.First();
+				orderList.ActiveItem = selected.Last();
 			}
 			else if (e.Command == NavigationCommands.Refresh)
 			{

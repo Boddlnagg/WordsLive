@@ -37,7 +37,7 @@
 		<CommandBinding Command="Refresh" Executed="OnExecuteCommand"/>
 		<CommandBinding Command="Delete" CanExecute="OnCanExecuteCommand"  Executed="OnExecuteCommand"/>
 		<CommandBinding Command="{x:Static local:CustomCommands.OpenInEditor}" CanExecute="OnCanExecuteCommand" Executed="OnExecuteCommand"/>
-		<CommandBinding Command="{x:Static local:CustomCommands.ShowSonglist}" Executed="OnExecuteCommand"/>
+		<CommandBinding Command="Find" Executed="OnExecuteCommand"/>
 	</Window.CommandBindings>
 	<Grid>
 		<Grid.RowDefinitions>

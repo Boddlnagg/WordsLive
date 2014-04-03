@@ -1,6 +1,6 @@
 ﻿<!--
 - WordsLive - worship projection software
-- Copyright (c) 2013 Patrick Reisert
+- Copyright (c) 2014 Patrick Reisert
 - 
 - This program is free software: you can redistribute it and/or modify
 - it under the terms of the GNU General Public License as published by
@@ -27,13 +27,13 @@
 			 DataContext="{Binding}" Loaded="Control_Loaded">
 	<DockPanel>
 		<ToolBar DockPanel.Dock="Top" ToolBarTray.IsLocked="True" Focusable="False">
-			<Button Command="PreviousPage" CommandTarget="{Binding ElementName=slideListView}" Style="{StaticResource markDisabledButton}">
+			<Button Command="PreviousPage" CommandTarget="{Binding ElementName=slideListView}" Style="{StaticResource markDisabledButton}" Focusable="False">
 				<StackPanel Orientation="Horizontal">
 					<Image Width="16" Height="16" Source="/WordsLive;component/Artwork/Small_ArrowLeft.png" />
 					<Label Content="{x:Static resx:Resource.previous}"/>
 				</StackPanel>
 			</Button>
-			<Button Command="NextPage" CommandTarget="{Binding ElementName=slideListView}" Style="{StaticResource markDisabledButton}">
+			<Button Command="NextPage" CommandTarget="{Binding ElementName=slideListView}" Style="{StaticResource markDisabledButton}" Focusable="False">
 				<StackPanel Orientation="Horizontal">
 					<Image Width="16" Height="16" Source="/WordsLive;component/Artwork/Small_ArrowRight.png" />
 					<Label Content="{x:Static resx:Resource.next}"/>

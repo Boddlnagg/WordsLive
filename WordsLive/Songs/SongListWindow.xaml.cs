@@ -203,7 +203,7 @@ namespace WordsLive.Songs
 				Dispatcher.Invoke((Action)list.Clear);
 				await LoadSongsAsync();
 			}
-			else if (e.Command == CustomCommands.ShowSonglist)
+			else if (e.Command == ApplicationCommands.Find)
 			{
 				this.FocusSearch();
 			}

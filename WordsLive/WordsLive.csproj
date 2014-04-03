@@ -210,6 +210,7 @@
     <Compile Include="Utils\InsertionAdorner.cs" />
     <Compile Include="Utils\EnumToIndexConverter.cs" />
     <Compile Include="Utils\AppendEllipsisConverter.cs" />
+    <Compile Include="Utils\LocalizedRoutedCommand.cs" />
     <Compile Include="Utils\RemoveAccessKeyConverter.cs" />
     <Compile Include="Documents\XpsDocument.cs" />
     <Compile Include="Documents\XpsDocumentHandler.cs" />

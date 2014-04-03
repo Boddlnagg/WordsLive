@@ -373,7 +373,7 @@ namespace WordsLive.Editor
 			{
 				e.CanExecute = doc != null;
 			}
-			else if (e.Command == CustomCommands.ImportFromClipboard)
+			else if (e.Command == ApplicationCommands.Paste)
 			{
 				e.CanExecute = false;
 				if (Clipboard.ContainsText())
@@ -436,7 +436,7 @@ namespace WordsLive.Editor
 			{
 				ExportSong(doc.Song);
 			}
-			else if (e.Command == CustomCommands.ImportFromClipboard)
+			else if (e.Command == ApplicationCommands.Paste)
 			{
 				try
 				{
@@ -492,7 +492,7 @@ namespace WordsLive.Editor
 			{
 				Controller.AddToPortfolio(doc.Song.Uri);
 			}
-			else if (e.Command == CustomCommands.ShowSonglist)
+			else if (e.Command == ApplicationCommands.Find)
 			{
 				Controller.ShowSongList();
 			}

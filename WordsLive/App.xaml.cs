@@ -25,7 +25,6 @@ namespace WordsLive
 	/*
 	 * TODO:
 	 * - Include reveal.js?
-	 * - Shortcuts in the menu are shown as "Ctrl" instead of "Strg" in German language
 	 * - Refactor drag & drop (introduce helper class)
 	 * - Add errorlog?
 	 */
