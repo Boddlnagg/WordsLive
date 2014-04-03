@@ -277,7 +277,7 @@ namespace WordsLive.Core
 		/// <param name="fileName">The target portfolio file.</param>
 		public static void SavePortfolio(IEnumerable<Media> enumerable, string fileName)
 		{ 
-			XDocument doc = new XDocument(new XDeclaration("1.0","ISO-8859-1","yes"));
+			XDocument doc = new XDocument(new XDeclaration("1.0","UTF-8","yes"));
 			XElement root = new XElement("ppp", new XAttribute("version", "4.0"),
 				new XElement("order",
 					from m in enumerable
@@ -320,7 +320,7 @@ namespace WordsLive.Core
 			doc.Add(new XComment("This file was written using WordsLive"));
 			doc.Add(root);
 
-			StreamWriter writer = new StreamWriter(fileName, false, System.Text.Encoding.GetEncoding("iso-8859-1")); // TODO: use utf-8?
+			StreamWriter writer = new StreamWriter(fileName, false, System.Text.Encoding.UTF8); 
 			doc.Save(writer);
 			writer.Close();
 		}
