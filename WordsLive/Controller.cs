@@ -69,9 +69,6 @@ namespace WordsLive
 			LoadTypes(Assembly.GetExecutingAssembly()); // WordsLive.exe
 			LoadTypes(Assembly.GetAssembly(typeof(WordsLive.Presentation.Wpf.WpfPresentationWindow))); // WordsLive.Presentation.Wpf.dll
 
-			string startupDir = new FileInfo(Assembly.GetExecutingAssembly().Location).Directory.FullName;
-			LoadTypes(Assembly.LoadFrom(Path.Combine(startupDir, "WordsLive.Slideshow.dll"))); // TODO: automatically load plugins (or remove plugin architecture)
-
 			WordsLive.Utils.ImageLoader.Manager.Instance.LoadingImage = new System.Windows.Media.Imaging.BitmapImage(new Uri("/WordsLive;component/Artwork/LoadingAnimation.png", UriKind.Relative));
 
 			UpgradeSettings();

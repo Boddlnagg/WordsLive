@@ -33,7 +33,7 @@ using unoidl.com.sun.star.lang;
 using unoidl.com.sun.star.presentation;
 using WordsLive.Presentation.Wpf;
 using WordsLive.Slideshow.Presentation;
-using WordsLive.Slideshow.Resources;
+using WordsLive.Resources;
 
 namespace WordsLive.Slideshow.Impress.Bridge
 {			
@@ -346,7 +346,7 @@ namespace WordsLive.Slideshow.Impress.Bridge
 				{
 					var decoder = new PngBitmapDecoder(reader.BaseStream, BitmapCreateOptions.PreservePixelFormat, BitmapCacheOption.OnLoad);
 					decoder.Frames[0].Freeze();
-					thumbnails.Add(new SlideThumbnail { Image = decoder.Frames[0], Title = name + " ("+ String.Format(Resource.slideN, i+1)+")"});
+					thumbnails.Add(new SlideThumbnail { Image = decoder.Frames[0], Title = name + " ("+ String.Format(Resource.slideDescriptionN, i+1)+")"});
 				}
 			}
 			File.Delete(file);

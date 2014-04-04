@@ -966,4 +966,31 @@
   <data name="ssTitle" xml:space="preserve">
     <value>Format Song</value>
   </data>
+  <data name="slideAnimations0" xml:space="preserve">
+    <value>no animations</value>
+  </data>
+  <data name="slideAnimations1" xml:space="preserve">
+    <value>1 animation</value>
+  </data>
+  <data name="slideAnimationsPl" xml:space="preserve">
+    <value>{0} animations</value>
+  </data>
+  <data name="slideDescriptionN" xml:space="preserve">
+    <value>Slide {0}</value>
+  </data>
+  <data name="slideErrorMsgClosedExternally" xml:space="preserve">
+    <value>The external presentation has been closed unexpectedly. WordsLive has switched to a black screen and will try to reload the presentation.</value>
+  </data>
+  <data name="slideErrorMsgHiddenSlides" xml:space="preserve">
+    <value>The presentation seems to contain hidden slides. This is not correctly supported in WordsLive when using Powerpoint Viewer. You can ignore this warning and continue to navigate the presentation using "Next" and "Previous". Selecting slides directly however will probably not work.</value>
+  </data>
+  <data name="slideErrorMsgHiddenSlidesTitle" xml:space="preserve">
+    <value>Warning: Hidden Slides</value>
+  </data>
+  <data name="slideNext" xml:space="preserve">
+    <value>Next</value>
+  </data>
+  <data name="slidePrevious" xml:space="preserve">
+    <value>Previous</value>
+  </data>
 </root>

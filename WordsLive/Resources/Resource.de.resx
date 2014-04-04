@@ -966,4 +966,31 @@
   <data name="ssTitle" xml:space="preserve">
     <value>Lied formatieren</value>
   </data>
+  <data name="slideAnimations0" xml:space="preserve">
+    <value>keine Animation</value>
+  </data>
+  <data name="slideAnimations1" xml:space="preserve">
+    <value>1 Animationsschritt</value>
+  </data>
+  <data name="slideAnimationsPl" xml:space="preserve">
+    <value>{0} Animationsschritte</value>
+  </data>
+  <data name="slideDescriptionN" xml:space="preserve">
+    <value>Folie {0}</value>
+  </data>
+  <data name="slideErrorMsgClosedExternally" xml:space="preserve">
+    <value>Die Präsentation wurde unerwartet geschlossen. WordsLive hat die Anzeige schwarz geschaltet und wird versuchen, die Präsentation neu zu laden.</value>
+  </data>
+  <data name="slideErrorMsgHiddenSlides" xml:space="preserve">
+    <value>Die Präsentation scheint versteckte Folien zu enthalten. Dies wird in WordsLive nicht korrekt unterstützt, wenn die Präsentation mit dem PowerPoint Viewer angezeigt wird. Sie können diese Warnung ignorieren und weiterhin mit "Weiter" und "Zurück" die Präsentation steuern. Das direkte Auswählen von Folien wird hingegen wahrscheinlich nicht funktionieren.</value>
+  </data>
+  <data name="slideErrorMsgHiddenSlidesTitle" xml:space="preserve">
+    <value>Warning: Hidden Slides</value>
+  </data>
+  <data name="slideNext" xml:space="preserve">
+    <value>Weiter</value>
+  </data>
+  <data name="slidePrevious" xml:space="preserve">
+    <value>Zurück</value>
+  </data>
 </root>

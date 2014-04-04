@@ -11,13 +11,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WordsLive", "WordsLive\Word
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WordsLive.Presentation.Wpf", "WordsLive.Presentation.Wpf\WordsLive.Presentation.Wpf.csproj", "{5CA13F98-4FCA-4DED-8468-366DD89932BD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WordsLive.Slideshow", "WordsLive.Slideshow\WordsLive.Slideshow.csproj", "{8FC44A35-F11F-49EE-B15C-CB400B318447}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WordsLive.Slideshow.Impress.Bridge", "WordsLive.Slideshow.Impress.Bridge\WordsLive.Slideshow.Impress.Bridge.csproj", "{7B989242-0A40-4E64-B976-751E01810525}"
 EndProject
 Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "Installer", "Installer\Installer.wixproj", "{BC64FB21-0D66-46A6-BBB7-0AA9AE432A07}"
 	ProjectSection(ProjectDependencies) = postProject
-		{8FC44A35-F11F-49EE-B15C-CB400B318447} = {8FC44A35-F11F-49EE-B15C-CB400B318447}
 		{7103EF3D-12DE-4381-95D4-1A440F0AA1D9} = {7103EF3D-12DE-4381-95D4-1A440F0AA1D9}
 		{7B989242-0A40-4E64-B976-751E01810525} = {7B989242-0A40-4E64-B976-751E01810525}
 		{AABDBF78-74B7-40DD-A327-FABF1FA758F8} = {AABDBF78-74B7-40DD-A327-FABF1FA758F8}
@@ -90,16 +87,6 @@ Global
 		{5CA13F98-4FCA-4DED-8468-366DD89932BD}.Release|Mixed Platforms.Build.0 = Release|x86
 		{5CA13F98-4FCA-4DED-8468-366DD89932BD}.Release|x86.ActiveCfg = Release|x86
 		{5CA13F98-4FCA-4DED-8468-366DD89932BD}.Release|x86.Build.0 = Release|x86
-		{8FC44A35-F11F-49EE-B15C-CB400B318447}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8FC44A35-F11F-49EE-B15C-CB400B318447}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8FC44A35-F11F-49EE-B15C-CB400B318447}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{8FC44A35-F11F-49EE-B15C-CB400B318447}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{8FC44A35-F11F-49EE-B15C-CB400B318447}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{8FC44A35-F11F-49EE-B15C-CB400B318447}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8FC44A35-F11F-49EE-B15C-CB400B318447}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8FC44A35-F11F-49EE-B15C-CB400B318447}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{8FC44A35-F11F-49EE-B15C-CB400B318447}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{8FC44A35-F11F-49EE-B15C-CB400B318447}.Release|x86.ActiveCfg = Release|Any CPU
 		{7B989242-0A40-4E64-B976-751E01810525}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7B989242-0A40-4E64-B976-751E01810525}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7B989242-0A40-4E64-B976-751E01810525}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU

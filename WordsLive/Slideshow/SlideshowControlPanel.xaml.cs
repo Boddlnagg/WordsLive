@@ -21,7 +21,7 @@ using System.ComponentModel;
 using System.Windows.Controls;
 using System.Windows.Input;
 using WordsLive.Slideshow.Presentation;
-using WordsLive.Slideshow.Resources;
+using WordsLive.Resources;
 
 namespace WordsLive.Slideshow
 {
@@ -82,7 +82,7 @@ namespace WordsLive.Slideshow
 				{
 					Controller.PresentationManager.CurrentPresentation = null;
 					Controller.FocusMainWindow();
-					System.Windows.MessageBox.Show(Resource.errorMsgClosedExternally);
+					System.Windows.MessageBox.Show(Resource.slideErrorMsgClosedExternally);
 					Controller.ReloadActiveMedia();
 				}));
 			};

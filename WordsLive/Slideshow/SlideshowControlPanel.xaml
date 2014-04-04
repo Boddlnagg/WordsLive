@@ -21,7 +21,7 @@
 			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
 			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-			 xmlns:resx="clr-namespace:WordsLive.Slideshow.Resources"
+			 xmlns:resx="clr-namespace:WordsLive.Resources"
 			 mc:Ignorable="d" 
 			 d:DesignHeight="300" d:DesignWidth="300"
 			 DataContext="{Binding}" Loaded="Control_Loaded">
@@ -30,13 +30,13 @@
 			<Button Command="PreviousPage" CommandTarget="{Binding ElementName=slideListView}" Style="{StaticResource markDisabledButton}" Focusable="False">
 				<StackPanel Orientation="Horizontal">
 					<Image Width="16" Height="16" Source="/WordsLive;component/Artwork/Small_ArrowLeft.png" />
-					<Label Content="{x:Static resx:Resource.previous}"/>
+					<Label Content="{x:Static resx:Resource.slidePrevious}"/>
 				</StackPanel>
 			</Button>
 			<Button Command="NextPage" CommandTarget="{Binding ElementName=slideListView}" Style="{StaticResource markDisabledButton}" Focusable="False">
 				<StackPanel Orientation="Horizontal">
 					<Image Width="16" Height="16" Source="/WordsLive;component/Artwork/Small_ArrowRight.png" />
-					<Label Content="{x:Static resx:Resource.next}"/>
+					<Label Content="{x:Static resx:Resource.slideNext}"/>
 				</StackPanel>
 			</Button>
 		</ToolBar>

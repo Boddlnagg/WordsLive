@@ -108,10 +108,6 @@
       <Project>{7103EF3D-12DE-4381-95D4-1A440F0AA1D9}</Project>
       <Name>WordsLive.Presentation</Name>
     </ProjectReference>
-    <ProjectReference Include="..\WordsLive.Slideshow\WordsLive.Slideshow.csproj">
-      <Project>{8FC44A35-F11F-49EE-B15C-CB400B318447}</Project>
-      <Name>WordsLive.Slideshow</Name>
-    </ProjectReference>
     <ProjectReference Include="..\WordsLive\WordsLive.csproj">
       <Project>{B2DF371C-DCAE-43FF-817A-34FBC21234D8}</Project>
       <Name>WordsLive</Name>

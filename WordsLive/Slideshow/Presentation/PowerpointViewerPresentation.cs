@@ -25,7 +25,7 @@ using System.Windows;
 using PowerpointViewerLib;
 using WordsLive.Presentation;
 using WordsLive.Presentation.Wpf;
-using WordsLive.Slideshow.Resources;
+using WordsLive.Resources;
 
 namespace WordsLive.Slideshow.Presentation
 {
@@ -48,10 +48,10 @@ namespace WordsLive.Slideshow.Presentation
 						thumbnails.Add(new SlideThumbnail
 						{
 							Image = Interop.ConvertBitmap(bmp),
-							Title = String.Format(Resource.slideN, i) + " (" +
-								(animations == 0 ? Resource.animations0 :
-								(animations == 1 ? Resource.animations1 :
-								String.Format(Resource.animationsPl, animations))) + ")"
+							Title = String.Format(Resource.slideDescriptionN, i) + " (" +
+								(animations == 0 ? Resource.slideAnimations0 :
+								(animations == 1 ? Resource.slideAnimations1 :
+								String.Format(Resource.slideAnimationsPl, animations))) + ")"
 						});
 						i++;
 					}
@@ -142,7 +142,7 @@ namespace WordsLive.Slideshow.Presentation
 					{
 						if (!hasShownHiddenWarning)
 						{
-							MessageBox.Show(Resource.errorMsgHiddenSlides, Resource.errorMsgHiddenSlidesTitle, MessageBoxButton.OK, MessageBoxImage.Warning);
+							MessageBox.Show(Resource.slideErrorMsgHiddenSlides, Resource.slideErrorMsgHiddenSlidesTitle, MessageBoxButton.OK, MessageBoxImage.Warning);
 							hasShownHiddenWarning = true;
 						}
 					}));

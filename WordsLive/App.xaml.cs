@@ -27,6 +27,7 @@ namespace WordsLive
 	 * - Include reveal.js?
 	 * - Refactor drag & drop (introduce helper class)
 	 * - Add errorlog?
+	 * - Remove plugin architecture (formerly used for slideshows)?
 	 */
 
 	public partial class App : Application

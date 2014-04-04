@@ -100,10 +100,6 @@
       <Project>{7103ef3d-12de-4381-95d4-1a440f0aa1d9}</Project>
       <Name>WordsLive.Presentation</Name>
     </ProjectReference>
-    <ProjectReference Include="..\WordsLive.Slideshow\WordsLive.Slideshow.csproj">
-      <Project>{8fc44a35-f11f-49ee-b15c-cb400b318447}</Project>
-      <Name>WordsLive.Slideshow</Name>
-    </ProjectReference>
     <ProjectReference Include="..\WordsLive\WordsLive.csproj">
       <Project>{b2df371c-dcae-43ff-817a-34fbc21234d8}</Project>
       <Name>WordsLive</Name>

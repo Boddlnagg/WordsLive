@@ -1735,6 +1735,87 @@ namespace WordsLive.Resources {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die no animations ähnelt.
+        /// </summary>
+        public static string slideAnimations0 {
+            get {
+                return ResourceManager.GetString("slideAnimations0", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die 1 animation ähnelt.
+        /// </summary>
+        public static string slideAnimations1 {
+            get {
+                return ResourceManager.GetString("slideAnimations1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die {0} animations ähnelt.
+        /// </summary>
+        public static string slideAnimationsPl {
+            get {
+                return ResourceManager.GetString("slideAnimationsPl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Slide {0} ähnelt.
+        /// </summary>
+        public static string slideDescriptionN {
+            get {
+                return ResourceManager.GetString("slideDescriptionN", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die The external presentation has been closed unexpectedly. WordsLive has switched to a black screen and will try to reload the presentation. ähnelt.
+        /// </summary>
+        public static string slideErrorMsgClosedExternally {
+            get {
+                return ResourceManager.GetString("slideErrorMsgClosedExternally", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die The presentation seems to contain hidden slides. This is not correctly supported in WordsLive when using Powerpoint Viewer. You can ignore this warning and continue to navigate the presentation using &quot;Next&quot; and &quot;Previous&quot;. Selecting slides directly however will probably not work. ähnelt.
+        /// </summary>
+        public static string slideErrorMsgHiddenSlides {
+            get {
+                return ResourceManager.GetString("slideErrorMsgHiddenSlides", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Warning: Hidden Slides ähnelt.
+        /// </summary>
+        public static string slideErrorMsgHiddenSlidesTitle {
+            get {
+                return ResourceManager.GetString("slideErrorMsgHiddenSlidesTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Next ähnelt.
+        /// </summary>
+        public static string slideNext {
+            get {
+                return ResourceManager.GetString("slideNext", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Previous ähnelt.
+        /// </summary>
+        public static string slidePrevious {
+            get {
+                return ResourceManager.GetString("slidePrevious", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Loading ... ähnelt.
         /// </summary>
         public static string slLoading {

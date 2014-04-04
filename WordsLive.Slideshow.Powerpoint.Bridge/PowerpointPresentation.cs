@@ -25,7 +25,7 @@ using System.Windows.Media.Imaging;
 using Microsoft.Office.Core;
 using WordsLive.Presentation.Wpf;
 using WordsLive.Slideshow.Presentation;
-using WordsLive.Slideshow.Resources;
+using WordsLive.Resources;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
 namespace WordsLive.Slideshow.Powerpoint.Bridge
@@ -114,7 +114,7 @@ namespace WordsLive.Slideshow.Powerpoint.Bridge
 				{
 					var decoder = new PngBitmapDecoder(reader.BaseStream, BitmapCreateOptions.PreservePixelFormat, BitmapCacheOption.OnLoad);
 					decoder.Frames[0].Freeze();
-					thumbnails.Add(new SlideThumbnail { Image = decoder.Frames[0], Title = slide.Name + " (" + String.Format(Resource.slideN, i + 1) + ")" });
+					thumbnails.Add(new SlideThumbnail { Image = decoder.Frames[0], Title = slide.Name + " (" + String.Format(Resource.slideDescriptionN, i + 1) + ")" });
 				}
 			}
 

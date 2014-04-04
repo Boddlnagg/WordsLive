@@ -87,6 +87,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Newtonsoft.Json.6.0.2\lib\net40\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="PowerpointViewerLib, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\3rdParty\PowerpointViewerLib.dll</HintPath>
+    </Reference>
     <Reference Include="ReachFramework" />
     <Reference Include="System" />
     <Reference Include="System.configuration" />
@@ -202,6 +206,22 @@
     <Compile Include="Documents\PdfDocument.cs" />
     <Compile Include="Documents\PdfPresentation.cs" />
     <Compile Include="PluginSettingsDictionary.cs" />
+    <Compile Include="Slideshow\Interop.cs" />
+    <Compile Include="Slideshow\OdpHandler.cs" />
+    <Compile Include="Slideshow\OdpMedia.cs" />
+    <Compile Include="Slideshow\PowerpointHandler.cs" />
+    <Compile Include="Slideshow\PowerpointMedia.cs" />
+    <Compile Include="Slideshow\Presentation\ISlideshowPresentation.cs" />
+    <Compile Include="Slideshow\Presentation\PowerpointViewerPresentation.cs" />
+    <Compile Include="Slideshow\Presentation\SlideshowPresentationBase.cs" />
+    <Compile Include="Slideshow\Presentation\SlideshowPresentationFactory.cs" />
+    <Compile Include="Slideshow\Presentation\SlideshowPresentationTarget.cs" />
+    <Compile Include="Slideshow\Presentation\SlideThumbnail.cs" />
+    <Compile Include="Slideshow\Settings.cs" />
+    <Compile Include="Slideshow\SlideshowControlPanel.xaml.cs">
+      <DependentUpon>SlideshowControlPanel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Slideshow\SlideshowMedia.cs" />
     <Compile Include="Songs\MasterOverrideOptions.cs" />
     <Compile Include="Songs\SongDataObject.cs" />
     <Compile Include="TestPresentation.cs" />
@@ -426,6 +446,10 @@
     </Compile>
     <Resource Include="Artwork\LockChains.png" />
     <Resource Include="Artwork\AboutDialog.png" />
+    <None Include="..\3rdParty\pptviewlib.dll">
+      <Link>pptviewlib.dll</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <Content Include="Data\Standard.ppl">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -486,6 +510,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Awesomium\AwesomiumWrapper.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Slideshow\SlideshowControlPanel.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
