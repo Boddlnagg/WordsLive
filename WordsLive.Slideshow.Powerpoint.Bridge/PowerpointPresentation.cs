@@ -56,23 +56,30 @@ namespace WordsLive.Slideshow.Powerpoint.Bridge
 
 		private void PerformLoad()
 		{
-			this.application = new PowerPoint.Application();
-			this.presentation = application.Presentations.Open(file.FullName, MsoTriState.msoTrue, MsoTriState.msoTrue, MsoTriState.msoFalse);
+			try
+			{
+				this.application = new PowerPoint.Application();
+				this.presentation = application.Presentations.Open(file.FullName, MsoTriState.msoTrue, MsoTriState.msoTrue, MsoTriState.msoFalse);
 
-			this.application.SlideShowNextSlide += application_SlideShowNextSlide;
-			this.application.SlideShowEnd += application_SlideShowEnd;
+				this.application.SlideShowNextSlide += application_SlideShowNextSlide;
+				this.application.SlideShowEnd += application_SlideShowEnd;
 
-			this.presentation.SlideShowSettings.Run();
-			this.presentation.SlideShowWindow.Top = OUTSIDE_Y; // outside of screen (-> hidden)
-			this.presentation.SlideShowWindow.Left = PixelsToPoints(Area.WindowLocation.X);
-			this.presentation.SlideShowWindow.Height = PixelsToPoints(Area.WindowSize.Height);
-			this.presentation.SlideShowWindow.Width = PixelsToPoints(Area.WindowSize.Width);
+				this.presentation.SlideShowSettings.Run();
+				this.presentation.SlideShowWindow.Top = OUTSIDE_Y; // outside of screen (-> hidden)
+				this.presentation.SlideShowWindow.Left = PixelsToPoints(Area.WindowLocation.X);
+				this.presentation.SlideShowWindow.Height = PixelsToPoints(Area.WindowSize.Height);
+				this.presentation.SlideShowWindow.Width = PixelsToPoints(Area.WindowSize.Width);
 
-			CreateThumbnails();
+				CreateThumbnails();
 
-			LoadPreviewProvider();
+				LoadPreviewProvider();
 
-			base.OnLoaded(true);
+				base.OnLoaded(true);
+			}
+			catch (COMException)
+			{
+				base.OnLoaded(false);
+			}
 		}
 
 		void application_SlideShowEnd(PowerPoint.Presentation Pres)
@@ -217,7 +224,8 @@ namespace WordsLive.Slideshow.Powerpoint.Bridge
 			Cleanup();
 			try
 			{
-				this.presentation.Close();
+				if (this.presentation != null)
+					this.presentation.Close();
 			}
 			catch (COMException) { }
 		}

@@ -29,6 +29,7 @@ namespace WordsLive.Slideshow
 			get
 			{
 				// TODO: configurable (what versions of PowerPoint support odp?)
+				//return SlideshowPresentationTarget.Powerpoint;
 				return SlideshowPresentationTarget.Impress;
 			}
 		}
