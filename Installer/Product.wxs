@@ -110,15 +110,15 @@
 				<File Source="$(var.WordsLive.TargetDir)WordsLive.Presentation.Wpf.dll.config" Name="WordsLive.Presentation.Wpf.dll.config" KeyPath="yes" />
 			</Component>
 			<Component>
-				<File Source="$(var.WordsLive.TargetDir)WordsLive.Slideshow.dll" Name="WordsLive.Slideshow.dll" KeyPath="yes" />
+				<File Source="$(var.WordsLive.TargetDir)WordsLive.Slideshow.Powerpoint.Bridge.dll" Name="WordsLive.Slideshow.Powerpoint.Bridge.dll" KeyPath="yes" />
 			</Component>
 			<Component>
-				<File Source="$(var.WordsLive.TargetDir)WordsLive.Slideshow.dll.config" Name="WordsLive.Slideshow.dll.config" KeyPath="yes" />
+				<File Source="$(var.WordsLive.TargetDir)WordsLive.Slideshow.Powerpoint.Bridge.dll.config" Name="WordsLive.Slideshow.Powerpoint.Bridge.dll.config" KeyPath="yes" />
 			</Component>
 			<Component>
 				<File Source="$(var.WordsLive.TargetDir)WordsLive.Slideshow.Impress.Bridge.dll" Name="WordsLive.Slideshow.Impress.Bridge.dll" KeyPath="yes" />
 			</Component>
-		<Component>
+		  <Component>
 				<File Source="$(var.WordsLive.TargetDir)WordsLive.Slideshow.Impress.Bridge.dll.config" Name="WordsLive.Slideshow.Impress.Bridge.dll.config" KeyPath="yes" />
 			</Component>
 		</ComponentGroup>
@@ -221,9 +221,6 @@
 		<ComponentGroup Id="I18nComponents">
 			<Component Directory="I18nDeFolder">
 				<File Source="$(var.WordsLive.TargetDir)de\WordsLive.resources.dll" Name="WordsLive.resources.dll" KeyPath="yes"/>
-			</Component>
-			<Component Directory="I18nDeFolder">
-				<File Source="$(var.WordsLive.TargetDir)de\WordsLive.Slideshow.resources.dll" Name="WordsLive.Slideshow.resources.dll" KeyPath="yes"/>
 			</Component>
 		</ComponentGroup>
 		<ComponentGroup Id="DotNet4CompatibilityAssemblies" Directory="APPLICATIONFOLDER">
