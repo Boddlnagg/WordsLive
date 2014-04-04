@@ -33,7 +33,7 @@ namespace WordsLive.Slideshow.Presentation
 		static SlideshowPresentationFactory()
 		{
 			impressPresentationType = TryLoadImpressBridge();
-			//powerpointPresentationType = TryLoadPowerpointBridge();
+			powerpointPresentationType = TryLoadPowerpointBridge();
 		}
 
 		private static Type TryLoadImpressBridge()
@@ -48,6 +48,25 @@ namespace WordsLive.Slideshow.Presentation
 			{
 				// this should not happen (the bride dll should always be present)
 				throw new DllNotFoundException("WordsLive.Slideshow.Impress.Bridge.dll");
+			}
+			catch (ReflectionTypeLoadException)
+			{
+				return null;
+			}
+		}
+
+		private static Type TryLoadPowerpointBridge()
+		{
+			try
+			{
+				string startupDir = new FileInfo(Assembly.GetExecutingAssembly().Location).Directory.FullName;
+				var asm = Assembly.LoadFrom(Path.Combine(startupDir, "WordsLive.Slideshow.Powerpoint.Bridge.dll"));
+				return asm.GetType("WordsLive.Slideshow.Powerpoint.Bridge.PowerpointPresentation");
+			}
+			catch (FileNotFoundException)
+			{
+				// this should not happen (the bride dll should always be present)
+				throw new DllNotFoundException("WordsLive.Slideshow.Powerpoint.Bridge.dll");
 			}
 			catch (ReflectionTypeLoadException)
 			{
@@ -83,7 +102,9 @@ namespace WordsLive.Slideshow.Presentation
 					pptViewPres.File = new FileInfo(media.Uri.LocalPath);
 					return pptViewPres;
 				case SlideshowPresentationTarget.Powerpoint:
-					throw new NotImplementedException();
+					var powerpointPres = (ISlideshowPresentation)Controller.PresentationManager.CreatePresentation(powerpointPresentationType);
+					powerpointPresentationType.GetMethod("Init", new Type[] { typeof(FileInfo) }).Invoke(powerpointPres, new object[] { new FileInfo(media.Uri.LocalPath) });
+					return powerpointPres;
 				default:
 					throw new InvalidOperationException("Invalid Slideshow Presentation Target");
 			}

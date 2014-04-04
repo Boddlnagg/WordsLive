@@ -1,15 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>8.0.30703</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{7B989242-0A40-4E64-B976-751E01810525}</ProjectGuid>
+    <ProjectGuid>{7AAC5624-B215-41ED-B3DD-569A7AB3DDF1}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>WordsLive.Slideshow.Impress.Bridge</RootNamespace>
-    <AssemblyName>WordsLive.Slideshow.Impress.Bridge</AssemblyName>
+    <RootNamespace>WordsLive.Slideshow.Powerpoint.Bridge</RootNamespace>
+    <AssemblyName>WordsLive.Slideshow.Powerpoint.Bridge</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
@@ -34,13 +33,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="cli_basetypes, Version=1.0.19.0, Culture=neutral, PublicKeyToken=ce2cb7e279207b9e, processorArchitecture=MSIL" />
-    <Reference Include="cli_cppuhelper, Version=1.0.22.0, Culture=neutral, PublicKeyToken=ce2cb7e279207b9e, processorArchitecture=x86" />
-    <Reference Include="cli_oootypes.fixed">
-      <HintPath>..\3rdParty\cli_oootypes.fixed.dll</HintPath>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Office.Interop.PowerPoint, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
-    <Reference Include="cli_ure, Version=1.0.22.0, Culture=neutral, PublicKeyToken=ce2cb7e279207b9e, processorArchitecture=MSIL" />
-    <Reference Include="cli_uretypes, Version=1.0.8.0, Culture=neutral, PublicKeyToken=ce2cb7e279207b9e, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Threading.Tasks, Version=1.0.12.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Microsoft.Bcl.Async.1.0.166\lib\net40\Microsoft.Threading.Tasks.dll</HintPath>
@@ -53,9 +49,11 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Microsoft.Bcl.Async.1.0.166\lib\net40\Microsoft.Threading.Tasks.Extensions.Desktop.dll</HintPath>
     </Reference>
+    <Reference Include="Office, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="System" />
-    <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.IO">
       <HintPath>..\packages\Microsoft.Bcl.1.1.7\lib\net40\System.IO.dll</HintPath>
@@ -83,7 +81,6 @@
     <Reference Include="System.Threading.Tasks">
       <HintPath>..\packages\Microsoft.Bcl.1.1.7\lib\net40\System.Threading.Tasks.dll</HintPath>
     </Reference>
-    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xaml" />
     <Reference Include="WindowsBase" />
   </ItemGroup>
@@ -91,29 +88,24 @@
     <Compile Include="..\WordsLive\Properties\CommonVersionInfo.cs">
       <Link>Properties\CommonVersionInfo.cs</Link>
     </Compile>
-    <Compile Include="ImpressPresentation.cs" />
+    <Compile Include="PowerpointPresentation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SlideShowListener.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\WordsLive.Core\WordsLive.Core.csproj">
-      <Project>{AABDBF78-74B7-40DD-A327-FABF1FA758F8}</Project>
-      <Name>WordsLive.Core</Name>
-    </ProjectReference>
     <ProjectReference Include="..\WordsLive.Presentation.Wpf\WordsLive.Presentation.Wpf.csproj">
-      <Project>{5CA13F98-4FCA-4DED-8468-366DD89932BD}</Project>
+      <Project>{5ca13f98-4fca-4ded-8468-366dd89932bd}</Project>
       <Name>WordsLive.Presentation.Wpf</Name>
     </ProjectReference>
     <ProjectReference Include="..\WordsLive.Presentation\WordsLive.Presentation.csproj">
-      <Project>{7103EF3D-12DE-4381-95D4-1A440F0AA1D9}</Project>
+      <Project>{7103ef3d-12de-4381-95d4-1a440f0aa1d9}</Project>
       <Name>WordsLive.Presentation</Name>
     </ProjectReference>
     <ProjectReference Include="..\WordsLive.Slideshow\WordsLive.Slideshow.csproj">
-      <Project>{8FC44A35-F11F-49EE-B15C-CB400B318447}</Project>
+      <Project>{8fc44a35-f11f-49ee-b15c-cb400b318447}</Project>
       <Name>WordsLive.Slideshow</Name>
     </ProjectReference>
     <ProjectReference Include="..\WordsLive\WordsLive.csproj">
-      <Project>{B2DF371C-DCAE-43FF-817A-34FBC21234D8}</Project>
+      <Project>{b2df371c-dcae-43ff-817a-34fbc21234d8}</Project>
       <Name>WordsLive</Name>
     </ProjectReference>
   </ItemGroup>
@@ -123,6 +115,12 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>Dieses Projekt verweist auf mindestens ein NuGet-Paket, das auf diesem Computer fehlt. Aktivieren Sie die Wiederherstellung von NuGet-Paketen, um die fehlende Datei herunterzuladen. Weitere Informationen finden Sie unter "http://go.microsoft.com/fwlink/?LinkID=322105". Die fehlende Datei ist "{0}".</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+  </Target>
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" />
   <Target Name="EnsureBclBuildImported" BeforeTargets="BeforeBuild" Condition="'$(BclBuildImported)' == ''">
     <Error Condition="!Exists('..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" Text="This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=317567." HelpKeyword="BCLBUILD2001" />

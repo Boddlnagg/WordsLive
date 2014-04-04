@@ -1,6 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30110.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WordsLive.Presentation", "WordsLive.Presentation\WordsLive.Presentation.csproj", "{7103EF3D-12DE-4381-95D4-1A440F0AA1D9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WordsLive.Core", "WordsLive.Core\WordsLive.Core.csproj", "{AABDBF78-74B7-40DD-A327-FABF1FA758F8}"
@@ -32,6 +34,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{60EAB1
 		.nuget\NuGet.exe = .nuget\NuGet.exe
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WordsLive.Slideshow.Powerpoint.Bridge", "WordsLive.Slideshow.Powerpoint.Bridge\WordsLive.Slideshow.Powerpoint.Bridge.csproj", "{7AAC5624-B215-41ED-B3DD-569A7AB3DDF1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -136,6 +140,16 @@ Global
 		{D1CBFA7D-BE14-4EE8-8696-81AB6401D195}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{D1CBFA7D-BE14-4EE8-8696-81AB6401D195}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{D1CBFA7D-BE14-4EE8-8696-81AB6401D195}.Release|x86.ActiveCfg = Release|Any CPU
+		{7AAC5624-B215-41ED-B3DD-569A7AB3DDF1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7AAC5624-B215-41ED-B3DD-569A7AB3DDF1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7AAC5624-B215-41ED-B3DD-569A7AB3DDF1}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{7AAC5624-B215-41ED-B3DD-569A7AB3DDF1}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{7AAC5624-B215-41ED-B3DD-569A7AB3DDF1}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{7AAC5624-B215-41ED-B3DD-569A7AB3DDF1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7AAC5624-B215-41ED-B3DD-569A7AB3DDF1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7AAC5624-B215-41ED-B3DD-569A7AB3DDF1}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{7AAC5624-B215-41ED-B3DD-569A7AB3DDF1}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{7AAC5624-B215-41ED-B3DD-569A7AB3DDF1}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
