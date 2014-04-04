@@ -1,6 +1,6 @@
 ﻿/*
  * WordsLive - worship projection software
- * Copyright (c) 2013 Patrick Reisert
+ * Copyright (c) 2014 Patrick Reisert
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,34 +19,36 @@
 using System;
 using System.Collections.Generic;
 using WordsLive.Core;
+using WordsLive.Slideshow.Presentation;
 
-namespace WordsLive.Slideshow.PowerpointViewer
+namespace WordsLive.Slideshow
 {
-	// TODO: This currently only works with PowerpointViewer 2007 (older versions untested), not with 2010
-	// and Visual C++ 2010 Redistributable must be installed for pptviewlib.dll to work
-	public class PowerpointHandler : MediaTypeHandler
+	public class OdpHandler : MediaTypeHandler
 	{
 		public override IEnumerable<string> Extensions
 		{
-			get { return new string[] { ".ppt", ".pptx" }; } // TODO: pptx untested
+			get { return new string[] { ".odp" }; }
 		}
 
 		public override string Description
 		{
-			get { return "Powerpoint-Präsentationen"; }
+			get { return "OpenDocument Presentation"; }
 		}
 
 		public override int Test(Uri uri)
 		{
-			if (!PowerpointViewerLib.PowerpointViewerController.IsAvailable)
+			if (!CheckExtension(uri))
 				return -1;
-			else
-				return CheckExtension(uri) ? 100 : -1;
+
+			if (!SlideshowPresentationFactory.IsTargetAvailable(SlideshowPresentationTarget.Impress))
+				return -1;
+			
+			return 100;
 		}
 
 		public override Media Handle(Uri uri, Dictionary<string, string> options)
 		{
-			return new PowerpointViewerMedia(uri);
+			return new OdpMedia(uri);
 		}
 	}
 }

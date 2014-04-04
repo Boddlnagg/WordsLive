@@ -91,11 +91,13 @@
     <Compile Include="..\WordsLive\Properties\CommonVersionInfo.cs">
       <Link>Properties\CommonVersionInfo.cs</Link>
     </Compile>
-    <Compile Include="Impress\ImpressHandler.cs" />
-    <Compile Include="Impress\ImpressMedia.cs" />
+    <Compile Include="OdpHandler.cs" />
+    <Compile Include="OdpMedia.cs" />
     <Compile Include="Interop.cs" />
-    <Compile Include="ISlideshowPresentation.cs" />
-    <Compile Include="PowerpointViewer\PowerpointHandler.cs" />
+    <Compile Include="Presentation\ISlideshowPresentation.cs" />
+    <Compile Include="PowerpointHandler.cs" />
+    <Compile Include="Presentation\SlideshowPresentationFactory.cs" />
+    <Compile Include="Presentation\SlideshowPresentationTarget.cs" />
     <Compile Include="Resources\Resource.de.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -110,14 +112,14 @@
     <Compile Include="SettingsTab.xaml.cs">
       <DependentUpon>SettingsTab.xaml</DependentUpon>
     </Compile>
-    <Compile Include="SlideThumbnail.cs" />
+    <Compile Include="Presentation\SlideThumbnail.cs" />
     <Compile Include="SlideshowMedia.cs" />
-    <Compile Include="SlideshowPresentationBase.cs" />
+    <Compile Include="Presentation\SlideshowPresentationBase.cs" />
     <Compile Include="SlideshowControlPanel.xaml.cs">
       <DependentUpon>SlideshowControlPanel.xaml</DependentUpon>
     </Compile>
-    <Compile Include="PowerpointViewer\PowerpointViewerMedia.cs" />
-    <Compile Include="PowerpointViewer\PowerpointViewerPresentation.cs" />
+    <Compile Include="PowerpointMedia.cs" />
+    <Compile Include="Presentation\PowerpointViewerPresentation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <None Include="..\3rdParty\pptviewlib.dll">
       <Link>pptviewlib.dll</Link>
@@ -165,6 +167,7 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.13\tools\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.13\tools\Microsoft.Bcl.Build.targets')" />

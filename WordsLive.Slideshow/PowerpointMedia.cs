@@ -1,6 +1,6 @@
 ﻿/*
  * WordsLive - worship projection software
- * Copyright (c) 2013 Patrick Reisert
+ * Copyright (c) 2014 Patrick Reisert
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,24 +18,29 @@
 
 using System;
 using System.IO;
+using WordsLive.Slideshow.Presentation;
 
-namespace WordsLive.Slideshow.Impress
+namespace WordsLive.Slideshow
 {
-	public class ImpressMedia : SlideshowMedia
+	public class PowerpointMedia : SlideshowMedia
 	{
-		Type presentationType;
+		public override SlideshowPresentationTarget Target
+		{
+			get
+			{
+				// TODO: configurable
+				if (SlideshowPresentationFactory.IsTargetAvailable(SlideshowPresentationTarget.Powerpoint))
+					return SlideshowPresentationTarget.Powerpoint;
+				else if (SlideshowPresentationFactory.IsTargetAvailable(SlideshowPresentationTarget.PowerpointViewer))
+					return SlideshowPresentationTarget.PowerpointViewer;
+				else if (SlideshowPresentationFactory.IsTargetAvailable(SlideshowPresentationTarget.Impress))
+					return SlideshowPresentationTarget.Impress;
+				else
+					throw new NotSupportedException("No Supported Target");
+			} 
+		}
 
-		public ImpressMedia(Uri uri, Type presentationType) : base(uri)
-		{
-			this.presentationType = presentationType;
-		}
-		
-		public override ISlideshowPresentation CreatePresentation()
-		{
-			var pres = (ISlideshowPresentation)Controller.PresentationManager.CreatePresentation(presentationType);
-			presentationType.GetMethod("Init", new Type[] { typeof(FileInfo) }).Invoke(pres, new object[] { new FileInfo(Uri.LocalPath) });
-			return pres;
-		}
+		public PowerpointMedia(Uri uri) : base(uri) { }
 
 		public override void Load()
 		{

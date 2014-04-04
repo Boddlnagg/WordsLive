@@ -1,6 +1,6 @@
 ﻿/*
  * WordsLive - worship projection software
- * Copyright (c) 2013 Patrick Reisert
+ * Copyright (c) 2014 Patrick Reisert
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,21 +18,22 @@
 
 using System;
 using System.IO;
+using WordsLive.Slideshow.Presentation;
 
-namespace WordsLive.Slideshow.PowerpointViewer
+namespace WordsLive.Slideshow
 {
-	public class PowerpointViewerMedia : SlideshowMedia
+	public class OdpMedia : SlideshowMedia
 	{
-		public FileInfo LocalFile { get; private set; }
-
-		public PowerpointViewerMedia(Uri uri) : base(uri) { }
-
-		public override ISlideshowPresentation CreatePresentation()
+		public override SlideshowPresentationTarget Target
 		{
-			var pres = Controller.PresentationManager.CreatePresentation<PowerpointViewerPresentation>();
-			pres.File = new FileInfo(Uri.LocalPath);
-			return pres;
+			get
+			{
+				// TODO: configurable (what versions of PowerPoint support odp?)
+				return SlideshowPresentationTarget.Impress;
+			}
 		}
+
+		public OdpMedia(Uri uri) : base(uri) { }
 
 		public override void Load()
 		{

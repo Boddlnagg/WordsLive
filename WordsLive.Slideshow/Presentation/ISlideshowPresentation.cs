@@ -16,31 +16,33 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-using System.Windows;
-using System.Windows.Controls;
-using WordsLive.Slideshow.Resources;
+using System;
+using System.Collections.Generic;
+using WordsLive.Presentation;
 
-namespace WordsLive.Slideshow
+namespace WordsLive.Slideshow.Presentation
 {
-	public partial class SettingsTab : UserControl/*, ISettingsTab*/
+	public class SlideshowLoadedEventArgs : EventArgs
 	{
-		public SettingsTab()
-		{
-			InitializeComponent();
-			this.DataContext = this;
-		}
+		public bool Success { get; private set; }
 
-		public FrameworkElement Control
+		public SlideshowLoadedEventArgs(bool success)
 		{
-			get { return this; }
+			Success = success;
 		}
+	}
 
-		public string Header
-		{
-			get
-			{
-				return Resource.seHeader;
-			}
-		}
+	public interface ISlideshowPresentation : IPresentation
+	{
+		void Load();
+		void GotoSlide(int index);
+		void NextStep();
+		void PreviousStep();
+		int SlideIndex { get; }
+		IList<SlideThumbnail> Thumbnails { get; }
+		bool IsEndless { get; }
+		event EventHandler<SlideshowLoadedEventArgs> Loaded;
+		event EventHandler SlideIndexChanged;
+		event EventHandler ClosedExternally;
 	}
 }
