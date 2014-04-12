@@ -59,7 +59,7 @@ namespace WordsLive.Core.Songs.IO
 			if (root.Elements("copyright").Any())
 				song.Copyright += "\n© " + root.Elements("copyright").Single().Value;
 
-			song.Category = root.Elements("theme").Single().Value;
+			song.Category = root.Elements("theme").Single().Value; // TODO: make theme optional
 			var lines = root.Elements("lyrics").Single().Value.Split('\n');
 
 			string partKey = null;

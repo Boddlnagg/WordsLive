@@ -422,8 +422,6 @@ class SongData
 				$pos += $i + 1;
 				continue;
 			}
-			
-			$found = true;
 
 			$pos += $i; // absolute position of '[Chord]'
 			$chordlen = $end - ($i + 1) + 2; // length of '[Chord]'
