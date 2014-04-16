@@ -46,7 +46,7 @@ namespace WordsLive.Slideshow.Presentation
 			}
 			catch (FileNotFoundException)
 			{
-				// this should not happen (the bride dll should always be present)
+				// this should not happen (the bridge dll should always be present)
 				throw new DllNotFoundException("WordsLive.Slideshow.Impress.Bridge.dll");
 			}
 			catch (ReflectionTypeLoadException)
@@ -61,11 +61,17 @@ namespace WordsLive.Slideshow.Presentation
 			{
 				string startupDir = new FileInfo(Assembly.GetExecutingAssembly().Location).Directory.FullName;
 				var asm = Assembly.LoadFrom(Path.Combine(startupDir, "WordsLive.Slideshow.Powerpoint.Bridge.dll"));
-				return asm.GetType("WordsLive.Slideshow.Powerpoint.Bridge.PowerpointPresentation");
+				var type = asm.GetType("WordsLive.Slideshow.Powerpoint.Bridge.PowerpointPresentation");
+				bool available = (bool)type.GetMethod("CheckAvailability").Invoke(null, null);
+				if (available)
+					return type;
+				else
+					return null;
+
 			}
 			catch (FileNotFoundException)
 			{
-				// this should not happen (the bride dll should always be present)
+				// this should not happen (the bridge dll should always be present)
 				throw new DllNotFoundException("WordsLive.Slideshow.Powerpoint.Bridge.dll");
 			}
 			catch (ReflectionTypeLoadException)

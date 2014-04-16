@@ -38,6 +38,25 @@ namespace WordsLive.Slideshow.Powerpoint.Bridge
 		private PowerPoint.Presentation presentation;
 		private List<SlideThumbnail> thumbnails;
 
+		/// <summary>
+		/// This is called via reflection. It checks, whether we can create a PowerPoint Application COM-binding,
+		/// because we might be able to load the assembly even if PowerPoint is not installed and therefore
+		/// this check is needed.
+		/// </summary>
+		/// <returns></returns>
+		public static bool CheckAvailability()
+		{
+			try
+			{
+				new PowerPoint.Application();
+				return true;
+			}
+			catch (COMException)
+			{
+				return false;
+			}
+		}
+
 		public void Init(FileInfo file)
 		{
 			this.file = file;

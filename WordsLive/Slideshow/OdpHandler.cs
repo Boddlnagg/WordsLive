@@ -40,7 +40,8 @@ namespace WordsLive.Slideshow
 			if (!CheckExtension(uri))
 				return -1;
 
-			if (!SlideshowPresentationFactory.IsTargetAvailable(SlideshowPresentationTarget.Impress))
+			if (!SlideshowPresentationFactory.IsTargetAvailable(SlideshowPresentationTarget.Impress) &&
+				!SlideshowPresentationFactory.IsTargetAvailable(SlideshowPresentationTarget.Powerpoint))
 				return -1;
 			
 			return 100;
