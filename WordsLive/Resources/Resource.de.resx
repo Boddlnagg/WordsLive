@@ -993,4 +993,10 @@
   <data name="slidePrevious" xml:space="preserve">
     <value>Zurück</value>
   </data>
+  <data name="sePreferPowerpointForOdp" xml:space="preserve">
+    <value>Verwende PowerPoint (anstatt Impress) für *.odp-Dateien</value>
+  </data>
+  <data name="sePreferPowerpointViewerToPowerpoint" xml:space="preserve">
+    <value>Verwende PowerPoint Viewer auch wenn Office PowerPoint installiert ist</value>
+  </data>
 </root>

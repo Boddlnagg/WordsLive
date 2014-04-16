@@ -18,6 +18,7 @@
 
 using System;
 using System.IO;
+using WordsLive.Properties;
 using WordsLive.Slideshow.Presentation;
 
 namespace WordsLive.Slideshow
@@ -28,9 +29,25 @@ namespace WordsLive.Slideshow
 		{
 			get
 			{
-				// TODO: configurable (what versions of PowerPoint support odp?)
-				//return SlideshowPresentationTarget.Powerpoint;
-				return SlideshowPresentationTarget.Impress;
+				if (Settings.Default.PreferPowerpointForOdp && SlideshowPresentationFactory.IsTargetAvailable(SlideshowPresentationTarget.Powerpoint))
+				{
+					// prefer PowerPoint if setting is set
+					return SlideshowPresentationTarget.Powerpoint;
+				}
+				else if (SlideshowPresentationFactory.IsTargetAvailable(SlideshowPresentationTarget.Impress))
+				{
+					// by default use Impress
+					return SlideshowPresentationTarget.Impress;
+				}
+				else if (!Settings.Default.PreferPowerpointForOdp && SlideshowPresentationFactory.IsTargetAvailable(SlideshowPresentationTarget.Powerpoint))
+				{
+					// use PowerPoint if Impress is not available (and setting is not set)
+					return SlideshowPresentationTarget.Powerpoint;
+				}
+				else
+				{
+					throw new NotSupportedException("No Supported Target");
+				}
 			}
 		}
 

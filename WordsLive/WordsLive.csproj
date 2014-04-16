@@ -217,7 +217,6 @@
     <Compile Include="Slideshow\Presentation\SlideshowPresentationFactory.cs" />
     <Compile Include="Slideshow\Presentation\SlideshowPresentationTarget.cs" />
     <Compile Include="Slideshow\Presentation\SlideThumbnail.cs" />
-    <Compile Include="Slideshow\Settings.cs" />
     <Compile Include="Slideshow\SlideshowControlPanel.xaml.cs">
       <DependentUpon>SlideshowControlPanel.xaml</DependentUpon>
     </Compile>

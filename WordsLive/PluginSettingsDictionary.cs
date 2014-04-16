@@ -1,6 +1,6 @@
 ﻿/*
  * WordsLive - worship projection software
- * Copyright (c) 2013 Patrick Reisert
+ * Copyright (c) 2014 Patrick Reisert
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,6 +24,7 @@ using System.Xml.Serialization;
 
 namespace WordsLive
 {
+	// TODO: probably we should get rid of this
 	public class PluginSettingsDictionary : IXmlSerializable
 	{
 		private Dictionary<string, object> dictionary = new Dictionary<string, object>();

@@ -1429,6 +1429,24 @@ namespace WordsLive.Resources {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Use PowerPoint (instead of Impress) for *.odp files ähnelt.
+        /// </summary>
+        public static string sePreferPowerpointForOdp {
+            get {
+                return ResourceManager.GetString("sePreferPowerpointForOdp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Use PowerPoint Viewer even if Office PowerPoint is available ähnelt.
+        /// </summary>
+        public static string sePreferPowerpointViewerToPowerpoint {
+            get {
+                return ResourceManager.GetString("sePreferPowerpointViewerToPowerpoint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Local directories ähnelt.
         /// </summary>
         public static string seRadioLocal {

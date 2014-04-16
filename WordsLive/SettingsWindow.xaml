@@ -161,9 +161,17 @@
 				</GroupBox>
 			</TabItem>
 			<TabItem Header="{x:Static resx:Resource.seTabExternalTools}">
-				<CheckBox IsChecked="{Binding UseVlc}" IsEnabled="{Binding IsVlcAvailable}">
-					<TextBlock Text="{x:Static resx:Resource.seExternalUseVLC}" TextWrapping="Wrap"/>
-				</CheckBox>
+				<StackPanel>
+					<CheckBox IsChecked="{Binding UseVlc}" IsEnabled="{Binding IsVlcAvailable}">
+						<TextBlock Text="{x:Static resx:Resource.seExternalUseVLC}" TextWrapping="Wrap"/>
+					</CheckBox>
+					<CheckBox IsChecked="{Binding Source={StaticResource settings}, Path=Default.PreferPowerpointViewerToPowerpoint}">
+						<TextBlock Text="{x:Static resx:Resource.sePreferPowerpointViewerToPowerpoint}" TextWrapping="Wrap"/>
+					</CheckBox>
+					<CheckBox IsChecked="{Binding Source={StaticResource settings}, Path=Default.PreferPowerpointForOdp}">
+						<TextBlock Text="{x:Static resx:Resource.sePreferPowerpointForOdp}" TextWrapping="Wrap"/>
+					</CheckBox>
+				</StackPanel>
 				<!-- TODO: add setting whether to use Impress or PowerPoint for PPT files and whether to use PPT Viewer or full PPT if available-->
 			</TabItem>
 		</TabControl>

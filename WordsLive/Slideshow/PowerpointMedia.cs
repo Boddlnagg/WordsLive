@@ -18,6 +18,7 @@
 
 using System;
 using System.IO;
+using WordsLive.Properties;
 using WordsLive.Slideshow.Presentation;
 
 namespace WordsLive.Slideshow
@@ -28,15 +29,30 @@ namespace WordsLive.Slideshow
 		{
 			get
 			{
-				// TODO: configurable
-				if (SlideshowPresentationFactory.IsTargetAvailable(SlideshowPresentationTarget.Powerpoint))
-					return SlideshowPresentationTarget.Powerpoint;
-				else if (SlideshowPresentationFactory.IsTargetAvailable(SlideshowPresentationTarget.PowerpointViewer))
+				if (Settings.Default.PreferPowerpointViewerToPowerpoint && SlideshowPresentationFactory.IsTargetAvailable(SlideshowPresentationTarget.PowerpointViewer))
+				{
+					// prefer PowerPoint Viewer if setting is set
 					return SlideshowPresentationTarget.PowerpointViewer;
+				}
+				else if (SlideshowPresentationFactory.IsTargetAvailable(SlideshowPresentationTarget.Powerpoint))
+				{
+					// by default prefer PowerPoint
+					return SlideshowPresentationTarget.Powerpoint;
+				}
+				else if (!Settings.Default.PreferPowerpointViewerToPowerpoint && SlideshowPresentationFactory.IsTargetAvailable(SlideshowPresentationTarget.PowerpointViewer))
+				{
+					// use PowerPoint Viewer if PowerPoint is not available (and setting is not set)
+					return SlideshowPresentationTarget.PowerpointViewer;
+				}
 				else if (SlideshowPresentationFactory.IsTargetAvailable(SlideshowPresentationTarget.Impress))
+				{
+					// use Impress when nothing else is available
 					return SlideshowPresentationTarget.Impress;
+				}
 				else
+				{
 					throw new NotSupportedException("No Supported Target");
+				}
 			} 
 		}
 
