@@ -222,7 +222,8 @@
 					 DragEnter="OrderListBox_DragEnterOrOver"
 					 DragOver="OrderListBox_DragEnterOrOver"
 					 DragLeave="OrderListBox_DragLeave"
-					 SelectionMode="Extended">
+					 SelectionMode="Extended"
+					 IsSynchronizedWithCurrentItem="True">
 				<ListBox.CommandBindings>
 					<CommandBinding Command="Delete" Executed="OrderListBox_OnExecuteCommand" CanExecute="OrderListBox_OnCanExecuteCommand"/>
 					<CommandBinding Command="{x:Static local:CustomCommands.MoveUp}" Executed="OrderListBox_OnExecuteCommand" CanExecute="OrderListBox_OnCanExecuteCommand"/>

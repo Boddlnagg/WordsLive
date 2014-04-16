@@ -805,6 +805,7 @@ namespace WordsLive
 			}
 			else if (e.Command == NavigationCommands.Refresh)
 			{
+				// FIXME: If the focus is on another element than the OrderListBox, refresh does not work correctly ...
 				foreach (var item in selected)
 				{
 					orderList.Reload(item);
