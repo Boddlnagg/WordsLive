@@ -682,6 +682,8 @@ namespace WordsLive.Editor
 
 		private void TranslationExpanderExpandedCollapsed(object sender, RoutedEventArgs e)
 		{
+			if (!(StructureTree.SelectedItem is SongSlide)) return;
+
 			Expander exp = (Expander)sender;
 			Grid g = exp.FindVisualParent<Grid>();
 			TextBox t;
