@@ -105,6 +105,9 @@ namespace WordsLive.Core.Songs.IO
 			if (general.Element("language") != null)
 				song.Language = general.Element("language").Value;
 
+			if (general.Element("translationlanguage") != null)
+				song.TranslationLanguage = general.Element("translationlanguage").Value;
+
 			if (general.Element("comment") != null)
 				song.Comment = general.Element("comment").Value;
 			else

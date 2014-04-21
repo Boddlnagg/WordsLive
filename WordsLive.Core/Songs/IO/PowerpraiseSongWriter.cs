@@ -42,6 +42,7 @@ namespace WordsLive.Core.Songs.IO
 					new XElement("title", song.Title),
 					new XElement("category", song.Category),
 					new XElement("language", song.Language),
+					String.IsNullOrWhiteSpace(song.TranslationLanguage) ? null : new XElement("translationlanguage", song.TranslationLanguage),
 					song.CcliNumber == null ? null : new XElement("ccli", song.CcliNumber),
 					String.IsNullOrEmpty(song.Comment) ? null : new XElement("comment", song.Comment)),
 				new XElement("songtext",
