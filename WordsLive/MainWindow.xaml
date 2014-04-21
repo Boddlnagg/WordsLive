@@ -269,7 +269,7 @@
 									<MenuItem Header="{x:Static resx:Resource.vOrderContextMenuShow}" Command="{x:Static local:CustomCommands.Activate}"/>
 									<MenuItem Header="{x:Static resx:Resource.vOrderContextMenuRefresh}" Command="Refresh"/>
 									<MenuItem Header="{x:Static resx:Resource.eCommandOpenInEditor}" Command="{x:Static local:CustomCommands.OpenInEditor}"/>
-									<MenuItem Header="{x:Static resx:Resource.vOrderContextMenuRemove}" Command="Delete"/>
+									<MenuItem Header="{x:Static resx:Resource.generalRemove}" Command="Delete"/>
 								</ContextMenu>
 							</Setter.Value>
 						</Setter>

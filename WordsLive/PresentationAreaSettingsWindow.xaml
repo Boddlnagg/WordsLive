@@ -1,6 +1,6 @@
 ﻿<!--
 - WordsLive - worship projection software
-- Copyright (c) 2013 Patrick Reisert
+- Copyright (c) 2014 Patrick Reisert
 - 
 - This program is free software: you can redistribute it and/or modify
 - it under the terms of the GNU General Public License as published by
@@ -55,7 +55,7 @@
 		<Button Grid.Row="0" Content="{x:Static resx:Resource.paMoveUp}" Height="23" Margin="0,12,12,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="75" Name="moveUpButton" Click="moveUpButton_Click" />
 		<Button Grid.Row="0" Content="{x:Static resx:Resource.paMoveDown}" Height="23" Margin="0,41,12,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="75" Name="moveDownButton" Click="moveDownButton_Click" />
 		<Button Content="{x:Static resx:Resource.paAdd}" Height="23" Margin="0,80,12,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="75" Name="addButton" Click="addButton_Click" />
-		<Button Content="{x:Static resx:Resource.paRemove}" Height="23" Margin="0,109,12,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="75" Name="removeButton" Click="removeButton_Click" />
+		<Button Content="{x:Static resx:Resource.generalRemove}" Height="23" Margin="0,109,12,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="75" Name="removeButton" Click="removeButton_Click" />
 		<Button Content="{x:Static resx:Resource.paRefresh}" Margin="0,0,12,12" HorizontalAlignment="Right" Width="75" Height="23" VerticalAlignment="Bottom" Name="updateButton" Click="updateButton_Click" />
 		<Grid Grid.Row="1" VerticalAlignment="Top" DataContext="{Binding ElementName=settingsPriorityListBox, Path=SelectedItem}">
 			<Grid.Style>

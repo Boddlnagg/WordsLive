@@ -952,7 +952,7 @@ namespace WordsLive.Resources {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die https://de.songselect.com/search/results?SearchTerm={0} ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die https://us.songselect.com/search/results?SearchTerm={0} ähnelt.
         /// </summary>
         public static string eSongSelectSearchString {
             get {
@@ -1029,6 +1029,15 @@ namespace WordsLive.Resources {
         public static string fsUsePowerpraiseDirectory {
             get {
                 return ResourceManager.GetString("fsUsePowerpraiseDirectory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Remove ähnelt.
+        /// </summary>
+        public static string generalRemove {
+            get {
+                return ResourceManager.GetString("generalRemove", resourceCulture);
             }
         }
         
@@ -1200,15 +1209,6 @@ namespace WordsLive.Resources {
         public static string paRefresh {
             get {
                 return ResourceManager.GetString("paRefresh", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Remove ähnelt.
-        /// </summary>
-        public static string paRemove {
-            get {
-                return ResourceManager.GetString("paRemove", resourceCulture);
             }
         }
         
@@ -2302,15 +2302,6 @@ namespace WordsLive.Resources {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Remove ähnelt.
-        /// </summary>
-        public static string vImagesContextMenuRemove {
-            get {
-                return ResourceManager.GetString("vImagesContextMenuRemove", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Stop;Start over;Blackscreen;Next item in order ähnelt.
         /// </summary>
         public static string vImagesFinishActions {
@@ -2667,15 +2658,6 @@ namespace WordsLive.Resources {
         public static string vOrderContextMenuRefresh {
             get {
                 return ResourceManager.GetString("vOrderContextMenuRefresh", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Remove ähnelt.
-        /// </summary>
-        public static string vOrderContextMenuRemove {
-            get {
-                return ResourceManager.GetString("vOrderContextMenuRemove", resourceCulture);
             }
         }
         

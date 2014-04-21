@@ -165,9 +165,6 @@
   <data name="paRefresh" xml:space="preserve">
     <value>Aktualisieren</value>
   </data>
-  <data name="paRemove" xml:space="preserve">
-    <value>Entfernen</value>
-  </data>
   <data name="paSecondary" xml:space="preserve">
     <value>Sekundär</value>
   </data>
@@ -537,14 +534,8 @@
   <data name="vOrderContextMenuRefresh" xml:space="preserve">
     <value>Neu laden</value>
   </data>
-  <data name="vOrderContextMenuRemove" xml:space="preserve">
-    <value>Entfernen</value>
-  </data>
   <data name="vOrderContextMenuShow" xml:space="preserve">
     <value>Anzeigen</value>
-  </data>
-  <data name="vImagesContextMenuRemove" xml:space="preserve">
-    <value>Entfernen</value>
   </data>
   <data name="vImagesFinishActions" xml:space="preserve">
     <value>Anhalten;Von vorne;Anzeige schwarz schalten;Nächstes Medienelement</value>
@@ -1010,5 +1001,8 @@
   </data>
   <data name="eSongSelectSearchString" xml:space="preserve">
     <value>https://de.songselect.com/search/results?SearchTerm={0}</value>
+  </data>
+  <data name="generalRemove" xml:space="preserve">
+    <value>Entfernen</value>
   </data>
 </root>

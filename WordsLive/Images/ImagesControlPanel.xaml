@@ -101,7 +101,7 @@
 								<Image imageloader:Loader.Source="{Binding Source}" imageloader:Loader.SourceType="{Binding SourceType}" ToolTip="{Binding Title}" Margin="2,2,2,2" Height="120">
 									<Image.ContextMenu>
 										<ContextMenu>
-											<MenuItem Header="{x:Static resx:Resource.vImagesContextMenuRemove}" Command="Delete" CommandParameter="{Binding}" CommandTarget="{Binding ElementName=slideListView}"/>
+											<MenuItem Header="{x:Static resx:Resource.generalRemove}" Command="Delete" CommandParameter="{Binding}" CommandTarget="{Binding ElementName=slideListView}"/>
 											<MenuItem Header="{x:Static resx:Resource.vImagesRotateLeft}" Command="{x:Static local:CustomCommands.RotateLeft}" CommandParameter="{Binding}" CommandTarget="{Binding ElementName=slideListView}"/>
 											<MenuItem Header="{x:Static resx:Resource.vImagesRotateRight}" Command="{x:Static local:CustomCommands.RotateRight}" CommandParameter="{Binding}" CommandTarget="{Binding ElementName=slideListView}"/>
 										</ContextMenu>
