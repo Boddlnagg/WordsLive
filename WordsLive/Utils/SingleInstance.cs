@@ -27,7 +27,7 @@ using System.Runtime.Remoting.Channels.Ipc;
 using System.Runtime.Remoting.Channels;
 using System.Runtime.Remoting;
 
-namespace WordsLive.Util
+namespace WordsLive.Utils
 {
 	/// <summary>
 	/// Source: http://dzimchuk.net/blog/post/Single-instance-of-a-WPF-app-e28093-part-5-%28Remoting%29

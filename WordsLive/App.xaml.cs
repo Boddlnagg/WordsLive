@@ -18,7 +18,7 @@
 
 using System;
 using System.Windows;
-using WordsLive.Util;
+using WordsLive.Utils;
 
 namespace WordsLive
 {
