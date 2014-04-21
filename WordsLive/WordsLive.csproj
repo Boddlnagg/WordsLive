@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -172,6 +172,9 @@
     <Compile Include="Documents\DocumentPageScale.cs" />
     <Compile Include="Documents\IDocumentPresentation.cs" />
     <Compile Include="Editor\Nodes\CcliNumberNode.cs" />
+    <Compile Include="Editor\EditSourcesControl.xaml.cs">
+      <DependentUpon>EditSourcesControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="FirstStartWindow.xaml.cs">
       <DependentUpon>FirstStartWindow.xaml</DependentUpon>
     </Compile>
@@ -247,6 +250,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Editor\SaveFilenameDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Editor\EditSourcesControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -360,9 +367,9 @@
     <Compile Include="Utils\ImageLoader\Manager.cs" />
     <Compile Include="Utils\ImageLoader\Types.cs" />
     <Compile Include="Resources\Resource.Designer.cs">
-      <DependentUpon>Resource.resx</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
+      <DependentUpon>Resource.resx</DependentUpon>
     </Compile>
     <Compile Include="Resources\Resource.de.Designer.cs">
       <AutoGen>True</AutoGen>

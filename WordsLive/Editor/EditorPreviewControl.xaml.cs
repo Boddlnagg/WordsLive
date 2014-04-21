@@ -18,6 +18,7 @@
 
 using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using Awesomium.Core;
@@ -44,14 +45,16 @@ namespace WordsLive.Editor
 
 			if (args.OldValue != null)
 			{
+				(args.OldValue as Song).PropertyChanging -= control.Song_PropertyChanging;
 				(args.OldValue as Song).PropertyChanged -= control.Song_PropertyChanged;
-				(args.OldValue as Song).Sources[0].PropertyChanged -= control.SongSource_PropertyChanged;
+				(args.OldValue as Song).FirstSource.PropertyChanged -= control.SongSource_PropertyChanged;
 			}
 
 			if (args.NewValue != null)
 			{
+				(args.NewValue as Song).PropertyChanging += control.Song_PropertyChanging;
 				(args.NewValue as Song).PropertyChanged += control.Song_PropertyChanged;
-				(args.NewValue as Song).Sources[0].PropertyChanged += control.SongSource_PropertyChanged;
+				(args.NewValue as Song).FirstSource.PropertyChanged += control.SongSource_PropertyChanged;
 			}
 
 			if (args.NewValue != null && control.web.IsProcessCreated)
@@ -135,6 +138,17 @@ namespace WordsLive.Editor
 				FinishedLoading(this, EventArgs.Empty);
 		}
 
+		void Song_PropertyChanging(object sender, PropertyChangingEventArgs e)
+		{
+			if (controller != null)
+			{
+				if (e.PropertyName == "FirstSource")
+				{
+					Song.FirstSource.PropertyChanged -= this.SongSource_PropertyChanged;
+				}
+			}
+		}
+
 		void Song_PropertyChanged(object sender, PropertyChangedEventArgs e)
 		{
 			if (controller != null)
@@ -144,17 +158,23 @@ namespace WordsLive.Editor
 					controller.UpdateFormatting(Song.Formatting, Song.HasTranslation, Song.HasChords);
 					Update(); // TODO: needed? (maybe for font size changes)
 				}
-
-				if (e.PropertyName == "Copyright")
+				else if (e.PropertyName == "Copyright")
+				{
 					controller.SetCopyright(Song.Copyright);
+				}
+				else if (e.PropertyName == "FirstSource")
+				{
+					Song.FirstSource.PropertyChanged += this.SongSource_PropertyChanged;
+				}
 			}
 		}
 
 		void SongSource_PropertyChanged(object sender, PropertyChangedEventArgs e)
 		{
-			// TODO: this is currently assuming that Song.Sources[0] does never change
+			Debug.Assert(sender == Song.FirstSource);
+
 			if (e.PropertyName == "Songbook" || e.PropertyName == "Number")
-				controller.SetSource(Song.Sources[0]);
+				controller.SetSource(Song.FirstSource);
 		}
 
 		void SongSlide_PropertyChanged(object sender, PropertyChangedEventArgs e)

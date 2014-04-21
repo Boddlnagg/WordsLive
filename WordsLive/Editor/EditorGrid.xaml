@@ -110,20 +110,7 @@
 			</Grid>
 		</DataTemplate>
 		<DataTemplate x:Key="editSourceGridTemplate">
-			<Grid Margin="10" VerticalAlignment="Top">
-				<Grid.ColumnDefinitions>
-					<ColumnDefinition Width="Auto"/>
-					<ColumnDefinition/>
-				</Grid.ColumnDefinitions>
-				<Grid.RowDefinitions>
-					<RowDefinition Height="Auto"/>
-					<RowDefinition Height="Auto"/>
-				</Grid.RowDefinitions>
-				<Label Grid.Column="0" Grid.Row="0" Content="{x:Static resx:Resource.eGridSourceSongbookLabel}"/>
-				<TextBox Grid.Column="1" Grid.Row="0" Margin="0,2,0,2" IsUndoEnabled="False" Text="{Binding Path=Root.Sources[0].Songbook, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-				<Label Grid.Column="0" Grid.Row="1" Content="{x:Static resx:Resource.eGridSourceNumberLabel}"/>
-				<TextBox Grid.Column="1" Grid.Row="1" IsUndoEnabled="False" Text="{Binding Path=Root.Sources[0].Number, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NullableValueConverter}}" />
-			</Grid>
+			<local:EditSourcesControl Song="{Binding Root}"/>
 		</DataTemplate>
 		<DataTemplate x:Key="editCcliNumberGridTemplate">
 			<Grid Margin="10" VerticalAlignment="Top">

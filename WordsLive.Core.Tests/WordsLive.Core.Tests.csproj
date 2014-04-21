@@ -95,6 +95,7 @@
     <Compile Include="Songs\ChordTests.cs" />
     <Compile Include="Songs\SongPartTests.cs" />
     <Compile Include="Songs\SongSlideTests.cs" />
+    <Compile Include="Songs\SongSourceTests.cs" />
     <Compile Include="Songs\SongTestsBase.cs" />
     <Compile Include="Songs\SongTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

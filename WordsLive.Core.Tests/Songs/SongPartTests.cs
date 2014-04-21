@@ -249,5 +249,16 @@ namespace WordsLive.Core.Tests.Songs
 			part.Slides[0].Text = "ChangedLine";
 			Assert.Equal("SimpleLine", copy.Text);
 		}
+
+		[Fact]
+		public void PartRemoveLast()
+		{
+			song.RemovePart(song.Parts[0]);
+			Assert.Equal(0, song.Parts.Count);
+			Assert.Equal(0, song.Order.Count);
+			Undo();
+			Assert.Equal(1, song.Parts.Count);
+			Assert.Equal(1, song.Order.Count);
+		}
 	}
 }

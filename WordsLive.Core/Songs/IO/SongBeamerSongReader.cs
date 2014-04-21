@@ -264,13 +264,7 @@ namespace WordsLive.Core.Songs.IO
 				song.Comment = properties["comment"];
 
 			if (properties.ContainsKey("songbook")) // also written: SongBook 	#Songbook=Come to Worship 1+2 / 136, In Love With Jesus 2 / 86
-			{
-				song.Sources.Clear();
-				foreach (var s in properties["songbook"].Split(','))
-				{
-					song.AddSource(s);
-				}
-			}
+				song.SetSources(properties["songbook"].Split(','));
 
 			if (properties.ContainsKey("langcount")) // number of translations in song file 	#LangCount=1
 				langcount = int.Parse(properties["langcount"]);

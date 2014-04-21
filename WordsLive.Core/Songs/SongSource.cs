@@ -16,6 +16,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+using System;
 using System.ComponentModel;
 using Newtonsoft.Json;
 
@@ -86,7 +87,7 @@ namespace WordsLive.Core.Songs
 		{
 			SongSource result = new SongSource(root);
 			
-			if(source.Trim() == "")
+			if(String.IsNullOrWhiteSpace(source))
 				return result;
 			
 			bool success = false;
@@ -95,10 +96,10 @@ namespace WordsLive.Core.Songs
 			if (source.Contains("/"))
 			{
 				var parts = source.Split('/');
-				result.Songbook = parts[0].Trim();
+				result.songbook = parts[0].Trim();
 				if (int.TryParse(parts[1].Trim(), out n))
 				{
-					result.Number = n;
+					result.number = n;
 					success = true;
 				}
 			}
@@ -114,11 +115,11 @@ namespace WordsLive.Core.Songs
 						book = book.Substring(0, book.Length - 3).Trim();
 					if (book.EndsWith(","))
 						book = book.Substring(0, book.Length - 1).Trim();
-					result.Songbook = book;
+					result.songbook = book;
 				}
 				else
 				{
-					result.Songbook = source;
+					result.songbook = source;
 				}
 			}
 			

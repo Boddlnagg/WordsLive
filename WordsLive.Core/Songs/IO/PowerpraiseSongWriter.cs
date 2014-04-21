@@ -73,10 +73,7 @@ namespace WordsLive.Core.Songs.IO
 					),
 					new XElement("source",
 						new XElement("position", song.Formatting.SourceDisplayPosition.ToString().ToLower()),
-						new XElement("text",
-							song.Sources.Count > 0 && !String.IsNullOrEmpty(song.Sources[0].ToString()) ?
-								new XElement("line", song.Sources[0].ToString()) : null
-						)
+						new XElement("text",song.Sources.Select(src => new XElement("line", src.ToString())))
 					)
 				),
 				new XElement("formatting",

@@ -53,7 +53,6 @@ namespace WordsLive.Core.Songs.IO
 
 			// reset in case it has already been loaded (TODO: move outside of this class to caller)
 			song.Backgrounds.Clear(); // this is needed, because the indices must be correct
-			song.Sources.Clear();
 			song.Parts.Clear();
 
 			var video = root.Element("formatting").Element("background").Attribute("video");
@@ -138,7 +137,7 @@ namespace WordsLive.Core.Songs.IO
 
 			song.Copyright = String.Join("\n", root.Element("information").Element("copyright").Element("text").Elements("line").Select(line => line.Value).ToArray());
 
-			song.AddSource(String.Join("\n", root.Element("information").Element("source").Element("text").Elements("line").Select(line => line.Value)));
+			song.SetSources(root.Element("information").Element("source").Element("text").Elements("line").Select(line => line.Value));
 		}
 
 		/// <summary>

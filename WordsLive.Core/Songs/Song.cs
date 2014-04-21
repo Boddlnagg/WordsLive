@@ -19,6 +19,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
@@ -34,7 +35,7 @@ namespace WordsLive.Core.Songs
 	/// <summary>
 	/// Represents a song media object.
 	/// </summary>
-	public class Song : INotifyPropertyChanged, ISongElement
+	public class Song : INotifyPropertyChanged, INotifyPropertyChanging, ISongElement
 	{
 		private SongUriResolver uriResolver;
 		public Uri Uri { get; private set; }
@@ -62,6 +63,9 @@ namespace WordsLive.Core.Songs
 			}
 			private set
 			{
+				if (value == isModified) return;
+
+				OnPropertyChanging("IsModified");
 				isModified = value;
 				OnPropertyChanged("IsModified");
 			}
@@ -78,6 +82,9 @@ namespace WordsLive.Core.Songs
 			}
 			private set
 			{
+				if (value == isImported) return;
+
+				OnPropertyChanging("IsImported");
 				isImported = value;
 				OnPropertyChanged("IsImported");
 
@@ -161,6 +168,7 @@ namespace WordsLive.Core.Songs
 				if (value != title)
 				{
 					Undo.ChangeFactory.OnChanging(this, "Title", title, value);
+					OnPropertyChanging("Title");
 					title = value;
 					OnPropertyChanged("Title");
 				}
@@ -181,6 +189,7 @@ namespace WordsLive.Core.Songs
 				if (value != category)
 				{
 					Undo.ChangeFactory.OnChangingTryMerge(this, "Category", category, value);
+					OnPropertyChanging("Category");
 					category = value;
 					OnPropertyChanged("Category");
 				}
@@ -201,6 +210,7 @@ namespace WordsLive.Core.Songs
 				if (value != language)
 				{
 					Undo.ChangeFactory.OnChangingTryMerge(this, "Language", language, value);
+					OnPropertyChanging("Language");
 					language = value;
 					OnPropertyChanged("Language");
 				}
@@ -209,7 +219,6 @@ namespace WordsLive.Core.Songs
 
 		/// <summary>
 		/// Gets or sets the language of the translation.
-		/// TODO: this setting is currently not saved (not supported in .ppl)
 		/// </summary>
 		public string TranslationLanguage
 		{
@@ -222,6 +231,7 @@ namespace WordsLive.Core.Songs
 				if (value != translationLanguage)
 				{
 					Undo.ChangeFactory.OnChangingTryMerge(this, "TranslationLanguage", translationLanguage, value);
+					OnPropertyChanging("TranslationLanguage");
 					translationLanguage = value;
 					OnPropertyChanged("TranslationLanguage");
 				}
@@ -242,6 +252,7 @@ namespace WordsLive.Core.Songs
 				if (value != comment)
 				{
 					Undo.ChangeFactory.OnChangingTryMerge(this, "Comment", comment, value);
+					OnPropertyChanging("Comment");
 					comment = value;
 					OnPropertyChanged("Comment");
 				}
@@ -262,6 +273,7 @@ namespace WordsLive.Core.Songs
 				if (value != copyright)
 				{
 					Undo.ChangeFactory.OnChangingTryMerge(this, "Copyright", copyright, value);
+					OnPropertyChanging("Copyright");
 					copyright = value;
 					OnPropertyChanged("Copyright");
 				}
@@ -282,21 +294,45 @@ namespace WordsLive.Core.Songs
 				if (value != ccliNumber)
 				{
 					Undo.ChangeFactory.OnChanging(this, "CcliNumber", ccliNumber, value);
+					OnPropertyChanging("CcliNumber");
 					ccliNumber = value;
 					OnPropertyChanged("CcliNumber");
 				}
 			}
 		}
 
+		private readonly ObservableCollection<SongSource> sources = new ObservableCollection<SongSource>();
+
 		/// <summary>
-		/// Gets a list of sources.
+		/// Gets a (read-only) list of sources.
 		/// </summary>
-		public ObservableCollection<SongSource> Sources { get; private set; }
+		public ReadOnlyObservableCollection<SongSource> Sources { get; private set; }
+
+		/// <summary>
+		/// Gets the first defined source.
+		/// This will never be <c>null</c> (from inside a single thread).
+		/// </summary>
+		public SongSource FirstSource
+		{
+			get
+			{
+				return sources[0];
+			}
+		}
+
+		private readonly ObservableCollection<SongBackground> backgrounds = new ObservableCollection<SongBackground>();
 
 		/// <summary>
 		/// Gets or sets a list of backgrounds.
+		/// TODO: make this a read-only collection
 		/// </summary>
-		public ObservableCollection<SongBackground> Backgrounds { get; private set; }
+		public ObservableCollection<SongBackground> Backgrounds
+		{
+			get
+			{
+				return backgrounds;
+			}
+		}
 
 		/// <summary>
 		/// Gets the video background used for this song or <c>null</c> if no video background is used.
@@ -323,6 +359,7 @@ namespace WordsLive.Core.Songs
 				using (Undo.ChangeFactory.Batch(this, "Formatting"))
 				{
 					Undo.ChangeFactory.OnChanging(this, "Formatting", formatting == null ? null : formatting.Clone(), value);
+					OnPropertyChanging("Formatting");
 					formatting = value;
 					var size = formatting.MainText.Size;
 					if (formatting.SingleFontSize && (!IsUndoEnabled || !UndoManager.IsUndoingOrRedoing))
@@ -337,19 +374,38 @@ namespace WordsLive.Core.Songs
 						}
 					}
 				}
+				// TODO: check whether this property is also fired in case of a undo/redo
 				OnPropertyChanged("Formatting");
 			}
 		}
+
+		private readonly ObservableCollection<SongPart> parts = new ObservableCollection<SongPart>();
 		
 		/// <summary>
 		/// Gets a list of song parts.
+		/// TODO: make this a read-only collection
 		/// </summary>
-		public ObservableCollection<SongPart> Parts { get; private set; }
+		public ObservableCollection<SongPart> Parts
+		{
+			get
+			{
+				return parts;
+			}
+		}
+
+		private readonly ObservableCollection<SongPartReference> order = new ObservableCollection<SongPartReference>();
 		
 		/// <summary>
 		/// Gets or sets the order of song parts indicated by a list of song part references.
+		/// TODO: make this a read-only collection
 		/// </summary>
-		public ObservableCollection<SongPartReference> Order { get; private set; }
+		public ObservableCollection<SongPartReference> Order
+		{
+			get
+			{
+				return order;
+			}
+		}
 
 		/// <summary>
 		/// Gets the text of all parts at once.
@@ -422,15 +478,17 @@ namespace WordsLive.Core.Songs
 
 		internal void UpdateHasTranslation(bool slideHasTranslation)
 		{
-			var lastHasTranslation = hasTranslation;
+			bool newHasTranslation;
 
 			if (slideHasTranslation)
-				hasTranslation = true;
+				newHasTranslation = true;
 			else
-				hasTranslation = Parts.Any(part => part.Slides.Any(slide => slide.HasTranslation));
+				newHasTranslation = Parts.Any(part => part.Slides.Any(slide => slide.HasTranslation));
 
-			if (hasTranslation != lastHasTranslation)
+			if (newHasTranslation != hasTranslation)
 			{
+				OnPropertyChanging("HasTranslation");
+				hasTranslation = newHasTranslation;
 				OnPropertyChanged("HasTranslation");
 			}
 		}
@@ -449,16 +507,17 @@ namespace WordsLive.Core.Songs
 		}
 
 		internal void UpdateHasChords(bool slideHasChords)
-		{ 
-			var lastHasChords = hasChords;
-
+		{
+			bool newHasChords;
 			if (slideHasChords)
-				hasChords = true;
+				newHasChords = true;
 			else
-				hasChords = Chords.Chords.GetChords(Text).Any();
+				newHasChords = Chords.Chords.GetChords(Text).Any();
 
-			if (hasChords != lastHasChords)
+			if (newHasChords != hasChords)
 			{
+				OnPropertyChanging("HasChords");
+				hasChords = newHasChords;
 				OnPropertyChanged("HasChords");
 			}
 		}
@@ -475,11 +534,10 @@ namespace WordsLive.Core.Songs
 
 		private Song()
 		{
-			Parts = new ObservableCollection<SongPart>();
-			Sources = new ObservableCollection<SongSource>();
-			Order = new ObservableCollection<SongPartReference>();
-			Backgrounds = new ObservableCollection<SongBackground>();
+			// this constructor must always be called
 			this.uriResolver = SongUriResolver.Default;
+			AddSource(String.Empty);
+			Sources = new ReadOnlyObservableCollection<SongSource>(sources);
 		}
 
 		public Song(string path) : this(new Uri(new FileInfo(path).FullName)) { }
@@ -638,29 +696,33 @@ namespace WordsLive.Core.Songs
 
 			Action redo = () =>
 			{
-				bool notify = false;
+				//bool notify = false;
 				SongPartReference pRef;
 
 				while ((pRef = Order.Where(partRef => partRef.Part == part).FirstOrDefault()) != null)
 				{
-					notify = true;
+					//if (!notify)
+					//{
+					//	OnPropertyChanging("Order");
+					//	notify = true;
+					//}
 					Order.Remove(pRef);
 				}
 
-				if (notify)
-					OnPropertyChanged("PartOrder");
+				//if (notify)
+				//	OnPropertyChanged("Order");
 
 				Parts.Remove(part);
 			};
 
 			Action undo = () =>
 			{
-				if (i == Parts.Count)
+				if (i == Parts.Count && i != 0)
 					i--;
 
 				Parts.Insert(i, part);
 				SetOrder(backup);
-				OnPropertyChanged("Order");
+				//OnPropertyChanged("Order");
 			};
 
 			Undo.ChangeFactory.OnChanging(this, undo, redo, "RemovePart");
@@ -934,15 +996,83 @@ namespace WordsLive.Core.Songs
 
 		
 		/// <summary>
-		/// Adds a new source from a string.
+		/// Adds a new source from a string (can be undone).
 		/// </summary>
 		/// <param name="source">The string.</param>
 		/// <returns>The added <see cref="SongSource"/> object.</returns>
 		public SongSource AddSource(string source)
 		{
 			var src = SongSource.Parse(source, this);
-			Sources.Add(src);
+			AddSource(src);
 			return src;
+		}
+
+		/// <summary>
+		/// Adds a source to the song (can be undone).
+		/// </summary>
+		/// <param name="source">The source to add.</param>
+		public void AddSource(SongSource source)
+		{
+			if (source == null)
+				throw new ArgumentNullException("source");
+
+			Undo.ChangeFactory.OnChanging(this,
+				() => { sources.Remove(source); },
+				() => { sources.Add(source); },
+				"AddSource");
+			sources.Add(source);
+		}
+
+		/// <summary>
+		/// Sets the sources of this song, replacing all previous ones.
+		/// If the enumeration is empty, a single empty source is added.
+		/// </summary>
+		/// <param name="newSources">The new sources as strings, which are first parsed.</param>
+		public void SetSources(IEnumerable<string> newSources)
+		{
+			SetSources(newSources.Select(src => SongSource.Parse(src, this)));
+		}
+
+		/// <summary>
+		/// Sets the sources of this song, replacing all previous ones.
+		/// If the enumeration is empty, a single empty source is added.
+		/// </summary>
+		/// <param name="newSources">The new sources.</param>
+		public void SetSources(IEnumerable<SongSource> newSources)
+		{
+			var backup = Sources.ToArray();
+			Action redo = () =>
+			{
+				sources.Clear();
+
+				if (!newSources.Any())
+				{
+					sources.Add(new SongSource(this));
+					return;
+				}
+
+				foreach (var source in newSources)
+				{
+					sources.Add(source);
+				}
+
+				OnPropertyChanged("FirstSource");
+			};
+
+			Action undo = () =>
+			{
+				sources.Clear();
+				foreach (var src in backup)
+				{
+					sources.Add(src);
+				}
+
+				OnPropertyChanged("FirstSource");
+			};
+
+			redo();
+
+			Undo.ChangeFactory.OnChanging(this, undo, redo, "SetBackground");
 		}
 
 		/// <summary>
@@ -1141,6 +1271,14 @@ namespace WordsLive.Core.Songs
 		{
 			if (PropertyChanged != null)
 				PropertyChanged(this, new PropertyChangedEventArgs(name));
+		}
+
+		public event PropertyChangingEventHandler PropertyChanging;
+
+		protected void OnPropertyChanging(string name)
+		{
+			if (PropertyChanging != null)
+				PropertyChanging(this, new PropertyChangingEventArgs(name));
 		}
 
 		[JsonIgnore]
