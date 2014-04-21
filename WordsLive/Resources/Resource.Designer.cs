@@ -403,6 +403,24 @@ namespace WordsLive.Resources {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die CCLI Song Number: ähnelt.
+        /// </summary>
+        public static string eGridCcliSongNumberLabel {
+            get {
+                return ResourceManager.GetString("eGridCcliSongNumberLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die View song in SongSelect ähnelt.
+        /// </summary>
+        public static string eGridCcliViewInSongSelect {
+            get {
+                return ResourceManager.GetString("eGridCcliViewInSongSelect", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Add part ähnelt.
         /// </summary>
         public static string eGridContextAddPart {
@@ -790,6 +808,15 @@ namespace WordsLive.Resources {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die CCLI ähnelt.
+        /// </summary>
+        public static string eMetadataCcliNumberTitle {
+            get {
+                return ResourceManager.GetString("eMetadataCcliNumberTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Copyright ähnelt.
         /// </summary>
         public static string eMetadataCopyrightTitle {
@@ -921,6 +948,15 @@ namespace WordsLive.Resources {
         public static string eNewSongTitle {
             get {
                 return ResourceManager.GetString("eNewSongTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die https://de.songselect.com/search/results?SearchTerm={0} ähnelt.
+        /// </summary>
+        public static string eSongSelectSearchString {
+            get {
+                return ResourceManager.GetString("eSongSelectSearchString", resourceCulture);
             }
         }
         

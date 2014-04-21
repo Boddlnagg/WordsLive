@@ -1,6 +1,6 @@
 ﻿/*
  * WordsLive - worship projection software
- * Copyright (c) 2013 Patrick Reisert
+ * Copyright (c) 2014 Patrick Reisert
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,44 +16,32 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-using System.IO;
-namespace WordsLive.Core.Songs.IO
+using System;
+using System.Globalization;
+using System.Windows.Data;
+
+namespace WordsLive.Utils
 {
-	public abstract class CcliSongReader : ISongReader
+	/// <summary>
+	/// See http://jeffhandley.com/archive/2008/07/09/binding-to-nullable-values-in-xaml.aspx
+	/// </summary>
+	public class NullableValueConverter : IValueConverter
 	{
-		protected string GetPartName(string line, out bool checkFirstLine)
+		#region IValueConverter Members
+
+		public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
 		{
-			checkFirstLine = false;
-
-			if (!(line.StartsWith("Ver") || line.StartsWith("Ch") || line.StartsWith("Br")))
-			{
-				checkFirstLine = true;
-			}
-
-			return line;
+			return value;
 		}
 
-		protected bool CheckFirstLine(string line, ref string partName)
+		public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
 		{
-			if (line.StartsWith("(") && line.EndsWith(")"))
-			{
-				partName = line.Substring(1, line.Length - 2);
-				return true;
-			}
-			else
-			{
-				return false;
-			}
+			if (string.IsNullOrEmpty(value.ToString()))
+				return null;
+
+			return value;
 		}
 
-		public abstract void Read(Song song, Stream stream);
-
-		public bool NeedsTemplate
-		{
-			get
-			{
-				return true;
-			}
-		}
+		#endregion
 	}
 }

@@ -1,6 +1,6 @@
 ﻿/*
  * WordsLive - worship projection software
- * Copyright (c) 2013 Patrick Reisert
+ * Copyright (c) 2014 Patrick Reisert
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,7 +28,7 @@ namespace WordsLive.Core.Songs
 	public class SongSource : ISongElement, INotifyPropertyChanged
 	{
 		private string songbook;
-		private int number;
+		private int? number;
 
 		/// <summary>
 		/// Gets or sets the songbook.
@@ -48,9 +48,9 @@ namespace WordsLive.Core.Songs
 		}
 
 		/// <summary>
-		/// Gets or sets the number of the song in the songbook (0 if unknown)
+		/// Gets or sets the number of the song in the songbook (<c>null</c> if unknown)
 		/// </summary>
-		public int Number
+		public int? Number
 		{
 			get
 			{
@@ -58,9 +58,12 @@ namespace WordsLive.Core.Songs
 			}
 			set
 			{
-				Undo.ChangeFactory.OnChangingTryMerge(this, "Number", number, value);
-				number = value;
-				OnPropertyChanged("Number");
+				if (value != number)
+				{
+					Undo.ChangeFactory.OnChangingTryMerge(this, "Number", number, value);
+					number = value;
+					OnPropertyChanged("Number");
+				}
 			}
 		}
 
@@ -124,7 +127,7 @@ namespace WordsLive.Core.Songs
 
 		/// <summary>
 		/// Returns a <see cref="System.String"/> that represents this instance in the format '[Book] / [Nr]'.
-		/// If the <see cref="Number"/> is <c>0</c> only the <see cref="Songbook"/> name is returned.
+		/// If the <see cref="Number"/> is <c>null</c> or <c>0</c> only the <see cref="Songbook"/> name is returned.
 		/// </summary>
 		/// <returns>
 		/// A <see cref="System.String"/> that represents this instance.
@@ -133,7 +136,7 @@ namespace WordsLive.Core.Songs
 		{
 			if (string.IsNullOrEmpty(Songbook))
 				return string.Empty;
-			else if (Number == 0)
+			else if (!Number.HasValue || Number.Value == 0)
 				return Songbook;
 			else
 				return Songbook + " / " + Number;

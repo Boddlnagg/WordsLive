@@ -31,6 +31,7 @@ using WordsLive.Core.Songs.IO;
 using WordsLive.Core.Songs.Storage;
 using WordsLive.Resources;
 using WordsLive.Songs;
+using WordsLive.Utils;
 
 namespace WordsLive.Editor
 {
@@ -405,6 +406,22 @@ namespace WordsLive.Editor
 			{
 				e.CanExecute = doc != null && !doc.Song.IsImported && doc.Song.Uri != null;
 			}
+			else if (e.Command == CustomCommands.SearchSongSelect)
+			{
+				string searchString = null;
+				if (e.Parameter is string)
+				{
+					searchString = (string)e.Parameter;
+				}
+				else
+				{
+					int? searchNum = e.Parameter as int?;
+					if (searchNum.HasValue)
+						searchString = searchNum.ToString();
+				}
+
+				e.CanExecute = !String.IsNullOrWhiteSpace(searchString);
+			}
 		}
 
 		private void OnExecuteCommand(object sender, ExecutedRoutedEventArgs e)
@@ -495,6 +512,23 @@ namespace WordsLive.Editor
 			else if (e.Command == ApplicationCommands.Find)
 			{
 				Controller.ShowSongList();
+			}
+			else if (e.Command == CustomCommands.SearchSongSelect)
+			{
+				string searchString = null;
+				if (e.Parameter is string)
+				{
+					searchString = (string)e.Parameter;
+				}
+				else
+				{
+					int? searchNum = e.Parameter as int?;
+					if (searchNum.HasValue)
+						searchString = searchNum.ToString();
+				}
+
+				if (!String.IsNullOrWhiteSpace(searchString))
+					new Uri(String.Format(Resource.eSongSelectSearchString, searchString)).OpenInBrowser();
 			}
 		}
 

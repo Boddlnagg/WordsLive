@@ -1,6 +1,6 @@
 ﻿/*
  * WordsLive - worship projection software
- * Copyright (c) 2013 Patrick Reisert
+ * Copyright (c) 2014 Patrick Reisert
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -71,6 +71,7 @@ namespace WordsLive.Songs
 			{
 				System.Windows.MessageBox.Show("SongDisplayController encountered JS error in " + target.Source + " (line " +  target.LineNumber + "): " + target.Message);
 			};
+			// FIXME: sometimes throws exception saying that "bridge" object already exists
 			bridge = this.control.CreateGlobalJavascriptObject("bridge");
 			bridge.Bind("callbackLoaded", false, (sender, args) => OnSongLoaded());
 			bridge["featureLevel"] = new JSValue(JsonConvert.SerializeObject(features));

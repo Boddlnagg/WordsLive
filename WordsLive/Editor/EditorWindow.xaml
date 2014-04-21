@@ -45,6 +45,7 @@
 		<CommandBinding Command="{x:Static local:CustomCommands.EditChords}" Executed="OnExecuteCommand" CanExecute="OnCommandCanExecute"/>
 		<CommandBinding Command="{x:Static local:CustomCommands.AddMedia}" Executed="OnExecuteCommand" CanExecute="OnCommandCanExecute"/>
 		<CommandBinding Command="Find" Executed="OnExecuteCommand"/>
+		<CommandBinding Command="{x:Static local:CustomCommands.SearchSongSelect}" Executed="OnExecuteCommand" CanExecute="OnCommandCanExecute"/>
 	</Window.CommandBindings>
 	<Window.Resources>
 		<DataTemplate x:Key="ClosableTabItemTemplate">

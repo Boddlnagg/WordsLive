@@ -94,12 +94,12 @@
 		<DataTemplate x:Key="editLanguageGridTemplate">
 			<Grid Margin="10">
 				<Grid.ColumnDefinitions>
-					<ColumnDefinition Width="Auto"></ColumnDefinition>
-					<ColumnDefinition></ColumnDefinition>
+					<ColumnDefinition Width="Auto"/>
+					<ColumnDefinition/>
 				</Grid.ColumnDefinitions>
 				<Grid.RowDefinitions>
-					<RowDefinition Height="Auto"></RowDefinition>
-					<RowDefinition Height="Auto"></RowDefinition>
+					<RowDefinition Height="Auto"/>
+					<RowDefinition Height="Auto"/>
 				</Grid.RowDefinitions>
 				<Label Grid.Row="0" Grid.Column="0" Content="{x:Static resx:Resource.eGridLanguageText}"/>
 				<ComboBox Grid.Row="0" Grid.Column="1" Height="24" VerticalAlignment="Top" IsEditable="True" Text="{Binding Path=Root.Language, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -112,17 +112,42 @@
 		<DataTemplate x:Key="editSourceGridTemplate">
 			<Grid Margin="10" VerticalAlignment="Top">
 				<Grid.ColumnDefinitions>
-					<ColumnDefinition Width="Auto"></ColumnDefinition>
-					<ColumnDefinition></ColumnDefinition>
+					<ColumnDefinition Width="Auto"/>
+					<ColumnDefinition/>
 				</Grid.ColumnDefinitions>
 				<Grid.RowDefinitions>
-					<RowDefinition Height="Auto"></RowDefinition>
-					<RowDefinition Height="Auto"></RowDefinition>
+					<RowDefinition Height="Auto"/>
+					<RowDefinition Height="Auto"/>
 				</Grid.RowDefinitions>
 				<Label Grid.Column="0" Grid.Row="0" Content="{x:Static resx:Resource.eGridSourceSongbookLabel}"/>
 				<TextBox Grid.Column="1" Grid.Row="0" Margin="0,2,0,2" IsUndoEnabled="False" Text="{Binding Path=Root.Sources[0].Songbook, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 				<Label Grid.Column="0" Grid.Row="1" Content="{x:Static resx:Resource.eGridSourceNumberLabel}"/>
-				<TextBox Grid.Column="1" Grid.Row="1" IsUndoEnabled="False" Text="{Binding Path=Root.Sources[0].Number, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+				<TextBox Grid.Column="1" Grid.Row="1" IsUndoEnabled="False" Text="{Binding Path=Root.Sources[0].Number, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NullableValueConverter}}" />
+			</Grid>
+		</DataTemplate>
+		<DataTemplate x:Key="editCcliNumberGridTemplate">
+			<Grid Margin="10" VerticalAlignment="Top">
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="Auto"/>
+					<ColumnDefinition Width="*"/>
+					<ColumnDefinition Width="Auto"/>
+				</Grid.ColumnDefinitions>
+				<Grid.RowDefinitions>
+					<RowDefinition Height="Auto"/>
+				</Grid.RowDefinitions>
+				<Label Grid.Column="0" Grid.Row="0" Content="{x:Static resx:Resource.eGridCcliSongNumberLabel}"/>
+				<TextBox Grid.Column="1" Grid.Row="0" Margin="0,2,0,2" IsUndoEnabled="False" Text="{Binding Path=Root.CcliNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NullableValueConverter}}" />
+				<Button Grid.Column="2" Grid.Row="0" Margin="5,0,0,0" Padding="2,0,2,0" Content="{x:Static resx:Resource.eGridCcliViewInSongSelect}" Command="{x:Static my:CustomCommands.SearchSongSelect}" CommandParameter="{Binding Path=Root.CcliNumber}">
+					<!--<Button.Style>
+						<Style TargetType="{x:Type Button}">
+							<Style.Triggers>
+								<DataTrigger Binding="{Binding Path=Root.CcliNumber}" Value="{x:Null}">
+									<Setter Property="IsEnabled" Value="False"/>
+								</DataTrigger>
+							</Style.Triggers>
+						</Style>
+					</Button.Style>-->
+				</Button>
 			</Grid>
 		</DataTemplate>
 		<local:EditControlTemplateSelector x:Key="editControlTemplateSelector"
@@ -131,6 +156,7 @@
 			EditCopyrightTemplate="{StaticResource editCopyrightTextBoxTemplate}"
 			EditLanguageTemlate="{StaticResource editLanguageGridTemplate}"
 			EditSourceTemplate="{StaticResource editSourceGridTemplate}"
+			EditCcliNumberTemplate="{StaticResource editCcliNumberGridTemplate}"
 			EditTextWithTranslationTemplate="{StaticResource editTextWithTranslationTemplate}"/>
 	</Grid.Resources>
 	<Grid.RowDefinitions>
@@ -267,6 +293,12 @@
 				<StackPanel Orientation="Horizontal">
 					<Image Width="16" Height="16" Margin="0, 1, 2, 1" Source="/WordsLive;component/Artwork/Small_Category.png" />
 					<TextBlock Text="{x:Static resx:Resource.eMetadataCategoryTitle}"/>
+				</StackPanel>
+			</HierarchicalDataTemplate>
+			<HierarchicalDataTemplate DataType="{x:Type nodes:CcliNumberNode}">
+				<StackPanel Orientation="Horizontal">
+					<Image Width="16" Height="16" Margin="0, 1, 2, 1" Source="/WordsLive;component/Artwork/Small_Number.png" />
+					<TextBlock Text="{x:Static resx:Resource.eMetadataCcliNumberTitle}"/>
 				</StackPanel>
 			</HierarchicalDataTemplate>
 		</TreeView.Resources>

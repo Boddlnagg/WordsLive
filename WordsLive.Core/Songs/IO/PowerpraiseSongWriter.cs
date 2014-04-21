@@ -1,6 +1,6 @@
 ﻿/*
  * WordsLive - worship projection software
- * Copyright (c) 2013 Patrick Reisert
+ * Copyright (c) 2014 Patrick Reisert
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -42,6 +42,7 @@ namespace WordsLive.Core.Songs.IO
 					new XElement("title", song.Title),
 					new XElement("category", song.Category),
 					new XElement("language", song.Language),
+					song.CcliNumber == null ? null : new XElement("ccli", song.CcliNumber),
 					String.IsNullOrEmpty(song.Comment) ? null : new XElement("comment", song.Comment)),
 				new XElement("songtext",
 					from part in song.Parts

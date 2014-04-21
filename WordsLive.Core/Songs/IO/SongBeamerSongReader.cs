@@ -1,6 +1,6 @@
 ﻿/*
  * WordsLive - worship projection software
- * Copyright (c) 2013 Patrick Reisert
+ * Copyright (c) 2014 Patrick Reisert
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -240,13 +240,16 @@ namespace WordsLive.Core.Songs.IO
 				properties["natcopyright"] // national copyright information 	#NatCopyright=Hänssler Verlag
 				properties["rights"] // additional rights (e.g. for translated lyrics) 	#Rights=D, A, CH, FL, und L Projektion J Musikverlag, Asslar
 				properties["addcopyrightinfo"] // additional copyright information 	#AddCopyrightInfo=1977
-				properties["ccli"] // CCLI number 	#CCLI=858299
 				properties["bible"] // bible passage the text is based on 	#Bible=Ps. 144,1-2
 				properties["key"] // mus. key of the song 	#Key=F#m
 				properties["tempo"]
 				properties["titlelang[2...n]"] // song title in other language 	#TitleLang2=Näher mein Gott zu Dir
 				properties["otitle"] // original title 	#OTitle=Nearer my God to Thee
 				*/
+
+			int ccli; // CCLI number 	#CCLI=858299
+			if (properties.ContainsKey("ccli") && int.TryParse(properties["ccli"], out ccli))
+				song.CcliNumber = ccli;
 
 			if (properties.ContainsKey("title")) // song title 	#Title=Nearer My God To Thee
 				song.Title = properties["title"];

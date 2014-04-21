@@ -61,7 +61,15 @@ namespace WordsLive
 			get;
 			private set;
 		}
+
 		#endregion
+
+		// TODO: this should be a (global?) delegate command
+		public static LocalizedRoutedCommand SearchSongSelect
+		{
+			get;
+			private set;
+		}
 
 		public static LocalizedRoutedCommand OpenInEditor
 		{
@@ -261,6 +269,7 @@ namespace WordsLive
 			RotateLeft = new LocalizedRoutedCommand("RotateLeft", t);
 			RotateRight = new LocalizedRoutedCommand("RotateRight", t);
 			CreateSlideshow = new LocalizedRoutedCommand("CreateSlideshow", t);
+			SearchSongSelect = new LocalizedRoutedCommand("SearchSongSelect", t);
 		}
 	}
 }

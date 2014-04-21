@@ -999,4 +999,16 @@
   <data name="sePreferPowerpointViewerToPowerpoint" xml:space="preserve">
     <value>Use PowerPoint Viewer even if Office PowerPoint is available</value>
   </data>
+  <data name="eGridCcliSongNumberLabel" xml:space="preserve">
+    <value>CCLI Song Number:</value>
+  </data>
+  <data name="eGridCcliViewInSongSelect" xml:space="preserve">
+    <value>View song in SongSelect</value>
+  </data>
+  <data name="eMetadataCcliNumberTitle" xml:space="preserve">
+    <value>CCLI</value>
+  </data>
+  <data name="eSongSelectSearchString" xml:space="preserve">
+    <value>https://us.songselect.com/search/results?SearchTerm={0}</value>
+  </data>
 </root>

@@ -31,6 +31,7 @@
 		<utils:AppendEllipsisConverter x:Key="AppendEllipsisConverter" />
 		<utils:RemoveAccessKeyConverter x:Key="RemoveAccessKeyConverter" />
 		<songs:SongBackgroundToImageSourceConverter x:Key="BackgroundConverter" />
+		<utils:NullableValueConverter x:Key="NullableValueConverter" />
 		<properties:Settings x:Key="settings" />
 		<LinearGradientBrush x:Key="HeaderGradientBrush" EndPoint="0.5,1" StartPoint="0.5,0">
 			<GradientStop Color="#FFEBF6FF" Offset="0"/>

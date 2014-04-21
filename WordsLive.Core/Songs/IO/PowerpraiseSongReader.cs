@@ -1,6 +1,6 @@
 ﻿/*
  * WordsLive - worship projection software
- * Copyright (c) 2013 Patrick Reisert
+ * Copyright (c) 2014 Patrick Reisert
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -97,14 +97,24 @@ namespace WordsLive.Core.Songs.IO
 				SourceDisplayPosition = (MetadataDisplayPosition)Enum.Parse(typeof(MetadataDisplayPosition), root.Element("information").Element("source").Element("position").Value, true)
 			};
 
-			if (root.Element("general").Element("category") != null)
-				song.Category = root.Element("general").Element("category").Value;
-			if (root.Element("general").Element("language") != null)
-				song.Language = root.Element("general").Element("language").Value;
-			if (root.Element("general").Element("comment") != null)
-				song.Comment = root.Element("general").Element("comment").Value;
+			var general = root.Element("general");
+
+			if (general.Element("category") != null)
+				song.Category = general.Element("category").Value;
+
+			if (general.Element("language") != null)
+				song.Language = general.Element("language").Value;
+
+			if (general.Element("comment") != null)
+				song.Comment = general.Element("comment").Value;
 			else
 				song.Comment = String.Empty;
+
+			int ccli;
+			if (general.Element("ccli") != null && int.TryParse(general.Element("ccli").Value, out ccli))
+				song.CcliNumber = ccli;
+			else
+				song.CcliNumber = null;
 
 			foreach (var part in root.Element("songtext").Elements("part"))
 			{

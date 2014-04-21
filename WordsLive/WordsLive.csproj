@@ -171,6 +171,7 @@
     <Compile Include="Documents\DocumentMedia.cs" />
     <Compile Include="Documents\DocumentPageScale.cs" />
     <Compile Include="Documents\IDocumentPresentation.cs" />
+    <Compile Include="Editor\Nodes\CcliNumberNode.cs" />
     <Compile Include="FirstStartWindow.xaml.cs">
       <DependentUpon>FirstStartWindow.xaml</DependentUpon>
     </Compile>
@@ -233,6 +234,7 @@
     <Compile Include="Utils\EnumToIndexConverter.cs" />
     <Compile Include="Utils\AppendEllipsisConverter.cs" />
     <Compile Include="Utils\LocalizedRoutedCommand.cs" />
+    <Compile Include="Utils\NullableValueConverter.cs" />
     <Compile Include="Utils\RemoveAccessKeyConverter.cs" />
     <Compile Include="Documents\XpsDocument.cs" />
     <Compile Include="Documents\XpsDocumentHandler.cs" />
@@ -452,6 +454,7 @@
       <Link>pptviewlib.dll</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <Resource Include="Artwork\Small_Number.png" />
     <Content Include="Data\Standard.ppl">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -599,7 +602,6 @@
   <ItemGroup>
     <EmbeddedResource Include="Resources\Resource.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resource.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\Resource.de.resx">
