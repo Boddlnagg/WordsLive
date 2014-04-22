@@ -80,7 +80,7 @@ namespace WordsLive.Core.Songs.IO
 						{
 							currentPart.Slides.Add(new SongSlide(song) { Size = song.Formatting.MainText.Size, Text = currentText, Translation = currentTrans });
 							currentText = null;
-							song.Parts.Add(currentPart);
+							song.AddPart(currentPart);
 							currentPart = new SongPart(song, FindUnusedPartName(song));
 							linenum = 0;
 						}
@@ -131,7 +131,7 @@ namespace WordsLive.Core.Songs.IO
 				}
 
 				currentPart.Slides.Add(new SongSlide(song) { Size = song.Formatting.MainText.Size, Text = currentText, Translation = currentTrans });
-				song.Parts.Add(currentPart);
+				song.AddPart(currentPart);
 
 				PostProcessSongBeamerProperties(song, properties);
 			}

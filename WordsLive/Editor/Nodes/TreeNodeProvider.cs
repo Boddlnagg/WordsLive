@@ -44,14 +44,14 @@ namespace WordsLive.Editor.Nodes
 			{
 				if (song != null)
 				{
-					song.Parts.CollectionChanged -= songParts_CollectionChanged;
+					(song.Parts as INotifyCollectionChanged).CollectionChanged -= songParts_CollectionChanged;
 				}
 
 				song = value;
 
 				if (song != null)
 				{
-					song.Parts.CollectionChanged += songParts_CollectionChanged; 
+					(song.Parts as INotifyCollectionChanged).CollectionChanged += songParts_CollectionChanged; 
 				}
 				
 				OnPropertyChanged("Song");

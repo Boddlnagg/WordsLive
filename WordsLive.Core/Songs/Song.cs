@@ -383,15 +383,8 @@ namespace WordsLive.Core.Songs
 		
 		/// <summary>
 		/// Gets a list of song parts.
-		/// TODO: make this a read-only collection
 		/// </summary>
-		public ObservableCollection<SongPart> Parts
-		{
-			get
-			{
-				return parts;
-			}
-		}
+		public ReadOnlyObservableCollection<SongPart> Parts { get; private set; }
 
 		private readonly ObservableCollection<SongPartReference> order = new ObservableCollection<SongPartReference>();
 		
@@ -538,6 +531,7 @@ namespace WordsLive.Core.Songs
 			this.uriResolver = SongUriResolver.Default;
 			AddSource(String.Empty);
 			Sources = new ReadOnlyObservableCollection<SongSource>(sources);
+			Parts = new ReadOnlyObservableCollection<SongPart>(parts);
 		}
 
 		public Song(string path) : this(new Uri(new FileInfo(path).FullName)) { }
@@ -627,7 +621,7 @@ namespace WordsLive.Core.Songs
 		{
 			LoadTemplate();
 			Order.Clear();
-			Parts.Clear();
+			parts.Clear();
 		}
 
 		/// <summary>
@@ -712,7 +706,7 @@ namespace WordsLive.Core.Songs
 				//if (notify)
 				//	OnPropertyChanged("Order");
 
-				Parts.Remove(part);
+				parts.Remove(part);
 			};
 
 			Action undo = () =>
@@ -720,7 +714,7 @@ namespace WordsLive.Core.Songs
 				if (i == Parts.Count && i != 0)
 					i--;
 
-				Parts.Insert(i, part);
+				parts.Insert(i, part);
 				SetOrder(backup);
 				//OnPropertyChanged("Order");
 			};
@@ -738,12 +732,12 @@ namespace WordsLive.Core.Songs
 		{
 			Action undo = () =>
 			{
-				Parts.Remove(part);
+				parts.Remove(part);
 			};
 
 			Action redo = () =>
 			{
-				Parts.Add(part);
+				parts.Add(part);
 			};
 
 			Undo.ChangeFactory.OnChanging(this, undo, redo, "AddPart");
@@ -787,12 +781,12 @@ namespace WordsLive.Core.Songs
 
 			Action redo = () =>
 			{
-				Parts.Move(originalIndex, newIndex);
+				parts.Move(originalIndex, newIndex);
 			};
 
 			Action undo = () =>
 			{
-				Parts.Move(newIndex, originalIndex);
+				parts.Move(newIndex, originalIndex);
 			};
 
 			Undo.ChangeFactory.OnChanging(this, undo, redo, "MovePart");

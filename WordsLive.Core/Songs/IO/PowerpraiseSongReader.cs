@@ -51,9 +51,8 @@ namespace WordsLive.Core.Songs.IO
 
 			var formatting = root.Element("formatting");
 
-			// reset in case it has already been loaded (TODO: move outside of this class to caller)
+			// reset in case it has already been loaded (TODO: move outside of this class to caller -> already partly implemented)
 			song.Backgrounds.Clear(); // this is needed, because the indices must be correct
-			song.Parts.Clear();
 
 			var video = root.Element("formatting").Element("background").Attribute("video");
 			if (video != null)
@@ -120,7 +119,7 @@ namespace WordsLive.Core.Songs.IO
 
 			foreach (var part in root.Element("songtext").Elements("part"))
 			{
-				song.Parts.Add(new SongPart(song,
+				song.AddPart(new SongPart(song,
 								part.Attribute("caption").Value,
 								from slide in part.Elements("slide")
 								select new SongSlide(song)
