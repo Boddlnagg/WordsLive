@@ -293,7 +293,7 @@ namespace WordsLive.Core.Songs.IO
 				// if no verseorder is specified, add each part once in order
 				foreach (SongPart part in song.Parts)
 				{
-					song.Order.Add(new SongPartReference(part));
+					song.AddPartToOrder(part);
 				}
 			}
 		}

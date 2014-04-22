@@ -390,15 +390,8 @@ namespace WordsLive.Core.Songs
 		
 		/// <summary>
 		/// Gets or sets the order of song parts indicated by a list of song part references.
-		/// TODO: make this a read-only collection
 		/// </summary>
-		public ObservableCollection<SongPartReference> Order
-		{
-			get
-			{
-				return order;
-			}
-		}
+		public ReadOnlyObservableCollection<SongPartReference> Order { get; private set; }
 
 		/// <summary>
 		/// Gets the text of all parts at once.
@@ -532,6 +525,7 @@ namespace WordsLive.Core.Songs
 			AddSource(String.Empty);
 			Sources = new ReadOnlyObservableCollection<SongSource>(sources);
 			Parts = new ReadOnlyObservableCollection<SongPart>(parts);
+			Order = new ReadOnlyObservableCollection<SongPartReference>(order);
 		}
 
 		public Song(string path) : this(new Uri(new FileInfo(path).FullName)) { }
@@ -620,7 +614,7 @@ namespace WordsLive.Core.Songs
 		private void LoadClearTemplate()
 		{
 			LoadTemplate();
-			Order.Clear();
+			order.Clear();
 			parts.Clear();
 		}
 
@@ -700,7 +694,7 @@ namespace WordsLive.Core.Songs
 					//	OnPropertyChanging("Order");
 					//	notify = true;
 					//}
-					Order.Remove(pRef);
+					order.Remove(pRef);
 				}
 
 				//if (notify)
@@ -911,11 +905,11 @@ namespace WordsLive.Core.Songs
 					index = Order.Count;
 
 				reference = new SongPartReference(part);
-				Order.Insert(index, reference);
+				order.Insert(index, reference);
 			};
 			Action undo = () =>
 			{
-				Order.RemoveAt(index);
+				order.RemoveAt(index);
 			};
 
 			Undo.ChangeFactory.OnChanging(this, undo, redo, "AddPartToOrder");
@@ -939,13 +933,13 @@ namespace WordsLive.Core.Songs
 
 			Action redo = () =>
 			{
-				Order.RemoveAt(index);
-				Order.Insert(target, reference);
+				order.RemoveAt(index);
+				order.Insert(target, reference);
 			};
 			Action undo = () =>
 			{
-				Order.RemoveAt(target);
-				Order.Insert(index, reference);
+				order.RemoveAt(target);
+				order.Insert(index, reference);
 			};
 
 			Undo.ChangeFactory.OnChanging(this, undo, redo, "MovePartInOrder");
@@ -963,13 +957,13 @@ namespace WordsLive.Core.Songs
 
 			Action redo = () =>
 			{
-				Order.RemoveAt(index);
+				order.RemoveAt(index);
 				//OnNotifyPropertyChanged("PartOrder");
 			};
 
 			Action undo = () =>
 			{
-				Order.Insert(index, reference);
+				order.Insert(index, reference);
 				//OnNotifyPropertyChanged("PartOrder");
 			};
 
@@ -1278,12 +1272,12 @@ namespace WordsLive.Core.Songs
 		/// otherwise, missing parts will be ignored.</param>
 		public void SetOrder(IEnumerable<string> partNames, bool ignoreMissing = false)
 		{
-			Order.Clear();
+			order.Clear();
 			foreach (var n in partNames)
 			{
 				try
 				{
-					Order.Add(new SongPartReference(this, n));
+					order.Add(new SongPartReference(this, n));
 				}
 				catch (ArgumentNullException)
 				{
@@ -1299,10 +1293,10 @@ namespace WordsLive.Core.Songs
 		/// <param name="partNames">The part references to use in the order they should appear.</param>
 		public void SetOrder(IEnumerable<SongPartReference> partReferences)
 		{
-			Order.Clear();
+			order.Clear();
 			foreach (var r in partReferences)
 			{
-				Order.Add(r);
+				order.Add(r);
 			}
 		}
 
