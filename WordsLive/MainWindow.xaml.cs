@@ -131,12 +131,8 @@ namespace WordsLive
 				Song song = (args.Media as SongMedia).Song;
 
 				if (UsePortfolioBackground == true)
-				{	
-					for (int i = 0; i < song.Backgrounds.Count; i++)
-					{
-						song.Backgrounds.RemoveAt(i);
-						song.Backgrounds.Insert(i, portfolioBackground);
-					}
+				{
+					song.SetBackground(portfolioBackground);
 				}
 
 				if (Properties.Settings.Default.TemplateMasterEnable)

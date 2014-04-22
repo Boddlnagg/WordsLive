@@ -324,15 +324,8 @@ namespace WordsLive.Core.Songs
 
 		/// <summary>
 		/// Gets or sets a list of backgrounds.
-		/// TODO: make this a read-only collection
 		/// </summary>
-		public ObservableCollection<SongBackground> Backgrounds
-		{
-			get
-			{
-				return backgrounds;
-			}
-		}
+		public ReadOnlyObservableCollection<SongBackground> Backgrounds { get; private set; }
 
 		/// <summary>
 		/// Gets the video background used for this song or <c>null</c> if no video background is used.
@@ -526,6 +519,7 @@ namespace WordsLive.Core.Songs
 			Sources = new ReadOnlyObservableCollection<SongSource>(sources);
 			Parts = new ReadOnlyObservableCollection<SongPart>(parts);
 			Order = new ReadOnlyObservableCollection<SongPartReference>(order);
+			Backgrounds = new ReadOnlyObservableCollection<SongBackground>(backgrounds);
 		}
 
 		public Song(string path) : this(new Uri(new FileInfo(path).FullName)) { }
@@ -616,6 +610,7 @@ namespace WordsLive.Core.Songs
 			LoadTemplate();
 			order.Clear();
 			parts.Clear();
+			backgrounds.Clear();
 		}
 
 		/// <summary>
@@ -1133,22 +1128,25 @@ namespace WordsLive.Core.Songs
 		/// <summary>
 		/// Adds the given background to the song's background list if it doesn't already exist (can be undone).
 		/// </summary>
-		/// <param name="bg"></param>
-		/// <returns>The index of the new background.</returns>
-		public int AddBackground(SongBackground bg)
+		/// <param name="bg">The background to add.</param>
+		/// <param name="forceAdd">if set to <c>true</c> the background will be added even if it already exists.</param>
+		/// <returns>
+		/// The index of the new background.
+		/// </returns>
+		public int AddBackground(SongBackground bg, bool forceAdd = false)
 		{
-			bool contains = Backgrounds.Contains(bg);
+			bool contains = !forceAdd && Backgrounds.Contains(bg);
 
 			Action redo = () =>
 			{
 				if (!contains)
-					Backgrounds.Add(bg);
+					backgrounds.Add(bg);
 			};
 
 			Action undo = () =>
 			{
 				if (!contains)
-					Backgrounds.Remove(bg);
+					backgrounds.Remove(bg);
 			};
 
 			Undo.ChangeFactory.OnChanging(this, undo, redo, "AddBackground");
@@ -1159,7 +1157,7 @@ namespace WordsLive.Core.Songs
 			}
 			else
 			{
-				Backgrounds.Add(bg);
+				backgrounds.Add(bg);
 				return Backgrounds.Count - 1;
 			}
 		}
@@ -1189,7 +1187,7 @@ namespace WordsLive.Core.Songs
 				{
 					if (!indices.ContainsKey(i - offset)) // background is not in use
 					{
-						Backgrounds.RemoveAt(i);
+						backgrounds.RemoveAt(i);
 						offset--;
 					}
 					else
@@ -1202,10 +1200,10 @@ namespace WordsLive.Core.Songs
 
 			Action undo = () =>
 			{
-				Backgrounds.Clear();
+				backgrounds.Clear();
 				foreach (var back in backup)
 				{
-					Backgrounds.Add(back);
+					backgrounds.Add(back);
 				}
 			};
 
@@ -1235,24 +1233,24 @@ namespace WordsLive.Core.Songs
 			var backup = Backgrounds.ToArray();
 			Action redo = () =>
 			{
-				Backgrounds.Clear();
-				Backgrounds.Add(bg);
+				backgrounds.Clear();
+				backgrounds.Add(bg);
 
 			};
 
 			Action undo = () =>
 			{
-				Backgrounds.Clear();
+				backgrounds.Clear();
 				foreach (var back in backup)
 				{
-					Backgrounds.Add(back);
+					backgrounds.Add(back);
 				}
 			};
 
 			using (Undo.ChangeFactory.Batch(this, "SetBackground"))
 			{
-				Backgrounds.Clear();
-				Backgrounds.Add(bg);
+				backgrounds.Clear();
+				backgrounds.Add(bg);
 
 				foreach (var part in this.Parts)
 				{

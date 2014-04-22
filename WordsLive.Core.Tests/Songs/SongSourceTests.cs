@@ -160,5 +160,15 @@ namespace WordsLive.Core.Tests.Songs
 			Assert.Equal(3, song.Sources.Count);
 			Assert.ReferenceEquals(sources[2], song.FirstSource);
 		}
+
+		[Fact]
+		public void SongSourceRemoveClean()
+		{
+			var weakRef = new WeakReference(song.FirstSource);
+			song.IsUndoEnabled = false;
+			song.SetSources(new SongSource[] { SongSource.Parse("Book / 1", song) });
+			GC.Collect();
+			Assert.False(weakRef.IsAlive);
+		}
 	}
 }

@@ -51,19 +51,16 @@ namespace WordsLive.Core.Songs.IO
 
 			var formatting = root.Element("formatting");
 
-			// reset in case it has already been loaded (TODO: move outside of this class to caller -> already partly implemented)
-			song.Backgrounds.Clear(); // this is needed, because the indices must be correct
-
 			var video = root.Element("formatting").Element("background").Attribute("video");
 			if (video != null)
 			{
-				song.Backgrounds.Add(new SongBackground(video.Value, true));
+				song.AddBackground(new SongBackground(video.Value, true), true);
 			}
 			else
 			{
 				foreach (var bg in root.Element("formatting").Element("background").Elements("file"))
 				{
-					song.Backgrounds.Add(ReadBackground(bg.Value));
+					song.AddBackground(ReadBackground(bg.Value), true);
 				}
 			}
 
