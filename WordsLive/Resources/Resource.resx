@@ -144,10 +144,10 @@
   <data name="paMonitor" xml:space="preserve">
     <value>Monitor:</value>
   </data>
-  <data name="paMoveDown" xml:space="preserve">
+  <data name="generalMoveDown" xml:space="preserve">
     <value>Move down</value>
   </data>
-  <data name="paMoveUp" xml:space="preserve">
+  <data name="generalMoveUp" xml:space="preserve">
     <value>Move up</value>
   </data>
   <data name="paMsgValidOption" xml:space="preserve">
@@ -1004,5 +1004,8 @@
   </data>
   <data name="generalRemove" xml:space="preserve">
     <value>Remove</value>
+  </data>
+  <data name="eGridSourceAddNew" xml:space="preserve">
+    <value>Add another source</value>
   </data>
 </root>

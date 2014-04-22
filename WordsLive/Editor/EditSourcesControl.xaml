@@ -22,37 +22,56 @@
 			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
 			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 			 xmlns:resx="clr-namespace:WordsLive.Resources"
+			 xmlns:my="clr-namespace:WordsLive"
 			 mc:Ignorable="d" 
 			 d:DesignHeight="300" d:DesignWidth="300">
-	<ItemsControl ItemsSource="{Binding Song.Sources, RelativeSource={RelativeSource AncestorType=UserControl}}">
-		<ItemsControl.ItemsPanel>
-			<ItemsPanelTemplate>
-				<StackPanel Margin="10" VerticalAlignment="Top"/>
-			</ItemsPanelTemplate>
-		</ItemsControl.ItemsPanel>
-		<ItemsControl.ItemTemplate>
-			<DataTemplate>
-				<Grid>
-					<Grid.ColumnDefinitions>
-						<ColumnDefinition Width="Auto"/>
-						<ColumnDefinition Width="3*"/>
-						<ColumnDefinition Width="Auto"/>
-						<ColumnDefinition Width="*"/>
-						<ColumnDefinition Width="Auto"/>
-					</Grid.ColumnDefinitions>
-					<Label Grid.Column="0" Content="{x:Static resx:Resource.eGridSourceSongbookLabel}"/>
-					<TextBox Grid.Column="1" Margin="0,2,0,2" IsUndoEnabled="False" Text="{Binding Path=Songbook, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-					<Label Grid.Column="2" Margin="3,0,0,0" Content="{x:Static resx:Resource.eGridSourceNumberLabel}"/>
-					<TextBox Grid.Column="3" Margin="0,2,0,2" IsUndoEnabled="False" Text="{Binding Path=Number, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NullableValueConverter}}" />
-					<!-- TODO: make this button do something -->
-					<Button Grid.Column="4" Margin="5,2,0,2" ToolTip="{x:Static resx:Resource.generalRemove}" IsEnabled="False">
-						<Image
-							Width="16"
-							Height="16"
-							Source="/WordsLive;component/Artwork/Small_Delete.png" />
-					</Button>
-				</Grid>
-			</DataTemplate>
-		</ItemsControl.ItemTemplate>
-	</ItemsControl>
+	<UserControl.CommandBindings>
+		<CommandBinding Command="Delete" CanExecute="Command_CanExecute" Executed="Command_Executed"/>
+		<CommandBinding Command="{x:Static my:CustomCommands.MoveUp}" CanExecute="Command_CanExecute" Executed="Command_Executed"/>
+		<CommandBinding Command="New" Executed="Command_Executed"/>
+	</UserControl.CommandBindings>
+	<ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+		<StackPanel>
+			<ItemsControl ItemsSource="{Binding Song.Sources, RelativeSource={RelativeSource AncestorType=UserControl}}">
+				<ItemsControl.ItemsPanel>
+					<ItemsPanelTemplate>
+						<StackPanel Margin="10,10,10,0" VerticalAlignment="Top"/>
+					</ItemsPanelTemplate>
+				</ItemsControl.ItemsPanel>
+				<ItemsControl.ItemTemplate>
+					<DataTemplate>
+						<Grid>
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition Width="Auto"/>
+								<ColumnDefinition Width="3*"/>
+								<ColumnDefinition Width="Auto"/>
+								<ColumnDefinition Width="*"/>
+								<ColumnDefinition Width="Auto"/>
+								<ColumnDefinition Width="Auto"/>
+							</Grid.ColumnDefinitions>
+							<Label Grid.Column="0" Content="{x:Static resx:Resource.eGridSourceSongbookLabel}"/>
+							<TextBox Grid.Column="1" Margin="0,2,0,2" IsUndoEnabled="False" Text="{Binding Path=Songbook, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+							<Label Grid.Column="2" Margin="3,0,0,0" Content="{x:Static resx:Resource.eGridSourceNumberLabel}"/>
+							<TextBox Grid.Column="3" Margin="0,2,0,2" IsUndoEnabled="False" Text="{Binding Path=Number, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NullableValueConverter}}" />
+							<Button Grid.Column="4" Margin="5,2,0,2" ToolTip="{x:Static resx:Resource.generalMoveUp}" Style="{StaticResource markDisabledButton}"
+								Command="{x:Static my:CustomCommands.MoveUp}" CommandParameter="{Binding}">
+								<Image
+								Width="16"
+								Height="16"
+								Source="/WordsLive;component/Artwork/Small_UpArrow.png" />
+							</Button>
+							<Button Grid.Column="5" Margin="5,2,0,2" ToolTip="{x:Static resx:Resource.generalRemove}" Style="{StaticResource markDisabledButton}"
+								Command="Delete" CommandParameter="{Binding}">
+								<Image
+								Width="16"
+								Height="16"
+								Source="/WordsLive;component/Artwork/Small_Delete.png" />
+							</Button>
+						</Grid>
+					</DataTemplate>
+				</ItemsControl.ItemTemplate>
+			</ItemsControl>
+			<Button Content="{x:Static resx:Resource.eGridSourceAddNew}" Width="Auto" Margin="10,5,10,5" HorizontalAlignment="Left" Command="New"/>
+		</StackPanel>
+	</ScrollViewer>
 </UserControl>

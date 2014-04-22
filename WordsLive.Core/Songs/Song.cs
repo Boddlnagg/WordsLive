@@ -1016,6 +1016,12 @@ namespace WordsLive.Core.Songs
 			if (source == null)
 				throw new ArgumentNullException("source");
 
+			if (source.Root != this)
+				throw new ArgumentException("source has wrong root");
+
+			if (sources.Contains(source))
+				throw new InvalidOperationException("source already added to the list, cannot add one source multiple times");
+
 			Undo.ChangeFactory.OnChanging(this,
 				() => { sources.Remove(source); },
 				() => { sources.Add(source); },
@@ -1024,7 +1030,68 @@ namespace WordsLive.Core.Songs
 		}
 
 		/// <summary>
-		/// Sets the sources of this song, replacing all previous ones.
+		/// Removes a source from the list of sources for this song (can be undone).
+		/// </summary>
+		/// <param name="source">The source to remove.</param>
+		public void RemoveSource(SongSource source)
+		{
+			if (source == null)
+				throw new ArgumentNullException("source");
+
+			if (sources.Count <= 1)
+				throw new InvalidOperationException("Can't remove last source");
+
+			int i = sources.IndexOf(source);
+
+			if (i < 0)
+				throw new ArgumentException("list of sources does not contain that source", "source");
+
+			Action undo = () =>
+			{
+				sources.Insert(i, source);
+				if (i == 0) OnPropertyChanged("FirstSource");
+			};
+
+			Action redo = () =>
+			{
+				sources.Remove(source);
+				if (i == 0) OnPropertyChanged("FirstSource");
+			};
+
+			Undo.ChangeFactory.OnChanging(this, undo, redo, "RemoveSource");
+			redo();
+		}
+
+		public void MoveSourceUp(SongSource source)
+		{
+			if (source == null)
+				throw new ArgumentNullException("source");
+
+			int i = sources.IndexOf(source);
+
+			if (i < 0)
+				throw new ArgumentException("list of sources does not contain that source", "source");
+
+			Action undo = () =>
+			{
+				sources.Remove(source);
+				sources.Insert(i, source);
+				OnPropertyChanged("FirstSource");
+			};
+
+			Action redo = () =>
+			{
+				sources.Remove(source);
+				sources.Insert(0, source);
+				OnPropertyChanged("FirstSource");
+			};
+
+			Undo.ChangeFactory.OnChanging(this, undo, redo, "MoveSourceUp");
+			redo();
+		}
+
+		/// <summary>
+		/// Sets the sources of this song, replacing all previous ones (can be undone).
 		/// If the enumeration is empty, a single empty source is added.
 		/// </summary>
 		/// <param name="newSources">The new sources as strings, which are first parsed.</param>
@@ -1034,7 +1101,7 @@ namespace WordsLive.Core.Songs
 		}
 
 		/// <summary>
-		/// Sets the sources of this song, replacing all previous ones.
+		/// Sets the sources of this song, replacing all previous ones (can be undone).
 		/// If the enumeration is empty, a single empty source is added.
 		/// </summary>
 		/// <param name="newSources">The new sources.</param>

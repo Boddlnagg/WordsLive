@@ -19,6 +19,7 @@
 using System;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using WordsLive.Core.Songs;
 
 namespace WordsLive.Editor
@@ -48,6 +49,37 @@ namespace WordsLive.Editor
 		public EditSourcesControl()
 		{
 			InitializeComponent();
+		}
+
+		private void Command_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+		{
+			if (e.Command == ApplicationCommands.Delete)
+			{
+				e.CanExecute = Song.Sources.Count > 1;
+				e.Handled = true;
+			}
+			else if (e.Command == CustomCommands.MoveUp)
+			{
+				e.CanExecute = Song.Sources.IndexOf((SongSource)e.Parameter) > 0; // in list and not already the first one
+				e.Handled = true;
+			}
+		}
+
+		private void Command_Executed(object sender, ExecutedRoutedEventArgs e)
+		{
+			if (e.Command == ApplicationCommands.Delete)
+			{
+				Song.RemoveSource((SongSource)e.Parameter);
+				e.Handled = true;
+			}
+			else if (e.Command == CustomCommands.MoveUp)
+			{
+				Song.MoveSourceUp((SongSource)e.Parameter);
+			}
+			else if (e.Command == ApplicationCommands.New)
+			{
+				Song.AddSource(String.Empty);
+			}
 		}
 	}
 }

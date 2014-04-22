@@ -100,5 +100,65 @@ namespace WordsLive.Core.Tests.Songs
 				Assert.Equal(i + 1, song.Sources[i].Number);
 			}
 		}
+
+		[Fact]
+		public void SourceRemoveUndoRedo()
+		{
+			var sources = new SongSource[] {
+				SongSource.Parse("Book / 1", song),
+				SongSource.Parse("Book / 2", song),
+				SongSource.Parse("Book / 3", song)
+			};
+			song.SetSources(sources);
+			ClearUndoRedoStack();
+			song.RemoveSource(song.FirstSource);
+			song.RemoveSource(song.FirstSource);
+			Assert.Equal(1, song.Sources.Count);
+			Undo();
+			Undo();
+			for (int i = 0; i < 3; i++)
+			{
+				Assert.Equal("Book", song.Sources[i].Songbook);
+				Assert.Equal(i + 1, song.Sources[i].Number);
+			}
+			Redo();
+			Redo();
+			Assert.Equal(1, song.Sources.Count);
+		}
+
+
+		[Fact]
+		public void SourceRemoveLastFail()
+		{
+			song.SetSources(new SongSource[] { });
+			Assert.Equal(1, song.Sources.Count);
+			Assert.Throws<InvalidOperationException>(() => song.RemoveSource(song.FirstSource));
+		}
+
+		[Fact]
+		public void SourceMoveUp()
+		{
+			var sources = new SongSource[] {
+				SongSource.Parse("Book / 1", song),
+				SongSource.Parse("Book / 2", song),
+				SongSource.Parse("Book / 3", song)
+			};
+			song.SetSources(sources);
+			ClearUndoRedoStack();
+
+			song.MoveSourceUp(sources[2]);
+			Assert.Equal(3, song.Sources.Count);
+			Assert.ReferenceEquals(sources[2], song.FirstSource);
+			Assert.Equal(1, UndoStackSize);
+			Undo();
+			for (int i = 0; i < 3; i++)
+			{
+				Assert.Equal("Book", song.Sources[i].Songbook);
+				Assert.Equal(i + 1, song.Sources[i].Number);
+			}
+			Redo();
+			Assert.Equal(3, song.Sources.Count);
+			Assert.ReferenceEquals(sources[2], song.FirstSource);
+		}
 	}
 }

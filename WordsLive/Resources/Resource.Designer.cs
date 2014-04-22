@@ -601,6 +601,15 @@ namespace WordsLive.Resources {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Add another source ähnelt.
+        /// </summary>
+        public static string eGridSourceAddNew {
+            get {
+                return ResourceManager.GetString("eGridSourceAddNew", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Number: ähnelt.
         /// </summary>
         public static string eGridSourceNumberLabel {
@@ -1033,6 +1042,24 @@ namespace WordsLive.Resources {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Move down ähnelt.
+        /// </summary>
+        public static string generalMoveDown {
+            get {
+                return ResourceManager.GetString("generalMoveDown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Move up ähnelt.
+        /// </summary>
+        public static string generalMoveUp {
+            get {
+                return ResourceManager.GetString("generalMoveUp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Remove ähnelt.
         /// </summary>
         public static string generalRemove {
@@ -1146,24 +1173,6 @@ namespace WordsLive.Resources {
         public static string paMonitor {
             get {
                 return ResourceManager.GetString("paMonitor", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Move down ähnelt.
-        /// </summary>
-        public static string paMoveDown {
-            get {
-                return ResourceManager.GetString("paMoveDown", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Move up ähnelt.
-        /// </summary>
-        public static string paMoveUp {
-            get {
-                return ResourceManager.GetString("paMoveUp", resourceCulture);
             }
         }
         

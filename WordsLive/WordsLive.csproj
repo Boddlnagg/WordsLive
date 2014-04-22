@@ -213,6 +213,11 @@
     <Compile Include="Documents\PdfDocument.cs" />
     <Compile Include="Documents\PdfPresentation.cs" />
     <Compile Include="PluginSettingsDictionary.cs" />
+    <Compile Include="Resources\Resource.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resource.resx</DependentUpon>
+    </Compile>
     <Compile Include="Slideshow\Interop.cs" />
     <Compile Include="Slideshow\OdpHandler.cs" />
     <Compile Include="Slideshow\OdpMedia.cs" />
@@ -366,11 +371,6 @@
     <Compile Include="Utils\ImageLoader\Loader.cs" />
     <Compile Include="Utils\ImageLoader\Manager.cs" />
     <Compile Include="Utils\ImageLoader\Types.cs" />
-    <Compile Include="Resources\Resource.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resource.resx</DependentUpon>
-    </Compile>
     <Compile Include="Resources\Resource.de.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -610,6 +610,7 @@
     <EmbeddedResource Include="Resources\Resource.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <SubType>Designer</SubType>
+      <LastGenOutput>Resource.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\Resource.de.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
