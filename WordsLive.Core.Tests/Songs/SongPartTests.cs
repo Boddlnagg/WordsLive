@@ -260,5 +260,16 @@ namespace WordsLive.Core.Tests.Songs
 			Assert.Equal(1, song.Parts.Count);
 			Assert.Equal(1, song.Order.Count);
 		}
+
+		[Fact]
+		public void PartRemoveClean()
+		{
+			var weakRef = new WeakReference(part);
+			song.IsUndoEnabled = false;
+			song.RemovePart(part);
+			part = null;
+			GC.Collect();
+			Assert.False(weakRef.IsAlive);
+		}
 	}
 }

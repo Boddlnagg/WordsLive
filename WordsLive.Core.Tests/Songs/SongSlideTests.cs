@@ -136,5 +136,17 @@ namespace WordsLive.Core.Tests.Songs
 			Redo();
 			Assert.Equal(System.Drawing.Color.Red.ToArgb(), slide.Background.Color.ToArgb());
 		}
+
+		[Fact]
+		public void SlideRemoveClean()
+		{
+			song.IsUndoEnabled = false;
+			var slide2 = part.DuplicateSlide(slide);
+			var weakRef = new WeakReference(slide2);
+			part.RemoveSlide(slide2);
+			slide2 = null;
+			GC.Collect();
+			Assert.False(weakRef.IsAlive);
+		}
 	}
 }
