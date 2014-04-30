@@ -170,7 +170,7 @@ namespace WordsLive.Songs
 			var s = new
 			{
 				Text = slide.Text,
-				Translation = slide.Translation,
+				Translation = slide.TranslationWithoutChords, // TODO: does the display controller need to know about chords in the translation?
 				Size = slide.Size,
 				Background = slide.Background,
 				Source = showSource,

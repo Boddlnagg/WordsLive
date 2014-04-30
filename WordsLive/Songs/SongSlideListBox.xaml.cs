@@ -1,6 +1,6 @@
 ﻿/*
  * WordsLive - worship projection software
- * Copyright (c) 2013 Patrick Reisert
+ * Copyright (c) 2014 Patrick Reisert
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -177,7 +177,7 @@ namespace WordsLive.Songs
 					parts.Add(new SongSlideContainer
 					{
 						Text = s.TextWithoutChords,
-						Translation = s.Translation,
+						Translation = s.TranslationWithoutChords,
 						Background = song.Backgrounds[s.BackgroundIndex],
 						PartIndex = partIndex,
 						PartName = partRef.Part.Name,

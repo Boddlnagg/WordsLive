@@ -1,6 +1,6 @@
 ﻿/*
  * WordsLive - worship projection software
- * Copyright (c) 2013 Patrick Reisert
+ * Copyright (c) 2014 Patrick Reisert
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -86,10 +86,22 @@ namespace WordsLive.Core.Songs
 					Undo.ChangeFactory.OnChangingTryMerge(this, "Translation", translation, value);
 					translation = value;
 					HasTranslation = !String.IsNullOrEmpty(translation);
+					bool translationHasChords = Chords.Chords.GetChords(translation).Any();
+					if (translationHasChords)
+						TranslationWithoutChords = Chords.Chords.RemoveAll(translation);
+					else
+						TranslationWithoutChords = Text;
 					OnPropertyChanged("Translation");
+					OnPropertyChanged("TranslationWithoutChords");
 				}
 			}
 		}
+
+		/// <summary>
+		/// Gets the translation of the text on this slide, but with chords removed.
+		/// </summary>
+		[JsonIgnore]
+		public string TranslationWithoutChords { get; private set; }
 
 		/// <summary>
 		/// Gets or sets the index pointing to the background of this slide.
@@ -202,6 +214,7 @@ namespace WordsLive.Core.Songs
 			this.text = "";
 			this.TextWithoutChords = "";
 			this.translation = "";
+			this.TranslationWithoutChords = "";
 			this.size = Root.Formatting.MainText.Size;
 		}
 
