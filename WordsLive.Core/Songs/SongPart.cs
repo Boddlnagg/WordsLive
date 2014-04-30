@@ -1,6 +1,6 @@
 ﻿/*
  * WordsLive - worship projection software
- * Copyright (c) 2013 Patrick Reisert
+ * Copyright (c) 2014 Patrick Reisert
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -56,11 +56,13 @@ namespace WordsLive.Core.Songs
 				}
 			}
 		}
+
+		private readonly ObservableCollection<SongSlide> slides = new ObservableCollection<SongSlide>();
 		
 		/// <summary>
-		/// Gets or sets a list of slides.
+		/// Gets the slides in this part (read-only).
 		/// </summary>
-		public ObservableCollection<SongSlide> Slides { get; private set; }
+		public ReadOnlyObservableCollection<SongSlide> Slides { get; private set; }
 
 		/// <summary>
 		/// Gets the text of all slides in this part.
@@ -103,7 +105,7 @@ namespace WordsLive.Core.Songs
 			}
 
 			this.name = name;
-			this.Slides = new ObservableCollection<SongSlide>();
+			this.Slides = new ReadOnlyObservableCollection<SongSlide>(slides);
 		}
 
 		/// <summary>
@@ -122,7 +124,8 @@ namespace WordsLive.Core.Songs
 			}
 
 			this.name = name;
-			this.Slides = new ObservableCollection<SongSlide>(slides);
+			this.slides = new ObservableCollection<SongSlide>(slides);
+			this.Slides = new ReadOnlyObservableCollection<SongSlide>(this.slides);
 		}
 
 		/// <summary>
@@ -146,10 +149,10 @@ namespace WordsLive.Core.Songs
 		public void AddSlide(SongSlide slide)
 		{
 			Undo.ChangeFactory.OnChanging(this,
-				() => { Slides.Remove(slide); },
-				() => { Slides.Add(slide); },
+				() => { slides.Remove(slide); },
+				() => { slides.Add(slide); },
 				"AddSlide");
-			Slides.Add(slide);
+			slides.Add(slide);
 		}
 
 		/// <summary>
@@ -170,10 +173,10 @@ namespace WordsLive.Core.Songs
 			else
 			{
 				Undo.ChangeFactory.OnChanging(this,
-					() => { Slides.Remove(slide); },
-					() => { Slides.Insert(index + 1, slide); },
+					() => { slides.Remove(slide); },
+					() => { slides.Insert(index + 1, slide); },
 					"InsertSlideAfter");
-				this.Slides.Insert(index + 1, slide);
+				slides.Insert(index + 1, slide);
 			}
 		}
 
@@ -183,6 +186,9 @@ namespace WordsLive.Core.Songs
 		/// <param name="slide"></param>
 		public void RemoveSlide(SongSlide slide)
 		{
+			if (slide == null)
+				throw new ArgumentNullException("slide");
+
 			if (Slides.Count <= 1)
 				throw new InvalidOperationException("Can't remove last slide in a part.");
 
@@ -191,10 +197,10 @@ namespace WordsLive.Core.Songs
 				throw new InvalidOperationException("Slide is not in this part.");
 
 			Undo.ChangeFactory.OnChanging(this,
-				() => { Slides.Insert(i, slide); },
-				() => { Slides.Remove(slide); },
+				() => { slides.Insert(i, slide); },
+				() => { slides.Remove(slide); },
 				"RemoveSlide");
-			this.Slides.Remove(slide);
+			slides.Remove(slide);
 		}
 
 		/// <summary>
@@ -211,10 +217,10 @@ namespace WordsLive.Core.Songs
 			{
 				s = slide.Copy();
 				Undo.ChangeFactory.OnChanging(this,
-					() => { Slides.Remove(s); },
-					() => { Slides.Insert(i + 1, s); },
+					() => { slides.Remove(s); },
+					() => { slides.Insert(i + 1, s); },
 					"DuplicateSlide");
-				Slides.Insert(i + 1, s);
+				slides.Insert(i + 1, s);
 			}
 			return s;
 		}

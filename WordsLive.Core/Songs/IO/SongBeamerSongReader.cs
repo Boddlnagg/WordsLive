@@ -78,7 +78,7 @@ namespace WordsLive.Core.Songs.IO
 					{
 						if (line == "---")
 						{
-							currentPart.Slides.Add(new SongSlide(song) { Size = song.Formatting.MainText.Size, Text = currentText, Translation = currentTrans });
+							currentPart.AddSlide(new SongSlide(song) { Size = song.Formatting.MainText.Size, Text = currentText, Translation = currentTrans });
 							currentText = null;
 							song.AddPart(currentPart);
 							currentPart = new SongPart(song, FindUnusedPartName(song));
@@ -86,7 +86,7 @@ namespace WordsLive.Core.Songs.IO
 						}
 						else if (line == "--" || line == "--A")
 						{
-							currentPart.Slides.Add(new SongSlide(song) { Size = song.Formatting.MainText.Size, Text = currentText, Translation = currentTrans });
+							currentPart.AddSlide(new SongSlide(song) { Size = song.Formatting.MainText.Size, Text = currentText, Translation = currentTrans });
 							currentText = "";
 							linenum = 0;
 						}
@@ -130,7 +130,7 @@ namespace WordsLive.Core.Songs.IO
 					}
 				}
 
-				currentPart.Slides.Add(new SongSlide(song) { Size = song.Formatting.MainText.Size, Text = currentText, Translation = currentTrans });
+				currentPart.AddSlide(new SongSlide(song) { Size = song.Formatting.MainText.Size, Text = currentText, Translation = currentTrans });
 				song.AddPart(currentPart);
 
 				PostProcessSongBeamerProperties(song, properties);
