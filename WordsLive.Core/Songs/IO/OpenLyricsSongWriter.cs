@@ -56,7 +56,7 @@ namespace WordsLive.Core.Songs.IO
 					new XElement(ns + "titles", new XElement(ns + "title", song.Title)),
 					String.IsNullOrWhiteSpace(song.Copyright) ? null : new XElement(ns + "copyright", song.Copyright),
 					song.CcliNumber == null ? null : new XElement(ns + "ccliNo", song.CcliNumber),
-					new XElement(ns + "verseOrder", String.Join(" ", from p in song.Parts from s in p.Slides select mappings[s])),
+					new XElement(ns + "verseOrder", String.Join(" ", from p in song.Order from s in p.Part.Slides select mappings[s])),
 					sources.Any() ? new XElement(ns + "songbooks", sources) : null,
 					String.IsNullOrWhiteSpace(song.Category) ? null : new XElement(ns + "themes", new XElement(ns + "theme", song.Category)),
 					String.IsNullOrWhiteSpace(song.Comment) ? null : new XElement(ns + "comments", new XElement(ns + "comment", song.Comment))

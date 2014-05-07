@@ -55,11 +55,17 @@ namespace WordsLive.Core.Songs.IO
 			var root = doc.Root;
 
 			song.Title = root.Elements("title").Single().Value;
-			song.Copyright = root.Elements("author").Any() ? root.Elements("author").Single().Value : "";
+			song.Copyright = root.Elements("author").Any() ? root.Elements("author").Single().Value : String.Empty;
 			if (root.Elements("copyright").Any())
-				song.Copyright += "\n© " + root.Elements("copyright").Single().Value;
+			{
+				var copyright = root.Element("copyright").Value;
+				if (!copyright.StartsWith("©") && !copyright.StartsWith("(c)"))
+					copyright = "© " + copyright;
+				song.Copyright = String.IsNullOrEmpty(song.Copyright) ? copyright : song.Copyright + "\n" + copyright;
+			}
 
-			song.Category = root.Elements("theme").Single().Value; // TODO: make theme optional
+			song.Category = root.Elements("theme").Any() ? root.Element("theme").Value : String.Empty;
+			song.CcliNumber = root.Elements("ccli").Any() ? int.Parse(root.Element("ccli").Value) : (int?)null;
 			var lines = root.Elements("lyrics").Single().Value.Split('\n');
 
 			string partKey = null;
