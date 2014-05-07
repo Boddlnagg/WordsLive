@@ -77,6 +77,15 @@ namespace WordsLive.Core.Songs.IO
 			song.Category = prop.Elements(ns + "themes").Any() ? String.Join("; ", prop.Element(ns + "themes").Elements(ns + "theme").Select(e => e.Value)) : String.Empty;
 			song.Comment = prop.Elements(ns + "comments").Any() ? String.Join("\n", prop.Element(ns + "comments").Elements(ns + "comment").Select(e => e.Value)) : String.Empty;
 
+			if (prop.Elements(ns + "songbooks").Any())
+			{
+				int number;
+				song.SetSources(prop.Element(ns + "songbooks").Elements(ns + "songbook").Select(e => new SongSource(song) {
+					Songbook = e.Attribute("name").Value,
+					Number = e.Attributes("entry").Any() ? (int.TryParse(e.Attribute("entry").Value, out number) ? number : (int?)null) : null
+				}));
+			}
+
 			var mappings = new Dictionary<string, string>();
 
 			foreach (var verse in doc.Root.Element(ns + "lyrics").Elements(ns + "verse"))

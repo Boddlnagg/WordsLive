@@ -46,7 +46,7 @@ namespace WordsLive.Core.Songs.IO
 			var sources = from s in song.Sources where !String.IsNullOrWhiteSpace(s.Songbook)
 						  select new XElement(ns + "songbook",
 							  new XAttribute("name", s.Songbook),
-							  new XAttribute("entry", s.Number == null ? " " : s.Number.ToString())); // empty string is not allowed in entry attribute
+							  s.Number == null ? null : new XAttribute("entry", s.Number.ToString()));
 			
 			XElement root = new XElement(ns + "song", new XAttribute("version", "0.8"),
 				new XAttribute("createdIn", versionString),
