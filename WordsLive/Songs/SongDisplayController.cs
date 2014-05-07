@@ -167,6 +167,8 @@ namespace WordsLive.Songs
 
 		public void ShowSlide(SongSlide slide)
 		{
+			if (slide == null) return; // slide might be null if the song has no parts
+
 			var s = new
 			{
 				Text = slide.Text,

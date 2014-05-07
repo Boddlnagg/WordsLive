@@ -610,7 +610,7 @@ namespace WordsLive.Core.Songs
 			LoadTemplate();
 			order.Clear();
 			parts.Clear();
-			backgrounds.Clear();
+			// important: don't clear backgrounds
 		}
 
 		/// <summary>
