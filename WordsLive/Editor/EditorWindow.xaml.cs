@@ -126,6 +126,10 @@ namespace WordsLive.Editor
 				{
 					song = new Song(uri, new CcliTxtSongReader());
 				}
+				else if (ext == ".xml")
+				{
+					song = new Song(uri, new OpenLyricsSongReader());
+				}
 				else if (ext == "") // OpenSong songs have no file extension
 				{
 					song = new Song(uri, new OpenSongSongReader());
@@ -170,7 +174,7 @@ namespace WordsLive.Editor
 			// TODO: localize
 			Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
 			dlg.DefaultExt = ".ppl";
-			dlg.Filter = "Powerpraise-Lied|*.ppl|SongBeamer-Lied|*.sng|ChordPro-Datei|*.chopro;*.cho;*.pro|SongSelect-Datei|*.usr;*.txt";
+			dlg.Filter = "Powerpraise-Lied|*.ppl|SongBeamer-Lied|*.sng|ChordPro-Datei|*.chopro;*.cho;*.pro|SongSelect-Datei|*.usr;*.txt|OpenLyrics-Lied|*.xml";
 			dlg.InitialDirectory = Properties.Settings.Default.LastSongDirectory;
 
 			if (dlg.ShowDialog() == true)
@@ -213,9 +217,9 @@ namespace WordsLive.Editor
 		{
 			// TODO: localize
 			var dlg = new Microsoft.Win32.SaveFileDialog();
-			string[] exts = { ".ppl", ".html" };
+			string[] exts = { ".ppl", ".xml", ".html" };
 			dlg.DefaultExt = exts[0];
-			dlg.Filter = "Powerpraise-Lied|*.ppl|HTML-Dokument|*.html"; // must be same order as exts
+			dlg.Filter = "Powerpraise-Lied|*.ppl|OpenLyrics-Lied|*.xml|HTML-Dokument|*.html"; // must be same order as exts
 			dlg.Title = Resource.eMenuExportSong;
 			dlg.InitialDirectory = Properties.Settings.Default.LastSongDirectory;
 
@@ -244,6 +248,10 @@ namespace WordsLive.Editor
 				if (ext == ".html")
 				{
 					song.Export(new Uri(path), new HtmlSongWriter());
+				}
+				else if (ext == ".xml")
+				{
+					song.Export(new Uri(path), new OpenLyricsSongWriter());
 				}
 				else if (ext == ".ppl")
 				{

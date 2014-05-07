@@ -116,6 +116,8 @@
     <Compile Include="Songs\IO\CcliSongReader.cs" />
     <Compile Include="Songs\IO\CcliTxtSongReader.cs" />
     <Compile Include="Songs\IO\CcliUsrSongReader.cs" />
+    <Compile Include="Songs\IO\OpenLyricsSongReader.cs" />
+    <Compile Include="Songs\IO\OpenLyricsSongWriter.cs" />
     <Compile Include="Songs\IO\SongFormatException.cs" />
     <Compile Include="Songs\ISongElementWithSize.cs" />
     <Compile Include="Songs\SongMedia.cs" />
