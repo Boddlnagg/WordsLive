@@ -166,6 +166,7 @@ namespace WordsLive.Editor
 			{
 				var newPart = song.AddPart(res.PartName);
 				this.StructureTree.SelectItem(newPart.Slides.First());
+				song.AddPartToOrder(newPart);
 			}
 		}
 
