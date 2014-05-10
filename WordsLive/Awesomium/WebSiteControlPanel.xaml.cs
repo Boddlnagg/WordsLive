@@ -155,7 +155,7 @@ namespace WordsLive.Awesomium
 			if (!url.Contains("://"))
 				url = "http://" + url;
 
-			presentation.Control.Web.LoadURL(new Uri(url));
+			presentation.Control.Web.Source = new Uri(url);
 			Controller.PresentationManager.CurrentPresentation = presentation;
 		}
 
@@ -185,7 +185,7 @@ namespace WordsLive.Awesomium
 			else
 				url = "http://m.bibleserver.com/text/" + bibleTextBox.Text;
 
-			presentation.Control.Web.LoadURL(new Uri(url));
+			presentation.Control.Web.Source = new Uri(url);
 			
 			Controller.PresentationManager.CurrentPresentation = presentation;
 		}

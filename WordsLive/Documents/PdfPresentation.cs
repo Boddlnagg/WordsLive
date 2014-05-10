@@ -50,7 +50,7 @@ namespace WordsLive.Documents
 				OnDocumentLoaded();
 			});
 			//this.Control.Web.ConsoleMessage += (sender, args) => System.Windows.MessageBox.Show(args.Message);
-			this.Control.Web.LoadURL(new Uri("asset://WordsLive/pdf.html"));
+			this.Control.Web.Source = new Uri("asset://WordsLive/pdf.html");
 		}
 
 		public void GoToPage(int page)
