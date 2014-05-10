@@ -47,9 +47,30 @@ namespace WordsLive.Server
 	public class MainServer
 	{
 		/// <summary>
-		/// Test page for WebSocket test
+		/// Default start page
 		/// </summary>
 		private string HtmlContent
+		{
+			get
+			{
+				return
+@"<!DOCTYPE html>
+<html>
+<head>
+<title>WordsLive Server</title>
+</head>
+<body>
+<h2>Welcome to WordsLive Server</h2>
+<p>Everything is up and running.</p>
+</body>
+</html>";
+			}
+		}
+
+		/// <summary>
+		/// Test page for WebSocket test
+		/// </summary>
+		private string HtmlContentEcho
 		{
 			get
 			{
@@ -276,6 +297,11 @@ window.addEventListener('load', init, false);
 						}
 					});
 					return TaskHelpers.Completed();
+				}
+				else if (request.Path == "/Echo")
+				{
+					var response = new OwinResponse(env);
+					return response.RespondString(HtmlContentEcho, "text/html");
 				}
 				else if (request.Path == "/")
 				{
