@@ -53,6 +53,9 @@ namespace WordsLive.Core.Songs.IO
 				throw new SongFormatException("File is not a valid OpenLyrics song.");
 			}
 
+			//var openLyricsVersion = new Version(doc.Root.Attribute("version").Value);
+			//bool versionPre08 = openLyricsVersion < new Version(0, 8);
+
 			var prop = doc.Root.Element(ns + "properties");
 
 			song.Title = prop.Element(ns + "titles").Elements(ns + "title").First().Value;
@@ -104,29 +107,7 @@ namespace WordsLive.Core.Songs.IO
 				var slides = verse.Elements(ns + "lines").Select(lines =>
 				{
 					StringBuilder str = new StringBuilder();
-					foreach (var n in lines.Nodes())
-					{
-						if (n is XText)
-						{
-							// remove whitespace around line breaks
-							str.Append(new Regex(@"[\t ]*\r?\n[\t ]*").Replace((n as XText).Value, String.Empty));
-						}
-						else
-						{
-							XElement e = (XElement)n;
-							if (e.Name == ns + "br")
-							{
-								str.AppendLine();
-							}
-							else if (e.Name == ns + "chord")
-							{
-								str.Append("[");
-								str.Append(e.Attribute("name").Value);
-								str.Append("]");
-							}
-						}
-					}
-
+					ParseLines(lines, str);
 					return new SongSlide(song) { Text = str.ToString() };
 				});
 
@@ -142,6 +123,46 @@ namespace WordsLive.Core.Songs.IO
 				// if we have no verseOrder element, use all verses from the mappings dictionary
 				// (so multiple translations will appear only once)
 				song.SetOrder(mappings.Values);
+			}
+		}
+
+		void ParseLines(XElement lines, StringBuilder str)
+		{
+			bool firstLine = true;
+			foreach (var n in lines.Nodes())
+			{
+				if (n is XText)
+				{
+					// remove whitespace around line breaks
+					str.Append(new Regex(@"[\t ]*\r?\n[\t ]*").Replace((n as XText).Value, String.Empty));
+				}
+				else
+				{
+					XElement e = (XElement)n;
+					if (e.Name == ns + "br")
+					{
+						str.AppendLine();
+					}
+					else if (e.Name == ns + "chord")
+					{
+						str.Append("[");
+						str.Append(e.Attribute("name").Value);
+						str.Append("]");
+					}
+					else if (e.Name == ns + "line") // old pre-0.8 format
+					{
+						if (firstLine)
+						{
+							firstLine = false;
+						}
+						else
+						{
+							str.AppendLine(); // add new line before every line except first one
+						}
+
+						ParseLines(e, str); // parse recursively for simplicity
+					}
+				}
 			}
 		}
 	}
