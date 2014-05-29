@@ -90,7 +90,7 @@ namespace WordsLive.Core.Songs
 					if (translationHasChords)
 						TranslationWithoutChords = Chords.Chords.RemoveAll(translation);
 					else
-						TranslationWithoutChords = Text;
+						TranslationWithoutChords = translation;
 					OnPropertyChanged("Translation");
 					OnPropertyChanged("TranslationWithoutChords");
 				}
