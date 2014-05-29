@@ -251,8 +251,11 @@ namespace WordsLive
 				}
 				catch (FileNotFoundException)
 				{
-					var newData = new FileNotFoundMedia(media.Uri);
-					orderList.ReplaceActive(newData);
+					orderList.ReplaceActive(new FileNotFoundMedia(media.Uri));
+				}
+				catch (DirectoryNotFoundException)
+				{
+					orderList.ReplaceActive(new FileNotFoundMedia(media.Uri));
 				}
 			}
 		}
