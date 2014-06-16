@@ -81,7 +81,7 @@ namespace WordsLive.Slideshow
 				this.Dispatcher.BeginInvoke(new Action(() =>
 				{
 					Controller.PresentationManager.CurrentPresentation = null;
-					Controller.FocusMainWindow();
+					Controller.FocusMainWindow(false);
 					System.Windows.MessageBox.Show(Resource.slideErrorMsgClosedExternally);
 					Controller.ReloadActiveMedia();
 				}));

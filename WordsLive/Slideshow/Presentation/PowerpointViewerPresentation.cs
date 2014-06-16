@@ -116,7 +116,7 @@ namespace WordsLive.Slideshow.Presentation
 								isShown = true;
 							}
 							OnLoaded(true);
-							Controller.FocusMainWindow();
+							Controller.FocusMainWindow(true);
 						}
 						else
 						{

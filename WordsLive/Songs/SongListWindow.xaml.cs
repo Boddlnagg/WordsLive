@@ -135,7 +135,7 @@ namespace WordsLive.Songs
 		{
 			Controller.AddToPortfolio(data.Uri);
 			this.Topmost = true;
-			Controller.FocusMainWindow();
+			Controller.FocusMainWindow(false);
 			this.Topmost = false;
 			this.Focus();
 		}

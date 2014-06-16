@@ -445,14 +445,19 @@ namespace WordsLive
 			return editor;
 		}
 
-		public static void FocusMainWindow()
+		public static void FocusMainWindow(bool tryFocusControlPanel)
 		{
-			Window win = instance.window;
+			MainWindow win = instance.window;
 			if (win.WindowState == WindowState.Minimized)
 				win.WindowState = WindowState.Normal;
 
 			win.Activate();
 			win.Focus();
+
+			if (tryFocusControlPanel && win.ControlPanel.Child != null)
+			{
+				win.ControlPanel.Child.Focus();
+			}
 		}
 
 		public static void ReloadActiveMedia()

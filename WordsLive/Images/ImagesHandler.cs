@@ -55,7 +55,7 @@ namespace WordsLive.Images
 
 		public override IEnumerable<Media> HandleMultiple(IEnumerable<Uri> uris)
 		{
-			Controller.FocusMainWindow();
+			Controller.FocusMainWindow(false);
 
 			var res = MessageBox.Show(Resource.imgMsgMultipleCreateSlideshow, Resource.imgMsgMultipleCreateSlideshowTitle, MessageBoxButton.YesNoCancel);
 			if (res == MessageBoxResult.Yes)

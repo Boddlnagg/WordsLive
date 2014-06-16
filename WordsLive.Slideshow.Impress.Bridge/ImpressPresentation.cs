@@ -302,7 +302,7 @@ namespace WordsLive.Slideshow.Impress.Bridge
 				(preview as LiveWindowPreviewProvider).UpdateSource(presentationHandle);
 			}
 
-			Controller.Dispatcher.Invoke(new Action(() => Controller.FocusMainWindow()));
+			Controller.Dispatcher.Invoke(new Action(() => Controller.FocusMainWindow(true)));
 		}
 
 		private void GetWindowHandles(out IntPtr presenterConsoleHandle, out IntPtr presentationHandle)
@@ -463,7 +463,7 @@ namespace WordsLive.Slideshow.Impress.Bridge
 			{
 				ResizeWindow();
 			}
-			Controller.FocusMainWindow();
+			Controller.FocusMainWindow(true);
 		}
 
 		public override void Close()

@@ -481,14 +481,14 @@ namespace WordsLive.Editor
 			{
 				SaveSong(doc.Song);
 				Controller.ReloadActiveMedia();
-				Controller.FocusMainWindow();
+				Controller.FocusMainWindow(true);
 			}
 			else if (e.Command == CustomCommands.SwitchWindow)
 			{
 				if (openDocuments.Count == 0)
 					this.Close();
 
-				Controller.FocusMainWindow();
+				Controller.FocusMainWindow(true);
 			}
 			else if (e.Command == CustomCommands.SongSettings)
 			{
