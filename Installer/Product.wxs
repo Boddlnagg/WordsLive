@@ -130,7 +130,7 @@
 				<File Source="$(var.WordsLive.TargetDir)MonitoredUndo.dll" Name="MonitoredUndo.dll" KeyPath="yes" />
 			</Component>
 			<Component>
-				<File Source="$(var.WordsLive.TargetDir)WPFToolkit.Extended.dll" Name="WPFToolkit.Extended.dll" KeyPath="yes" />
+				<File Source="$(var.WordsLive.TargetDir)Xceed.Wpf.Toolkit.dll" Name="Xceed.Wpf.Toolkit.dll" KeyPath="yes" />
 			</Component>
 			<Component>
 				<File Source="$(var.WordsLive.TargetDir)Newtonsoft.Json.dll" Name="Newtonsoft.Json.dll" KeyPath="yes" />
