@@ -1,6 +1,6 @@
 ﻿/*
  * WordsLive - worship projection software
- * Copyright (c) 2014 Patrick Reisert
+ * Copyright (c) 2015 Patrick Reisert
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -541,17 +541,20 @@ namespace WordsLive.Editor
 			else
 				PreviewControl.IsFirstSelected = false;
 
-			if (listBox.SelectedIndex == listBox.Items.Count - 1)
-				PreviewControl.IsLastSelected = true;
-			else
-				PreviewControl.IsLastSelected = false;
-
 			orderSelected = true;
 			var selectedPart = ((SongPartReference)listBox.SelectedItem).Part;
 			if (selectedPart.Slides.Count > 0)
+			{
 				StructureTree.SelectItem(selectedPart.Slides[0]);
+				if (listBox.SelectedIndex == listBox.Items.Count - 1 && selectedPart.Slides.Count == 1)
+					PreviewControl.IsLastSelected = true;
+				else
+					PreviewControl.IsLastSelected = false;
+			}
 			else
+			{
 				StructureTree.SelectItem(selectedPart);
+			}
 			orderSelected = false;
 
 			listBox.Focus();
