@@ -6,6 +6,6 @@
 //
 // You can specify all the values or you can use the default the Revision and 
 // Build Numbers by using the '*' as shown below:
-[assembly: AssemblyFileVersion("0.9.10")]
-[assembly: AssemblyVersion("0.9.10.0")]
+[assembly: AssemblyFileVersion("0.9.11")]
+[assembly: AssemblyVersion("0.9.11.0")]
 
