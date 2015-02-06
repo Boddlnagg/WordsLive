@@ -1008,4 +1008,13 @@
   <data name="eGridSourceAddNew" xml:space="preserve">
     <value>Eine weitere Quelle hinzufügen</value>
   </data>
+  <data name="cbMsgErrNoImageSelected" xml:space="preserve">
+    <value>Es ist kein Bild ausgewählt.</value>
+  </data>
+  <data name="cbMsgWarnTrySelectImage" xml:space="preserve">
+    <value>Die Auswahl eines Hintergrundbildes ist momentan deaktiviert, weil die Option "Einzelne Farbe verwenden" in der oberen linken Ecke dieses Fensters aktiviert ist. Deaktivieren Sie diese Option, um ein Hintergrundbild auswählen zu können.</value>
+  </data>
+  <data name="cbMsgWarnTrySelectImageTitle" xml:space="preserve">
+    <value>Auswahl eines Hintergrundbildes deaktiviert</value>
+  </data>
 </root>

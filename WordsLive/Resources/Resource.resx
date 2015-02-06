@@ -1008,4 +1008,13 @@
   <data name="eGridSourceAddNew" xml:space="preserve">
     <value>Add another source</value>
   </data>
+  <data name="cbMsgErrNoImageSelected" xml:space="preserve">
+    <value>No image has been selected.</value>
+  </data>
+  <data name="cbMsgWarnTrySelectImage" xml:space="preserve">
+    <value>The option to select a background image is currently disabled, because the check box 'Use single color' in the top left corner of this window is enabled. Please uncheck that option to select an image.</value>
+  </data>
+  <data name="cbMsgWarnTrySelectImageTitle" xml:space="preserve">
+    <value>Background image selection disabled</value>
+  </data>
 </root>

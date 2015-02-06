@@ -1,6 +1,6 @@
 ﻿<!--
 - WordsLive - worship projection software
-- Copyright (c) 2013 Patrick Reisert
+- Copyright (c) 2015 Patrick Reisert
 - 
 - This program is free software: you can redistribute it and/or modify
 - it under the terms of the GNU General Public License as published by
@@ -46,7 +46,8 @@
 			<Button Content="{x:Static resx:Resource.dialogOK}" IsDefault="True" Margin="0,0,5,0" VerticalAlignment="Center" HorizontalAlignment="Right" Width="75" Click="OKButton_Click" />
 			<Button Content="{x:Static resx:Resource.dialogCancel}" IsCancel="True" Margin="0,0,86,0" VerticalAlignment="Center" HorizontalAlignment="Right" Width="75" />
 		</Grid>
-		<Grid IsEnabled="{Binding Path=UseImage}">
+		<ContentControl MouseDown="ContentControl_MouseDown"> <!-- Wrap in ContentControl to be able to intercept mouse event when grid is disabled -->
+			<Grid IsEnabled="{Binding Path=UseImage}">
 				<Grid.ColumnDefinitions>
 					<ColumnDefinition Width="*"/>
 					<ColumnDefinition Width="5"/>
@@ -91,7 +92,7 @@
 				<ListView Grid.Column="2" ItemsSource="{Binding ElementName=directoryView, Path=SelectedItem.Files}" Name="imageListView">
 					<ListView.ItemTemplate>
 						<DataTemplate>
-							<Grid MaxWidth="{Binding ElementName=PreviewSizeSlider, Path=Value}" MaxHeight="{Binding ElementName=PreviewSizeSlider, Path=Value}"  Margin="1,2,3,1" ToolTip="{Binding Name}" MouseDown="Grid_MouseDown">
+							<Grid MaxWidth="{Binding ElementName=PreviewSizeSlider, Path=Value}" MaxHeight="{Binding ElementName=PreviewSizeSlider, Path=Value}"  Margin="1,2,3,1" ToolTip="{Binding Name}" MouseDown="ImageGrid_MouseDown">
 								<Grid.ColumnDefinitions>
 									<ColumnDefinition Width="4*"/>
 									<ColumnDefinition Width="1*"/>
@@ -135,5 +136,6 @@
 					</ListView.ItemsPanel>
 				</ListView>
 			</Grid>
-		</DockPanel>
+		</ContentControl>
+	</DockPanel>
 </Window>

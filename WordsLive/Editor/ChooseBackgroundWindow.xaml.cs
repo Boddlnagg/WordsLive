@@ -1,6 +1,6 @@
 ﻿/*
  * WordsLive - worship projection software
- * Copyright (c) 2013 Patrick Reisert
+ * Copyright (c) 2015 Patrick Reisert
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -203,7 +203,7 @@ namespace WordsLive.Editor
 				var entry = (BackgroundStorageEntry)imageListView.SelectedItem;
 				if (entry == null)
 				{
-					MessageBox.Show("Es ist kein Bild ausgewählt.");
+					MessageBox.Show(Resource.cbMsgErrNoImageSelected);
 					return;
 				}
 
@@ -223,7 +223,15 @@ namespace WordsLive.Editor
 			SetResultAndClose();
 		}
 
-		private void Grid_MouseDown(object sender, MouseButtonEventArgs e)
+		private void ContentControl_MouseDown(object sender, MouseButtonEventArgs e)
+		{
+			if (UseColor)
+			{
+				MessageBox.Show(Resource.cbMsgWarnTrySelectImage, Resource.cbMsgWarnTrySelectImageTitle, MessageBoxButton.OK, MessageBoxImage.Warning);
+			}
+		}
+
+		private void ImageGrid_MouseDown(object sender, MouseButtonEventArgs e)
 		{
 			if (e.ChangedButton == MouseButton.Left && e.ClickCount == 2)
 			{
