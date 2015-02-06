@@ -1,6 +1,6 @@
 ﻿/*
  * WordsLive - worship projection software
- * Copyright (c) 2014 Patrick Reisert
+ * Copyright (c) 2015 Patrick Reisert
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -697,37 +697,63 @@ namespace WordsLive
 			{
 				if (value != usePortfolioBackground)
 				{
-					usePortfolioBackground = value;
+					var shiftPressed = (Keyboard.Modifiers & ModifierKeys.Shift) == ModifierKeys.Shift;
 
-					if (usePortfolioBackground == true)
+					if (value == true)
 					{
+						usePortfolioBackground = true;
+
 						if (portfolioBackground == null)
 							portfolioBackground = SongBackground.Default;
 
-						var win = new ChooseBackgroundWindow(portfolioBackground, true);
-						win.Owner = this;
-						win.ShowDialog();
-						if (win.DialogResult == true)
+						if (!shiftPressed)
 						{
-							portfolioBackground = win.ChosenBackground;
-							if (ActiveMedia is SongMedia)
+							// if SHIFT is not pressed, choose another background; if it is pressed, use the previous one
+							var win = new ChooseBackgroundWindow(portfolioBackground, true);
+							win.Owner = this;
+							win.ShowDialog();
+							if (win.DialogResult == true)
 							{
-								ReloadActiveMedia();
+								portfolioBackground = win.ChosenBackground;
+							}
+							else
+							{
+								usePortfolioBackground = false;
 							}
 						}
-						else
+
+						if (usePortfolioBackground && ActiveMedia is SongMedia)
 						{
-							usePortfolioBackground = false;
-							
+							ReloadActiveMedia();
 						}
 					}
 					else
 					{
-						// disable portfolio background
-						if (ActiveMedia is SongMedia)
+						if (shiftPressed)
 						{
-							ReloadActiveMedia();
+							// with SHIFT pressed, allow to select another image without turning it out first
+							usePortfolioBackground = true;
+							var win = new ChooseBackgroundWindow(portfolioBackground, true);
+							win.Owner = this;
+							win.ShowDialog();
+							if (win.DialogResult == true)
+							{
+								portfolioBackground = win.ChosenBackground;
+								if (ActiveMedia is SongMedia)
+								{
+									ReloadActiveMedia();
+								}
+							}
 						}
+						else
+						{
+							// without SHIFT pressed, just disable portfolio background
+							usePortfolioBackground = false;
+							if (ActiveMedia is SongMedia)
+							{
+								ReloadActiveMedia();
+							}
+						}						
 					}
 
 					OnPropertyChanged("UsePortfolioBackground");
