@@ -1,6 +1,6 @@
 ﻿<!--
 - WordsLive - worship projection software
-- Copyright (c) 2014 Patrick Reisert
+- Copyright (c) 2015 Patrick Reisert
 - 
 - This program is free software: you can redistribute it and/or modify
 - it under the terms of the GNU General Public License as published by
@@ -38,7 +38,7 @@
 		<CommandBinding Command="SaveAs" Executed="OnExecuteCommand" CanExecute="OnCommandCanExecute"/>
 		<CommandBinding Command="Close" Executed="OnExecuteCommand" CanExecute="OnCommandCanExecute"/>
 		<CommandBinding Command="{x:Static local:CustomCommands.Export}" Executed="OnExecuteCommand" CanExecute="OnCommandCanExecute"/>
-		<CommandBinding Command="Paste" Executed="OnExecuteCommand" CanExecute="OnCommandCanExecute"/>
+		<CommandBinding Command="{x:Static local:CustomCommands.ImportFromClipboard}" Executed="OnExecuteCommand" CanExecute="OnCommandCanExecute"/>
 		<CommandBinding Command="{x:Static local:CustomCommands.SwitchWindow}" Executed="OnExecuteCommand"/>
 		<CommandBinding Command="{x:Static local:CustomCommands.ViewCurrent}" Executed="OnExecuteCommand" CanExecute="OnCommandCanExecute"/>
 		<CommandBinding Command="{x:Static local:CustomCommands.SongSettings}" Executed="OnExecuteCommand" CanExecute="OnCommandCanExecute"/>
@@ -115,7 +115,7 @@
 					Header="{Binding Converter={StaticResource AppendEllipsisConverter}, ConverterParameter={x:Static resx:Resource.eMenuExportSong}}" Command="{x:Static local:CustomCommands.Export}"/>
 				<Separator/>
 				<MenuItem
-					Header="{x:Static resx:Resource.eMenuImportFromClipboard}" Command="Paste"/>
+					Header="{x:Static resx:Resource.eMenuImportFromClipboard}" Command="{x:Static local:CustomCommands.ImportFromClipboard}"/>
 				<Separator/>
 				<MenuItem
 					Header="{x:Static resx:Resource.eMenuAddToPortfolio}" Command="{x:Static local:CustomCommands.AddMedia}"/>

@@ -1,6 +1,6 @@
 ﻿/*
  * WordsLive - worship projection software
- * Copyright (c) 2014 Patrick Reisert
+ * Copyright (c) 2015 Patrick Reisert
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -190,6 +190,12 @@ namespace WordsLive
 			private set;
 		}
 
+		public static LocalizedRoutedCommand ImportFromClipboard
+		{
+			get;
+			private set;
+		}
+
 		public static LocalizedRoutedCommand ViewCurrent
 		{
 			get;
@@ -244,6 +250,7 @@ namespace WordsLive
 			EditActive = new LocalizedRoutedCommand("EditActive", t);
 			OpenInEditor = new LocalizedRoutedCommand("OpenInEditor", t);
 			Export = new LocalizedRoutedCommand("Export", t);
+			ImportFromClipboard = new LocalizedRoutedCommand("ImportFromClipboard", t, new InputGestureCollection { new KeyGesture(Key.V, ModifierKeys.Control | ModifierKeys.Shift) });
 			Activate = new LocalizedRoutedCommand("Activate", t);
 			ShowSettings = new LocalizedRoutedCommand("ShowSettings", t);
 			ViewCurrent = new LocalizedRoutedCommand("ViewCurrent", t);
