@@ -1,6 +1,6 @@
 ﻿/*
  * WordsLive - worship projection software
- * Copyright (c) 2014 Patrick Reisert
+ * Copyright (c) 2015 Patrick Reisert
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -434,10 +434,18 @@ namespace WordsLive.Slideshow.Impress.Bridge
 
 		private bool RestartIfNecessary()
 		{
+			if (controller == null) // don't know if this can happen, but just in case ...
+			{
+				Start();
+				return true;
+			}
 			if (controller.getCurrentSlideIndex() == -1)
 			{
 				controller.removeSlideShowListener(listener);
-				presentation.end();
+				if (presentation != null)
+				{
+					presentation.end();
+				}
 				Start();
 				return true;
 			}
