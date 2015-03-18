@@ -26,8 +26,8 @@ namespace WordsLive.AudioVideo
 	public class VideoHandler : MediaTypeHandler
 	{
 		// TODO: add all formats from https://wiki.videolan.org/VLC_Features_Formats/#Format.2FContainer.2FMuxers
-		private string[] vlcExtensions = new string[] { ".ogv", ".mkv" };
-		private string[] extensions = new string[] { ".wmv", ".mp4", ".avi", ".mov", ".m4v", ".flv" };
+		private string[] vlcExtensions = new string[] { ".ogv", ".mkv", ".3g2", ".webm", ".vob" };
+		private string[] extensions = new string[] { ".wmv", ".mp4", ".avi", ".mov", ".m4v", ".flv", ".3gp", ".mpg" };
 
 		public override IEnumerable<string> Extensions
 		{
