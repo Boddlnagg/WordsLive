@@ -45,15 +45,12 @@ namespace WordsLive.Documents
 			UriMapDataSource.Instance.Add(uriKey, Document.Uri);
 			bridge = this.Control.Web.CreateGlobalJavascriptObject("bridge");
 			bridge["document"] = "asset://WordsLive/urimap/" + uriKey;
-			bridge.BindAsync(loaded); // must be a named method, no lambda
-			//this.Control.Web.ConsoleMessage += (sender, args) => System.Windows.MessageBox.Show(args.Message);
+			bridge.BindAsync("loaded", (sender, args) => {
+				IsLoaded = true;
+				OnDocumentLoaded();
+			});
+			//this.Control.Web.ConsoleMessage += (sender, args) => System.Windows.MessageBox.Show(args.Source + " (" + args.LineNumber + "): " + args.Message);
 			this.Control.Web.Source = new Uri("asset://WordsLive/pdf.html");
-		}
-
-		private void loaded(object sender, JavascriptMethodEventArgs e)
-		{
-			IsLoaded = true;
-			OnDocumentLoaded();
 		}
 
 		public void GoToPage(int page)

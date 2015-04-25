@@ -73,13 +73,8 @@ namespace WordsLive.Songs
 			};
 			// FIXME: sometimes throws exception saying that "bridge" object already exists
 			bridge = this.control.CreateGlobalJavascriptObject("bridge");
-			bridge.BindAsync(callbackLoaded); // NOTE: this can not be a lambda, but must be a named method
+			bridge.BindAsync("callbackLoaded", (sender, args) => OnSongLoaded());
 			bridge["featureLevel"] = new JSValue(JsonConvert.SerializeObject(features));
-		}
-
-		private void callbackLoaded(object sender, JavascriptMethodEventArgs e)
-		{
-			OnSongLoaded();
 		}
 
 		public void Load(Song song)
