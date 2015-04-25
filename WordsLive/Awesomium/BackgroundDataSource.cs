@@ -1,6 +1,6 @@
 ﻿/*
  * WordsLive - worship projection software
- * Copyright (c) 2013 Patrick Reisert
+ * Copyright (c) 2015 Patrick Reisert
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -34,6 +34,7 @@ namespace WordsLive.Awesomium
 				using (WebClient client = new WebClient())
 				{
 					var bytes = client.DownloadData(bg.Uri);
+					// TODO: is this buffer ever freed again?
 					GCHandle pinnedBuffer = GCHandle.Alloc(bytes, GCHandleType.Pinned);
 					IntPtr pointer = pinnedBuffer.AddrOfPinnedObject();
 					respond(new DataSourceResponse

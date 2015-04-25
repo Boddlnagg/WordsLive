@@ -1,6 +1,6 @@
 ﻿/*
  * WordsLive - worship projection software
- * Copyright (c) 2013 Patrick Reisert
+ * Copyright (c) 2015 Patrick Reisert
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -45,12 +45,15 @@ namespace WordsLive.Documents
 			UriMapDataSource.Instance.Add(uriKey, Document.Uri);
 			bridge = this.Control.Web.CreateGlobalJavascriptObject("bridge");
 			bridge["document"] = "asset://WordsLive/urimap/" + uriKey;
-			bridge.Bind("loaded", false, (sender, args) => {
-				IsLoaded = true;
-				OnDocumentLoaded();
-			});
+			bridge.BindAsync(loaded); // must be a named method, no lambda
 			//this.Control.Web.ConsoleMessage += (sender, args) => System.Windows.MessageBox.Show(args.Message);
 			this.Control.Web.Source = new Uri("asset://WordsLive/pdf.html");
+		}
+
+		private void loaded(object sender, JavascriptMethodEventArgs e)
+		{
+			IsLoaded = true;
+			OnDocumentLoaded();
 		}
 
 		public void GoToPage(int page)
