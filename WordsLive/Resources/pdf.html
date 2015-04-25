@@ -3,7 +3,8 @@
 
 <head>
 	<title>PDF</title>
-	<script type="text/javascript" src="asset://WordsLive.Core/thirdparty/pdf.js"></script>
+	<script type="text/javascript" src="asset://osm-pdf/web/compatibility.js"></script> <!-- This is required to support browsers other than Firefox (and Awesomium is not Firefox!)-->
+	<script type="text/javascript" src="asset://osm-pdf/build/pdf.js"></script>
 	<script type="text/javascript" src="asset://WordsLive.Core/thirdparty/jquery.js"></script>
 	<script type="text/javascript" src="asset://WordsLive.Core/thirdparty/jquery.mousewheel.js"></script>
   
@@ -21,6 +22,13 @@
 		var isWholePage = false;
 		var unscaledViewport = null;
 		var scale;
+
+		//TODO:
+		//PDFJS.workerSrc = 'asset://osm-pdf/build/pdf.worker.js';
+		//PDFJS.cMapUrl = 'asset://osm-pdf/web/cmaps/';
+		//PDFJS.cMapPacked = true;
+		//PDFJS.disableWorker = true; // this is required because worker would require compatibility.js, so just disable it
+
 
 		function renderPage(div, pdf, pageNumber, callback) {
 			pdf.getPage(pageNumber).then(function(page) {
@@ -80,8 +88,8 @@
 			});
 		}
 
-		// Fetch the PDF document from the URL using promices
-		PDFJS.getDocument(bridge.document).then(function getPdfForm(pdf) {
+		// Fetch the PDF document from the URL using promises
+		PDFJS.getDocument(bridge.document).then(function (pdf) {
 			doc = pdf;
 			bridge.loaded();
 			renderAll();
