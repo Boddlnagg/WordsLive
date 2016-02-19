@@ -273,6 +273,8 @@ namespace WordsLive.Slideshow.Impress.Bridge
 				controller = presentation.getController();
 			}
 
+			Thread.Sleep(50);
+
 			if (controller == null)
 				throw new InvalidOperationException();
 
@@ -282,6 +284,8 @@ namespace WordsLive.Slideshow.Impress.Bridge
 				isEndless = controller.isEndless();
 
 			controller.gotoSlideIndex(restoreSlideIndex.HasValue ? restoreSlideIndex.Value : 0);
+
+			Thread.Sleep(50);
 
 			IntPtr presenterConsoleHandle;
 
