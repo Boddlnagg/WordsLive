@@ -61,7 +61,14 @@ namespace WordsLive.Editor
 			{
 				var col = ColorPicker.SelectedColor;
 				var font = this.Font;
-				font.Color = System.Drawing.Color.FromArgb(col.R, col.G, col.B);
+				if (!col.HasValue)
+				{
+					font.Color = System.Drawing.Color.Black;
+				}
+				else
+				{
+					font.Color = System.Drawing.Color.FromArgb(col.Value.R, col.Value.G, col.Value.B);
+				}
 				this.Font = font;
 			};
 		}

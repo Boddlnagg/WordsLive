@@ -211,7 +211,14 @@ namespace WordsLive.Editor
 			}
 			else
 			{
-				ChosenBackground = new SongBackground(System.Drawing.Color.FromArgb(ColorPicker.SelectedColor.R, ColorPicker.SelectedColor.G, ColorPicker.SelectedColor.B));
+				if (!ColorPicker.SelectedColor.HasValue)
+				{
+					ChosenBackground = new SongBackground(System.Drawing.Color.Black);
+				}
+				else
+				{
+					ChosenBackground = new SongBackground(System.Drawing.Color.FromArgb(ColorPicker.SelectedColor.Value.R, ColorPicker.SelectedColor.Value.G, ColorPicker.SelectedColor.Value.B));
+				}
 			}
 
 			this.DialogResult = true;
