@@ -22,6 +22,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using WordsLive.Slideshow.Presentation;
 using WordsLive.Resources;
+using System.Windows.Threading;
 
 namespace WordsLive.Slideshow
 {
@@ -31,12 +32,58 @@ namespace WordsLive.Slideshow
 		private SlideshowMedia media;
 		private ISlideshowPresentation pres;
 		private ControlPanelLoadState loadState;
+		private DispatcherTimer autoAdvanceTimer;
+
+		// TODO: don't save this in global setting, but per-presentation instead (same for images)
+		public bool AutoAdvance
+		{
+			get
+			{
+				return Properties.Settings.Default.ImagesEnableAutoAdvance;
+			}
+			set
+			{
+				if (value != Properties.Settings.Default.ImagesEnableAutoAdvance)
+				{
+					Properties.Settings.Default.ImagesEnableAutoAdvance = value;
+					OnPropertyChanged("AutoAdvance");
+					ResetAutoAdvanceTimer();
+				}
+			}
+		}
+
+		public uint AutoAdvanceSeconds
+		{
+			get
+			{
+				return Properties.Settings.Default.ImagesAutoAdvanceSeconds;
+			}
+			set
+			{
+				if (value != Properties.Settings.Default.ImagesAutoAdvanceSeconds)
+				{
+					if (value > 999)
+						value = 999;
+					Properties.Settings.Default.ImagesAutoAdvanceSeconds = value;
+					OnPropertyChanged("AutoAdvanceSeconds");
+					ResetAutoAdvanceTimer();
+				}
+			}
+		}
 
 		public SlideshowControlPanel()
 		{
 			InitializeComponent();
 
 			LoadState = ControlPanelLoadState.Loading;
+			autoAdvanceTimer = new DispatcherTimer();
+			autoAdvanceTimer.Tick += (sender, args) =>
+			{
+				if (LoadState == ControlPanelLoadState.Loaded)
+				{
+					pres.NextStep();
+				}
+			};
 		}
 
 		public Control Control
@@ -47,6 +94,16 @@ namespace WordsLive.Slideshow
 		public Core.Media Media
 		{
 			get { return media; }
+		}
+
+		private void ResetAutoAdvanceTimer()
+		{
+			autoAdvanceTimer.Stop();
+			if (AutoAdvance && AutoAdvanceSeconds > 0)
+			{
+				autoAdvanceTimer.Interval = new TimeSpan(0, 0, (int)AutoAdvanceSeconds);
+				autoAdvanceTimer.Start();
+			}
 		}
 
 		private void SetupEventListeners()
@@ -61,6 +118,7 @@ namespace WordsLive.Slideshow
 						this.slideListView.DataContext = pres.Thumbnails;
 						// make sure that toolbar buttons are enabled
 						CommandManager.InvalidateRequerySuggested();
+						ResetAutoAdvanceTimer();
 						this.Focus();
 					}
 					else

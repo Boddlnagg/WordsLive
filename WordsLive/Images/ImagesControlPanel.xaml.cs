@@ -37,6 +37,7 @@ namespace WordsLive.Images
 		private DispatcherTimer autoAdvanceTimer;
 		private bool resetAutoAdvance = true;
 
+		// TODO: don't save this in global setting, but per-presentation instead (same for slideshows)
 		public bool AutoAdvance
 		{
 			get
