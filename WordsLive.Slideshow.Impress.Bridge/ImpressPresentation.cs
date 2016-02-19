@@ -154,6 +154,15 @@ namespace WordsLive.Slideshow.Impress.Bridge
 
 			Area.WindowSizeChanged += Area_WindowSizeChanged;
 
+			try
+			{
+				// TODO: This is a workaround for https://bugs.documentfoundation.org/show_bug.cgi?id=97043
+				//       Also see http://stackoverflow.com/questions/31856025/bootstrap-uno-api-libreoffice-exception/31937114
+				var unoPath = @"C:\Program Files (x86)\LibreOffice 5\program";
+				Environment.SetEnvironmentVariable("PATH", Environment.GetEnvironmentVariable("PATH") + ";" + unoPath, EnvironmentVariableTarget.Process);
+			}
+			catch { }
+
 			var task = Task.Factory.StartNew(PerformLoad);
 			task.ContinueWith(t =>
 				Controller.Dispatcher.Invoke(new Action(() => { base.OnLoaded(false); throw new Exception("Exception occured while loading presentation", t.Exception.InnerException); })),
@@ -320,6 +329,7 @@ namespace WordsLive.Slideshow.Impress.Bridge
 			}
 			if (child == IntPtr.Zero)
 			{
+				// TODO: this can happen if presentation view is not enabled in LibreOffice (i.e. single monitor mode)
 				throw new InvalidOperationException("Couldn't find presentation window.");
 			}
 

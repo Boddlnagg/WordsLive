@@ -138,14 +138,23 @@ namespace WordsLive
 
 			try
 			{
+				bool songsExist = Directory.Exists(Properties.Settings.Default.SongsDirectory);
+				bool backgroundsExist = Directory.Exists(Properties.Settings.Default.BackgroundsDirectory);
+
 				if (!UsePowerpraiseData)
 				{
-					Directory.CreateDirectory(Properties.Settings.Default.SongsDirectory);
-					Directory.CreateDirectory(Properties.Settings.Default.BackgroundsDirectory);
+					if (!songsExist)
+						Directory.CreateDirectory(Properties.Settings.Default.SongsDirectory);
 
-					var appDir = new FileInfo(Assembly.GetExecutingAssembly().Location).Directory;
-					var examplesZip = ZipFile.Read(Path.Combine(appDir.FullName, "Data", "Examples.zip"));
-					examplesZip.ExtractAll(actualDirectory);
+					if (!backgroundsExist)
+						Directory.CreateDirectory(Properties.Settings.Default.BackgroundsDirectory);
+
+					if (!songsExist && !backgroundsExist)
+					{
+						var appDir = new FileInfo(Assembly.GetExecutingAssembly().Location).Directory;
+						var examplesZip = ZipFile.Read(Path.Combine(appDir.FullName, "Data", "Examples.zip"));
+						examplesZip.ExtractAll(actualDirectory);
+					}
 				}
 			}
 			catch (Exception ex)
