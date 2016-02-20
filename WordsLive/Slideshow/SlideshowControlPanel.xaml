@@ -42,7 +42,7 @@
 			</Button>
 			<Separator/>
 			<Grid>
-                <CheckBox IsChecked="{Binding AutoAdvance, RelativeSource={RelativeSource AncestorType={x:Type self:SlideshowControlPanel}}}" Margin="5,0,0,0" VerticalAlignment="Center" x:Name="AutoAdvanceCheckBox" Content="{x:Static resx:Resource.vImagesAutoAdvanceAfter}"/>
+				<CheckBox IsChecked="{Binding AutoAdvance, RelativeSource={RelativeSource AncestorType={x:Type self:SlideshowControlPanel}}}" Margin="5,0,0,0" VerticalAlignment="Center" x:Name="AutoAdvanceCheckBox" Content="{x:Static resx:Resource.vImagesAutoAdvanceAfter}"/>
 			</Grid>
 			<TextBox Width="30" MaxLength="3" Margin="3,0,0,0" TextAlignment="Right" IsEnabled="{Binding ElementName=AutoAdvanceCheckBox, Path=IsChecked}" Text="{Binding AutoAdvanceSeconds, RelativeSource={RelativeSource AncestorType={x:Type self:SlideshowControlPanel}}, UpdateSourceTrigger=PropertyChanged}"/>
 			<Label VerticalAlignment="Center" IsEnabled="{Binding ElementName=AutoAdvanceCheckBox, Path=IsChecked}" Content="s"/>

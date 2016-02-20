@@ -33,19 +33,20 @@ namespace WordsLive.Slideshow
 		private ISlideshowPresentation pres;
 		private ControlPanelLoadState loadState;
 		private DispatcherTimer autoAdvanceTimer;
+		private bool enableAutoAdvance = false;
 
-		// TODO: don't save this in global setting, but per-presentation instead (same for images)
+		// TODO: save this in the portfolio (per-presentation)
 		public bool AutoAdvance
 		{
 			get
 			{
-				return Properties.Settings.Default.ImagesEnableAutoAdvance;
+				return enableAutoAdvance;
 			}
 			set
 			{
-				if (value != Properties.Settings.Default.ImagesEnableAutoAdvance)
+				if (value != enableAutoAdvance)
 				{
-					Properties.Settings.Default.ImagesEnableAutoAdvance = value;
+					enableAutoAdvance = value;
 					OnPropertyChanged("AutoAdvance");
 					ResetAutoAdvanceTimer();
 				}
@@ -56,15 +57,17 @@ namespace WordsLive.Slideshow
 		{
 			get
 			{
-				return Properties.Settings.Default.ImagesAutoAdvanceSeconds;
+				return Properties.Settings.Default.SlideshowAutoAdvanceSeconds;
 			}
 			set
 			{
-				if (value != Properties.Settings.Default.ImagesAutoAdvanceSeconds)
+				if (value != Properties.Settings.Default.SlideshowAutoAdvanceSeconds)
 				{
-					if (value > 999)
+					if (value < 1)
+						value = 1;
+					else if (value > 999)
 						value = 999;
-					Properties.Settings.Default.ImagesAutoAdvanceSeconds = value;
+					Properties.Settings.Default.SlideshowAutoAdvanceSeconds = value;
 					OnPropertyChanged("AutoAdvanceSeconds");
 					ResetAutoAdvanceTimer();
 				}
@@ -211,6 +214,8 @@ namespace WordsLive.Slideshow
 		{
 			if (Controller.PresentationManager.CurrentPresentation != pres)
 				pres.Close();
+
+			autoAdvanceTimer.Stop();
 		}
 
 		public event PropertyChangedEventHandler PropertyChanged;
