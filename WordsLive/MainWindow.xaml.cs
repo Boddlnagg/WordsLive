@@ -314,7 +314,10 @@ namespace WordsLive
 			dlg.Title = Resource.vMenuAddMedia;
 			dlg.Filter = String.Join("|", typeFilters);
 			dlg.Multiselect = true;
-			dlg.InitialDirectory = Properties.Settings.Default.LastMediaDirectory;
+			if (Directory.Exists(Properties.Settings.Default.LastMediaDirectory))
+			{
+				dlg.InitialDirectory = Properties.Settings.Default.LastMediaDirectory;
+			}
 
 			if (dlg.ShowDialog() == true)
 			{
@@ -390,7 +393,10 @@ namespace WordsLive
 				var dlg = new Microsoft.Win32.OpenFileDialog();
 				dlg.DefaultExt = ".ppp";
 				dlg.Filter = "Powerpraise-Portfolio|*.ppp";
-				dlg.InitialDirectory = Properties.Settings.Default.LastPortfolioDirectory;
+				if (Directory.Exists(Properties.Settings.Default.LastPortfolioDirectory))
+				{
+					dlg.InitialDirectory = Properties.Settings.Default.LastPortfolioDirectory;
+				}
 
 				if (dlg.ShowDialog() == true)
 				{
@@ -437,7 +443,10 @@ namespace WordsLive
 			var dlg = new Microsoft.Win32.SaveFileDialog();
 			dlg.DefaultExt = ".ppp";
 			dlg.Filter = "Powerpraise Portfolio|*.ppp";
-			dlg.InitialDirectory = Properties.Settings.Default.LastPortfolioDirectory;
+			if (Directory.Exists(Properties.Settings.Default.LastPortfolioDirectory))
+			{
+				dlg.InitialDirectory = Properties.Settings.Default.LastPortfolioDirectory;
+			}
 
 			if (PortfolioFile != null)
 			{
@@ -606,7 +615,10 @@ namespace WordsLive
 				var dlg = new Microsoft.Win32.SaveFileDialog();
 				dlg.DefaultExt = ".show";
 				dlg.Filter = "Diashow|*.show"; // TODO: localize
-				dlg.InitialDirectory = Properties.Settings.Default.LastMediaDirectory;
+				if (Directory.Exists(Properties.Settings.Default.LastMediaDirectory))
+				{
+					dlg.InitialDirectory = Properties.Settings.Default.LastMediaDirectory;
+				}
 
 				if (dlg.ShowDialog() == true)
 				{

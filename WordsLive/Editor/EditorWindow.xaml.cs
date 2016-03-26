@@ -175,7 +175,10 @@ namespace WordsLive.Editor
 			Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
 			dlg.DefaultExt = ".ppl";
 			dlg.Filter = "Powerpraise-Lied|*.ppl|SongBeamer-Lied|*.sng|ChordPro-Datei|*.chopro;*.cho;*.pro|SongSelect-Datei|*.usr;*.txt|OpenLyrics-Lied|*.xml";
-			dlg.InitialDirectory = Properties.Settings.Default.LastSongDirectory;
+			if (Directory.Exists(Properties.Settings.Default.LastSongDirectory))
+			{
+				dlg.InitialDirectory = Properties.Settings.Default.LastSongDirectory;
+			}
 
 			if (dlg.ShowDialog() == true)
 			{
@@ -221,7 +224,10 @@ namespace WordsLive.Editor
 			dlg.DefaultExt = exts[0];
 			dlg.Filter = "Powerpraise-Lied|*.ppl|OpenLyrics-Lied|*.xml|HTML-Dokument|*.html"; // must be same order as exts
 			dlg.Title = Resource.eMenuExportSong;
-			dlg.InitialDirectory = Properties.Settings.Default.LastSongDirectory;
+			if (Directory.Exists(Properties.Settings.Default.LastSongDirectory))
+			{
+				dlg.InitialDirectory = Properties.Settings.Default.LastSongDirectory;
+			}
 
 			if (song.Uri == null)
 			{
