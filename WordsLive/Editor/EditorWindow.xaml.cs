@@ -1,6 +1,6 @@
 ﻿/*
  * WordsLive - worship projection software
- * Copyright (c) 2015 Patrick Reisert
+ * Copyright (c) 2017 Patrick Reisert
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -542,7 +542,7 @@ namespace WordsLive.Editor
 				}
 
 				if (!String.IsNullOrWhiteSpace(searchString))
-					new Uri(String.Format(Resource.eSongSelectSearchString, searchString)).OpenInBrowser();
+					new Uri(String.Format("https://songselect.ccli.com/Songs/{0}", searchString)).OpenInBrowser();
 			}
 		}
 

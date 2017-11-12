@@ -999,9 +999,6 @@
   <data name="eMetadataCcliNumberTitle" xml:space="preserve">
     <value>CCLI</value>
   </data>
-  <data name="eSongSelectSearchString" xml:space="preserve">
-    <value>https://de.songselect.com/search/results?SearchTerm={0}</value>
-  </data>
   <data name="generalRemove" xml:space="preserve">
     <value>Entfernen</value>
   </data>
