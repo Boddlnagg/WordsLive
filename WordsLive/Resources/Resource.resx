@@ -1014,4 +1014,7 @@
   <data name="cbMsgWarnTrySelectImageTitle" xml:space="preserve">
     <value>Background image selection disabled</value>
   </data>
+  <data name="vSubmitCcliOlr" xml:space="preserve">
+    <value>Submit to CCLI Online Reporting</value>
+  </data>
 </root>

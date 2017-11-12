@@ -180,6 +180,12 @@ namespace WordsLive
 			get;
 			private set;
 		}
+
+		public static LocalizedRoutedCommand SubmitCcliOlr
+		{
+			get;
+			private set;
+		}
 		#endregion
 
 		#region Only used in Editor
@@ -276,6 +282,7 @@ namespace WordsLive
 			RotateLeft = new LocalizedRoutedCommand("RotateLeft", t);
 			RotateRight = new LocalizedRoutedCommand("RotateRight", t);
 			CreateSlideshow = new LocalizedRoutedCommand("CreateSlideshow", t);
+			SubmitCcliOlr = new LocalizedRoutedCommand("SubmitCcliOlr", t);
 			SearchSongSelect = new LocalizedRoutedCommand("SearchSongSelect", t);
 		}
 	}

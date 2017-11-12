@@ -857,6 +857,31 @@ namespace WordsLive
 					ed.LoadOrImport(song.Uri);
 				}
 			}
+			else if (e.Command == CustomCommands.SubmitCcliOlr)
+			{
+				foreach (var item in selected)
+				{
+					var song = item.Data as SongMedia;
+					if (song != null)
+					{
+						if (song.Song.Title.StartsWith("__") && song.Song.Parts.Count == 1 && song.Song.Parts[0].Slides.Count == 1)
+						{
+							// skip songs used as placeholder
+							continue;
+						}
+						string searchTerm;
+						if (song.Song.CcliNumber.HasValue)
+						{
+							searchTerm = song.Song.CcliNumber.Value.ToString();
+						}
+						else
+						{
+							searchTerm = song.Song.Title;
+						}
+						new Uri(String.Format("https://olr.ccli.com/search/results?SearchTerm={0}", searchTerm)).OpenInBrowser();
+					}
+				}
+			}
 		}
 
 		private void OrderListBox_OnCanExecuteCommand(object sender, CanExecuteRoutedEventArgs e)
@@ -869,6 +894,11 @@ namespace WordsLive
 			else if (e.Command == CustomCommands.OpenInEditor)
 			{
 				e.CanExecute = OrderListBox.SelectedItem != null && OrderListBox.SelectedItems.Cast<MediaOrderItem>().All(item => item.Data is SongMedia);
+			}
+			else if (e.Command == CustomCommands.SubmitCcliOlr)
+			{
+				// the selection must at least contain one song (other items are ignored)
+				e.CanExecute = OrderListBox.SelectedItem != null && OrderListBox.SelectedItems.Cast<MediaOrderItem>().Any(item => item.Data is SongMedia);
 			}
 			else
 			{

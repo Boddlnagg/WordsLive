@@ -231,6 +231,7 @@
 					<CommandBinding Command="{x:Static local:CustomCommands.Activate}" Executed="OrderListBox_OnExecuteCommand" CanExecute="OrderListBox_OnCanExecuteCommand"/>
 					<CommandBinding Command="Refresh" Executed="OrderListBox_OnExecuteCommand" CanExecute="OrderListBox_OnCanExecuteCommand"/>
 					<CommandBinding Command="{x:Static local:CustomCommands.OpenInEditor}" Executed="OrderListBox_OnExecuteCommand" CanExecute="OrderListBox_OnCanExecuteCommand"/>
+					<CommandBinding Command="{x:Static local:CustomCommands.SubmitCcliOlr}" Executed="OrderListBox_OnExecuteCommand" CanExecute="OrderListBox_OnCanExecuteCommand"/>
 				</ListBox.CommandBindings>
 				<ListBox.Resources>
 					<Style x:Key="ActiveItemTextStyle" TargetType="{x:Type TextBlock}">
@@ -269,6 +270,7 @@
 									<MenuItem Header="{x:Static resx:Resource.vOrderContextMenuShow}" Command="{x:Static local:CustomCommands.Activate}"/>
 									<MenuItem Header="{x:Static resx:Resource.vOrderContextMenuRefresh}" Command="Refresh"/>
 									<MenuItem Header="{x:Static resx:Resource.eCommandOpenInEditor}" Command="{x:Static local:CustomCommands.OpenInEditor}"/>
+									<MenuItem Header="{x:Static resx:Resource.vSubmitCcliOlr}" Command="{x:Static local:CustomCommands.SubmitCcliOlr}"/>
 									<MenuItem Header="{x:Static resx:Resource.generalRemove}" Command="Delete"/>
 								</ContextMenu>
 							</Setter.Value>

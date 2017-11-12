@@ -2716,6 +2716,15 @@ namespace WordsLive.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Submit to CCLI Online Reporting.
+        /// </summary>
+        public static string vSubmitCcliOlr {
+            get {
+                return ResourceManager.GetString("vSubmitCcliOlr", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to New portfolio.
         /// </summary>
         public static string vTitleUnnamedPortfolio {
