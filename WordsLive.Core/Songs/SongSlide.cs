@@ -86,7 +86,7 @@ namespace WordsLive.Core.Songs
 					Undo.ChangeFactory.OnChangingTryMerge(this, "Translation", translation, value);
 					translation = value;
 					HasTranslation = !String.IsNullOrEmpty(translation);
-					bool translationHasChords = Chords.Chords.GetChords(translation).Any();
+					bool translationHasChords = HasTranslation && Chords.Chords.GetChords(translation).Any();
 					if (translationHasChords)
 						TranslationWithoutChords = Chords.Chords.RemoveAll(translation);
 					else

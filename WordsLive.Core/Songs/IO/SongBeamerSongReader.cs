@@ -48,13 +48,37 @@ namespace WordsLive.Core.Songs.IO
 			using (StreamReader reader = new StreamReader(stream, System.Text.Encoding.Default, true))
 			{
 				SongPart currentPart = null;
+				SongPart currentDuplicateCandidatePart = null;
 				string currentText = null;
 				string currentTrans = null;
 
+				List<string> fallbackOrder = new List<string>();
 				string line;
 				Dictionary<string, string> properties = new Dictionary<string, string>();
 				int langcount = 1;
 				int linenum = 0;
+
+				void FinalizeCurrentPart()
+				{
+					if (!String.IsNullOrEmpty(currentText))
+					{
+						currentPart.AddSlide(new SongSlide(song) { Size = song.Formatting.MainText.Size, Text = currentText, Translation = currentTrans });
+					}
+					if (currentPart.Slides.Count > 0)
+					{
+						if (currentDuplicateCandidatePart == null || currentPart.Text != currentDuplicateCandidatePart.Text)
+						{
+							song.AddPart(currentPart);
+							fallbackOrder.Add(currentPart.Name);
+						}
+						else
+						{
+							fallbackOrder.Add(currentDuplicateCandidatePart.Name);
+						}
+					}
+					currentDuplicateCandidatePart = null;
+					currentText = null;
+				}
 
 				while ((line = reader.ReadLine()) != null)
 				{
@@ -78,11 +102,12 @@ namespace WordsLive.Core.Songs.IO
 					{
 						if (line == "---")
 						{
-							currentPart.AddSlide(new SongSlide(song) { Size = song.Formatting.MainText.Size, Text = currentText, Translation = currentTrans });
-							currentText = null;
-							song.AddPart(currentPart);
-							currentPart = new SongPart(song, FindUnusedPartName(song));
-							linenum = 0;
+							if (currentText != null)
+							{
+								FinalizeCurrentPart();
+								currentPart = new SongPart(song, FindUnusedPartName(song));
+								linenum = 0;
+							}
 						}
 						else if (line == "--" || line == "--A")
 						{
@@ -97,7 +122,12 @@ namespace WordsLive.Core.Songs.IO
 								string name;
 								if (IsSongBeamerPartName(line, out name))
 								{
-									currentPart.Name = name;
+									currentPart.Name = FindUnusedPartName(song, name);
+									if (currentPart.Name != name)
+									{
+										// remember part with original name, so we can compare later if they match
+										currentDuplicateCandidatePart = song.FindPartByName(name);
+									}
 									currentText = "";
 									linenum = 0;
 								}
@@ -130,10 +160,8 @@ namespace WordsLive.Core.Songs.IO
 					}
 				}
 
-				currentPart.AddSlide(new SongSlide(song) { Size = song.Formatting.MainText.Size, Text = currentText, Translation = currentTrans });
-				song.AddPart(currentPart);
-
-				PostProcessSongBeamerProperties(song, properties);
+				FinalizeCurrentPart();
+				PostProcessSongBeamerProperties(song, properties, fallbackOrder);
 			}
 		}
 
@@ -142,14 +170,19 @@ namespace WordsLive.Core.Songs.IO
 		/// </summary>
 		/// <param name="song">The song to generate the name for.</param>
 		/// <returns>A part name that is guaranteed to be unused in that song.</returns>
-		private static string FindUnusedPartName(Song song)
+		private static string FindUnusedPartName(Song song, string tryName = null)
 		{
-			int i = 1;
-			while (song.FindPartByName(i.ToString()) != null)
+			int i = 0;
+			string nextTry;
+			do
 			{
 				i++;
-			}
-			return i.ToString();
+				if (tryName == null)
+					nextTry = i.ToString();
+				else
+					nextTry = (i == 1) ? tryName : tryName + " (" + i + ")";
+			} while (song.FindPartByName(nextTry) != null);
+			return nextTry;
 		}
 
 		/// <summary>
@@ -245,7 +278,13 @@ namespace WordsLive.Core.Songs.IO
 				properties["tempo"]
 				properties["titlelang[2...n]"] // song title in other language 	#TitleLang2=Näher mein Gott zu Dir
 				properties["otitle"] // original title 	#OTitle=Nearer my God to Thee
-				*/
+			*/
+
+			/* Newer properties (SongBeamer 3.10d)?
+				properties["format"] // ??? (example: "F/K//")
+				properties["titleformat"] // ??? (example: "U")
+				properties["chords"] // chords (in some weird encoded format)
+			*/
 
 			int ccli; // CCLI number 	#CCLI=858299
 			if (properties.ContainsKey("ccli") && int.TryParse(properties["ccli"], out ccli))
@@ -282,7 +321,8 @@ namespace WordsLive.Core.Songs.IO
 		/// </summary>
 		/// <param name="song">The imported song.</param>
 		/// <param name="properties">A dictionary with properties.</param>
-		private static void PostProcessSongBeamerProperties(Song song, Dictionary<string, string> properties)
+		/// <param name="fallbackOrder">Fallback order of parts if no other one is specified</param>
+		private static void PostProcessSongBeamerProperties(Song song, Dictionary<string, string> properties, List<string> fallbackOrder)
 		{
 			if (properties.ContainsKey("verseorder"))
 			{
@@ -290,11 +330,7 @@ namespace WordsLive.Core.Songs.IO
 			}
 			else
 			{
-				// if no verseorder is specified, add each part once in order
-				foreach (SongPart part in song.Parts)
-				{
-					song.AddPartToOrder(part);
-				}
+				song.SetOrder(fallbackOrder);
 			}
 		}
 	}
