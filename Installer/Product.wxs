@@ -34,7 +34,7 @@
 			<ComponentGroupRef Id="AwesomiumComponents" />
 			<ComponentGroupRef Id="DataComponents" />
 			<ComponentGroupRef Id="I18nComponents"/>
-			<ComponentGroupRef Id="DotNet4CompatibilityAssemblies"/>
+			<ComponentGroupRef Id="MicrosoftAssemblies"/>
 			<ComponentRef Id="StartMenuShortcutsFolder"/>
 		</Feature>
 
@@ -220,33 +220,21 @@
 				<File Source="$(var.WordsLive.TargetDir)de\WordsLive.resources.dll" Name="WordsLive.resources.dll" KeyPath="yes"/>
 			</Component>
 		</ComponentGroup>
-		<ComponentGroup Id="DotNet4CompatibilityAssemblies" Directory="APPLICATIONFOLDER">
+		<ComponentGroup Id="MicrosoftAssemblies" Directory="APPLICATIONFOLDER">
 			<Component>
-				<File Source="$(var.WordsLive.TargetDir)Microsoft.Threading.Tasks.dll" Name="Microsoft.Threading.Tasks.dll" KeyPath="yes"/>
+				<File Source="$(var.WordsLive.TargetDir)System.Security.Cryptography.Algorithms.dll" Name="System.Security.Cryptography.Algorithms.dll" KeyPath="yes"/>
 			</Component>
 			<Component>
-				<File Source="$(var.WordsLive.TargetDir)Microsoft.Threading.Tasks.Extensions.dll" Name="Microsoft.Threading.Tasks.Extensions.dll" KeyPath="yes"/>
+				<File Source="$(var.WordsLive.TargetDir)System.Security.Cryptography.X509Certificates.dll" Name="System.Security.Cryptography.X509Certificates.dll" KeyPath="yes"/>
 			</Component>
 			<Component>
-				<File Source="$(var.WordsLive.TargetDir)Microsoft.Threading.Tasks.Extensions.Desktop.dll" Name="Microsoft.Threading.Tasks.Extensions.Desktop.dll" KeyPath="yes"/>
+				<File Source="$(var.WordsLive.TargetDir)System.Security.Cryptography.Primitives.dll" Name="System.Security.Cryptography.Primitives.dll" KeyPath="yes"/>
 			</Component>
 			<Component>
-				<File Source="$(var.WordsLive.TargetDir)System.Runtime.dll" Name="System.Runtime.dll" KeyPath="yes"/>
-			</Component>
-			<Component>
-				<File Source="$(var.WordsLive.TargetDir)System.Threading.Tasks.dll" Name="System.Threading.Tasks.dll" KeyPath="yes"/>
+				<File Source="$(var.WordsLive.TargetDir)System.Security.Cryptography.Encoding.dll" Name="System.Security.Cryptography.Encoding.dll" KeyPath="yes"/>
 			</Component>
 			<Component>
 				<File Source="$(var.WordsLive.TargetDir)System.Net.Http.dll" Name="System.Net.Http.dll" KeyPath="yes"/>
-			</Component>
-			<Component>
-				<File Source="$(var.WordsLive.TargetDir)System.Net.Http.Extensions.dll" Name="System.Net.Http.Extensions.dll" KeyPath="yes"/>
-			</Component>
-			<Component>
-				<File Source="$(var.WordsLive.TargetDir)System.Net.Http.Primitives.dll" Name="System.Net.Http.Primitives.dll" KeyPath="yes"/>
-			</Component>
-			<Component>
-				<File Source="$(var.WordsLive.TargetDir)System.Net.Http.WebRequest.dll" Name="System.Net.Http.WebRequest.dll" KeyPath="yes"/>
 			</Component>
 		</ComponentGroup>
 	</Fragment>
