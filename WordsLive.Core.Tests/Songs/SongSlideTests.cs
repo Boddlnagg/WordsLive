@@ -68,9 +68,9 @@ namespace WordsLive.Core.Tests.Songs
 			slide.Text = "NewText";
 			Assert.Equal(1, UndoStackSize);
 			Undo();
-			Assert.Equal(slide.Text, "SimpleLine");
+			Assert.Equal("SimpleLine", slide.Text);
 			Redo();
-			Assert.Equal(slide.Text, "NewText");
+			Assert.Equal("NewText", slide.Text);
 		}
 
 		[Fact]

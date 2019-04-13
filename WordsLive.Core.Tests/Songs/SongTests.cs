@@ -21,6 +21,8 @@ using System.Linq;
 using WordsLive.Core.Songs;
 using Xunit;
 
+#pragma warning disable xUnit2013 // Do not use equality check to check for collection size.
+
 namespace WordsLive.Core.Tests.Songs
 {
 	public class SongTests : SongTestsBase
@@ -353,12 +355,12 @@ namespace WordsLive.Core.Tests.Songs
 			ClearUndoRedoStack();
 
 			Core.Songs.Chords.Chords.RemoveAll(song);
-			Assert.Equal(slide.Text, "TestTest2");
+			Assert.Equal("TestTest2", slide.Text);
 			Assert.Equal(1, UndoStackSize);
 			Undo();
-			Assert.Equal(slide.Text, "Test[Em]Test2[G]");
+			Assert.Equal("Test[Em]Test2[G]", slide.Text);
 			Redo();
-			Assert.Equal(slide.Text, "TestTest2");
+			Assert.Equal("TestTest2", slide.Text);
 		}
 
 		[Fact]
@@ -369,12 +371,12 @@ namespace WordsLive.Core.Tests.Songs
 			ClearUndoRedoStack();
 
 			Core.Songs.Chords.Chords.Transpose(song, new Core.Songs.Chords.Key("Em"), 5);
-			Assert.Equal(slide.Text, "Test[Am]Test2[C]");
+			Assert.Equal("Test[Am]Test2[C]", slide.Text);
 			Assert.Equal(1, UndoStackSize);
 			Undo();
-			Assert.Equal(slide.Text, "Test[Em]Test2[G]");
+			Assert.Equal("Test[Em]Test2[G]", slide.Text);
 			Redo();
-			Assert.Equal(slide.Text, "Test[Am]Test2[C]");
+			Assert.Equal("Test[Am]Test2[C]", slide.Text);
 		}
 
 		[Fact]

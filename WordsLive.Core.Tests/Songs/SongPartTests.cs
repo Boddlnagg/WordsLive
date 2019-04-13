@@ -21,6 +21,8 @@ using System.Linq;
 using WordsLive.Core.Songs;
 using Xunit;
 
+#pragma warning disable xUnit2013 // Do not use equality check to check for collection size.
+
 namespace WordsLive.Core.Tests.Songs
 {
 	public class SongPartTests : SongTestsBase
@@ -235,7 +237,7 @@ namespace WordsLive.Core.Tests.Songs
 			Assert.Equal(0, part.Slides[1].BackgroundIndex);
 			Assert.Equal(1, UndoStackSize);
 			Undo();
-			Assert.Equal(song.Backgrounds.Count, 2);
+			Assert.Equal(2, song.Backgrounds.Count);
 			Assert.Equal(1, part.Slides[0].BackgroundIndex);
 			Assert.Equal(0, part.Slides[1].BackgroundIndex);
 		}

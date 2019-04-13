@@ -23,6 +23,8 @@ using System.Text;
 using WordsLive.Core.Songs;
 using Xunit;
 
+#pragma warning disable xUnit2013 // Do not use equality check to check for collection size.
+
 namespace WordsLive.Core.Tests.Songs
 {
 	public class SongSourceTests : SongTestsBase
@@ -51,7 +53,7 @@ namespace WordsLive.Core.Tests.Songs
 			Assert.Equal(1, song.Sources.Count);
 			Assert.Equal("Book", song.Sources[0].Songbook);
 			Assert.Equal(1, song.Sources[0].Number);
-			Assert.ReferenceEquals(song.Sources[0], song.FirstSource);
+			Assert.Same(song.Sources[0], song.FirstSource);
 		}
 
 		[Fact]
@@ -148,7 +150,7 @@ namespace WordsLive.Core.Tests.Songs
 
 			song.MoveSourceUp(sources[2]);
 			Assert.Equal(3, song.Sources.Count);
-			Assert.ReferenceEquals(sources[2], song.FirstSource);
+			Assert.Same(sources[2], song.FirstSource);
 			Assert.Equal(1, UndoStackSize);
 			Undo();
 			for (int i = 0; i < 3; i++)
@@ -158,7 +160,7 @@ namespace WordsLive.Core.Tests.Songs
 			}
 			Redo();
 			Assert.Equal(3, song.Sources.Count);
-			Assert.ReferenceEquals(sources[2], song.FirstSource);
+			Assert.Same(sources[2], song.FirstSource);
 		}
 
 		[Fact]
