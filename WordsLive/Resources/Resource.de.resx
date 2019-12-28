@@ -1017,4 +1017,7 @@
   <data name="vSubmitCcliOlr" xml:space="preserve">
     <value>Bei CCLI Online Reporting melden</value>
   </data>
+  <data name="generalSelectAll" xml:space="preserve">
+    <value>Alles markieren</value>
+  </data>
 </root>

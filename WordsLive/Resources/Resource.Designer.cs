@@ -1087,6 +1087,15 @@ namespace WordsLive.Resources {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Select All ähnelt.
+        /// </summary>
+        public static string generalSelectAll {
+            get {
+                return ResourceManager.GetString("generalSelectAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die You&apos;ve selected multiple image files. Do you want to add them as a single slideshow? When selecting &quot;Yes&quot; you will be prompted for a location to save the slideshow. Selecting &quot;No&quot; means the images will be added one by one. ähnelt.
         /// </summary>
         public static string imgMsgMultipleCreateSlideshow {

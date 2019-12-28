@@ -882,6 +882,10 @@ namespace WordsLive
 					}
 				}
 			}
+			else if (e.Command == ApplicationCommands.SelectAll)
+			{
+				this.OrderListBox.SelectAll();
+			}
 		}
 
 		private void OrderListBox_OnCanExecuteCommand(object sender, CanExecuteRoutedEventArgs e)
@@ -899,6 +903,10 @@ namespace WordsLive
 			{
 				// the selection must at least contain one song (other items are ignored)
 				e.CanExecute = OrderListBox.SelectedItem != null && OrderListBox.SelectedItems.Cast<MediaOrderItem>().Any(item => item.Data is SongMedia);
+			}
+			else if (e.Command == ApplicationCommands.SelectAll)
+			{
+				e.CanExecute = true;
 			}
 			else
 			{
