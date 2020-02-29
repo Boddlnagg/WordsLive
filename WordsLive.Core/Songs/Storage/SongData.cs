@@ -64,6 +64,11 @@ namespace WordsLive.Core.Songs.Storage
 		public string Language { get; set; }
 
 		/// <summary>
+		/// Gets or sets the CCLI song number.
+		/// </summary>
+		public int? CcliNumber { get; set; }
+
+		/// <summary>
 		/// Gets the search text (with whitespaces and commas removed)
 		/// </summary>
 		[JsonIgnore]
@@ -118,7 +123,8 @@ namespace WordsLive.Core.Songs.Storage
 				Text = song.TextWithoutChords,
 				Copyright = String.Join(" ", song.Copyright.Split('\n').Select(line => line.Trim())),
 				Sources = String.Join("; ", song.Sources),
-				Language = song.Language
+				Language = song.Language,
+				CcliNumber = song.CcliNumber,
 			};
 		}
 

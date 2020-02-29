@@ -108,6 +108,25 @@ namespace WordsLive.Songs
 			}
 		}
 
+		private int? ccliNumber;
+
+		/// <summary>
+		/// Gets or sets the CCLI song number to search for. If this is <c>null</c>,
+		/// the songs will not be filtered by CCLI song number.
+		/// </summary>
+		public int? CcliNumber
+		{
+			get
+			{
+				return ccliNumber;
+			}
+			set
+			{
+				ccliNumber = value;
+				OnPropertyChanged("CcliNumber");
+			}
+		}
+
 		/// <summary>
 		/// Creates an empty song filter.
 		/// </summary>
@@ -152,6 +171,14 @@ namespace WordsLive.Songs
 
 			if (!String.IsNullOrEmpty(Keyword))
 			{
+				int number;
+				if (song.CcliNumber.HasValue && int.TryParse(Keyword, out number))
+				{
+					if (song.CcliNumber.Value == number)
+					{
+						return true;
+					}
+				}
 				if (!(song.SearchTitle.ContainsIgnoreCase(NormalizedKeyword) || (SearchInText && song.SearchText.ContainsIgnoreCase(NormalizedKeyword))))
 				{
 					return false;
@@ -180,6 +207,7 @@ namespace WordsLive.Songs
 			Keyword = "";
 			Source = "";
 			Copyright = "";
+			CcliNumber = null;
 		}
 
 		public event PropertyChangedEventHandler PropertyChanged;
