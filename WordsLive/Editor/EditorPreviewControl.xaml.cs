@@ -21,8 +21,8 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
-using Awesomium.Core;
-using Awesomium.Windows.Controls;
+using CefSharp.Wpf;
+using WordsLive.Cef;
 using WordsLive.Core.Songs;
 using WordsLive.Songs;
 
@@ -57,7 +57,7 @@ namespace WordsLive.Editor
 				(args.NewValue as Song).FirstSource.PropertyChanged += control.SongSource_PropertyChanged;
 			}
 
-			if (args.NewValue != null && control.web.IsProcessCreated)
+			if (args.NewValue != null && control.web.IsBrowserInitialized)
 			{
 				control.Load();
 			}
@@ -72,7 +72,7 @@ namespace WordsLive.Editor
 
 		public event EventHandler FinishedLoading;
 
-		private global::Awesomium.Windows.Controls.WebControl web;
+		private ChromiumWebBrowser web;
 
 		public EditorPreviewControl()
 		{
@@ -86,7 +86,7 @@ namespace WordsLive.Editor
 
 		private void Init()
 		{
-			web = new WebControl()
+			web = new ChromiumWebBrowser()
 			{
 				Width = Controller.PresentationManager.Area.WindowSize.Width,
 				Height = Controller.PresentationManager.Area.WindowSize.Height,
@@ -95,13 +95,15 @@ namespace WordsLive.Editor
 			Controller.PresentationManager.Area.WindowSizeChanged += Area_WindowSizeChanged;
 
 			webControlContainer.Child = web;
-			
-			web.Crashed += OnWebViewCrashed;
-			web.ProcessInput = ViewInput.None;
 
-			web.ProcessCreated += OnWebProcessCreated;
+			web.RequestHandler = new CefRequestHandler();
+			(web.RequestHandler as CefRequestHandler).RenderProcessTerminated += Web_RenderProcessTerminated;
 
-			if (Song != null && web.IsProcessCreated) // if this is not the first Init(), probably a song has already be loaded and must be reloaded
+			web.IsEnabled = false;
+
+			web.IsBrowserInitializedChanged += Web_IsBrowserInitializedChanged;
+
+			if (Song != null && web.IsBrowserInitialized) // if this is not the first Init(), probably a song has already been loaded and must be reloaded
 			{
 				Load();
 			}
@@ -118,18 +120,23 @@ namespace WordsLive.Editor
 			}
 		}
 
-		void OnWebProcessCreated(object sender, WebViewEventArgs e)
+		private void Web_IsBrowserInitializedChanged(object sender, DependencyPropertyChangedEventArgs e)
 		{
+			if (web.IsBrowserInitialized != true) return;
+
 			if (Song != null)
 			{
 				Load();
 			}
 		}
 
-		void OnWebViewCrashed(object sender, EventArgs e)
+		private void Web_RenderProcessTerminated(object sender, CefRequestHandler.RenderProcessTerminatedEventArgs e)
 		{
-			Cleanup();
-			Init();
+			this.Dispatcher.BeginInvoke(new Action(() =>
+			{
+				Cleanup();
+				Init();
+			}));
 		}
 
 		protected void OnFinishedLoading()
@@ -339,11 +346,9 @@ namespace WordsLive.Editor
 
 			if (web != null)
 			{
-				web.Crashed -= OnWebViewCrashed;
-				web.ProcessCreated -= OnWebProcessCreated;
+				(web.RequestHandler as CefRequestHandler).RenderProcessTerminated -= Web_RenderProcessTerminated;
 
 				web.Dispose();
-				DependencyObject p = (web.Surface as WebViewPresenter);
 				web = null;
 				webControlContainer.Child = null;
 			}

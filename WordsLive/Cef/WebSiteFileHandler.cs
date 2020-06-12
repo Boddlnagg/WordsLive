@@ -17,12 +17,40 @@
  */
 
 using System;
-using Awesomium.Core.Data;
+using System.Collections.Generic;
+using WordsLive.Core;
 
-namespace WordsLive.Awesomium
+namespace WordsLive.Cef
 {
-	public interface IDataSource
+	/// <summary>
+	/// This is currently disabled
+	/// </summary>
+	public class WebSiteFileHandler : MediaTypeHandler
 	{
-		bool HandleRequest(DataSourceRequest request, Action<DataSourceResponse> respond);
+		public override IEnumerable<string> Extensions
+		{
+			get { return new string[] { ".website", ".url" }; }
+		}
+
+		public override string Description
+		{
+			get { return "Webseiten"; }
+		}
+
+		public override int Test(Uri uri)
+		{
+			if (CheckExtension(uri))
+				return 100;
+
+			if (uri.Scheme == "http" || uri.Scheme == "https")
+				return 50;
+
+			return -1;
+		}
+
+		public override Media Handle(Uri uri, Dictionary<string, string> options)
+		{
+			return new WebSite(uri);
+		}
 	}
 }

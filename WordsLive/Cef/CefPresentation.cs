@@ -1,6 +1,6 @@
 ﻿/*
  * WordsLive - worship projection software
- * Copyright (c) 2013 Patrick Reisert
+ * Copyright (c) 2020 Patrick Reisert
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,15 +18,13 @@
 
 using System;
 using System.Windows;
-using Awesomium.Core;
-using Awesomium.Windows.Controls;
 using WordsLive.Presentation;
 using WordsLive.Presentation.Wpf;
 using WordsLive.Resources;
 
-namespace WordsLive.Awesomium
+namespace WordsLive.Cef
 {
-	public class AwesomiumPresentation : WpfPresentation<AwesomiumWrapper>
+	public class CefPresentation : WpfPresentation<CefWrapper>
 	{
 		Window win;
 
@@ -37,13 +35,14 @@ namespace WordsLive.Awesomium
 			else
 				this.Control.Load(true, this.Area);
 
-			this.Control.Web.ShowCreatedWebView += OnShowCreatedWebView;
-			this.Control.Web.Crashed += OnWebviewCrashed;
+			this.Control.Web.RequestHandler = new CefRequestHandler();
+			(this.Control.Web.RequestHandler as CefRequestHandler).RenderProcessTerminated += OnRenderProcessTerminated;
 
 			// we only need to disable input, when manual updates are disabled
 			if (!enableInput && !manualUpdate)
-				(this.Control.Web as WebControl).ProcessInput = ViewInput.None;
+				(this.Control.Web as CefSharp.Wpf.ChromiumWebBrowser).IsEnabled = false;
 
+			// create an offscreen window to render the web content
 			win = new Window();
 			win.Owner = WordsLive.Presentation.Wpf.WpfPresentationWindow.Instance.Owner;
 			win.Width = this.Area.WindowSize.Width;
@@ -59,42 +58,41 @@ namespace WordsLive.Awesomium
 			win.Show();
 		}
 
+		private void OnRenderProcessTerminated(object sender, CefRequestHandler.RenderProcessTerminatedEventArgs e)
+		{
+			Controller.DispatchToMainWindow(() =>
+			{
+				var result = MessageBox.Show(Resource.vDisplayProcessCrashed, Resource.vDisplayProcessCrashedTitle, MessageBoxButton.OKCancel);
+
+				if (result == MessageBoxResult.OK)
+				{
+					e.ChromiumWebBrowser.Dispose();
+					Controller.ReloadActiveMedia();
+				}
+			});
+		}
+
 		public override void Show(int transitionDuration = 0, Action callback = null, IPresentation previous = null)
 		{
 			if (win != null)
 			{
 				win.Content = null;
-				win.Close();
-				win = null;
+				// we can't close the window here already, because it will dispose of the CEF control that's
+				// somehow still connected to that window (maybe a CefSharp bug?)
 			}
 			base.Show(transitionDuration, callback, previous);
 		}
 
-		void OnShowCreatedWebView(object sender, ShowCreatedWebViewEventArgs e)
-		{
-			throw new NotImplementedException();
-			// no support for multiple browser instances/tabs/windows, so open external links in the same window
-			//if (e.Url.Length > 0)
-			//{
-			//	this.Control.Web.LoadURL(e.Url);
-			//}
-		}
-
-		private void OnWebviewCrashed(object sender, EventArgs e)
-		{
-			var result = MessageBox.Show(Resource.vAwesomiumProcessCrashed, Resource.vAwesomiumProcessCrashedTitle, MessageBoxButton.OKCancel);
-
-			if (result == MessageBoxResult.OK)
-			{
-				this.Control.Web.Dispose();
-				Controller.ReloadActiveMedia();
-			}
-		}
-
 		public override void Close()
 		{
-			Control.Web.ShowCreatedWebView -= OnShowCreatedWebView;
-			Control.Web.Crashed -= OnWebviewCrashed;
+			if (win != null)
+			{
+				win.Close();
+				win = null;
+			}
+
+			if (this.Control.Web.RequestHandler is CefRequestHandler)
+				(this.Control.Web.RequestHandler as CefRequestHandler).RenderProcessTerminated -= OnRenderProcessTerminated;
 
 			base.Close();
 			this.Control.Close();

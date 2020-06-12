@@ -12,24 +12,26 @@ String.prototype.replaceAll = function (replace, with_this) {
 
 var presentation;
 
-$(function () {
-	SongPresentation.BrowserStroke = true; // use WebKit text-stroke support
-	SongPresentation.BackgroundPrefix = bridge.backgroundPrefix;
-	presentation = new SongPresentation(0, JSON.parse(bridge.songString), bridge.featureLevel); // TODO: set SongPresentation.Transition if used
+(async function () {
+	await CefSharp.BindObjectAsync("bridge");
+
+	SongPresentation.BackgroundPrefix = await bridge.getBackgroundPrefix();
+	presentation = new SongPresentation(0, JSON.parse(await bridge.getSongString()), await bridge.getFeatureLevel()); // TODO: set SongPresentation.Transition if used
 	$('body').prepend(presentation.getContainer());
 	presentation.getContainer().show();
 
-	presentation.setShowChords(bridge.showChords);
+	presentation.setShowChords(await bridge.getShowChords());
 
-	if (bridge.preloadImages !== undefined) {
-	    $.each(bridge.preloadImages, function (i) {
+	var pi = await bridge.getPreloadImages();
+	if (pi) {
+		$.each(JSON.parse(pi), function (i, elem) {
 			var img = new Image();
-			img.src = SongPresentation.BackgroundPrefix + bridge.preloadImages[i];
+			img.src = SongPresentation.BackgroundPrefix + elem;
 		});
 	}
 
-	bridge.callbackLoaded();
-});
+	await bridge.onCallbackLoaded();
+})();
 	</script>
 	<style id="style">
 	body {

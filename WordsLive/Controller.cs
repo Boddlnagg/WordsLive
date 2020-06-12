@@ -460,6 +460,11 @@ namespace WordsLive
 			}
 		}
 
+		public static void DispatchToMainWindow(Action action)
+		{
+			instance.window.Dispatcher.BeginInvoke(action);
+		}
+
 		public static void ReloadActiveMedia()
 		{
 			instance.window.ReloadActiveMedia();

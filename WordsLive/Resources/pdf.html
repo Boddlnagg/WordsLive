@@ -80,12 +80,16 @@
 			});
 		}
 
-		// Fetch the PDF document from the URL using promices
-		PDFJS.getDocument(bridge.document).then(function getPdfForm(pdf) {
-			doc = pdf;
-			bridge.loaded();
-			renderAll();
-		});
+		(async function () {
+		    await CefSharp.BindObjectAsync("bridge");
+		
+			// Fetch the PDF document from the URL using promices
+		    PDFJS.getDocument(await bridge.getDocument()).then(async function getPdfForm(pdf) {
+			    doc = pdf;
+				await bridge.onCallbackLoaded();
+				renderAll();
+			});
+		})();
 
 		$(window).resize(function () {
 			renderAll();
@@ -125,8 +129,8 @@
 			
 			for (var p = 1; p <= doc.numPages; p++) {
 				//alert(p +': '+$('#page_' + p).offset().top + ' >= ' + t);
-				if ($('#page_'+p).offset().top > t)
-					return p-1;
+				if ($('#page_'+p).offset().top >= t)
+					return p;
 			}
 			return doc.numPages;
 		}

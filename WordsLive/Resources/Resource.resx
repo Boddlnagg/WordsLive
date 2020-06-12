@@ -690,10 +690,10 @@
   <data name="seErrorWrongPortNumber" xml:space="preserve">
     <value>The port number must either be 80 or at least 1024.</value>
   </data>
-  <data name="vAwesomiumProcessCrashed" xml:space="preserve">
-    <value>The display process WordsLive.Awesomium.exe was closed or crashed. WordsLive will try to reload the current presentation in order to restore it.</value>
+  <data name="vDisplayProcessCrashed" xml:space="preserve">
+    <value>The display process WordsLive.CefSharp.exe was closed or crashed. WordsLive will try to reload the current presentation in order to restore it.</value>
   </data>
-  <data name="vAwesomiumProcessCrashedTitle" xml:space="preserve">
+  <data name="vDisplayProcessCrashedTitle" xml:space="preserve">
     <value>Display process crashed</value>
   </data>
   <data name="dialogAbort" xml:space="preserve">

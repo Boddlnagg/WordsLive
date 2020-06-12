@@ -20,8 +20,9 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Awesomium.Core;
+using CefSharp;
 using Newtonsoft.Json;
+using WordsLive.Cef;
 using WordsLive.Core.Songs;
 
 namespace WordsLive.Songs
@@ -38,11 +39,11 @@ namespace WordsLive.Songs
 			Transitions
 		}
 
-		private IWebView control;
+		private IWebBrowser control;
 		private bool loaded = false;
 		private bool showChords = true;
-		private JSObject bridge;
 		private FeatureLevel features;
+		private SongDisplayBridge bridge;
 
 		public bool ShowChords
 		{
@@ -54,7 +55,7 @@ namespace WordsLive.Songs
 			{
 				showChords = value;
 				if (loaded)
-					control.ExecuteJavascript("presentation.setShowChords(" + JsonConvert.SerializeObject(showChords) + ")");
+					control.GetMainFrame().ExecuteJavaScriptAsync("presentation.setShowChords(" + JsonConvert.SerializeObject(showChords) + ")");
 			}
 		}
 
@@ -63,18 +64,19 @@ namespace WordsLive.Songs
 		/// </summary>
 		/// <param name="control">The web view that is controlled by this instance. Its IsProcessCreated property must be true.</param>
 		/// <param name="features">The desired feature level.</param>
-		public SongDisplayController(IWebView control, FeatureLevel features = FeatureLevel.None)
+		public SongDisplayController(IWebBrowser control, FeatureLevel features = FeatureLevel.None)
 		{
 			this.control = control;
 			this.features = features;
 			this.control.ConsoleMessage += (obj, target) =>
 			{
-				System.Windows.MessageBox.Show("SongDisplayController encountered JS error in " + target.Source + " (line " +  target.LineNumber + "): " + target.Message);
+				System.Windows.MessageBox.Show("SongDisplayController encountered JS error in " + target.Source + " (line " +  target.Line + "): " + target.Message);
 			};
-			// FIXME: sometimes throws exception saying that "bridge" object already exists
-			bridge = this.control.CreateGlobalJavascriptObject("bridge");
-			bridge.BindAsync("callbackLoaded", (sender, args) => OnSongLoaded());
-			bridge["featureLevel"] = new JSValue(JsonConvert.SerializeObject(features));
+			this.bridge = new SongDisplayBridge(features);
+
+			control.JavascriptObjectRepository.UnRegisterAll();
+			control.JavascriptObjectRepository.Register("bridge", bridge, true);
+			bridge.CallbackLoaded += OnSongLoaded;
 		}
 
 		public void Load(Song song)
@@ -84,32 +86,30 @@ namespace WordsLive.Songs
 
 			if (features != FeatureLevel.None)
 			{
-				var backgrounds = new List<JSValue>(song.Backgrounds.Count);
+				var backgrounds = new List<string>(song.Backgrounds.Count);
 
 				foreach (var bg in song.Backgrounds.Where(bg => bg.Type == SongBackgroundType.Image))
 				{
 					try
 					{
-						backgrounds.Add(new JSValue(bg.FilePath.Replace('\\', '/')));
+						backgrounds.Add(bg.FilePath.Replace('\\', '/'));
 					}
 					catch (FileNotFoundException)
 					{
 						// ignore -> just show black background
 					}
 				}
-
-				bridge["preloadImages"] = new JSValue(backgrounds.ToArray());
-				bridge["backgroundPrefix"] = new JSValue("asset://backgrounds/");
+				bridge.PreloadImages = backgrounds;
 			}
-			bridge["songString"] = new JSValue(JsonConvert.SerializeObject(song));
-			bridge["showChords"] = new JSValue(ShowChords);
+			bridge.Song = song;
+			bridge.ShowChords = ShowChords;
 			
-			this.control.Source = new Uri("asset://WordsLive/song.html");
+			this.control.Load("asset://WordsLive/song.html");
 		}
 
 		public void UpdateFormatting(SongFormatting formatting, bool hasTranslation, bool hasChords)
 		{
-			this.control.ExecuteJavascript("presentation.updateFormatting(" + JsonConvert.SerializeObject(formatting) + ", " + JsonConvert.SerializeObject(hasTranslation) + ", " + JsonConvert.SerializeObject(hasChords) + ")");
+			this.control.GetMainFrame().ExecuteJavaScriptAsync("presentation.updateFormatting(" + JsonConvert.SerializeObject(formatting) + ", " + JsonConvert.SerializeObject(hasTranslation) + ", " + JsonConvert.SerializeObject(hasChords) + ")");
 		}
 
 		public event EventHandler SongLoaded;
@@ -117,18 +117,15 @@ namespace WordsLive.Songs
 		protected void OnSongLoaded()
 		{
 			loaded = true;
-			if (!ShowChords) // defaults to true
-			{
-				control.ExecuteJavascript("presentation.setShowChords(false)");
-			}
+			control.GetMainFrame().ExecuteJavaScriptAsync("presentation.setShowChords(" + JsonConvert.SerializeObject(showChords) + ")");
 
 			if (SongLoaded != null)
-				SongLoaded(this, EventArgs.Empty);
+				System.Windows.Application.Current.Dispatcher.Invoke(() => SongLoaded(this, EventArgs.Empty));
 		}
 
 		public void SetSource(SongSource source)
 		{
-			control.ExecuteJavascript("presentation.setSource(" + JsonConvert.SerializeObject(source.ToString()) + ")");
+			control.GetMainFrame().ExecuteJavaScriptAsync("presentation.setSource(" + JsonConvert.SerializeObject(source.ToString()) + ")");
 		}
 
 		private bool showSource;
@@ -143,13 +140,13 @@ namespace WordsLive.Songs
 			set
 			{
 				showSource = value;
-				control.ExecuteJavascript("presentation.showSource(" + JsonConvert.SerializeObject(showSource) + ")");
+				control.GetMainFrame().ExecuteJavaScriptAsync("presentation.showSource(" + JsonConvert.SerializeObject(showSource) + ")");
 			}
 		}
 
 		public void SetCopyright(string copyright)
 		{
-			control.ExecuteJavascript("presentation.setCopyright(" + JsonConvert.SerializeObject(copyright) + ")");
+			control.GetMainFrame().ExecuteJavaScriptAsync("presentation.setCopyright(" + JsonConvert.SerializeObject(copyright) + ")");
 		}
 
 		public bool ShowCopyright
@@ -161,7 +158,7 @@ namespace WordsLive.Songs
 			set
 			{
 				showCopyright = value;
-				control.ExecuteJavascript("presentation.showCopyright(" + JsonConvert.SerializeObject(showCopyright) + ")");
+				control.GetMainFrame().ExecuteJavaScriptAsync("presentation.showCopyright(" + JsonConvert.SerializeObject(showCopyright) + ")");
 			}
 		}
 
@@ -179,17 +176,17 @@ namespace WordsLive.Songs
 				Copyright = showCopyright
 			};
 
-			control.ExecuteJavascript("presentation.showSlide(" + JsonConvert.SerializeObject(s) + ")");
+			control.GetMainFrame().ExecuteJavaScriptAsync("presentation.showSlide(" + JsonConvert.SerializeObject(s) + ")");
 		}
 
 		public void GotoSlide(SongPartReference part, int slide)
 		{
-			control.ExecuteJavascript("presentation.gotoSlide("+part.OrderIndex+", "+slide+")");
+			control.GetMainFrame().ExecuteJavaScriptAsync("presentation.gotoSlide("+part.OrderIndex+", "+slide+")");
 		}
 
 		public void GotoBlankSlide(SongBackground background)
 		{
-			control.ExecuteJavascript("presentation.gotoBlankSlide("+JsonConvert.SerializeObject(background)+")");
+			control.GetMainFrame().ExecuteJavaScriptAsync("presentation.gotoBlankSlide("+JsonConvert.SerializeObject(background)+")");
 		}
 	}
 }

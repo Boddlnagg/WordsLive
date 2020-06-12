@@ -17,20 +17,22 @@
  */
 
 using System;
-using Awesomium.Core;
-using WordsLive.Awesomium;
+using WordsLive.Cef;
+using CefSharp;
 
 namespace WordsLive.Documents
 {
-	public class PdfPresentation : AwesomiumPresentation, IDocumentPresentation
+	public class PdfPresentation : CefPresentation, IDocumentPresentation
 	{
-		private JSObject bridge;
+		//private JSObject bridge;
 		private string uriKey;
 		private DocumentPageScale pageScale;
 
 		public PdfDocument Document { get; internal set; }
 
 		public bool IsLoaded { get; private set; }
+
+		private PdfPresentationBridge bridge;
 
 		public void Load()
 		{
@@ -43,14 +45,23 @@ namespace WordsLive.Documents
 
 
 			UriMapDataSource.Instance.Add(uriKey, Document.Uri);
-			bridge = this.Control.Web.CreateGlobalJavascriptObject("bridge");
-			bridge["document"] = "asset://WordsLive/urimap/" + uriKey;
-			bridge.BindAsync("loaded", (sender, args) => {
-				IsLoaded = true;
-				OnDocumentLoaded();
-			});
-			//this.Control.Web.ConsoleMessage += (sender, args) => System.Windows.MessageBox.Show(args.Source + " (" + args.LineNumber + "): " + args.Message);
-			this.Control.Web.Source = new Uri("asset://WordsLive/pdf.html");
+
+			this.bridge = new PdfPresentationBridge("asset://urimap/" + uriKey);
+			this.Control.Web.JavascriptObjectRepository.UnRegisterAll();
+			this.Control.Web.JavascriptObjectRepository.Register("bridge", bridge, true);
+			bridge.CallbackLoaded += () => {
+				this.Control.Dispatcher.BeginInvoke(new Action(() => {
+					IsLoaded = true;
+					OnDocumentLoaded();
+				}));
+			};
+
+			//this.Control.Web.ConsoleMessage += (sender, args) => System.Windows.MessageBox.Show(args.Source + " (" + args.Line + "): " + args.Message);
+
+			//(this.Control.Web as CefSharp.Wpf.ChromiumWebBrowser).IsBrowserInitializedChanged += (sender, args) => {
+			//	int x = 0;
+			//};
+			this.Control.Web.Load("asset://WordsLive/pdf.html");
 		}
 
 		public void GoToPage(int page)
@@ -58,7 +69,7 @@ namespace WordsLive.Documents
 			if (!IsLoaded)
 				throw new InvalidOperationException("Document not loaded yet.");
 
-			this.Control.Web.ExecuteJavascript("gotoPage("+page.ToString()+");");
+			this.Control.Web.GetBrowser().MainFrame.ExecuteJavaScriptAsync("gotoPage("+page.ToString()+");");
 		}
 
 		public void NextPage()
@@ -66,7 +77,7 @@ namespace WordsLive.Documents
 			if (!IsLoaded)
 				throw new InvalidOperationException("Document not loaded yet.");
 
-			this.Control.Web.ExecuteJavascript("nextPage();");
+			this.Control.Web.GetMainFrame().ExecuteJavaScriptAsync("nextPage()");
 		}
 
 		public void PreviousPage()
@@ -74,7 +85,7 @@ namespace WordsLive.Documents
 			if (!IsLoaded)
 				throw new InvalidOperationException("Document not loaded yet.");
 
-			this.Control.Web.ExecuteJavascript("prevPage();");
+			this.Control.Web.GetMainFrame().ExecuteJavaScriptAsync("prevPage();");
 		}
 
 		public bool CanGoToPreviousPage
@@ -112,9 +123,9 @@ namespace WordsLive.Documents
 				if (IsLoaded)
 				{
 					if (pageScale == DocumentPageScale.FitToWidth)
-						this.Control.Web.ExecuteJavascript("fitToWidth()");
+						this.Control.Web.GetMainFrame().ExecuteJavaScriptAsync("fitToWidth()");
 					else
-						this.Control.Web.ExecuteJavascript("wholePage()");
+						this.Control.Web.GetMainFrame().ExecuteJavaScriptAsync("wholePage()");
 				}
 			}
 		}
@@ -126,7 +137,11 @@ namespace WordsLive.Documents
 				if (!IsLoaded)
 					throw new InvalidOperationException("Document not loaded yet.");
 
-				return (int)this.Control.Web.ExecuteJavascriptWithResult("getCurrentPage()");
+				var task = this.Control.Web.GetMainFrame().EvaluateScriptAsync("getCurrentPage()");
+				task.Wait();
+				if (!task.Result.Success)
+					throw new InvalidOperationException("JS call did not succeed.");
+				return (int)task.Result.Result;
 			}
 		}
 
@@ -137,7 +152,11 @@ namespace WordsLive.Documents
 				if (!IsLoaded)
 					throw new InvalidOperationException("Document not loaded yet.");
 
-				return (int)this.Control.Web.ExecuteJavascriptWithResult("getPageCount()");
+				var task = this.Control.Web.GetMainFrame().EvaluateScriptAsync("getPageCount()");
+				task.Wait();
+				if (!task.Result.Success)
+					throw new InvalidOperationException("JS call did not succeed.");
+				return (int)task.Result.Result;
 			}
 		}
 

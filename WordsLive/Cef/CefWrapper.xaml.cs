@@ -1,6 +1,6 @@
 ﻿/*
  * WordsLive - worship projection software
- * Copyright (c) 2013 Patrick Reisert
+ * Copyright (c) 2020 Patrick Reisert
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,36 +21,32 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using Awesomium.Core;
-using Awesomium.Windows.Controls;
+using CefSharp;
 using WordsLive.Presentation;
 
-namespace WordsLive.Awesomium
+namespace WordsLive.Cef
 {
-	public partial class AwesomiumWrapper : UserControl
+	public partial class CefWrapper : UserControl
 	{
-		private WebView webView;
-		private WebControl webControl;
+		private CefSharp.Wpf.ChromiumWebBrowser webControl;
+		private CefSharp.OffScreen.ChromiumWebBrowser offscreenControl;
 		private PresentationArea area;
 
 		private Image frontImage;
 		private Image backImage;
 
-		public IWebView Web
+		public IWebBrowser Web
 		{
 			get
 			{
-				if (webView != null)
-					return webView;
+				if (offscreenControl != null)
+					return offscreenControl;
 				else
 					return webControl;
 			}
 		}
 
-		private WriteableBitmap wb1, wb2;
-		private Int32Rect rect;
-
-		public AwesomiumWrapper()
+		public CefWrapper()
 		{
 			InitializeComponent();
 		}
@@ -61,41 +57,59 @@ namespace WordsLive.Awesomium
 
 			if (!manualUpdate)
 			{
-				webControl = new WebControl();
+				webControl = new CefSharp.Wpf.ChromiumWebBrowser();
 				ForegroundGrid.Children.Add(webControl);
 			}
 			else
 			{
-				int w = area.WindowSize.Width;
-				int h = area.WindowSize.Height;
-				webView = WebCore.CreateWebView(w, h);
-				webView.Surface = new ImageSurface(null);
-				wb1 = new WriteableBitmap(w, h, 96, 96, PixelFormats.Pbgra32, null);
-				wb2 = new WriteableBitmap(w, h, 96, 96, PixelFormats.Pbgra32, null);
-				rect = new Int32Rect(0, 0, w, h);
-
+				offscreenControl = new CefSharp.OffScreen.ChromiumWebBrowser("", new BrowserSettings { BackgroundColor = CefSharp.Cef.ColorSetARGB(0, 0, 0, 0) } );
+				offscreenControl.Size = this.area.WindowSize;
 				area.WindowSizeChanged += area_WindowSizeChanged;
 			}
 		}
 
 		void area_WindowSizeChanged(object sender, System.EventArgs e)
 		{
-			int w = ((PresentationArea)sender).WindowSize.Width;
-			int h = ((PresentationArea)sender).WindowSize.Height;
+			offscreenControl.Size = ((PresentationArea)sender).WindowSize;
+		}
 
-			webView.Resize(w, h);
+		private static BitmapSource CreateBitmapSourceFromGdiBitmap(System.Drawing.Bitmap bitmap)
+		{
+			if (bitmap == null)
+				throw new ArgumentNullException("bitmap");
 
-			wb1 = new WriteableBitmap(w, h, 96, 96, PixelFormats.Pbgra32, null);
-			wb2 = new WriteableBitmap(w, h, 96, 96, PixelFormats.Pbgra32, null);
-			rect = new Int32Rect(0, 0, w, h);
+			var rect = new System.Drawing.Rectangle(0, 0, bitmap.Width, bitmap.Height);
+
+			var bitmapData = bitmap.LockBits(
+				rect,
+				System.Drawing.Imaging.ImageLockMode.ReadWrite,
+				System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+
+			try
+			{
+				var size = (rect.Width * rect.Height) * 4;
+
+				return BitmapSource.Create(
+					bitmap.Width,
+					bitmap.Height,
+					bitmap.HorizontalResolution,
+					bitmap.VerticalResolution,
+					PixelFormats.Bgra32,
+					null,
+					bitmapData.Scan0,
+					size,
+					bitmapData.Stride);
+			}
+			finally
+			{
+				bitmap.UnlockBits(bitmapData);
+			}
 		}
 
 		public void UpdateForeground()
 		{
-			if (webView == null)
+			if (offscreenControl == null)
 				throw new InvalidOperationException("Manual updating is disabled for this presentation.");
-
-			var surf = webView.Surface as ImageSurface;
 
 			if (frontImage == null)
 			{
@@ -106,7 +120,10 @@ namespace WordsLive.Awesomium
 			}
 
 			backImage.Source = frontImage.Source;
-			frontImage.Source = surf.Image.Clone();
+			using (var bitmap = offscreenControl.ScreenshotOrNull())
+			{
+				frontImage.Source = CreateBitmapSourceFromGdiBitmap(bitmap);
+			}
 		}
 
 		public void Close()

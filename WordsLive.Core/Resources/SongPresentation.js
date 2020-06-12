@@ -3,7 +3,6 @@ SongPresentation.Transition = 1000;
 SongPresentation.FontFactor = 1.3;
 SongPresentation.MarginFactor = 1.3;
 SongPresentation.LineFactor = 1.28;
-SongPresentation.BrowserStroke = false;
 SongPresentation.BackgroundPrefix = "";
 
 SongPresentation.FeatureLevel = {
@@ -269,6 +268,15 @@ SongPresentation.prototype.showSlide = function (slide) {
 			this.container.find('.song-copyright').fadeOut(SongPresentation.Transition);
 	}
 
+	// Set one top left pixel to a random color (but it's almost invisible due to opacity).
+	// This is required to force an repaint (invalidation) even when the content of the slide
+	// doesn't otherwise change (but a repaint is required to detect the necessity of a
+	// background change when the background is rendered handled outside of CEF)
+	var r = Math.floor(Math.random() * 256);
+	var g = Math.floor(Math.random() * 256);
+	var b = Math.floor(Math.random() * 256);
+	this.container.find('.song-randompixel').css('background', "rgb(" + r + "," + g + "," + b + ")");
+
 	this.isShown = true;
 }
 
@@ -420,12 +428,11 @@ SongPresentation.prototype.generateStyle = function () {
 	var createStrokeShadowRules = function (strokeSize, shadowSize) {
 		var result = '';
 		var shadowRules = [];
-		var i = 0;
 
 		strokeSize *= 0.1;
 		shadowSize *= 0.1;
 
-		if (SongPresentation.BrowserStroke && formatting.IsOutlineEnabled) {
+		if (formatting.IsOutlineEnabled) {
 			strokeSizeValue = makeCssValue(strokeSize, 'px');
 			result = '-webkit-text-stroke: ' + strokeSizeValue + ' ' + outlineColor + ';\
 						  text-stroke: ' + strokeSizeValue + ' ' + outlineColor + ';';
@@ -433,25 +440,7 @@ SongPresentation.prototype.generateStyle = function () {
 
 		if (formatting.IsShadowEnabled) {
 			shadowSizeValue = makeCssValue(shadowSize, 'px');
-			shadowRules[i++] = shadowColor + ' ' + shadowSizeValue + ' ' + shadowSizeValue + ' ' + shadowSizeValue;
-		}
-
-		if (formatting.IsShadowEnabled && formatting.IsOutlineEnabled && !SongPresentation.BrowserStroke) {
-			var modStrokeSizeValue = makeCssValue(strokeSize * 0.75, 'px');
-
-			// simulate stroke with 8 shadows
-			shadowRules[i++] = '' + modStrokeSizeValue + ' ' + modStrokeSizeValue + ' 0 ' + outlineColor;
-			shadowRules[i++] = '' + modStrokeSizeValue + ' 0px 0 ' + outlineColor;
-			shadowRules[i++] = '-' + modStrokeSizeValue + ' -' + modStrokeSizeValue + ' 0 ' + outlineColor;
-			shadowRules[i++] = '-' + modStrokeSizeValue + ' 0px 0 ' + outlineColor;
-			shadowRules[i++] = '' + modStrokeSizeValue + ' -' + modStrokeSizeValue + ' 0 ' + outlineColor;
-			shadowRules[i++] = '0px -' + modStrokeSizeValue + ' 0 ' + outlineColor;
-			shadowRules[i++] = '-' + modStrokeSizeValue + ' ' + modStrokeSizeValue + ' 0 ' + outlineColor;
-			shadowRules[i++] = '0px ' + modStrokeSizeValue + ' 0 ' + outlineColor;
-		}
-
-		if (shadowRules.length > 0) {
-			result += 'text-shadow: ' + shadowRules.join(',') + ';';
+			result += 'text-shadow: ' + shadowColor + ' ' + shadowSizeValue + ' ' + shadowSizeValue + ' ' + shadowSizeValue + ';'
 		}
 
 		return result;
@@ -573,18 +562,16 @@ SongPresentation.prototype.generateStyle = function () {
 
 // static functions
 SongPresentation.createLayer = function () {
-	// create two layers when text-stroke is used
-	if (SongPresentation.BrowserStroke)
-		return [$('<div>').addClass('song-back').append('<div>'), $('<div>').addClass('song-front').append('<div>')];
-	else
-		return [$('<div>').addClass('song-back').append('<div>')];
+	// create two layers (for text-stroke)
+	return [$('<div>').addClass('song-back').append('<div>'), $('<div>').addClass('song-front').append('<div>')];
 }
 
 SongPresentation.createContainer = function () {
 	return [$('<div>').hide().addClass('song-current').addClass('song-background'),
 			$('<div>').addClass('song-current').addClass('song-main').append(SongPresentation.createLayer()),
 			$('<div>').hide().addClass('song-source').append(SongPresentation.createLayer()),
-			$('<div>').hide().addClass('song-copyright').append(SongPresentation.createLayer())];
+			$('<div>').hide().addClass('song-copyright').append(SongPresentation.createLayer()),
+			$('<div>').addClass('song-randompixel')];
 }
 
 SongPresentation.makeCssColor = function (value) {
@@ -630,6 +617,12 @@ SongPresentation.insertStyleGeneral = function () {
 		height: 100%;                 	\
 		display: table;               	\
 		table-layout: fixed;          	\
+	}                                   \
+	.song-randompixel {                 \
+		position: absolute;             \
+		width: 1px; height: 1px;        \
+		opacity: 0.05;                  \
+		background-color: white;        \
 	}';
 	$('head').append($('<style>').attr('id', 'song-style-general').append(cssGeneral));
 }

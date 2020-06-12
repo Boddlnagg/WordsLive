@@ -2266,20 +2266,20 @@ namespace WordsLive.Resources {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die The display process WordsLive.Awesomium.exe was closed or crashed. WordsLive will try to reload the current presentation in order to restore it. ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die The display process WordsLive.CefSharp.exe was closed or crashed. WordsLive will try to reload the current presentation in order to restore it. ähnelt.
         /// </summary>
-        public static string vAwesomiumProcessCrashed {
+        public static string vDisplayProcessCrashed {
             get {
-                return ResourceManager.GetString("vAwesomiumProcessCrashed", resourceCulture);
+                return ResourceManager.GetString("vDisplayProcessCrashed", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Display process crashed ähnelt.
         /// </summary>
-        public static string vAwesomiumProcessCrashedTitle {
+        public static string vDisplayProcessCrashedTitle {
             get {
-                return ResourceManager.GetString("vAwesomiumProcessCrashedTitle", resourceCulture);
+                return ResourceManager.GetString("vDisplayProcessCrashedTitle", resourceCulture);
             }
         }
         

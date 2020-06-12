@@ -16,18 +16,14 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+using CefSharp;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Runtime.InteropServices;
-using Awesomium.Core.Data;
 
-namespace WordsLive.Awesomium
+namespace WordsLive.Cef
 {
-	/// <summary>
-	/// Data source for Awesomium that maps custom URIs to local or remote URIs.
-	/// </summary>
-	public class UriMapDataSource : IDataSource
+	public class UriMapDataSource
 	{
 		private static UriMapDataSource instance;
 
@@ -73,48 +69,26 @@ namespace WordsLive.Awesomium
 			}
 		}
 
-		public bool HandleRequest(DataSourceRequest request, Action<DataSourceResponse> respond)
+		public IResourceHandler CreateHandler(Uri url)
 		{
 			try
 			{
-				Uri uri;
-
-				if (!request.Path.StartsWith("urimap/"))
+				string path = url.AbsolutePath.Substring(1); // remove leading slash
+				Uri localUrl;
+				lock (o)
 				{
-					return false;
-				}
-				else
-				{
-					string path = request.Path.Substring("urimap/".Length);
-
-					lock (o)
-					{
-						uri = map[path];
-					}
-
-					if (!uri.IsFile)
-						throw new NotImplementedException("Mapping to non-local URIs not yet implemented.");
-
-					using (var stream = File.OpenRead(uri.LocalPath))
-					{
-						byte[] bytes = new byte[stream.Length];
-						stream.Read(bytes, 0, (int)stream.Length);
-						GCHandle pinnedBuffer = GCHandle.Alloc(bytes, GCHandleType.Pinned);
-						IntPtr pointer = pinnedBuffer.AddrOfPinnedObject();
-						respond(new DataSourceResponse
-						{
-							Buffer = pointer,
-							Size = (uint)bytes.Length
-						});
-						pinnedBuffer.Free();
-					}
+					localUrl = map[path];
 				}
 
-				return true;
+				if (!localUrl.IsFile)
+					throw new NotImplementedException("Mapping to non-local URIs not yet implemented.");
+
+				string mimeType = CefSharp.Cef.GetMimeType(Path.GetExtension(localUrl.LocalPath));
+				return ResourceHandler.FromFilePath(localUrl.LocalPath, mimeType);
 			}
 			catch
 			{
-				return false;
+				return null;
 			}
 		}
 	}

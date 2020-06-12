@@ -31,7 +31,9 @@
 			<ComponentGroupRef Id="ServerAssemblies" />
 			<ComponentGroupRef Id="VlcDotNetAssemblies" />
 			<ComponentGroupRef Id="PowerpointViewerLibComponents" />
-			<ComponentGroupRef Id="AwesomiumComponents" />
+			<ComponentGroupRef Id="CefSharpX86Components" />
+			<ComponentGroupRef Id="CefSharpX86LocalesComponents" />
+			<ComponentGroupRef Id="CefSharpX86SwiftshaderComponents" />
 			<ComponentGroupRef Id="DataComponents" />
 			<ComponentGroupRef Id="I18nComponents"/>
 			<ComponentGroupRef Id="MicrosoftAssemblies"/>
@@ -56,6 +58,10 @@
 				<Directory Id="APPLICATIONFOLDER" Name="$(var.ProductName)">
 					<Directory Id="DataFolder" Name="Data"/>
 					<Directory Id="I18nDeFolder" Name="de"/>
+					<Directory Id="CefSharpX86Folder" Name="x86">
+						<Directory Id="CefSharpX86LocalesFolder" Name="locales"/>
+						<Directory Id="CefSharpX86SwiftshaderFolder" Name="swiftshader"/>
+					</Directory>
 				</Directory>
 			</Directory>
 
@@ -118,7 +124,7 @@
 			<Component>
 				<File Source="$(var.WordsLive.TargetDir)WordsLive.Slideshow.Impress.Bridge.dll" Name="WordsLive.Slideshow.Impress.Bridge.dll" KeyPath="yes" />
 			</Component>
-		  <Component>
+			<Component>
 				<File Source="$(var.WordsLive.TargetDir)WordsLive.Slideshow.Impress.Bridge.dll.config" Name="WordsLive.Slideshow.Impress.Bridge.dll.config" KeyPath="yes" />
 			</Component>
 		</ComponentGroup>
@@ -172,39 +178,79 @@
 				<File Source="$(var.WordsLive.TargetDir)PowerpointViewerLib.dll" Name="PowerpointViewerLib.dll" KeyPath="yes" />
 			</Component>
 		</ComponentGroup>
-		<ComponentGroup Id="AwesomiumComponents" Directory="APPLICATIONFOLDER">
+		<ComponentGroup Id="CefSharpX86Components" Directory="CefSharpX86Folder">
 			<Component>
-				<File Source="$(var.WordsLive.TargetDir)awesomium.dll" Name="awesomium.dll" KeyPath="yes" />
+				<File Source="$(var.WordsLive.TargetDir)x86\cef.pak" Name="cef.pak" KeyPath="yes" />
 			</Component>
 			<Component>
-				<File Source="$(var.WordsLive.TargetDir)WordsLive.Awesomium.exe" Name="WordsLive.Awesomium.exe" KeyPath="yes" />
+				<File Source="$(var.WordsLive.TargetDir)x86\cef_100_percent.pak" Name="cef_100_percent.pak" KeyPath="yes" />
 			</Component>
 			<Component>
-				<File Source="$(var.WordsLive.TargetDir)Awesomium.Core.dll" Name="Awesomium.Core.dll" KeyPath="yes" />
+				<File Source="$(var.WordsLive.TargetDir)x86\cef_200_percent.pak" Name="cef_200_percent.pak" KeyPath="yes" />
 			</Component>
 			<Component>
-				<File Source="$(var.WordsLive.TargetDir)Awesomium.Windows.Controls.dll" Name="Awesomium.Windows.Controls.dll" KeyPath="yes" />
+				<File Source="$(var.WordsLive.TargetDir)x86\cef_extensions.pak" Name="cef_extensions.pak" KeyPath="yes" />
 			</Component>
 			<Component>
-				<File Source="$(var.WordsLive.TargetDir)icudt.dll" Name="icudt.dll" KeyPath="yes" />
+				<File Source="$(var.WordsLive.TargetDir)x86\icudtl.dat" Name="icudtl.dat" KeyPath="yes" />
 			</Component>
 			<Component>
-				<File Source="$(var.WordsLive.TargetDir)avcodec-53.dll" Name="avcodec-53.dll" KeyPath="yes" />
+				<File Source="$(var.WordsLive.TargetDir)x86\chrome_elf.dll" Name="chrome_elf.dll" KeyPath="yes" />
 			</Component>
 			<Component>
-				<File Source="$(var.WordsLive.TargetDir)avformat-53.dll" Name="avformat-53.dll" KeyPath="yes" />
+				<File Source="$(var.WordsLive.TargetDir)x86\d3dcompiler_47.dll" Name="d3dcompiler_47.dll" KeyPath="yes" />
 			</Component>
 			<Component>
-				<File Source="$(var.WordsLive.TargetDir)avutil-51.dll" Name="avutil-51.dll" KeyPath="yes" />
+				<File Source="$(var.WordsLive.TargetDir)x86\libcef.dll" Name="libcef.dll" KeyPath="yes" />
 			</Component>
 			<Component>
-				<File Source="$(var.WordsLive.TargetDir)libEGL.dll" Name="libEGL.dll" KeyPath="yes" />
+				<File Source="$(var.WordsLive.TargetDir)x86\libEGL.dll" Name="libEGL.dll" KeyPath="yes" />
 			</Component>
 			<Component>
-				<File Source="$(var.WordsLive.TargetDir)libGLESv2.dll" Name="libGLESv2.dll" KeyPath="yes" />
+				<File Source="$(var.WordsLive.TargetDir)x86\libGLESv2.dll" Name="libGLESv2.dll" KeyPath="yes" />
 			</Component>
 			<Component>
-				<File Source="$(var.WordsLive.TargetDir)xinput9_1_0.dll" Name="xinput9_1_0.dll" KeyPath="yes" />
+				<File Source="$(var.WordsLive.TargetDir)x86\README.txt" Name="README.txt" KeyPath="yes" />
+			</Component>
+			<Component>
+				<File Source="$(var.WordsLive.TargetDir)x86\snapshot_blob.bin" Name="snapshot_blob.bin" KeyPath="yes" />
+			</Component>
+			<Component>
+				<File Source="$(var.WordsLive.TargetDir)x86\v8_context_snapshot.bin" Name="v8_context_snapshot.bin" KeyPath="yes" />
+			</Component>
+			<Component>
+				<File Source="$(var.WordsLive.TargetDir)x86\CefSharp.dll" Name="CefSharp.dll" KeyPath="yes" />
+			</Component>
+			<Component>
+				<File Source="$(var.WordsLive.TargetDir)x86\CefSharp.Core.dll" Name="CefSharp.Core.dll" KeyPath="yes" />
+			</Component>
+			<Component>
+				<File Source="$(var.WordsLive.TargetDir)x86\CefSharp.Offscreen.dll" Name="CefSharp.Offscreen.dll" KeyPath="yes" />
+			</Component>
+			<Component>
+				<File Source="$(var.WordsLive.TargetDir)x86\CefSharp.Wpf.dll" Name="CefSharp.Wpf.dll" KeyPath="yes" />
+			</Component>
+			<Component>
+				<File Source="$(var.WordsLive.TargetDir)x86\WordsLive.CefSharp.exe" Name="WordsLive.CefSharp.exe" KeyPath="yes" />
+			</Component>
+			<Component>
+				<File Source="$(var.WordsLive.TargetDir)x86\CefSharp.BrowserSubprocess.Core.dll" Name="CefSharp.BrowserSubprocess.Core.dll" KeyPath="yes" />
+			</Component>
+		</ComponentGroup>
+		<ComponentGroup Id="CefSharpX86LocalesComponents" Directory="CefSharpX86LocalesFolder">
+			<Component>
+				<File Source="$(var.WordsLive.TargetDir)x86\locales\en-US.pak" Name="en-US.pak" KeyPath="yes" />
+			</Component>
+			<Component>
+				<File Source="$(var.WordsLive.TargetDir)x86\locales\de.pak" Name="de.pak" KeyPath="yes" />
+			</Component>
+		</ComponentGroup>
+		<ComponentGroup Id="CefSharpX86SwiftshaderComponents" Directory="CefSharpX86SwiftshaderFolder">
+			<Component>
+				<File Source="$(var.WordsLive.TargetDir)x86\swiftshader\libEGL.dll" Name="libEGL.dll" Id="libEGL.dll.Swiftshader" KeyPath="yes" />
+			</Component>
+			<Component>
+				<File Source="$(var.WordsLive.TargetDir)x86\swiftshader\libGLESv2.dll" Name="libGLESv2.dll" Id="libGLESv2.dll.Swiftshader" KeyPath="yes" />
 			</Component>
 		</ComponentGroup>
 		<ComponentGroup Id="DataComponents" Directory="DataFolder">

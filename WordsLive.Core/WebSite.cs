@@ -57,7 +57,7 @@ namespace WordsLive.Core
 			}
 			else
 			{
-				throw new NotImplementedException("Loading remote websites not yet implemented.");
+				Url = this.Uri.AbsoluteUri;
 			}
 		}
 	}

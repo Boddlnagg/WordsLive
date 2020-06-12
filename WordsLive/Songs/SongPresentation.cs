@@ -16,6 +16,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+using CefSharp;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -23,17 +24,15 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
-using Awesomium.Core;
-using Awesomium.Windows.Controls;
 using WordsLive.AudioVideo;
-using WordsLive.Awesomium;
+using WordsLive.Cef;
 using WordsLive.Core;
 using WordsLive.Core.Songs;
 using WordsLive.Utils;
 
 namespace WordsLive.Songs
 {
-	public class SongPresentation : AwesomiumPresentation
+	public class SongPresentation : CefPresentation
 	{
 		private Song song;
 		private Dictionary<SongSlide, int> slides = new Dictionary<SongSlide, int>();
@@ -54,6 +53,7 @@ namespace WordsLive.Songs
 			}
 			set
 			{
+				DebugMessage($"Going to slide {value} (current is {currentSlideIndex})");
 				if (currentSlideIndex != value)
 				{
 					GotoSlide(value);
@@ -78,6 +78,11 @@ namespace WordsLive.Songs
 					controller.ShowChords = showChords;
 				}
 			}
+		}
+
+		static void DebugMessage(string message)
+		{
+			//Console.WriteLine($"[{DateTime.Now.ToLongTimeString()}] {message}");
 		}
 
 		public void Load(Song song, bool update = false)
@@ -126,13 +131,17 @@ namespace WordsLive.Songs
 				this.Control.BackgroundGrid.Children.Add(videoBackgroundClone);
 			}
 
-			this.Control.Web.IsTransparent = true;
-			this.Control.Web.ProcessCreated += Web_ProcessCreated;
+			if (this.Control.Web.IsBrowserInitialized)
+				Init();
+			else
+				(this.Control.Web as CefSharp.OffScreen.ChromiumWebBrowser).BrowserInitialized += SongPresentation_BrowserInitialized;
+			
 			currentSlideIndex = -1;
 		}
 
-		void Web_ProcessCreated(object sender, WebViewEventArgs e)
+		private void Init()
 		{
+			// TODO: try to move to native JS transitions
 			controller = new SongDisplayController(Control.Web, SongDisplayController.FeatureLevel.None);
 			controller.ShowChords = showChords;
 
@@ -140,15 +149,24 @@ namespace WordsLive.Songs
 			{
 				OnFinishedLoading();
 			};
-
-			(Control.Web.Surface as ImageSurface).Updated += web_Updated;
-
+			(Control.Web as CefSharp.OffScreen.ChromiumWebBrowser).Paint += SongPresentation_Paint;
 			controller.Load(this.song);
 		}
 
-		void web_Updated(object sender, SurfaceUpdatedEventArgs e)
+		private void SongPresentation_Paint(object sender, CefSharp.OffScreen.OnPaintEventArgs e)
 		{
-			UpdateSlide();
+			DebugMessage($"Paint event for rect ({e.DirtyRect.X}/{e.DirtyRect.Y}, {e.DirtyRect.Width}/{e.DirtyRect.Height})");
+			this.Control.Dispatcher.InvokeAsync(() =>
+			{
+				DebugMessage("Executing paint");
+				UpdateSlide();
+			});
+		}
+
+		private void SongPresentation_BrowserInitialized(object sender, EventArgs e)
+		{
+			(this.Control.Web as CefSharp.OffScreen.ChromiumWebBrowser).BrowserInitialized -= SongPresentation_BrowserInitialized;
+			Init();
 		}
 
 		public event EventHandler FinishedLoading;
@@ -175,7 +193,9 @@ namespace WordsLive.Songs
 			if (tuple != null)
 				controller.GotoSlide(tuple.Item2, tuple.Item3);
 			else
+			{
 				controller.GotoBlankSlide(bg);
+			}
 
 			if (videoBackground == null) // only change backgrounds if we're not using a video background
 			{
@@ -188,6 +208,7 @@ namespace WordsLive.Songs
 			Control.UpdateForeground();
 			if (nextBackground != null)
 			{
+				DebugMessage($"Setting next background for slide {this.CurrentSlideIndex}");
 				backImage.Source = frontImage.Source;
 				frontImage.Source = nextBackground;
 				nextBackground = null;
@@ -230,8 +251,8 @@ namespace WordsLive.Songs
 
 		public override void Close()
 		{
-			(Control.Web.Surface as ImageSurface).Updated -= web_Updated;
-			Control.Web.ProcessCreated -= Web_ProcessCreated;
+			(Control.Web as CefSharp.OffScreen.ChromiumWebBrowser).Paint -= SongPresentation_Paint;
+			(this.Control.Web as CefSharp.OffScreen.ChromiumWebBrowser).BrowserInitialized -= SongPresentation_BrowserInitialized;
 
 			base.Close();
 			if (videoBackground != null)

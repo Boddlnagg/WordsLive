@@ -1,6 +1,6 @@
 ﻿/*
  * WordsLive - worship projection software
- * Copyright (c) 2013 Patrick Reisert
+ * Copyright (c) 2020 Patrick Reisert
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,40 +17,29 @@
  */
 
 using System;
-using System.Collections.Generic;
-using WordsLive.Core;
 
-namespace WordsLive.Awesomium
+namespace WordsLive.Documents
 {
-	/// <summary>
-	/// This is currently disabled
-	/// </summary>
-	public class WebSiteFileHandler : MediaTypeHandler
+	class PdfPresentationBridge
 	{
-		public override IEnumerable<string> Extensions
+		public event Action CallbackLoaded;
+
+		private string document;
+
+		public PdfPresentationBridge(string document)
 		{
-			get { return new string[] { ".website", ".url" }; }
+			this.document = document;
 		}
 
-		public override string Description
+		public string GetDocument()
 		{
-			get { return "Webseiten"; }
+			return document;
 		}
 
-		public override int Test(Uri uri)
+		public void OnCallbackLoaded()
 		{
-			//if (CheckExtension(uri))
-			//	return 100;
-
-			//if (uri.Scheme == "http" || uri.Scheme == "https")
-			//	return 50;
-
-			return -1;
-		}
-
-		public override Media Handle(Uri uri, Dictionary<string, string> options)
-		{
-			return new WebSite(uri);
+			if (CallbackLoaded != null)
+				CallbackLoaded();
 		}
 	}
 }

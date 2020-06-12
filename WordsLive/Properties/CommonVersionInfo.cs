@@ -9,3 +9,5 @@
 [assembly: AssemblyFileVersion("0.9.17")]
 [assembly: AssemblyVersion("0.9.17.0")]
 
+// NOTE: Don't forget to update the version in app.manifest as well!
+

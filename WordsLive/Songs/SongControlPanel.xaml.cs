@@ -73,12 +73,14 @@ namespace WordsLive.Songs
 			finishedLoading = false;
 			presentation = Controller.PresentationManager.CreatePresentation<SongPresentation>();
 			presentation.FinishedLoading += pres_OnFinishedLoading;
+			if (!firstTime)
+			{
+				presentation.ShowChords = oldPresentation.ShowChords;
+			}
 			presentation.Load(this.song.Song, !firstTime);
 
 			if (!firstTime)
 			{
-				presentation.ShowChords = oldPresentation.ShowChords;
-
 				if (this.SlideListBox.SelectedItem != null)
 				{
 					var con = (SongSlideListBox.SongSlideContainer)this.SlideListBox.SelectedItem;
