@@ -878,7 +878,7 @@ namespace WordsLive
 						{
 							searchTerm = song.Song.Title;
 						}
-						new Uri(String.Format("https://olr.ccli.com/search/results?SearchTerm={0}", searchTerm)).OpenInBrowser();
+						new Uri(String.Format("https://reporting.ccli.com/search?s={0}", searchTerm)).OpenInBrowser();
 					}
 				}
 			}
