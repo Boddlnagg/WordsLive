@@ -1,0 +1,33 @@
+name: Build
+ 
+on: [push]
+ 
+jobs:
+  build:
+  
+    strategy:
+      matrix:
+        configuration: [Debug, Release]
+ 
+    runs-on: windows-latest
+ 
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+     
+    - name: Setup MSBuild
+      uses: microsoft/setup-msbuild@v1.0.2
+       
+    - name: Setup NuGet
+      uses: NuGet/setup-nuget@v1
+     
+    - name: Restore NuGet Packages
+      run: nuget restore WordsLive.sln
+
+    - name: Run MSBuild
+      run: msbuild WordsLive.sln /p:Configuration=$env:Configuration /p:Platform="Any CPU"
+      env:
+        Configuration: ${{ matrix.configuration }}
+ 
