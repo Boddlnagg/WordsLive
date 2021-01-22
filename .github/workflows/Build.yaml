@@ -27,7 +27,12 @@ jobs:
       run: nuget restore WordsLive.sln
 
     - name: Run MSBuild
-      run: msbuild WordsLive.sln /p:Configuration=$env:Configuration /p:Platform="Any CPU"
+      run: msbuild WordsLive.sln /p:Configuration=$env:Configuration /p:Platform=x86
+      env:
+        Configuration: ${{ matrix.configuration }}
+        
+    - name: Build Installer
+      run: msbuild Installer\Installer.wixproj /p:Configuration=$env:Configuration /p:Platform=x86
       env:
         Configuration: ${{ matrix.configuration }}
  

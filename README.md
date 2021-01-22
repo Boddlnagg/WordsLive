@@ -15,7 +15,6 @@ This project is licensed under the terms of the GPLv3.
 The following tools are required for building WordsLive:
 
 - Visual Studio 2012 or later
-- [Awesomium SDK](http://www.awesomium.com/download/) (currently version 1.7.3)
 - [WiX Toolset](http://wixtoolset.org/) (for the installer – unload the installer project in VS to skip building it)
 - Office PowerPoint and LibreOffice (for building the bridge assemblies)
 
