@@ -19,10 +19,11 @@
 using System;
 using WordsLive.Core.Songs.Chords;
 using Xunit;
-using Xunit.Extensions;
 
 namespace WordsLive.Core.Tests.Songs
 {
+	// We need to disable parallelization because of the statics in `Chords`
+	[CollectionDefinition("ChordTests", DisableParallelization = true)]
 	public class ChordTests
 	{
 		[Theory]

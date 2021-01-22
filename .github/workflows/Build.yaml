@@ -26,11 +26,16 @@ jobs:
     - name: Restore NuGet Packages
       run: nuget restore WordsLive.sln
 
-    - name: Run MSBuild
+    - name: Build Project
       run: msbuild WordsLive.sln /p:Configuration=$env:Configuration /p:Platform=x86
       env:
         Configuration: ${{ matrix.configuration }}
-        
+
+    - name: Run Tests
+      run: msbuild WordsLive.Core.Tests\WordsLive.Core.Tests.csproj /t:Test /p:Configuration=$env:Configuration /p:Platform=x86
+      env:
+        Configuration: ${{ matrix.configuration }}
+
     - name: Build Installer
       run: msbuild Installer\Installer.wixproj /p:Configuration=$env:Configuration /p:Platform=x86
       env:
