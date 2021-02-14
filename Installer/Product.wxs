@@ -190,6 +190,9 @@
 				<File Source="$(var.WordsLive.TargetDir)cef_extensions.pak" Name="cef_extensions.pak" KeyPath="yes" />
 			</Component>
 			<Component>
+				<File Source="$(var.WordsLive.TargetDir)devtools_resources.pak" Name="devtools_resources.pak" KeyPath="yes" />
+			</Component>
+			<Component>
 				<File Source="$(var.WordsLive.TargetDir)icudtl.dat" Name="icudtl.dat" KeyPath="yes" />
 			</Component>
 			<Component>
