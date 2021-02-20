@@ -200,7 +200,7 @@ namespace WordsLive.Slideshow.Powerpoint.Bridge
 
 		public override void Show()
 		{
-			this.presentation.SlideShowWindow.Top = Area.WindowLocation.Y;
+			this.presentation.SlideShowWindow.Top = PixelsToPoints(Area.WindowLocation.Y);
 		}
 
 		public override void Hide()
