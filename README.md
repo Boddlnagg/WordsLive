@@ -14,8 +14,5 @@ This project is licensed under the terms of the GPLv3.
 ### How to build
 The following tools are required for building WordsLive:
 
-- Visual Studio 2012 or later
+- Visual Studio 2017 or later (the free Community edition will work just fine)
 - [WiX Toolset](http://wixtoolset.org/) (for the installer – unload the installer project in VS to skip building it)
-- Office PowerPoint and LibreOffice (for building the bridge assemblies)
-
-On first build, NuGet will download some assemblies required for async support on .NET 4 (this is required in order to support Windows XP, but will probably be dropped in the future). After this, you need to restart Visual Studio to complete the build process successfully!
