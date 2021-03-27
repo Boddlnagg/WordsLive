@@ -633,32 +633,20 @@ namespace WordsLive
 
 		public void ShowSettingsWindow()
 		{
-			while (true)
+			var win = new SettingsWindow();
+			if (this.IsLoaded)
+				win.Owner = this;
+			MasterOverrideOptions oldOptions = MasterOverrideOptions.CreateFromSettings();
+			win.ShowDialog();
+
+			if (win.DialogResult.HasValue && win.DialogResult.Value)
 			{
-				var win = new SettingsWindow();
-				if (this.IsLoaded)
-					win.Owner = this;
-				MasterOverrideOptions oldOptions = MasterOverrideOptions.CreateFromSettings();
-				win.ShowDialog();
-
-				if (win.DialogResult.HasValue && win.DialogResult.Value)
+				if (ActiveMedia is SongMedia && !oldOptions.Equals(MasterOverrideOptions.CreateFromSettings()))
 				{
-					if (ActiveMedia is SongMedia && !oldOptions.Equals(MasterOverrideOptions.CreateFromSettings()))
-					{
-						ReloadActiveMedia();
-					}
-
-					DataManager.SongTemplate = new FileInfo(Properties.Settings.Default.SongTemplateFile);
-
-					if (Controller.TryUpdateServerSettings())
-					{
-						break;
-					}
-					else
-					{
-						MessageBox.Show(Resource.seMsgInitServerError);
-					}
+					ReloadActiveMedia();
 				}
+
+				DataManager.SongTemplate = new FileInfo(Properties.Settings.Default.SongTemplateFile);
 			}
 		}
 

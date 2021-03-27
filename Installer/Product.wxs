@@ -28,7 +28,6 @@
 		<Feature Id="ProductFeature" ConfigurableDirectory="APPLICATIONFOLDER" Level="1">
 			<ComponentGroupRef Id="MainAssemblies" />
 			<ComponentGroupRef Id="ThirdPartyAssemblies" />
-			<ComponentGroupRef Id="ServerAssemblies" />
 			<ComponentGroupRef Id="VlcDotNetAssemblies" />
 			<ComponentGroupRef Id="PowerpointViewerLibComponents" />
 			<ComponentGroupRef Id="CefSharpX86Components" />
@@ -99,12 +98,6 @@
 				<File Source="$(var.WordsLive.TargetDir)WordsLive.Core.dll.config" Name="WordsLive.Core.dll.config" KeyPath="yes" />
 			</Component>
 			<Component>
-				<File Source="$(var.WordsLive.TargetDir)WordsLive.Server.dll" Name="WordsLive.Server.dll" KeyPath="yes" />
-			</Component>
-			<Component>
-				<File Source="$(var.WordsLive.TargetDir)WordsLive.Server.dll.config" Name="WordsLive.Server.dll.config" KeyPath="yes" />
-			</Component>
-			<Component>
 				<File Source="$(var.WordsLive.TargetDir)WordsLive.Presentation.dll" Name="WordsLive.Presentation.dll" KeyPath="yes" />
 			</Component>
 			<Component>
@@ -138,23 +131,6 @@
 			</Component>
 			<Component>
 				<File Source="$(var.WordsLive.TargetDir)Newtonsoft.Json.dll" Name="Newtonsoft.Json.dll" KeyPath="yes" />
-			</Component>
-		</ComponentGroup>
-		<ComponentGroup Id="ServerAssemblies" Directory="APPLICATIONFOLDER">
-			<Component>
-				<File Source="$(var.WordsLive.TargetDir)Firefly.dll" Name="Firefly.dll" KeyPath="yes" />
-			</Component>
-			<Component>
-				<File Source="$(var.WordsLive.TargetDir)Owin.dll" Name="Owin.dll" KeyPath="yes" />
-			</Component>
-			<Component>
-				<File Source="$(var.WordsLive.TargetDir)Owin.Types.dll" Name="Owin.Types.dll" KeyPath="yes" />
-			</Component>
-			<Component>
-				<File Source="$(var.WordsLive.TargetDir)Owin.Builder.dll" Name="Owin.Builder.dll" KeyPath="yes" />
-			</Component>
-			<Component>
-				<File Source="$(var.WordsLive.TargetDir)Owin.Extensions.dll" Name="Owin.Extensions.dll" KeyPath="yes" />
 			</Component>
 		</ComponentGroup>
 		<ComponentGroup Id="VlcDotNetAssemblies" Directory="APPLICATIONFOLDER">

@@ -223,7 +223,7 @@
     <value>Songlist</value>
   </data>
   <data name="seMsgInitDataError" xml:space="preserve">
-    <value>Either the selected directory for songs or backgrounds does not exist, or the connection to the data server failed. Please update the data source settings.</value>
+    <value>The selected directory for songs or backgrounds does not exist. Please update the data source settings.</value>
   </data>
   <data name="vFilterAllFiles" xml:space="preserve">
     <value>All files</value>
@@ -315,8 +315,8 @@
   <data name="vToolbarEditActiveSong" xml:space="preserve">
     <value>Open active song in editor</value>
   </data>
-  <data name="seHeaderDataSources" xml:space="preserve">
-    <value>Data sources</value>
+  <data name="seHeaderDataSource" xml:space="preserve">
+    <value>Data source</value>
   </data>
   <data name="seLabelBackgrounds" xml:space="preserve">
     <value>Backgrounds:</value>
@@ -615,18 +615,6 @@
   <data name="slMsgDeleteSongTitle" xml:space="preserve">
     <value>Really delete song?</value>
   </data>
-  <data name="seLabelServerAddress" xml:space="preserve">
-    <value>Address:</value>
-  </data>
-  <data name="seRadioLocal" xml:space="preserve">
-    <value>Local directories</value>
-  </data>
-  <data name="seRadioServer" xml:space="preserve">
-    <value>Data server</value>
-  </data>
-  <data name="seLabelServerPassword" xml:space="preserve">
-    <value>Password:</value>
-  </data>
   <data name="sfMsgOverwriteExistingFile" xml:space="preserve">
     <value>A file with that name already exists. Do you want to overwrite it?</value>
   </data>
@@ -687,9 +675,6 @@
   <data name="seErrorNegativeValue" xml:space="preserve">
     <value>The value must be at least 0.</value>
   </data>
-  <data name="seErrorWrongPortNumber" xml:space="preserve">
-    <value>The port number must either be 80 or at least 1024.</value>
-  </data>
   <data name="vDisplayProcessCrashed" xml:space="preserve">
     <value>The display process WordsLive.CefSharp.exe was closed or crashed. WordsLive will try to reload the current presentation in order to restore it.</value>
   </data>
@@ -743,9 +728,6 @@
   </data>
   <data name="eMsgSingleFontSizeTitle" xml:space="preserve">
     <value>Multiple font sizes</value>
-  </data>
-  <data name="seMsgInitServerError" xml:space="preserve">
-    <value>The server could not be started. Make sure that the port is not used by any other application.</value>
   </data>
   <data name="docCurrentPage" xml:space="preserve">
     <value>Current page</value>
@@ -855,23 +837,8 @@
   <data name="seExternalUseVLC" xml:space="preserve">
     <value>Use VLC for audio and video playback (if available)</value>
   </data>
-  <data name="seRemotingEmbeddedServerPassword" xml:space="preserve">
-    <value>Password:</value>
-  </data>
-  <data name="seRemotingEmbeddedServerPort" xml:space="preserve">
-    <value>Port:</value>
-  </data>
-  <data name="seRemotingEnableEmbeddedServer" xml:space="preserve">
-    <value>Enable embedded display server</value>
-  </data>
-  <data name="seRemotingEnableRedirect" xml:space="preserve">
-    <value>Redirect all requests over embedded data server (not recommended)</value>
-  </data>
   <data name="seTabExternalTools" xml:space="preserve">
     <value>External Tools</value>
-  </data>
-  <data name="seTabRemoting" xml:space="preserve">
-    <value>Remoting</value>
   </data>
   <data name="ssCheckboxOutline" xml:space="preserve">
     <value>Outline</value>

@@ -1,6 +1,6 @@
 ﻿<!--
 - WordsLive - worship projection software
-- Copyright (c) 2014 Patrick Reisert
+- Copyright (c) 2021 Patrick Reisert
 - 
 - This program is free software: you can redistribute it and/or modify
 - it under the terms of the GNU General Public License as published by
@@ -42,13 +42,9 @@
 						<ColumnDefinition Width="*"/>
 						<ColumnDefinition Width="Auto"/>
 					</Grid.ColumnDefinitions>
-					<GroupBox Header="{x:Static resx:Resource.seHeaderDataSources}" Grid.Row="0" Grid.ColumnSpan="3">
+					<GroupBox Header="{x:Static resx:Resource.seHeaderDataSource}" Grid.Row="0" Grid.ColumnSpan="3">
 						<Grid>
 							<Grid.RowDefinitions>
-								<RowDefinition Height="Auto"/>
-								<RowDefinition Height="Auto"/>
-								<RowDefinition Height="Auto"/>
-								<RowDefinition Height="Auto"/>
 								<RowDefinition Height="Auto"/>
 								<RowDefinition Height="Auto"/>
 								<RowDefinition Height="Auto"/>
@@ -57,17 +53,11 @@
 								<ColumnDefinition Width="Auto"/>
 								<ColumnDefinition Width="*"/>
 							</Grid.ColumnDefinitions>
-							<RadioButton IsChecked="{Binding UseLocalDirectories}" Name="radioLocal" Content="{x:Static resx:Resource.seRadioLocal}"/>
-							<Label IsEnabled="{Binding ElementName=radioLocal, Path=IsChecked}" Grid.Row="1" Grid.Column="0" Content="{x:Static resx:Resource.seLabelSongs}" Height="28" Margin="3,0,0,0" />
-							<utils:FolderEntry IsEnabled="{Binding ElementName=radioLocal, Path=IsChecked}" Grid.Row="1" Grid.Column="1"  Height="23" Text="{Binding SongsDirectory}"/>
-							<Label IsEnabled="{Binding ElementName=radioLocal, Path=IsChecked}" Grid.Row="2" Grid.Column="0"  Content="{x:Static resx:Resource.seLabelBackgrounds}" Height="28" Margin="3,0,0,0" />
-							<utils:FolderEntry IsEnabled="{Binding ElementName=radioLocal, Path=IsChecked}" Grid.Row="2" Grid.Column="1"  Height="23" Text="{Binding BackgroundsDirectory}"/>
-							<RadioButton IsChecked="{Binding UseDataServer}" Name="radioServer" Grid.Row="3" Content="{x:Static resx:Resource.seRadioServer}"/>
-							<Label IsEnabled="{Binding ElementName=radioServer, Path=IsChecked}" Grid.Row="4" Height="28" Margin="3,0,0,0" Content="{x:Static resx:Resource.seLabelServerAddress}"/>
-							<TextBox IsEnabled="{Binding ElementName=radioServer, Path=IsChecked}" Grid.Row="4" Grid.Column="1" Height="23" Text="{Binding DataServerAddress}"/>
-							<Label IsEnabled="{Binding ElementName=radioServer, Path=IsChecked}" Grid.Row="5" Height="28" Margin="3,0,0,0" Content="{x:Static resx:Resource.seLabelServerPassword}"/>
-							<PasswordBox Name="dataServerPasswordBox" IsEnabled="{Binding ElementName=radioServer, Path=IsChecked}" Grid.Row="5" Grid.Column="1" Height="23"/>
-							<TextBlock Grid.Row="6" Grid.ColumnSpan="2"  Margin="3,0,0,0" Padding="5" TextWrapping="Wrap" Text="{x:Static resx:Resource.seWarningRelaunch}"/>
+							<Label Grid.Row="0" Grid.Column="0" Content="{x:Static resx:Resource.seLabelSongs}" Height="28" Margin="3,0,0,0" />
+							<utils:FolderEntry Grid.Row="0" Grid.Column="1"  Height="23" Text="{Binding SongsDirectory}"/>
+							<Label Grid.Row="1" Grid.Column="0"  Content="{x:Static resx:Resource.seLabelBackgrounds}" Height="28" Margin="3,0,0,0" />
+							<utils:FolderEntry Grid.Row="1" Grid.Column="1"  Height="23" Text="{Binding BackgroundsDirectory}"/>
+							<TextBlock Grid.Row="2" Grid.ColumnSpan="2"  Margin="3,0,0,0" Padding="5" TextWrapping="Wrap" Text="{x:Static resx:Resource.seWarningRelaunch}"/>
 						</Grid>
 					</GroupBox>
 					<Label Grid.Row="1" Content="{x:Static resx:Resource.seLabelTransitionPresentations}" HorizontalAlignment="Left" Margin="0" VerticalAlignment="Top" />
@@ -129,36 +119,6 @@
 						</Grid>
 					</GroupBox>
 				</Grid>
-			</TabItem>
-			<TabItem Header="{x:Static resx:Resource.seTabRemoting}">
-				<GroupBox>
-					<!-- TODO: localize -->
-					<GroupBox.Header>
-						<CheckBox x:Name="enableDisplayServerCheckBox" Content="{x:Static resx:Resource.seRemotingEnableEmbeddedServer}" IsChecked="{Binding EmbeddedServerEnable}"/>
-					</GroupBox.Header>
-					<Grid IsEnabled="{Binding ElementName=enableDisplayServerCheckBox, Path=IsChecked}">
-						<Grid.RowDefinitions>
-							<RowDefinition Height="Auto"/>
-							<RowDefinition Height="Auto"/>
-							<RowDefinition Height="Auto"/>
-							<RowDefinition Height="Auto"/>
-						</Grid.RowDefinitions>
-						<Grid.ColumnDefinitions>
-							<ColumnDefinition Width="Auto"/>
-							<ColumnDefinition Width="*"/>
-						</Grid.ColumnDefinitions>
-						<Label Grid.Row="0" Height="28" Content="{x:Static resx:Resource.seRemotingEmbeddedServerPort}"/>
-						<TextBox Grid.Row="0" Height="23" Grid.Column="1" Text="{Binding EmbeddedServerPort, ValidatesOnDataErrors=True}" Style="{StaticResource textBoxInError}"/>
-						<Label Grid.Row="1" Content="{x:Static resx:Resource.seRemotingEmbeddedServerPassword}"/>
-						<PasswordBox x:Name="embeddedServerPasswordBox" Grid.Row="1" Grid.Column="1" Height="23"/>
-						<CheckBox Grid.Row="2" Grid.ColumnSpan="2" Margin="3" IsChecked="{Binding EmbeddedServerRedirectAll}">
-							<TextBlock TextWrapping="WrapWithOverflow" Text="{x:Static resx:Resource.seRemotingEnableRedirect}"/>
-						</CheckBox>
-						<!--<CheckBox Grid.Row="3" Grid.ColumnSpan="2" Margin="3" IsChecked="{Binding EmbeddedServerEnableUI}">
-							<TextBlock Text="Enable browser UI" TextWrapping="WrapWithOverflow"/>
-						</CheckBox>-->
-					</Grid>
-				</GroupBox>
 			</TabItem>
 			<TabItem Header="{x:Static resx:Resource.seTabExternalTools}">
 				<StackPanel>

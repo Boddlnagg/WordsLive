@@ -31,9 +31,6 @@ namespace WordsLive.Core
 		public static SongStorage ActualSongStorage { get; private set; }
 		public static BackgroundStorage ActualBackgroundStorage { get; private set; }
 
-		private static SongStorage redirectSongStorage;
-		private static BackgroundStorage redirectBackgroundStorage;
-
 		public static DirectoryInfo TempDirectory
 		{
 			get
@@ -52,10 +49,7 @@ namespace WordsLive.Core
 		{
 			get
 			{
-				if (redirectSongStorage != null)
-					return redirectSongStorage;
-				else
-					return ActualSongStorage;
+				return ActualSongStorage;
 			}
 		}
 
@@ -66,10 +60,7 @@ namespace WordsLive.Core
 		{
 			get
 			{
-				if (redirectBackgroundStorage != null)
-					return redirectBackgroundStorage;
-				else
-					return ActualBackgroundStorage;
+				return ActualBackgroundStorage;
 			}
 		}
 
@@ -154,26 +145,6 @@ namespace WordsLive.Core
 			ActualBackgroundStorage = backgrounds;
 			return true;
 		}
-
-		/// <summary>
-		/// Enables redirecting of all request over local server using the given password.
-		/// </summary>
-		/// <param name="password">The password.</param>
-		public static void EnableRedirect(SongStorage songs, BackgroundStorage backgrounds)
-		{
-			redirectSongStorage = songs;
-			redirectBackgroundStorage = backgrounds;
-		}
-
-		/// <summary>
-		/// Disables the redirect.
-		/// </summary>
-		public static void DisableRedirect()
-		{
-			redirectSongStorage = null;
-			redirectBackgroundStorage = null;
-		}
-
 		public class TemporaryDirectory
 		{
 			public DirectoryInfo Directory { get; set; }

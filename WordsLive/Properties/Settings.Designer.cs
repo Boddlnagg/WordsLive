@@ -12,7 +12,7 @@ namespace WordsLive.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "15.9.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "16.8.1.0")]
     internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -550,102 +550,6 @@ namespace WordsLive.Properties {
             }
             set {
                 this["TemplateMasterOverrideOutlineShadow"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool UseDataServer {
-            get {
-                return ((bool)(this["UseDataServer"]));
-            }
-            set {
-                this["UseDataServer"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string DataServerAddress {
-            get {
-                return ((string)(this["DataServerAddress"]));
-            }
-            set {
-                this["DataServerAddress"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string DataServerPassword {
-            get {
-                return ((string)(this["DataServerPassword"]));
-            }
-            set {
-                this["DataServerPassword"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool EmbeddedServerEnable {
-            get {
-                return ((bool)(this["EmbeddedServerEnable"]));
-            }
-            set {
-                this["EmbeddedServerEnable"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("80")]
-        public int EmbeddedServerPort {
-            get {
-                return ((int)(this["EmbeddedServerPort"]));
-            }
-            set {
-                this["EmbeddedServerPort"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string EmbeddedServerPassword {
-            get {
-                return ((string)(this["EmbeddedServerPassword"]));
-            }
-            set {
-                this["EmbeddedServerPassword"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool EmbeddedServerRedirectAll {
-            get {
-                return ((bool)(this["EmbeddedServerRedirectAll"]));
-            }
-            set {
-                this["EmbeddedServerRedirectAll"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool EmbeddedServerEnableUI {
-            get {
-                return ((bool)(this["EmbeddedServerEnableUI"]));
-            }
-            set {
-                this["EmbeddedServerEnableUI"] = value;
             }
         }
         

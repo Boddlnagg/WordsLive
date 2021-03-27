@@ -48,9 +48,6 @@ namespace WordsLive
 				this.TabControl.Items.Add(new TabItem { Header = tab.Header, Content = tab.Control });
 			}
 
-			this.embeddedServerPasswordBox.Password = Properties.Settings.Default.EmbeddedServerPassword;
-			this.dataServerPasswordBox.Password = Properties.Settings.Default.DataServerPassword;
-
 			this.DataContext = this;
 		}
 
@@ -75,42 +72,6 @@ namespace WordsLive
 			set
 			{
 				Properties.Settings.Default.BackgroundsDirectory = value;
-			}
-		}
-
-		public bool UseDataServer
-		{
-			get
-			{
-				return Properties.Settings.Default.UseDataServer;
-			}
-			set
-			{
-				Properties.Settings.Default.UseDataServer = value;
-			}
-		}
-
-		public bool UseLocalDirectories
-		{
-			get
-			{
-				return !UseDataServer;
-			}
-			set
-			{
-				UseDataServer = !value;
-			}
-		}
-
-		public string DataServerAddress
-		{
-			get
-			{
-				return Properties.Settings.Default.DataServerAddress;
-			}
-			set
-			{
-				Properties.Settings.Default.DataServerAddress = value;
 			}
 		}
 
@@ -162,56 +123,6 @@ namespace WordsLive
 			}
 		}
 
-		#region Remoting
-
-		public bool EmbeddedServerEnable
-		{
-			get
-			{
-				return Properties.Settings.Default.EmbeddedServerEnable;
-			}
-			set
-			{
-				Properties.Settings.Default.EmbeddedServerEnable = value;
-			}
-		}
-
-		public int EmbeddedServerPort
-		{
-			get
-			{
-				return Properties.Settings.Default.EmbeddedServerPort;
-			}
-			set
-			{
-				Properties.Settings.Default.EmbeddedServerPort = value;
-			}
-		}
-
-		public bool EmbeddedServerRedirectAll
-		{
-			get
-			{
-				return Properties.Settings.Default.EmbeddedServerRedirectAll;
-			}
-			set
-			{
-				Properties.Settings.Default.EmbeddedServerRedirectAll = value;
-			}
-		}
-
-		public bool EmbeddedServerEnableUI
-		{
-			get
-			{
-				return Properties.Settings.Default.EmbeddedServerEnableUI;
-			}
-			set
-			{
-				Properties.Settings.Default.EmbeddedServerEnableUI = value;
-			}
-		}
-
 		public bool UseVlc
 		{
 			get
@@ -231,8 +142,6 @@ namespace WordsLive
 				return AudioVideo.VlcController.IsAvailable;
 			}
 		}
-
-		#endregion
 
 		public string Error
 		{
@@ -257,10 +166,6 @@ namespace WordsLive
 						if (ImageTransition < 0)
 							return Resource.seErrorNegativeValue;
 						break;
-					case "EmbeddedServerPort":
-						if (EmbeddedServerPort != 80 && EmbeddedServerPort < 1024)
-							return Resource.seErrorWrongPortNumber;
-						break;
 				}
 				return null;
 			}
@@ -272,8 +177,6 @@ namespace WordsLive
 
 			if (this.IsValid())
 			{
-				Properties.Settings.Default.DataServerPassword = dataServerPasswordBox.Password;
-				Properties.Settings.Default.EmbeddedServerPassword = embeddedServerPasswordBox.Password;
 				this.DialogResult = true;
 			}
 			else

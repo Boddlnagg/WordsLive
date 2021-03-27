@@ -30,9 +30,7 @@ using WordsLive.Core;
 using WordsLive.Editor;
 using WordsLive.MediaOrderList;
 using WordsLive.Resources;
-using WordsLive.Server;
 using WordsLive.Songs;
-using WordsLive.Utils;
 
 namespace WordsLive
 {
@@ -207,14 +205,6 @@ namespace WordsLive
 				Properties.Settings.Default.LastSongDirectory = Properties.Settings.Default.SongsDirectory;
 			}
 
-			// try to initialize embedded server
-
-			if (!TryUpdateServerSettings())
-			{
-				MessageBox.Show(Resource.seMsgInitServerError);
-				instance.window.ShowSettingsWindow();
-			}
-
 			while (!instance.TryInitDataManager())
 			{
 				// TODO: this message box is not shown correctly (the first time, when the window is not yet loaded)
@@ -232,71 +222,12 @@ namespace WordsLive
 			else
 				DataManager.SongTemplate = fi;
 
-			if (Properties.Settings.Default.UseDataServer)
-				return DataManager.TryInitUsingServer(Properties.Settings.Default.DataServerAddress, Properties.Settings.Default.DataServerPassword);
-			else
-				return DataManager.TryInitUsingLocal(Properties.Settings.Default.SongsDirectory, Properties.Settings.Default.BackgroundsDirectory);
-		}
-
-		internal static bool TryUpdateServerSettings()
-		{
-			if (Server == null)
-			{
-				Server = new MainServer(Properties.Settings.Default.EmbeddedServerPort);
-			}
-
-			if (Properties.Settings.Default.EmbeddedServerEnable)
-			{
-				var port = Properties.Settings.Default.EmbeddedServerPort;
-				var pwd = Properties.Settings.Default.EmbeddedServerPassword;
-				var enableUI = Properties.Settings.Default.EmbeddedServerEnableUI;
-
-				var settingsChanged = Server.Port != port || Server.Password != pwd || !Server.IsRunning;
-
-				// TODO: do we need a restart for change of password?
-
-				if (settingsChanged)
-				{
-					if (Server.IsRunning)
-					{
-						// TODO: show warning
-						Server.Stop();
-					}
-
-					Server.Port = port;
-					Server.Password = pwd;
-
-					try
-					{
-						Server.Start();
-					}
-					catch
-					{
-						return false;
-					}
-				}
-
-				if (Properties.Settings.Default.EmbeddedServerRedirectAll)
-				{
-					DataManager.EnableRedirect(Controller.Server.CreateSongStorage(), Controller.Server.CreateBackgroundStorage());
-				}
-				else
-				{
-					DataManager.DisableRedirect();
-				}
-			}
-			else if (Server.IsRunning)
-			{
-				Server.Stop();
-			}
-
-			return true;
+			return DataManager.TryInitUsingLocal(Properties.Settings.Default.SongsDirectory, Properties.Settings.Default.BackgroundsDirectory);
 		}
 
 		#endregion
 
 		#region Public (static) members
-		public static MainServer Server { get; private set; }
 
 		public static bool IsShuttingDown
 		{

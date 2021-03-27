@@ -260,10 +260,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <ProjectReference Include="..\WordsLive.Server\WordsLive.Server.csproj">
-      <Project>{D1CBFA7D-BE14-4EE8-8696-81AB6401D195}</Project>
-      <Name>WordsLive.Server</Name>
-    </ProjectReference>
     <Resource Include="Artwork\PresentationArea.png" />
     <Resource Include="Artwork\Settings.png" />
     <Resource Include="Artwork\Small_Plus.png" />

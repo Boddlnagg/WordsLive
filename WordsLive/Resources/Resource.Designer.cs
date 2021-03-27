@@ -19,7 +19,7 @@ namespace WordsLive.Resources {
     // -Klasse über ein Tool wie ResGen oder Visual Studio automatisch generiert.
     // Um einen Member hinzuzufügen oder zu entfernen, bearbeiten Sie die .ResX-Datei und führen dann ResGen
     // mit der /str-Option erneut aus, oder Sie erstellen Ihr VS-Projekt neu.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class Resource {
@@ -1384,15 +1384,6 @@ namespace WordsLive.Resources {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die The port number must either be 80 or at least 1024. ähnelt.
-        /// </summary>
-        public static string seErrorWrongPortNumber {
-            get {
-                return ResourceManager.GetString("seErrorWrongPortNumber", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Use VLC for audio and video playback (if available) ähnelt.
         /// </summary>
         public static string seExternalUseVLC {
@@ -1402,11 +1393,11 @@ namespace WordsLive.Resources {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Data sources ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die Data source ähnelt.
         /// </summary>
-        public static string seHeaderDataSources {
+        public static string seHeaderDataSource {
             get {
-                return ResourceManager.GetString("seHeaderDataSources", resourceCulture);
+                return ResourceManager.GetString("seHeaderDataSource", resourceCulture);
             }
         }
         
@@ -1425,24 +1416,6 @@ namespace WordsLive.Resources {
         public static string seLabelNewSongTemplate {
             get {
                 return ResourceManager.GetString("seLabelNewSongTemplate", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Address: ähnelt.
-        /// </summary>
-        public static string seLabelServerAddress {
-            get {
-                return ResourceManager.GetString("seLabelServerAddress", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Password: ähnelt.
-        /// </summary>
-        public static string seLabelServerPassword {
-            get {
-                return ResourceManager.GetString("seLabelServerPassword", resourceCulture);
             }
         }
         
@@ -1483,20 +1456,11 @@ namespace WordsLive.Resources {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Either the selected directory for songs or backgrounds does not exist, or the connection to the data server failed. Please update the data source settings. ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die The selected directory for songs or backgrounds does not exist. Please update the data source settings. ähnelt.
         /// </summary>
         public static string seMsgInitDataError {
             get {
                 return ResourceManager.GetString("seMsgInitDataError", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die The server could not be started. Make sure that the port is not used by any other application. ähnelt.
-        /// </summary>
-        public static string seMsgInitServerError {
-            get {
-                return ResourceManager.GetString("seMsgInitServerError", resourceCulture);
             }
         }
         
@@ -1519,60 +1483,6 @@ namespace WordsLive.Resources {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Local directories ähnelt.
-        /// </summary>
-        public static string seRadioLocal {
-            get {
-                return ResourceManager.GetString("seRadioLocal", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Data server ähnelt.
-        /// </summary>
-        public static string seRadioServer {
-            get {
-                return ResourceManager.GetString("seRadioServer", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Password: ähnelt.
-        /// </summary>
-        public static string seRemotingEmbeddedServerPassword {
-            get {
-                return ResourceManager.GetString("seRemotingEmbeddedServerPassword", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Port: ähnelt.
-        /// </summary>
-        public static string seRemotingEmbeddedServerPort {
-            get {
-                return ResourceManager.GetString("seRemotingEmbeddedServerPort", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Enable embedded display server ähnelt.
-        /// </summary>
-        public static string seRemotingEnableEmbeddedServer {
-            get {
-                return ResourceManager.GetString("seRemotingEnableEmbeddedServer", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Redirect all requests over embedded data server (not recommended) ähnelt.
-        /// </summary>
-        public static string seRemotingEnableRedirect {
-            get {
-                return ResourceManager.GetString("seRemotingEnableRedirect", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die External Tools ähnelt.
         /// </summary>
         public static string seTabExternalTools {
@@ -1587,15 +1497,6 @@ namespace WordsLive.Resources {
         public static string seTabGeneral {
             get {
                 return ResourceManager.GetString("seTabGeneral", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Remoting ähnelt.
-        /// </summary>
-        public static string seTabRemoting {
-            get {
-                return ResourceManager.GetString("seTabRemoting", resourceCulture);
             }
         }
         
