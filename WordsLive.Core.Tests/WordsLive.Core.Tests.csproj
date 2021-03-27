@@ -51,7 +51,6 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
-    <Reference Include="System.Net" />
     <Reference Include="xunit.abstractions, Version=2.0.0.0, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
       <HintPath>..\packages\xunit.abstractions.2.0.3\lib\net35\xunit.abstractions.dll</HintPath>
     </Reference>
@@ -123,10 +122,10 @@
   -->
   <Target Name="Test">
     <ItemGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
-	  <TestAssemblies Include="..\bin\Debug\WordsLive.Core.Tests.dll" />
+      <TestAssemblies Include="..\bin\Debug\WordsLive.Core.Tests.dll" />
     </ItemGroup>
     <ItemGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
-	  <TestAssemblies Include="..\bin\Release\WordsLive.Core.Tests.dll" />
+      <TestAssemblies Include="..\bin\Release\WordsLive.Core.Tests.dll" />
     </ItemGroup>
     <xunit Assemblies="@(TestAssemblies)" />
   </Target>

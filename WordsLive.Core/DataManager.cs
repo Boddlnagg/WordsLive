@@ -83,46 +83,6 @@ namespace WordsLive.Core
 		}
 
 		/// <summary>
-		/// Tries the initialize this data manager using a data server for songs and backgrounds.
-		/// </summary>
-		/// <param name="address">The address of the server.</param>
-		/// <param name="password">The password to use, <c>null</c> or an empty string if no authentication should be used.</param>
-		/// <returns><c>true</c> if the initialization succeeded, <c>false</c> otherwise.</returns>
-		public static bool TryInitUsingServer(string address, string password)
-		{
-			if (address.EndsWith("/"))
-				address = address.Substring(0, address.Length - 1);
-
-			if (String.IsNullOrWhiteSpace(address))
-				return false;
-
-			System.Net.NetworkCredential credentials = null;
-
-			if (!String.IsNullOrWhiteSpace(password))
-				credentials = new System.Net.NetworkCredential("WordsLive", password);
-
-			var songs = new HttpSongStorage(address + "/songs/", credentials);
-			var backgrounds = new HttpBackgroundStorage(address + "/backgrounds/", credentials);
-
-			try
-			{
-				songs.Count(); // get song count for testing the connection and password
-			}
-			catch (System.Net.Http.HttpRequestException)
-			{
-				return false; // problem with the connection
-			}
-			catch (FormatException)
-			{
-				return false; // problem with the response (not a number)
-			}
-
-			ActualSongStorage = songs;
-			ActualBackgroundStorage = backgrounds;
-			return true;
-		}
-
-		/// <summary>
 		/// Tries to initialize this data manager using local directories for songs and backgrounds.
 		/// </summary>
 		/// <param name="songsDirectory">The directory for songs.</param>
