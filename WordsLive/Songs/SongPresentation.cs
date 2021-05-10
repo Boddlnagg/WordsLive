@@ -43,6 +43,7 @@ namespace WordsLive.Songs
 		private BaseMediaControl videoBackground;
 		private System.Windows.Shapes.Rectangle videoBackgroundClone;
 		private ImageSource nextBackground = null;
+		private bool ignorePaint = false; // ignore paint events while in the middle of a reload (no transitions until done reloading)
 
 		private int currentSlideIndex;
 		public int CurrentSlideIndex
@@ -54,6 +55,7 @@ namespace WordsLive.Songs
 			set
 			{
 				DebugMessage($"Going to slide {value} (current is {currentSlideIndex})");
+				ignorePaint = false;
 				if (currentSlideIndex != value)
 				{
 					GotoSlide(value);
@@ -137,6 +139,9 @@ namespace WordsLive.Songs
 				(this.Control.Web as CefSharp.OffScreen.ChromiumWebBrowser).BrowserInitialized += SongPresentation_BrowserInitialized;
 			
 			currentSlideIndex = -1;
+
+			if (update)
+				ignorePaint = true;
 		}
 
 		private void Init()
@@ -155,6 +160,11 @@ namespace WordsLive.Songs
 
 		private void SongPresentation_Paint(object sender, CefSharp.OffScreen.OnPaintEventArgs e)
 		{
+			if (ignorePaint)
+			{
+				DebugMessage($"Paint event for rect ({e.DirtyRect.X}/{e.DirtyRect.Y}, {e.DirtyRect.Width}/{e.DirtyRect.Height}) IGNORED");
+				return;
+			}
 			DebugMessage($"Paint event for rect ({e.DirtyRect.X}/{e.DirtyRect.Y}, {e.DirtyRect.Width}/{e.DirtyRect.Height})");
 			this.Control.Dispatcher.InvokeAsync(() =>
 			{
