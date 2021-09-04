@@ -154,19 +154,13 @@
 		</ComponentGroup>
 		<ComponentGroup Id="CefSharpX86Components" Directory="APPLICATIONFOLDER">
 			<Component>
-				<File Source="$(var.WordsLive.TargetDir)cef.pak" Name="cef.pak" KeyPath="yes" />
+				<File Source="$(var.WordsLive.TargetDir)resources.pak" Name="resources.pak" KeyPath="yes" />
 			</Component>
 			<Component>
-				<File Source="$(var.WordsLive.TargetDir)cef_100_percent.pak" Name="cef_100_percent.pak" KeyPath="yes" />
+				<File Source="$(var.WordsLive.TargetDir)chrome_100_percent.pak" Name="chrome_100_percent.pak" KeyPath="yes" />
 			</Component>
 			<Component>
-				<File Source="$(var.WordsLive.TargetDir)cef_200_percent.pak" Name="cef_200_percent.pak" KeyPath="yes" />
-			</Component>
-			<Component>
-				<File Source="$(var.WordsLive.TargetDir)cef_extensions.pak" Name="cef_extensions.pak" KeyPath="yes" />
-			</Component>
-			<Component>
-				<File Source="$(var.WordsLive.TargetDir)devtools_resources.pak" Name="devtools_resources.pak" KeyPath="yes" />
+				<File Source="$(var.WordsLive.TargetDir)chrome_200_percent.pak" Name="chrome_200_percent.pak" KeyPath="yes" />
 			</Component>
 			<Component>
 				<File Source="$(var.WordsLive.TargetDir)icudtl.dat" Name="icudtl.dat" KeyPath="yes" />
@@ -200,6 +194,9 @@
 			</Component>
 			<Component>
 				<File Source="$(var.WordsLive.TargetDir)CefSharp.Core.dll" Name="CefSharp.Core.dll" KeyPath="yes" />
+			</Component>
+			<Component>
+				<File Source="$(var.WordsLive.TargetDir)CefSharp.Core.Runtime.dll" Name="CefSharp.Core.Runtime.dll" KeyPath="yes" />
 			</Component>
 			<Component>
 				<File Source="$(var.WordsLive.TargetDir)CefSharp.Offscreen.dll" Name="CefSharp.Offscreen.dll" KeyPath="yes" />
