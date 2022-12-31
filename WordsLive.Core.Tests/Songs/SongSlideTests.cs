@@ -28,7 +28,7 @@ namespace WordsLive.Core.Tests.Songs
 		protected SongPart part;
 		protected SongSlide slide;
 
-		public override void Init()
+		protected override void Init()
 		{
 			base.Init();
 			part = song.Parts.Single();

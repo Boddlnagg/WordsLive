@@ -33,7 +33,7 @@ namespace WordsLive.Core.Tests.Songs
 			Init();
 		}
 
-		public virtual void Init()
+		protected virtual void Init()
 		{
 			song = new Song(@"TestData\SimpleSong.ppl");
 			song.IsUndoEnabled = true;
