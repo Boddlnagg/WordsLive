@@ -188,6 +188,15 @@
 				<File Source="$(var.WordsLive.TargetDir)v8_context_snapshot.bin" Name="v8_context_snapshot.bin" KeyPath="yes" />
 			</Component>
 			<Component>
+				<File Source="$(var.WordsLive.TargetDir)vk_swiftshader.dll" Name="vk_swiftshader.dll" KeyPath="yes" />
+			</Component>
+			<Component>
+				<File Source="$(var.WordsLive.TargetDir)vk_swiftshader_icd.json" Name="vk_swiftshader_icd.json" KeyPath="yes" />
+			</Component>
+			<Component>
+				<File Source="$(var.WordsLive.TargetDir)vulkan-1.dll" Name="vulkan-1.dll" KeyPath="yes" />
+			</Component>
+			<Component>
 				<File Source="$(var.WordsLive.TargetDir)CefSharp.dll" Name="CefSharp.dll" KeyPath="yes" />
 			</Component>
 			<Component>
@@ -203,7 +212,7 @@
 				<File Source="$(var.WordsLive.TargetDir)CefSharp.Wpf.dll" Name="CefSharp.Wpf.dll" KeyPath="yes" />
 			</Component>
 			<Component>
-				<File Source="$(var.WordsLive.TargetDir)WordsLive.CefSharp.exe" Name="WordsLive.CefSharp.exe" KeyPath="yes" />
+				<File Source="$(var.WordsLive.TargetDir)CefSharp.BrowserSubprocess.exe" Name="CefSharp.BrowserSubprocess.exe" KeyPath="yes" />
 			</Component>
 			<Component>
 				<File Source="$(var.WordsLive.TargetDir)CefSharp.BrowserSubprocess.Core.dll" Name="CefSharp.BrowserSubprocess.Core.dll" KeyPath="yes" />

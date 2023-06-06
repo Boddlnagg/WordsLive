@@ -35,7 +35,7 @@ namespace WordsLive.Cef
 				var settings = new CefSettings
 				{
 					// see https://github.com/cefsharp/CefSharp/issues/1714 regarding x86
-					BrowserSubprocessPath = System.IO.Path.GetFullPath(@"WordsLive.CefSharp.exe"),
+					//BrowserSubprocessPath = System.IO.Path.GetFullPath(@"WordsLive.CefSharp.exe"),
 					LogSeverity = LogSeverity.Disable,
 					CefCommandLineArgs = { ["disable-gpu-shader-disk-cache"] = "1" },
 				};
