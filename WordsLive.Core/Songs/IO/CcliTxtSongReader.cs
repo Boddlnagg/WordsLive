@@ -58,6 +58,8 @@ namespace WordsLive.Core.Songs.IO
 						}
 						else if (verseLineList != null) // empty line and there were lyrics before -> create part
 						{
+							while (song.FindPartByName(verseType) != null)
+								verseType += " (*)"; // make it distinct
 							var part = new SongPart(song, verseType);
 							var slide = new SongSlide(song);
 							slide.Text = String.Join("\n", verseLineList.ToArray());
@@ -81,7 +83,18 @@ namespace WordsLive.Core.Songs.IO
 							{
 								lineType++;
 								string num = cleanLine.Split(' ').Last();
+								if (num.StartsWith("#"))
+									num = num.Substring(1);
 								song.CcliNumber = int.Parse(num);
+								if (verseLineList != null) // there were copyright lines *before* the CCLI line
+								{
+									copyright = verseType;
+									foreach (string copyrightLine in verseLineList)
+									{
+										copyright += "\n" + copyrightLine;
+									}
+
+								}
 							}
 							else if (verseLineList == null)
 							{
