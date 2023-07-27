@@ -239,8 +239,8 @@
     <Compile Include="Documents\XpsDocument.cs" />
     <Compile Include="Documents\XpsDocumentHandler.cs" />
     <Compile Include="Documents\XpsPresentation.cs" />
-    <Compile Include="Utils\SingleInstance.cs" />
     <Compile Include="Utils\TreeViewHelper.cs" />
+    <Compile Include="Utils\WpfSingleInstance.cs" />
     <EmbeddedResource Include="Resources\pdf.html" />
     <Page Include="AboutDialog.xaml">
       <SubType>Designer</SubType>

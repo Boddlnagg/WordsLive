@@ -109,6 +109,8 @@ namespace WordsLive
 
 		public MainWindow()
 		{
+			Application.Current.MainWindow = this;
+
 			CefManager.Init();
 
 			this.InitializeComponent();	

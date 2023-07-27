@@ -94,7 +94,7 @@ namespace WordsLive
 
 		private void DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
 		{
-			if (window.IsLoaded)
+			if (window != null && window.IsLoaded)
 			{
 				e.Handled = ShowUnhandledException(e.Exception, true);
 			}

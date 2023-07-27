@@ -39,15 +39,12 @@ namespace WordsLive
 			//System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo("en-US");
 			//System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
 
-			SingleInstance si = new SingleInstance(appGuid);
-			si.ArgsRecieved += (args) => (this.MainWindow as MainWindow).HandleCommandLineArgs(args);
-			si.Run(() =>
-			{
-				var win = new MainWindow();
-				win.Loaded += (sender, args) => win.HandleCommandLineArgs(e.Args);
-				win.Show();
-				return this.MainWindow;
-			}, e.Args);
+			WpfSingleInstance.Make(appGuid.ToString());
+			MainWindow window = new MainWindow();
+			window.Show();
+			window.HandleCommandLineArgs(e.Args);
+
+			// FIXME: open portfolio in first instance when a second instance is started with a command line argument
 		}
 	}
 }
