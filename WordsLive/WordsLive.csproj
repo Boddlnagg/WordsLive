@@ -569,10 +569,10 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="CefSharp.OffScreen">
-      <Version>113.1.40</Version>
+      <Version>116.0.230</Version>
     </PackageReference>
     <PackageReference Include="CefSharp.Wpf">
-      <Version>113.1.40</Version>
+      <Version>116.0.230</Version>
     </PackageReference>
     <PackageReference Include="DotNetZip">
       <Version>1.16.0</Version>
