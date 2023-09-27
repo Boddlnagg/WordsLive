@@ -14,5 +14,5 @@ This project is licensed under the terms of the GPLv3.
 ### How to build
 The following tools are required for building WordsLive:
 
-- Visual Studio 2017 or later (the free Community edition will work just fine)
+- Visual Studio 2019 or later (the free Community edition will work just fine)
 - [WiX Toolset](http://wixtoolset.org/) (for the installer – unload the installer project in VS to skip building it)
