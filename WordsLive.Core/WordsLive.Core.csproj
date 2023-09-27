@@ -59,13 +59,6 @@
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
   <ItemGroup>
-    <Reference Include="MonitoredUndo, Version=1.2.0.1, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\MUF.1.2.1\lib\net40\MonitoredUndo.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.13.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -144,7 +137,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\SongPresentation.js" />
@@ -157,6 +149,14 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\thirdparty\pdf.worker.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="MUF">
+      <Version>1.2.1</Version>
+    </PackageReference>
+    <PackageReference Include="Newtonsoft.Json">
+      <Version>13.0.2</Version>
+    </PackageReference>
   </ItemGroup>
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
 </Project>
