@@ -62,7 +62,7 @@
   <Target Name="BeforeBuild">
   </Target>-->
   <Target Name="AfterBuild">
-    <Torch Condition="%(CultureGroup.Identity) != 'en-US'" ToolPath="$(WixToolPath)" BaselineFile="$(TargetDir)en-US\$(TargetFileName)" UpdateFile="$(TargetDir)%(CultureGroup.OutputFolder)$(TargetFileName)" OutputFile="$(TargetDir)%(CultureGroup.Identity).mst" AdditionalOptions="-p -t Language" />
+    <Torch Condition="%(CultureGroup.Identity) != 'en-US'" ToolPath="$(WixToolPath)" BaselineFile="$(TargetDir)en-US\$(TargetFileName)" UpdateFile="$(TargetDir)%(CultureGroup.OutputFolder)$(TargetFileName)" OutputFile="$(TargetDir)%(CultureGroup.Identity).mst" AdditionalOptions="-p -t Language" RunAsSeparateProcess="$(RunWixToolsOutOfProc)" />
     <Copy SourceFiles="$(TargetDir)en-US\$(TargetFileName)" DestinationFolder="$(TargetDir)" />
     <Exec Command="cscript &quot;WiSubStg.vbs&quot; &quot;$(TargetDir)$(TargetFileName)&quot; &quot;$(TargetDir)de-DE.mst&quot; 1031" />
     <Exec Command="cscript &quot;WiLangId.vbs&quot; &quot;$(TargetDir)$(TargetFileName)&quot; Package 1033,1031" />
