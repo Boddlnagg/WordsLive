@@ -7,10 +7,11 @@
 	<Product Id="*" Name="$(var.ProductName)" Language="!(loc.LANG)" Version="!(bind.FileVersion.MainApplicationExe)" Manufacturer="$(var.Manufacturer)" UpgradeCode="$(var.UpgradeCode)">
 		<Package InstallerVersion="405" Compressed="yes" InstallScope="perMachine" />
 
-		<PropertyRef Id="NETFRAMEWORK40CLIENT"/>
+		<PropertyRef Id="NETFRAMEWORK45"/>
 
 		<Condition Message="!(loc.NetFxErrorMessage)">
-			<![CDATA[Installed OR NETFRAMEWORK40CLIENT]]>
+			<![CDATA[Installed OR NETFRAMEWORK45 >= "#461808"]]> <!-- See https://stackoverflow.com/questions/37401019/how-can-i-detect-whether-net-framework-4-6-1-or-higher-is-installed-in-wix
+                                                                and https://learn.microsoft.com/de-de/dotnet/framework/migration-guide/how-to-determine-which-versions-are-installed -->
 		</Condition>
 
 		<MajorUpgrade DowngradeErrorMessage="!(loc.DowngradeErrorMessage)" />

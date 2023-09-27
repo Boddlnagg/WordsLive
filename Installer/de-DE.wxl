@@ -2,5 +2,5 @@
 <WixLocalization Culture="de-DE" xmlns="http://schemas.microsoft.com/wix/2006/localization">
 	<String Id="LANG">1031</String>
 	<String Id="DowngradeErrorMessage">Eine neuere Version von [ProductName] ist bereits installiert.</String>
-	<String Id="NetFxErrorMessage">Diese Anwendung benötigt das .NET Framework 4.0. Bitte installieren Sie das .NET Framework und starten Sie die Installation erneut.</String>
+	<String Id="NetFxErrorMessage">Diese Anwendung benötigt das .NET Framework 4.7.2. Bitte installieren Sie das .NET Framework und starten Sie die Installation erneut.</String>
 </WixLocalization>
