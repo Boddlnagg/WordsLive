@@ -158,5 +158,4 @@
       <Version>13.0.2</Version>
     </PackageReference>
   </ItemGroup>
-  <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
 </Project>
