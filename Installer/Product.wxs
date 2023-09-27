@@ -35,7 +35,6 @@
 			<ComponentGroupRef Id="CefSharpX86LocalesComponents" />
 			<ComponentGroupRef Id="DataComponents" />
 			<ComponentGroupRef Id="I18nComponents"/>
-			<ComponentGroupRef Id="MicrosoftAssemblies"/>
 			<ComponentRef Id="StartMenuShortcutsFolder"/>
 		</Feature>
 
@@ -238,23 +237,6 @@
 		<ComponentGroup Id="I18nComponents">
 			<Component Directory="I18nDeFolder">
 				<File Source="$(var.WordsLive.TargetDir)de\WordsLive.resources.dll" Name="WordsLive.resources.dll" KeyPath="yes"/>
-			</Component>
-		</ComponentGroup>
-		<ComponentGroup Id="MicrosoftAssemblies" Directory="APPLICATIONFOLDER">
-			<Component>
-				<File Source="$(var.WordsLive.TargetDir)System.Security.Cryptography.Algorithms.dll" Name="System.Security.Cryptography.Algorithms.dll" KeyPath="yes"/>
-			</Component>
-			<Component>
-				<File Source="$(var.WordsLive.TargetDir)System.Security.Cryptography.X509Certificates.dll" Name="System.Security.Cryptography.X509Certificates.dll" KeyPath="yes"/>
-			</Component>
-			<Component>
-				<File Source="$(var.WordsLive.TargetDir)System.Security.Cryptography.Primitives.dll" Name="System.Security.Cryptography.Primitives.dll" KeyPath="yes"/>
-			</Component>
-			<Component>
-				<File Source="$(var.WordsLive.TargetDir)System.Security.Cryptography.Encoding.dll" Name="System.Security.Cryptography.Encoding.dll" KeyPath="yes"/>
-			</Component>
-			<Component>
-				<File Source="$(var.WordsLive.TargetDir)System.Net.Http.dll" Name="System.Net.Http.dll" KeyPath="yes"/>
 			</Component>
 		</ComponentGroup>
 	</Fragment>
