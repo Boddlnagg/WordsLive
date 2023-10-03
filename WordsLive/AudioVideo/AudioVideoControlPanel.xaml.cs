@@ -122,7 +122,7 @@ namespace WordsLive.AudioVideo
 			if (this.media == null)
 				throw new ArgumentException("media must not be null and of type VideoMedia");
 
-			if (Properties.Settings.Default.UseVlc && VlcController.IsAvailable)
+			if (Properties.Settings.Default.UseVlc/* && VlcController.IsAvailable*/)
 			{
 				var vlc = Controller.PresentationManager.CreatePresentation<AudioVideoPresentation<VlcWrapper>>();
 				Load(vlc);

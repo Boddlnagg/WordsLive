@@ -22,19 +22,19 @@
 			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
 			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-			 xmlns:vlc="clr-namespace:Vlc.DotNet.Wpf;assembly=Vlc.DotNet.Wpf"
+			 xmlns:vlc="clr-namespace:LibVLCSharp.WPF;assembly=LibVLCSharp.WPF"
 			 mc:Ignorable="d" 
 			 d:DesignHeight="300" d:DesignWidth="300"
 			 Background="Black">
 	<Grid>
-		<Grid.Background>
+		<!--<Grid.Background>
 			<VisualBrush Stretch="Uniform">
 				<VisualBrush.Visual>
 					<Image Source="{Binding ElementName=vlc, Path=VideoSource}" />
 				</VisualBrush.Visual>
 			</VisualBrush >
-		</Grid.Background>
-		<vlc:VlcControl x:Name="vlc" />
+		</Grid.Background>-->
+		<vlc:VideoView x:Name="vlc" />
 		<Rectangle x:Name="rect" Fill="Black"/>
 	</Grid>
 </av:BaseMediaControl>

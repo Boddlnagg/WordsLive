@@ -16,8 +16,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+using LibVLCSharp.Shared;
 using System;
-using Vlc.DotNet.Core.Medias;
 using WordsLive.Core;
 
 namespace WordsLive.AudioVideo
@@ -26,7 +26,7 @@ namespace WordsLive.AudioVideo
 	{
 		bool initialized = false;
 		bool loop = false;
-		LocationMedia media;
+		LibVLCSharp.Shared.Media media;
 		float durationMilliseconds;
 
 		static VlcWrapper()
@@ -37,45 +37,49 @@ namespace WordsLive.AudioVideo
 		public VlcWrapper()
 		{
 			InitializeComponent();
+			vlc.MediaPlayer = new MediaPlayer(VlcController.LibVLC);
 		}
 
-		private void OnMediaStateChange(MediaBase sender, Vlc.DotNet.Core.VlcEventArgs<Vlc.DotNet.Core.Interops.Signatures.LibVlc.Media.States> e)
+		private void OnMediaStateChange(object sender, MediaStateChangedEventArgs e)
 		{
-			if (e.Data == Vlc.DotNet.Core.Interops.Signatures.LibVlc.Media.States.Playing)
+			if (e.State == VLCState.Playing)
 			{
 				if (!initialized)
 				{
-					if (media.Duration.TotalMilliseconds > 0)
+					Controller.DispatchToMainWindow(() =>
 					{
-						if (!Autoplay)
-							vlc.Pause();
-						else
-							rect.Visibility = System.Windows.Visibility.Hidden;
+						if (media.Duration > 0)
+						{
+							if (!Autoplay)
+								vlc.MediaPlayer.Pause();
+							else
+								rect.Visibility = System.Windows.Visibility.Hidden;
 
-						durationMilliseconds = (float)media.Duration.TotalMilliseconds;
-						initialized = true;
-						OnMediaLoaded();
-					}
-					else if (media.SubItems.Count > 0)
-					{
-						var subItems = media.SubItems;
-						media.StateChanged -= OnMediaStateChange;
-						subItems[0].StateChanged += OnMediaStateChange;
-						media = subItems[0];
-						vlc.Media = subItems[0];
-						vlc.Play();
-					}
-					else
-					{
-						OnMediaFailed();
-					}
+							durationMilliseconds = (float)media.Duration;
+							initialized = true;
+							OnMediaLoaded();
+						}
+						else if (media.SubItems.Count > 0)
+						{
+							var subItems = media.SubItems;
+							media.StateChanged -= OnMediaStateChange;
+							subItems[0].StateChanged += OnMediaStateChange;
+							media = subItems[0];
+							vlc.MediaPlayer.Media = subItems[0];
+							vlc.MediaPlayer.Play();
+						}
+						else
+						{
+							OnMediaFailed();
+						}
+					});
 				}
 			}
 		}
 
 		public override void Load(Uri uri)
 		{
-			media = new LocationMedia(uri.AbsoluteUri);
+			media = new LibVLCSharp.Shared.Media(VlcController.LibVLC, uri);
 			if (uri.Scheme == "dshow")
 			{
 				var nvc = uri.ParseQueryString();
@@ -89,12 +93,12 @@ namespace WordsLive.AudioVideo
 
 			bool doLoop = false;
 
-			vlc.EncounteredError += (sender, args) =>
+			vlc.MediaPlayer.EncounteredError += (sender, args) =>
 			{
 				OnMediaFailed();
 			};
 
-			vlc.EndReached += (sender, args) =>
+			vlc.MediaPlayer.EndReached += (sender, args) =>
 			{
 				if (!loop)
 				{
@@ -107,7 +111,7 @@ namespace WordsLive.AudioVideo
 				}
 			};
 
-			vlc.Playing += (sender, args) =>
+			vlc.MediaPlayer.Playing += (sender, args) =>
 			{
 				if (loop && doLoop)
 				{
@@ -116,7 +120,8 @@ namespace WordsLive.AudioVideo
 				doLoop = false;
 			};
 
-			vlc.Media = media;
+			vlc.MediaPlayer.Media = media;
+			vlc.MediaPlayer.Play();
 		}
 
 		public override bool Loop
@@ -128,10 +133,10 @@ namespace WordsLive.AudioVideo
 			set
 			{
 				loop = value;
-				if (loop)
-					vlc.PlaybackMode = Vlc.DotNet.Core.Interops.Signatures.LibVlc.MediaListPlayer.PlaybackModes.Loop;
-				else
-					vlc.PlaybackMode = Vlc.DotNet.Core.Interops.Signatures.LibVlc.MediaListPlayer.PlaybackModes.Default;
+				//if (loop)
+				//	vlc.MediaPlayer.PlaybackMode = Vlc.DotNet.Core.Interops.Signatures.LibVlc.MediaListPlayer.PlaybackModes.Loop;
+				//else
+				//	vlc.MediaPlayer.PlaybackMode = Vlc.DotNet.Core.Interops.Signatures.LibVlc.MediaListPlayer.PlaybackModes.Default;
 			}
 		}
 
@@ -145,7 +150,7 @@ namespace WordsLive.AudioVideo
 		{
 			get
 			{
-				return media.Duration;
+				return TimeSpan.FromMilliseconds(media.Duration);
 			}
 		}
 
@@ -153,12 +158,12 @@ namespace WordsLive.AudioVideo
 		{
 			get
 			{
-				return (int)(vlc.Position * durationMilliseconds);
+				return (int)(vlc.MediaPlayer.Position * durationMilliseconds);
 			}
 			set
 			{
 				if (durationMilliseconds != 0)
-					vlc.Position = value / durationMilliseconds;
+					vlc.MediaPlayer.Position = value / durationMilliseconds;
 			}
 		}
 
@@ -167,11 +172,11 @@ namespace WordsLive.AudioVideo
 		{
 			get
 			{
-				return vlc.AudioProperties.Volume;
+				return vlc.MediaPlayer.Volume;
 			}
 			set
 			{
-				vlc.AudioProperties.Volume = value;
+				vlc.MediaPlayer.Volume = value;
 			}
 		}
 
@@ -209,27 +214,27 @@ namespace WordsLive.AudioVideo
 
 		public override void Play()
 		{
-			if (media.State == Vlc.DotNet.Core.Interops.Signatures.LibVlc.Media.States.Paused)
-				vlc.Play();
+			if (media.State == VLCState.Paused)
+				vlc.MediaPlayer.Play();
 			else
-				vlc.Media = media;
+				vlc.MediaPlayer.Media = media;
 
 			rect.Visibility = System.Windows.Visibility.Hidden;
 		}
 
 		public override void Pause()
 		{
-			if (media.State == Vlc.DotNet.Core.Interops.Signatures.LibVlc.Media.States.Playing)
-				vlc.Pause();
+			if (media.State == VLCState.Playing)
+				vlc.MediaPlayer.Pause();
 		}
 
 		public override void Stop()
 		{
-			if (!vlc.IsPaused)
+			if (media.State != VLCState.Paused) // correct?
 			{
 				// don't really stop, but pause and go back to beginning
 				// TODO: this does not work for livestreams (like WebCam)
-				vlc.Pause();
+				vlc.MediaPlayer.Pause();
 			}
 			OnSeekStart();
 			rect.Visibility = System.Windows.Visibility.Visible;
@@ -237,7 +242,7 @@ namespace WordsLive.AudioVideo
 
 		public override void Destroy()
 		{
-			vlc.Stop();
+			vlc.MediaPlayer.Stop();
 		}
 	}
 }
