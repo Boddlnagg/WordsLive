@@ -17,6 +17,7 @@
  */
 
 using System;
+using System.Collections.Generic;
 
 namespace WordsLive.Core.Songs
 {
@@ -35,7 +36,7 @@ namespace WordsLive.Core.Songs
 			}
 		}
 
-		public SongMedia(Uri uri) : base(uri) { }
+		public SongMedia(Uri uri, Dictionary<string, string> options) : base(uri, options) { }
 
 		/// <summary>
 		/// Load the song in order to have access to the title and background.
@@ -55,6 +56,55 @@ namespace WordsLive.Core.Songs
 		public override void Load()
 		{
 			Song = new Song(this.Uri);
+			translationDisplayOptions = Options.ContainsKey("displayTranslation") && Enum.TryParse(Options["displayTranslation"], out TranslationDisplayOptions value) ? value : TranslationDisplayOptions.Default;
 		}
+
+		private TranslationDisplayOptions translationDisplayOptions;
+
+		public TranslationDisplayOptions TranslationDisplayOptions
+		{
+			get
+			{
+				return translationDisplayOptions;
+			}
+			set
+			{
+				translationDisplayOptions = value;
+				if (translationDisplayOptions == TranslationDisplayOptions.Default)
+				{
+					Options.Remove("displayTranslation");
+				}
+				else
+				{
+					Options["displayTranslation"] = translationDisplayOptions.ToString();
+				}
+			}
+		}
+	}
+
+	/// <summary>
+	/// Represents the display options of the song's text translation.
+	/// </summary>
+	public enum TranslationDisplayOptions
+	{
+		/// <summary>
+		/// Show the song text in both its primary language and its translation (default).
+		/// </summary>
+		Default,
+
+		/// <summary>
+		/// Hide the translation, i.e., show only the song text in the primary language of the song file.
+		/// </summary>
+		Hide,
+
+		/// <summary>
+		/// Show only the translation of the song text.
+		/// </summary>
+		Only,
+
+		/// <summary>
+		/// Use translation of song text as primary language and use original text as its translation.
+		/// </summary>
+		Swap
 	}
 }

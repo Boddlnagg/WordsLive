@@ -42,7 +42,7 @@ namespace WordsLive.Songs
 
 		public override Media Handle(Uri uri, Dictionary<string, string> options)
 		{
-			return new SongMedia(DataManager.Songs.TryRewriteUri(uri));
+			return new SongMedia(DataManager.Songs.TryRewriteUri(uri), options);
 		}
 	}
 }
