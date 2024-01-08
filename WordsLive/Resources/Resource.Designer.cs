@@ -682,6 +682,15 @@ namespace WordsLive.Resources {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die CCLI Song Number (Translation): ähnelt.
+        /// </summary>
+        public static string eGridTranslationCcliSongNumberLabel {
+            get {
+                return ResourceManager.GetString("eGridTranslationCcliSongNumberLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Add song to current portfolio ähnelt.
         /// </summary>
         public static string eMenuAddToPortfolio {

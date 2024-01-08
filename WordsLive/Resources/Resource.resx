@@ -987,4 +987,7 @@
   <data name="generalSelectAll" xml:space="preserve">
     <value>Select All</value>
   </data>
+  <data name="eGridTranslationCcliSongNumberLabel" xml:space="preserve">
+    <value>CCLI Song Number (Translation):</value>
+  </data>
 </root>
