@@ -171,10 +171,13 @@ namespace WordsLive.Songs
 
 			if (!String.IsNullOrEmpty(Keyword))
 			{
-				int number;
-				if (song.CcliNumber.HasValue && int.TryParse(Keyword, out number))
+				if (int.TryParse(Keyword, out int number))
 				{
-					if (song.CcliNumber.Value == number)
+					if (song.CcliNumber.HasValue && song.CcliNumber.Value == number)
+					{
+						return true;
+					}
+					if (song.TranslationCcliNumber.HasValue && song.TranslationCcliNumber.Value == number)
 					{
 						return true;
 					}
