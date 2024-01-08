@@ -285,8 +285,8 @@
   <data name="vMenuShowSonglist" xml:space="preserve">
     <value>Open Song_list</value>
   </data>
-  <data name="vMenuSwapTextAndTranslation" xml:space="preserve">
-    <value>Swap text and translation</value>
+  <data name="vMenuChangeTranslationDisplayOptions" xml:space="preserve">
+    <value>Change translation display options (default→hidden→exclusive→swapped)</value>
   </data>
   <data name="vMenuUsePortfolioBackground" xml:space="preserve">
     <value>Use single background for all songs</value>

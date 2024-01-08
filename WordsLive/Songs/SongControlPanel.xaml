@@ -28,7 +28,7 @@
 	d:DesignWidth="200" d:DesignHeight="200"
 	Focusable="True">
 	<UserControl.CommandBindings>
-		<CommandBinding Command="{x:Static my:CustomCommands.SwapTextAndTranslation}" CanExecute="OnCanExecuteCommand"/>
+		<CommandBinding Command="{x:Static my:CustomCommands.ChangeTranslationDisplayOptions}" CanExecute="OnCanExecuteCommand" Executed="OnExecuteCommand"/>
 	</UserControl.CommandBindings>
 	<local:SongSlideListBox x:Name="SlideListBox" SelectionChanged="ListBox_SelectionChanged"
 							NavigateBeyondLast="ListBox_SelectNext" NavigateBeyondFirst="ListBox_SelectPrevious"/>

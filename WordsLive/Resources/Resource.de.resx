@@ -285,8 +285,8 @@
   <data name="vMenuShowSonglist" xml:space="preserve">
     <value>_Liederliste anzeigen</value>
   </data>
-  <data name="vMenuSwapTextAndTranslation" xml:space="preserve">
-    <value>Liedtext und Übersetzung tauschen</value>
+  <data name="vMenuChangeTranslationDisplayOptions" xml:space="preserve">
+    <value>Ändere Übersetzungsanzeige (normal→versteckt→alleinig→vertauscht)</value>
   </data>
   <data name="vMenuUsePortfolioBackground" xml:space="preserve">
     <value>Einen Hintergrund für alle Lieder verwenden</value>

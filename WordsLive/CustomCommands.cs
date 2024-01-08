@@ -232,6 +232,12 @@ namespace WordsLive
 			private set;
 		}
 
+		public static LocalizedRoutedCommand ChangeTranslationDisplayOptions
+		{
+			get;
+			private set;
+		}
+
 		public static LocalizedRoutedCommand SongSettings
 		{
 			get;
@@ -270,6 +276,7 @@ namespace WordsLive
 			Duplicate = new LocalizedRoutedCommand("Duplicate", t);
 			Split = new LocalizedRoutedCommand("Split", t);
 			SwapTextAndTranslation = new LocalizedRoutedCommand("SwapTextAndTranslation", t);
+			ChangeTranslationDisplayOptions = new LocalizedRoutedCommand("ChangeTranslationDisplayOptions", t);
 			SongSettings = new LocalizedRoutedCommand("SongSettings", t);
 			EditChords = new LocalizedRoutedCommand("EditChords", t);
 			AddMedia = new LocalizedRoutedCommand("AddMedia", t, new InputGestureCollection { new KeyGesture(Key.M, ModifierKeys.Control) });

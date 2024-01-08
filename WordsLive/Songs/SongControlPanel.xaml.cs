@@ -34,6 +34,7 @@ namespace WordsLive.Songs
 		}
 
 		private SongMedia song;
+		private bool translationDisplayOptionsApplied;
 		private bool finishedLoading;
 		private SongPresentation presentation;
 		private SongPresentation oldPresentation;
@@ -55,9 +56,30 @@ namespace WordsLive.Songs
 			bool updating = this.song != null; // whether we are updating
 
 			this.song = s;
+			this.translationDisplayOptionsApplied = false;
 
-			if (SwapTextAndTranslation)
-				DoSwapTextAndTranslation();
+			if (s.Song.HasTranslation)
+			{
+				switch (s.TranslationDisplayOptions)
+				{
+					case TranslationDisplayOptions.Hide:
+						DoRemoveTranslation();
+						translationDisplayOptionsApplied = true;
+						break;
+					case TranslationDisplayOptions.Only:
+						DoSwapTextAndTranslation();
+						DoRemoveTranslation();
+						translationDisplayOptionsApplied = true;
+						break;
+					case TranslationDisplayOptions.Swap:
+						DoSwapTextAndTranslation();
+						translationDisplayOptionsApplied = true;
+						break;
+					default:
+						// nothing to do
+						break;
+				}
+			}
 
 			Refresh(!updating);
 		}
@@ -205,25 +227,6 @@ namespace WordsLive.Songs
 			}
 		}
 
-		private bool swapTextAndTranslation;
-
-		public bool SwapTextAndTranslation
-		{
-			get
-			{
-				return swapTextAndTranslation;
-			}
-			set
-			{
-				if (value != swapTextAndTranslation)
-				{
-					swapTextAndTranslation = value;
-					DoSwapTextAndTranslation();
-					Refresh(false); // reload
-				}
-			}
-		}
-
 		private void DoSwapTextAndTranslation()
 		{
 			foreach (var part in song.Song.Parts)
@@ -232,19 +235,49 @@ namespace WordsLive.Songs
 			}
 		}
 
+		private void DoRemoveTranslation()
+		{
+			foreach (var part in song.Song.Parts)
+			{
+				part.RemoveTranslation();
+			}
+		}
+
 		private void OnCanExecuteCommand(object sender, System.Windows.Input.CanExecuteRoutedEventArgs e)
 		{
-			if (e.Command == CustomCommands.SwapTextAndTranslation)
+			if (e.Command == CustomCommands.ChangeTranslationDisplayOptions)
 			{
-				e.CanExecute = this.song.Song.HasTranslation; // swapping text and translation is only possible if the song has a translation
+				e.CanExecute = translationDisplayOptionsApplied || song.Song.HasTranslation;
+				e.Handled = true;
 			}
 		}
 
 		private void OnExecuteCommand(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
 		{
-			if (e.Command == CustomCommands.SwapTextAndTranslation)
+			if (e.Command == CustomCommands.ChangeTranslationDisplayOptions)
 			{
-				// nothing to do (this is handled by the SwapTextAndTranslation property)
+				// dummy implementation for now (no fancy dialog, just rotate through all options)
+				switch (song.TranslationDisplayOptions)
+				{
+					case TranslationDisplayOptions.Hide:
+						song.TranslationDisplayOptions = TranslationDisplayOptions.Only;
+						break;
+					case TranslationDisplayOptions.Only:
+						song.TranslationDisplayOptions = TranslationDisplayOptions.Swap;
+						break;
+					case TranslationDisplayOptions.Swap:
+						song.TranslationDisplayOptions = TranslationDisplayOptions.Default;
+						break;
+					default:
+						song.TranslationDisplayOptions = TranslationDisplayOptions.Hide;
+						break;
+				}
+
+				// reload
+				MediaManager.LoadMedia(song); // ugly hack to obtain the original text and translation (by reloading from disk)
+				Init(song);
+
+				e.Handled = true;
 			}
 		}
 

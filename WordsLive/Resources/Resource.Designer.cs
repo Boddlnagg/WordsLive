@@ -2329,6 +2329,15 @@ namespace WordsLive.Resources {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Change translation display options (default→hidden→exclusive→swapped) ähnelt.
+        /// </summary>
+        public static string vMenuChangeTranslationDisplayOptions {
+            get {
+                return ResourceManager.GetString("vMenuChangeTranslationDisplayOptions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Check for Updates ähnelt.
         /// </summary>
         public static string vMenuCheckForUpdates {
@@ -2523,15 +2532,6 @@ namespace WordsLive.Resources {
         public static string vMenuShowTestImage {
             get {
                 return ResourceManager.GetString("vMenuShowTestImage", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Swap text and translation ähnelt.
-        /// </summary>
-        public static string vMenuSwapTextAndTranslation {
-            get {
-                return ResourceManager.GetString("vMenuSwapTextAndTranslation", resourceCulture);
             }
         }
         

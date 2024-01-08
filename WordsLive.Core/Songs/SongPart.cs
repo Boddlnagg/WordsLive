@@ -299,6 +299,17 @@ namespace WordsLive.Core.Songs
 			}
 		}
 
+		public void RemoveTranslation()
+		{
+			using (Undo.ChangeFactory.Batch(this, "RemoveTranslation"))
+			{
+				foreach (var s in Slides)
+				{
+					s.RemoveTranslation();
+				}
+			}
+		}
+
 		/// <summary>
 		/// Creates a copy of this <see cref="SongPart"/>.
 		/// </summary>
