@@ -1,0 +1,51 @@
+﻿<!--
+- WordsLive - worship projection software
+- Copyright (c) 2014 Patrick Reisert
+- 
+- This program is free software: you can redistribute it and/or modify
+- it under the terms of the GNU General Public License as published by
+- the Free Software Foundation, either version 3 of the License, or
+- (at your option) any later version.
+- 
+- This program is distributed in the hope that it will be useful,
+- but WITHOUT ANY WARRANTY; without even the implied warranty of
+- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- GNU General Public License for more details.
+- 
+- You should have received a copy of the GNU General Public License
+- along with this program. If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<Window x:Class="WordsLive.Songs.TranslationDisplayOptionsWindow"
+		xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+		xmlns:coresongs="clr-namespace:WordsLive.Core.Songs;assembly=WordsLive.Core"
+		xmlns:resx="clr-namespace:WordsLive.Resources"
+		Title="{x:Static resx:Resource.tdoTitle}"
+		MinWidth="400" MinHeight="160" Width="450" Height="180"
+        WindowStyle="ToolWindow" WindowStartupLocation="CenterOwner">
+	<Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+		</Grid.RowDefinitions>
+        <Grid Grid.Row="0" VerticalAlignment="Top">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="Auto"/>
+				<ColumnDefinition Width="*"/>
+			</Grid.ColumnDefinitions>
+			<Grid.RowDefinitions>
+				<RowDefinition Height="Auto"/>
+				<RowDefinition Height="Auto"/>
+				<RowDefinition Height="Auto"/>
+				<RowDefinition Height="Auto"/>
+			</Grid.RowDefinitions>
+            <Label Grid.Column="0" Grid.Row="0" Content="{x:Static resx:Resource.tdoLabel}" HorizontalAlignment="Left" VerticalAlignment="Bottom" />
+            <RadioButton IsChecked="{Binding Path=TranslationDisplayOptions, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static coresongs:TranslationDisplayOptions.Default}}" Grid.Column="1" Grid.Row="0" Content="{x:Static resx:Resource.tdoOptionDefault}" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="4" />
+            <RadioButton IsChecked="{Binding Path=TranslationDisplayOptions, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static coresongs:TranslationDisplayOptions.Hide}}" Grid.Column="1" Grid.Row="1" Content="{x:Static resx:Resource.tdoOptionHide}" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="4" />
+            <RadioButton IsChecked="{Binding Path=TranslationDisplayOptions, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static coresongs:TranslationDisplayOptions.Only}}" Grid.Column="1" Grid.Row="2" Content="{x:Static resx:Resource.tdoOptionOnly}" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="4" />
+            <RadioButton IsChecked="{Binding Path=TranslationDisplayOptions, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static coresongs:TranslationDisplayOptions.Swap}}" Grid.Column="1" Grid.Row="3" Content="{x:Static resx:Resource.tdoOptionSwap}" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="4" />
+        </Grid>
+        <Button IsCancel="True" IsDefault="True" Grid.Row="2" Content="{x:Static resx:Resource.dialogOK}" Margin="0,0,6,6" Height="23" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="90" Name="OKButton" />
+	</Grid>
+</Window>

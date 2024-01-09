@@ -286,7 +286,7 @@
     <value>_Liederliste anzeigen</value>
   </data>
   <data name="vMenuChangeTranslationDisplayOptions" xml:space="preserve">
-    <value>Ändere Übersetzungsanzeige (normal→versteckt→alleinig→vertauscht)</value>
+    <value>Ändere Übersetzungsanzeige für Liedtext...</value>
   </data>
   <data name="vMenuUsePortfolioBackground" xml:space="preserve">
     <value>Einen Hintergrund für alle Lieder verwenden</value>
@@ -989,5 +989,23 @@
   </data>
   <data name="eGridTranslationCcliSongNumberLabel" xml:space="preserve">
     <value>CCLI Liednummer (Übersetzung):</value>
+  </data>
+  <data name="tdoLabel" xml:space="preserve">
+    <value>Anzeigeeinstellungen:</value>
+  </data>
+  <data name="tdoOptionDefault" xml:space="preserve">
+    <value>Standard (Originaltext und Übersetzung)</value>
+  </data>
+  <data name="tdoOptionHide" xml:space="preserve">
+    <value>Übersetzung ausblenden</value>
+  </data>
+  <data name="tdoOptionOnly" xml:space="preserve">
+    <value>Übersetzung alleine anzeigen</value>
+  </data>
+  <data name="tdoOptionSwap" xml:space="preserve">
+    <value>Originaltext und Übersetzung vertauschen</value>
+  </data>
+  <data name="tdoTitle" xml:space="preserve">
+    <value>Ändere Übersetzungsanzeige für Liedtext</value>
   </data>
 </root>

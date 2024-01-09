@@ -2149,6 +2149,60 @@ namespace WordsLive.Resources {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Display options: ähnelt.
+        /// </summary>
+        public static string tdoLabel {
+            get {
+                return ResourceManager.GetString("tdoLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Default (original text and translation) ähnelt.
+        /// </summary>
+        public static string tdoOptionDefault {
+            get {
+                return ResourceManager.GetString("tdoOptionDefault", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Hide translation ähnelt.
+        /// </summary>
+        public static string tdoOptionHide {
+            get {
+                return ResourceManager.GetString("tdoOptionHide", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Show only translation ähnelt.
+        /// </summary>
+        public static string tdoOptionOnly {
+            get {
+                return ResourceManager.GetString("tdoOptionOnly", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Swap original text and translation ähnelt.
+        /// </summary>
+        public static string tdoOptionSwap {
+            get {
+                return ResourceManager.GetString("tdoOptionSwap", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Change display options for song translation ähnelt.
+        /// </summary>
+        public static string tdoTitle {
+            get {
+                return ResourceManager.GetString("tdoTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Checking for updates failed. Please make sure that you are connected to the internet. ähnelt.
         /// </summary>
         public static string updMsgFailed {
@@ -2329,7 +2383,7 @@ namespace WordsLive.Resources {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Change translation display options (default→hidden→exclusive→swapped) ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die Change display options for song translation.. ähnelt.
         /// </summary>
         public static string vMenuChangeTranslationDisplayOptions {
             get {

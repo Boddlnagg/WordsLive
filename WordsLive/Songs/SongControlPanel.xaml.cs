@@ -17,6 +17,7 @@
  */
 
 using System;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using WordsLive.Core;
@@ -196,12 +197,12 @@ namespace WordsLive.Songs
 			}
 		}
 
-		private void ListBox_SelectNext(object sender, System.Windows.RoutedEventArgs e)
+		private void ListBox_SelectNext(object sender, RoutedEventArgs e)
 		{
 			Controller.TryActivateNext();
 		}
 
-		private void ListBox_SelectPrevious(object sender, System.Windows.RoutedEventArgs e)
+		private void ListBox_SelectPrevious(object sender, RoutedEventArgs e)
 		{
 			Controller.TryActivatePrevious();
 		}
@@ -244,7 +245,7 @@ namespace WordsLive.Songs
 			}
 		}
 
-		private void OnCanExecuteCommand(object sender, System.Windows.Input.CanExecuteRoutedEventArgs e)
+		private void OnCanExecuteCommand(object sender, CanExecuteRoutedEventArgs e)
 		{
 			if (e.Command == CustomCommands.ChangeTranslationDisplayOptions)
 			{
@@ -253,28 +254,15 @@ namespace WordsLive.Songs
 			}
 		}
 
-		private void OnExecuteCommand(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
+		private void OnExecuteCommand(object sender, ExecutedRoutedEventArgs e)
 		{
 			if (e.Command == CustomCommands.ChangeTranslationDisplayOptions)
 			{
-				// dummy implementation for now (no fancy dialog, just rotate through all options)
-				switch (song.TranslationDisplayOptions)
-				{
-					case TranslationDisplayOptions.Hide:
-						song.TranslationDisplayOptions = TranslationDisplayOptions.Only;
-						break;
-					case TranslationDisplayOptions.Only:
-						song.TranslationDisplayOptions = TranslationDisplayOptions.Swap;
-						break;
-					case TranslationDisplayOptions.Swap:
-						song.TranslationDisplayOptions = TranslationDisplayOptions.Default;
-						break;
-					default:
-						song.TranslationDisplayOptions = TranslationDisplayOptions.Hide;
-						break;
-				}
+				var win = new TranslationDisplayOptionsWindow(song);
+				win.Owner = Application.Current.MainWindow;
+				win.ShowDialog();
 
-				// reload
+				// apply new translation settings
 				MediaManager.LoadMedia(song); // ugly hack to obtain the original text and translation (by reloading from disk)
 				Init(song);
 

@@ -118,6 +118,9 @@
     </Compile>
     <Compile Include="Cef\CefRequestHandler.cs" />
     <Compile Include="Documents\PdfPresentationBridge.cs" />
+    <Compile Include="Songs\TranslationDisplayOptionsWindow.xaml.cs">
+      <DependentUpon>TranslationDisplayOptionsWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Songs\SongDisplayBridge.cs" />
     <Compile Include="Cef\SchemeHandlerFactory.cs" />
     <Compile Include="Cef\UriMapDataSource.cs" />
@@ -471,6 +474,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Cef\CefWrapper.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Songs\TranslationDisplayOptionsWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
