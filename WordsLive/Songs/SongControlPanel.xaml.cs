@@ -18,6 +18,7 @@
 
 using System;
 using System.Windows.Controls;
+using System.Windows.Input;
 using WordsLive.Core;
 using WordsLive.Core.Songs;
 
@@ -277,6 +278,9 @@ namespace WordsLive.Songs
 				MediaManager.LoadMedia(song); // ugly hack to obtain the original text and translation (by reloading from disk)
 				Init(song);
 
+				// make sure enabled state of the menu item is correct
+				Keyboard.Focus(this.SlideListBox);
+				
 				e.Handled = true;
 			}
 		}
