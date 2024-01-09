@@ -860,7 +860,12 @@ namespace WordsLive
 							continue;
 						}
 						string searchTerm;
-						if (song.Song.CcliNumber.HasValue)
+						if (song.Song.TranslationCcliNumber.HasValue &&
+							(song.TranslationDisplayOptions == TranslationDisplayOptions.Only || song.TranslationDisplayOptions == TranslationDisplayOptions.Swap))
+						{
+							searchTerm = song.Song.TranslationCcliNumber.Value.ToString();
+						}
+						else if (song.Song.CcliNumber.HasValue)
 						{
 							searchTerm = song.Song.CcliNumber.Value.ToString();
 						}
