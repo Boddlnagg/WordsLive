@@ -69,14 +69,18 @@ namespace WordsLive.Core.Songs
 			}
 			set
 			{
-				translationDisplayOptions = value;
-				if (translationDisplayOptions == TranslationDisplayOptions.Default)
+				if (value != translationDisplayOptions)
 				{
-					Options.Remove("displayTranslation");
-				}
-				else
-				{
-					Options["displayTranslation"] = translationDisplayOptions.ToString();
+					translationDisplayOptions = value;
+					if (translationDisplayOptions == TranslationDisplayOptions.Default)
+					{
+						Options.Remove("displayTranslation");
+					}
+					else
+					{
+						Options["displayTranslation"] = translationDisplayOptions.ToString();
+					}
+					OnOptionsChanged();
 				}
 			}
 		}

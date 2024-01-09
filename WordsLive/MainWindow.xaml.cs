@@ -122,6 +122,7 @@ namespace WordsLive
 
 			this.OrderListBox.DataContext = orderList;
 			this.orderList.ListChanged += (sender, args) => { portfolioModified = true; };
+			this.orderList.MediaOptionsChanged += (sender, args) => { portfolioModified = true; };
 
 			Controller.Initialize();
 		}
