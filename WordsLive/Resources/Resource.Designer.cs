@@ -2149,7 +2149,7 @@ namespace WordsLive.Resources {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Display options: ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die Display options ähnelt.
         /// </summary>
         public static string tdoLabel {
             get {
@@ -2190,6 +2190,15 @@ namespace WordsLive.Resources {
         public static string tdoOptionSwap {
             get {
                 return ResourceManager.GetString("tdoOptionSwap", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Preview ähnelt.
+        /// </summary>
+        public static string tdoPreviewLabel {
+            get {
+                return ResourceManager.GetString("tdoPreviewLabel", resourceCulture);
             }
         }
         

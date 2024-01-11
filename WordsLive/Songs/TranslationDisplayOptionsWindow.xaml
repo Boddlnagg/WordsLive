@@ -22,30 +22,40 @@
 		xmlns:coresongs="clr-namespace:WordsLive.Core.Songs;assembly=WordsLive.Core"
 		xmlns:resx="clr-namespace:WordsLive.Resources"
 		Title="{x:Static resx:Resource.tdoTitle}"
-		MinWidth="400" MinHeight="160" Width="450" Height="180"
-        WindowStyle="ToolWindow" WindowStartupLocation="CenterOwner">
+		MinWidth="400" MinHeight="200" Width="440" Height="210"
+		WindowStyle="ToolWindow" WindowStartupLocation="CenterOwner">
 	<Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="*"/>
+			<RowDefinition Height="Auto"/>
 		</Grid.RowDefinitions>
-        <Grid Grid.Row="0" VerticalAlignment="Top">
+		<Grid Grid.Row="0" VerticalAlignment="Top">
 			<Grid.ColumnDefinitions>
-				<ColumnDefinition Width="Auto"/>
+				<ColumnDefinition Width="4"/>
 				<ColumnDefinition Width="*"/>
+				<ColumnDefinition Width="Auto"/>
+				<ColumnDefinition Width="Auto"/>
 			</Grid.ColumnDefinitions>
 			<Grid.RowDefinitions>
 				<RowDefinition Height="Auto"/>
 				<RowDefinition Height="Auto"/>
 				<RowDefinition Height="Auto"/>
 				<RowDefinition Height="Auto"/>
+				<RowDefinition Height="Auto"/>
 			</Grid.RowDefinitions>
-            <Label Grid.Column="0" Grid.Row="0" Content="{x:Static resx:Resource.tdoLabel}" HorizontalAlignment="Left" VerticalAlignment="Bottom" />
-            <RadioButton IsChecked="{Binding Path=TranslationDisplayOptions, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static coresongs:TranslationDisplayOptions.Default}}" Grid.Column="1" Grid.Row="0" Content="{x:Static resx:Resource.tdoOptionDefault}" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="4" />
-            <RadioButton IsChecked="{Binding Path=TranslationDisplayOptions, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static coresongs:TranslationDisplayOptions.Hide}}" Grid.Column="1" Grid.Row="1" Content="{x:Static resx:Resource.tdoOptionHide}" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="4" />
-            <RadioButton IsChecked="{Binding Path=TranslationDisplayOptions, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static coresongs:TranslationDisplayOptions.Only}}" Grid.Column="1" Grid.Row="2" Content="{x:Static resx:Resource.tdoOptionOnly}" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="4" />
-            <RadioButton IsChecked="{Binding Path=TranslationDisplayOptions, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static coresongs:TranslationDisplayOptions.Swap}}" Grid.Column="1" Grid.Row="3" Content="{x:Static resx:Resource.tdoOptionSwap}" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="4" />
-        </Grid>
-        <Button IsCancel="True" IsDefault="True" Grid.Row="2" Content="{x:Static resx:Resource.dialogOK}" Margin="0,0,6,6" Height="23" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="90" Name="OKButton" />
+			<Label Grid.Column="2" Grid.Row="0" Grid.ColumnSpan="2" Content="{x:Static resx:Resource.tdoPreviewLabel}" HorizontalAlignment="Center" VerticalAlignment="Bottom" FontWeight="Bold" />
+			<Label Grid.Column="1" Grid.Row="0" Content="{x:Static resx:Resource.tdoLabel}" FontWeight="Bold" />
+			<RadioButton IsChecked="{Binding Path=TranslationDisplayOptions, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static coresongs:TranslationDisplayOptions.Default}}" Grid.Column="1" Grid.Row="1" Content="{x:Static resx:Resource.tdoOptionDefault}" Margin="6" />
+			<Label x:Name="PrimaryLanguageForDefault" Grid.Column="2" Grid.Row="1" Content="{Binding Path=Song.Language}" Margin="4,0,4,0" />
+			<Label x:Name="SecondaryLanguageForDefault" Grid.Column="3" Grid.Row="1" Content="{Binding Path=Song.TranslationLanguage}" Margin="4,0,4,0" />
+			<RadioButton IsChecked="{Binding Path=TranslationDisplayOptions, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static coresongs:TranslationDisplayOptions.Hide}}" Grid.Column="1" Grid.Row="2" Content="{x:Static resx:Resource.tdoOptionHide}" Margin="6" />
+			<Label x:Name="PrimaryLanguageForHide" Grid.Column="2" Grid.Row="2" Content="{Binding Path=Song.Language}" Margin="4,0,4,0" />
+			<RadioButton IsChecked="{Binding Path=TranslationDisplayOptions, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static coresongs:TranslationDisplayOptions.Only}}" Grid.Column="1" Grid.Row="3" Content="{x:Static resx:Resource.tdoOptionOnly}" Margin="6" />
+			<Label x:Name="PrimaryLanguageForOnly" Grid.Column="2" Grid.Row="3" Content="{Binding Path=Song.TranslationLanguage}" Margin="4,0,4,0" />
+			<RadioButton IsChecked="{Binding Path=TranslationDisplayOptions, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static coresongs:TranslationDisplayOptions.Swap}}" Grid.Column="1" Grid.Row="4" Content="{x:Static resx:Resource.tdoOptionSwap}" Margin="6" />
+			<Label x:Name="PrimaryLanguageForSwap" Grid.Column="2" Grid.Row="4" Content="{Binding Path=Song.TranslationLanguage}" Margin="4,0,4,0" />
+			<Label x:Name="SecondaryLanguageForSwap" Grid.Column="3" Grid.Row="4" Content="{Binding Path=Song.Language}" Margin="4,0,4,0" />
+		</Grid>
+		<Button IsCancel="True" IsDefault="True" Grid.Row="2" Content="{x:Static resx:Resource.dialogClose}" Margin="0,0,6,6" Height="23" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="90" Name="OKButton" />
 	</Grid>
 </Window>
