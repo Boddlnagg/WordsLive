@@ -395,7 +395,7 @@ namespace WordsLive.Editor
 				{
 					string text = Clipboard.GetText();
 					var firstNewline = text.IndexOf('\n');
-					if (firstNewline > 0 && text.Length >= firstNewline + 1)
+					if (firstNewline > 0 && text.Length >= firstNewline + 2)
 					{
 						var next = text[firstNewline + 1];
 						e.CanExecute = (next == '\n' || next == '\r') && text.Contains("CCLI");
