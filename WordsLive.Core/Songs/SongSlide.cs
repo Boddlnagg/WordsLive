@@ -252,11 +252,6 @@ namespace WordsLive.Core.Songs
 			}
 		}
 
-		public void RemoveTranslation()
-		{
-			this.Translation = null;
-		}
-
 		/// <summary>
 		/// Copies this slide.
 		/// </summary>

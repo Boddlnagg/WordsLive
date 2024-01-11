@@ -17,16 +17,24 @@
  */
 
 using System.Windows;
+using System.Windows.Controls;
 using WordsLive.Core.Songs;
 
 namespace WordsLive.Songs
 {
 	public partial class TranslationDisplayOptionsWindow : Window
 	{
-		public TranslationDisplayOptionsWindow(SongMedia songMedia)
+		public TranslationDisplayOptionsWindow(SongMedia songMedia, string language, string translationLanguage)
 		{
 			InitializeComponent();
 			DataContext = songMedia;
+
+			(FindName("PrimaryLanguageForDefault") as Label).Content = language;
+			(FindName("SecondaryLanguageForDefault") as Label).Content = translationLanguage;
+			(FindName("PrimaryLanguageForHide") as Label).Content = language;
+			(FindName("PrimaryLanguageForOnly") as Label).Content = translationLanguage;
+			(FindName("PrimaryLanguageForSwap") as Label).Content = translationLanguage;
+			(FindName("SecondaryLanguageForSwap") as Label).Content = language;
 		}
 	}
 }
