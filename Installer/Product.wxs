@@ -31,6 +31,7 @@
 			<ComponentGroupRef Id="ThirdPartyAssemblies" />
 			<ComponentGroupRef Id="VlcDotNetAssemblies" />
 			<ComponentGroupRef Id="PowerpointViewerLibComponents" />
+			<ComponentGroupRef Id="OfficeLibComponents" />
 			<ComponentGroupRef Id="CefSharpX86Components" />
 			<ComponentGroupRef Id="CefSharpX86LocalesComponents" />
 			<ComponentGroupRef Id="DataComponents" />
@@ -148,6 +149,14 @@
 			</Component>
 			<Component>
 				<File Source="$(var.WordsLive.TargetDir)PowerpointViewerLib.dll" Name="PowerpointViewerLib.dll" KeyPath="yes" />
+			</Component>
+		</ComponentGroup>
+		<ComponentGroup Id="OfficeLibComponents" Directory="APPLICATIONFOLDER">
+			<Component>
+				<File Source="$(var.WordsLive.TargetDir)Office.dll" Name="Office.dll" KeyPath="yes" />
+			</Component>
+			<Component>
+				<File Source="$(var.WordsLive.TargetDir)Microsoft.Office.Interop.PowerPoint.dll" Name="Microsoft.Office.Interop.PowerPoint.dll" KeyPath="yes" />
 			</Component>
 		</ComponentGroup>
 		<ComponentGroup Id="CefSharpX86Components" Directory="APPLICATIONFOLDER">
