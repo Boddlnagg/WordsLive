@@ -60,6 +60,7 @@
 		<CommandBinding Command="{x:Static local:CustomCommands.ShowTestImage}" Executed="OnExecuteCommand"/>
 		<CommandBinding Command="{x:Static local:CustomCommands.ShowNotification}" Executed="OnExecuteCommand"/>
 		<CommandBinding Command="{x:Static local:CustomCommands.CreateSlideshow}" Executed="OnExecuteCommand"/>
+		<CommandBinding Command="{x:Static local:CustomCommands.ChangeTranslationDisplayOptions}" Executed="OnExecuteCommand" CanExecute="OnCommandCanExecute"/>
 	</Window.CommandBindings>
 	<Grid x:Name="LayoutRoot">
 		<Grid.RowDefinitions>

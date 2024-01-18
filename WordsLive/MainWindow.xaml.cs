@@ -507,6 +507,10 @@ namespace WordsLive
 			{
 				e.CanExecute = Controller.PresentationManager.CurrentPresentation != null;
 			}
+			else if (e.Command == CustomCommands.ChangeTranslationDisplayOptions)
+			{
+				e.CanExecute = CurrentPanel is SongControlPanel && (CurrentPanel as SongControlPanel).CanChangeTranslationDisplayOptions();
+			}
 		}
 
 		private void OnExecuteCommand(object sender, ExecutedRoutedEventArgs e)
@@ -631,6 +635,10 @@ namespace WordsLive
 					media.CreateSlideshow(new Uri[] {}); // create empty slideshow
 					Controller.AddToPortfolio(slideshowUri);
 				}
+			}
+			else if (e.Command == CustomCommands.ChangeTranslationDisplayOptions)
+			{
+				(CurrentPanel as SongControlPanel).DoChangeTranslationDisplayOptions();
 			}
 		}
 

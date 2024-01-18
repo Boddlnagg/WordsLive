@@ -223,6 +223,20 @@ namespace WordsLive.Songs
 			}
 		}
 
+		public bool CanChangeTranslationDisplayOptions()
+		{
+			return originalTextAndTranslation != null && originalTextAndTranslation.HasTranslation;
+		}
+
+		public void DoChangeTranslationDisplayOptions()
+		{
+			var win = new TranslationDisplayOptionsWindow(song, originalTextAndTranslation.Language, originalTextAndTranslation.TranslationLanguage)
+			{
+				Owner = Application.Current.MainWindow
+			};
+			win.ShowDialog();
+		}
+
 		private void InitOriginalTextAndTranslation()
 		{
 			originalTextAndTranslation = new OriginalTextAndTranslation()
@@ -297,32 +311,6 @@ namespace WordsLive.Songs
 		{
 			ApplyTranslationDisplayOptions();
 			Refresh(false);
-		}
-
-		private void OnCanExecuteCommand(object sender, CanExecuteRoutedEventArgs e)
-		{
-			if (e.Command == CustomCommands.ChangeTranslationDisplayOptions)
-			{
-				e.CanExecute = originalTextAndTranslation != null && originalTextAndTranslation.HasTranslation;
-				e.Handled = true;
-			}
-		}
-
-		private void OnExecuteCommand(object sender, ExecutedRoutedEventArgs e)
-		{
-			if (e.Command == CustomCommands.ChangeTranslationDisplayOptions)
-			{
-				var win = new TranslationDisplayOptionsWindow(song, originalTextAndTranslation.Language, originalTextAndTranslation.TranslationLanguage)
-				{
-					Owner = Application.Current.MainWindow
-				};
-				win.ShowDialog();
-
-				// make sure enabled state of the menu item is correct
-				Keyboard.Focus(this.SlideListBox);
-				
-				e.Handled = true;
-			}
 		}
 
 		public void Close()
