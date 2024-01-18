@@ -70,7 +70,7 @@ namespace WordsLive.Songs
 			this.song = s;
 
 			InitOriginalTextAndTranslation();
-			ApplyTranslationDisplayOptions();
+			ApplyDisplayTextAndOrTranslation();
 
 			if (!updating)
 			{
@@ -223,14 +223,14 @@ namespace WordsLive.Songs
 			}
 		}
 
-		public bool CanChangeTranslationDisplayOptions()
+		public bool CanChangeDisplayTextAndOrTranslation()
 		{
 			return originalTextAndTranslation != null && originalTextAndTranslation.HasTranslation;
 		}
 
-		public void DoChangeTranslationDisplayOptions()
+		public void DoChangeDisplayTextAndOrTranslation()
 		{
-			var win = new TranslationDisplayOptionsWindow(song, originalTextAndTranslation.Language, originalTextAndTranslation.TranslationLanguage)
+			var win = new DisplayTextAndOrTranslationWindow(song, originalTextAndTranslation.Language, originalTextAndTranslation.TranslationLanguage)
 			{
 				Owner = Application.Current.MainWindow
 			};
@@ -256,7 +256,7 @@ namespace WordsLive.Songs
 			}
 		}
 
-		private void ApplyTranslationDisplayOptions()
+		private void ApplyDisplayTextAndOrTranslation()
 		{
 			if (!originalTextAndTranslation.HasTranslation)
 			{
@@ -268,18 +268,18 @@ namespace WordsLive.Songs
 			{
 				foreach (var s in part.Slides)
 				{
-					switch (song.TranslationDisplayOptions)
+					switch (song.DisplayTextAndOrTranslation)
 					{
-						case TranslationDisplayOptions.Default:
+						case DisplayTextAndOrTranslation.TextAndTranslation:
 							(s.Text, s.Translation) = (originalTextAndTranslation.SlideTexts[s], originalTextAndTranslation.SlideTranslations[s]);
 							break;
-						case TranslationDisplayOptions.Hide:
+						case DisplayTextAndOrTranslation.Text:
 							(s.Text, s.Translation) = (originalTextAndTranslation.SlideTexts[s], null);
 							break;
-						case TranslationDisplayOptions.Only:
+						case DisplayTextAndOrTranslation.Translation:
 							(s.Text, s.Translation) = (originalTextAndTranslation.SlideTranslations[s], null);
 							break;
-						case TranslationDisplayOptions.Swap:
+						case DisplayTextAndOrTranslation.TranslationAndText:
 							(s.Text, s.Translation) = (originalTextAndTranslation.SlideTranslations[s], originalTextAndTranslation.SlideTexts[s]);
 							break;
 						default:
@@ -288,18 +288,18 @@ namespace WordsLive.Songs
 				}
 			}
 
-			switch (song.TranslationDisplayOptions)
+			switch (song.DisplayTextAndOrTranslation)
 			{
-				case TranslationDisplayOptions.Default:
+				case DisplayTextAndOrTranslation.TextAndTranslation:
 					(song.Song.Language, song.Song.TranslationLanguage) = (originalTextAndTranslation.Language, originalTextAndTranslation.TranslationLanguage);
 					break;
-				case TranslationDisplayOptions.Hide:
+				case DisplayTextAndOrTranslation.Text:
 					(song.Song.Language, song.Song.TranslationLanguage) = (originalTextAndTranslation.Language, null);
 					break;
-				case TranslationDisplayOptions.Only:
+				case DisplayTextAndOrTranslation.Translation:
 					(song.Song.Language, song.Song.TranslationLanguage) = (originalTextAndTranslation.TranslationLanguage, null);
 					break;
-				case TranslationDisplayOptions.Swap:
+				case DisplayTextAndOrTranslation.TranslationAndText:
 					(song.Song.Language, song.Song.TranslationLanguage) = (originalTextAndTranslation.TranslationLanguage, originalTextAndTranslation.Language);
 					break;
 				default:
@@ -309,7 +309,7 @@ namespace WordsLive.Songs
 
 		private void SongOptionsChanged(object sender, EventArgs args)
 		{
-			ApplyTranslationDisplayOptions();
+			ApplyDisplayTextAndOrTranslation();
 			Refresh(false);
 		}
 

@@ -412,6 +412,69 @@ namespace WordsLive.Resources {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Display options ähnelt.
+        /// </summary>
+        public static string dttLabel {
+            get {
+                return ResourceManager.GetString("dttLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Text ähnelt.
+        /// </summary>
+        public static string dttOptionText {
+            get {
+                return ResourceManager.GetString("dttOptionText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Text and translation ähnelt.
+        /// </summary>
+        public static string dttOptionTextAndTranslation {
+            get {
+                return ResourceManager.GetString("dttOptionTextAndTranslation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Translation ähnelt.
+        /// </summary>
+        public static string dttOptionTranslation {
+            get {
+                return ResourceManager.GetString("dttOptionTranslation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Translation and text ähnelt.
+        /// </summary>
+        public static string dttOptionTranslationAndText {
+            get {
+                return ResourceManager.GetString("dttOptionTranslationAndText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Preview ähnelt.
+        /// </summary>
+        public static string dttPreviewLabel {
+            get {
+                return ResourceManager.GetString("dttPreviewLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Choose text/translation ähnelt.
+        /// </summary>
+        public static string dttTitle {
+            get {
+                return ResourceManager.GetString("dttTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Open in editor ähnelt.
         /// </summary>
         public static string eCommandOpenInEditor {
@@ -2149,69 +2212,6 @@ namespace WordsLive.Resources {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Display options ähnelt.
-        /// </summary>
-        public static string tdoLabel {
-            get {
-                return ResourceManager.GetString("tdoLabel", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Default (original text and translation) ähnelt.
-        /// </summary>
-        public static string tdoOptionDefault {
-            get {
-                return ResourceManager.GetString("tdoOptionDefault", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Hide translation ähnelt.
-        /// </summary>
-        public static string tdoOptionHide {
-            get {
-                return ResourceManager.GetString("tdoOptionHide", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Show only translation ähnelt.
-        /// </summary>
-        public static string tdoOptionOnly {
-            get {
-                return ResourceManager.GetString("tdoOptionOnly", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Swap original text and translation ähnelt.
-        /// </summary>
-        public static string tdoOptionSwap {
-            get {
-                return ResourceManager.GetString("tdoOptionSwap", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Preview ähnelt.
-        /// </summary>
-        public static string tdoPreviewLabel {
-            get {
-                return ResourceManager.GetString("tdoPreviewLabel", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Change display options for song translation ähnelt.
-        /// </summary>
-        public static string tdoTitle {
-            get {
-                return ResourceManager.GetString("tdoTitle", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Checking for updates failed. Please make sure that you are connected to the internet. ähnelt.
         /// </summary>
         public static string updMsgFailed {
@@ -2392,11 +2392,11 @@ namespace WordsLive.Resources {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Change display options for song translation.. ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die Choose text/translation... ähnelt.
         /// </summary>
-        public static string vMenuChangeTranslationDisplayOptions {
+        public static string vMenuChangeDisplayTextAndOrTranslation {
             get {
-                return ResourceManager.GetString("vMenuChangeTranslationDisplayOptions", resourceCulture);
+                return ResourceManager.GetString("vMenuChangeDisplayTextAndOrTranslation", resourceCulture);
             }
         }
         

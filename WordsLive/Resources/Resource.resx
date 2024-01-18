@@ -285,8 +285,8 @@
   <data name="vMenuShowSonglist" xml:space="preserve">
     <value>Open Song_list</value>
   </data>
-  <data name="vMenuChangeTranslationDisplayOptions" xml:space="preserve">
-    <value>Change display options for song translation..</value>
+  <data name="vMenuChangeDisplayTextAndOrTranslation" xml:space="preserve">
+    <value>Choose text/translation...</value>
   </data>
   <data name="vMenuUsePortfolioBackground" xml:space="preserve">
     <value>Use single background for all songs</value>
@@ -990,25 +990,25 @@
   <data name="eGridCcliSongNumberTranslationLabel" xml:space="preserve">
     <value>Song number translation:</value>
   </data>
-  <data name="tdoLabel" xml:space="preserve">
+  <data name="dttLabel" xml:space="preserve">
     <value>Display options</value>
   </data>
-  <data name="tdoOptionDefault" xml:space="preserve">
-    <value>Default (original text and translation)</value>
+  <data name="dttOptionTextAndTranslation" xml:space="preserve">
+    <value>Text and translation</value>
   </data>
-  <data name="tdoOptionHide" xml:space="preserve">
-    <value>Hide translation</value>
+  <data name="dttOptionText" xml:space="preserve">
+    <value>Text</value>
   </data>
-  <data name="tdoOptionOnly" xml:space="preserve">
-    <value>Show only translation</value>
+  <data name="dttOptionTranslation" xml:space="preserve">
+    <value>Translation</value>
   </data>
-  <data name="tdoOptionSwap" xml:space="preserve">
-    <value>Swap original text and translation</value>
+  <data name="dttOptionTranslationAndText" xml:space="preserve">
+    <value>Translation and text</value>
   </data>
-  <data name="tdoTitle" xml:space="preserve">
-    <value>Change display options for song translation</value>
+  <data name="dttTitle" xml:space="preserve">
+    <value>Choose text/translation</value>
   </data>
-  <data name="tdoPreviewLabel" xml:space="preserve">
+  <data name="dttPreviewLabel" xml:space="preserve">
     <value>Preview</value>
   </data>
 </root>

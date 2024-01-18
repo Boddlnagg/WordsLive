@@ -232,7 +232,7 @@ namespace WordsLive
 			private set;
 		}
 
-		public static LocalizedRoutedCommand ChangeTranslationDisplayOptions
+		public static LocalizedRoutedCommand ChangeDisplayTextAndOrTranslation
 		{
 			get;
 			private set;
@@ -276,7 +276,6 @@ namespace WordsLive
 			Duplicate = new LocalizedRoutedCommand("Duplicate", t);
 			Split = new LocalizedRoutedCommand("Split", t);
 			SwapTextAndTranslation = new LocalizedRoutedCommand("SwapTextAndTranslation", t);
-			ChangeTranslationDisplayOptions = new LocalizedRoutedCommand("ChangeTranslationDisplayOptions", t);
 			SongSettings = new LocalizedRoutedCommand("SongSettings", t);
 			EditChords = new LocalizedRoutedCommand("EditChords", t);
 			AddMedia = new LocalizedRoutedCommand("AddMedia", t, new InputGestureCollection { new KeyGesture(Key.M, ModifierKeys.Control) });
@@ -291,6 +290,7 @@ namespace WordsLive
 			CreateSlideshow = new LocalizedRoutedCommand("CreateSlideshow", t);
 			SubmitCcliOlr = new LocalizedRoutedCommand("SubmitCcliOlr", t);
 			SearchSongSelect = new LocalizedRoutedCommand("SearchSongSelect", t);
+			ChangeDisplayTextAndOrTranslation = new LocalizedRoutedCommand("ChangeDisplayTextAndOrTranslation", t);
 		}
 	}
 }

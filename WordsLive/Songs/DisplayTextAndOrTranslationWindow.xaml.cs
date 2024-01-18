@@ -22,19 +22,19 @@ using WordsLive.Core.Songs;
 
 namespace WordsLive.Songs
 {
-	public partial class TranslationDisplayOptionsWindow : Window
+	public partial class DisplayTextAndOrTranslationWindow : Window
 	{
-		public TranslationDisplayOptionsWindow(SongMedia songMedia, string language, string translationLanguage)
+		public DisplayTextAndOrTranslationWindow(SongMedia songMedia, string language, string translationLanguage)
 		{
 			InitializeComponent();
 			DataContext = songMedia;
 
-			(FindName("PrimaryLanguageForDefault") as Label).Content = language;
-			(FindName("SecondaryLanguageForDefault") as Label).Content = translationLanguage;
-			(FindName("PrimaryLanguageForHide") as Label).Content = language;
-			(FindName("PrimaryLanguageForOnly") as Label).Content = translationLanguage;
-			(FindName("PrimaryLanguageForSwap") as Label).Content = translationLanguage;
-			(FindName("SecondaryLanguageForSwap") as Label).Content = language;
+			(FindName("PrimaryLanguageForTextAndTranslation") as Label).Content = language;
+			(FindName("SecondaryLanguageForTextAndTranslation") as Label).Content = translationLanguage;
+			(FindName("PrimaryLanguageForText") as Label).Content = language;
+			(FindName("PrimaryLanguageForTranslation") as Label).Content = translationLanguage;
+			(FindName("PrimaryLanguageForTranslationAndText") as Label).Content = translationLanguage;
+			(FindName("SecondaryLanguageForTranslationAndText") as Label).Content = language;
 		}
 	}
 }

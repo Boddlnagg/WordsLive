@@ -60,7 +60,7 @@
 		<CommandBinding Command="{x:Static local:CustomCommands.ShowTestImage}" Executed="OnExecuteCommand"/>
 		<CommandBinding Command="{x:Static local:CustomCommands.ShowNotification}" Executed="OnExecuteCommand"/>
 		<CommandBinding Command="{x:Static local:CustomCommands.CreateSlideshow}" Executed="OnExecuteCommand"/>
-		<CommandBinding Command="{x:Static local:CustomCommands.ChangeTranslationDisplayOptions}" Executed="OnExecuteCommand" CanExecute="OnCommandCanExecute"/>
+		<CommandBinding Command="{x:Static local:CustomCommands.ChangeDisplayTextAndOrTranslation}" Executed="OnExecuteCommand" CanExecute="OnCommandCanExecute"/>
 	</Window.CommandBindings>
 	<Grid x:Name="LayoutRoot">
 		<Grid.RowDefinitions>
@@ -111,7 +111,7 @@
 			</MenuItem>
 			<MenuItem Header="{x:Static resx:Resource.vMenuActivePresentation}">
 				<MenuItem Header="{x:Static resx:Resource.vMenuRefresh}" Command="Refresh"/>
-				<MenuItem Header="{x:Static resx:Resource.vMenuChangeTranslationDisplayOptions}" Command="{x:Static local:CustomCommands.ChangeTranslationDisplayOptions}"/>
+				<MenuItem Header="{x:Static resx:Resource.vMenuChangeDisplayTextAndOrTranslation}" Command="{x:Static local:CustomCommands.ChangeDisplayTextAndOrTranslation}"/>
 			</MenuItem>
 			<MenuItem Header="{x:Static resx:Resource.vMenuProjection}">
 				<MenuItem Header="{x:Static resx:Resource.vMenuHidePresentation}" Command="{x:Static local:CustomCommands.HidePresentation}" IsChecked="{Binding Source={x:Static local:Controller.PresentationManager}, Path=Status, Mode=OneWay, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static local:PresentationStatus.Hide}}"/>

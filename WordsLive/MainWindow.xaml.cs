@@ -507,9 +507,9 @@ namespace WordsLive
 			{
 				e.CanExecute = Controller.PresentationManager.CurrentPresentation != null;
 			}
-			else if (e.Command == CustomCommands.ChangeTranslationDisplayOptions)
+			else if (e.Command == CustomCommands.ChangeDisplayTextAndOrTranslation)
 			{
-				e.CanExecute = CurrentPanel is SongControlPanel && (CurrentPanel as SongControlPanel).CanChangeTranslationDisplayOptions();
+				e.CanExecute = CurrentPanel is SongControlPanel && (CurrentPanel as SongControlPanel).CanChangeDisplayTextAndOrTranslation();
 			}
 		}
 
@@ -636,9 +636,9 @@ namespace WordsLive
 					Controller.AddToPortfolio(slideshowUri);
 				}
 			}
-			else if (e.Command == CustomCommands.ChangeTranslationDisplayOptions)
+			else if (e.Command == CustomCommands.ChangeDisplayTextAndOrTranslation)
 			{
-				(CurrentPanel as SongControlPanel).DoChangeTranslationDisplayOptions();
+				(CurrentPanel as SongControlPanel).DoChangeDisplayTextAndOrTranslation();
 			}
 		}
 
@@ -870,7 +870,7 @@ namespace WordsLive
 						}
 						string searchTerm;
 						if (song.Song.TranslationCcliNumber.HasValue &&
-							(song.TranslationDisplayOptions == TranslationDisplayOptions.Only || song.TranslationDisplayOptions == TranslationDisplayOptions.Swap))
+							(song.DisplayTextAndOrTranslation == DisplayTextAndOrTranslation.Translation || song.DisplayTextAndOrTranslation == DisplayTextAndOrTranslation.TranslationAndText))
 						{
 							searchTerm = song.Song.TranslationCcliNumber.Value.ToString();
 						}

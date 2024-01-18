@@ -23,6 +23,8 @@ namespace WordsLive.Core.Songs
 {
 	public class SongMedia : Media
 	{
+		private static readonly string DisplayTextAndOrTranslationKey = "displayTextAndOrTranslation";
+
 		public Song Song { get; private set; }
 
 		/// <summary>
@@ -56,29 +58,29 @@ namespace WordsLive.Core.Songs
 		public override void Load()
 		{
 			Song = new Song(this.Uri);
-			translationDisplayOptions = Options.ContainsKey("displayTranslation") && Enum.TryParse(Options["displayTranslation"], out TranslationDisplayOptions value) ? value : TranslationDisplayOptions.Default;
+			displayTextAndOrTranslation = Options.ContainsKey(DisplayTextAndOrTranslationKey) && Enum.TryParse(Options[DisplayTextAndOrTranslationKey], out DisplayTextAndOrTranslation value) ? value : DisplayTextAndOrTranslation.TextAndTranslation;
 		}
 
-		private TranslationDisplayOptions translationDisplayOptions;
+		private DisplayTextAndOrTranslation displayTextAndOrTranslation;
 
-		public TranslationDisplayOptions TranslationDisplayOptions
+		public DisplayTextAndOrTranslation DisplayTextAndOrTranslation
 		{
 			get
 			{
-				return translationDisplayOptions;
+				return displayTextAndOrTranslation;
 			}
 			set
 			{
-				if (value != translationDisplayOptions)
+				if (value != displayTextAndOrTranslation)
 				{
-					translationDisplayOptions = value;
-					if (translationDisplayOptions == TranslationDisplayOptions.Default)
+					displayTextAndOrTranslation = value;
+					if (displayTextAndOrTranslation == DisplayTextAndOrTranslation.TextAndTranslation)
 					{
-						Options.Remove("displayTranslation");
+						Options.Remove(DisplayTextAndOrTranslationKey);
 					}
 					else
 					{
-						Options["displayTranslation"] = translationDisplayOptions.ToString();
+						Options[DisplayTextAndOrTranslationKey] = displayTextAndOrTranslation.ToString();
 					}
 					OnOptionsChanged();
 				}
@@ -87,28 +89,28 @@ namespace WordsLive.Core.Songs
 	}
 
 	/// <summary>
-	/// Represents the display options of the song's text translation.
+	/// Represents the display options of the song's text and its translation.
 	/// </summary>
-	public enum TranslationDisplayOptions
+	public enum DisplayTextAndOrTranslation
 	{
 		/// <summary>
-		/// Show the song text in both its primary language and its translation (default).
+		/// Show the text and its translation (default).
 		/// </summary>
-		Default,
+		TextAndTranslation,
 
 		/// <summary>
-		/// Hide the translation, i.e., show only the song text in the primary language of the song file.
+		/// Show the text but without its translation.
 		/// </summary>
-		Hide,
+		Text,
 
 		/// <summary>
-		/// Show only the translation of the song text.
+		/// Show the translation but not the original text.
 		/// </summary>
-		Only,
+		Translation,
 
 		/// <summary>
-		/// Use translation of song text as primary language and use original text as its translation.
+		/// Show translation and text (i.e., they are swapped).
 		/// </summary>
-		Swap
+		TranslationAndText
 	}
 }

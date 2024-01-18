@@ -285,8 +285,8 @@
   <data name="vMenuShowSonglist" xml:space="preserve">
     <value>_Liederliste anzeigen</value>
   </data>
-  <data name="vMenuChangeTranslationDisplayOptions" xml:space="preserve">
-    <value>Ändere Übersetzungsanzeige für Liedtext...</value>
+  <data name="vMenuChangeDisplayTextAndOrTranslation" xml:space="preserve">
+    <value>Anzeige Liedtext/Übersetzung...</value>
   </data>
   <data name="vMenuUsePortfolioBackground" xml:space="preserve">
     <value>Einen Hintergrund für alle Lieder verwenden</value>
@@ -990,25 +990,25 @@
   <data name="eGridCcliSongNumberTranslationLabel" xml:space="preserve">
     <value>Lied-Nr. Übersetzung:</value>
   </data>
-  <data name="tdoLabel" xml:space="preserve">
+  <data name="dttLabel" xml:space="preserve">
     <value>Anzeigeeinstellungen</value>
   </data>
-  <data name="tdoOptionDefault" xml:space="preserve">
-    <value>Standard (Originaltext und Übersetzung)</value>
+  <data name="dttOptionTextAndTranslation" xml:space="preserve">
+    <value>Liedtext und Übersetzung</value>
   </data>
-  <data name="tdoOptionHide" xml:space="preserve">
-    <value>Übersetzung ausblenden</value>
+  <data name="dttOptionText" xml:space="preserve">
+    <value>Liedtext</value>
   </data>
-  <data name="tdoOptionOnly" xml:space="preserve">
-    <value>Übersetzung alleine anzeigen</value>
+  <data name="dttOptionTranslation" xml:space="preserve">
+    <value>Übersetzung</value>
   </data>
-  <data name="tdoOptionSwap" xml:space="preserve">
-    <value>Originaltext und Übersetzung vertauschen</value>
+  <data name="dttOptionTranslationAndText" xml:space="preserve">
+    <value>Übersetzung und Liedtext</value>
   </data>
-  <data name="tdoTitle" xml:space="preserve">
-    <value>Ändere Übersetzungsanzeige für Liedtext</value>
+  <data name="dttTitle" xml:space="preserve">
+    <value>Anzeige Liedtext/Übersetzung</value>
   </data>
-  <data name="tdoPreviewLabel" xml:space="preserve">
+  <data name="dttPreviewLabel" xml:space="preserve">
     <value>Vorschau</value>
   </data>
 </root>
