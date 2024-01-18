@@ -22,7 +22,7 @@
 		xmlns:coresongs="clr-namespace:WordsLive.Core.Songs;assembly=WordsLive.Core"
 		xmlns:resx="clr-namespace:WordsLive.Resources"
 		Title="{x:Static resx:Resource.tdoTitle}"
-		MinWidth="400" MinHeight="200" Width="440" Height="210"
+		SizeToContent="WidthAndHeight"
 		WindowStyle="ToolWindow" WindowStartupLocation="CenterOwner">
 	<Grid>
 		<Grid.RowDefinitions>
