@@ -430,11 +430,20 @@ namespace WordsLive.Resources {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die CCLI Song Number: ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die Song number text: ähnelt.
         /// </summary>
         public static string eGridCcliSongNumberLabel {
             get {
                 return ResourceManager.GetString("eGridCcliSongNumberLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Song number translation: ähnelt.
+        /// </summary>
+        public static string eGridCcliSongNumberTranslationLabel {
+            get {
+                return ResourceManager.GetString("eGridCcliSongNumberTranslationLabel", resourceCulture);
             }
         }
         
@@ -678,15 +687,6 @@ namespace WordsLive.Resources {
         public static string eGridTranslation {
             get {
                 return ResourceManager.GetString("eGridTranslation", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die CCLI Song Number (Translation): ähnelt.
-        /// </summary>
-        public static string eGridTranslationCcliSongNumberLabel {
-            get {
-                return ResourceManager.GetString("eGridTranslationCcliSongNumberLabel", resourceCulture);
             }
         }
         

@@ -958,7 +958,7 @@
     <value>Use PowerPoint Viewer even if Office PowerPoint is available</value>
   </data>
   <data name="eGridCcliSongNumberLabel" xml:space="preserve">
-    <value>CCLI Song Number:</value>
+    <value>Song number text:</value>
   </data>
   <data name="eGridCcliViewInSongSelect" xml:space="preserve">
     <value>View song in SongSelect</value>
@@ -987,8 +987,8 @@
   <data name="generalSelectAll" xml:space="preserve">
     <value>Select All</value>
   </data>
-  <data name="eGridTranslationCcliSongNumberLabel" xml:space="preserve">
-    <value>CCLI Song Number (Translation):</value>
+  <data name="eGridCcliSongNumberTranslationLabel" xml:space="preserve">
+    <value>Song number translation:</value>
   </data>
   <data name="tdoLabel" xml:space="preserve">
     <value>Display options</value>
