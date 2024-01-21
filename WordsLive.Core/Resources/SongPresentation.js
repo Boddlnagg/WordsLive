@@ -210,7 +210,7 @@ SongPresentation.prototype.showSlide = function (slide) {
 				transLine = '';
 
 			inner.append($('<span>').append(this.parseLine(textLine, true)));
-			inner.append($('<span>').addClass('song-trans').append(this.parseLine(transLine, false)));
+			inner.append($('<span>').addClass('song-trans').append(this.parseLine(transLine, true, true)));
 		}
 	} else {
 		for (i = 0; i < lines.length; i++) {
@@ -281,7 +281,7 @@ SongPresentation.prototype.showSlide = function (slide) {
 }
 
 // parses chords in a line of the song text
-SongPresentation.prototype.parseLine = function (line, parseChords) {
+SongPresentation.prototype.parseLine = function (line, parseChords, ignoreChords = false) {
 	var result = new Array();
 	var index = 0; // current index in result array
 
@@ -315,7 +315,7 @@ SongPresentation.prototype.parseLine = function (line, parseChords) {
 			chordlen = end - (i + 1) + 2; // length of '[Chord]'
 
 			result[index++] = line.substring(start, pos); // append text to result
-			if (this.showChords) {
+			if (this.showChords && !ignoreChords) {
 				var chord = line.substring(pos + 1, pos + chordlen - 1);
 
 				// abusing the <b> tag for chords for brevity
