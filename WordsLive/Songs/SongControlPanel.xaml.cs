@@ -267,19 +267,21 @@ namespace WordsLive.Songs
 			{
 				foreach (var s in part.Slides)
 				{
+					_ = originalTextAndTranslation.SlideTexts.TryGetValue(s, out string text);
+					_ = originalTextAndTranslation.SlideTranslations.TryGetValue(s, out string translation);
 					switch (song.DisplayTextAndOrTranslation)
 					{
 						case DisplayTextAndOrTranslation.TextAndTranslation:
-							(s.Text, s.Translation) = (originalTextAndTranslation.SlideTexts[s], originalTextAndTranslation.SlideTranslations[s]);
+							(s.Text, s.Translation) = (text, translation);
 							break;
 						case DisplayTextAndOrTranslation.Text:
-							(s.Text, s.Translation) = (originalTextAndTranslation.SlideTexts[s], null);
+							(s.Text, s.Translation) = (text, null);
 							break;
 						case DisplayTextAndOrTranslation.Translation:
-							(s.Text, s.Translation) = (originalTextAndTranslation.SlideTranslations[s], null);
+							(s.Text, s.Translation) = (translation, null);
 							break;
 						case DisplayTextAndOrTranslation.TranslationAndText:
-							(s.Text, s.Translation) = (originalTextAndTranslation.SlideTranslations[s], originalTextAndTranslation.SlideTexts[s]);
+							(s.Text, s.Translation) = (translation, text);
 							break;
 						default:
 							throw new NotImplementedException();
