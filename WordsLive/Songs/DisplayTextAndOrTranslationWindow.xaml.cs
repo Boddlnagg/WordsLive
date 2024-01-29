@@ -17,7 +17,6 @@
  */
 
 using System.Windows;
-using System.Windows.Controls;
 using WordsLive.Core.Songs;
 
 namespace WordsLive.Songs
@@ -29,12 +28,12 @@ namespace WordsLive.Songs
 			InitializeComponent();
 			DataContext = songMedia;
 
-			(FindName("PrimaryLanguageForTextAndTranslation") as Label).Content = language;
-			(FindName("SecondaryLanguageForTextAndTranslation") as Label).Content = translationLanguage;
-			(FindName("PrimaryLanguageForText") as Label).Content = language;
-			(FindName("PrimaryLanguageForTranslation") as Label).Content = translationLanguage;
-			(FindName("PrimaryLanguageForTranslationAndText") as Label).Content = translationLanguage;
-			(FindName("SecondaryLanguageForTranslationAndText") as Label).Content = language;
+			PrimaryLanguageForTextAndTranslation.Content = language;
+			SecondaryLanguageForTextAndTranslation.Content = translationLanguage;
+			PrimaryLanguageForText.Content = language;
+			PrimaryLanguageForTranslation.Content = translationLanguage;
+			PrimaryLanguageForTranslationAndText.Content = translationLanguage;
+			SecondaryLanguageForTranslationAndText.Content = language;
 		}
 	}
 }
