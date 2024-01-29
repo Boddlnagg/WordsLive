@@ -41,6 +41,12 @@ namespace WordsLive.Editor
 			{
 				this.PartName = this.part.Name;
 			}
+
+			this.Loaded += delegate
+			{
+				this.newNameTextBox.Focus();
+				this.newNameTextBox.SelectAll();
+			};
 		}
 		
 		public string PartName

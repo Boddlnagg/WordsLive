@@ -35,6 +35,12 @@ namespace WordsLive.Editor
 
 			this.DataContext = this;
 			this.FilenameWithoutExtension = name;
+
+			this.Loaded += delegate
+			{
+				this.filenameTextBox.Focus();
+				this.filenameTextBox.SelectAll();
+			};
 		}
 
 		public string FilenameWithoutExtension
