@@ -25,8 +25,7 @@
 		MinWidth="300" MaxWidth="500"
 		ShowInTaskbar="False"
 		WindowStartupLocation="CenterOwner" 
-		WindowStyle="SingleBorderWindow"
-		FocusManager.FocusedElement="{Binding ElementName=newNameTextBox}">
+		WindowStyle="SingleBorderWindow">
 	<StackPanel Orientation="Vertical">
 		<Label HorizontalAlignment="Left" VerticalAlignment="Top" Content="{x:Static resx:Resource.rsNewNameLabel}"/>
 		<TextBox x:Name="newNameTextBox" Height="Auto" Margin="5" Style="{StaticResource textBoxInError}">

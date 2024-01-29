@@ -44,6 +44,12 @@ namespace WordsLive.Editor
             InitializeComponent();
             this.SongName = songName;
             this.DataContext = this;
+
+            this.Loaded += delegate
+            {
+                this.newNameTextBox.Focus();
+                this.newNameTextBox.SelectAll();
+            };
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
