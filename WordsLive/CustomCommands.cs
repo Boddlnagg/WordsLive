@@ -232,6 +232,12 @@ namespace WordsLive
 			private set;
 		}
 
+		public static LocalizedRoutedCommand ChangeDisplayTextAndOrTranslation
+		{
+			get;
+			private set;
+		}
+
 		public static LocalizedRoutedCommand SongSettings
 		{
 			get;
@@ -284,6 +290,7 @@ namespace WordsLive
 			CreateSlideshow = new LocalizedRoutedCommand("CreateSlideshow", t);
 			SubmitCcliOlr = new LocalizedRoutedCommand("SubmitCcliOlr", t);
 			SearchSongSelect = new LocalizedRoutedCommand("SearchSongSelect", t);
+			ChangeDisplayTextAndOrTranslation = new LocalizedRoutedCommand("ChangeDisplayTextAndOrTranslation", t);
 		}
 	}
 }

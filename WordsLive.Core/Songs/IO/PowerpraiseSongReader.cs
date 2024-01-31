@@ -108,11 +108,14 @@ namespace WordsLive.Core.Songs.IO
 			else
 				song.Comment = String.Empty;
 
-			int ccli;
-			if (general.Element("ccli") != null && int.TryParse(general.Element("ccli").Value, out ccli))
+			if (general.Element("ccli") != null && int.TryParse(general.Element("ccli").Value, out int ccli))
 				song.CcliNumber = ccli;
 			else
 				song.CcliNumber = null;
+			if (general.Element("translationccli") != null && int.TryParse(general.Element("translationccli").Value, out int translationccli))
+				song.TranslationCcliNumber = translationccli;
+			else
+				song.TranslationCcliNumber = null;
 
 			foreach (var part in root.Element("songtext").Elements("part"))
 			{

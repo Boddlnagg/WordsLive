@@ -47,6 +47,7 @@ namespace WordsLive.Core.Songs
 		private string comment;
 		private string copyright;
 		private int? ccliNumber;
+		private int? translationCcliNumber;
 		private SongFormatting formatting;
 
 		private bool isModified;
@@ -297,6 +298,27 @@ namespace WordsLive.Core.Songs
 					OnPropertyChanging("CcliNumber");
 					ccliNumber = value;
 					OnPropertyChanged("CcliNumber");
+				}
+			}
+		}
+
+		/// <summary>
+		/// Gets or sets the CCLI song number of this song's translation.
+		/// </summary>
+		public int? TranslationCcliNumber
+		{
+			get
+			{
+				return translationCcliNumber;
+			}
+			set
+			{
+				if (value != translationCcliNumber)
+				{
+					Undo.ChangeFactory.OnChanging(this, "TranslationCcliNumber", translationCcliNumber, value);
+					OnPropertyChanging("TranslationCcliNumber");
+					translationCcliNumber = value;
+					OnPropertyChanged("TranslationCcliNumber");
 				}
 			}
 		}

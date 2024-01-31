@@ -44,6 +44,7 @@ namespace WordsLive.Core.Songs.IO
 					new XElement("language", song.Language),
 					String.IsNullOrWhiteSpace(song.TranslationLanguage) ? null : new XElement("translationlanguage", song.TranslationLanguage),
 					song.CcliNumber == null ? null : new XElement("ccli", song.CcliNumber),
+					song.TranslationCcliNumber == null ? null : new XElement("translationccli", song.TranslationCcliNumber),
 					String.IsNullOrEmpty(song.Comment) ? null : new XElement("comment", song.Comment)),
 				new XElement("songtext",
 					from part in song.Parts

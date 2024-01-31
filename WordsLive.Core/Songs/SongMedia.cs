@@ -17,11 +17,14 @@
  */
 
 using System;
+using System.Collections.Generic;
 
 namespace WordsLive.Core.Songs
 {
 	public class SongMedia : Media
 	{
+		private static readonly string DisplayTextAndOrTranslationKey = "displayTextAndOrTranslation";
+
 		public Song Song { get; private set; }
 
 		/// <summary>
@@ -35,7 +38,7 @@ namespace WordsLive.Core.Songs
 			}
 		}
 
-		public SongMedia(Uri uri) : base(uri) { }
+		public SongMedia(Uri uri, Dictionary<string, string> options) : base(uri, options) { }
 
 		/// <summary>
 		/// Load the song in order to have access to the title and background.
@@ -55,6 +58,59 @@ namespace WordsLive.Core.Songs
 		public override void Load()
 		{
 			Song = new Song(this.Uri);
+			displayTextAndOrTranslation = Options.ContainsKey(DisplayTextAndOrTranslationKey) && Enum.TryParse(Options[DisplayTextAndOrTranslationKey], out DisplayTextAndOrTranslation value) ? value : DisplayTextAndOrTranslation.TextAndTranslation;
 		}
+
+		private DisplayTextAndOrTranslation displayTextAndOrTranslation;
+
+		public DisplayTextAndOrTranslation DisplayTextAndOrTranslation
+		{
+			get
+			{
+				return displayTextAndOrTranslation;
+			}
+			set
+			{
+				if (value != displayTextAndOrTranslation)
+				{
+					displayTextAndOrTranslation = value;
+					if (displayTextAndOrTranslation == DisplayTextAndOrTranslation.TextAndTranslation)
+					{
+						Options.Remove(DisplayTextAndOrTranslationKey);
+					}
+					else
+					{
+						Options[DisplayTextAndOrTranslationKey] = displayTextAndOrTranslation.ToString();
+					}
+					OnOptionsChanged();
+				}
+			}
+		}
+	}
+
+	/// <summary>
+	/// Represents the display options of the song's text and its translation.
+	/// </summary>
+	public enum DisplayTextAndOrTranslation
+	{
+		/// <summary>
+		/// Show the text and its translation (default).
+		/// </summary>
+		TextAndTranslation,
+
+		/// <summary>
+		/// Show the text but without its translation.
+		/// </summary>
+		Text,
+
+		/// <summary>
+		/// Show the translation but not the original text.
+		/// </summary>
+		Translation,
+
+		/// <summary>
+		/// Show translation and text (i.e., they are swapped).
+		/// </summary>
+		TranslationAndText
 	}
 }

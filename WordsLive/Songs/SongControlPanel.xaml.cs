@@ -17,6 +17,8 @@
  */
 
 using System;
+using System.Collections.Generic;
+using System.Windows;
 using System.Windows.Controls;
 using WordsLive.Core;
 using WordsLive.Core.Songs;
@@ -33,6 +35,15 @@ namespace WordsLive.Songs
 			public int SlideIndex { get; set; }
 		}
 
+		private class OriginalTextAndTranslation
+		{
+			public string Language { get; set; }
+			public string TranslationLanguage { get; set; }
+			public bool HasTranslation { get; set; }
+			public Dictionary<SongSlide, string> SlideTexts { get; } = new Dictionary<SongSlide, string>();
+			public Dictionary<SongSlide, string> SlideTranslations { get; } = new Dictionary<SongSlide, string>();
+		}
+
 		private SongMedia song;
 		private bool finishedLoading;
 		private SongPresentation presentation;
@@ -43,6 +54,7 @@ namespace WordsLive.Songs
 			this.InitializeComponent();
 		}
 
+		OriginalTextAndTranslation originalTextAndTranslation;
 		SongSlideSelection recoverSelection;
 
 		public void Init(Media media)
@@ -56,8 +68,13 @@ namespace WordsLive.Songs
 
 			this.song = s;
 
-			if (SwapTextAndTranslation)
-				DoSwapTextAndTranslation();
+			InitOriginalTextAndTranslation();
+			ApplyDisplayTextAndOrTranslation();
+
+			if (!updating)
+			{
+				s.OptionsChanged += SongOptionsChanged;
+			}
 
 			Refresh(!updating);
 		}
@@ -173,12 +190,12 @@ namespace WordsLive.Songs
 			}
 		}
 
-		private void ListBox_SelectNext(object sender, System.Windows.RoutedEventArgs e)
+		private void ListBox_SelectNext(object sender, RoutedEventArgs e)
 		{
 			Controller.TryActivateNext();
 		}
 
-		private void ListBox_SelectPrevious(object sender, System.Windows.RoutedEventArgs e)
+		private void ListBox_SelectPrevious(object sender, RoutedEventArgs e)
 		{
 			Controller.TryActivatePrevious();
 		}
@@ -205,47 +222,96 @@ namespace WordsLive.Songs
 			}
 		}
 
-		private bool swapTextAndTranslation;
-
-		public bool SwapTextAndTranslation
+		public bool CanChangeDisplayTextAndOrTranslation()
 		{
-			get
+			return originalTextAndTranslation != null && originalTextAndTranslation.HasTranslation;
+		}
+
+		public void DoChangeDisplayTextAndOrTranslation()
+		{
+			var win = new DisplayTextAndOrTranslationWindow(song, originalTextAndTranslation.Language, originalTextAndTranslation.TranslationLanguage)
 			{
-				return swapTextAndTranslation;
-			}
-			set
+				Owner = Application.Current.MainWindow
+			};
+			win.ShowDialog();
+		}
+
+		private void InitOriginalTextAndTranslation()
+		{
+			originalTextAndTranslation = new OriginalTextAndTranslation()
 			{
-				if (value != swapTextAndTranslation)
+				Language = song.Song.Language,
+				TranslationLanguage = song.Song.TranslationLanguage,
+				HasTranslation = song.Song.HasTranslation
+			};
+
+			foreach (var part in song.Song.Parts)
+			{
+				foreach (var s in part.Slides)
 				{
-					swapTextAndTranslation = value;
-					DoSwapTextAndTranslation();
-					Refresh(false); // reload
+					originalTextAndTranslation.SlideTexts[s] = s.Text;
+					originalTextAndTranslation.SlideTranslations[s] = s.Translation;
 				}
 			}
 		}
 
-		private void DoSwapTextAndTranslation()
+		private void ApplyDisplayTextAndOrTranslation()
 		{
+			if (!originalTextAndTranslation.HasTranslation)
+			{
+				// make sure the translation display option is ignored when there is no translation (anymore)
+				return;
+			}
+
 			foreach (var part in song.Song.Parts)
 			{
-				part.SwapTextAndTranslation();
+				foreach (var s in part.Slides)
+				{
+					_ = originalTextAndTranslation.SlideTexts.TryGetValue(s, out string text);
+					_ = originalTextAndTranslation.SlideTranslations.TryGetValue(s, out string translation);
+					switch (song.DisplayTextAndOrTranslation)
+					{
+						case DisplayTextAndOrTranslation.TextAndTranslation:
+							(s.Text, s.Translation) = (text, translation);
+							break;
+						case DisplayTextAndOrTranslation.Text:
+							(s.Text, s.Translation) = (text, null);
+							break;
+						case DisplayTextAndOrTranslation.Translation:
+							(s.Text, s.Translation) = (translation, null);
+							break;
+						case DisplayTextAndOrTranslation.TranslationAndText:
+							(s.Text, s.Translation) = (translation, text);
+							break;
+						default:
+							throw new NotImplementedException();
+					}
+				}
+			}
+
+			switch (song.DisplayTextAndOrTranslation)
+			{
+				case DisplayTextAndOrTranslation.TextAndTranslation:
+					(song.Song.Language, song.Song.TranslationLanguage) = (originalTextAndTranslation.Language, originalTextAndTranslation.TranslationLanguage);
+					break;
+				case DisplayTextAndOrTranslation.Text:
+					(song.Song.Language, song.Song.TranslationLanguage) = (originalTextAndTranslation.Language, null);
+					break;
+				case DisplayTextAndOrTranslation.Translation:
+					(song.Song.Language, song.Song.TranslationLanguage) = (originalTextAndTranslation.TranslationLanguage, null);
+					break;
+				case DisplayTextAndOrTranslation.TranslationAndText:
+					(song.Song.Language, song.Song.TranslationLanguage) = (originalTextAndTranslation.TranslationLanguage, originalTextAndTranslation.Language);
+					break;
+				default:
+					throw new NotImplementedException();
 			}
 		}
 
-		private void OnCanExecuteCommand(object sender, System.Windows.Input.CanExecuteRoutedEventArgs e)
+		private void SongOptionsChanged(object sender, EventArgs args)
 		{
-			if (e.Command == CustomCommands.SwapTextAndTranslation)
-			{
-				e.CanExecute = this.song.Song.HasTranslation; // swapping text and translation is only possible if the song has a translation
-			}
-		}
-
-		private void OnExecuteCommand(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
-		{
-			if (e.Command == CustomCommands.SwapTextAndTranslation)
-			{
-				// nothing to do (this is handled by the SwapTextAndTranslation property)
-			}
+			ApplyDisplayTextAndOrTranslation();
+			Refresh(false);
 		}
 
 		public void Close()

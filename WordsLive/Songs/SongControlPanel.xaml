@@ -22,14 +22,10 @@
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	xmlns:local="clr-namespace:WordsLive.Songs"
-	xmlns:my="clr-namespace:WordsLive"
 	mc:Ignorable="d"
 	x:Class="WordsLive.Songs.SongControlPanel"
 	d:DesignWidth="200" d:DesignHeight="200"
 	Focusable="True">
-	<UserControl.CommandBindings>
-		<CommandBinding Command="{x:Static my:CustomCommands.SwapTextAndTranslation}" CanExecute="OnCanExecuteCommand"/>
-	</UserControl.CommandBindings>
 	<local:SongSlideListBox x:Name="SlideListBox" SelectionChanged="ListBox_SelectionChanged"
 							NavigateBeyondLast="ListBox_SelectNext" NavigateBeyondFirst="ListBox_SelectPrevious"/>
 </UserControl>

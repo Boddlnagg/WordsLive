@@ -78,6 +78,14 @@ namespace WordsLive.MediaOrderList
 				ActiveItemChanged(this, EventArgs.Empty);
 		}
 
+		public event EventHandler MediaOptionsChanged;
+
+		protected void OnMediaOptionsChanged()
+		{
+			if (MediaOptionsChanged != null)
+				MediaOptionsChanged(this, EventArgs.Empty);
+		}
+
 		public MediaOrderItem Add(Media media)
 		{
 			var item = CreateItem(media);
@@ -221,6 +229,7 @@ namespace WordsLive.MediaOrderList
 
 		private MediaOrderItem CreateItem(Media media)
 		{
+			media.OptionsChanged += (sender, args) => OnMediaOptionsChanged();
 			return new MediaOrderItem(media);
 		}
 	}

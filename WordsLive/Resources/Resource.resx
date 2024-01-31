@@ -285,8 +285,8 @@
   <data name="vMenuShowSonglist" xml:space="preserve">
     <value>Open Song_list</value>
   </data>
-  <data name="vMenuSwapTextAndTranslation" xml:space="preserve">
-    <value>Swap text and translation</value>
+  <data name="vMenuChangeDisplayTextAndOrTranslation" xml:space="preserve">
+    <value>Choose text/translation...</value>
   </data>
   <data name="vMenuUsePortfolioBackground" xml:space="preserve">
     <value>Use single background for all songs</value>
@@ -958,7 +958,7 @@
     <value>Use PowerPoint Viewer even if Office PowerPoint is available</value>
   </data>
   <data name="eGridCcliSongNumberLabel" xml:space="preserve">
-    <value>CCLI Song Number:</value>
+    <value>Song number text:</value>
   </data>
   <data name="eGridCcliViewInSongSelect" xml:space="preserve">
     <value>View song in SongSelect</value>
@@ -986,5 +986,29 @@
   </data>
   <data name="generalSelectAll" xml:space="preserve">
     <value>Select All</value>
+  </data>
+  <data name="eGridCcliSongNumberTranslationLabel" xml:space="preserve">
+    <value>Song number translation:</value>
+  </data>
+  <data name="dttLabel" xml:space="preserve">
+    <value>Display options</value>
+  </data>
+  <data name="dttOptionTextAndTranslation" xml:space="preserve">
+    <value>Text and translation</value>
+  </data>
+  <data name="dttOptionText" xml:space="preserve">
+    <value>Text</value>
+  </data>
+  <data name="dttOptionTranslation" xml:space="preserve">
+    <value>Translation</value>
+  </data>
+  <data name="dttOptionTranslationAndText" xml:space="preserve">
+    <value>Translation and text</value>
+  </data>
+  <data name="dttTitle" xml:space="preserve">
+    <value>Choose text/translation</value>
+  </data>
+  <data name="dttPreviewLabel" xml:space="preserve">
+    <value>Preview</value>
   </data>
 </root>
