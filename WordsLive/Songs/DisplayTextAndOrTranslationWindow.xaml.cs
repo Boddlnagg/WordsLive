@@ -28,6 +28,9 @@ namespace WordsLive.Songs
 			InitializeComponent();
 			DataContext = songMedia;
 
+			language = string.IsNullOrEmpty(language) ? "?" : language;
+			translationLanguage = string.IsNullOrEmpty(translationLanguage) ? "?" : translationLanguage;
+
 			PrimaryLanguageForTextAndTranslation.Content = language;
 			SecondaryLanguageForTextAndTranslation.Content = translationLanguage;
 			PrimaryLanguageForText.Content = language;
