@@ -35,6 +35,15 @@ namespace WordsLive.Core
 
 
 		private Dictionary<string, string> options;
+
+		public event EventHandler OptionsChanged;
+
+		protected void OnOptionsChanged()
+		{
+			if (OptionsChanged != null)
+				OptionsChanged(this, EventArgs.Empty);
+		}
+
 		/// <summary>
 		/// Gets a dictionary (key-value-store) with additional options.
 		/// </summary>

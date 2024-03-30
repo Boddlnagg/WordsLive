@@ -69,6 +69,11 @@ namespace WordsLive.Core.Songs.Storage
 		public int? CcliNumber { get; set; }
 
 		/// <summary>
+		/// Gets or sets the CCLI song number of the translated song.
+		/// </summary>
+		public int? TranslationCcliNumber { get; set; }
+
+		/// <summary>
 		/// Gets the search text (with whitespaces and commas removed)
 		/// </summary>
 		[JsonIgnore]
@@ -125,6 +130,7 @@ namespace WordsLive.Core.Songs.Storage
 				Sources = String.Join("; ", song.Sources),
 				Language = song.Language,
 				CcliNumber = song.CcliNumber,
+				TranslationCcliNumber = song.TranslationCcliNumber,
 			};
 		}
 

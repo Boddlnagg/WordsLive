@@ -1,6 +1,6 @@
 ﻿/*
  * WordsLive - worship projection software
- * Copyright (c) 2013 Patrick Reisert
+ * Copyright (c) 2014 Patrick Reisert
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,33 +16,24 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-using System;
-using System.Collections.Generic;
-using WordsLive.Core;
+using System.Windows;
 using WordsLive.Core.Songs;
 
 namespace WordsLive.Songs
 {
-	public class SongHandler : MediaTypeHandler
+	public partial class DisplayTextAndOrTranslationWindow : Window
 	{
-		public override IEnumerable<string> Extensions
+		public DisplayTextAndOrTranslationWindow(SongMedia songMedia, string language, string translationLanguage)
 		{
-			get { return new string[] { ".ppl" }; }
-		}
+			InitializeComponent();
+			DataContext = songMedia;
 
-		public override string Description
-		{
-			get { return "Powerpraise-Lieder"; } // TODO: localize
-		}
-
-		public override int Test(Uri uri)
-		{
-			return CheckExtension(uri) ? 100 : -1;
-		}
-
-		public override Media Handle(Uri uri, Dictionary<string, string> options)
-		{
-			return new SongMedia(DataManager.Songs.TryRewriteUri(uri), options);
+			PrimaryLanguageForTextAndTranslation.Content = language;
+			SecondaryLanguageForTextAndTranslation.Content = translationLanguage;
+			PrimaryLanguageForText.Content = language;
+			PrimaryLanguageForTranslation.Content = translationLanguage;
+			PrimaryLanguageForTranslationAndText.Content = translationLanguage;
+			SecondaryLanguageForTranslationAndText.Content = language;
 		}
 	}
 }

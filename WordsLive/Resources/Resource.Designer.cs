@@ -412,6 +412,69 @@ namespace WordsLive.Resources {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Display options ähnelt.
+        /// </summary>
+        public static string dttLabel {
+            get {
+                return ResourceManager.GetString("dttLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Text ähnelt.
+        /// </summary>
+        public static string dttOptionText {
+            get {
+                return ResourceManager.GetString("dttOptionText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Text and translation ähnelt.
+        /// </summary>
+        public static string dttOptionTextAndTranslation {
+            get {
+                return ResourceManager.GetString("dttOptionTextAndTranslation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Translation ähnelt.
+        /// </summary>
+        public static string dttOptionTranslation {
+            get {
+                return ResourceManager.GetString("dttOptionTranslation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Translation and text ähnelt.
+        /// </summary>
+        public static string dttOptionTranslationAndText {
+            get {
+                return ResourceManager.GetString("dttOptionTranslationAndText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Preview ähnelt.
+        /// </summary>
+        public static string dttPreviewLabel {
+            get {
+                return ResourceManager.GetString("dttPreviewLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Choose text/translation ähnelt.
+        /// </summary>
+        public static string dttTitle {
+            get {
+                return ResourceManager.GetString("dttTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Open in editor ähnelt.
         /// </summary>
         public static string eCommandOpenInEditor {
@@ -430,11 +493,20 @@ namespace WordsLive.Resources {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die CCLI Song Number: ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die Song number text: ähnelt.
         /// </summary>
         public static string eGridCcliSongNumberLabel {
             get {
                 return ResourceManager.GetString("eGridCcliSongNumberLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Song number translation: ähnelt.
+        /// </summary>
+        public static string eGridCcliSongNumberTranslationLabel {
+            get {
+                return ResourceManager.GetString("eGridCcliSongNumberTranslationLabel", resourceCulture);
             }
         }
         
@@ -2320,6 +2392,15 @@ namespace WordsLive.Resources {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Choose text/translation... ähnelt.
+        /// </summary>
+        public static string vMenuChangeDisplayTextAndOrTranslation {
+            get {
+                return ResourceManager.GetString("vMenuChangeDisplayTextAndOrTranslation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Check for Updates ähnelt.
         /// </summary>
         public static string vMenuCheckForUpdates {
@@ -2514,15 +2595,6 @@ namespace WordsLive.Resources {
         public static string vMenuShowTestImage {
             get {
                 return ResourceManager.GetString("vMenuShowTestImage", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Swap text and translation ähnelt.
-        /// </summary>
-        public static string vMenuSwapTextAndTranslation {
-            get {
-                return ResourceManager.GetString("vMenuSwapTextAndTranslation", resourceCulture);
             }
         }
         

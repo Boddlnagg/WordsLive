@@ -45,8 +45,12 @@ namespace WordsLive.AudioVideo
 			}
 			set
 			{
-				offsetStart = value;
-				Options["start"] = ((int)offsetStart.TotalMilliseconds).ToString();
+				if (value != offsetStart)
+				{
+					offsetStart = value;
+					Options["start"] = ((int)offsetStart.TotalMilliseconds).ToString();
+					OnOptionsChanged();
+				}
 			}
 		}
 
@@ -58,8 +62,12 @@ namespace WordsLive.AudioVideo
 			}
 			set
 			{
-				offsetEnd = value;
-				Options["end"] = ((int)offsetEnd.TotalMilliseconds).ToString();
+				if (value != offsetEnd)
+				{
+					offsetEnd = value;
+					Options["end"] = ((int)offsetEnd.TotalMilliseconds).ToString();
+					OnOptionsChanged();
+				}
 			}
 		}
 	}
