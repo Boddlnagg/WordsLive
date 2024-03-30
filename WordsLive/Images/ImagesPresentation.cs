@@ -51,7 +51,9 @@ namespace WordsLive.Images
 			this.Control.Children.Add(frontGrid);
 
 			Loader.SetDisplayOption(back, DisplayOptions.FullResolution);
+			Loader.SetMaxSize(back, Math.Max(Area.Width, Area.Height));
 			Loader.AddLoadedHandler(back, back_Loaded);
+			this.Area.WindowSizeChanged	+= Area_WindowSizeChanged;
 
 			DoubleAnimation ani = new DoubleAnimation { From = 1.0, To = 0.0, FillBehavior = FillBehavior.Stop };
 			ani.Completed += ani_Completed;
@@ -60,6 +62,11 @@ namespace WordsLive.Images
 
 			storyboard = new Storyboard();
 			storyboard.Children.Add(ani);
+		}
+
+		private void Area_WindowSizeChanged(object sender, EventArgs e)
+		{
+			Loader.SetMaxSize(back, Math.Max(Area.Width, Area.Height));
 		}
 
 		void ani_Completed(object sender, EventArgs e)
@@ -120,6 +127,12 @@ namespace WordsLive.Images
 			IsLoadingImage = true;
 			Loader.SetSourceType(back, image.SourceType);
 			Loader.SetSource(back, image.Source);
+		}
+
+		public override void Close()
+		{
+			this.Area.WindowSizeChanged -= Area_WindowSizeChanged;
+			base.Close();
 		}
 	}
 }

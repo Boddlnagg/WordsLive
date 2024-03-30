@@ -264,10 +264,12 @@ namespace WordsLive.Utils.ImageLoader
 				Stream imageStream = null;
 
 				SourceType sourceType = SourceType.LocalDisk;
+				int maxSize = 0;
 
 				image.Dispatcher.Invoke(new ThreadStart(delegate
 				{
 					sourceType = Loader.GetSourceType(image);
+					maxSize = Loader.GetMaxSize(image);
 				}));
 
 				try
@@ -366,12 +368,25 @@ namespace WordsLive.Utils.ImageLoader
 						{
 							BitmapFrame bitmapFrame = BitmapFrame.Create(imageStream);
 							int rotation = GetRotation(bitmapFrame.Metadata as BitmapMetadata);
+							bool isOrientationChanged = rotation != 0 && rotation != 180;
+
+							double usedFactor = 1.0;
+
+							if (maxSize != 0)
+							{
+								var origHeight = isOrientationChanged ? bitmapFrame.PixelWidth : bitmapFrame.PixelHeight;
+								var origWidth = isOrientationChanged ? bitmapFrame.PixelHeight : bitmapFrame.PixelWidth;
+								var heightFactor = maxSize / (double)origHeight;
+								var widthFactor = maxSize / (double)origWidth;
+								usedFactor = Math.Max(heightFactor, widthFactor);
+							}
 
 							TransformedBitmap bitmapImage = new TransformedBitmap();
 							bitmapImage.BeginInit();
 							bitmapImage.Source = bitmapFrame as BitmapSource;
 							TransformGroup transformGroup = new TransformGroup();
 							transformGroup.Children.Add(new RotateTransform(rotation));
+							transformGroup.Children.Add(new ScaleTransform(usedFactor, usedFactor));
 							bitmapImage.Transform = transformGroup;
 							bitmapImage.EndInit();
 
@@ -421,6 +436,12 @@ namespace WordsLive.Utils.ImageLoader
 							imageSource = (ImageSource)BitmapFrame.Create(rtb).GetCurrentValueAsFrozen();
 							player.Close();
 						}
+					}
+					catch (System.OutOfMemoryException)
+					{
+						// for big images we sometimes run out of memory,
+						// but a manual GC seems to help ...
+						GC.Collect();
 					}
 					catch (Exception) { }
 				}

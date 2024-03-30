@@ -104,6 +104,20 @@ namespace WordsLive.Utils.ImageLoader
 			DependencyProperty.RegisterAttached("DisplayOption", typeof(DisplayOptions), typeof(Loader), new UIPropertyMetadata(DisplayOptions.Preview));
 
 
+		[AttachedPropertyBrowsableForType(typeof(Image))]
+		public static int GetMaxSize(Image obj)
+		{
+			return (int)obj.GetValue(MaxSizeProperty);
+		}
+
+		public static void SetMaxSize(Image obj, int value)
+		{
+			obj.SetValue(MaxSizeProperty, value);
+		}
+		public static readonly DependencyProperty MaxSizeProperty =
+			DependencyProperty.RegisterAttached("MaxSize", typeof(int), typeof(Loader), new UIPropertyMetadata(0));
+
+
 
 		[AttachedPropertyBrowsableForType(typeof(Image))]
 		public static bool GetIsLoading(Image obj)
