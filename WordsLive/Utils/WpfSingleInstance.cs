@@ -26,11 +26,7 @@ namespace WordsLive.Utils
             bool isSecondaryInstance = true;
 
             EventWaitHandle eventWaitHandle = null;
-            try
-            {
-                eventWaitHandle = EventWaitHandle.OpenExisting(eventName);
-            }
-            catch
+            if (!EventWaitHandle.TryOpenExisting(eventName, out eventWaitHandle))
             {
                 // This code only runs on the first instance.
                 isSecondaryInstance = false;
