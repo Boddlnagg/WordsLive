@@ -19,6 +19,9 @@
 using System;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Documents;
+using System.Windows.Markup;
+using System.Windows.Media;
 using WordsLive.Presentation.Wpf;
 
 namespace WordsLive.Documents
@@ -26,6 +29,8 @@ namespace WordsLive.Documents
 	public class XpsPresentation : WpfPresentation<DocumentViewer>, IDocumentPresentation
 	{
 		private DocumentPageScale pageScale = default;
+		private FixedDocument document;
+		private int pageNumber = 1;
 
 		public XpsPresentation()
 		{
@@ -38,13 +43,13 @@ namespace WordsLive.Documents
 
 		public void SetSourceDocument(XpsDocument doc)
 		{
-			this.Control.Document = doc.Document.GetFixedDocumentSequence();
 			this.pageScale = doc.PageScale;
-			ApplyPageScale();
+			this.document = doc.Document.GetFixedDocumentSequence().References[0].GetDocument(false);
 		}
 
 		public void Load()
 		{
+			RenderCurrentPage();
 			IsLoaded = true;
 			OnDocumentLoaded();
 		}
@@ -53,34 +58,41 @@ namespace WordsLive.Documents
 
 		public int PageCount
 		{
-			get { return Control.PageCount; }
+			get { return this.document == null ? 0 : this.document.Pages.Count; }
 		}
 
 		public int CurrentPage
 		{
-			get { return Control.MasterPageNumber; }
+			get { return this.document == null ? 0 : this.pageNumber; }
 		}
 
 		public void GoToPage(int page)
 		{
-			Control.GoToPage(page);
+			this.pageNumber = page;
+			RenderCurrentPage();
 		}
 
 		public void PreviousPage()
 		{
-			Control.PreviousPage();
+			if (!this.CanGoToPreviousPage)
+				return;
+			this.pageNumber--;
+			RenderCurrentPage();
 		}
 
 		public void NextPage()
 		{
-			Control.NextPage();
+			if (!this.CanGoToNextPage)
+				return;
+			this.pageNumber++;
+			RenderCurrentPage();
 		}
 
 		public bool CanGoToPreviousPage
 		{
 			get
 			{
-				return Control.CanGoToPreviousPage;
+				return this.pageNumber > 1;
 			}
 		}
 
@@ -88,7 +100,7 @@ namespace WordsLive.Documents
 		{
 			get
 			{
-				return Control.CanGoToNextPage;
+				return this.pageNumber < this.PageCount;
 			}
 		}
 
@@ -108,12 +120,63 @@ namespace WordsLive.Documents
 			}
 		}
 
+		private void RenderCurrentPage()
+		{
+			if (this.document.Pages.Count == 0)
+				return;
+			this.pageNumber = Math.Max(1, Math.Min(this.document.Pages.Count, this.pageNumber));
+
+			/*
+			 * We do not render the whole document, just the current page. This way ApplyPageScale
+			 * will work properly (for each page individually, not only for the largest one of the whole
+			 * document) and we will not ever see parts of other pages.
+			 */
+			var page = this.document.Pages[this.pageNumber - 1].GetPageRoot(false);
+
+			/*
+			 * A problem is that there is no easy way to copy individual pages for their rendering.
+			 * Therefore we use CreateVisualBrushClone that renders the page into a new FixedPage.
+			 * By rendering, we avoid other types of cloning and are sure that no referenced resources are lost.
+			 */
+			var clonedPage = CreateVisualBrushClone(page);
+
+			var singlePageContent = new PageContent();
+			((IAddChild)singlePageContent).AddChild(clonedPage);
+			var singlePageDocument = new FixedDocument();
+			singlePageDocument.Pages.Add(singlePageContent);
+
+			this.Control.Document = singlePageDocument;
+			ApplyPageScale();
+		}
+
 		private void ApplyPageScale()
 		{
 			if (pageScale == DocumentPageScale.FitToWidth)
 				Control.FitToWidth();
 			else
 				Control.FitToMaxPagesAcross(1);
+		}
+
+		private static FixedPage CreateVisualBrushClone(FixedPage original)
+		{
+			if (original == null)
+				return null;
+
+			var clone = new FixedPage
+			{
+				Width = original.Width,
+				Height = original.Height
+			};
+
+			var rect = new System.Windows.Shapes.Rectangle
+			{
+				Width = original.Width,
+				Height = original.Height,
+				Fill = new VisualBrush(original)
+			};
+
+			clone.Children.Add(rect);
+			return clone;
 		}
 
 		public event EventHandler DocumentLoaded;
