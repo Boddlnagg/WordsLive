@@ -45,6 +45,7 @@ namespace WordsLive.Documents
 
 
 			UriMapDataSource.Instance.Add(uriKey, Document.Uri);
+			this.pageScale = Document.PageScale;
 
 			this.bridge = new PdfPresentationBridge("asset://urimap/" + uriKey);
 			this.Control.Web.JavascriptObjectRepository.UnRegisterAll();

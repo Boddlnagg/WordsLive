@@ -39,6 +39,7 @@ namespace WordsLive.Documents
 		public void SetSourceDocument(XpsDocument doc)
 		{
 			this.Control.Document = doc.Document.GetFixedDocumentSequence();
+			this.pageScale = doc.PageScale;
 			ApplyPageScale();
 		}
 
