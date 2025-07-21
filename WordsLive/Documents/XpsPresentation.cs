@@ -25,7 +25,7 @@ namespace WordsLive.Documents
 {
 	public class XpsPresentation : WpfPresentation<DocumentViewer>, IDocumentPresentation
 	{
-		private DocumentPageScale pageScale = DocumentPageScale.FitToWidth;
+		private DocumentPageScale pageScale = default;
 
 		public XpsPresentation()
 		{
@@ -39,7 +39,7 @@ namespace WordsLive.Documents
 		public void SetSourceDocument(XpsDocument doc)
 		{
 			this.Control.Document = doc.Document.GetFixedDocumentSequence();
-			this.Control.FitToWidth();
+			ApplyPageScale();
 		}
 
 		public void Load()

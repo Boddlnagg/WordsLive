@@ -52,6 +52,7 @@ namespace WordsLive.Documents
 			bridge.CallbackLoaded += () => {
 				this.Control.Dispatcher.BeginInvoke(new Action(() => {
 					IsLoaded = true;
+					ApplyPageScale();
 					OnDocumentLoaded();
 				}));
 			};
@@ -119,14 +120,7 @@ namespace WordsLive.Documents
 			set
 			{
 				pageScale = value;
-
-				if (IsLoaded)
-				{
-					if (pageScale == DocumentPageScale.FitToWidth)
-						this.Control.Web.GetMainFrame().ExecuteJavaScriptAsync("fitToWidth()");
-					else
-						this.Control.Web.GetMainFrame().ExecuteJavaScriptAsync("wholePage()");
-				}
+				ApplyPageScale();
 			}
 		}
 
@@ -165,6 +159,17 @@ namespace WordsLive.Documents
 			base.Close();
 
 			UriMapDataSource.Instance.Remove(uriKey);
+		}
+
+		private void ApplyPageScale()
+		{
+			if (!IsLoaded)
+				return;
+
+			if (pageScale == DocumentPageScale.FitToWidth)
+				this.Control.Web.GetMainFrame().ExecuteJavaScriptAsync("fitToWidth()");
+			else
+				this.Control.Web.GetMainFrame().ExecuteJavaScriptAsync("wholePage()");
 		}
 
 		public event EventHandler DocumentLoaded;

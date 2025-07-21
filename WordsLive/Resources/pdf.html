@@ -62,10 +62,14 @@
 		}
 
 		var doc;
+		var skipRenderingOnInit = true;
 		var currentPage = 1;
 		var isWholePage = false;
 
 		function renderCurrentPage() {
+			if (skipRenderingOnInit) {
+			    return;
+			}
 			var viewer = document.getElementById('viewer');
 			$(viewer).empty();
 			renderPage(viewer, doc, currentPage, isWholePage);
@@ -78,6 +82,7 @@
 		    PDFJS.getDocument(await bridge.getDocument()).then(async function getPdfForm(pdf) {
 			    doc = pdf;
 				await bridge.onCallbackLoaded();
+				skipRenderingOnInit = false;
 				renderCurrentPage();
 			});
 		})();
