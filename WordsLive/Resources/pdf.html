@@ -8,22 +8,66 @@
 	<script type="text/javascript" src="asset://WordsLive.Core/thirdparty/jquery.mousewheel.js"></script>
   
 	<style>
-		body { margin: 0; overflow: hidden; background-color: black;}
-		#viewer { display: flex; justify-content: center; align-items: center; height: 100vh; }
-		.pdfpage { margin: auto; }
+		body {
+			margin: 0;
+			overflow: hidden;
+			background-color: black;
+		}
+
+		#viewer {
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100vw;
+			height: 100vh;
+		}
+
+		/*
+			* Within the #viewer div, the JS code below will create the dynamic elements.
+			* One page is within a ".pdfpageoverlay > .pdfpageviewport > .pdfpage" construction.
+			* Typically we only have one page displayed, but when transitioning from one page to the next
+			  we keep the old elements while the new page is being rendered (and then switch to it
+			  with a crossfade transition).
+			* The ".pdfpageoverlay" div is used for stacking pages on top of each other, without them
+			  affecting each other, by using CSS absolute positioning.
+			* The ".pdfpageviewport" and ".pdfpage" styles ensure horizontal and vertical positioning of
+			  the page (for both scaling options, i.e., fit-to-width and whole-page).
+		*/
+
+		.pdfpageoverlay {
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100vw;
+			height: 100vh;
+			background-color: black;
+		}
+
+		.pdfpageviewport {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			position: relative;
+			width: 100vw;
+			height: 100vh;
+		}
+
+		.pdfpage {
+			margin: auto;
+		}
 	</style>
 
 	<script type="text/javascript">
 		'use strict';
 
-		function renderPage(div, pdf, pageNumber, wholePage) {
+		function renderPage(div, pdf, pageNumber, wholePage, callback) {
 			pdf.getPage(pageNumber).then(function(page) {
 				var unscaledViewport = page.getViewport(1);
 				var scale;
 				if (wholePage) {
 					scale = Math.min(
-						$(document).width() / unscaledViewport.width,
-						$(document).height() / unscaledViewport.height
+						$(window).width() / unscaledViewport.width,
+						$(window).height() / unscaledViewport.height
 					);
 				} else {
 					scale = $(document).width() / unscaledViewport.width;
@@ -33,19 +77,25 @@
 				var pageDisplayWidth = viewport.width;
 				var pageDisplayHeight = viewport.height;
 
-				var pageDivHolder = document.createElement('div');
-				pageDivHolder.className = 'pdfpage';
-				$(pageDivHolder).attr('id', 'page_'+pageNumber);
-				pageDivHolder.style.width = pageDisplayWidth + 'px';
-				pageDivHolder.style.height = pageDisplayHeight + 'px';
-				div.appendChild(pageDivHolder);
+				var pageOverlayDiv = document.createElement('div');
+				pageOverlayDiv.className = 'pdfpageoverlay';
+				$(pageOverlayDiv).css('display', 'none');
+				var pageViewportDiv = document.createElement('div');
+				pageViewportDiv.className = 'pdfpageviewport';
+				var pageDiv = document.createElement('div');
+				pageDiv.className = 'pdfpage';
+				pageDiv.style.width = pageDisplayWidth + 'px';
+				pageDiv.style.height = pageDisplayHeight + 'px';
+				div.appendChild(pageOverlayDiv);
+				pageOverlayDiv.appendChild(pageViewportDiv);
+				pageViewportDiv.appendChild(pageDiv);
 
 				// Prepare canvas using PDF page dimensions
 				var canvas = document.createElement('canvas');
 				var context = canvas.getContext('2d');
 				canvas.width = pageDisplayWidth;
 				canvas.height = pageDisplayHeight;
-				pageDivHolder.appendChild(canvas);
+				pageDiv.appendChild(canvas);
 
 
 				// Render PDF page into canvas context
@@ -53,11 +103,13 @@
 					canvasContext: context,
 					viewport: viewport
 				};
-				page.render(renderContext);
+				page.render(renderContext).then(function () {
+					callback(pageOverlayDiv);
+				});
 
 				// Prepare and populate form elements layer
 				var formDiv = document.createElement('div');
-				pageDivHolder.appendChild(formDiv);
+				pageDiv.appendChild(formDiv);
 			});
 		}
 
@@ -65,14 +117,19 @@
 		var skipRenderingOnInit = true;
 		var currentPage = 1;
 		var isWholePage = false;
+		var crossfadeDuration = 500;
 
-		function renderCurrentPage() {
+		function renderCurrentPage(useTransition = false) {
 			if (skipRenderingOnInit) {
 			    return;
 			}
 			var viewer = document.getElementById('viewer');
-			$(viewer).empty();
-			renderPage(viewer, doc, currentPage, isWholePage);
+			var oldPageOverlays = $(viewer).children('.pdfpageoverlay');
+			renderPage(viewer, doc, currentPage, isWholePage, function (pageOverlayDiv) {
+			    $(pageOverlayDiv).fadeIn(useTransition ? crossfadeDuration : 0, 'swing', function () {
+			        oldPageOverlays.remove();
+			    });
+			});
 		}
 
 		(async function () {
@@ -118,7 +175,7 @@
 				return;
 			}
 			currentPage = p;
-			renderCurrentPage();
+			renderCurrentPage(true);
 		}
 	  
 		function getCurrentPage() {
