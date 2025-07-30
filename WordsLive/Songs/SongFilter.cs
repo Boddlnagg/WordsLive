@@ -182,7 +182,7 @@ namespace WordsLive.Songs
 						return true;
 					}
 				}
-				if (!(song.SearchTitle.ContainsIgnoreCase(NormalizedKeyword) || (SearchInText && song.SearchText.ContainsIgnoreCase(NormalizedKeyword))))
+				if (!(song.SearchTitle.ContainsIgnoreCase(NormalizedKeyword) || (SearchInText && song.SearchText.ContainsIgnoreCase(NormalizedKeyword)) || (SearchInText && song.SearchTranslation.ContainsIgnoreCase(NormalizedKeyword))))
 				{
 					return false;
 				}

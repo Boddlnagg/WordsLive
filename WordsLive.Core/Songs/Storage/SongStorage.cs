@@ -61,10 +61,10 @@ namespace WordsLive.Core.Songs.Storage
 		/// Filters the songs using a full-text search.
 		/// </summary>
 		/// <param name="query">The query to use. This is case-insensitive.</param>
-		/// <returns>All songs whose text or title contains the query.</returns>
+		/// <returns>All songs whose text, translation, or title contains the query.</returns>
 		public virtual IEnumerable<SongData> WhereTextContains(string query)
 		{
-			return All().Where(d => d.SearchTitle.ContainsIgnoreCase(query) || d.SearchText.ContainsIgnoreCase(query));
+			return All().Where(d => d.SearchTitle.ContainsIgnoreCase(query) || d.SearchText.ContainsIgnoreCase(query) || d.SearchTranslation.ContainsIgnoreCase(query));
 		}
 
 		/// <summary>
