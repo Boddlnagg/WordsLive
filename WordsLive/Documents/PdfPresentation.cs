@@ -47,13 +47,12 @@ namespace WordsLive.Documents
 			UriMapDataSource.Instance.Add(uriKey, Document.Uri);
 			this.pageScale = Document.PageScale;
 
-			this.bridge = new PdfPresentationBridge("asset://urimap/" + uriKey);
+			this.bridge = new PdfPresentationBridge("asset://urimap/" + uriKey, pageScale, Properties.Settings.Default.DocumentPageTransition);
 			this.Control.Web.JavascriptObjectRepository.UnRegisterAll();
 			this.Control.Web.JavascriptObjectRepository.Register("bridge", bridge, true);
 			bridge.CallbackLoaded += () => {
 				this.Control.Dispatcher.BeginInvoke(new Action(() => {
 					IsLoaded = true;
-					ApplyPageScale();
 					OnDocumentLoaded();
 				}));
 			};

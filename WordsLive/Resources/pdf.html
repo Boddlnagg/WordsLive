@@ -117,7 +117,7 @@
 		var skipRenderingOnInit = true;
 		var currentPage = 1;
 		var isWholePage = false;
-		var crossfadeDuration = 500;
+		var crossfadeDuration = 0;
 
 		function renderCurrentPage(useTransition = false) {
 			if (skipRenderingOnInit) {
@@ -134,8 +134,11 @@
 
 		(async function () {
 		    await CefSharp.BindObjectAsync("bridge");
-		
-			// Fetch the PDF document from the URL using promices
+
+		    isWholePage = await bridge.getRenderWholePage();
+		    crossfadeDuration = await bridge.getTransitionDuration();
+
+		    // Fetch the PDF document from the URL using promises
 		    PDFJS.getDocument(await bridge.getDocument()).then(async function getPdfForm(pdf) {
 			    doc = pdf;
 				await bridge.onCallbackLoaded();

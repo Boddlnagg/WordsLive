@@ -32,12 +32,13 @@ namespace WordsLive.Documents
 		private FixedDocument document;
 		private DocumentViewer currentViewer;
 		private int currentPageNumber = 1;
-		private int crossfadeDuration = 500;
+		private int crossfadeDuration;
 
 		public XpsPresentation()
 		{
 			this.Control.Background = Brushes.Black;
 			this.Control.SizeChanged += (sender, args) => ApplyPageScale();
+			this.crossfadeDuration = Properties.Settings.Default.DocumentPageTransition;
 		}
 
 		public void SetSourceDocument(XpsDocument doc)
