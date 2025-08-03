@@ -53,13 +53,16 @@ namespace WordsLive.Core.Songs.Storage
 			// TODO: implement caching
 			SongData data;
 
-			foreach (string file in Directory.GetFiles(directory))
+			foreach (string file in Directory.EnumerateFiles(directory, "*.*", SearchOption.AllDirectories))
 			{
 				data = null;
 
 				try
 				{
-					var song = new Song(new Uri("song:///" + Path.GetFileName(file)), new SongUriResolver(this));
+					var relativePath = new Uri(directory + Path.DirectorySeparatorChar)
+						.MakeRelativeUri(new Uri(file))
+						.ToString();
+					var song = new Song(new Uri("song:///" + relativePath), new SongUriResolver(this));
 					data = SongData.Create(song);
 				}
 				catch { }
@@ -84,7 +87,7 @@ namespace WordsLive.Core.Songs.Storage
 		/// <exception cref="FileNotFoundException">The resource was not found.</exception>
 		public override SongStorageEntry Get(string name)
 		{
-			if (name.Contains("\\") || name.Contains("/"))
+			if (Path.IsPathRooted(name))
 				throw new ArgumentException("Song filename must not contain a full path.");
 
 			string fullPath = Path.Combine(directory, name);
@@ -130,20 +133,13 @@ namespace WordsLive.Core.Songs.Storage
 			if (uri.IsFile)
 			{
 				// rewrite local song URIs to song:// schema
-				var store = DataManager.Songs as LocalSongStorage;
-				try
+				var filePath = Path.GetFullPath(Uri.UnescapeDataString(uri.LocalPath));
+				var rootPath = Path.GetFullPath(directory) + Path.DirectorySeparatorChar;
+
+				if (filePath.StartsWith(rootPath, StringComparison.OrdinalIgnoreCase))
 				{
-					FileInfo fi1 = new FileInfo(Uri.UnescapeDataString(uri.AbsolutePath));
-					var name = Uri.UnescapeDataString(uri.Segments[uri.Segments.Length - 1]);
-					var fi2 = store.GetLocal(name);
-					if (fi1.Exists && fi2.Exists && fi1.FullName == fi2.FullName)
-					{
-						return new Uri("song:///" + name);
-					}
-				}
-				catch (FileNotFoundException)
-				{
-					return uri;
+					var relativePath = filePath.Substring(rootPath.Length).Replace(Path.DirectorySeparatorChar, '/');
+					return new Uri("song:///" + relativePath);
 				}
 			}
 
