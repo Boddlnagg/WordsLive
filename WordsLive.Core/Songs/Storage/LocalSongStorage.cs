@@ -128,6 +128,29 @@ namespace WordsLive.Core.Songs.Storage
 			return File.Exists(Path.Combine(directory, name));
 		}
 
+		public override bool IsValidName(string name)
+		{
+			if (string.IsNullOrEmpty(name) || name.IndexOfAny(Path.GetInvalidPathChars()) != -1)
+				return false;
+
+			if (Path.IsPathRooted(name))
+				return false;
+
+			var fileName = Path.GetFileName(name);
+			if (string.IsNullOrEmpty(fileName) || fileName.IndexOfAny(Path.GetInvalidFileNameChars()) != -1)
+				return false;
+
+			var subdirectoryName = Path.GetDirectoryName(name);
+			if (!Directory.Exists(Path.Combine(directory, subdirectoryName)))
+				return false;
+
+			var fullPath = Path.GetFullPath(Path.Combine(directory, name));
+			if (!fullPath.StartsWith(directory + Path.DirectorySeparatorChar, StringComparison.OrdinalIgnoreCase))
+				return false;
+
+			return true;
+		}
+
 		public override Uri TryRewriteUri(Uri uri)
 		{
 			if (uri.IsFile)
