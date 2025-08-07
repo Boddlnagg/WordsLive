@@ -87,4 +87,11 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <Target Name="EmbedInteropTypes" AfterTargets="ResolveReferences" BeforeTargets="FindReferenceAssembliesForReferences">
+    <ItemGroup>
+      <ReferencePath Condition=" '%(FileName)' == 'Microsoft.Office.Interop.PowerPoint' ">
+        <EmbedInteropTypes>true</EmbedInteropTypes>
+      </ReferencePath>
+    </ItemGroup>
+  </Target>
 </Project>
