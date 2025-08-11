@@ -91,6 +91,32 @@ namespace WordsLive.Core.Songs
 		}
 
 		/// <summary>
+		/// Gets the translation text of all slides in this part.
+		/// Changes to this property are not notified.
+		/// </summary>
+		[JsonIgnore]
+		public string Translation
+		{
+			get
+			{
+				return string.Join("\n", Slides.Select(slide => slide.Translation).ToArray());
+			}
+		}
+
+		/// <summary>
+		/// Gets the translation text of all slides in this part, but with chords removed.
+		/// Changes to this property are not notified.
+		/// </summary>
+		[JsonIgnore]
+		public string TranslationWithoutChords
+		{
+			get
+			{
+				return string.Join("\n", Slides.Select(slide => slide.TranslationWithoutChords).ToArray());
+			}
+		}
+
+		/// <summary>
 		/// Initializes a new instance of the <see cref="SongPart"/> class.
 		/// </summary>
 		/// <param name="root">The song this part belongs to.</param>

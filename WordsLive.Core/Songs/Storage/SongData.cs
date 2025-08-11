@@ -31,6 +31,7 @@ namespace WordsLive.Core.Songs.Storage
 	public class SongData
 	{
 		private string searchText = null;
+		private string searchTranslation = null;
 		private string searchTitle = null;
 
 		/// <summary>
@@ -47,6 +48,11 @@ namespace WordsLive.Core.Songs.Storage
 		/// Gets or sets the text (without chords and without the translation).
 		/// </summary>
 		public string Text { get; set; }
+
+		/// <summary>
+		/// Gets or sets the translation text.
+		/// </summary>
+		public string Translation { get; set; }
 
 		/// <summary>
 		/// Gets or sets the copyright as a single line.
@@ -84,6 +90,20 @@ namespace WordsLive.Core.Songs.Storage
 				if (searchText == null)
 					searchText = NormalizeSearchString(Text);
 				return searchText;
+			}
+		}
+
+		/// <summary>
+		/// Gets the search translation text (with whitespaces and commas removed)
+		/// </summary>
+		[JsonIgnore]
+		public string SearchTranslation
+		{
+			get
+			{
+				if (searchTranslation == null)
+					searchTranslation = NormalizeSearchString(Translation);
+				return searchTranslation;
 			}
 		}
 
@@ -126,6 +146,7 @@ namespace WordsLive.Core.Songs.Storage
 				Title = song.Title,
 				Filename = Path.GetFileName(Uri.UnescapeDataString(song.Uri.Segments.Last())),
 				Text = song.TextWithoutChords,
+				Translation = song.TranslationWithoutChords,
 				Copyright = String.Join(" ", song.Copyright.Split('\n').Select(line => line.Trim())),
 				Sources = String.Join("; ", song.Sources),
 				Language = song.Language,

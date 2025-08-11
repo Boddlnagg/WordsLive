@@ -19,7 +19,6 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Collections.Specialized;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
@@ -431,6 +430,32 @@ namespace WordsLive.Core.Songs
 			get
 			{
 				return string.Join("\n", Parts.Select(part => part.TextWithoutChords).ToArray());
+			}
+		}
+
+		/// <summary>
+		/// Gets the translation of all parts at once.
+		/// Changes to this property are not notified.
+		/// </summary>
+		[JsonIgnore]
+		public string Translation
+		{
+			get
+			{
+				return string.Join("\n", Parts.Select(part => part.Translation).ToArray());
+			}
+		}
+
+		/// <summary>
+		/// Gets the translation of all parts but with chords symbols removed.
+		/// Changes to this property are not notified.
+		/// </summary>
+		[JsonIgnore]
+		public string TranslationWithoutChords
+		{
+			get
+			{
+				return string.Join("\n", Parts.Select(part => part.TranslationWithoutChords).ToArray());
 			}
 		}
 
