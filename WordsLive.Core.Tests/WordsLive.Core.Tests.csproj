@@ -86,10 +86,10 @@
       <Version>1.2.1</Version>
     </PackageReference>
     <PackageReference Include="xunit">
-      <Version>2.5.1</Version>
+      <Version>2.9.3</Version>
     </PackageReference>
     <PackageReference Include="xunit.runner.msbuild">
-      <Version>2.5.1</Version>
+      <Version>2.9.3</Version>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
