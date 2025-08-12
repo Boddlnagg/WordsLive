@@ -25,15 +25,29 @@ namespace WordsLive.Documents
 		public event Action CallbackLoaded;
 
 		private string document;
+		private DocumentPageScale pageScale;
+		private int transitionDuration;
 
-		public PdfPresentationBridge(string document)
+		public PdfPresentationBridge(string document, DocumentPageScale pageScale, int transitionDuration)
 		{
 			this.document = document;
+			this.pageScale = pageScale;
+			this.transitionDuration = transitionDuration;
 		}
 
 		public string GetDocument()
 		{
 			return document;
+		}
+
+		public bool GetRenderWholePage()
+		{
+			return pageScale == DocumentPageScale.WholePage;
+		}
+
+		public int GetTransitionDuration()
+		{
+			return transitionDuration;
 		}
 
 		public void OnCallbackLoaded()

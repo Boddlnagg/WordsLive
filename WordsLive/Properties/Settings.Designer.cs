@@ -720,5 +720,17 @@ namespace WordsLive.Properties {
                 this["SlideshowAutoAdvanceSeconds"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("350")]
+        public int DocumentPageTransition {
+            get {
+                return ((int)(this["DocumentPageTransition"]));
+            }
+            set {
+                this["DocumentPageTransition"] = value;
+            }
+        }
     }
 }

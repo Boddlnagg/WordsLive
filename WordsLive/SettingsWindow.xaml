@@ -36,6 +36,7 @@
 						<RowDefinition Height="Auto"/>
 						<RowDefinition Height="Auto"/>
 						<RowDefinition Height="Auto"/>
+						<RowDefinition Height="Auto"/>
 					</Grid.RowDefinitions>
 					<Grid.ColumnDefinitions>
 						<ColumnDefinition Width="Auto"/>
@@ -69,6 +70,9 @@
 					<Label Grid.Row="3" Content="{x:Static resx:Resource.seLabelTransitionImages}" HorizontalAlignment="Left" Margin="0" VerticalAlignment="Top" />
 					<TextBox Grid.Row="3" Grid.Column="1" Height="23" Margin="0" Style="{StaticResource textBoxInError}" Text="{Binding ImageTransition, Mode=TwoWay, ValidatesOnDataErrors=True}" TextAlignment="Right" VerticalAlignment="Top" />
 					<TextBlock Grid.Row="3" Grid.Column="2" Height="23" Margin="3,0,0,0" Text="ms" VerticalAlignment="Center" />
+					<Label Grid.Row="4" Content="{x:Static resx:Resource.seLabelTransitionDocumentPages}" HorizontalAlignment="Left" Margin="0" VerticalAlignment="Top" />
+					<TextBox Grid.Row="4" Grid.Column="1" Height="23" Margin="0" Style="{StaticResource textBoxInError}" Text="{Binding DocumentPageTransition, Mode=TwoWay, ValidatesOnDataErrors=True}" TextAlignment="Right" VerticalAlignment="Top" />
+					<TextBlock Grid.Row="4" Grid.Column="2" Height="23" Margin="3,0,0,0" Text="ms" VerticalAlignment="Center" />
 				</Grid>
 			</TabItem>
 			<TabItem Header="{x:Static resx:Resource.seTabTemplate}">

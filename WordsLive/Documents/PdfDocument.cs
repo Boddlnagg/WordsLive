@@ -17,17 +17,13 @@
  */
 
 using System;
+using System.Collections.Generic;
 
 namespace WordsLive.Documents
 {
 	public class PdfDocument : DocumentMedia
 	{
-		public PdfDocument(Uri uri) : base(uri) { }
-
-		public override void Load()
-		{
-			// nothing to do
-		}
+		public PdfDocument(Uri uri, Dictionary<string, string> options) : base(uri, options) { }
 
 		public override IDocumentPresentation CreatePresentation()
 		{
