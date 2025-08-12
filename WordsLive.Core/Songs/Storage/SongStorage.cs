@@ -112,6 +112,14 @@ namespace WordsLive.Core.Songs.Storage
 
 		public abstract bool Exists(string name);
 
+		/// <summary>
+		/// Check if the given name of the song is allowed (independent of whether it already exists
+		/// or not; checks the general format and checks especially for invalid characters).
+		/// </summary>
+		/// <param name="name">The name of the song.</param>
+		/// <returns>True if the song name can be used for saving a song.</returns>
+		public abstract bool IsValidName(string name);
+
 		//public Song Read(string name, ISongReader reader)
 		//{
 		//	throw new NotImplementedException();

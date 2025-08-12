@@ -17,7 +17,6 @@
  */
 
 using System;
-using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Newtonsoft.Json;
@@ -144,7 +143,7 @@ namespace WordsLive.Core.Songs.Storage
 			return new SongData
 			{
 				Title = song.Title,
-				Filename = Path.GetFileName(Uri.UnescapeDataString(song.Uri.Segments.Last())),
+				Filename = Uri.UnescapeDataString(String.Join("", song.Uri.Segments.Skip(1))),
 				Text = song.TextWithoutChords,
 				Translation = song.TranslationWithoutChords,
 				Copyright = String.Join(" ", song.Copyright.Split('\n').Select(line => line.Trim())),
