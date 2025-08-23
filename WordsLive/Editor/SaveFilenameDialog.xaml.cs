@@ -17,7 +17,6 @@
  */
 
 using System.ComponentModel;
-using System.IO;
 using System.Windows;
 using WordsLive.Core;
 using WordsLive.Resources;
@@ -103,7 +102,7 @@ namespace WordsLive.Editor
 				switch (name)
 				{
 					case "FilenameWithoutExtension":
-						if (string.IsNullOrEmpty(this.filename) || this.filename.IndexOfAny(Path.GetInvalidFileNameChars()) != -1)
+						if (!DataManager.Songs.IsValidName(this.filename))
 							return Resource.sfInvalidFilename;
 
 						break;
