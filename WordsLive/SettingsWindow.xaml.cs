@@ -111,6 +111,18 @@ namespace WordsLive
 			}
 		}
 
+		public int DocumentPageTransition
+		{
+			get
+			{
+				return Properties.Settings.Default.DocumentPageTransition;
+			}
+			set
+			{
+				Properties.Settings.Default.DocumentPageTransition = value;
+			}
+		}
+
 		public string SongTemplateFile
 		{
 			get

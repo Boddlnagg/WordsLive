@@ -31,7 +31,6 @@ namespace WordsLive.Documents
 		private IDocumentPresentation presentation;
 		private DocumentMedia media;
 		private ControlPanelLoadState loadState = ControlPanelLoadState.Loading;
-		private DocumentPageScale pageScale = DocumentPageScale.FitToWidth;
 
 		public DocumentControlPanel()
 		{
@@ -76,15 +75,15 @@ namespace WordsLive.Documents
 		{
 			get
 			{
-				return pageScale;
+				return media.PageScale;
 			}
 			set
 			{
-				if (pageScale != value)
+				if (media.PageScale != value)
 				{
-					pageScale = value;
+					media.PageScale = value;
 
-					presentation.PageScale = pageScale;
+					presentation.PageScale = value;
 
 					OnPropertyChanged("PageScale");
 					OnPropertyChanged("CurrentPage");
