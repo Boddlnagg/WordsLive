@@ -40,7 +40,7 @@ namespace WordsLive.AudioVideo
 
 		public override TimeSpan Duration
 		{
-			get { return player.NaturalDuration.TimeSpan; }
+			get { return player.NaturalDuration.HasTimeSpan ? player.NaturalDuration.TimeSpan : TimeSpan.Zero; }
 		}
 
 		public override int Position
