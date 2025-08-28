@@ -576,10 +576,10 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="CefSharp.OffScreen">
-      <Version>116.0.230</Version>
+      <Version>139.0.280</Version>
     </PackageReference>
     <PackageReference Include="CefSharp.Wpf">
-      <Version>116.0.230</Version>
+      <Version>139.0.280</Version>
     </PackageReference>
     <PackageReference Include="DotNetZip">
       <Version>1.16.0</Version>

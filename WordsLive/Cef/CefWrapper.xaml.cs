@@ -62,7 +62,7 @@ namespace WordsLive.Cef
 			}
 			else
 			{
-				offscreenControl = new CefSharp.OffScreen.ChromiumWebBrowser("", new BrowserSettings { BackgroundColor = CefSharp.Cef.ColorSetARGB(0, 0, 0, 0) } );
+				offscreenControl = new CefSharp.OffScreen.ChromiumWebBrowser("about:blank", new BrowserSettings { BackgroundColor = CefSharp.Cef.ColorSetARGB(0, 0, 0, 0) } );
 				offscreenControl.Size = this.area.WindowSize;
 				area.WindowSizeChanged += area_WindowSizeChanged;
 			}

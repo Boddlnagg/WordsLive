@@ -179,12 +179,6 @@
 				<File Source="$(var.WordsLive.TargetDir)libGLESv2.dll" Name="libGLESv2.dll" KeyPath="yes" />
 			</Component>
 			<Component>
-				<File Source="$(var.WordsLive.TargetDir)README.txt" Name="README.txt" KeyPath="yes" />
-			</Component>
-			<Component>
-				<File Source="$(var.WordsLive.TargetDir)snapshot_blob.bin" Name="snapshot_blob.bin" KeyPath="yes" />
-			</Component>
-			<Component>
 				<File Source="$(var.WordsLive.TargetDir)v8_context_snapshot.bin" Name="v8_context_snapshot.bin" KeyPath="yes" />
 			</Component>
 			<Component>
