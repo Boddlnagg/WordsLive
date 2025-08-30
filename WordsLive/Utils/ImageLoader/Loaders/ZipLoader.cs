@@ -18,7 +18,7 @@
 
 using System;
 using System.IO;
-using Ionic.Zip;
+using System.IO.Compression;
 
 namespace WordsLive.Utils.ImageLoader.Loaders
 {
@@ -28,13 +28,16 @@ namespace WordsLive.Utils.ImageLoader.Loaders
 
 		public Stream Load(object source)
 		{
-			if (source is ZipEntry)
+			if (source is ZipArchiveEntry)
 			{
-				ZipEntry entry = source as ZipEntry;
+				var entry = source as ZipArchiveEntry;
 				lock(Lock)
 				{
 					MemoryStream stream = new MemoryStream();
-					entry.Extract(stream);
+					using (var entryStream = entry.Open())
+					{
+						entryStream.CopyTo(stream);
+					}
 					stream.Flush();
 					stream.Seek(0, SeekOrigin.Begin);
 					return stream;

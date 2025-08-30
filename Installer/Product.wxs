@@ -119,9 +119,6 @@
 		</ComponentGroup>
 		<ComponentGroup Id="ThirdPartyAssemblies" Directory="APPLICATIONFOLDER">
 			<Component>
-				<File Source="$(var.WordsLive.TargetDir)DotNetZip.dll" Name="DotNetZip.dll" KeyPath="yes" />
-			</Component>
-			<Component>
 				<File Source="$(var.WordsLive.TargetDir)MonitoredUndo.dll" Name="MonitoredUndo.dll" KeyPath="yes" />
 			</Component>
 			<Component>
