@@ -19,10 +19,10 @@
 using System;
 using System.ComponentModel;
 using System.IO;
+using System.IO.Compression;
 using System.Reflection;
 using System.Windows;
 using System.Xml.Linq;
-using Ionic.Zip;
 using WordsLive.Resources;
 
 namespace WordsLive
@@ -152,8 +152,7 @@ namespace WordsLive
 					if (!songsExist && !backgroundsExist)
 					{
 						var appDir = new FileInfo(Assembly.GetExecutingAssembly().Location).Directory;
-						var examplesZip = ZipFile.Read(Path.Combine(appDir.FullName, "Data", "Examples.zip"));
-						examplesZip.ExtractAll(actualDirectory);
+						ZipFile.ExtractToDirectory(Path.Combine(appDir.FullName, "Data", "Examples.zip"), actualDirectory);
 					}
 				}
 			}
