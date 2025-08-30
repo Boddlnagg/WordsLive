@@ -71,7 +71,7 @@ namespace WordsLive.Cef
 			return true;
 		}
 
-		public void OnRenderProcessTerminated(IWebBrowser chromiumWebBrowser, IBrowser browser, CefTerminationStatus status)
+		public void OnRenderProcessTerminated(IWebBrowser chromiumWebBrowser, IBrowser browser, CefTerminationStatus status, int errorCode, string errorMessage)
 		{
 			RenderProcessTerminated?.Invoke(chromiumWebBrowser, new RenderProcessTerminatedEventArgs {
 				ChromiumWebBrowser = chromiumWebBrowser,
