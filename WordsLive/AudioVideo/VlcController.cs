@@ -58,6 +58,7 @@ namespace WordsLive.AudioVideo
 
 		public static void Init()
 		{
+			//LibVLCSharp.Shared.Core.Initialize(Path);
 			LibVLC = new LibVLCSharp.Shared.LibVLC();
 
 

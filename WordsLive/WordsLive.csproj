@@ -578,10 +578,10 @@
       <Version>4.0.2</Version>
     </PackageReference>
     <PackageReference Include="LibVLCSharp">
-      <Version>3.8.0</Version>
+      <Version>3.9.4</Version>
     </PackageReference>
     <PackageReference Include="LibVLCSharp.WPF">
-      <Version>3.8.0</Version>
+      <Version>3.9.4</Version>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
       <Version>13.0.3</Version>
@@ -596,7 +596,7 @@
       <Version>4.3.2</Version>
     </PackageReference>
     <PackageReference Include="VideoLAN.LibVLC.Windows">
-      <Version>3.0.18</Version>
+      <Version>3.0.21</Version>
     </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
