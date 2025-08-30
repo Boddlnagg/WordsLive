@@ -19,31 +19,38 @@
 using System;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Documents;
+using System.Windows.Markup;
+using System.Windows.Media;
 using WordsLive.Presentation.Wpf;
 
 namespace WordsLive.Documents
 {
-	public class XpsPresentation : WpfPresentation<DocumentViewer>, IDocumentPresentation
+	public class XpsPresentation : WpfPresentation<Grid>, IDocumentPresentation
 	{
-		private DocumentPageScale pageScale = DocumentPageScale.FitToWidth;
+		private DocumentPageScale pageScale = default;
+		private FixedDocument document;
+		private DocumentViewer currentViewer;
+		private int currentPageNumber = 1;
+		private int crossfadeDuration;
 
 		public XpsPresentation()
 		{
-			this.Control.Style = Application.Current.FindResource("reducedDocumentViewer") as Style;
-			this.Control.ShowPageBorders = false;
-			this.Control.HorizontalPageSpacing = 0;
-			this.Control.VerticalPageSpacing = 0;
+			this.Control.Background = Brushes.Black;
 			this.Control.SizeChanged += (sender, args) => ApplyPageScale();
+			this.crossfadeDuration = Properties.Settings.Default.DocumentPageTransition;
 		}
 
 		public void SetSourceDocument(XpsDocument doc)
 		{
-			this.Control.Document = doc.Document.GetFixedDocumentSequence();
-			this.Control.FitToWidth();
+			this.pageScale = doc.PageScale;
+			this.document = doc.Document.GetFixedDocumentSequence().References[0].GetDocument(false);
 		}
 
 		public void Load()
 		{
+			var newDocumentViewer = RenderPage(this.currentPageNumber);
+			ShowPage(newDocumentViewer);
 			IsLoaded = true;
 			OnDocumentLoaded();
 		}
@@ -52,34 +59,40 @@ namespace WordsLive.Documents
 
 		public int PageCount
 		{
-			get { return Control.PageCount; }
+			get { return this.document == null ? 0 : this.document.Pages.Count; }
 		}
 
 		public int CurrentPage
 		{
-			get { return Control.MasterPageNumber; }
+			get { return this.document == null ? 0 : this.currentPageNumber; }
 		}
 
 		public void GoToPage(int page)
 		{
-			Control.GoToPage(page);
+			var newDocumentViewer = RenderPage(page);
+			this.currentPageNumber = page;
+			AnimatePageTransition(newDocumentViewer);
 		}
 
 		public void PreviousPage()
 		{
-			Control.PreviousPage();
+			if (!this.CanGoToPreviousPage)
+				return;
+			this.GoToPage(this.currentPageNumber - 1);
 		}
 
 		public void NextPage()
 		{
-			Control.NextPage();
+			if (!this.CanGoToNextPage)
+				return;
+			this.GoToPage(this.currentPageNumber + 1);
 		}
 
 		public bool CanGoToPreviousPage
 		{
 			get
 			{
-				return Control.CanGoToPreviousPage;
+				return this.currentPageNumber > 1;
 			}
 		}
 
@@ -87,7 +100,7 @@ namespace WordsLive.Documents
 		{
 			get
 			{
-				return Control.CanGoToNextPage;
+				return this.currentPageNumber < this.PageCount;
 			}
 		}
 
@@ -109,10 +122,97 @@ namespace WordsLive.Documents
 
 		private void ApplyPageScale()
 		{
+			if (currentViewer == null)
+				return;
 			if (pageScale == DocumentPageScale.FitToWidth)
-				Control.FitToWidth();
+				currentViewer.FitToWidth();
 			else
-				Control.FitToMaxPagesAcross(1);
+				currentViewer.FitToMaxPagesAcross(1);
+		}
+
+		private DocumentViewer RenderPage(int pageNumber)
+		{
+			var documentViewer = new DocumentViewer
+			{
+				Style = Application.Current.FindResource("reducedDocumentViewer") as Style,
+				ShowPageBorders = false,
+				HorizontalPageSpacing = 0,
+				VerticalPageSpacing = 0
+			};
+
+			if (this.document.Pages.Count == 0)
+				return documentViewer;
+
+			var page = this.document.Pages[Math.Max(1, Math.Min(this.document.Pages.Count, pageNumber)) - 1].GetPageRoot(false);
+
+			/*
+			 * A problem is that there is no straightforward way to render individual pages or just
+			 * copy individual pages. Therefore we use CreateVisualBrushClone that renders the page
+			 * into a new FixedPage. This way we avoid requiring a deep cloning and we are sure that
+			 * no referenced resources are lost.
+			 */
+			var clonedPage = CreateVisualBrushClone(page);
+
+			var singlePageContent = new PageContent();
+			((IAddChild)singlePageContent).AddChild(clonedPage);
+			var singlePageDocument = new FixedDocument();
+			singlePageDocument.Pages.Add(singlePageContent);
+
+			documentViewer.Document = singlePageDocument;
+			if (pageScale == DocumentPageScale.FitToWidth)
+				documentViewer.FitToWidth();
+			else
+				documentViewer.FitToMaxPagesAcross(1);
+
+			return documentViewer;
+		}
+
+		private static FixedPage CreateVisualBrushClone(FixedPage original)
+		{
+			if (original == null)
+				return null;
+
+			var clone = new FixedPage
+			{
+				Width = original.Width,
+				Height = original.Height
+			};
+
+			var rect = new System.Windows.Shapes.Rectangle
+			{
+				Width = original.Width,
+				Height = original.Height,
+				Fill = new VisualBrush(original)
+			};
+
+			clone.Children.Add(rect);
+			return clone;
+		}
+
+		private void ShowPage(DocumentViewer newDocumentViewer)
+		{
+			this.Control.Children.Clear();
+			this.Control.Children.Add(newDocumentViewer);
+			this.currentViewer = newDocumentViewer;
+		}
+
+		private void AnimatePageTransition(DocumentViewer newDocumentViewer)
+		{
+			if (crossfadeDuration <= 0)
+			{
+				ShowPage(newDocumentViewer);
+				return;
+			}
+
+			var oldDocumentViewer = this.currentViewer;
+
+			newDocumentViewer.Opacity = 0.0;
+			this.Control.Children.Add(newDocumentViewer);
+			this.currentViewer = newDocumentViewer;
+
+			var fadeIn = new System.Windows.Media.Animation.DoubleAnimation(0.0, 1.0, TimeSpan.FromMilliseconds(crossfadeDuration));
+			fadeIn.Completed += (s, e) => this.Control.Children.Remove(oldDocumentViewer);
+			newDocumentViewer.BeginAnimation(UIElement.OpacityProperty, fadeIn);
 		}
 
 		public event EventHandler DocumentLoaded;

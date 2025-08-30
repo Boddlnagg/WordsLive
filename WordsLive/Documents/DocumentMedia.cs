@@ -17,14 +17,41 @@
  */
 
 using System;
+using System.Collections.Generic;
 using WordsLive.Core;
 
 namespace WordsLive.Documents
 {
 	public abstract class DocumentMedia : Media
 	{
-		public DocumentMedia(Uri uri) : base(uri) { }
+		private static readonly string PageScaleKey = "pageScale";
+
+		public DocumentMedia(Uri uri, Dictionary<string, string> options) : base(uri, options) { }
+
+		public override void Load()
+		{
+			pageScale = Options.ContainsKey(PageScaleKey) && Enum.TryParse(Options[PageScaleKey], out DocumentPageScale value) ? value : default;
+		}
 
 		public abstract IDocumentPresentation CreatePresentation();
+
+		private DocumentPageScale pageScale;
+
+		public DocumentPageScale PageScale
+		{
+			get
+			{
+				return pageScale;
+			}
+			set
+			{
+				if (value != pageScale)
+				{
+					pageScale = value;
+					Options[PageScaleKey] = pageScale.ToString();
+					OnOptionsChanged();
+				}
+			}
+		}
 	}
 }

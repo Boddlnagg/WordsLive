@@ -1011,4 +1011,7 @@
   <data name="dttPreviewLabel" xml:space="preserve">
     <value>Preview</value>
   </data>
+  <data name="seLabelTransitionDocumentPages" xml:space="preserve">
+    <value>Transition between PDF/XPS pages:</value>
+  </data>
 </root>
