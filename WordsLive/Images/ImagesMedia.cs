@@ -20,8 +20,8 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
-using Ionic.Zip;
 using WordsLive.Core;
 
 namespace WordsLive.Images
@@ -139,13 +139,15 @@ namespace WordsLive.Images
 			if (!Uri.IsFile)
 				throw new NotImplementedException("Loading slideshows from a remote source is not implemented.");
 
-			Stream stream = System.IO.File.OpenRead(Uri.LocalPath);
-			using (var zip = ZipFile.Read(stream))
+			var archive = ZipFile.OpenRead(Uri.LocalPath);
+			foreach (var entry in archive.Entries)
 			{
-				foreach (var entry in zip.Entries)
+				if (string.IsNullOrEmpty(entry.Name))
 				{
-					yield return new ImageInfo(entry);
+					// skip directories
+					continue;
 				}
+				yield return new ImageInfo(entry);
 			}
 
 			// important: don't close stream directly, so ImageLoader can load the images

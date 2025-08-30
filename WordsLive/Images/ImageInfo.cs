@@ -19,9 +19,9 @@
 using System;
 using System.ComponentModel;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Windows.Media.Imaging;
-using Ionic.Zip;
 using WordsLive.Utils.ImageLoader;
 
 namespace WordsLive.Images
@@ -42,14 +42,14 @@ namespace WordsLive.Images
 			}
 		}
 
-		public ZipEntry ZipEntry
+		public ZipArchiveEntry ZipEntry
 		{
 			get
 			{
 				if (sourceType != SourceType.ZipFile)
 					throw new InvalidOperationException("Not loaded from a zip file.");
 
-				return (ZipEntry)source;
+				return (ZipArchiveEntry)source;
 			}
 		}
 
@@ -77,7 +77,7 @@ namespace WordsLive.Images
 					case SourceType.ExternalResource:
 						return Uri.UnescapeDataString(Uri.Segments.Last());
 					case SourceType.ZipFile:
-						return ZipEntry.FileName;
+						return ZipEntry.Name;
 					default:
 						return null;
 				}
@@ -114,7 +114,7 @@ namespace WordsLive.Images
 			this.source = uri;
 		}
 
-		public ImageInfo(ZipEntry entry)
+		public ImageInfo(ZipArchiveEntry entry)
 		{
 			this.sourceType = SourceType.ZipFile;
 			this.source = entry;
