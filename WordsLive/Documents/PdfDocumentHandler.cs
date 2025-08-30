@@ -44,7 +44,7 @@ namespace WordsLive.Documents
 
 		public override Media Handle(Uri uri, Dictionary<string, string> options)
 		{
-			return new PdfDocument(uri);
+			return new PdfDocument(uri, options);
 		}
 	}
 }

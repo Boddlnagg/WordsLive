@@ -80,13 +80,6 @@
     <Setting Name="PresentationTransition" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">500</Value>
     </Setting>
-    <Setting Name="PresentationAreas" Type="System.Collections.Specialized.StringCollection" Scope="User">
-      <Value Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
-&lt;ArrayOfString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
-  &lt;string&gt;1,True,0,0,0,0&lt;/string&gt;
-  &lt;string&gt;0,False,0,0,800,600&lt;/string&gt;
-&lt;/ArrayOfString&gt;</Value>
-    </Setting>
     <Setting Name="SongTemplateFile" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
@@ -179,6 +172,16 @@
     </Setting>
     <Setting Name="SlideshowAutoAdvanceSeconds" Type="System.UInt32" Scope="User">
       <Value Profile="(Default)">10</Value>
+    </Setting>
+    <Setting Name="DocumentPageTransition" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">350</Value>
+    </Setting>
+    <Setting Name="PresentationAreas" Type="System.Collections.Specialized.StringCollection" Scope="User">
+      <Value Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
+&lt;ArrayOfString xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"&gt;
+  &lt;string&gt;1,True,0,0,0,0&lt;/string&gt;
+  &lt;string&gt;0,False,0,0,800,600&lt;/string&gt;
+&lt;/ArrayOfString&gt;</Value>
     </Setting>
   </Settings>
 </SettingsFile>

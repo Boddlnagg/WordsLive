@@ -45,8 +45,9 @@ namespace WordsLive.Documents
 
 
 			UriMapDataSource.Instance.Add(uriKey, Document.Uri);
+			this.pageScale = Document.PageScale;
 
-			this.bridge = new PdfPresentationBridge("asset://urimap/" + uriKey);
+			this.bridge = new PdfPresentationBridge("asset://urimap/" + uriKey, pageScale, Properties.Settings.Default.DocumentPageTransition);
 			this.Control.Web.JavascriptObjectRepository.UnRegisterAll();
 			this.Control.Web.JavascriptObjectRepository.Register("bridge", bridge, true);
 			bridge.CallbackLoaded += () => {
@@ -119,14 +120,7 @@ namespace WordsLive.Documents
 			set
 			{
 				pageScale = value;
-
-				if (IsLoaded)
-				{
-					if (pageScale == DocumentPageScale.FitToWidth)
-						this.Control.Web.GetMainFrame().ExecuteJavaScriptAsync("fitToWidth()");
-					else
-						this.Control.Web.GetMainFrame().ExecuteJavaScriptAsync("wholePage()");
-				}
+				ApplyPageScale();
 			}
 		}
 
@@ -165,6 +159,17 @@ namespace WordsLive.Documents
 			base.Close();
 
 			UriMapDataSource.Instance.Remove(uriKey);
+		}
+
+		private void ApplyPageScale()
+		{
+			if (!IsLoaded)
+				return;
+
+			if (pageScale == DocumentPageScale.FitToWidth)
+				this.Control.Web.GetMainFrame().ExecuteJavaScriptAsync("fitToWidth()");
+			else
+				this.Control.Web.GetMainFrame().ExecuteJavaScriptAsync("wholePage()");
 		}
 
 		public event EventHandler DocumentLoaded;

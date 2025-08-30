@@ -1501,6 +1501,15 @@ namespace WordsLive.Resources {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Transition between PDF/XPS pages: ähnelt.
+        /// </summary>
+        public static string seLabelTransitionDocumentPages {
+            get {
+                return ResourceManager.GetString("seLabelTransitionDocumentPages", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Transition between images: ähnelt.
         /// </summary>
         public static string seLabelTransitionImages {

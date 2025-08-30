@@ -18,9 +18,19 @@
 
 namespace WordsLive.Documents
 {
+	/// <summary>
+	/// Represents the options for scaling of document pages when rendered.
+	/// </summary>
 	public enum DocumentPageScale
 	{
-		FitToWidth,
-		WholePage
+		/// <summary>
+		/// Scale the current page to fit completely into the presentation area (default).
+		/// </summary>
+		WholePage,
+
+		/// <summary>
+		/// Scale the current page to use the full width of the presentation area, scrolling may be needed to view the lower parts of the page. This is useful for documents with portrait orientation.
+		/// </summary>
+		FitToWidth
 	}
 }
