@@ -142,13 +142,13 @@
     <EmbeddedResource Include="Resources\SongPresentation.js" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Resources\thirdparty\pdf.js" />
+    <EmbeddedResource Include="Resources\thirdparty\pdf.mjs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\thirdparty\jquery.mousewheel.js" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Resources\thirdparty\pdf.worker.js" />
+    <EmbeddedResource Include="Resources\thirdparty\pdf.worker.mjs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="MUF">

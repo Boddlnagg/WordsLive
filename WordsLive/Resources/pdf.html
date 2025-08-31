@@ -3,7 +3,6 @@
 
 <head>
 	<title>PDF</title>
-	<script type="text/javascript" src="asset://WordsLive.Core/thirdparty/pdf.js"></script>
 	<script type="text/javascript" src="asset://WordsLive.Core/thirdparty/jquery.js"></script>
 	<script type="text/javascript" src="asset://WordsLive.Core/thirdparty/jquery.mousewheel.js"></script>
   
@@ -57,12 +56,13 @@
 		}
 	</style>
 
-	<script type="text/javascript">
-		'use strict';
+	<script type="module">
+		import * as pdfjsLib from 'asset://WordsLive.Core/thirdparty/pdf.mjs';
+		pdfjsLib.GlobalWorkerOptions.workerSrc = 'asset://WordsLive.Core/thirdparty/pdf.worker.mjs';
 
 		function renderPage(div, pdf, pageNumber, wholePage, callback) {
 			pdf.getPage(pageNumber).then(function(page) {
-				var unscaledViewport = page.getViewport(1);
+				var unscaledViewport = page.getViewport({ scale: 1 });
 				var scale;
 				if (wholePage) {
 					scale = Math.min(
@@ -72,7 +72,7 @@
 				} else {
 					scale = $(document).width() / unscaledViewport.width;
 				}
-				var viewport = page.getViewport(scale);
+				var viewport = page.getViewport({ scale: scale });
 
 				var pageDisplayWidth = viewport.width;
 				var pageDisplayHeight = viewport.height;
@@ -103,7 +103,7 @@
 					canvasContext: context,
 					viewport: viewport
 				};
-				page.render(renderContext).then(function () {
+				page.render(renderContext).promise.then(function () {
 					callback(pageOverlayDiv);
 				});
 
@@ -138,13 +138,10 @@
 		    isWholePage = await bridge.getRenderWholePage();
 		    crossfadeDuration = await bridge.getTransitionDuration();
 
-		    // Fetch the PDF document from the URL using promises
-		    PDFJS.getDocument(await bridge.getDocument()).then(async function getPdfForm(pdf) {
-			    doc = pdf;
-				await bridge.onCallbackLoaded();
-				skipRenderingOnInit = false;
-				renderCurrentPage();
-			});
+		    doc = await pdfjsLib.getDocument(await bridge.getDocument()).promise;
+		    await bridge.onCallbackLoaded();
+		    skipRenderingOnInit = false;
+		    renderCurrentPage();
 		})();
 
 		$(window).resize(function () {
@@ -196,6 +193,15 @@
 		function prevPage() {
 			gotoPage(getCurrentPage() - 1);
 		}
+
+		// Expose control functions to the global window object, this is necessary to use them from C# code
+		window.wholePage = wholePage;
+		window.fitToWidth = fitToWidth;
+		window.gotoPage = gotoPage;
+		window.getCurrentPage = getCurrentPage;
+		window.getPageCount = getPageCount;
+		window.nextPage = nextPage;
+		window.prevPage = prevPage;
 	</script>
 </head>
 
