@@ -79,6 +79,8 @@ function SongPresentation(id, song, featureLevel) {
 	var ths = this;
 
 	$(window).bind('resize.presentation_' + this.id, function () {
+		if (ths.slide === null)
+			return;
 		ths.container.find('.song-main > div > div > div').css('font-size', (ths.slide.Size * SongPresentation.FontFactor * ths.getFactor()) + "pt");
 		ths.updateStyle();
 	});
