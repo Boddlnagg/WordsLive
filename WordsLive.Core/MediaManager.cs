@@ -239,7 +239,7 @@ namespace WordsLive.Core
 					{
 						foreach (Media m in from i in root.Element("order").Elements("item")
 											select (i.Attribute("mediatype").Value == "powerpraise-song" && !i.Element("file").Value.Contains('\\')) ?
-											LoadMediaMetadata(new Uri("song:///" + i.Element("file").Value), LoadOptions(i)) :
+											LoadMediaMetadata(new Uri("song:///" + Uri.EscapeDataString(i.Element("file").Value)), LoadOptions(i)) :
 											LoadMediaMetadata(new Uri(i.Element("file").Value), LoadOptions(i)))
 						{
 							yield return m;
@@ -250,7 +250,7 @@ namespace WordsLive.Core
 					else if (root.Attribute("version").Value == "2.2")
 					{
 						foreach (Media m in from i in root.Elements("item")
-													select MediaManager.LoadMediaMetadata(new Uri("song:///" + i.Element("file").Value), null))
+													select MediaManager.LoadMediaMetadata(new Uri("song:///" + Uri.EscapeDataString(i.Element("file").Value)), null))
 						{
 							yield return m;
 						}

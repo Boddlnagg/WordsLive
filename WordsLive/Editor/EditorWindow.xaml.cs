@@ -212,7 +212,7 @@ namespace WordsLive.Editor
 
 			if (dlg.ShowDialog() == true)
 			{
-				song.Save(new Uri("song:///" + dlg.Filename));
+				song.Save(new Uri("song:///" + Uri.EscapeDataString(dlg.Filename)));
 			}
 		}
 

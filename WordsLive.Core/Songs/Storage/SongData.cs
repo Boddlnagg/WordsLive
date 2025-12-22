@@ -128,7 +128,7 @@ namespace WordsLive.Core.Songs.Storage
 		{
 			get
 			{
-				return new Uri("song:///" + Filename);
+				return new Uri("song:///" + Uri.EscapeDataString(Filename));
 			}
 		}
 
