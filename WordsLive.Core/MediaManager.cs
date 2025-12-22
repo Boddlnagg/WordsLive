@@ -21,6 +21,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Xml.Linq;
+using WordsLive.Core.Songs.Storage;
 
 namespace WordsLive.Core
 {
@@ -239,7 +240,7 @@ namespace WordsLive.Core
 					{
 						foreach (Media m in from i in root.Element("order").Elements("item")
 											select (i.Attribute("mediatype").Value == "powerpraise-song" && !i.Element("file").Value.Contains('\\')) ?
-											LoadMediaMetadata(new Uri("song:///" + Uri.EscapeDataString(i.Element("file").Value)), LoadOptions(i)) :
+											LoadMediaMetadata(SongUri.GetUri(i.Element("file").Value), LoadOptions(i)) :
 											LoadMediaMetadata(new Uri(i.Element("file").Value), LoadOptions(i)))
 						{
 							yield return m;
@@ -250,7 +251,7 @@ namespace WordsLive.Core
 					else if (root.Attribute("version").Value == "2.2")
 					{
 						foreach (Media m in from i in root.Elements("item")
-													select MediaManager.LoadMediaMetadata(new Uri("song:///" + Uri.EscapeDataString(i.Element("file").Value)), null))
+													select MediaManager.LoadMediaMetadata(SongUri.GetUri(i.Element("file").Value), null))
 						{
 							yield return m;
 						}
@@ -336,7 +337,7 @@ namespace WordsLive.Core
 		private static string GetMediaPathFromUri(Uri uri)
 		{
 			if (uri.Scheme == "song")
-				return Uri.UnescapeDataString(uri.AbsolutePath).Substring(1);
+				return SongUri.GetFilename(uri);
 
 			if (uri.IsFile)
 				return uri.LocalPath;

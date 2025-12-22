@@ -21,6 +21,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Windows.Media;
 using WordsLive.Core;
+using WordsLive.Core.Songs.Storage;
 
 namespace WordsLive.MediaOrderList
 {
@@ -75,7 +76,7 @@ namespace WordsLive.MediaOrderList
 				}
 				else if (Data.Uri.Scheme == "song")
 				{
-					return Uri.UnescapeDataString(Data.Uri.AbsolutePath).Substring(1);
+					return SongUri.GetFilename(Data.Uri);
 				}
 				else
 				{
