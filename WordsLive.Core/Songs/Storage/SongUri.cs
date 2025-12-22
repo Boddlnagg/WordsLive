@@ -17,6 +17,7 @@
  */
 
 using System;
+using System.Linq;
 
 namespace WordsLive.Core.Songs.Storage
 {
@@ -32,7 +33,8 @@ namespace WordsLive.Core.Songs.Storage
 		/// <returns>The "song://" URI with encoded special characters if needed.</returns>
 		public static Uri GetUri(string filename)
 		{
-			return new Uri("song:///" + Uri.EscapeDataString(filename));
+			var escapedFilename = string.Join("/", filename.Split('/', '\\').Select(Uri.EscapeDataString));
+			return new Uri("song:///" + escapedFilename);
 		}
 
 		/// <summary>
