@@ -53,7 +53,7 @@ namespace WordsLive.Core.Tests.Songs
 			{
 				return;
 			}
-			Assert.Equal(filename.Replace("\\", "/"), SongUri.GetFilename(new Uri(uri)));
+			Assert.Equal(filename, SongUri.GetFilename(new Uri(uri)));
 		}
 	}
 }
