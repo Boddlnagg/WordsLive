@@ -28,11 +28,11 @@ namespace WordsLive.Core.Tests.Songs
 			new TheoryData<string, string, bool>
 			{
 				{ "test.ppl", "song:///test.ppl", false },
-				{ "test and test.ppl", "song:///test and test.ppl", false },
 				{ "test+test.ppl", "song:///test%2Btest.ppl", false },
 				{ "test&test.ppl", "song:///test%26test.ppl", false },
-				{ "test (test).ppl", "song:///test %28test%29.ppl", false },
-				{ "test [test].ppl", "song:///test %5Btest%5D.ppl", false },
+				{ "test (test).ppl", "song:///test%20%28test%29.ppl", false },
+				{ "test [test].ppl", "song:///test%20%5Btest%5D.ppl", false },
+				{ "test äöüß.ppl", "song:///test%20%C3%A4%C3%B6%C3%BC%C3%9F.ppl", false },
 				{ "#test.ppl", "song:///%23test.ppl", false },
 				{ "subfolder/test.ppl", "song:///subfolder/test.ppl", false },
 				{ "subfolder\\test.ppl", "song:///subfolder/test.ppl", true },
@@ -42,7 +42,7 @@ namespace WordsLive.Core.Tests.Songs
 		[MemberData(nameof(TestData))]
 		public void GetUri(string filename, string uri, bool _)
 		{
-			Assert.Equal(uri, SongUri.GetUri(filename).ToString());
+			Assert.Equal(uri, SongUri.GetUri(filename).OriginalString);
 		}
 
 		[Theory]
