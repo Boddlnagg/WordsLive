@@ -82,6 +82,7 @@
     <Compile Include="Songs\ISongElementWithSize.cs" />
     <Compile Include="Songs\SongMedia.cs" />
     <Compile Include="Songs\Storage\SongStorageEntry.cs" />
+    <Compile Include="Songs\Storage\SongUri.cs" />
     <Compile Include="Songs\Storage\SongUriResolver.cs" />
     <Compile Include="Songs\Storage\BackgroundStorage.cs" />
     <Compile Include="Songs\Storage\BackgroundStorageEntry.cs" />

@@ -59,10 +59,11 @@ namespace WordsLive.Core.Songs.Storage
 
 				try
 				{
-					var relativePath = new Uri(directory + Path.DirectorySeparatorChar)
+					var escapedRelativePath = new Uri(directory + Path.DirectorySeparatorChar)
 						.MakeRelativeUri(new Uri(file))
 						.ToString();
-					var song = new Song(new Uri("song:///" + relativePath), new SongUriResolver(this));
+					var relativePath = Uri.UnescapeDataString(escapedRelativePath);
+					var song = new Song(SongUri.GetUri(relativePath), new SongUriResolver(this));
 					data = SongData.Create(song);
 				}
 				catch { }
@@ -162,7 +163,7 @@ namespace WordsLive.Core.Songs.Storage
 				if (filePath.StartsWith(rootPath, StringComparison.OrdinalIgnoreCase))
 				{
 					var relativePath = filePath.Substring(rootPath.Length).Replace(Path.DirectorySeparatorChar, '/');
-					return new Uri("song:///" + relativePath);
+					return SongUri.GetUri(relativePath);
 				}
 			}
 

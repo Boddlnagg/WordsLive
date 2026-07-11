@@ -61,7 +61,7 @@ namespace WordsLive.Core.Songs.Storage
 		{
 			if (uri.Scheme == "song")
 			{
-				return (ForceStorage ?? DataManager.Songs).Get(GetFilename(uri)).Stream;
+				return (ForceStorage ?? DataManager.Songs).Get(SongUri.GetFilename(uri)).Stream;
 				
 			}
 			else if (uri.IsFile)
@@ -85,7 +85,7 @@ namespace WordsLive.Core.Songs.Storage
 		{
 			if (uri.Scheme == "song")
 			{
-				var entry = await (ForceStorage ?? DataManager.Songs).GetAsync(GetFilename(uri), cancellation);
+				var entry = await (ForceStorage ?? DataManager.Songs).GetAsync(SongUri.GetFilename(uri), cancellation);
 				return entry.Stream;
 			}
 			else if (uri.IsFile)
@@ -109,7 +109,7 @@ namespace WordsLive.Core.Songs.Storage
 		{
 			if (uri.Scheme == "song")
 			{
-				return (ForceStorage ?? DataManager.Songs).Put(GetFilename(uri));
+				return (ForceStorage ?? DataManager.Songs).Put(SongUri.GetFilename(uri));
 			}
 			else if (uri.IsFile)
 			{
@@ -119,14 +119,6 @@ namespace WordsLive.Core.Songs.Storage
 			{
 				throw new NotSupportedException();
 			}
-		}
-
-		private static string GetFilename(Uri uri)
-		{
-			if (uri.Scheme != "song")
-				throw new ArgumentException("uri");
-
-			return Uri.UnescapeDataString(uri.AbsolutePath).Substring(1);
 		}
 	}
 }

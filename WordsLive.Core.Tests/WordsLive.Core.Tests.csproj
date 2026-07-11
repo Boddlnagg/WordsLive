@@ -51,6 +51,7 @@
     </Compile>
     <Compile Include="DataTests.cs" />
     <Compile Include="ExtensionsTests.cs" />
+    <Compile Include="Songs\SongUriTests.cs" />
     <Compile Include="Songs\ChordTests.cs" />
     <Compile Include="Songs\SongPartTests.cs" />
     <Compile Include="Songs\SongSlideTests.cs" />

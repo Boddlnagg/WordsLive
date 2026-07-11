@@ -128,7 +128,7 @@ namespace WordsLive.Core.Songs.Storage
 		{
 			get
 			{
-				return new Uri("song:///" + Filename);
+				return SongUri.GetUri(Filename);
 			}
 		}
 
@@ -143,7 +143,7 @@ namespace WordsLive.Core.Songs.Storage
 			return new SongData
 			{
 				Title = song.Title,
-				Filename = Uri.UnescapeDataString(String.Join("", song.Uri.Segments.Skip(1))),
+				Filename = song.Uri.Scheme == "song" ? SongUri.GetFilename(song.Uri) : null,
 				Text = song.TextWithoutChords,
 				Translation = song.TranslationWithoutChords,
 				Copyright = String.Join(" ", song.Copyright.Split('\n').Select(line => line.Trim())),
