@@ -16,27 +16,28 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+using Microsoft.Office.Core;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
-using Microsoft.Office.Core;
 using WordsLive.Presentation.Wpf;
-using WordsLive.Slideshow.Presentation;
 using WordsLive.Resources;
+using WordsLive.Slideshow.Presentation;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
 namespace WordsLive.Slideshow.Powerpoint.Bridge
 {
 	public class PowerpointPresentation : SlideshowPresentationBase
 	{
-		private const float OUTSIDE_Y = -20000.25f;
+		private const int OUTSIDE_Y_PIXELS = -15000;
 		private FileInfo file;
 		private PowerPoint.Application application;
 		private PowerPoint.Presentation presentation;
 		private List<SlideThumbnail> thumbnails;
+		private bool visible;
 
 		/// <summary>
 		/// This is called via reflection. It checks, whether we can create a PowerPoint Application COM-binding,
@@ -80,15 +81,12 @@ namespace WordsLive.Slideshow.Powerpoint.Bridge
 				this.application = new PowerPoint.Application();
 				this.presentation = application.Presentations.Open(file.FullName, MsoTriState.msoTrue, MsoTriState.msoTrue, MsoTriState.msoFalse);
 
+				this.application.SlideShowBegin += application_SlideShowBegin;
 				this.application.SlideShowNextSlide += application_SlideShowNextSlide;
 				this.application.SlideShowEnd += application_SlideShowEnd;
 
 				this.presentation.SlideShowSettings.ShowPresenterView = MsoTriState.msoFalse;
 				this.presentation.SlideShowSettings.Run();
-				this.presentation.SlideShowWindow.Top = OUTSIDE_Y; // outside of screen (-> hidden)
-				this.presentation.SlideShowWindow.Left = PixelsToPoints(Area.WindowLocation.X);
-				this.presentation.SlideShowWindow.Height = PixelsToPoints(Area.WindowSize.Height);
-				this.presentation.SlideShowWindow.Width = PixelsToPoints(Area.WindowSize.Width);
 
 				CreateThumbnails();
 
@@ -99,6 +97,32 @@ namespace WordsLive.Slideshow.Powerpoint.Bridge
 			catch (COMException)
 			{
 				base.OnLoaded(false);
+			}
+		}
+
+		[DllImport("user32.dll")]
+		static extern bool MoveWindow(IntPtr hWnd, int X, int Y, int nWidth, int nHeight, bool bRepaint);
+
+		private void SetSlideShowAreaViaWinApi(bool visible)
+		{
+			// Do NOT use this.presentation.SlideShowWindow.Top/Left/Height/Width. The presentation is
+			// loaded read-only. In case there are e.g. missing fonts and they are substituted, any
+			// modification to window size will fail because it triggers internal recomputations and
+			// therefore document changes. If we use the Windows API however, it stays in memory only.
+			IntPtr hwnd = new IntPtr(this.presentation.SlideShowWindow.HWND);
+			MoveWindow(
+				hwnd,
+				Area.WindowLocation.X, visible ? Area.WindowLocation.Y : OUTSIDE_Y_PIXELS,
+				Area.WindowSize.Width, Area.WindowSize.Height,
+				true);
+			this.visible = visible;
+		}
+
+		private void application_SlideShowBegin(PowerPoint.SlideShowWindow Wn)
+		{
+			if (Wn == this.presentation.SlideShowWindow)
+			{
+				SetSlideShowAreaViaWinApi(false);
 			}
 		}
 
@@ -123,11 +147,6 @@ namespace WordsLive.Slideshow.Powerpoint.Bridge
 			}
 		}
 
-		private float PixelsToPoints(int px)
-		{
-			return px / 96f * 72f; // TODO: don't hardcode DPI of 96
-		}
-
 		void CreateThumbnails()
 		{
 			thumbnails = new List<SlideThumbnail>();
@@ -150,18 +169,18 @@ namespace WordsLive.Slideshow.Powerpoint.Bridge
 
 		private void Area_WindowSizeChanged(object sender, EventArgs e)
 		{
-			this.presentation.SlideShowWindow.Height = PixelsToPoints(Area.WindowSize.Height);
-			this.presentation.SlideShowWindow.Width = PixelsToPoints(Area.WindowSize.Width);
+			if (this.visible)
+			{
+				SetSlideShowAreaViaWinApi(true);
+			}
 		}
 
 		private void Area_WindowLocationChanged(object sender, EventArgs e)
 		{
-			if (this.presentation.SlideShowWindow.Top != OUTSIDE_Y)
+			if (this.visible)
 			{
-				this.presentation.SlideShowWindow.Top = PixelsToPoints(Area.WindowLocation.Y);
+				SetSlideShowAreaViaWinApi(true);
 			}
-
-			this.presentation.SlideShowWindow.Left = PixelsToPoints(Area.WindowLocation.X);
 		}
 
 		protected override void LoadPreviewProvider()
@@ -201,12 +220,12 @@ namespace WordsLive.Slideshow.Powerpoint.Bridge
 
 		public override void Show()
 		{
-			this.presentation.SlideShowWindow.Top = PixelsToPoints(Area.WindowLocation.Y);
+			SetSlideShowAreaViaWinApi(true);
 		}
 
 		public override void Hide()
 		{
-			this.presentation.SlideShowWindow.Top = OUTSIDE_Y;
+			SetSlideShowAreaViaWinApi(false);
 		}
 
 		public override IList<SlideThumbnail> Thumbnails
@@ -254,6 +273,7 @@ namespace WordsLive.Slideshow.Powerpoint.Bridge
 		{
 			Area.WindowSizeChanged -= Area_WindowSizeChanged;
 			Area.WindowLocationChanged -= Area_WindowLocationChanged;
+			this.application.SlideShowBegin -= application_SlideShowBegin;
 			this.application.SlideShowNextSlide -= application_SlideShowNextSlide;
 			this.application.SlideShowEnd -= application_SlideShowEnd;
 		}
