@@ -83,6 +83,7 @@ namespace WordsLive.Slideshow.Powerpoint.Bridge
 				this.application.SlideShowNextSlide += application_SlideShowNextSlide;
 				this.application.SlideShowEnd += application_SlideShowEnd;
 
+				this.presentation.SlideShowSettings.ShowPresenterView = MsoTriState.msoFalse;
 				this.presentation.SlideShowSettings.Run();
 				this.presentation.SlideShowWindow.Top = OUTSIDE_Y; // outside of screen (-> hidden)
 				this.presentation.SlideShowWindow.Left = PixelsToPoints(Area.WindowLocation.X);
