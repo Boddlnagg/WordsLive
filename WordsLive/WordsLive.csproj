@@ -578,10 +578,10 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="CefSharp.OffScreen">
-      <Version>139.0.280</Version>
+      <Version>144.0.270</Version>
     </PackageReference>
     <PackageReference Include="CefSharp.Wpf">
-      <Version>139.0.280</Version>
+      <Version>144.0.270</Version>
     </PackageReference>
     <PackageReference Include="Extended.Wpf.Toolkit">
       <Version>4.0.2</Version>
